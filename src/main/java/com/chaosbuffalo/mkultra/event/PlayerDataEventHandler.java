@@ -7,18 +7,17 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+@SuppressWarnings("unused")
 @Mod.EventBusSubscriber
 public class PlayerDataEventHandler {
 
@@ -83,45 +82,5 @@ public class PlayerDataEventHandler {
             return;
 
         event.addCapability(new ResourceLocation(MKUltra.MODID, "player_data"), new PlayerDataProvider((EntityPlayer) event.getObject()));
-    }
-
-    @SubscribeEvent
-    static void onLivingHurt(LivingHurtEvent event) {
-
-        DamageSource source = event.getSource();
-        if (!source.isMagicDamage())
-            return;
-
-
-        // Try to apply magic damage bonus
-        if (source.getImmediateSource() != null && source.getImmediateSource() instanceof EntityPlayerMP) {
-            EntityPlayerMP player = (EntityPlayerMP) source.getImmediateSource();
-
-            IPlayerData data = PlayerDataProvider.get(player);
-            if (data == null) {
-                return;
-            }
-
-            float newDamage = data.scaleMagicDamage(event.getAmount());
-            event.setAmount(newDamage);
-        }
-
-
-        // Try to apply magic armor
-        if (event.getEntityLiving() instanceof EntityPlayerMP) {
-            EntityPlayerMP player = (EntityPlayerMP) event.getEntityLiving();
-
-            IPlayerData data = PlayerDataProvider.get(player);
-            if (data == null) {
-                return;
-            }
-
-            float newDamage = data.applyMagicArmor(event.getAmount());
-            event.setAmount(newDamage);
-
-            // TODO: set unblockable to skip applyArmorCalculations?
-            // TODO: set absolute to skip applyPotionDamageCalculations?
-        }
-
     }
 }

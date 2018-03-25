@@ -1,27 +1,23 @@
 package com.chaosbuffalo.mkultra.effects.spells;
 
-/**
- * Created by Jacob on 7/19/2016.
- */
-
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
 import com.chaosbuffalo.mkultra.effects.Targeting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-/**
- * Created by Jacob on 7/16/2016.
- */
+
 @Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class UndertowPotion extends SpellPotionBase {
-
     public static final UndertowPotion INSTANCE = new UndertowPotion();
 
 
@@ -63,5 +59,16 @@ public class UndertowPotion extends SpellPotionBase {
     @Override
     public boolean isInstant() {
         return false;
+    }
+
+
+    public void onAttackEntity(EntityPlayer player, Entity target, PotionEffect effect) {
+        if (target instanceof EntityLivingBase) {
+            EntityLivingBase livingEnt = (EntityLivingBase) target;
+            if (livingEnt.isPotionActive(DrownPotion.INSTANCE)) {
+                livingEnt.attackEntityFrom(DamageSource.causeIndirectMagicDamage(livingEnt, player),
+                        5.0f * effect.getAmplifier());
+            }
+        }
     }
 }
