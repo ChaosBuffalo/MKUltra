@@ -1,0 +1,1 @@
+{"pattern": ["www", "wcw", "www"], "type": "minecraft:crafting_shaped", "result": {"count": 9, "item": "mkultra:copper_threaded_cloth"}, "key": {"c": {"item": "basemetals:copper_ingot"}, "w": {"item": "minecraft:wool", "data": 32767}}}

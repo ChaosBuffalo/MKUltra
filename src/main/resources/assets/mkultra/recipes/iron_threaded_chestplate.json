@@ -1,0 +1,1 @@
+{"pattern": ["w w", "www", "www"], "type": "minecraft:crafting_shaped", "result": {"item": "mkultra:iron_threaded_chestplate"}, "key": {"w": {"item": "mkultra:iron_threaded_cloth"}}}

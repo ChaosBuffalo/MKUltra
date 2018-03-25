@@ -1,0 +1,1 @@
+{"textures": {"north": "mkultra:blocks/xptable-sides", "particle": "blocks/planks_oak", "west": "mkultra:blocks/xptable-sides", "up": "mkultra:blocks/xptable-top", "down": "mkultra:blocks/xptable-bot", "east": "mkultra:blocks/xptable-sides", "south": "mkultra:blocks/xptable-sides"}, "parent": "block/cube"}

@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shaped", "group": "mana_regen_idol", "result": {"item": "mkultra:mana_regen_idol_silver"}, "key": {"i": {"item": "basemetals:silver_ingot"}, "e": {"item": "minecraft:diamond"}}, "pattern": [" e ", " i ", " i "]}

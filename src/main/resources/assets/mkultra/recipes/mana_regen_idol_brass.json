@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shaped", "group": "mana_regen_idol", "result": {"item": "mkultra:mana_regen_idol_brass"}, "key": {"i": {"item": "basemetals:brass_ingot"}, "e": {"item": "minecraft:redstone"}}, "pattern": [" e ", " i ", " i "]}

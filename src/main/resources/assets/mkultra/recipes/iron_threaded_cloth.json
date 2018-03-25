@@ -1,0 +1,1 @@
+{"pattern": ["www", "wcw", "www"], "type": "minecraft:crafting_shaped", "result": {"count": 9, "item": "mkultra:iron_threaded_cloth"}, "key": {"c": {"item": "minecraft:iron_ingot"}, "w": {"item": "mkultra:hempfibers"}}}

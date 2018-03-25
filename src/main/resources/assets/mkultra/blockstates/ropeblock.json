@@ -1,0 +1,1 @@
+{"variants": {"facing=up": {"model": "mkultra:ropenoanchor"}, "facing=east": {"model": "mkultra:ropeanchorside"}, "facing=north": {"y": 270, "model": "mkultra:ropeanchorside"}, "facing=south": {"y": 90, "model": "mkultra:ropeanchorside"}, "facing=down": {"model": "mkultra:ropeanchorup"}, "facing=west": {"y": 180, "model": "mkultra:ropeanchorside"}}}
