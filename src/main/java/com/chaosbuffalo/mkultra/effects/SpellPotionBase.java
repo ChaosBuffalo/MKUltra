@@ -114,24 +114,24 @@ public abstract class SpellPotionBase extends Potion {
 
     @Override
     public void applyAttributesModifiersToEntity(EntityLivingBase target, AbstractAttributeMap attributes, int amplifier) {
-        // Called on application
-        super.applyAttributesModifiersToEntity(target, attributes, amplifier);
-
         SpellCast cast = SpellCast.get(target, this);
         if (cast != null) {
             onPotionAdd(cast, target, attributes, amplifier);
         }
+
+        // Called on application
+        super.applyAttributesModifiersToEntity(target, attributes, amplifier);
     }
 
     @Override
     public void removeAttributesModifiersFromEntity(EntityLivingBase target, AbstractAttributeMap attributes, int amplifier) {
-        // Called on removal
-        super.removeAttributesModifiersFromEntity(target, attributes, amplifier);
-
         SpellCast cast = SpellCast.get(target, this);
         if (cast != null) {
             onPotionRemove(cast, target, attributes, amplifier);
         }
+
+        // Called on removal
+        super.removeAttributesModifiersFromEntity(target, attributes, amplifier);
     }
 
     public void onPotionAdd(SpellCast cast, EntityLivingBase target, AbstractAttributeMap attributes, int amplifier) {
