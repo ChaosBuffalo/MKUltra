@@ -23,9 +23,7 @@ public class ClericHealPotion extends SpellPotionBase {
     }
 
     public static SpellCast Create(Entity source, EntityLivingBase target, float base, float scaling) {
-        return INSTANCE.newSpellCast(source)
-                .setScalingParameters(base, scaling)
-                .setTarget(target);
+        return Create(source, base, scaling).setTarget(target);
     }
 
     public static SpellCast Create(Entity source, float base, float scaling) {
