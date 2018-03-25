@@ -45,11 +45,11 @@ public class EntityBallLightningProjectile extends EntityBaseProjectile {
 
 
     @Override
-    protected void onImpact(EntityLivingBase entity, RayTraceResult result, int level) {
+    protected boolean onImpact(EntityLivingBase entity, RayTraceResult result, int level) {
 
         if (world.isRemote) {
             // No client code
-            return;
+            return false;
         }
 
         if (result.entityHit != null && entity instanceof EntityPlayer && result.entityHit instanceof EntityLivingBase){
@@ -84,7 +84,7 @@ public class EntityBallLightningProjectile extends EntityBaseProjectile {
                     result.hitVec.y, result.hitVec.z, 50.0f);
         }
 
-        setDead();
+        return true;
     }
 
     @Override
@@ -95,10 +95,6 @@ public class EntityBallLightningProjectile extends EntityBaseProjectile {
         return super.isValidEntityTarget(entity);
     }
 
-    @Override
-    protected void onSecondaryProc(EntityLivingBase caster, int amplifier) {
-
-    }
 
     @Override
     protected void onAirProc(EntityLivingBase caster, int amplifier) {

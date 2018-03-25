@@ -27,8 +27,8 @@ public class EntityGeyserProjectile extends EntityBaseProjectile {
             super(worldIn, throwerIn);
 
             this.setDeathTime(1200);
-            this.setDoSecondary(true);
-            this.setSecondaryProcTime(50);
+            this.setDoGroundProc(true);
+            this.setGroundProcTime(50);
         }
 
         public EntityGeyserProjectile(World worldIn, double x, double y, double z)
@@ -38,13 +38,7 @@ public class EntityGeyserProjectile extends EntityBaseProjectile {
 
 
         @Override
-        protected void onImpact(EntityLivingBase entity, RayTraceResult result, int level) {
-
-
-        }
-
-        @Override
-        protected void onSecondaryProc(EntityLivingBase caster, int amplifier) {
+        protected boolean onGroundProc(EntityLivingBase caster, int amplifier) {
             if (!this.world.isRemote && caster != null)
             {
                 SpellCast geyser = GeyserPotion.Create(caster, 0.0f, 10.0f);
@@ -62,16 +56,11 @@ public class EntityGeyserProjectile extends EntityBaseProjectile {
                                 this.posZ, 1.5, 2.0, 1.5, 1.0,
                                 new Vec3d(0., 1.0, 0.0)),
                         this.dimension, this.posX, this.posY, this.posZ, 50.0f);
-                this.setDead();
+                return true;
             }
-
-
+            return false;
         }
 
-        @Override
-        protected void onAirProc(EntityLivingBase caster, int amplifier) {
-
-        }
     }
 
 

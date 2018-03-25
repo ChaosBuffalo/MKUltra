@@ -32,8 +32,8 @@ public class EntityDualityRuneProjectile extends EntityBaseProjectile {
             super(worldIn, throwerIn);
 
             this.setDeathTime(60);
-            this.setDoSecondary(true);
-            this.setSecondaryProcTime(30);
+            this.setDoGroundProc(true);
+            this.setGroundProcTime(30);
         }
 
         public EntityDualityRuneProjectile(World worldIn, double x, double y, double z)
@@ -42,14 +42,9 @@ public class EntityDualityRuneProjectile extends EntityBaseProjectile {
         }
 
 
-        @Override
-        protected void onImpact(EntityLivingBase entity, RayTraceResult result, int level) {
-
-
-        }
 
         @Override
-        protected void onSecondaryProc(EntityLivingBase caster, int amplifier) {
+        protected boolean onGroundProc(EntityLivingBase caster, int amplifier) {
             if (!this.world.isRemote && caster != null)
             {
                 SpellCast heal = ClericHealPotion.Create(caster, BASE, SCALE);
@@ -69,14 +64,10 @@ public class EntityDualityRuneProjectile extends EntityBaseProjectile {
                                 this.posZ, 1.5, 2.0, 1.5, 1.0,
                                 new Vec3d(0., 1.0, 0.0)),
                         this.dimension, this.posX, this.posY, this.posZ, 50.0f);
-                this.setDead();
+                return true;
             }
 
-
+            return false;
         }
 
-        @Override
-        protected void onAirProc(EntityLivingBase caster, int amplifier) {
-
-        }
     }

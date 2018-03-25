@@ -39,8 +39,8 @@ public abstract class EntityBaseProjectile extends Entity implements IProjectile
     private int deathTime;
     private int airProcTime;
     private boolean doAirProc;
-    private int secondaryProcTime;
-    private boolean doSecondary;
+    private int groundProcTime;
+    private boolean doGroundProc;
     private int amplifier;
 
     public EntityBaseProjectile(World worldIn)
@@ -50,8 +50,8 @@ public abstract class EntityBaseProjectile extends Entity implements IProjectile
         this.yTile = -1;
         this.zTile = -1;
         this.setDeathTime(100);
-        this.setDoSecondary(false);
-        this.setSecondaryProcTime(20);
+        this.setDoGroundProc(false);
+        this.setGroundProcTime(20);
         this.setSize(.25f, .25f);
         this.setAirProcTime(20);
         this.setDoAirProc(false);
@@ -84,8 +84,8 @@ public abstract class EntityBaseProjectile extends Entity implements IProjectile
         this.amplifier = newVal;
     }
 
-    public boolean getDoSecondary(){
-        return this.doSecondary;
+    public boolean getDoGroundProc(){
+        return this.doGroundProc;
     }
 
     public boolean getDoAirProc(){
@@ -120,16 +120,16 @@ public abstract class EntityBaseProjectile extends Entity implements IProjectile
         this.deathTime = newVal;
     }
 
-    public void setDoSecondary(boolean newVal){
-        this.doSecondary = newVal;
+    public void setDoGroundProc(boolean newVal){
+        this.doGroundProc = newVal;
     }
 
-    public int getSecondaryProcTime(){
-        return this.secondaryProcTime;
+    public int getGroundProcTime(){
+        return this.groundProcTime;
     }
 
-    public void setSecondaryProcTime(int newVal){
-        this.secondaryProcTime = newVal;
+    public void setGroundProcTime(int newVal){
+        this.groundProcTime = newVal;
     }
 
     /**
@@ -237,8 +237,10 @@ public abstract class EntityBaseProjectile extends Entity implements IProjectile
             if (iblockstate.getBlock() == this.inTile)
             {
                 ++this.ticksInGround;
-                if (this.getDoSecondary() && this.ticksInGround == this.getSecondaryProcTime()){
-                    this.onSecondaryProc(this.getThrower(), this.getAmplifier());
+                if (this.getDoGroundProc() && this.ticksInGround > 0 && this.ticksInGround % this.getGroundProcTime() == 0){
+                    if (this.onGroundProc(this.getThrower(), this.getAmplifier())){
+                        this.setDead();
+                    }
                 }
 
                 return;
@@ -293,7 +295,9 @@ public abstract class EntityBaseProjectile extends Entity implements IProjectile
                 }
 
                 if (trace.typeOfHit != RayTraceResult.Type.MISS) {
-                    this.onImpact(this.getThrower(), trace, this.getAmplifier());
+                    if (this.onImpact(this.getThrower(), trace, this.getAmplifier())) {
+                        this.setDead();
+                    }
                 }
             }
 
@@ -405,11 +409,11 @@ public abstract class EntityBaseProjectile extends Entity implements IProjectile
     /**
      * Called when this EntityThrowable hits a block or entity.
      */
-    protected abstract void onImpact(EntityLivingBase caster, RayTraceResult result, int amplifier);
+    protected boolean onImpact(EntityLivingBase caster, RayTraceResult result, int amplifier){return false;};
 
-    protected abstract void onSecondaryProc(EntityLivingBase caster, int amplifier);
+    protected boolean onGroundProc(EntityLivingBase caster, int amplifier) {return false;};
 
-    protected abstract void onAirProc(EntityLivingBase caster, int amplifier);
+    protected void onAirProc(EntityLivingBase caster, int amplifier) {};
 
     protected boolean isValidEntityTarget(Entity entity) {
         return entity != this &&
@@ -450,9 +454,9 @@ public abstract class EntityBaseProjectile extends Entity implements IProjectile
 
         compound.setString("ownerName", this.throwerName == null ? "" : this.throwerName);
         compound.setBoolean("doAirProc", this.getDoAirProc());
-        compound.setBoolean("doSecondary", this.getDoSecondary());
+        compound.setBoolean("doGroundProc", this.getDoGroundProc());
         compound.setInteger("airProcTime", this.getAirProcTime());
-        compound.setInteger("secondaryProcTime", this.getSecondaryProcTime());
+        compound.setInteger("groundProcTime", this.getGroundProcTime());
         compound.setInteger("deathTime", this.getDeathTime());
         compound.setInteger("amplifier", this.getAmplifier());
     }
@@ -488,9 +492,9 @@ public abstract class EntityBaseProjectile extends Entity implements IProjectile
         this.thrower = this.getThrower();
 
         this.setDoAirProc(compound.getBoolean("doAirProc"));
-        this.setDoSecondary(compound.getBoolean("doSecondary"));
+        this.setDoGroundProc(compound.getBoolean("doGroundProc"));
         this.setAirProcTime(compound.getInteger("airProcTime"));
-        this.setSecondaryProcTime(compound.getInteger("secondaryProcTime"));
+        this.setGroundProcTime(compound.getInteger("groundProcTime"));
         this.setDeathTime(compound.getInteger("deathTime"));
         this.setAmplifier(compound.getInteger("amplifier"));
     }
