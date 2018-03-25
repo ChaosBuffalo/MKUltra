@@ -54,7 +54,7 @@ public class PoisonArrowPotion extends SpellPotionBase {
                 .effect(new PotionEffect(MobEffects.POISON, 9 * 20, amplifier, false, true), getTargetType())
                 .effect(new PotionEffect(MobEffects.SLOWNESS, 9 * 20, amplifier + 2, false, true), getTargetType())
                 .spellCast(particlePotion, amplifier, getTargetType())
-                .duration(6).waitTime(0)
+                .instant()
                 .particle(EnumParticleTypes.SLIME)
                 .color(16737305).radius(cast.getFloat("range"), true)
                 .spawn();

@@ -97,7 +97,7 @@ public class NocturnalCommunion extends BaseAbility {
         AreaEffectBuilder.Create(entity, entity)
                 .spellCast(effect, duration, level, getTargetType())
                 .spellCast(particlePotion, level, getTargetType())
-                .duration(6).waitTime(0)
+                .instant()
                 .particle(EnumParticleTypes.SPELL_WITCH)
                 .color(13147120).radius(getDistance(level), true)
                 .spawn();

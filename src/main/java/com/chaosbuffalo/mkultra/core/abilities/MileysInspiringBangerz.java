@@ -107,7 +107,7 @@ public class MileysInspiringBangerz extends BaseAbility {
                 .effect(damage, getTargetType())
                 .effect(resistance, getTargetType())
                 .spellCast(particle, level, getTargetType())
-                .duration(6).waitTime(0)
+                .instant()
                 .color(16762880).radius(getDistance(level), true)
                 .particle(EnumParticleTypes.NOTE)
                 .spawn();

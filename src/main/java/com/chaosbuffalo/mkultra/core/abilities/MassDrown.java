@@ -96,7 +96,7 @@ public class MassDrown extends BaseAbility {
                 SpellCast drown = DrownPotion.Create(entity);
 
                 AreaEffectBuilder.Create(entity, targetEntity)
-                        .duration(6).waitTime(0)
+                        .instant()
                         .spellCast(drown, 20 * 3, level, getTargetType())
                         .color(65480).radius(5.0f + 2.0f * level, true)
                         .spawn();

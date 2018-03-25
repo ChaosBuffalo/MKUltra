@@ -110,7 +110,7 @@ public class Ignite extends BaseAbility {
                 AreaEffectBuilder.Create(entity, entity)
                         .spellCast(ignite, level, getTargetType())
                         .spellCast(particle, level, getTargetType())
-                        .duration(6).waitTime(0)
+                        .instant()
                         .color(16737305).radius(getDistance(level), true)
                         .particle(EnumParticleTypes.FLAME)
                         .spawn();

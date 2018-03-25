@@ -8,9 +8,6 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 
 
-/**
- * Created by Lee on 3/21/2016.
- */
 public class AreaEffectBuilder {
 
     private EntityMKAreaEffect areaEffectCloud;
@@ -22,6 +19,10 @@ public class AreaEffectBuilder {
 
     public static AreaEffectBuilder Create(EntityLivingBase caster, Entity center) {
         return new AreaEffectBuilder(caster, center);
+    }
+
+    public AreaEffectBuilder instant() {
+        return duration(6).waitTime(0);
     }
 
     public AreaEffectBuilder duration(int duration) {

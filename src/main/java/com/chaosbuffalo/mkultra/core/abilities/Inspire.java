@@ -95,7 +95,7 @@ public class Inspire extends BaseAbility {
         AreaEffectBuilder.Create(entity, entity)
                 .effect(hasteEffect, Targeting.TargetType.FRIENDLY)
                 .effect(regenEffect, Targeting.TargetType.FRIENDLY)
-                .duration(6).waitTime(0).color(1034415).radius(getDistance(level), true)
+                .instant().color(1034415).radius(getDistance(level), true)
                 .particle(EnumParticleTypes.VILLAGER_HAPPY)
                 .spawn();
 

@@ -111,7 +111,7 @@ public class KPDarkWail extends BaseAbility {
                 .spellCast(damage, level, getTargetType())
                 .spellCast(particle, level, getTargetType())
                 .effect(slow, getTargetType())
-                .duration(6).waitTime(0)
+                .instant()
                 .color(16711935).radius(getDistance(level), true)
                 .particle(EnumParticleTypes.NOTE)
                 .spawn();

@@ -110,7 +110,7 @@ public class FireArmor extends BaseAbility {
                 .effect(absorbEffect, getTargetType())
                 .effect(fireResistanceEffect, getTargetType())
                 .spellCast(particlePotion, level, getTargetType())
-                .duration(6).waitTime(0)
+                .instant()
                 .particle(EnumParticleTypes.DRIP_LAVA)
                 .color(16762905).radius(getDistance(level), true)
                 .spawn();

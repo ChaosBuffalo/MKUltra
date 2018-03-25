@@ -98,7 +98,7 @@ public class Esuna extends BaseAbility {
         AreaEffectBuilder.Create(entity, entity)
                 .spellCast(esuna, 4 * GameConstants.TICKS_PER_SECOND, level, getTargetType())
                 .spellCast(cure, level, getTargetType())
-                .duration(6).waitTime(0)
+                .instant()
                 .color(65480).radius(getDistance(level), true)
                 .spawn();
 

@@ -102,7 +102,7 @@ public class FlameWave extends BaseAbility {
         AreaEffectBuilder.Create(entity, entity)
                 .spellCast(flames, level, getTargetType())
                 .spellCast(particles, level, getTargetType())
-                .duration(6).waitTime(0)
+                .instant()
                 .color(16737305).radius(getDistance(level), true)
                 .particle(EnumParticleTypes.LAVA)
                 .spawn();

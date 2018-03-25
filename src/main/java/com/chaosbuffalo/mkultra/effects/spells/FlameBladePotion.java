@@ -75,7 +75,7 @@ public class FlameBladePotion extends SpellPotionBase {
         AreaEffectBuilder.Create(player, target)
                 .spellCast(flames, potion.getAmplifier(), Targeting.TargetType.ENEMY)
                 .spellCast(particles, potion.getAmplifier(), Targeting.TargetType.ENEMY)
-                .duration(6).waitTime(0)
+                .instant()
                 .color(16737305).radius(2.0f, true)
                 .particle(EnumParticleTypes.LAVA)
                 .spawn();

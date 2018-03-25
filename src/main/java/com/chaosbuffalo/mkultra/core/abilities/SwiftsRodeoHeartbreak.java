@@ -100,7 +100,7 @@ public class SwiftsRodeoHeartbreak extends BaseAbility {
         AreaEffectBuilder.Create(entity, entity)
                 .effect(addSpeed, getTargetType())
                 .spellCast(particle, level, getTargetType())
-                .duration(6).waitTime(0)
+                .instant()
                 .color(3338315).radius(getDistance(level), true)
                 .particle(EnumParticleTypes.NOTE)
                 .spawn();

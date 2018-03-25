@@ -107,7 +107,7 @@ public class CrescentSlash extends BaseAbility {
             AreaEffectBuilder.Create(entity, targetEntity)
                     .spellCast(damage, level, getTargetType())
                     .spellCast(particlePotion, level, getTargetType())
-                    .duration(6).waitTime(0)
+                    .instant()
                     .color(16409620).radius(5.0f, true)
                     .particle(EnumParticleTypes.CRIT)
                     .spawn();

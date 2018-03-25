@@ -96,7 +96,7 @@ public class Repulse extends BaseAbility {
 
         AreaEffectBuilder.Create(entity, entity)
                 .spellCast(repulse, level, getTargetType())
-                .duration(6).waitTime(0)
+                .instant()
                 .color(16409620).radius(getDistance(level), true)
                 .spawn();
 
