@@ -116,7 +116,7 @@ public class CrescentSlash extends BaseAbility {
             MKUltra.packetHandler.sendToAllAround(
                     new ParticleEffectSpawnPacket(
                             EnumParticleTypes.SWEEP_ATTACK.getParticleID(),
-                            ParticleEffects.SPHERE_MOTION, 4, 5,
+                            ParticleEffects.SPHERE_MOTION, 5, 5,
                             targetEntity.posX, targetEntity.posY + 1.0,
                             targetEntity.posZ, 1.0, 1.0, 1.0, 1.5,
                             lookVec),
