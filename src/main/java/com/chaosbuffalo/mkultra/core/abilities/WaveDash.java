@@ -4,6 +4,7 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.BaseAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.effects.Targeting;
+import com.chaosbuffalo.mkultra.effects.spells.WhirlpoolPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.mkultra.utils.RayTraceUtils;
@@ -28,7 +29,7 @@ public class WaveDash extends BaseAbility {
 
     public static float BASE_DAMAGE = 6.0f;
     public static float DAMAGE_SCALE = 4.0f;
-    public static float DASH_DISTANCE = 5.0f;
+    public static float DASH_DISTANCE = 7.0f;
 
     public WaveDash() {
         super(MKUltra.MODID, "ability.wave_dash");
@@ -103,16 +104,21 @@ public class WaveDash extends BaseAbility {
         Vec3d from = entity.getPositionVector().addVector(0, entity.getEyeHeight(), 0);
         Vec3d to = from.add(look);
         RayTraceResult blockHit = RayTraceUtils.rayTraceBlocks(entity.getEntityWorld(), from, to, false);
-        if (blockHit.typeOfHit == RayTraceResult.Type.BLOCK)
+        if (blockHit != null && blockHit.typeOfHit == RayTraceResult.Type.BLOCK)
         {
             to = blockHit.hitVec;
         }
 
         Vec3d lookVec = entity.getLookVec();
         List<Entity> entityHit = getTargetsInLine(entity, from, to, true);
+        float damage = BASE_DAMAGE + DAMAGE_SCALE * level;
         for (Entity entHit : entityHit){
-            entHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(entity, entity),
-                    BASE_DAMAGE + DAMAGE_SCALE * level);
+            if (entHit instanceof EntityLivingBase){
+                if (((EntityLivingBase)entHit).isPotionActive(WhirlpoolPotion.INSTANCE)){
+                    damage = damage * 2.0f;
+                }
+            }
+            entHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(entity, entity), damage);
             if (entHit instanceof EntityLivingBase){
                 EntityLivingBase livEnt = (EntityLivingBase) entHit;
                 livEnt.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 2 * 20 * level, level, false, true));

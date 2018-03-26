@@ -12,6 +12,7 @@ import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -29,8 +30,6 @@ public class EntityWhirlpoolProjectile extends EntityBaseProjectile {
         super(worldIn, throwerIn);
 
         this.setDeathTime(80);
-        this.setDoGroundProc(true);
-        this.setGroundProcTime(20);
     }
 
     public EntityWhirlpoolProjectile(World worldIn, double x, double y, double z)
@@ -40,16 +39,19 @@ public class EntityWhirlpoolProjectile extends EntityBaseProjectile {
 
 
     @Override
-    protected boolean onGroundProc(EntityLivingBase caster, int amplifier) {
+    protected boolean onImpact(EntityLivingBase caster, RayTraceResult result, int amplifier) {
         if (!this.world.isRemote && caster != null)
         {
             SpellCast yank = YankPotion.Create(caster);
             SpellCast whirlpool = WhirlpoolPotion.Create(caster);
+//            SpellCast damagePotion = InstantIndirectMagicDamagePotion.Create(caster, 2.0f, 2.0f);
             AreaEffectBuilder.Create(caster, this)
-                    .spellCast(yank, amplifier, Targeting.TargetType.ENEMY)
-                    .spellCast(whirlpool, amplifier, Targeting.TargetType.ENEMY)
-                    .duration(6).waitTime(0)
-                    .color(39935).radius(4.0f, true)
+                    .spellCast(yank, amplifier - 1, Targeting.TargetType.ENEMY)
+                    .spellCast(whirlpool, 20*2*amplifier, amplifier, Targeting.TargetType.ENEMY)
+//                    .spellCast(damagePotion, amplifier, Targeting.TargetType.ENEMY)
+                    .duration(80).waitTime(0)
+                    .setReapplicationDelay(20)
+                    .color(39935).radius(3.0f, true)
                     .spawn();
             MKUltra.packetHandler.sendToAllAround(
                     new ParticleEffectSpawnPacket(

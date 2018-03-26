@@ -50,13 +50,13 @@ public class WhirlpoolPotion extends SpellDOTPotionBase {
 
     @Override
     public void doEffect(Entity source, Entity indirectSource, EntityLivingBase target, int amplifier, SpellCast cast) {
-        target.attackEntityFrom(DamageSource.causeIndirectMagicDamage(source, indirectSource), amplifier * 4.0f);
+        target.attackEntityFrom(DamageSource.causeIndirectMagicDamage(source, indirectSource), amplifier * 2.0f);
         MKUltra.packetHandler.sendToAllAround(
                 new ParticleEffectSpawnPacket(
                         EnumParticleTypes.WATER_SPLASH.getParticleID(),
                         ParticleEffects.CIRCLE_MOTION, 25, 10,
                         target.posX, target.posY + 1.0f,
-                        target.posZ, .75, 1.0, .75, 1.5,
+                        target.posZ, 1.0, 1.0, 1.0, 2.5,
                         target.getLookVec()),
                 target.dimension, target.posX,
                 target.posY, target.posZ, 50.0f);

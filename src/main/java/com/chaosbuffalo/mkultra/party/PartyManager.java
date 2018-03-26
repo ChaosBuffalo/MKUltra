@@ -94,7 +94,7 @@ public class PartyManager {
         if (team != null) {
             for (String member : team.getMembershipCollection()) {
                 EntityPlayer p = player.getEntityWorld().getPlayerEntityByName(member);
-                if (p != null) {
+                if (p != null && !p.isEntityEqual(player)) {
                     members.add(p);
                 }
             }
