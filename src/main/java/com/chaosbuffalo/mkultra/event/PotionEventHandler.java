@@ -42,7 +42,6 @@ public class PotionEventHandler {
                 }
             } else if (entity.isPotionActive(WhirlpoolPotion.INSTANCE)){
                 PotionEffect potion = entity.getActivePotionEffect(WhirlpoolPotion.INSTANCE);
-                System.out.println("Whirlpool potion effect on fall");
                 entity.attackEntityFrom(DamageSource.causeIndirectMagicDamage(source.getImmediateSource(),
                         source.getTrueSource()), 8.0f * potion.getAmplifier());
             }
