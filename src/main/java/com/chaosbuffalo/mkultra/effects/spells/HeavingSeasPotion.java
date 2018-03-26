@@ -35,7 +35,7 @@ public class HeavingSeasPotion extends SpellPotionBase {
 
     private HeavingSeasPotion() {
         // boolean isBadEffectIn, int liquidColorIn
-        super(true, 4393423);
+        super(true, 1665535);
         SpellPotionBase.register("effect.heavingseas", this);
     }
 

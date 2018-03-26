@@ -39,7 +39,7 @@ public class WhirlpoolPotion extends SpellDOTPotionBase {
 
     private WhirlpoolPotion() {
         // boolean isBadEffectIn, int liquidColorIn
-        super(DEFAULT_PERIOD, true, 4393423, new ResourceLocation(MKUltra.MODID, "textures/class/abilities/whirlpool.png"));
+        super(DEFAULT_PERIOD, true, 1665535, new ResourceLocation(MKUltra.MODID, "textures/class/abilities/whirlpool.png"));
         SpellPotionBase.register("effect.whirlpool", this);
     }
 

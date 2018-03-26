@@ -39,7 +39,7 @@ public abstract class SpellPotionBase extends Potion {
     {
         if (iconTexture != null){
             mc.getTextureManager().bindTexture(iconTexture);
-            Gui.drawModalRectWithCustomSizedTexture(x + 3, y + 3, 0, 0, 16, 16, 16, 16);
+            Gui.drawModalRectWithCustomSizedTexture(x + 4, y + 4, 0, 0, 16, 16, 16, 16);
         }
 
     }

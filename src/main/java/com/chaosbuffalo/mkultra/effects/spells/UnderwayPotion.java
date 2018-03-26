@@ -52,7 +52,7 @@ public class UnderwayPotion extends SpellPotionBase {
 
     private UnderwayPotion() {
         // boolean isBadEffectIn, int liquidColorIn
-        super(false, 4393423, new ResourceLocation(MKUltra.MODID, "textures/class/abilities/underway.png"));
+        super(false, 1665535, new ResourceLocation(MKUltra.MODID, "textures/class/abilities/underway.png"));
         SpellPotionBase.register("effect.underway", this);
     }
 
