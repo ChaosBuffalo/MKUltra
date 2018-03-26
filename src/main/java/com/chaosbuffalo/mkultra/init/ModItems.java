@@ -92,6 +92,7 @@ public final class ModItems {
     public static Item iron_threaded_helmet;
     public static Item iron_threaded_boots;
     public static Item duality_rune_projectile;
+    public static Item whirlpool_projectile;
 
 
 
@@ -142,6 +143,7 @@ public final class ModItems {
         regInternal(geyserProjectile = new Item().setCreativeTab(CreativeTabs.MATERIALS), "geyserProjectile");
         regInternal(duality_rune_projectile = new Item().setCreativeTab(CreativeTabs.MATERIALS), "duality_rune_projectile");
         regInternal(ballLightning = new Item().setCreativeTab(CreativeTabs.MATERIALS), "ballLightning");
+        regInternal(whirlpool_projectile = new Item().setCreativeTab(CreativeTabs.MATERIALS), "whirlpool_projectile");
 
         regInternal(manaRegenIdolCopper = new ManaRegenIdol("mana_regen_idol_copper", .5f, 0, 0, 0, 125));
         regInternal(manaRegenIdolIron = new ManaRegenIdol("mana_regen_idol_iron", .5f, 0, 2, 0, 175));

@@ -1,10 +1,7 @@
 package com.chaosbuffalo.mkultra.client.render.entities;
 
 import com.chaosbuffalo.mkultra.entities.EntityMKAreaEffect;
-import com.chaosbuffalo.mkultra.entities.projectiles.EntityBallLightningProjectile;
-import com.chaosbuffalo.mkultra.entities.projectiles.EntityDrownProjectile;
-import com.chaosbuffalo.mkultra.entities.projectiles.EntityDualityRuneProjectile;
-import com.chaosbuffalo.mkultra.entities.projectiles.EntityGeyserProjectile;
+import com.chaosbuffalo.mkultra.entities.projectiles.*;
 import com.chaosbuffalo.mkultra.init.ModItems;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 
@@ -23,5 +20,7 @@ public class EntityRenderRegister {
                 new RenderProjectile(ModItems.ballLightning, 1.0f));
         RenderingRegistry.registerEntityRenderingHandler(EntityDualityRuneProjectile.class,
                 new RenderProjectile(ModItems.duality_rune_projectile, 1.0f));
+        RenderingRegistry.registerEntityRenderingHandler(EntityWhirlpoolProjectile.class,
+                new RenderProjectile(ModItems.whirlpool_projectile, 1.0f));
     }
 }

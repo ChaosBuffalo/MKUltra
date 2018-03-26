@@ -30,6 +30,17 @@ public class RayTraceUtils {
 
     private static Predicate<Entity> defaultFilter = e -> EntitySelectors.IS_ALIVE.apply(e) && EntitySelectors.NOT_SPECTATING.apply(e);
 
+
+    public static List<Entity> getEntitiesInLine(final Entity mainEntity, Vec3d from, Vec3d to, Vec3d expansion,
+                                                 float growth, final Predicate<Entity> filter){
+        Predicate<Entity> predicate = input -> defaultFilter.test(input) && filter.test(input);
+        AxisAlignedBB bb = new AxisAlignedBB(new BlockPos(from), new BlockPos(to))
+                .expand(expansion.x, expansion.y, expansion.z)
+                .grow(growth);
+        List<Entity> entities = mainEntity.getEntityWorld().getEntitiesWithinAABB(Entity.class, bb, predicate::test);
+        return entities;
+    }
+
     public static RayTraceResult getLookingAt(final Entity mainEntity, double distance, final Predicate<Entity> entityPredicate) {
 
         Predicate<Entity> finalFilter = e -> e != mainEntity &&

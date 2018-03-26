@@ -4,62 +4,57 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
 import com.chaosbuffalo.mkultra.effects.Targeting;
-import com.chaosbuffalo.mkultra.core.abilities.Yank;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.MobEffects;
 import net.minecraft.network.play.server.SPacketEntityVelocity;
 import net.minecraft.potion.Potion;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+/**
+ * Created by Jacob on 3/25/2018.
+ */
 @Mod.EventBusSubscriber(modid = MKUltra.MODID)
-public class YankPotion extends SpellPotionBase {
+public class HeavingSeasPotion extends SpellPotionBase {
 
-    public static YankPotion INSTANCE = new YankPotion();
+    public static final HeavingSeasPotion INSTANCE = new HeavingSeasPotion();
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {
         event.getRegistry().register(INSTANCE);
     }
 
-    public static SpellCast Create(Entity source, EntityLivingBase target) {
-        return INSTANCE.newSpellCast(source).setTarget(target);
-    }
-
-    public static SpellCast Create(Entity source){
+    public static SpellCast Create(Entity source) {
         return INSTANCE.newSpellCast(source);
     }
 
-    private YankPotion() {
+    private HeavingSeasPotion() {
         // boolean isBadEffectIn, int liquidColorIn
         super(true, 4393423);
-        SpellPotionBase.register("effect.yank", this);
+        SpellPotionBase.register("effect.heavingseas", this);
     }
 
     @Override
     public Targeting.TargetType getTargetType() {
-        return Targeting.TargetType.ALL;
+        return Targeting.TargetType.ENEMY;
     }
 
     @Override
     public boolean canSelfCast() {
-        return false;
+        return true;
     }
 
     @Override
     public void doEffect(Entity applier, Entity caster, EntityLivingBase target, int amplifier, SpellCast cast) {
 
-        Vec3d playerOrigin = applier.getPositionVector();
-        Vec3d targetPos = target.getPositionVector();
-        Vec3d awayFrom = playerOrigin.subtract(targetPos).normalize().scale(
-                Yank.BASE_FORCE + Yank.FORCE_SCALE * amplifier);
-        if (target.equals(caster)) {
-            return;
-        }
-        target.addVelocity(awayFrom.x, awayFrom.y, awayFrom.z);
+        target.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 1 * 20 * amplifier, amplifier, false, true));
+        target.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 1 * 20 * amplifier, amplifier, false, true));
+        target.addVelocity(0.0, amplifier * .75f, 0.0);
         if (target instanceof EntityPlayerMP && !caster.world.isRemote) {
             ((EntityPlayerMP) target).connection.sendPacket(new SPacketEntityVelocity(target));
         }

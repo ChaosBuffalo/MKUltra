@@ -41,6 +41,11 @@ public class PotionEventHandler {
                 if (entity instanceof EntityPlayer) {
                     entity.sendMessage(new TextComponentString("My legs are OK"));
                 }
+            } else if (entity.isPotionActive(WhirlpoolPotion.INSTANCE)){
+                PotionEffect potion = entity.getActivePotionEffect(WhirlpoolPotion.INSTANCE);
+                entity.attackEntityFrom(DamageSource.causeIndirectMagicDamage(source.getImmediateSource(),
+                        source.getTrueSource()), 8.0f * potion.getAmplifier());
+                entity.removePotionEffect(WhirlpoolPotion.INSTANCE);
             }
         } else if (source.getTrueSource() != null && source.getTrueSource() instanceof EntityPlayer) {
             EntityPlayer sourceEntity = (EntityPlayer) source.getTrueSource();
@@ -48,17 +53,18 @@ public class PotionEventHandler {
             if (data == null)
                 return;
 
-            PotionEffect potion = sourceEntity.getActivePotionEffect(VampiricReverePotion.INSTANCE);
-            if (potion != null && isPlayerPhysicalDamage(source) && data.getMana() > 0) {
+            PotionEffect potion;
+            if (sourceEntity.isPotionActive(VampiricReverePotion.INSTANCE) && isPlayerPhysicalDamage(source) && data.getMana() > 0) {
+                potion = sourceEntity.getActivePotionEffect(VampiricReverePotion.INSTANCE);
                 data.setMana(data.getMana() - 1);
                 sourceEntity.heal(event.getAmount() * .15f * potion.getAmplifier());
             }
 
-            potion = sourceEntity.getActivePotionEffect(NocturnalCommunionPotion.INSTANCE);
-            if (potion != null) {
+            if (sourceEntity.isPotionActive(NocturnalCommunionPotion.INSTANCE)) {
+                potion = sourceEntity.getActivePotionEffect(NocturnalCommunionPotion.INSTANCE);
                 sourceEntity.heal(event.getAmount() * .1f * potion.getAmplifier());
             }
-        } else if (living.getActivePotionEffect(MoonTrancePotion.INSTANCE) != null) {
+        } else if (living.isPotionActive(MoonTrancePotion.INSTANCE)) {
             PotionEffect effect = living.getActivePotionEffect(MoonTrancePotion.INSTANCE);
             if (event.getSource().getTrueSource() instanceof EntityLivingBase) {
                 EntityLivingBase attacker = (EntityLivingBase) event.getSource().getTrueSource();

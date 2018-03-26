@@ -3,12 +3,16 @@ package com.chaosbuffalo.mkultra.core;
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.effects.Targeting;
 import com.chaosbuffalo.mkultra.utils.RayTraceUtils;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.IForgeRegistryEntry;
+
+import java.util.List;
 
 public abstract class BaseAbility extends IForgeRegistryEntry.Impl<BaseAbility> {
 
@@ -91,6 +95,11 @@ public abstract class BaseAbility extends IForgeRegistryEntry.Impl<BaseAbility> 
 
     protected EntityLivingBase getSingleLivingTarget(EntityLivingBase caster, float distance) {
         return getSingleLivingTarget(caster, distance, true);
+    }
+
+    protected List<Entity> getTargetsInLine(EntityLivingBase caster, Vec3d from, Vec3d to, boolean checkValid){
+        return RayTraceUtils.getEntitiesInLine(caster, from, to, new Vec3d(0.0f, 0.0f, 0.0f), .25f,
+                e -> !checkValid || (e instanceof EntityLivingBase && isValidTarget(caster, (EntityLivingBase)e)));
     }
 
     protected EntityLivingBase getSingleLivingTarget(EntityLivingBase caster, float distance, boolean checkValid) {

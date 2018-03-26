@@ -6,6 +6,7 @@ import com.chaosbuffalo.mkultra.core.BaseAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkultra.utils.RayTraceUtils;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
@@ -13,6 +14,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -103,6 +105,11 @@ public class KanyeCutter extends BaseAbility {
             Vec3d position = entity.getPositionVector();
             Vec3d movementVec = position.subtract(targetEntity.getPositionVector()).normalize().scale(5.0f);
             Vec3d teleLoc = targetEntity.getPositionVector().add(new Vec3d(movementVec.x, 0.0, movementVec.z));
+            RayTraceResult colTrace = RayTraceUtils.rayTraceBlocks(theWorld, targetEntity.getPositionVector(),
+                    teleLoc, false);
+            if (colTrace.typeOfHit == RayTraceResult.Type.BLOCK){
+                teleLoc = colTrace.hitVec;
+            }
             Vec3d newLookVec = targetEntity.getPositionVector().subtract(teleLoc).normalize();
             float pitch = (float)Math.asin(-newLookVec.y);
             float yaw = (float)Math.atan2(newLookVec.x, newLookVec.z);

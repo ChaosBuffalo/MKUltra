@@ -2,10 +2,7 @@ package com.chaosbuffalo.mkultra.init;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.entities.EntityMKAreaEffect;
-import com.chaosbuffalo.mkultra.entities.projectiles.EntityBallLightningProjectile;
-import com.chaosbuffalo.mkultra.entities.projectiles.EntityDrownProjectile;
-import com.chaosbuffalo.mkultra.entities.projectiles.EntityDualityRuneProjectile;
-import com.chaosbuffalo.mkultra.entities.projectiles.EntityGeyserProjectile;
+import com.chaosbuffalo.mkultra.entities.projectiles.*;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 
@@ -29,6 +26,9 @@ public class ModEntities {
                 MKUltra.INSTANCE, 64, 1, true);
         EntityRegistry.registerModEntity(new ResourceLocation(MKUltra.MODID, "DualityRuneProjectile"),
                 EntityDualityRuneProjectile.class, "EntityDualityRuneProjectile", 5,
+                MKUltra.INSTANCE, 64, 1, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(MKUltra.MODID, "WhirlpoolProjectile"),
+                EntityWhirlpoolProjectile.class, "EntityWhirlpoolProjectile", 6,
                 MKUltra.INSTANCE, 64, 1, true);
     }
 }
