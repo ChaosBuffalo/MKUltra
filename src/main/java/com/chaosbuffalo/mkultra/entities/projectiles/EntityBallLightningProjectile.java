@@ -58,7 +58,7 @@ public class EntityBallLightningProjectile extends EntityBaseProjectile {
 
             AreaEffectBuilder.Create(entity, this)
                     .spellCast(ballLightning, level, Targeting.TargetType.ENEMY)
-                    .duration(6).waitTime(0)
+                    .instant()
                     .color(16769280).radius(4.0f, true)
                     .spawn();
 
@@ -110,7 +110,7 @@ public class EntityBallLightningProjectile extends EntityBaseProjectile {
                     caster.dimension, this.posX, this.posY, this.posZ, 50.0f);
             AreaEffectBuilder.Create(caster, this)
                     .spellCast(ballLightning, amplifier, Targeting.TargetType.ENEMY)
-                    .duration(6).waitTime(0)
+                    .instant()
                     .color(16769280).radius(3.0f, true)
                     .spawn();
 

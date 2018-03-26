@@ -51,7 +51,7 @@ public class FireArrowPotion extends SpellPotionBase {
             AreaEffectBuilder.Create((EntityLivingBase) caster, target)
                     .spellCast(wave, amplifier, getTargetType())
                     .spellCast(particle, amplifier, getTargetType())
-                    .duration(6).waitTime(0)
+                    .instant()
                     .particle(EnumParticleTypes.LAVA)
                     .color(16737305).radius(cast.getFloat("range"), true)
                     .spawn();

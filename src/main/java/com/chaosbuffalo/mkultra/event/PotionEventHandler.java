@@ -1,20 +1,16 @@
 package com.chaosbuffalo.mkultra.event;
 
-import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
-import com.chaosbuffalo.mkultra.effects.SpellCast;
-import com.chaosbuffalo.mkultra.effects.Targeting;
-import com.chaosbuffalo.mkultra.effects.spells.*;
+
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerDataProvider;
-import com.chaosbuffalo.mkultra.core.abilities.FlameBlade;
-import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.effects.spells.*;
+import com.chaosbuffalo.mkultra.log.Log;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
@@ -33,7 +29,7 @@ public class PotionEventHandler {
     @SubscribeEvent
     public static void onLivingHurt(LivingHurtEvent event) {
         DamageSource source = event.getSource();
-        EntityLivingBase living = event.getEntityLiving();
+        EntityLivingBase livingTarget = event.getEntityLiving();
         if (source == DamageSource.FALL) { // TODO: maybe just use LivingFallEvent?
             EntityLivingBase entity = event.getEntityLiving();
             if (entity.isPotionActive(FeatherFallPotion.INSTANCE)) {
@@ -47,32 +43,59 @@ public class PotionEventHandler {
                         source.getTrueSource()), 8.0f * potion.getAmplifier());
                 entity.removePotionEffect(WhirlpoolPotion.INSTANCE);
             }
-        } else if (source.getTrueSource() != null && source.getTrueSource() instanceof EntityPlayer) {
-            EntityPlayer sourceEntity = (EntityPlayer) source.getTrueSource();
-            IPlayerData data = PlayerDataProvider.get(sourceEntity);
-            if (data == null)
+        }
+
+        // Player is the source
+        if (source.getTrueSource() != null && source.getTrueSource() instanceof EntityPlayerMP) {
+            EntityPlayerMP playerSource = (EntityPlayerMP) source.getTrueSource();
+            IPlayerData sourceData = PlayerDataProvider.get(playerSource);
+            if (sourceData == null) {
                 return;
-
+            }
+            if (source.isMagicDamage()) {
+                float newDamage = sourceData.scaleMagicDamage(event.getAmount());
+                Log.debug("Scaling magic damage from %f to %f", event.getAmount(), newDamage);
+                event.setAmount(newDamage);
+            }
             PotionEffect potion;
-            if (sourceEntity.isPotionActive(VampiricReverePotion.INSTANCE) && isPlayerPhysicalDamage(source) && data.getMana() > 0) {
-                potion = sourceEntity.getActivePotionEffect(VampiricReverePotion.INSTANCE);
-                data.setMana(data.getMana() - 1);
-                sourceEntity.heal(event.getAmount() * .15f * potion.getAmplifier());
+            if (playerSource.isPotionActive(VampiricReverePotion.INSTANCE) && isPlayerPhysicalDamage(source)
+                    && sourceData.getMana() > 0) {
+                potion = playerSource.getActivePotionEffect(VampiricReverePotion.INSTANCE);
+                sourceData.setMana(sourceData.getMana() - 1);
+                playerSource.heal(event.getAmount() * .15f * potion.getAmplifier());
             }
 
-            if (sourceEntity.isPotionActive(NocturnalCommunionPotion.INSTANCE)) {
-                potion = sourceEntity.getActivePotionEffect(NocturnalCommunionPotion.INSTANCE);
-                sourceEntity.heal(event.getAmount() * .1f * potion.getAmplifier());
+            if (playerSource.isPotionActive(NocturnalCommunionPotion.INSTANCE)) {
+                potion = playerSource.getActivePotionEffect(NocturnalCommunionPotion.INSTANCE);
+                playerSource.heal(event.getAmount() * .1f * potion.getAmplifier());
             }
-        } else if (living.isPotionActive(MoonTrancePotion.INSTANCE)) {
-            PotionEffect effect = living.getActivePotionEffect(MoonTrancePotion.INSTANCE);
-            if (event.getSource().getTrueSource() instanceof EntityLivingBase) {
-                EntityLivingBase attacker = (EntityLivingBase) event.getSource().getTrueSource();
-                attacker.attackEntityFrom(DamageSource.causeIndirectMagicDamage(living, living),
+        }
+
+        // Player is the victim
+        if (livingTarget instanceof EntityPlayerMP) {
+            IPlayerData targetData = PlayerDataProvider.get((EntityPlayerMP)livingTarget);
+            if (targetData == null) {
+                return;
+            }
+
+            float newDamage = targetData.applyMagicArmor(event.getAmount());
+            Log.debug("Magic armor reducing damage from %f to %f", event.getAmount(), newDamage);
+            event.setAmount(newDamage);
+        }
+
+        // Anyone is the victim
+
+        // MoonTrance thorns. Source is attacker, event target is player
+        if (event.getSource().getTrueSource() != null && event.getSource().getTrueSource() instanceof EntityLivingBase) {
+            EntityLivingBase livingSource = (EntityLivingBase) event.getSource().getTrueSource();
+
+            PotionEffect effect = livingTarget.getActivePotionEffect(MoonTrancePotion.INSTANCE);
+            if (effect != null) {
+                Log.debug("Attacking %s due to %s", livingSource.getName(), effect.getPotion().getRegistryName());
+                livingSource.attackEntityFrom(DamageSource.causeIndirectMagicDamage(livingTarget, livingTarget),
                         Math.min(event.getAmount(), 4.0f * effect.getAmplifier()));
+
             }
-
-
         }
     }
 
@@ -82,34 +105,12 @@ public class PotionEventHandler {
         Entity target = event.getTarget();
         PotionEffect potion = player.getActivePotionEffect(UndertowPotion.INSTANCE);
         if (potion != null) {
-            if (target instanceof EntityLivingBase) {
-                EntityLivingBase livingEnt = (EntityLivingBase) target;
-                PotionEffect drownEffect = livingEnt.getActivePotionEffect(DrownPotion.INSTANCE);
-                if (drownEffect != null) {
-                    livingEnt.attackEntityFrom(DamageSource.causeIndirectMagicDamage(livingEnt, player),
-                            5.0f * potion.getAmplifier());
-                }
-            }
-
+            UndertowPotion.INSTANCE.onAttackEntity(player, target, potion);
         }
+
         potion = player.getActivePotionEffect(FlameBladePotion.INSTANCE);
         if (potion != null) {
-
-            SpellCast flames = FlameBladeEffectPotion.Create(player, FlameBlade.BASE_DAMAGE, FlameBlade.DAMAGE_SCALE);
-            SpellCast particles = ParticlePotion.Create(player,
-                    EnumParticleTypes.LAVA.getParticleID(),
-                    ParticleEffects.SPHERE_MOTION, false, new Vec3d(1.0, 1.0, 1.0),
-                    new Vec3d(0.0, 1.0, 0.0), 15, 5, 1.0);
-
-            AreaEffectBuilder.Create(player, target)
-                    .spellCast(flames, potion.getAmplifier(), Targeting.TargetType.ENEMY)
-                    .spellCast(particles, potion.getAmplifier(), Targeting.TargetType.ENEMY)
-                    .duration(6).waitTime(0)
-                    .color(16737305).radius(2.0f, true)
-                    .particle(EnumParticleTypes.LAVA)
-                    .spawn();
+            FlameBladePotion.INSTANCE.onAttackEntity(player, target, potion);
         }
-
-
     }
 }

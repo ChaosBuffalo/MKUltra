@@ -45,7 +45,7 @@ public class EntityGeyserProjectile extends EntityBaseProjectile {
 
                 AreaEffectBuilder.Create(caster, this)
                         .spellCast(geyser, amplifier, Targeting.TargetType.ALL)
-                        .duration(6).waitTime(0)
+                        .instant()
                         .color(39935).radius(4.0f, true)
                         .spawn();
                 MKUltra.packetHandler.sendToAllAround(

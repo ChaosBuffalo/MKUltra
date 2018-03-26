@@ -102,7 +102,7 @@ public class LavaWanderer extends BaseAbility {
                 .effect(speed, getTargetType())
                 .effect(fireResist, getTargetType())
                 .spellCast(particle, level, getTargetType())
-                .duration(6).waitTime(0)
+                .instant()
                 .particle(EnumParticleTypes.DRIP_LAVA)
                 .color(16762880).radius(getDistance(level), true)
                 .spawn();

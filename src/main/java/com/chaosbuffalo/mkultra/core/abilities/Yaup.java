@@ -104,7 +104,7 @@ public class Yaup extends BaseAbility {
                 .effect(hasteEffect, getTargetType())
                 .effect(damageEffect, getTargetType())
                 .spellCast(particlePotion, 0, getTargetType())
-                .duration(6).waitTime(0).color(16751360).radius(getDistance(level), true)
+                .instant().color(16751360).radius(getDistance(level), true)
                 .spawn();
 
         Vec3d lookVec = entity.getLookVec();

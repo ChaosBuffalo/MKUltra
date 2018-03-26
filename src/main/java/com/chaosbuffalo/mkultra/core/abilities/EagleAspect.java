@@ -107,7 +107,7 @@ public class EagleAspect extends BaseAbility {
                 .spellCast(effect, duration, level, getTargetType())
                 .spellCast(feather, duration + 10 * GameConstants.TICKS_PER_SECOND, level, getTargetType())
                 .spellCast(particlePotion, level, getTargetType())
-                .duration(6).waitTime(0)
+                .instant()
                 .particle(EnumParticleTypes.FIREWORKS_SPARK)
                 .color(65480).radius(getDistance(level), true)
                 .spawn();

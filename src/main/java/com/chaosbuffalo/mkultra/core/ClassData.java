@@ -70,6 +70,7 @@ public class ClassData {
         registerClass(new MoonKnight());
     }
 
+    @SuppressWarnings("unused")
     @SubscribeEvent
     public static void registerClasses(RegistryEvent.Register<BaseClass> event) {
         BUILTIN_CLASSES.forEach(c -> {
@@ -78,6 +79,7 @@ public class ClassData {
         });
     }
 
+    @SuppressWarnings("unused")
     @SubscribeEvent
     public static void registerAbilities(RegistryEvent.Register<BaseAbility> event) {
         BUILTIN_CLASSES.forEach(bc -> bc.getAbilities().forEach(a -> {
@@ -86,6 +88,7 @@ public class ClassData {
         }));
     }
 
+    @SuppressWarnings("unused")
     @SubscribeEvent
     public static void createRegistries(RegistryEvent.NewRegistry event) {
         REGISTRY_CLASSES = new RegistryBuilder<BaseClass>()

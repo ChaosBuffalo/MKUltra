@@ -103,7 +103,7 @@ public class Undertow extends BaseAbility {
         AreaEffectBuilder.Create(entity, entity)
                 .spellCast(undertow, duration, level, getTargetType())
                 .spellCast(particlePotion, level, getTargetType())
-                .duration(6).waitTime(0)
+                .instant()
                 .particle(EnumParticleTypes.DRIP_WATER)
                 .color(65480).radius(getDistance(level), true)
                 .spawn();

@@ -96,7 +96,7 @@ public class Galvanize extends BaseAbility {
         AreaEffectBuilder.Create(entity, entity)
                 .spellCast(cure, level, getTargetType())
                 .effect(jump, getTargetType())
-                .duration(6).waitTime(0).color(1048370).radius(getDistance(level), true)
+                .instant().color(1048370).radius(getDistance(level), true)
                 .spawn();
 
         Vec3d lookVec = entity.getLookVec();

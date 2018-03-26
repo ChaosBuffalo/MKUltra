@@ -100,7 +100,7 @@ public class PartyPanel extends Gui {
     @SuppressWarnings("unused")
     @SubscribeEvent
     public void onRenderExperienceBar(RenderGameOverlayEvent event) {
-        if (event.isCanceled() || event.getType() != RenderGameOverlayEvent.ElementType.EXPERIENCE) {
+        if (event.isCancelable() || event.getType() != RenderGameOverlayEvent.ElementType.EXPERIENCE) {
             return;
         }
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);

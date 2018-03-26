@@ -53,7 +53,7 @@ public class EntityDualityRuneProjectile extends EntityBaseProjectile {
                 AreaEffectBuilder.Create(caster, this)
                         .spellCast(heal, amplifier, Targeting.TargetType.FRIENDLY)
                         .spellCast(damage, amplifier, Targeting.TargetType.ENEMY)
-                        .duration(6).waitTime(0)
+                        .instant()
                         .color(39935).radius(4.0f, true)
                         .spawn();
                 MKUltra.packetHandler.sendToAllAround(
