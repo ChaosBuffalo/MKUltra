@@ -29,7 +29,7 @@ public class WaveDash extends BaseAbility {
 
     public static float BASE_DAMAGE = 6.0f;
     public static float DAMAGE_SCALE = 4.0f;
-    public static float DASH_DISTANCE = 7.0f;
+    public static float DASH_DISTANCE = 8.0f;
 
     public WaveDash() {
         super(MKUltra.MODID, "ability.wave_dash");
@@ -103,11 +103,6 @@ public class WaveDash extends BaseAbility {
         Vec3d look = entity.getLookVec().scale(DASH_DISTANCE);
         Vec3d from = entity.getPositionVector().addVector(0, entity.getEyeHeight(), 0);
         Vec3d to = from.add(look);
-        RayTraceResult blockHit = RayTraceUtils.rayTraceBlocks(entity.getEntityWorld(), from, to, false);
-        if (blockHit != null && blockHit.typeOfHit == RayTraceResult.Type.BLOCK)
-        {
-            to = blockHit.hitVec;
-        }
 
         Vec3d lookVec = entity.getLookVec();
         List<Entity> entityHit = getTargetsInLine(entity, from, to, true);
@@ -119,6 +114,7 @@ public class WaveDash extends BaseAbility {
                 }
             }
             entHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(entity, entity), damage);
+            pData.setCooldown(getAbilityId(), Math.max(0, pData.getCurrentAbilityCooldown(getAbilityId()) - 2));
             if (entHit instanceof EntityLivingBase){
                 EntityLivingBase livEnt = (EntityLivingBase) entHit;
                 livEnt.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 2 * 20 * level, level, false, true));
@@ -134,6 +130,11 @@ public class WaveDash extends BaseAbility {
                             lookVec),
                     entity.dimension, entHit.posX,
                     entHit.posY, entHit.posZ, 50.0f);
+        }
+        RayTraceResult blockHit = RayTraceUtils.rayTraceBlocks(entity.getEntityWorld(), from, to, false);
+        if (blockHit != null && blockHit.typeOfHit == RayTraceResult.Type.BLOCK)
+        {
+            to = blockHit.hitVec;
         }
         entity.setPositionAndUpdate(to.x, to.y, to.z);
         MKUltra.packetHandler.sendToAllAround(
