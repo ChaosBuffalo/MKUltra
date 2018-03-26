@@ -327,7 +327,8 @@ public class PlayerData implements IPlayerData {
         }
 
         abilityInfoMap.put(abilityId, info);
-        sendSingleAbilityUpdate(info, false);
+        updateToggleAbility(info);
+        sendSingleAbilityUpdate(info);
 
         int slot = getCurrentSlotForAbility(abilityId);
         if (slot == GameConstants.ACTION_BAR_INVALID_SLOT) {
@@ -360,14 +361,13 @@ public class PlayerData implements IPlayerData {
             setUnspentPoints(curUnspent + 1);
         }
 
-        if (info.level > GameConstants.ACTION_BAR_INVALID_LEVEL) {
-            // Already learned but leveling up or down
-            sendSingleAbilityUpdate(info, false);
-        } else {
-            // Unlearning completely, but still keep the PlayerAbilityInfo around so we can continue to track cooldowns
+        if (info.level <= GameConstants.ACTION_BAR_INVALID_LEVEL) {
+            // Unlearning completely. Keep the PlayerAbilityInfo around so we can continue to track cooldowns
             info.level = GameConstants.ACTION_BAR_INVALID_LEVEL;
-            sendSingleAbilityUpdate(info, true);
         }
+
+        updateToggleAbility(info);
+        sendSingleAbilityUpdate(info);
 
         int slot = getCurrentSlotForAbility(abilityId);
         if (slot != GameConstants.ACTION_BAR_INVALID_SLOT) {
@@ -375,6 +375,24 @@ public class PlayerData implements IPlayerData {
         }
 
         return true;
+    }
+
+    private void updateToggleAbility(PlayerAbilityInfo info) {
+        BaseAbility ability = ClassData.getAbility(info.id);
+        if (ability != null && ability instanceof BaseToggleAbility && player != null) {
+            BaseToggleAbility toggle = (BaseToggleAbility) ability;
+
+            if (info.level > GameConstants.ACTION_BAR_INVALID_LEVEL) {
+                // If this is a toggle ability we must re-apply the effect to make sure it's working at the proper level
+                if (player.isPotionActive(toggle.getToggleEffect())) {
+                    toggle.removeEffect(player, this, player.getEntityWorld());
+                    toggle.applyEffect(player, this, player.getEntityWorld());
+                }
+            } else {
+                // Unlearning, remove the effect
+                toggle.removeEffect(player, this, player.getEntityWorld());
+            }
+        }
     }
 
     @Override
@@ -540,8 +558,9 @@ public class PlayerData implements IPlayerData {
         updateMana();
     }
 
-    private void sendSingleAbilityUpdate(PlayerAbilityInfo info, boolean removed) {
+    private void sendSingleAbilityUpdate(PlayerAbilityInfo info) {
         if (isServerSide()) {
+            boolean removed = info.level == GameConstants.ACTION_BAR_INVALID_LEVEL;
             MKUltra.packetHandler.sendTo(new AbilityUpdatePacket(info, removed), (EntityPlayerMP) player);
         }
     }
@@ -752,6 +771,17 @@ public class PlayerData implements IPlayerData {
         cinfo.setActiveAbilities(getActiveAbilities());
     }
 
+    private void deactivateCurrentToggleAbilities() {
+        for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
+            ResourceLocation abilityId = getAbilityInSlot(i);
+            BaseAbility ability = ClassData.getAbility(abilityId);
+            if (ability != null && ability instanceof BaseToggleAbility && player != null) {
+                BaseToggleAbility toggle = (BaseToggleAbility)ability;
+                toggle.removeEffect(player, this, player.getEntityWorld());
+            }
+        }
+    }
+
     @Override
     public void activateClass(ResourceLocation classId) {
 
@@ -760,6 +790,7 @@ public class PlayerData implements IPlayerData {
         ResourceLocation[] hotbar;
 
         saveCurrentClass();
+        deactivateCurrentToggleAbilities();
 
         if (classId.compareTo(ClassData.INVALID_CLASS) == 0 || !isClassKnown(classId)) {
             // Switching to no class
