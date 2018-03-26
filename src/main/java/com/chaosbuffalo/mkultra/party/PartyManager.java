@@ -88,6 +88,20 @@ public class PartyManager {
         }
     }
 
+    public static ArrayList<EntityPlayer> getPlayersOnTeam(EntityPlayer player){
+        ArrayList<EntityPlayer> members = new ArrayList<>();
+        Team team = player.getTeam();
+        if (team != null) {
+            for (String member : team.getMembershipCollection()) {
+                EntityPlayer p = player.getEntityWorld().getPlayerEntityByName(member);
+                if (p != null) {
+                    members.add(p);
+                }
+            }
+        }
+        return members;
+    }
+
     @SuppressWarnings("unused")
     @SubscribeEvent
     public static void onPickUpExp(PlayerPickupXpEvent e){

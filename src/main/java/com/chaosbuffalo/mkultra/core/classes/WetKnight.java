@@ -19,6 +19,10 @@ public class WetKnight extends BaseClass {
 
     static {
         abilities.add(new Whirlpool());
+        abilities.add(new WaveDash());
+        abilities.add(new Underway());
+        abilities.add(new HeavingSeas());
+        abilities.add(new WaveBreak());
     }
 
     public WetKnight() {

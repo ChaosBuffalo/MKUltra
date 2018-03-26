@@ -54,7 +54,7 @@ public class HeavingSeasPotion extends SpellPotionBase {
 
         target.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 1 * 20 * amplifier, amplifier, false, true));
         target.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 1 * 20 * amplifier, amplifier, false, true));
-        target.addVelocity(0.0, amplifier * .75f, 0.0);
+        target.addVelocity(0.0, amplifier * 1.25f, 0.0);
         if (target instanceof EntityPlayerMP && !caster.world.isRemote) {
             ((EntityPlayerMP) target).connection.sendPacket(new SPacketEntityVelocity(target));
         }

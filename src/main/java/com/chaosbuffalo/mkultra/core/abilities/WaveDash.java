@@ -26,8 +26,8 @@ import java.util.List;
  */
 public class WaveDash extends BaseAbility {
 
-    public static float BASE_DAMAGE = 4.0f;
-    public static float DAMAGE_SCALE = 2.0f;
+    public static float BASE_DAMAGE = 6.0f;
+    public static float DAMAGE_SCALE = 4.0f;
     public static float DASH_DISTANCE = 5.0f;
 
     public WaveDash() {
@@ -82,12 +82,12 @@ public class WaveDash extends BaseAbility {
 
     @Override
     public int getManaCost(int currentLevel) {
-        return 3 + currentLevel * 2;
+        return 2 + currentLevel * 2;
     }
 
     @Override
     public float getDistance(int currentLevel) {
-        return 25.0f;
+        return DASH_DISTANCE;
     }
 
     @Override

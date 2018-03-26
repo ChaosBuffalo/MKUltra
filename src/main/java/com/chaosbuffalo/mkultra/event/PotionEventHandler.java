@@ -5,6 +5,7 @@ import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerDataProvider;
 import com.chaosbuffalo.mkultra.effects.spells.*;
 import com.chaosbuffalo.mkultra.log.Log;
+import com.chaosbuffalo.mkultra.party.PartyManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,6 +17,8 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
+import java.util.ArrayList;
 
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber
@@ -76,6 +79,18 @@ public class PotionEventHandler {
             IPlayerData targetData = PlayerDataProvider.get((EntityPlayerMP)livingTarget);
             if (targetData == null) {
                 return;
+            }
+
+            ArrayList<EntityPlayer> teammates = PartyManager.getPlayersOnTeam((EntityPlayer)livingTarget);
+            for (EntityPlayer teammate : teammates){
+                if (teammate == null){
+                    continue;
+                }
+                if (teammate.isPotionActive(WaveBreakPotion.INSTANCE)){
+                    float amount = event.getAmount();
+                    event.setAmount(amount * .2f);
+                    teammate.attackEntityFrom(source, amount *.8f);
+                }
             }
 
             float newDamage = targetData.applyMagicArmor(event.getAmount());

@@ -5,16 +5,10 @@ import com.chaosbuffalo.mkultra.core.PlayerAttributes;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
 import com.chaosbuffalo.mkultra.effects.Targeting;
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.AbstractAttributeMap;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.network.play.server.SPacketPlayerAbilities;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
@@ -27,19 +21,13 @@ import java.util.UUID;
  * Created by Jacob on 3/25/2018.
  */
 @Mod.EventBusSubscriber(modid = MKUltra.MODID)
-public class UnderwayPotion extends SpellPotionBase {
-
-    public static final UUID MODIFIER_ID = UUID.fromString("771f39b8-c161-4b80-897f-724f84e08ae7");
-
-    public static final UnderwayPotion INSTANCE = (UnderwayPotion)(new UnderwayPotion()
-        .registerPotionAttributeModifier(PlayerAttributes.COOLDOWN, MODIFIER_ID.toString(),
-                -0.1, PlayerAttributes.OP_INCREMENT)
-        .registerPotionAttributeModifier(SharedMonsterAttributes.MOVEMENT_SPEED, MODIFIER_ID.toString(),
-                .1, PlayerAttributes.OP_SCALE_MULTIPLICATIVE)
+public class WaveBreakPotion extends SpellPotionBase {
+    public static final UUID MODIFIER_ID = UUID.fromString("771f29b8-c161-4b80-897f-724f84e08ae7");
+    public static final WaveBreakPotion INSTANCE = (WaveBreakPotion)(new WaveBreakPotion()
+            .registerPotionAttributeModifier(SharedMonsterAttributes.MAX_HEALTH, MODIFIER_ID.toString(), 10, PlayerAttributes.OP_INCREMENT)
+            .registerPotionAttributeModifier(SharedMonsterAttributes.ARMOR, MODIFIER_ID.toString(), 5, PlayerAttributes.OP_INCREMENT)
+            .registerPotionAttributeModifier(PlayerAttributes.MAGIC_ARMOR, MODIFIER_ID.toString(), 5, PlayerAttributes.OP_INCREMENT)
     );
-
-
-
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {
@@ -50,10 +38,16 @@ public class UnderwayPotion extends SpellPotionBase {
         return INSTANCE.newSpellCast(source);
     }
 
-    private UnderwayPotion() {
+    private WaveBreakPotion() {
         // boolean isBadEffectIn, int liquidColorIn
-        super(false, 4393423, new ResourceLocation(MKUltra.MODID, "textures/class/abilities/underway.png"));
-        SpellPotionBase.register("effect.underway", this);
+        super(false, 4393423, new ResourceLocation(MKUltra.MODID, "textures/class/abilities/wave_break.png"));
+        SpellPotionBase.register("effect.wave_break", this);
+    }
+
+    @Override
+    public double getAttributeModifierAmount(int amplifier, AttributeModifier modifier)
+    {
+        return modifier.getAmount() * (double)(amplifier);
     }
 
     @Override
@@ -64,12 +58,6 @@ public class UnderwayPotion extends SpellPotionBase {
     @Override
     public void doEffect(Entity applier, Entity caster, EntityLivingBase target, int amplifier, SpellCast cast) {
 
-    }
-
-    @Override
-    public double getAttributeModifierAmount(int amplifier, AttributeModifier modifier)
-    {
-        return modifier.getAmount() * (double)(amplifier);
     }
 
     @Override
@@ -87,3 +75,4 @@ public class UnderwayPotion extends SpellPotionBase {
         return false;
     }
 }
+

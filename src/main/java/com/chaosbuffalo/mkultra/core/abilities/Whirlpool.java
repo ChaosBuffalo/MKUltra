@@ -63,7 +63,7 @@ public class Whirlpool extends BaseAbility {
 
     @Override
     public int getManaCost(int currentLevel) {
-        return 4 + 4*currentLevel;
+        return 4 + 2*currentLevel;
     }
 
 
