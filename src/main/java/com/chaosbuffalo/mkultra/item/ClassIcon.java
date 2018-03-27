@@ -11,6 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 /**
@@ -18,13 +19,22 @@ import net.minecraft.world.World;
  */
 public class ClassIcon extends Item implements IClassProvider {
 
-    public String iconText;
+    private final String iconText;
+    private final ResourceLocation iconLoc;
+    private final String xpTableText;
+    private final ResourceLocation xpTableBackground;
+    private final int xpTableTextColor;
 
-    public ClassIcon(String unlocalizedName, String iconText, int maxDamageIn) {
+    public ClassIcon(String unlocalizedName, String iconText, int maxDamageIn, ResourceLocation iconLoc,
+                     String xpTableText, ResourceLocation xpTableBackground, int xpTableTextColor) {
         super();
         this.setUnlocalizedName(unlocalizedName);
         this.setCreativeTab(CreativeTabs.MATERIALS);
         this.iconText = iconText;
+        this.iconLoc = iconLoc;
+        this.xpTableText = xpTableText;
+        this.xpTableBackground = xpTableBackground;
+        this.xpTableTextColor = xpTableTextColor;
         this.setMaxDamage(maxDamageIn);
         this.setMaxStackSize(1);
     }
@@ -42,7 +52,22 @@ public class ClassIcon extends Item implements IClassProvider {
     }
 
     @Override
+    public String getXpTableText() { return xpTableText; }
+
+    @Override
+    public ResourceLocation getIconForProvider(){ return iconLoc; }
+
+    @Override
     public String getClassSelectionText() {
         return iconText;
     }
+
+    @Override
+    public ResourceLocation getXpTableBackground(){ return xpTableBackground; }
+
+    @Override
+    public int getXpTableTextColor() {
+        return xpTableTextColor;
+    }
+
 }

@@ -3,6 +3,7 @@ package com.chaosbuffalo.mkultra.client.gui;
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.*;
+import com.chaosbuffalo.mkultra.item.interfaces.IClassProvider;
 import com.chaosbuffalo.mkultra.network.packets.client.LevelAbilityPacket;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
@@ -66,9 +67,11 @@ public class PlayerClassScreen extends GuiScreen {
         //drawing ability
         //draw icons
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        ResourceLocation iconLoc1 = new ResourceLocation(MKUltra.MODID, playerClass.getClassIconTextures());
+        IClassProvider classProvider = (IClassProvider)playerClass.getUnlockItem();
+        ResourceLocation iconLoc1 = classProvider.getIconForProvider();
         this.mc.renderEngine.bindTexture(iconLoc1);
-        this.drawTexturedModalRect(xPos + 6, iconHeight, playerClass.getIconU(), playerClass.getIconV(), 16, 16);
+        Gui.drawModalRectWithCustomSizedTexture(xPos + 6, iconHeight, 0, 0, 16, 16, 16, 16);
+//        this.drawTexturedModalRect(xPos + 6, iconHeight, 0, 0, 16, 16);
 //        ResourceLocation iconLoc2 = new ResourceLocation(MKUltra.MODID, ClassData.getAbilityIconTextures());
 //        this.mc.renderEngine.bindTexture(iconLoc2);
         for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {

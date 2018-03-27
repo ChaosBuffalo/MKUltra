@@ -10,6 +10,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.*;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.util.EnumHelper;
@@ -132,8 +133,16 @@ public final class ModItems {
     public static void initItems() {
         // Class-related
         regInternal(angelDust = new AngelDust("angelDust"));
-        regInternal(sunicon = new ClassIcon("sunicon", "The Sun God will bestow on you great powers. Choose your class: ", 8), "sunicon");
-        regInternal(moon_icon = new ClassIcon("moon_icon", "The Mysterious Moon God offers her arts to you. Choose your class: ", 1), "moon_icon");
+        regInternal(sunicon = new ClassIcon("sunicon", "The Sun God will bestow on you great powers. Choose your class: ", 8,
+                new ResourceLocation(MKUltra.MODID, "textures/items/sunicon.png"), "Give your Brouzoufs to Solarius." +
+                "  Receive his blessings.",
+                new ResourceLocation(MKUltra.MODID, "textures/gui/xp_table_background.png")
+                ,38600), "sunicon");
+        regInternal(moon_icon = new ClassIcon("moon_icon", "The Mysterious Moon Goddess offers her arts to you. Choose your class: ", 1,
+                new ResourceLocation(MKUltra.MODID, "textures/items/moon_icon.png"),
+                "Thalassa, Goddess of the Moon, demands brouzouf in exchange for her powers. ",
+                new ResourceLocation(MKUltra.MODID, "textures/gui/xp_table_background_moon.png")
+                ,4404838), "moon_icon");
         regInternal(forgetfulnessBread = new ForgetfulnessBread(8, 1.0f, false), "forgetfulnessBread");
 
 

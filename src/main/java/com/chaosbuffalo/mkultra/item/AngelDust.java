@@ -11,6 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 
@@ -35,7 +36,27 @@ public class AngelDust extends Item implements IClassProvider {
     }
 
     @Override
+    public ResourceLocation getIconForProvider() {
+        return new ResourceLocation(MKUltra.MODID, "textures/items/sunicon.png");
+    }
+
+    @Override
     public String getClassSelectionText() {
         return "Select your next class";
+    }
+
+    @Override
+    public String getXpTableText() {
+        return "You shouldn't see this.";
+    }
+
+    @Override
+    public ResourceLocation getXpTableBackground() {
+        return new ResourceLocation(MKUltra.MODID, "textures/gui/xp_table_background_moon.png");
+    }
+
+    @Override
+    public int getXpTableTextColor() {
+        return 38600;
     }
 }

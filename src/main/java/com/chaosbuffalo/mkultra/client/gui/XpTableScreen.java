@@ -1,8 +1,10 @@
 package com.chaosbuffalo.mkultra.client.gui;
 
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.core.ClassData;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerDataProvider;
+import com.chaosbuffalo.mkultra.item.interfaces.IClassProvider;
 import com.chaosbuffalo.mkultra.network.packets.client.LevelUpRequestPacket;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -31,7 +33,8 @@ public class XpTableScreen extends GuiScreen {
         int panelHeight = 165;
         int xPos = width / 2 - panelWidth / 2;
         int yPos = height / 2 - panelHeight / 2;
-        ResourceLocation loc = new ResourceLocation(MKUltra.MODID, "textures/gui/xp_table_background.png");
+        IClassProvider classProvider = (IClassProvider)ClassData.getClass(pData.getClassId()).getUnlockItem();
+        ResourceLocation loc = classProvider.getXpTableBackground();
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.renderEngine.bindTexture(loc);
         GL11.glDisable(GL11.GL_LIGHTING);
@@ -39,8 +42,9 @@ public class XpTableScreen extends GuiScreen {
         float scaleFactor = 1.5f;
         GlStateManager.pushMatrix();
         GlStateManager.scale(1.0f / scaleFactor, 1.0f / scaleFactor, 1.0f / scaleFactor);
-        String text = "Give your Brouzoufs to Solarius." +
-                "  Receive his blessings.";
+
+
+        String text = classProvider.getXpTableText();
         this.fontRenderer.drawSplitString(
                 text,
                 (int)((xPos + 20) * scaleFactor),
@@ -69,7 +73,7 @@ public class XpTableScreen extends GuiScreen {
         if (pData.getLevel() <= 8){
             levelText = " " + levelText;
         }
-        this.fontRenderer.drawString(levelText, xCoord, yCoord, 38600);
+        this.fontRenderer.drawString(levelText, xCoord, yCoord, classProvider.getXpTableTextColor());
         GlStateManager.popMatrix();
     }
 
