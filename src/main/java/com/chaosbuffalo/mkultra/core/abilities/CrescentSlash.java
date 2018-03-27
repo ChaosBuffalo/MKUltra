@@ -50,18 +50,8 @@ public class CrescentSlash extends BaseAbility {
     }
 
     @Override
-    public int getIconU() {
-        return 18;
-    }
-
-    @Override
-    public int getIconV() {
-        return 18;
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
-        return 16 - 2 * currentLevel;
+        return 10 - 2 * currentLevel;
     }
 
     @Override
@@ -81,7 +71,7 @@ public class CrescentSlash extends BaseAbility {
 
     @Override
     public float getDistance(int currentLevel) {
-        return 3.0f + currentLevel * 2.0f;
+        return 7.0f + currentLevel * 2.0f;
     }
 
     @Override
