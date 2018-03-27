@@ -51,7 +51,7 @@ public class CrescentSlash extends BaseAbility {
 
     @Override
     public int getCooldown(int currentLevel) {
-        return 8 - 2 * currentLevel;
+        return 7 -  currentLevel;
     }
 
     @Override
