@@ -86,7 +86,7 @@ public class VampiricRevere extends BaseToggleAbility {
         int level = pData.getLevelForAbility(getAbilityId());
 
         // What to do for each target hit
-        entity.addPotionEffect(VampiricReverePotion.Create(entity).toPotionEffect(BASE_DURATION, level));
+        entity.addPotionEffect(VampiricReverePotion.Create(entity).setTarget(entity).toPotionEffect(BASE_DURATION, level));
         Vec3d lookVec = entity.getLookVec();
         MKUltra.packetHandler.sendToAllAround(
                 new ParticleEffectSpawnPacket(
