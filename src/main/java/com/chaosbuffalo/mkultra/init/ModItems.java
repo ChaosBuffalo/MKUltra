@@ -43,10 +43,10 @@ public final class ModItems {
     public static Item chainmailHelmet;
     public static Item chainmailBoots;
     public static Item chainmailLeggings;
-    public static Item robesHelmet;
-    public static Item robesBoots;
-    public static Item robesChestplate;
-    public static Item robesLeggings;
+    public static Item gold_threaded_helmet;
+    public static Item gold_threaded_boots;
+    public static Item gold_threaded_chestplate;
+    public static Item gold_threaded_leggings;
     public static Item woodSpear;
     public static Item ironSpear;
     public static Item stoneSpear;
@@ -56,7 +56,7 @@ public final class ModItems {
     public static Item hempSeeds;
     public static Item hempLeaves;
     public static Item hempFibers;
-    public static Item goldThreadedCloth;
+    public static Item gold_threaded_cloth;
     public static Item hempSeedBread;
     public static Item pipe;
     public static Item copperSpear;
@@ -97,23 +97,23 @@ public final class ModItems {
 
 
 
-    public static ItemArmor.ArmorMaterial CHAINMAT = EnumHelper.addArmorMaterial("minekampfChain",
+    public static ItemArmor.ArmorMaterial CHAINMAT = EnumHelper.addArmorMaterial("mkultra_chain",
                                                                                  "mkultra:chainmail", 15,
                                                                                  new int[] {1, 4, 5, 2}, 12, null, 0);
-    public static ItemArmor.ArmorMaterial ROBEMAT = EnumHelper.addArmorMaterial("minekampfRobes",
-                                                                                "mkultra:robes", 20,
+    public static ItemArmor.ArmorMaterial ROBEMAT = EnumHelper.addArmorMaterial("mkultra_gold_threaded",
+                                                                                "mkultra:gold_threaded", 20,
                                                                                 new int[] {1, 1, 1, 1}, 35, null, 0);
-    public static ItemArmor.ArmorMaterial BONEDLEATHERMAT = EnumHelper.addArmorMaterial("minekampfBonedLeather",
+    public static ItemArmor.ArmorMaterial BONEDLEATHERMAT = EnumHelper.addArmorMaterial("mkultra_boned_leather",
                                                                                         "mkultra:bone", 24,
                                                                                         new int[] {1, 3, 2, 1}, 2, null, 0);
 
     public static ItemArmor.ArmorMaterial COPPER_THREADED_MAT = EnumHelper.addArmorMaterial(
-            "minekampf_copper_threaded",
+            "mkultra_copper_threaded",
             "mkultra:copper_threaded", 15,
             new int[] {0, 1, 1, 0}, 5, null, 0);
 
     public static ItemArmor.ArmorMaterial IRON_THREADED_MAT = EnumHelper.addArmorMaterial(
-            "minekampf_iron_threaded",
+            "mkultra_iron_threaded",
             "mkultra:iron_threaded", 28,
             new int[] {2, 3, 3, 2}, 20, null, 0);
 
@@ -196,15 +196,15 @@ public final class ModItems {
         regInternal(chainmailLeggings = new ItemModArmor("chainmail_leggings", CHAINMAT, 2, EntityEquipmentSlot.LEGS));
         regInternal(chainmailBoots = new ItemModArmor("chainmail_boots", CHAINMAT, 2, EntityEquipmentSlot.FEET));
 
-        regInternal(goldThreadedCloth = new Item().setCreativeTab(CreativeTabs.MATERIALS), "goldThreadedCloth");
-        ROBEMAT.setRepairItem(new ItemStack(ModItems.goldThreadedCloth));
-        regInternal(robesChestplate = new ItemMagicDamageArmor("robesChestplate", ROBEMAT, 1, EntityEquipmentSlot.CHEST,
+        regInternal(gold_threaded_cloth = new Item().setCreativeTab(CreativeTabs.MATERIALS), "gold_threaded_cloth");
+        ROBEMAT.setRepairItem(new ItemStack(ModItems.gold_threaded_cloth));
+        regInternal(gold_threaded_chestplate = new ItemMagicDamageArmor("gold_threaded_chestplate", ROBEMAT, 1, EntityEquipmentSlot.CHEST,
                 2.0f, chestUUID));
-        regInternal(robesHelmet = new ItemManaRegenArmor("robesHelmet", ROBEMAT, 1, EntityEquipmentSlot.HEAD,
+        regInternal(gold_threaded_helmet = new ItemManaRegenArmor("gold_threaded_helmet", ROBEMAT, 1, EntityEquipmentSlot.HEAD,
                 1.5f, helmetUUID));
-        regInternal(robesLeggings = new ItemManaArmor("robesLeggings", ROBEMAT, 2, EntityEquipmentSlot.LEGS,
+        regInternal(gold_threaded_leggings = new ItemManaArmor("gold_threaded_leggings", ROBEMAT, 2, EntityEquipmentSlot.LEGS,
                 5, leggingsUUID));
-        regInternal(robesBoots = new ItemManaArmor("robesBoots", ROBEMAT, 2, EntityEquipmentSlot.FEET,
+        regInternal(gold_threaded_boots = new ItemManaArmor("gold_threaded_boots", ROBEMAT, 2, EntityEquipmentSlot.FEET,
                 5, feetUUID));
 
         regInternal(bonedLeather = new Item().setCreativeTab(CreativeTabs.MATERIALS), "bonedLeather");
