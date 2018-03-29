@@ -121,16 +121,16 @@ public final class ModCrafting {
         CrusherRecipeRegistry.addNewCrusherRecipe(Items.DIAMOND, new ItemStack(ModItems.angelDust, 4));
         CrusherRecipeRegistry.addNewCrusherRecipe(ModItems.hempLeaves,
                 new ItemStack(ModItems.hempFibers, 2));
-        addRecipe(event, new ItemStack(ModItems.goldThreadedCloth),
+        addRecipe(event, new ItemStack(ModItems.gold_threaded_cloth, 4),
                 "fff", "fgf", "fff", 'f', ModItems.hempFibers, 'g', Items.GOLD_INGOT);
-        addRecipe(event, new ItemStack(ModItems.robesBoots),
-                "c c", "c c", 'c', ModItems.goldThreadedCloth);
-        addRecipe(event, new ItemStack(ModItems.robesHelmet),
-                "ccc", "c c", 'c', ModItems.goldThreadedCloth);
-        addRecipe(event, new ItemStack(ModItems.robesChestplate),
-                "c c", "ccc", "ccc", 'c', ModItems.goldThreadedCloth);
-        addRecipe(event, new ItemStack(ModItems.robesLeggings),
-                "ccc", "c c", "c c", 'c', ModItems.goldThreadedCloth);
+        addRecipe(event, new ItemStack(ModItems.gold_threaded_boots),
+                "c c", "c c", 'c', ModItems.gold_threaded_cloth);
+        addRecipe(event, new ItemStack(ModItems.gold_threaded_helmet),
+                "ccc", "c c", 'c', ModItems.gold_threaded_cloth);
+        addRecipe(event, new ItemStack(ModItems.gold_threaded_chestplate),
+                "c c", "ccc", "ccc", 'c', ModItems.gold_threaded_cloth);
+        addRecipe(event, new ItemStack(ModItems.gold_threaded_leggings),
+                "ccc", "c c", "c c", 'c', ModItems.gold_threaded_cloth);
 
         addRecipe(event, new ItemStack(ModItems.bonedLeather, 5),
                 "bbb", "blb", 'b', Items.BONE, 'l', Items.LEATHER);
