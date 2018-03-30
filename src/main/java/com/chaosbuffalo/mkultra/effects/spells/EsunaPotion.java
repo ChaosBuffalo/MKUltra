@@ -33,9 +33,13 @@ public class EsunaPotion extends SpellDOTPotionBase {
     }
 
     private EsunaPotion() {
-        // boolean isBadEffectIn, int liquidColorIn
-        super(DEFAULT_PERIOD, false, 4393423, new ResourceLocation(MKUltra.MODID, "textures/class/abilities/esuna.png"));
+        super(DEFAULT_PERIOD, false, 4393423);
         SpellPotionBase.register("effect.esuna", this);
+    }
+
+    @Override
+    public ResourceLocation getIconTexture() {
+        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/esuna.png");
     }
 
     @Override

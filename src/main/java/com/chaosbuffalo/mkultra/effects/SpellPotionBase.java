@@ -15,46 +15,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class SpellPotionBase extends Potion {
 
-    private final ResourceLocation iconTexture;
-
     public static void register(String name, Potion potion) {
         potion.setRegistryName(MKUltra.MODID, name);
         potion.setPotionName(name);
     }
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void renderInventoryEffect(int x, int y, PotionEffect effect, Minecraft mc)
-    {
-        if (mc.currentScreen != null && iconTexture != null)
-        {
-            mc.getTextureManager().bindTexture(iconTexture);
-            Gui.drawModalRectWithCustomSizedTexture(x + 6, y + 7, 0, 0, 16, 16, 16, 16);
-        }
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void renderHUDEffect(int x, int y, PotionEffect effect, Minecraft mc, float alpha)
-    {
-        if (iconTexture != null){
-            mc.getTextureManager().bindTexture(iconTexture);
-            Gui.drawModalRectWithCustomSizedTexture(x + 4, y + 4, 0, 0, 16, 16, 16, 16);
-        }
-
-    }
-
     protected SpellPotionBase(boolean isBadEffectIn, int liquidColorIn) {
         super(isBadEffectIn, liquidColorIn);
-        iconTexture = null;
-        if (!isBadEffectIn) {
-            setBeneficial();
-        }
-    }
-
-    protected SpellPotionBase(boolean isBadEffectIn, int liquidColorIn, ResourceLocation iconTextureIn) {
-        super(isBadEffectIn, liquidColorIn);
-        this.iconTexture = iconTextureIn;
         if (!isBadEffectIn) {
             setBeneficial();
         }
@@ -177,5 +144,31 @@ public abstract class SpellPotionBase extends Potion {
         hash = 31 * hash + getLiquidColor();
         hash = 31 * hash + (isBadEffect() ? 1 : 0);
         return hash;
+    }
+
+    public ResourceLocation getIconTexture() {
+        return null;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void renderInventoryEffect(int x, int y, PotionEffect effect, Minecraft mc)
+    {
+        if (mc.currentScreen != null && getIconTexture() != null)
+        {
+            mc.getTextureManager().bindTexture(getIconTexture());
+            Gui.drawModalRectWithCustomSizedTexture(x + 6, y + 7, 0, 0, 16, 16, 16, 16);
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void renderHUDEffect(int x, int y, PotionEffect effect, Minecraft mc, float alpha)
+    {
+        if (getIconTexture() != null){
+            mc.getTextureManager().bindTexture(getIconTexture());
+            Gui.drawModalRectWithCustomSizedTexture(x + 4, y + 4, 0, 0, 16, 16, 16, 16);
+        }
+
     }
 }

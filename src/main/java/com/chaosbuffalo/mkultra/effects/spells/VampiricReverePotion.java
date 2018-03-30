@@ -30,9 +30,13 @@ public class VampiricReverePotion extends SpellPotionBase {
     }
 
     private VampiricReverePotion() {
-        // boolean isBadEffectIn, int liquidColorIn
-        super(false, 4393423, new ResourceLocation(MKUltra.MODID, "textures/class/abilities/vampiric_revere.png"));
+        super(false, 4393423);
         SpellPotionBase.register("effect.vampiric_revere", this);
+    }
+
+    @Override
+    public ResourceLocation getIconTexture() {
+        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/vampiric_revere.png");
     }
 
     @Override

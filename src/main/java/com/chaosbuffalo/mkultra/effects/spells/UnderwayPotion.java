@@ -51,9 +51,13 @@ public class UnderwayPotion extends SpellPotionBase {
     }
 
     private UnderwayPotion() {
-        // boolean isBadEffectIn, int liquidColorIn
-        super(false, 1665535, new ResourceLocation(MKUltra.MODID, "textures/class/abilities/underway.png"));
+        super(false, 1665535);
         SpellPotionBase.register("effect.underway", this);
+    }
+
+    @Override
+    public ResourceLocation getIconTexture() {
+        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/underway.png");
     }
 
     @Override

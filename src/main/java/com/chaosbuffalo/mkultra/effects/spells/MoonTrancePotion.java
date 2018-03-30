@@ -38,9 +38,13 @@ public class MoonTrancePotion extends SpellDOTPotionBase {
     }
 
     private MoonTrancePotion() {
-        // boolean isBadEffectIn, int liquidColorIn
-        super(DEFAULT_PERIOD, false, 4393423, new ResourceLocation(MKUltra.MODID, "textures/class/abilities/moon_trance.png"));
+        super(DEFAULT_PERIOD, false, 4393423);
         SpellPotionBase.register("effect.moon_trance", this);
+    }
+
+    @Override
+    public ResourceLocation getIconTexture() {
+        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/moon_trance.png");
     }
 
     @Override

@@ -35,9 +35,13 @@ public class WarpCursePotion extends SpellDOTPotionBase {
     }
 
     private WarpCursePotion() {
-        // boolean isBadEffectIn, int liquidColorIn
-        super(DEFAULT_PERIOD, true, 4393423, new ResourceLocation(MKUltra.MODID, "textures/class/abilities/warp_curse.png"));
+        super(DEFAULT_PERIOD, true, 4393423);
         SpellPotionBase.register("effect.warp_curse", this);
+    }
+
+    @Override
+    public ResourceLocation getIconTexture() {
+        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/warp_curse.png");
     }
 
     @Override

@@ -30,9 +30,13 @@ public class NocturnalCommunionPotion extends SpellPotionBase {
     }
 
     private NocturnalCommunionPotion() {
-        // boolean isBadEffectIn, int liquidColorIn
-        super(false, 4393423, new ResourceLocation(MKUltra.MODID, "textures/class/abilities/nocturnal_communion.png"));
+        super(false, 4393423);
         SpellPotionBase.register("effect.nocturnal_communion", this);
+    }
+
+    @Override
+    public ResourceLocation getIconTexture() {
+        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/nocturnal_communion.png");
     }
 
     @Override

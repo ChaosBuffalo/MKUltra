@@ -31,9 +31,13 @@ public class UndertowPotion extends SpellPotionBase {
     }
 
     private UndertowPotion() {
-        // boolean isBadEffectIn, int liquidColorIn
-        super(false, 4393423, new ResourceLocation(MKUltra.MODID, "textures/class/abilities/undertow.png"));
+        super(false, 4393423);
         SpellPotionBase.register("effect.undertow", this);
+    }
+
+    @Override
+    public ResourceLocation getIconTexture() {
+        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/undertow.png");
     }
 
     @Override

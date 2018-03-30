@@ -33,9 +33,13 @@ public class DrownPotion extends SpellDOTPotionBase {
     }
 
     private DrownPotion() {
-        // boolean isBadEffectIn, int liquidColorIn
-        super(DEFAULT_PERIOD, true, 4393423, new ResourceLocation(MKUltra.MODID, "textures/class/abilities/drown.png"));
+        super(DEFAULT_PERIOD, true, 4393423);
         SpellPotionBase.register("effect.drown", this);
+    }
+
+    @Override
+    public ResourceLocation getIconTexture() {
+        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/drown.png");
     }
 
     @Override

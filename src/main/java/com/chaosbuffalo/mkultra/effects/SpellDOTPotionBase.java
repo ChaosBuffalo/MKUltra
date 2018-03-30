@@ -1,7 +1,5 @@
 package com.chaosbuffalo.mkultra.effects;
 
-import net.minecraft.util.ResourceLocation;
-
 /**
  * Created by Jacob on 3/31/2016.
  */
@@ -12,12 +10,6 @@ public abstract class SpellDOTPotionBase extends SpellPotionBase {
 
     protected SpellDOTPotionBase(int period, boolean isBadEffectIn, int liquidColorIn) {
         super(isBadEffectIn, liquidColorIn);
-        this.period = period;
-    }
-
-    protected SpellDOTPotionBase(int period, boolean isBadEffectIn, int liquidColorIn,
-                                 ResourceLocation iconTextureIn) {
-        super(isBadEffectIn, liquidColorIn, iconTextureIn);
         this.period = period;
     }
 
