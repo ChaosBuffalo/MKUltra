@@ -94,8 +94,8 @@ public class Ember extends BaseAbility {
         if (targetEntity != null) {
             pData.startAbility(this);
 
-            targetEntity.attackEntityFrom(DamageSource.causeIndirectMagicDamage(entity, entity), BASE_DAMAGE + level * DAMAGE_SCALE);
             targetEntity.setFire(BASE_DURATION + level * DURATION_SCALE);
+            targetEntity.attackEntityFrom(DamageSource.causeIndirectMagicDamage(entity, entity), BASE_DAMAGE + level * DAMAGE_SCALE);
 
             Vec3d lookVec = entity.getLookVec();
             MKUltra.packetHandler.sendToAllAround(
