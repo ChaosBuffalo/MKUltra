@@ -31,7 +31,7 @@ public class FlightPotion extends SpellPotionBase {
 
     private FlightPotion() {
         super(false, 4393423);
-        SpellPotionBase.register("effect.flight", this);
+        SpellPotionBase.register(MKUltra.MODID, "effect.flight", this);
     }
 
     @Override

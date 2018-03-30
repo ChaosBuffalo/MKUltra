@@ -39,7 +39,7 @@ public class MoonTrancePotion extends SpellDOTPotionBase {
 
     private MoonTrancePotion() {
         super(DEFAULT_PERIOD, false, 4393423);
-        SpellPotionBase.register("effect.moon_trance", this);
+        SpellPotionBase.register(MKUltra.MODID, "effect.moon_trance", this);
     }
 
     @Override

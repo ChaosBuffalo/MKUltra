@@ -34,7 +34,7 @@ public class DrownPotion extends SpellDOTPotionBase {
 
     private DrownPotion() {
         super(DEFAULT_PERIOD, true, 4393423);
-        SpellPotionBase.register("effect.drown", this);
+        SpellPotionBase.register(MKUltra.MODID, "effect.drown", this);
     }
 
     @Override

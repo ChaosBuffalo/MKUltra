@@ -35,7 +35,7 @@ public class FlameBladePotion extends SpellPotionBase {
 
     private FlameBladePotion() {
         super(false, 4393423);
-        SpellPotionBase.register("effect.flame_blade", this);
+        SpellPotionBase.register(MKUltra.MODID, "effect.flame_blade", this);
     }
 
     @Override

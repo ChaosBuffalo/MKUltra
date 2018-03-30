@@ -32,7 +32,7 @@ public class IgnitePotion extends SpellPotionBase {
 
     private IgnitePotion() {
         super(true, 123);
-        SpellPotionBase.register("effect.ignite", this);
+        SpellPotionBase.register(MKUltra.MODID, "effect.ignite", this);
     }
 
 

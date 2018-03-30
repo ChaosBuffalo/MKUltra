@@ -31,7 +31,7 @@ public class NocturnalCommunionPotion extends SpellPotionBase {
 
     private NocturnalCommunionPotion() {
         super(false, 4393423);
-        SpellPotionBase.register("effect.nocturnal_communion", this);
+        SpellPotionBase.register(MKUltra.MODID, "effect.nocturnal_communion", this);
     }
 
     @Override

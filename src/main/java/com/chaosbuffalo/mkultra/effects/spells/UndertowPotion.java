@@ -32,7 +32,7 @@ public class UndertowPotion extends SpellPotionBase {
 
     private UndertowPotion() {
         super(false, 4393423);
-        SpellPotionBase.register("effect.undertow", this);
+        SpellPotionBase.register(MKUltra.MODID, "effect.undertow", this);
     }
 
     @Override

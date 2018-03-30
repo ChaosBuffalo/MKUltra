@@ -34,7 +34,7 @@ public class CurePotion extends SpellPotionBase {
     private CurePotion() {
         // boolean isBadEffectIn, int liquidColorIn
         super(false, 4393423);
-        SpellPotionBase.register("effect.cure", this);
+        SpellPotionBase.register(MKUltra.MODID, "effect.cure", this);
     }
 
     private static void apply(EntityLivingBase entity) {

@@ -11,7 +11,6 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.network.play.server.SPacketEntityVelocity;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.DamageSource;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -36,7 +35,7 @@ public class HeavingSeasPotion extends SpellPotionBase {
     private HeavingSeasPotion() {
         // boolean isBadEffectIn, int liquidColorIn
         super(true, 1665535);
-        SpellPotionBase.register("effect.heavingseas", this);
+        SpellPotionBase.register(MKUltra.MODID, "effect.heavingseas", this);
     }
 
     @Override

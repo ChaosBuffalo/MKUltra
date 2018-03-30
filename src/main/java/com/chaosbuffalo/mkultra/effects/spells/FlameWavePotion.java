@@ -28,7 +28,7 @@ public class FlameWavePotion extends SpellPotionBase {
 
     private FlameWavePotion() {
         super(true, 123);
-        SpellPotionBase.register("effect.flame_wave", this);
+        SpellPotionBase.register(MKUltra.MODID, "effect.flame_wave", this);
     }
 
     @Override

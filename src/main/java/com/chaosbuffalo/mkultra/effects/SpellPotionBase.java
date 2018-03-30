@@ -1,6 +1,5 @@
 package com.chaosbuffalo.mkultra.effects;
 
-import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.log.Log;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -15,8 +14,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class SpellPotionBase extends Potion {
 
-    public static void register(String name, Potion potion) {
-        potion.setRegistryName(MKUltra.MODID, name);
+    public static void register(String modId, String name, Potion potion) {
+        potion.setRegistryName(modId, name);
         potion.setPotionName(name);
     }
 

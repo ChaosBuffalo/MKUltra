@@ -13,7 +13,6 @@ import net.minecraft.potion.Potion;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -39,7 +38,7 @@ public class WhirlpoolPotion extends SpellDOTPotionBase {
 
     private WhirlpoolPotion() {
         super(DEFAULT_PERIOD, true, 1665535);
-        SpellPotionBase.register("effect.whirlpool", this);
+        SpellPotionBase.register(MKUltra.MODID, "effect.whirlpool", this);
     }
 
     @Override

@@ -36,7 +36,7 @@ public class WarpCursePotion extends SpellDOTPotionBase {
 
     private WarpCursePotion() {
         super(DEFAULT_PERIOD, true, 4393423);
-        SpellPotionBase.register("effect.warp_curse", this);
+        SpellPotionBase.register(MKUltra.MODID, "effect.warp_curse", this);
     }
 
     @Override
