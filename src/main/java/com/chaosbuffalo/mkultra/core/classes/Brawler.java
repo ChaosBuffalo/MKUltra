@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.core.classes;
 
+import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.BaseAbility;
 import com.chaosbuffalo.mkultra.core.BaseClass;
 import com.chaosbuffalo.mkultra.core.abilities.*;
@@ -23,7 +24,7 @@ public class Brawler extends BaseClass {
     }
 
     public Brawler() {
-        super("class.brawler", "Brawler");
+        super(MKUltra.MODID, "class.brawler", "Brawler");
     }
 
     @Override
