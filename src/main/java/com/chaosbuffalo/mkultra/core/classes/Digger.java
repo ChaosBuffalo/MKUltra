@@ -35,16 +35,6 @@ public class Digger extends BaseClass {
     }
 
     @Override
-    public int getIconU() {
-        return 0;
-    }
-
-    @Override
-    public int getIconV() {
-        return 0;
-    }
-
-    @Override
     public int getHealthPerLevel() {
         return 4;
     }

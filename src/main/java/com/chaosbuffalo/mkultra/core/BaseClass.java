@@ -40,14 +40,6 @@ public abstract class BaseClass extends IForgeRegistryEntry.Impl<BaseClass> {
 
     public abstract int getManaPerLevel();
 
-    public int getIconU() {
-        return 18;
-    }
-
-    public int getIconV() {
-        return 0;
-    }
-
     public abstract Item getUnlockItem();
 
     public abstract ArmorClass getArmorClass();
@@ -61,8 +53,4 @@ public abstract class BaseClass extends IForgeRegistryEntry.Impl<BaseClass> {
     }
 
     protected abstract List<BaseAbility> getAbilities();
-
-    public String getClassIconTextures() {
-        return "textures/class/icons/class_icons.png";
-    }
 }
