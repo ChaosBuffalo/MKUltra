@@ -6,7 +6,7 @@ package com.chaosbuffalo.mkultra.effects;
 
 public abstract class SpellDOTPotionBase extends SpellPotionBase {
 
-    protected int period;
+    private int period;
 
     protected SpellDOTPotionBase(int period, boolean isBadEffectIn, int liquidColorIn) {
         super(isBadEffectIn, liquidColorIn);

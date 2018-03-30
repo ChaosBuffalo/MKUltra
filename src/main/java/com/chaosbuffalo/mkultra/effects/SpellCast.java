@@ -11,19 +11,19 @@ import java.util.Map;
 
 public class SpellCast {
 
-    static Map<EntityLivingBase, Map<SpellPotionBase, SpellCast>> allCasts =
+    private static Map<EntityLivingBase, Map<SpellPotionBase, SpellCast>> allCasts =
             new HashMap<>(new HashMap<EntityLivingBase, Map<SpellPotionBase, SpellCast>>());
 
-    SpellPotionBase potion;
-    Entity applier;
-    Entity caster;
-    NBTTagCompound data;
+    private SpellPotionBase potion;
+    private Entity applier;
+    private Entity caster;
+    private NBTTagCompound data;
 
     public SpellCast(SpellPotionBase potion, Entity caster) {
         this.potion = potion;
         this.applier = caster;
         this.caster = caster;
-        data = new NBTTagCompound();
+        this.data = new NBTTagCompound();
     }
 
     public static SpellCast create(SpellPotionBase potion, Entity caster) {

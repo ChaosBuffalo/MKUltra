@@ -12,6 +12,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
+
 public abstract class SpellPotionBase extends Potion {
 
     public void register(String modId, String name) {
@@ -49,7 +51,7 @@ public abstract class SpellPotionBase extends Potion {
     }
 
     @Override
-    public void affectEntity(Entity applier, Entity caster, EntityLivingBase target, int amplifier, double health) {
+    public void affectEntity(Entity applier, Entity caster, @Nonnull EntityLivingBase target, int amplifier, double health) {
 
         SpellCast meta = SpellCast.get(target, this);
         if (meta == null) {
@@ -64,7 +66,7 @@ public abstract class SpellPotionBase extends Potion {
     }
 
     @Override
-    public void performEffect(EntityLivingBase target, int amplifier) {
+    public void performEffect(@Nonnull EntityLivingBase target, int amplifier) {
 
         SpellCast meta = SpellCast.get(target, this);
         if (meta == null) {
@@ -79,7 +81,7 @@ public abstract class SpellPotionBase extends Potion {
     }
 
     @Override
-    public void applyAttributesModifiersToEntity(EntityLivingBase target, AbstractAttributeMap attributes, int amplifier) {
+    public void applyAttributesModifiersToEntity(EntityLivingBase target, @Nonnull AbstractAttributeMap attributes, int amplifier) {
         SpellCast cast = SpellCast.get(target, this);
         if (cast != null) {
             onPotionAdd(cast, target, attributes, amplifier);
@@ -90,7 +92,7 @@ public abstract class SpellPotionBase extends Potion {
     }
 
     @Override
-    public void removeAttributesModifiersFromEntity(EntityLivingBase target, AbstractAttributeMap attributes, int amplifier) {
+    public void removeAttributesModifiersFromEntity(EntityLivingBase target, @Nonnull AbstractAttributeMap attributes, int amplifier) {
         SpellCast cast = SpellCast.get(target, this);
         if (cast != null) {
             onPotionRemove(cast, target, attributes, amplifier);
