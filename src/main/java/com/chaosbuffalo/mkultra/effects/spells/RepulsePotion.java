@@ -32,7 +32,7 @@ public class RepulsePotion extends SpellPotionBase {
     private RepulsePotion() {
         // boolean isBadEffectIn, int liquidColorIn
         super(true, 4393423);
-        SpellPotionBase.register(MKUltra.MODID, "effect.repulse", this);
+        register(MKUltra.MODID, "effect.repulse");
     }
 
     @Override

@@ -14,9 +14,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class SpellPotionBase extends Potion {
 
-    public static void register(String modId, String name, Potion potion) {
-        potion.setRegistryName(modId, name);
-        potion.setPotionName(name);
+    public void register(String modId, String name) {
+        setRegistryName(modId, name);
+        setPotionName(name);
     }
 
     protected SpellPotionBase(boolean isBadEffectIn, int liquidColorIn) {

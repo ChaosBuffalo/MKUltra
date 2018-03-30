@@ -33,7 +33,7 @@ public class GeyserPotion extends SpellPotionBase {
     private GeyserPotion() {
         // boolean isBadEffectIn, int liquidColorIn
         super(true, 4393423);
-        SpellPotionBase.register(MKUltra.MODID, "effect.geyser", this);
+        register(MKUltra.MODID, "effect.geyser");
     }
 
     @Override

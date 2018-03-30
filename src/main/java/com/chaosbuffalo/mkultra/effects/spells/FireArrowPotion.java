@@ -31,7 +31,7 @@ public class FireArrowPotion extends SpellPotionBase {
     private FireArrowPotion() {
         // boolean isBadEffectIn, int liquidColorIn
         super(true, 4393423);
-        SpellPotionBase.register(MKUltra.MODID, "effect.fire_arrow", this);
+        register(MKUltra.MODID, "effect.fire_arrow");
     }
 
     @Override

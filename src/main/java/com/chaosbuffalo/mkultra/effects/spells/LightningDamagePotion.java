@@ -28,7 +28,7 @@ public class LightningDamagePotion extends SpellPotionBase {
 
     private LightningDamagePotion() {
         super(true, 123);
-        SpellPotionBase.register(MKUltra.MODID, "effect.instant_lightning_damage", this);
+        register(MKUltra.MODID, "effect.instant_lightning_damage");
     }
 
     @Override

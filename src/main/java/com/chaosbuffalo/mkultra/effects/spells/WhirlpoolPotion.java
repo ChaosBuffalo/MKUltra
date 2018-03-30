@@ -3,7 +3,6 @@ package com.chaosbuffalo.mkultra.effects.spells;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellDOTPotionBase;
-import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
 import com.chaosbuffalo.mkultra.effects.Targeting;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
@@ -38,7 +37,7 @@ public class WhirlpoolPotion extends SpellDOTPotionBase {
 
     private WhirlpoolPotion() {
         super(DEFAULT_PERIOD, true, 1665535);
-        SpellPotionBase.register(MKUltra.MODID, "effect.whirlpool", this);
+        register(MKUltra.MODID, "effect.whirlpool");
     }
 
     @Override

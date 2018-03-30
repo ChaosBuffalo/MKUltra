@@ -3,7 +3,6 @@ package com.chaosbuffalo.mkultra.effects.spells;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellDOTPotionBase;
-import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
 import com.chaosbuffalo.mkultra.effects.Targeting;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
@@ -34,7 +33,7 @@ public class DrownPotion extends SpellDOTPotionBase {
 
     private DrownPotion() {
         super(DEFAULT_PERIOD, true, 4393423);
-        SpellPotionBase.register(MKUltra.MODID, "effect.drown", this);
+        register(MKUltra.MODID, "effect.drown");
     }
 
     @Override

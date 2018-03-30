@@ -40,7 +40,7 @@ public class WaveBreakPotion extends SpellPotionBase {
 
     private WaveBreakPotion() {
         super(false, 1665535);
-        SpellPotionBase.register(MKUltra.MODID, "effect.wave_break", this);
+        register(MKUltra.MODID, "effect.wave_break");
     }
 
     @Override

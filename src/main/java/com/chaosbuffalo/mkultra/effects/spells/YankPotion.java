@@ -36,7 +36,7 @@ public class YankPotion extends SpellPotionBase {
     private YankPotion() {
         // boolean isBadEffectIn, int liquidColorIn
         super(true, 4393423);
-        SpellPotionBase.register(MKUltra.MODID, "effect.yank", this);
+        register(MKUltra.MODID, "effect.yank");
     }
 
     @Override

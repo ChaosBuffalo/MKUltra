@@ -35,7 +35,7 @@ public class HeavingSeasPotion extends SpellPotionBase {
     private HeavingSeasPotion() {
         // boolean isBadEffectIn, int liquidColorIn
         super(true, 1665535);
-        SpellPotionBase.register(MKUltra.MODID, "effect.heavingseas", this);
+        register(MKUltra.MODID, "effect.heavingseas");
     }
 
     @Override

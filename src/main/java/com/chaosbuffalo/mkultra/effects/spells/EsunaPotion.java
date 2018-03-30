@@ -34,7 +34,7 @@ public class EsunaPotion extends SpellDOTPotionBase {
 
     private EsunaPotion() {
         super(DEFAULT_PERIOD, false, 4393423);
-        SpellPotionBase.register(MKUltra.MODID, "effect.esuna", this);
+        register(MKUltra.MODID, "effect.esuna");
     }
 
     @Override

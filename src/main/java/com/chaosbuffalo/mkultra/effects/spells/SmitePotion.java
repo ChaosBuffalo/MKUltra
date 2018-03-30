@@ -29,7 +29,7 @@ public class SmitePotion extends SpellPotionBase {
     private SmitePotion() {
         // boolean isBadEffectIn, int liquidColorIn
         super(true, 4393481);
-        SpellPotionBase.register(MKUltra.MODID, "effect.smite", this);
+        register(MKUltra.MODID, "effect.smite");
     }
 
     @Override

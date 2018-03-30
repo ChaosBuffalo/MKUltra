@@ -31,7 +31,7 @@ public class VampiricReverePotion extends SpellPotionBase {
 
     private VampiricReverePotion() {
         super(false, 4393423);
-        SpellPotionBase.register(MKUltra.MODID, "effect.vampiric_revere", this);
+        register(MKUltra.MODID, "effect.vampiric_revere");
     }
 
     @Override

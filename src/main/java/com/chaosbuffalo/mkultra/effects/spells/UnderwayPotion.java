@@ -46,7 +46,7 @@ public class UnderwayPotion extends SpellPotionBase {
 
     private UnderwayPotion() {
         super(false, 1665535);
-        SpellPotionBase.register(MKUltra.MODID, "effect.underway", this);
+        register(MKUltra.MODID, "effect.underway");
     }
 
     @Override

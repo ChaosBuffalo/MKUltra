@@ -28,7 +28,7 @@ public class FeatherFallPotion extends SpellPotionBase {
 
     private FeatherFallPotion() {
         super(false, 4393423);
-        SpellPotionBase.register(MKUltra.MODID, "effect.featherfall", this);
+        register(MKUltra.MODID, "effect.featherfall");
     }
 
     @Override
