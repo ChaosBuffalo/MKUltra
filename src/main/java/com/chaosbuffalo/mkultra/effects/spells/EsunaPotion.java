@@ -18,7 +18,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Mod.EventBusSubscriber(modid = MKUltra.MODID)
-public class EsunaPotion extends SpellDOTPotionBase {
+public class EsunaPotion extends SpellPeriodicPotionBase {
     private static final int DEFAULT_PERIOD = 30;
 
     public static final EsunaPotion INSTANCE = new EsunaPotion();

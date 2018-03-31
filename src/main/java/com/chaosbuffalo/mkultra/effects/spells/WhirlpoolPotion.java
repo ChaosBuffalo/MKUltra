@@ -2,7 +2,7 @@ package com.chaosbuffalo.mkultra.effects.spells;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
-import com.chaosbuffalo.mkultra.effects.SpellDOTPotionBase;
+import com.chaosbuffalo.mkultra.effects.SpellPeriodicPotionBase;
 import com.chaosbuffalo.mkultra.effects.Targeting;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
@@ -20,7 +20,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
  * Created by Jacob on 3/25/2018.
  */
 @Mod.EventBusSubscriber(modid = MKUltra.MODID)
-public class WhirlpoolPotion extends SpellDOTPotionBase {
+public class WhirlpoolPotion extends SpellPeriodicPotionBase {
 
     private static final int DEFAULT_PERIOD = 20;
 
