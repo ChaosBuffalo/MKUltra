@@ -93,7 +93,7 @@ public class PartyPanel extends Gui {
         GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
         mc.fontRenderer.drawString(player.getName(), panelX + 2, memberY + 2, 16777215);
         GlStateManager.popMatrix();
-        mc.renderEngine.bindTexture(new ResourceLocation("minecraft", "textures/gui/icons.png"));
+        mc.renderEngine.bindTexture(Gui.ICONS);
     }
 
 
