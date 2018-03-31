@@ -1,6 +1,9 @@
 package com.chaosbuffalo.mkultra.blocks;
 
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.core.ClassData;
+import com.chaosbuffalo.mkultra.core.IPlayerData;
+import com.chaosbuffalo.mkultra.core.PlayerDataProvider;
 import com.chaosbuffalo.mkultra.network.ModGuiHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -39,6 +42,10 @@ public class XpTableBlock extends Block {
                                     EntityPlayer player, EnumHand hand,
                                     EnumFacing side,
                                     float hitX, float hitY, float hitZ) {
+        IPlayerData pData = PlayerDataProvider.get(player);
+        if (pData == null || ClassData.getClass(pData.getClassId()) == null)
+            return true;
+
         player.openGui(MKUltra.INSTANCE, ModGuiHandler.XP_TABLE_SCREEN, player.world,
                 (int) player.posX, (int) player.posY, (int) player.posZ);
         return true;
