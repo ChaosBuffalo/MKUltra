@@ -103,10 +103,7 @@ public class ArrowStorm extends BaseAbility {
             theWorld.spawnEntity(entityarrow);
         }
 
-        ammo.shrink(1);
-        if (ammo.getCount() == 0) {
-            entity.inventory.deleteStack(ammo);
-        }
+        ItemHelper.shrinkStack(entity, ammo, 1);
 
         Vec3d lookVec = entity.getLookVec();
         MKUltra.packetHandler.sendToAllAround(

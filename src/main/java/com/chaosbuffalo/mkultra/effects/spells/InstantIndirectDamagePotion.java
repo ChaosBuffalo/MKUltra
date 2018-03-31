@@ -28,7 +28,7 @@ public class InstantIndirectDamagePotion extends SpellPotionBase {
 
     private InstantIndirectDamagePotion() {
         super(true, 123);
-        SpellPotionBase.register("effect.instant_indirect_damage", this);
+        register(MKUltra.MODID, "effect.instant_indirect_damage");
     }
 
     @Override

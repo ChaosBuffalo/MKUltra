@@ -58,7 +58,7 @@ public class XpTableScreen extends GuiScreen {
                 buttonStartY, 69, 20, "Sacrifice");
         button.enabled = pData.canLevelUp();
         this.buttonList.add(button);
-        button.drawButton(this.mc, mouseX, mouseY, 0f);
+        button.drawButton(this.mc, mouseX, mouseY, partialTicks);
         scaleFactor = 0.5f;
         GlStateManager.pushMatrix();
         GlStateManager.scale(1.0f / scaleFactor, 1.0f / scaleFactor, 1.0f / scaleFactor);

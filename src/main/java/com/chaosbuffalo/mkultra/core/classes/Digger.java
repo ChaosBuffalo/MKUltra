@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.core.classes;
 
+import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.BaseAbility;
 import com.chaosbuffalo.mkultra.core.BaseClass;
 import com.chaosbuffalo.mkultra.core.abilities.*;
@@ -25,22 +26,12 @@ public class Digger extends BaseClass {
     }
 
     public Digger() {
-        super("class.digger", "Digger");
+        super(MKUltra.MODID, "class.digger", "Digger");
     }
 
     @Override
     public List<BaseAbility> getAbilities() {
         return abilities;
-    }
-
-    @Override
-    public int getIconU() {
-        return 0;
-    }
-
-    @Override
-    public int getIconV() {
-        return 0;
     }
 
     @Override

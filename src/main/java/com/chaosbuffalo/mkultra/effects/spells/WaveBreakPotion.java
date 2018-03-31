@@ -39,9 +39,13 @@ public class WaveBreakPotion extends SpellPotionBase {
     }
 
     private WaveBreakPotion() {
-        // boolean isBadEffectIn, int liquidColorIn
-        super(false, 1665535, new ResourceLocation(MKUltra.MODID, "textures/class/abilities/wave_break.png"));
-        SpellPotionBase.register("effect.wave_break", this);
+        super(false, 1665535);
+        register(MKUltra.MODID, "effect.wave_break");
+    }
+
+    @Override
+    public ResourceLocation getIconTexture() {
+        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/wave_break.png");
     }
 
     @Override

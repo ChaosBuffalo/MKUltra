@@ -39,10 +39,7 @@ public class Pipe extends Item {
             ItemStack smokeable = findSmokeable(playerIn);
             if (!smokeable.isEmpty() && currentMana < augMax){
                 data.setMana(Math.min(augMax, currentMana + 10));
-                smokeable.shrink(1);
-                if (smokeable.getCount() == 0){
-                    playerIn.inventory.deleteStack(smokeable);
-                }
+                ItemHelper.shrinkStack(playerIn, smokeable, 1);
 
                 playerIn.getCooldownTracker().setCooldown(this, COOLDOWN);
             }

@@ -18,7 +18,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Mod.EventBusSubscriber(modid = MKUltra.MODID)
-public class EsunaPotion extends SpellDOTPotionBase {
+public class EsunaPotion extends SpellPeriodicPotionBase {
     private static final int DEFAULT_PERIOD = 30;
 
     public static final EsunaPotion INSTANCE = new EsunaPotion();
@@ -33,9 +33,13 @@ public class EsunaPotion extends SpellDOTPotionBase {
     }
 
     private EsunaPotion() {
-        // boolean isBadEffectIn, int liquidColorIn
-        super(DEFAULT_PERIOD, false, 4393423, new ResourceLocation(MKUltra.MODID, "textures/class/abilities/esuna.png"));
-        SpellPotionBase.register("effect.esuna", this);
+        super(DEFAULT_PERIOD, false, 4393423);
+        register(MKUltra.MODID, "effect.esuna");
+    }
+
+    @Override
+    public ResourceLocation getIconTexture() {
+        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/esuna.png");
     }
 
     @Override

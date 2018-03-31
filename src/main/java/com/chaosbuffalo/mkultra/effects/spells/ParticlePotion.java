@@ -33,7 +33,7 @@ public class ParticlePotion extends SpellPotionBase {
 
     protected ParticlePotion() {
         super(true, 123);
-        SpellPotionBase.register("effect.particle_potion", this);
+        register(MKUltra.MODID, "effect.particle_potion");
     }
 
     private ParticlePotion setParameters(SpellCast cast, int particleId, int motionType, boolean includeSelf,

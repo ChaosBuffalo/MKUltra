@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.core.classes;
 
+import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.BaseAbility;
 import com.chaosbuffalo.mkultra.core.BaseClass;
 import com.chaosbuffalo.mkultra.core.abilities.*;
@@ -22,7 +23,7 @@ public class NetherMage extends BaseClass {
     }
 
     public NetherMage() {
-        super("class.nether_mage", "Nether Mage");
+        super(MKUltra.MODID, "class.nether_mage", "Nether Mage");
     }
 
     @Override
@@ -34,12 +35,6 @@ public class NetherMage extends BaseClass {
     public List<BaseAbility> getAbilities() {
         return abilities;
     }
-
-    @Override
-    public int getIconU(){return 0;}
-
-    @Override
-    public int getIconV(){return 0;}
 
     @Override
     public int getHealthPerLevel(){

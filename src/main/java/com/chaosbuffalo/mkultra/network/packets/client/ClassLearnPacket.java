@@ -4,6 +4,7 @@ package com.chaosbuffalo.mkultra.network.packets.client;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerDataProvider;
 import com.chaosbuffalo.mkultra.item.AngelDust;
+import com.chaosbuffalo.mkultra.item.ItemHelper;
 import com.chaosbuffalo.mkultra.network.MessageHandler;
 import com.chaosbuffalo.mkultra.utils.ServerUtils;
 import io.netty.buffer.ByteBuf;
@@ -56,20 +57,14 @@ public class ClassLearnPacket implements IMessage {
                     if (msg.learn) {
                         data.learnClass(msg.classId);
                         ItemStack heldItem = player.getHeldItem(EnumHand.MAIN_HAND);
-                        heldItem.damageItem(1, player);
-                        if (heldItem.getItemDamage() >= heldItem.getMaxDamage()) {
-                            player.inventory.deleteStack(heldItem);
-                        }
+                        ItemHelper.damageStack(player, heldItem, 1);
                     } else {
                         // switching. need to consume item
                         ItemStack dust = player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND);
                         if (!(dust.getItem() instanceof AngelDust)) {
                             return;
                         } else {
-                            dust.shrink(1);
-                            if (dust.getCount() == 0) {
-                                player.inventory.deleteStack(dust);
-                            }
+                            ItemHelper.shrinkStack(player, dust, 1);
                         }
                     }
 

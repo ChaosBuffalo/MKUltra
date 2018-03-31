@@ -104,14 +104,14 @@ public class PlayerClassScreen extends GuiScreen {
             int panelX = abilityPanelXs[i];
             int panelY = abilityPanelYs[i];
 
-            GuiButton upButton = new GuiButton(i, xPos + panelX + 22 + 40, yPos + panelY + 10 + 3, 16, 19, "+");
+            GuiButton upButton = new GuiButton(i, xPos + panelX + 22 + 40 + 4, yPos + panelY + 10 + 3, 16, 19, "+");
             upButton.enabled = unspent > 0 && pData.getLevel() >= reqLevel && level < ability.getMaxLevel();
-            upButton.drawButton(this.mc, mouseX, mouseY, 0f);
+            upButton.drawButton(this.mc, mouseX, mouseY, partialTicks);
             this.buttonList.add(upButton);
 
-            GuiButton downButton = new GuiButton(i + GameConstants.ACTION_BAR_SIZE, xPos + panelX + 22 + 40 + 20, yPos + panelY + 10 + 3, 16, 19, "-");
+            GuiButton downButton = new GuiButton(i + GameConstants.ACTION_BAR_SIZE, xPos + panelX + 22 + 40 + 20 + 4, yPos + panelY + 10 + 3, 16, 19, "-");
             downButton.enabled = level > 0;
-            downButton.drawButton(this.mc, mouseX, mouseY, 0f);
+            downButton.drawButton(this.mc, mouseX, mouseY, partialTicks);
             this.buttonList.add(downButton);
 
             String name;

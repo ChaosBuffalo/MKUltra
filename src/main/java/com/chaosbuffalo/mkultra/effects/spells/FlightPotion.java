@@ -30,9 +30,13 @@ public class FlightPotion extends SpellPotionBase {
     }
 
     private FlightPotion() {
-        // boolean isBadEffectIn, int liquidColorIn
-        super(false, 4393423, new ResourceLocation(MKUltra.MODID, "textures/class/abilities/eagle_aspect.png"));
-        SpellPotionBase.register("effect.flight", this);
+        super(false, 4393423);
+        register(MKUltra.MODID, "effect.flight");
+    }
+
+    @Override
+    public ResourceLocation getIconTexture() {
+        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/eagle_aspect.png");
     }
 
     @Override

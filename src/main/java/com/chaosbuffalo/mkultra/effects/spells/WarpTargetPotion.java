@@ -29,7 +29,7 @@ public class WarpTargetPotion extends SpellPotionBase {
     private WarpTargetPotion() {
         // boolean isBadEffectIn, int liquidColorIn
         super(true, 4393423);
-        SpellPotionBase.register("effect.warp_target", this);
+        register(MKUltra.MODID, "effect.warp_target");
     }
 
     @Override

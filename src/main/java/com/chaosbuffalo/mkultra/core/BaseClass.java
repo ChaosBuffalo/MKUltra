@@ -1,6 +1,5 @@
 package com.chaosbuffalo.mkultra.core;
 
-import com.chaosbuffalo.mkultra.MKUltra;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
@@ -12,8 +11,8 @@ public abstract class BaseClass extends IForgeRegistryEntry.Impl<BaseClass> {
     private String className;
     private ResourceLocation classId;
 
-    protected BaseClass(String pathName, String className) {
-        this(new ResourceLocation(MKUltra.MODID, pathName), className);
+    protected BaseClass(String modId, String pathName, String className) {
+        this(new ResourceLocation(modId, pathName), className);
     }
 
     public BaseClass(ResourceLocation classId, String className) {
@@ -41,14 +40,6 @@ public abstract class BaseClass extends IForgeRegistryEntry.Impl<BaseClass> {
 
     public abstract int getManaPerLevel();
 
-    public int getIconU() {
-        return 18;
-    }
-
-    public int getIconV() {
-        return 0;
-    }
-
     public abstract Item getUnlockItem();
 
     public abstract ArmorClass getArmorClass();
@@ -62,8 +53,4 @@ public abstract class BaseClass extends IForgeRegistryEntry.Impl<BaseClass> {
     }
 
     protected abstract List<BaseAbility> getAbilities();
-
-    public String getClassIconTextures() {
-        return "textures/class/icons/class_icons.png";
-    }
 }

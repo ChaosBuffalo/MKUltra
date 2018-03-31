@@ -2,8 +2,7 @@ package com.chaosbuffalo.mkultra.effects.spells;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
-import com.chaosbuffalo.mkultra.effects.SpellDOTPotionBase;
-import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
+import com.chaosbuffalo.mkultra.effects.SpellPeriodicPotionBase;
 import com.chaosbuffalo.mkultra.effects.Targeting;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerDataProvider;
@@ -23,7 +22,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 /**
  * Created by Jacob on 3/24/2018.
  */@Mod.EventBusSubscriber(modid = MKUltra.MODID)
-public class MoonTrancePotion extends SpellDOTPotionBase {
+public class MoonTrancePotion extends SpellPeriodicPotionBase {
     private static final int DEFAULT_PERIOD = 40;
 
     public static final MoonTrancePotion INSTANCE = new MoonTrancePotion();
@@ -38,9 +37,13 @@ public class MoonTrancePotion extends SpellDOTPotionBase {
     }
 
     private MoonTrancePotion() {
-        // boolean isBadEffectIn, int liquidColorIn
-        super(DEFAULT_PERIOD, false, 4393423, new ResourceLocation(MKUltra.MODID, "textures/class/abilities/moon_trance.png"));
-        SpellPotionBase.register("effect.moon_trance", this);
+        super(DEFAULT_PERIOD, false, 4393423);
+        register(MKUltra.MODID, "effect.moon_trance");
+    }
+
+    @Override
+    public ResourceLocation getIconTexture() {
+        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/moon_trance.png");
     }
 
     @Override

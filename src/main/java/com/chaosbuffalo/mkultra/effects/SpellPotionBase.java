@@ -1,6 +1,5 @@
 package com.chaosbuffalo.mkultra.effects;
 
-import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.log.Log;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -13,48 +12,17 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
+
 public abstract class SpellPotionBase extends Potion {
 
-    private final ResourceLocation iconTexture;
-
-    public static void register(String name, Potion potion) {
-        potion.setRegistryName(MKUltra.MODID, name);
-        potion.setPotionName(name);
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void renderInventoryEffect(int x, int y, PotionEffect effect, Minecraft mc)
-    {
-        if (mc.currentScreen != null && iconTexture != null)
-        {
-            mc.getTextureManager().bindTexture(iconTexture);
-            Gui.drawModalRectWithCustomSizedTexture(x + 6, y + 7, 0, 0, 16, 16, 16, 16);
-        }
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void renderHUDEffect(int x, int y, PotionEffect effect, Minecraft mc, float alpha)
-    {
-        if (iconTexture != null){
-            mc.getTextureManager().bindTexture(iconTexture);
-            Gui.drawModalRectWithCustomSizedTexture(x + 4, y + 4, 0, 0, 16, 16, 16, 16);
-        }
-
+    public void register(String modId, String name) {
+        setRegistryName(modId, name);
+        setPotionName(name);
     }
 
     protected SpellPotionBase(boolean isBadEffectIn, int liquidColorIn) {
         super(isBadEffectIn, liquidColorIn);
-        iconTexture = null;
-        if (!isBadEffectIn) {
-            setBeneficial();
-        }
-    }
-
-    protected SpellPotionBase(boolean isBadEffectIn, int liquidColorIn, ResourceLocation iconTextureIn) {
-        super(isBadEffectIn, liquidColorIn);
-        this.iconTexture = iconTextureIn;
         if (!isBadEffectIn) {
             setBeneficial();
         }
@@ -83,7 +51,7 @@ public abstract class SpellPotionBase extends Potion {
     }
 
     @Override
-    public void affectEntity(Entity applier, Entity caster, EntityLivingBase target, int amplifier, double health) {
+    public void affectEntity(Entity applier, Entity caster, @Nonnull EntityLivingBase target, int amplifier, double health) {
 
         SpellCast meta = SpellCast.get(target, this);
         if (meta == null) {
@@ -98,7 +66,7 @@ public abstract class SpellPotionBase extends Potion {
     }
 
     @Override
-    public void performEffect(EntityLivingBase target, int amplifier) {
+    public void performEffect(@Nonnull EntityLivingBase target, int amplifier) {
 
         SpellCast meta = SpellCast.get(target, this);
         if (meta == null) {
@@ -113,7 +81,7 @@ public abstract class SpellPotionBase extends Potion {
     }
 
     @Override
-    public void applyAttributesModifiersToEntity(EntityLivingBase target, AbstractAttributeMap attributes, int amplifier) {
+    public void applyAttributesModifiersToEntity(EntityLivingBase target, @Nonnull AbstractAttributeMap attributes, int amplifier) {
         SpellCast cast = SpellCast.get(target, this);
         if (cast != null) {
             onPotionAdd(cast, target, attributes, amplifier);
@@ -124,7 +92,7 @@ public abstract class SpellPotionBase extends Potion {
     }
 
     @Override
-    public void removeAttributesModifiersFromEntity(EntityLivingBase target, AbstractAttributeMap attributes, int amplifier) {
+    public void removeAttributesModifiersFromEntity(EntityLivingBase target, @Nonnull AbstractAttributeMap attributes, int amplifier) {
         SpellCast cast = SpellCast.get(target, this);
         if (cast != null) {
             onPotionRemove(cast, target, attributes, amplifier);
@@ -177,5 +145,31 @@ public abstract class SpellPotionBase extends Potion {
         hash = 31 * hash + getLiquidColor();
         hash = 31 * hash + (isBadEffect() ? 1 : 0);
         return hash;
+    }
+
+    public ResourceLocation getIconTexture() {
+        return null;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void renderInventoryEffect(int x, int y, PotionEffect effect, Minecraft mc)
+    {
+        if (mc.currentScreen != null && getIconTexture() != null)
+        {
+            mc.getTextureManager().bindTexture(getIconTexture());
+            Gui.drawModalRectWithCustomSizedTexture(x + 6, y + 7, 0, 0, 16, 16, 16, 16);
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void renderHUDEffect(int x, int y, PotionEffect effect, Minecraft mc, float alpha)
+    {
+        if (getIconTexture() != null){
+            mc.getTextureManager().bindTexture(getIconTexture());
+            Gui.drawModalRectWithCustomSizedTexture(x + 4, y + 4, 0, 0, 16, 16, 16, 16);
+        }
+
     }
 }

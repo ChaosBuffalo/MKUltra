@@ -7,7 +7,6 @@ import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.Targeting;
-import com.chaosbuffalo.mkultra.effects.spells.MoonTrancePotion;
 import com.chaosbuffalo.mkultra.effects.spells.ParticlePotion;
 import com.chaosbuffalo.mkultra.effects.spells.UnderwayPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;

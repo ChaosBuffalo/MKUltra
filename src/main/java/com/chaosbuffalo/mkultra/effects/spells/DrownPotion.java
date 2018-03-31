@@ -2,8 +2,7 @@ package com.chaosbuffalo.mkultra.effects.spells;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
-import com.chaosbuffalo.mkultra.effects.SpellDOTPotionBase;
-import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
+import com.chaosbuffalo.mkultra.effects.SpellPeriodicPotionBase;
 import com.chaosbuffalo.mkultra.effects.Targeting;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
@@ -18,7 +17,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Mod.EventBusSubscriber(modid = MKUltra.MODID)
-public class DrownPotion extends SpellDOTPotionBase {
+public class DrownPotion extends SpellPeriodicPotionBase {
     private static final int DEFAULT_PERIOD = 10;
 
     public static final DrownPotion INSTANCE = new DrownPotion();
@@ -33,9 +32,13 @@ public class DrownPotion extends SpellDOTPotionBase {
     }
 
     private DrownPotion() {
-        // boolean isBadEffectIn, int liquidColorIn
-        super(DEFAULT_PERIOD, true, 4393423, new ResourceLocation(MKUltra.MODID, "textures/class/abilities/drown.png"));
-        SpellPotionBase.register("effect.drown", this);
+        super(DEFAULT_PERIOD, true, 4393423);
+        register(MKUltra.MODID, "effect.drown");
+    }
+
+    @Override
+    public ResourceLocation getIconTexture() {
+        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/drown.png");
     }
 
     @Override

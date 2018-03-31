@@ -34,9 +34,13 @@ public class FlameBladePotion extends SpellPotionBase {
     }
 
     private FlameBladePotion() {
-        // boolean isBadEffectIn, int liquidColorIn
-        super(false, 4393423, new ResourceLocation(MKUltra.MODID, "textures/class/abilities/flameblade.png"));
-        SpellPotionBase.register("effect.flame_blade", this);
+        super(false, 4393423);
+        register(MKUltra.MODID, "effect.flame_blade");
+    }
+
+    @Override
+    public ResourceLocation getIconTexture() {
+        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/flameblade.png");
     }
 
     @Override

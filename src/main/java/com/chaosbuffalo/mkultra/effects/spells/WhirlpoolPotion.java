@@ -2,8 +2,7 @@ package com.chaosbuffalo.mkultra.effects.spells;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
-import com.chaosbuffalo.mkultra.effects.SpellDOTPotionBase;
-import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
+import com.chaosbuffalo.mkultra.effects.SpellPeriodicPotionBase;
 import com.chaosbuffalo.mkultra.effects.Targeting;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
@@ -13,7 +12,6 @@ import net.minecraft.potion.Potion;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -22,7 +20,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
  * Created by Jacob on 3/25/2018.
  */
 @Mod.EventBusSubscriber(modid = MKUltra.MODID)
-public class WhirlpoolPotion extends SpellDOTPotionBase {
+public class WhirlpoolPotion extends SpellPeriodicPotionBase {
 
     private static final int DEFAULT_PERIOD = 20;
 
@@ -38,9 +36,13 @@ public class WhirlpoolPotion extends SpellDOTPotionBase {
     }
 
     private WhirlpoolPotion() {
-        // boolean isBadEffectIn, int liquidColorIn
-        super(DEFAULT_PERIOD, true, 1665535, new ResourceLocation(MKUltra.MODID, "textures/class/abilities/whirlpool.png"));
-        SpellPotionBase.register("effect.whirlpool", this);
+        super(DEFAULT_PERIOD, true, 1665535);
+        register(MKUltra.MODID, "effect.whirlpool");
+    }
+
+    @Override
+    public ResourceLocation getIconTexture() {
+        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/whirlpool.png");
     }
 
     @Override

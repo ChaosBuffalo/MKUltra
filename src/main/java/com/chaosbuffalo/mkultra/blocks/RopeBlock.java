@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.blocks;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.init.ModBlocks;
+import com.chaosbuffalo.mkultra.item.ItemHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
@@ -145,10 +146,7 @@ public class RopeBlock extends Block
                 if (worldIn.getBlockState(pos.down(i)).getBlock().equals(Blocks.AIR)){
                     worldIn.setBlockState(pos.down(i), getDefaultState());
 
-                    heldItem.shrink(1);
-                    if (heldItem.getCount() == 0) {
-                        playerIn.inventory.deleteStack(heldItem);
-                    }
+                    ItemHelper.shrinkStack(playerIn, heldItem, 1);
                 }
             }
         }

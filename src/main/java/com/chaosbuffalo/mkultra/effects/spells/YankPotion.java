@@ -18,7 +18,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class YankPotion extends SpellPotionBase {
 
-    public static YankPotion INSTANCE = new YankPotion();
+    public static final YankPotion INSTANCE = new YankPotion();
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {
@@ -36,7 +36,7 @@ public class YankPotion extends SpellPotionBase {
     private YankPotion() {
         // boolean isBadEffectIn, int liquidColorIn
         super(true, 4393423);
-        SpellPotionBase.register("effect.yank", this);
+        register(MKUltra.MODID, "effect.yank");
     }
 
     @Override

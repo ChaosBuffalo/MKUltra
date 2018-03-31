@@ -34,7 +34,7 @@ public class PoisonArrowPotion extends SpellPotionBase {
     private PoisonArrowPotion() {
         // boolean isBadEffectIn, int liquidColorIn
         super(true, 4393423);
-        SpellPotionBase.register("effect.poison_arrow", this);
+        register(MKUltra.MODID, "effect.poison_arrow");
     }
 
     @Override

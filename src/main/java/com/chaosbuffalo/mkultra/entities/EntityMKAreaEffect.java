@@ -42,9 +42,9 @@ public class EntityMKAreaEffect extends Entity {
     private UUID ownerUniqueId;
 
     private static class EffectEntry {
-        PotionEffect effect;
-        Targeting.TargetType targetType;
-        boolean excludeCaster;
+        final PotionEffect effect;
+        final Targeting.TargetType targetType;
+        final boolean excludeCaster;
         SpellCast cast;
 
         EffectEntry(PotionEffect effect, Targeting.TargetType targetType, boolean excludeCaster) {
@@ -54,15 +54,13 @@ public class EntityMKAreaEffect extends Entity {
         }
 
         EffectEntry(SpellCast cast, PotionEffect effect, Targeting.TargetType targetType, boolean excludeCaster) {
+            this(effect, targetType, excludeCaster);
             this.cast = cast;
-            this.effect = effect;
-            this.targetType = targetType;
-            this.excludeCaster = excludeCaster;
         }
     }
 
-    static final float DEFAULT_RADIUS = 3.0f;
-    static final float DEFAULT_HEIGHT = 0.5f;
+    private static final float DEFAULT_RADIUS = 3.0f;
+    private static final float DEFAULT_HEIGHT = 0.5f;
 
     public EntityMKAreaEffect(World worldIn) {
         super(worldIn);

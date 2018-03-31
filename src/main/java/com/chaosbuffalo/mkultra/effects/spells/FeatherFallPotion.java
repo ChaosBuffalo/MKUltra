@@ -27,9 +27,13 @@ public class FeatherFallPotion extends SpellPotionBase {
     }
 
     private FeatherFallPotion() {
-        // boolean isBadEffectIn, int liquidColorIn
-        super(false, 4393423, new ResourceLocation(MKUltra.MODID, "textures/class/abilities/featherfall.png"));
-        SpellPotionBase.register("effect.featherfall", this);
+        super(false, 4393423);
+        register(MKUltra.MODID, "effect.featherfall");
+    }
+
+    @Override
+    public ResourceLocation getIconTexture() {
+        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/featherfall.png");
     }
 
     @Override

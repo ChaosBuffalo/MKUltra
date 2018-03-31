@@ -34,7 +34,7 @@ public class ClericHealPotion extends SpellPotionBase {
     private ClericHealPotion() {
         // boolean isBadEffectIn, int liquidColorIn
         super(false, 4393481);
-        SpellPotionBase.register("effect.cleric_heal", this);
+        register(MKUltra.MODID, "effect.cleric_heal");
     }
 
     @Override
