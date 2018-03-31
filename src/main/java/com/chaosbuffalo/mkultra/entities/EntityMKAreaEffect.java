@@ -15,19 +15,22 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+// This class exists mostly because EntityAreaEffectCloud has all its members marked as private and many have no getters
 public class EntityMKAreaEffect extends Entity {
     private static final DataParameter<Float> RADIUS = EntityDataManager.createKey(EntityMKAreaEffect.class, DataSerializers.FLOAT);
     private static final DataParameter<Integer> COLOR = EntityDataManager.createKey(EntityMKAreaEffect.class, DataSerializers.VARINT);
-    private static final DataParameter<Boolean> IGNORE_RADIUS = EntityDataManager.createKey(EntityMKAreaEffect.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> SINGLE_POINT = EntityDataManager.createKey(EntityMKAreaEffect.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> PARTICLE = EntityDataManager.createKey(EntityMKAreaEffect.class, DataSerializers.VARINT);
     private final List<EffectEntry> effects;
     private final Map<Entity, Integer> reapplicationDelayMap;
@@ -83,7 +86,7 @@ public class EntityMKAreaEffect extends Entity {
     protected void entityInit() {
         this.getDataManager().register(COLOR, 0);
         this.getDataManager().register(RADIUS, 0.5F);
-        this.getDataManager().register(IGNORE_RADIUS, false);
+        this.getDataManager().register(SINGLE_POINT, false);
         this.getDataManager().register(PARTICLE, EnumParticleTypes.SPELL_MOB.getParticleID());
     }
 
@@ -128,12 +131,12 @@ public class EntityMKAreaEffect extends Entity {
         this.getDataManager().set(PARTICLE, particleIn.getParticleID());
     }
 
-    protected void setIgnoreRadius(boolean ignoreRadius) {
-        this.getDataManager().set(IGNORE_RADIUS, ignoreRadius);
+    protected void setIsSinglePoint(boolean ignoreRadius) {
+        this.getDataManager().set(SINGLE_POINT, ignoreRadius);
     }
 
-    public boolean shouldIgnoreRadius() {
-        return this.getDataManager().get(IGNORE_RADIUS);
+    public boolean isSinglePoint() {
+        return this.getDataManager().get(SINGLE_POINT);
     }
 
     public int getDuration() {
@@ -148,11 +151,11 @@ public class EntityMKAreaEffect extends Entity {
     public void onUpdate() {
         super.onUpdate();
 
-        boolean ignoreRadius = this.shouldIgnoreRadius();
+        boolean singlePoint = this.isSinglePoint();
         float radius = this.getRadius();
 
         if (this.world.isRemote) {
-            clientUpdate(ignoreRadius, radius);
+            clientUpdate(singlePoint, radius);
         } else {
             if (this.ticksExisted >= this.waitTime + this.duration) {
                 this.setDead();
@@ -161,8 +164,8 @@ public class EntityMKAreaEffect extends Entity {
 
             boolean mustWait = this.ticksExisted < this.waitTime;
 
-            if (ignoreRadius != mustWait) {
-                this.setIgnoreRadius(mustWait);
+            if (singlePoint != mustWait) {
+                this.setIsSinglePoint(mustWait);
             }
 
             if (mustWait) {
@@ -180,103 +183,113 @@ public class EntityMKAreaEffect extends Entity {
                 this.setRadius(radius);
             }
 
-            if (this.ticksExisted % 5 == 0) {
+            if (this.ticksExisted % 5 != 0) {
+                return;
+            }
 
-                this.reapplicationDelayMap.entrySet().removeIf(entry -> this.ticksExisted >= entry.getValue());
+            this.reapplicationDelayMap.entrySet().removeIf(entry -> this.ticksExisted >= entry.getValue());
 
-                List<EffectEntry> potions = Lists.newArrayList();
-                potions.addAll(this.effects);
+            List<EffectEntry> potions = Lists.newArrayList();
+            potions.addAll(this.effects);
 
-                if (potions.isEmpty()) {
-                    this.reapplicationDelayMap.clear();
-                } else {
-                    List<EntityLivingBase> list = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox());
+            if (potions.isEmpty()) {
+                this.reapplicationDelayMap.clear();
+            } else {
+                List<EntityLivingBase> list = this.world.getEntitiesWithinAABB(EntityLivingBase.class,
+                        this.getEntityBoundingBox(),
+                        e -> e != null && EntitySelectors.NOT_SPECTATING.apply(e) && e.isEntityAlive() &&
+                                !reapplicationDelayMap.containsKey(e) && e.canBeHitWithPotion());
+                if (list.isEmpty()) {
+                    return;
+                }
 
-                    if (!list.isEmpty()) {
-                        for (EntityLivingBase target : list) {
-                            if (!this.reapplicationDelayMap.containsKey(target) && target.canBeHitWithPotion()) {
-                                double d0 = target.posX - this.posX;
-                                double d1 = target.posZ - this.posZ;
-                                double d2 = d0 * d0 + d1 * d1;
+                for (EntityLivingBase target : list) {
 
-                                if (d2 <= (double) (radius * radius)) {
-                                    this.reapplicationDelayMap.put(target, this.ticksExisted + this.reapplicationDelay);
+                    double d0 = target.posX - this.posX;
+                    double d1 = target.posZ - this.posZ;
+                    double d2 = d0 * d0 + d1 * d1;
 
-                                    for (EffectEntry spellEffect : potions) {
+                    if (d2 > (double) (radius * radius)) {
+                        continue;
+                    }
 
-                                        PotionEffect eff = spellEffect.effect;
+                    applyEffectsToTarget(potions, target);
 
-                                        boolean validTarget;
-                                        SpellPotionBase spBase = eff.getPotion() instanceof SpellPotionBase ? (SpellPotionBase)eff.getPotion() : null;
-                                        if (spBase != null) {
-                                            validTarget = spBase.isValidTarget(spellEffect.targetType, getOwner(), target, spellEffect.excludeCaster);
-                                        }
-                                        else {
-                                            validTarget = Targeting.isValidTarget(spellEffect.targetType, getOwner(), target, spellEffect.excludeCaster);
-                                        }
+                    if (this.radiusOnUse != 0.0F) {
+                        radius += this.radiusOnUse;
 
-                                        if (!validTarget) {
-                                            continue;
-                                        }
+                        if (radius < 0.5F) {
+                            this.setDead();
+                            return;
+                        }
 
-                                        if (eff.getPotion().isInstant()) {
+                        this.setRadius(radius);
+                    }
 
-                                            if (spBase != null) {
+                    if (this.durationOnUse != 0) {
+                        this.duration += this.durationOnUse;
 
-                                                SpellCast cast = spellEffect.cast;
-                                                if (cast == null) {
-                                                    Log.warn("MKAREA instant null cast! " + spellEffect.effect.getPotion());
-                                                    continue;
-                                                }
-
-                                                // We can skip affectEntity and go directly to the effect because we
-                                                // have already ensured the target is valid.
-                                                spBase.doEffect(this, getOwner(), target, eff.getAmplifier(), cast);
-                                            }
-                                            else {
-                                                eff.getPotion().affectEntity(this, this.getOwner(), target, eff.getAmplifier(), 0.5D);
-                                            }
-                                        } else {
-
-                                            if (spBase != null) {
-                                                SpellCast cast = spellEffect.cast;
-                                                if (cast == null) {
-                                                    Log.warn("MKAREA periodic null cast! " + spellEffect.effect);
-                                                    continue;
-                                                }
-
-                                                // The cast given to MKAreaEffect has no target, so we need to register
-                                                SpellCast.registerTarget(cast, target);
-                                            }
-
-                                            target.addPotionEffect(new PotionEffect(eff));
-                                        }
-                                    }
-
-                                    if (this.radiusOnUse != 0.0F) {
-                                        radius += this.radiusOnUse;
-
-                                        if (radius < 0.5F) {
-                                            this.setDead();
-                                            return;
-                                        }
-
-                                        this.setRadius(radius);
-                                    }
-
-                                    if (this.durationOnUse != 0) {
-                                        this.duration += this.durationOnUse;
-
-                                        if (this.duration <= 0) {
-                                            this.setDead();
-                                            return;
-                                        }
-                                    }
-                                }
-                            }
+                        if (this.duration <= 0) {
+                            this.setDead();
+                            return;
                         }
                     }
                 }
+            }
+        }
+    }
+
+    private void applyEffectsToTarget(List<EffectEntry> potions, EntityLivingBase target) {
+        this.reapplicationDelayMap.put(target, this.ticksExisted + this.reapplicationDelay);
+
+        for (EffectEntry spellEffect : potions) {
+
+            PotionEffect eff = spellEffect.effect;
+
+            boolean validTarget;
+            SpellPotionBase spBase = eff.getPotion() instanceof SpellPotionBase ? (SpellPotionBase)eff.getPotion() : null;
+            if (spBase != null) {
+                validTarget = spBase.isValidTarget(spellEffect.targetType, getOwner(), target, spellEffect.excludeCaster);
+            }
+            else {
+                validTarget = Targeting.isValidTarget(spellEffect.targetType, getOwner(), target, spellEffect.excludeCaster);
+            }
+
+            if (!validTarget) {
+                continue;
+            }
+
+            if (eff.getPotion().isInstant()) {
+
+                if (spBase != null) {
+
+                    SpellCast cast = spellEffect.cast;
+                    if (cast == null) {
+                        Log.warn("MKAREA instant null cast! " + spellEffect.effect.getPotion());
+                        continue;
+                    }
+
+                    // We can skip affectEntity and go directly to the effect because we
+                    // have already ensured the target is valid.
+                    spBase.doEffect(this, getOwner(), target, eff.getAmplifier(), cast);
+                }
+                else {
+                    eff.getPotion().affectEntity(this, this.getOwner(), target, eff.getAmplifier(), 0.5D);
+                }
+            } else {
+
+                if (spBase != null) {
+                    SpellCast cast = spellEffect.cast;
+                    if (cast == null) {
+                        Log.warn("MKAREA periodic null cast! " + spellEffect.effect);
+                        continue;
+                    }
+
+                    // The cast given to MKAreaEffect has no target, so we need to register
+                    SpellCast.registerTarget(cast, target);
+                }
+
+                target.addPotionEffect(new PotionEffect(eff));
             }
         }
     }
@@ -315,7 +328,7 @@ public class EntityMKAreaEffect extends Entity {
     }
 
     @Override
-    protected void readEntityFromNBT(NBTTagCompound tagCompund) {
+    protected void readEntityFromNBT(@Nonnull NBTTagCompound tagCompund) {
         this.ticksExisted = tagCompund.getInteger("Age");
         this.duration = tagCompund.getInteger("Duration");
         this.waitTime = tagCompund.getInteger("WaitTime");
@@ -357,7 +370,7 @@ public class EntityMKAreaEffect extends Entity {
     }
 
     @Override
-    protected void writeEntityToNBT(NBTTagCompound tagCompound) {
+    protected void writeEntityToNBT(@Nonnull NBTTagCompound tagCompound) {
         tagCompound.setInteger("Age", this.ticksExisted);
         tagCompound.setInteger("Duration", this.duration);
         tagCompound.setInteger("WaitTime", this.waitTime);
@@ -401,18 +414,19 @@ public class EntityMKAreaEffect extends Entity {
         super.notifyDataManagerChange(key);
     }
 
+    @Nonnull
     @Override
     public EnumPushReaction getPushReaction() {
         return EnumPushReaction.IGNORE;
     }
 
-    private void clientUpdate(boolean ignoreRadius, float radius) {
+    private void clientUpdate(boolean singlePoint, float radius) {
         if (ticksExisted % 5 != 0) {
             return;
         }
         EnumParticleTypes enumparticletypes = this.getParticle();
 
-        if (ignoreRadius) {
+        if (singlePoint) {
             if (this.rand.nextBoolean()) {
                 int[] aint = new int[enumparticletypes.getArgumentCount()];
 
