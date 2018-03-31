@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.core;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.item.ItemHelper;
 import com.chaosbuffalo.mkultra.item.ManaRegenIdol;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.network.packets.client.PlayerSyncRequestPacket;
@@ -420,17 +421,11 @@ public class PlayerData implements IPlayerData {
             return;
         ItemStack heldItem = this.player.getHeldItem(EnumHand.OFF_HAND);
         if (heldItem.getItem() instanceof ManaRegenIdol){
-            heldItem.damageItem(1, this.player);
-            if (heldItem.getItemDamage() >= heldItem.getMaxDamage()){
-                this.player.inventory.deleteStack(heldItem);
-            }
+            ItemHelper.damageStack(player, heldItem, 1);
         }
         ItemStack mainHandItem = this.player.getHeldItem(EnumHand.MAIN_HAND);
         if (mainHandItem.getItem() instanceof  ManaRegenIdol){
-            mainHandItem.damageItem(1, this.player);
-            if (mainHandItem.getItemDamage() >= mainHandItem.getMaxDamage()){
-                this.player.inventory.deleteStack(mainHandItem);
-            }
+            ItemHelper.damageStack(player, mainHandItem, 1);
         }
         int manaCost = ability.getManaCost(info.level);
         manaCost = applyManaCostReduction(manaCost);

@@ -73,4 +73,18 @@ public class ItemHelper {
         }
         player.setItemStackToSlot(slot, ItemStack.EMPTY);
     }
+
+    public static void damageStack(EntityPlayer player, ItemStack stack, int amount) {
+        stack.damageItem(amount, player);
+        if (stack.getItemDamage() >= stack.getMaxDamage()) {
+            player.inventory.deleteStack(stack);
+        }
+    }
+
+    public static void shrinkStack(EntityPlayer player, ItemStack stack, int amount) {
+        stack.shrink(amount);
+        if (stack.getCount() == 0) {
+            player.inventory.deleteStack(stack);
+        }
+    }
 }
