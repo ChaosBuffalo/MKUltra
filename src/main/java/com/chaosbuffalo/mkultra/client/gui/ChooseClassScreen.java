@@ -34,14 +34,14 @@ public class ChooseClassScreen extends GuiScreen{
         int width = scaledresolution.getScaledWidth();
         int height = scaledresolution.getScaledHeight();
         int panelWidth = 250;
-        int panelHeight = 170;
+        int panelHeight = 166;
         int xPos = width / 2 - panelWidth / 2;
         int yPos = height / 2 - panelHeight / 2;
         ResourceLocation loc = new ResourceLocation(MKUltra.MODID, "textures/gui/demo_background.png");
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.renderEngine.bindTexture(loc);
         GL11.glDisable(GL11.GL_LIGHTING);
-        this.drawTexturedModalRect(xPos, yPos, 0, 0, 250, 170);
+        this.drawTexturedModalRect(xPos, yPos, 0, 0, panelWidth, panelHeight);
         int titleHeight = 15;
         this.fontRenderer.drawString("Choose Your Class: ", xPos + 15, yPos + 4, 8129636);
 
