@@ -48,10 +48,10 @@ public class PartyInviteScreen extends GuiScreen {
         this.buttonList.clear();
 
         GuiButton yesButton = new GuiButton(YES_RESPONSE, buttonStartX, buttonStartY, buttonWidth, 20, "Yes");
-        yesButton.drawButton(this.mc, mouseX, mouseY, 0f);
+        yesButton.drawButton(this.mc, mouseX, mouseY, partialTicks);
         GuiButton noButton = new GuiButton(NO_RESPONSE, buttonStartX + buttonWidth + buttonSpacing,
                 buttonStartY, buttonWidth, 20, "No");
-        noButton.drawButton(this.mc, mouseX, mouseY, 0f);
+        noButton.drawButton(this.mc, mouseX, mouseY, partialTicks);
         this.buttonList.add(yesButton);
         this.buttonList.add(noButton);
     }

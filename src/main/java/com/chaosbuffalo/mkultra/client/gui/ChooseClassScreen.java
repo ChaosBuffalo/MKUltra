@@ -91,7 +91,7 @@ public class ChooseClassScreen extends GuiScreen{
                 // Only allow selecting classes other than the current
                 button.enabled = classId.compareTo(data.getClassId()) != 0;
             }
-            button.drawButton(this.mc, mouseX, mouseY, 0f);
+            button.drawButton(this.mc, mouseX, mouseY, partialTicks);
 
             this.buttonList.add(button);
         }
