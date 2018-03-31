@@ -90,27 +90,33 @@ public class MassDrown extends BaseAbility {
 
         EntityLivingBase targetEntity = getSingleLivingTarget(entity, getDistance(level));
         if (targetEntity != null) {
-            PotionEffect drownPotion = targetEntity.getActivePotionEffect(DrownPotion.INSTANCE);
-            if (drownPotion != null) {
-                pData.startAbility(this);
-                SpellCast drown = DrownPotion.Create(entity);
 
-                AreaEffectBuilder.Create(entity, targetEntity)
-                        .instant()
-                        .spellCast(drown, 20 * 3, level, getTargetType())
-                        .color(65480).radius(5.0f + 2.0f * level, true)
-                        .spawn();
-                Vec3d lookVec = entity.getLookVec();
-                MKUltra.packetHandler.sendToAllAround(
-                        new ParticleEffectSpawnPacket(
-                                EnumParticleTypes.WATER_DROP.getParticleID(),
-                                ParticleEffects.DIRECTED_SPOUT, 60, 10,
-                                targetEntity.posX, targetEntity.posY + 1.0,
-                                targetEntity.posZ, 1.0, 1.0, 1.0, 1.0,
-                                lookVec),
-                        entity.dimension, targetEntity.posX,
-                        targetEntity.posY, targetEntity.posZ, 50.0f);
+            // If the target does not have Drown already, this is an AoE of level 1 drown.
+            // If the target does have Drown then this is an AoE Drown equal to the level of MassDrown
+            int effectiveLevel = 1;
+            if (targetEntity.isPotionActive(DrownPotion.INSTANCE)) {
+                effectiveLevel = level;
             }
+
+            pData.startAbility(this);
+            SpellCast drown = DrownPotion.Create(entity);
+
+            AreaEffectBuilder.Create(entity, targetEntity)
+                    .instant()
+                    .spellCast(drown, 20 * 3, effectiveLevel, getTargetType())
+                    .color(65480).radius(5.0f + 2.0f * effectiveLevel, true)
+                    .spawn();
+            Vec3d lookVec = entity.getLookVec();
+            MKUltra.packetHandler.sendToAllAround(
+                    new ParticleEffectSpawnPacket(
+                            EnumParticleTypes.WATER_DROP.getParticleID(),
+                            ParticleEffects.DIRECTED_SPOUT, 60, 10,
+                            targetEntity.posX, targetEntity.posY + 1.0,
+                            targetEntity.posZ, 1.0, 1.0, 1.0, 1.0,
+                            lookVec),
+                    entity.dimension, targetEntity.posX,
+                    targetEntity.posY, targetEntity.posZ, 50.0f);
+
         }
     }
 }
