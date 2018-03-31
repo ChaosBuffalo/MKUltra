@@ -30,7 +30,6 @@ public class Integrations {
                 .register(Materials.getArmorMaterialFor(Materials.getMaterialByName(MaterialNames.BISMUTH)));
 
         ArmorClass.MEDIUM
-                .register(Materials.getArmorMaterialFor(Materials.getMaterialByName(MaterialNames.TIN)))
                 .register(Materials.getArmorMaterialFor(Materials.getMaterialByName(MaterialNames.COPPER)))
                 .register(Materials.getArmorMaterialFor(Materials.getMaterialByName(MaterialNames.BRASS)))
                 .register(Materials.getArmorMaterialFor(Materials.getMaterialByName(MaterialNames.SILVER)))

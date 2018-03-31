@@ -34,7 +34,7 @@ public class VampiricRevere extends BaseToggleAbility {
     @Override
     public String getAbilityDescription() {
         return "Toggle ability that gives you lifesteal on hit, but drains 1 mana" +
-                "everytime you attack.";
+                "every time you attack.";
     }
 
     @Override

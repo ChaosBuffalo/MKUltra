@@ -38,7 +38,7 @@ public class Ember extends BaseAbility {
 
     @Override
     public String getAbilityDescription() {
-        return "Damages your target and sets them alight";
+        return "Damages your target and sets them ablaze";
     }
 
     @Override

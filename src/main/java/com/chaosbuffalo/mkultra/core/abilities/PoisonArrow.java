@@ -36,7 +36,7 @@ public class PoisonArrow extends BaseAbility {
 
     @Override
     public String getAbilityDescription() {
-        return "Launches an arrow that poisons an enemy, slowing and poisoning them." +
+        return "Launches a magic arrow that poisons and slows an enemy. " +
                 "At level 2 the effects are spread to nearby enemies.";
     }
 

@@ -30,7 +30,7 @@ public class Yank extends BaseAbility {
 
     @Override
     public String getAbilityDescription() {
-        return "Pulls an enemy towards you.";
+        return "Pulls an enemy or ally towards you.";
     }
 
     @Override
@@ -40,7 +40,7 @@ public class Yank extends BaseAbility {
 
     @Override
     public String getAbilityType() {
-        return "AOE";
+        return "Target";
     }
 
     @Override

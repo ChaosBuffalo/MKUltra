@@ -29,7 +29,7 @@ public class PierceTheHeavens extends BaseAbility {
 
     @Override
     public String getAbilityDescription() {
-        return "Creates some ladders so that you make escape the doldrums.";
+        return "Creates some ladders so that you make an escape from the doldrums.";
     }
 
     @Override
