@@ -81,22 +81,39 @@ public class PotionEventHandler {
             }
 
             ArrayList<EntityPlayer> teammates = PartyManager.getPlayersOnTeam((EntityPlayer)livingTarget);
+            ArrayList<EntityPlayer> damageAbsorbers = new ArrayList<>();
             for (EntityPlayer teammate : teammates){
                 if (teammate == null){
                     continue;
                 }
                 if (teammate.isPotionActive(WaveBreakPotion.INSTANCE)){
-                    float amount = event.getAmount();
-                    event.setAmount(amount * .2f);
-                    System.out.println(String.format("Setting damage to self %s, %f", livingTarget.getName(), amount * .2f));
-                    System.out.println(String.format("Setting damage to teammate %s, %f", teammate.getName(), amount*.8f));
-                    teammate.attackEntityFrom(source, amount *.8f);
+                    IPlayerData teammatedata = PlayerDataProvider.get(teammate);
+                    if (teammatedata == null){
+                        continue;
+                    }
+                    if (teammatedata.getMana() > 0) {
+                        damageAbsorbers.add(teammate);
+                        teammatedata.setMana(teammatedata.getMana() - 1);
+                    } else {
+                        teammate.removePotionEffect(WaveBreakPotion.INSTANCE);
+                    }
+
                 }
             }
-
-            float newDamage = targetData.applyMagicArmor(event.getAmount());
-            Log.debug("Magic armor reducing damage from %f to %f", event.getAmount(), newDamage);
+            int absorbCount = damageAbsorbers.size();
+            float newDamage = event.getAmount()/absorbCount;
+            if (absorbCount > 0){
+                for (EntityPlayer absorber : damageAbsorbers){
+                    absorber.attackEntityFrom(source, newDamage);
+                }
+            }
             event.setAmount(newDamage);
+            if (event.getSource().isMagicDamage()){
+                newDamage = targetData.applyMagicArmor(event.getAmount());
+                Log.debug("Magic armor reducing damage from %f to %f", event.getAmount(), newDamage);
+                event.setAmount(newDamage);
+            }
+            
         }
 
         // Anyone is the victim

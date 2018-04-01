@@ -75,7 +75,7 @@ public class Yank extends BaseAbility {
 
     @Override
     public float getDistance(int currentLevel) {
-        return 10.0f;
+        return 5.0f + 2 * 5.0f;
     }
 
     @Override
