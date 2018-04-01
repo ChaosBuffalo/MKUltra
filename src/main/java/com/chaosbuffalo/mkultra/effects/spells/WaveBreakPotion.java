@@ -24,9 +24,9 @@ import java.util.UUID;
 public class WaveBreakPotion extends SpellPotionBase {
     public static final UUID MODIFIER_ID = UUID.fromString("771f29b8-c161-4b80-897f-724f84e08ae7");
     public static final WaveBreakPotion INSTANCE = (WaveBreakPotion)(new WaveBreakPotion()
-            .registerPotionAttributeModifier(SharedMonsterAttributes.MAX_HEALTH, MODIFIER_ID.toString(), 10, PlayerAttributes.OP_INCREMENT)
-            .registerPotionAttributeModifier(SharedMonsterAttributes.ARMOR, MODIFIER_ID.toString(), 5, PlayerAttributes.OP_INCREMENT)
-            .registerPotionAttributeModifier(PlayerAttributes.MAGIC_ARMOR, MODIFIER_ID.toString(), 5, PlayerAttributes.OP_INCREMENT)
+            .registerPotionAttributeModifier(SharedMonsterAttributes.MAX_HEALTH, MODIFIER_ID.toString(), 5, PlayerAttributes.OP_INCREMENT)
+            .registerPotionAttributeModifier(SharedMonsterAttributes.ARMOR, MODIFIER_ID.toString(), 2, PlayerAttributes.OP_INCREMENT)
+            .registerPotionAttributeModifier(PlayerAttributes.MAGIC_ARMOR, MODIFIER_ID.toString(), 3, PlayerAttributes.OP_INCREMENT)
     );
 
     @SubscribeEvent

@@ -88,6 +88,8 @@ public class PotionEventHandler {
                 if (teammate.isPotionActive(WaveBreakPotion.INSTANCE)){
                     float amount = event.getAmount();
                     event.setAmount(amount * .2f);
+                    System.out.println(String.format("Setting damage to self %s, %f", livingTarget.getName(), amount * .2f));
+                    System.out.println(String.format("Setting damage to teammate %s, %f", teammate.getName(), amount*.8f));
                     teammate.attackEntityFrom(source, amount *.8f);
                 }
             }
