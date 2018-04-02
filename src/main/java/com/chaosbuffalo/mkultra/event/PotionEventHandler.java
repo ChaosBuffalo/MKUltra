@@ -101,19 +101,20 @@ public class PotionEventHandler {
                 }
             }
             int absorbCount = damageAbsorbers.size();
-            float newDamage = event.getAmount()/absorbCount;
+
             if (absorbCount > 0){
+                float newDamage = event.getAmount()/absorbCount;
                 for (EntityPlayer absorber : damageAbsorbers){
                     absorber.attackEntityFrom(source, newDamage);
                 }
+                event.setAmount(newDamage);
             }
-            event.setAmount(newDamage);
             if (event.getSource().isMagicDamage()){
-                newDamage = targetData.applyMagicArmor(event.getAmount());
+                float newDamage = targetData.applyMagicArmor(event.getAmount());
                 Log.debug("Magic armor reducing damage from %f to %f", event.getAmount(), newDamage);
                 event.setAmount(newDamage);
             }
-            
+
         }
 
         // Anyone is the victim
