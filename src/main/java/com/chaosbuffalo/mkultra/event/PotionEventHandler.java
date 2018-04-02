@@ -103,7 +103,7 @@ public class PotionEventHandler {
             int absorbCount = damageAbsorbers.size();
 
             if (absorbCount > 0){
-                float newDamage = event.getAmount()/absorbCount;
+                float newDamage = event.getAmount()/(absorbCount + 1);
                 for (EntityPlayer absorber : damageAbsorbers){
                     absorber.attackEntityFrom(source, newDamage);
                 }
