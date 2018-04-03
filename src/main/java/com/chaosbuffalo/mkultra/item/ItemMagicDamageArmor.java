@@ -28,7 +28,7 @@ public class ItemMagicDamageArmor extends ItemArmor {
     @Override
     public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
 
-        Multimap<String, AttributeModifier> mods = HashMultimap.create();
+        Multimap<String, AttributeModifier> mods = super.getAttributeModifiers(slot, stack);
         if (slot == this.armorType){
             if (this.bonus > 0){
                 AttributeModifier mod =
