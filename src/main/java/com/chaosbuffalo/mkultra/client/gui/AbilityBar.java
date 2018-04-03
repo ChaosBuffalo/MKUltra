@@ -19,7 +19,7 @@ import org.lwjgl.opengl.GL11;
 public class AbilityBar extends Gui {
     private static final int SLOT_COUNT = GameConstants.ACTION_BAR_SIZE;
 
-    private static ResourceLocation barTexture = new ResourceLocation(MKUltra.MODID, "textures/gui/abilitybar.png");
+    private static final ResourceLocation barTexture = new ResourceLocation(MKUltra.MODID, "textures/gui/abilitybar.png");
     private static final int SLOT_WIDTH = 19;
     private static final int SLOT_HEIGHT = 20;
     private static final int MANA_START_U = 21;
@@ -27,10 +27,10 @@ public class AbilityBar extends Gui {
     private static final int MANA_CELL_WIDTH = 3;
     private static final int MANA_CELL_HEIGHT = 8;
 
-    private static ResourceLocation COOLDOWN_ICON = new ResourceLocation(MKUltra.MODID,
+    private static final ResourceLocation COOLDOWN_ICON = new ResourceLocation(MKUltra.MODID,
             "textures/class/abilities/cooldown.png");
 
-    private static ResourceLocation TOGGLE_EFFECT = new ResourceLocation(MKUltra.MODID,
+    private static final ResourceLocation TOGGLE_EFFECT = new ResourceLocation(MKUltra.MODID,
             "textures/class/abilities/ability_toggle.png");
 
     private static final int ABILITY_ICON_SIZE = 16;
@@ -120,7 +120,7 @@ public class AbilityBar extends Gui {
 
             if (cooldownFactor > 0) {
                 int coolDownHeight = (int) (cooldownFactor * ABILITY_ICON_SIZE);
-                if (coolDownHeight < 1){
+                if (coolDownHeight < 1) {
                     coolDownHeight = 1;
                 }
                 mc.getTextureManager().bindTexture(COOLDOWN_ICON);
@@ -129,8 +129,8 @@ public class AbilityBar extends Gui {
                         0, 0, ABILITY_ICON_SIZE, coolDownHeight, ABILITY_ICON_SIZE, coolDownHeight);
             }
 
-            if (ability instanceof BaseToggleAbility){
-                if (mc.player.isPotionActive(((BaseToggleAbility)ability).getToggleEffect())){
+            if (ability instanceof BaseToggleAbility) {
+                if (mc.player.isPotionActive(((BaseToggleAbility) ability).getToggleEffect())) {
                     mc.getTextureManager().bindTexture(TOGGLE_EFFECT);
                     Gui.drawModalRectWithCustomSizedTexture(slotAbilityOffsetX,
                             barStartY + slotAbilityOffsetY + (i * SLOT_HEIGHT),
@@ -159,4 +159,3 @@ public class AbilityBar extends Gui {
         drawAbilities(data, event.getPartialTicks());
     }
 }
-

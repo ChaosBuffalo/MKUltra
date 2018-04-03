@@ -96,29 +96,29 @@ public final class ModItems {
     public static Item whirlpool_projectile;
 
 
-
     public static ItemArmor.ArmorMaterial CHAINMAT = EnumHelper.addArmorMaterial("mkultra_chain",
-                                                                                 "mkultra:chainmail", 15,
-                                                                                 new int[] {1, 4, 5, 2}, 12, null, 0);
+            "mkultra:chainmail", 15,
+            new int[]{1, 4, 5, 2}, 12, null, 0);
     public static ItemArmor.ArmorMaterial ROBEMAT = EnumHelper.addArmorMaterial("mkultra_gold_threaded",
-                                                                                "mkultra:gold_threaded", 20,
-                                                                                new int[] {1, 1, 1, 1}, 35, null, 0);
+            "mkultra:gold_threaded", 20,
+            new int[]{1, 1, 1, 1}, 35, null, 0);
     public static ItemArmor.ArmorMaterial BONEDLEATHERMAT = EnumHelper.addArmorMaterial("mkultra_boned_leather",
-                                                                                        "mkultra:bone", 24,
-                                                                                        new int[] {1, 3, 2, 1}, 2, null, 0);
+            "mkultra:bone", 24,
+            new int[]{1, 3, 2, 1}, 2, null, 0);
 
     public static ItemArmor.ArmorMaterial COPPER_THREADED_MAT = EnumHelper.addArmorMaterial(
             "mkultra_copper_threaded",
             "mkultra:copper_threaded", 15,
-            new int[] {0, 1, 1, 0}, 5, null, 0);
+            new int[]{0, 1, 1, 0}, 5, null, 0);
 
     public static ItemArmor.ArmorMaterial IRON_THREADED_MAT = EnumHelper.addArmorMaterial(
             "mkultra_iron_threaded",
             "mkultra:iron_threaded", 28,
-            new int[] {2, 3, 3, 2}, 20, null, 0);
+            new int[]{2, 3, 3, 2}, 20, null, 0);
 
     // can't be public because this is an ObjectHolder
     private static final Set<Item> ALL_ITEMS = new HashSet<>();
+
     private static void regInternal(Item item, String pathName) {
         item.setUnlocalizedName(pathName);
         item.setRegistryName(MKUltra.MODID, pathName);
@@ -137,14 +137,13 @@ public final class ModItems {
                 new ResourceLocation(MKUltra.MODID, "textures/items/sunicon.png"), "Give your Brouzoufs to Solarius." +
                 "  Receive his blessings.",
                 new ResourceLocation(MKUltra.MODID, "textures/gui/xp_table_background.png")
-                ,38600), "sunicon");
+                , 38600), "sunicon");
         regInternal(moon_icon = new ClassIcon("moon_icon", "The Mysterious Moon Goddess offers her arts to you. Choose your class: ", 1,
                 new ResourceLocation(MKUltra.MODID, "textures/items/moon_icon.png"),
                 "Thalassa, Goddess of the Moon, demands brouzouf in exchange for her powers. ",
                 new ResourceLocation(MKUltra.MODID, "textures/gui/xp_table_background_moon.png")
-                ,4404838), "moon_icon");
+                , 4404838), "moon_icon");
         regInternal(forgetfulnessBread = new ForgetfulnessBread(8, 1.0f, false), "forgetfulnessBread");
-
 
 
         //Projectile items

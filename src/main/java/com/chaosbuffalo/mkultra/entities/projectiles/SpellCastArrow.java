@@ -27,8 +27,7 @@ public class SpellCastArrow extends EntityTippedArrow {
     }
 
     @Override
-    protected void arrowHit(EntityLivingBase target)
-    {
+    protected void arrowHit(EntityLivingBase target) {
         for (SpellCast cast : casts) {
             SpellCast.registerTarget(cast, target);
 

@@ -18,55 +18,50 @@ import net.minecraft.world.World;
  */
 public class EntityDualityRuneProjectile extends EntityBaseProjectile {
 
-        private final static float BASE = 4.0f;
-        private final static float SCALE = 4.0f;
+    private final static float BASE = 4.0f;
+    private final static float SCALE = 4.0f;
 
-        public EntityDualityRuneProjectile(World worldIn)
-        {
-            super(worldIn);
-        }
-
-        public EntityDualityRuneProjectile(World worldIn, EntityLivingBase throwerIn)
-        {
-            super(worldIn, throwerIn);
-
-            this.setDeathTime(60);
-            this.setDoGroundProc(true);
-            this.setGroundProcTime(30);
-        }
-
-        public EntityDualityRuneProjectile(World worldIn, double x, double y, double z)
-        {
-            super(worldIn, x, y, z);
-        }
-
-
-
-        @Override
-        protected boolean onGroundProc(EntityLivingBase caster, int amplifier) {
-            if (!this.world.isRemote && caster != null)
-            {
-                SpellCast heal = ClericHealPotion.Create(caster, BASE, SCALE);
-                SpellCast damage = InstantIndirectMagicDamagePotion.Create(caster, BASE, SCALE);
-
-                AreaEffectBuilder.Create(caster, this)
-                        .spellCast(heal, amplifier, Targeting.TargetType.FRIENDLY)
-                        .spellCast(damage, amplifier, Targeting.TargetType.ENEMY)
-                        .instant()
-                        .color(39935).radius(4.0f, true)
-                        .spawn();
-                MKUltra.packetHandler.sendToAllAround(
-                        new ParticleEffectSpawnPacket(
-                                EnumParticleTypes.SPELL_WITCH.getParticleID(),
-                                ParticleEffects.DIRECTED_SPOUT, 100, 1,
-                                this.posX, this.posY + 1.0,
-                                this.posZ, 1.5, 2.0, 1.5, 1.0,
-                                new Vec3d(0., 1.0, 0.0)),
-                        this.dimension, this.posX, this.posY, this.posZ, 50.0f);
-                return true;
-            }
-
-            return false;
-        }
-
+    public EntityDualityRuneProjectile(World worldIn) {
+        super(worldIn);
     }
+
+    public EntityDualityRuneProjectile(World worldIn, EntityLivingBase throwerIn) {
+        super(worldIn, throwerIn);
+
+        this.setDeathTime(60);
+        this.setDoGroundProc(true);
+        this.setGroundProcTime(30);
+    }
+
+    public EntityDualityRuneProjectile(World worldIn, double x, double y, double z) {
+        super(worldIn, x, y, z);
+    }
+
+
+    @Override
+    protected boolean onGroundProc(EntityLivingBase caster, int amplifier) {
+        if (!this.world.isRemote && caster != null) {
+            SpellCast heal = ClericHealPotion.Create(caster, BASE, SCALE);
+            SpellCast damage = InstantIndirectMagicDamagePotion.Create(caster, BASE, SCALE);
+
+            AreaEffectBuilder.Create(caster, this)
+                    .spellCast(heal, amplifier, Targeting.TargetType.FRIENDLY)
+                    .spellCast(damage, amplifier, Targeting.TargetType.ENEMY)
+                    .instant()
+                    .color(39935).radius(4.0f, true)
+                    .spawn();
+            MKUltra.packetHandler.sendToAllAround(
+                    new ParticleEffectSpawnPacket(
+                            EnumParticleTypes.SPELL_WITCH.getParticleID(),
+                            ParticleEffects.DIRECTED_SPOUT, 100, 1,
+                            this.posX, this.posY + 1.0,
+                            this.posZ, 1.5, 2.0, 1.5, 1.0,
+                            new Vec3d(0., 1.0, 0.0)),
+                    this.dimension, this.posX, this.posY, this.posZ, 50.0f);
+            return true;
+        }
+
+        return false;
+    }
+
+}

@@ -247,11 +247,10 @@ public class EntityMKAreaEffect extends Entity {
             PotionEffect eff = spellEffect.effect;
 
             boolean validTarget;
-            SpellPotionBase spBase = eff.getPotion() instanceof SpellPotionBase ? (SpellPotionBase)eff.getPotion() : null;
+            SpellPotionBase spBase = eff.getPotion() instanceof SpellPotionBase ? (SpellPotionBase) eff.getPotion() : null;
             if (spBase != null) {
                 validTarget = spBase.isValidTarget(spellEffect.targetType, getOwner(), target, spellEffect.excludeCaster);
-            }
-            else {
+            } else {
                 validTarget = Targeting.isValidTarget(spellEffect.targetType, getOwner(), target, spellEffect.excludeCaster);
             }
 
@@ -272,8 +271,7 @@ public class EntityMKAreaEffect extends Entity {
                     // We can skip affectEntity and go directly to the effect because we
                     // have already ensured the target is valid.
                     spBase.doEffect(this, getOwner(), target, eff.getAmplifier(), cast);
-                }
-                else {
+                } else {
                     eff.getPotion().affectEntity(this, this.getOwner(), target, eff.getAmplifier(), 0.5D);
                 }
             } else {
@@ -448,7 +446,7 @@ public class EntityMKAreaEffect extends Entity {
                 }
             }
         } else {
-            int particleCount = (int)radius * 10;
+            int particleCount = (int) radius * 10;
             int[] aint1 = new int[enumparticletypes.getArgumentCount()];
 
             for (int k1 = 0; k1 < particleCount; ++k1) {
@@ -471,5 +469,4 @@ public class EntityMKAreaEffect extends Entity {
             }
         }
     }
-
 }

@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.effects.spells;
 
+import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
@@ -51,8 +52,9 @@ public class HeavingSeasPotion extends SpellPotionBase {
     @Override
     public void doEffect(Entity applier, Entity caster, EntityLivingBase target, int amplifier, SpellCast cast) {
 
-        target.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 1 * 20 * amplifier, amplifier, false, true));
-        target.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 1 * 20 * amplifier, amplifier, false, true));
+        int duration = GameConstants.TICKS_PER_SECOND * amplifier;
+        target.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, duration, amplifier, false, true));
+        target.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, duration, amplifier, false, true));
         target.addVelocity(0.0, amplifier * 1.25f, 0.0);
         if (target instanceof EntityPlayerMP && !caster.world.isRemote) {
             ((EntityPlayerMP) target).connection.sendPacket(new SPacketEntityVelocity(target));

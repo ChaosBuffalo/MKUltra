@@ -49,7 +49,7 @@ public final class ModBlocks {
 
     @SuppressWarnings("unused")
     @SubscribeEvent
-    public static void registerBlocks(RegistryEvent.Register<Block> event){
+    public static void registerBlocks(RegistryEvent.Register<Block> event) {
         ALL_BLOCKS.forEach(event.getRegistry()::register);
     }
 

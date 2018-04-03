@@ -19,27 +19,23 @@ import net.minecraft.world.World;
  * Created by Jacob on 7/21/2016.
  */
 public class EntityBallLightningProjectile extends EntityBaseProjectile {
-    public EntityBallLightningProjectile(World worldIn)
-    {
+    public EntityBallLightningProjectile(World worldIn) {
         super(worldIn);
     }
 
-    public EntityBallLightningProjectile(World worldIn, EntityLivingBase throwerIn)
-    {
+    public EntityBallLightningProjectile(World worldIn, EntityLivingBase throwerIn) {
         super(worldIn, throwerIn);
         this.setDoAirProc(true);
         this.setAirProcTime(7);
         this.setDeathTime(30);
     }
 
-    public EntityBallLightningProjectile(World worldIn, double x, double y, double z)
-    {
+    public EntityBallLightningProjectile(World worldIn, double x, double y, double z) {
         super(worldIn, x, y, z);
     }
 
     @Override
-    public float getGravityVelocity()
-    {
+    public float getGravityVelocity() {
         return 0.00F;
     }
 
@@ -52,8 +48,8 @@ public class EntityBallLightningProjectile extends EntityBaseProjectile {
             return false;
         }
 
-        if (result.entityHit != null && entity instanceof EntityPlayer && result.entityHit instanceof EntityLivingBase){
-            EntityLivingBase targetEntity = (EntityLivingBase)result.entityHit;
+        if (result.entityHit != null && entity instanceof EntityPlayer && result.entityHit instanceof EntityLivingBase) {
+            EntityLivingBase targetEntity = (EntityLivingBase) result.entityHit;
             SpellCast ballLightning = LightningDamagePotion.Create(entity, 5.0f, 5.0f);
 
             AreaEffectBuilder.Create(entity, this)
@@ -72,7 +68,7 @@ public class EntityBallLightningProjectile extends EntityBaseProjectile {
                             lookVec),
                     entity.dimension, targetEntity.posX,
                     targetEntity.posY, targetEntity.posZ, 50.0f);
-        } else if (entity != null){
+        } else if (entity != null) {
             MKUltra.packetHandler.sendToAllAround(
                     new ParticleEffectSpawnPacket(
                             EnumParticleTypes.FIREWORKS_SPARK.getParticleID(),
@@ -98,7 +94,7 @@ public class EntityBallLightningProjectile extends EntityBaseProjectile {
 
     @Override
     protected void onAirProc(EntityLivingBase caster, int amplifier) {
-        if (caster != null){
+        if (caster != null) {
             SpellCast ballLightning = LightningDamagePotion.Create(caster, 4.0f, 4.0f);
             this.setTicksInAir(0);
             MKUltra.packetHandler.sendToAllAround(

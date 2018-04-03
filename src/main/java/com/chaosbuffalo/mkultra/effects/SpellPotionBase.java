@@ -153,10 +153,8 @@ public abstract class SpellPotionBase extends Potion {
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void renderInventoryEffect(int x, int y, PotionEffect effect, Minecraft mc)
-    {
-        if (mc.currentScreen != null && getIconTexture() != null)
-        {
+    public void renderInventoryEffect(int x, int y, PotionEffect effect, Minecraft mc) {
+        if (mc.currentScreen != null && getIconTexture() != null) {
             mc.getTextureManager().bindTexture(getIconTexture());
             Gui.drawModalRectWithCustomSizedTexture(x + 6, y + 7, 0, 0, 16, 16, 16, 16);
         }
@@ -164,9 +162,8 @@ public abstract class SpellPotionBase extends Potion {
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void renderHUDEffect(int x, int y, PotionEffect effect, Minecraft mc, float alpha)
-    {
-        if (getIconTexture() != null){
+    public void renderHUDEffect(int x, int y, PotionEffect effect, Minecraft mc, float alpha) {
+        if (getIconTexture() != null) {
             mc.getTextureManager().bindTexture(getIconTexture());
             Gui.drawModalRectWithCustomSizedTexture(x + 4, y + 4, 0, 0, 16, 16, 16, 16);
         }

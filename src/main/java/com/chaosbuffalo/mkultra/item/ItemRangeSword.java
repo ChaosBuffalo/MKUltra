@@ -12,7 +12,7 @@ public class ItemRangeSword extends ItemSword implements IExtendedReach {
     private float reach;
     private float realAttackDamage;
 
-    public ItemRangeSword(String unlocalizedName, ToolMaterial mat, float reach){
+    public ItemRangeSword(String unlocalizedName, ToolMaterial mat, float reach) {
         super(mat);
         setUnlocalizedName(unlocalizedName);
         this.reach = reach;
@@ -22,18 +22,16 @@ public class ItemRangeSword extends ItemSword implements IExtendedReach {
     }
 
     @Override
-    public float getReach(){
+    public float getReach() {
         return this.reach;
     }
 
     @Override
-    public Multimap<String, AttributeModifier> getItemAttributeModifiers(EntityEquipmentSlot equipmentSlot)
-    {
+    public Multimap<String, AttributeModifier> getItemAttributeModifiers(EntityEquipmentSlot equipmentSlot) {
         Multimap<String, AttributeModifier> multimap = super.getItemAttributeModifiers(equipmentSlot);
 
-        if (equipmentSlot == EntityEquipmentSlot.MAINHAND)
-        {
-            multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", (double)this.realAttackDamage, 0));
+        if (equipmentSlot == EntityEquipmentSlot.MAINHAND) {
+            multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", (double) this.realAttackDamage, 0));
             multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", -3.2000000953674316D, 0));
         }
 

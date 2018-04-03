@@ -88,7 +88,7 @@ public class PartyManager {
         }
     }
 
-    public static ArrayList<EntityPlayer> getPlayersOnTeam(EntityPlayer player){
+    public static ArrayList<EntityPlayer> getPlayersOnTeam(EntityPlayer player) {
         ArrayList<EntityPlayer> members = new ArrayList<>();
         Team team = player.getTeam();
         if (team != null) {
@@ -104,7 +104,7 @@ public class PartyManager {
 
     @SuppressWarnings("unused")
     @SubscribeEvent
-    public static void onPickUpExp(PlayerPickupXpEvent e){
+    public static void onPickUpExp(PlayerPickupXpEvent e) {
 
         EntityPlayer original = e.getEntityPlayer();
         Team team = original.getTeam();
@@ -129,14 +129,13 @@ public class PartyManager {
             int pCount = members.size();
             for (EntityPlayer p : members) {
                 // ensure every player gets at least 1 xp
-                int playerExp = Math.max(exp/pCount, 1);
+                int playerExp = Math.max(exp / pCount, 1);
                 p.addExperience(playerExp);
                 gainBrouzoufs(p);
             }
             e.getOrb().setDead();
             e.setCanceled(true);
-        }
-        else {
+        } else {
             gainBrouzoufs(original);
         }
     }

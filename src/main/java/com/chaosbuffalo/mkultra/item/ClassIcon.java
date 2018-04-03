@@ -52,10 +52,14 @@ public class ClassIcon extends Item implements IClassProvider {
     }
 
     @Override
-    public String getXpTableText() { return xpTableText; }
+    public String getXpTableText() {
+        return xpTableText;
+    }
 
     @Override
-    public ResourceLocation getIconForProvider(){ return iconLoc; }
+    public ResourceLocation getIconForProvider() {
+        return iconLoc;
+    }
 
     @Override
     public String getClassSelectionText() {
@@ -63,7 +67,9 @@ public class ClassIcon extends Item implements IClassProvider {
     }
 
     @Override
-    public ResourceLocation getXpTableBackground(){ return xpTableBackground; }
+    public ResourceLocation getXpTableBackground() {
+        return xpTableBackground;
+    }
 
     @Override
     public int getXpTableTextColor() {

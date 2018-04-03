@@ -27,8 +27,7 @@ public class SpellCast {
     }
 
     public static SpellCast create(SpellPotionBase potion, Entity caster) {
-        SpellCast meta = new SpellCast(potion, caster);
-        return meta;
+        return new SpellCast(potion, caster);
     }
 
     public static SpellCast get(EntityLivingBase target, SpellPotionBase potion) {

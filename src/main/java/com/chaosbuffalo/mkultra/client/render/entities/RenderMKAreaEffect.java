@@ -9,8 +9,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class RenderMKAreaEffect implements IRenderFactory<EntityMKAreaEffect>
-{
+public class RenderMKAreaEffect implements IRenderFactory<EntityMKAreaEffect> {
     @Override
     public Render<EntityMKAreaEffect> createRenderFor(RenderManager manager) {
         return new Renderer(manager);
@@ -21,13 +20,11 @@ public class RenderMKAreaEffect implements IRenderFactory<EntityMKAreaEffect>
             super(renderManager);
         }
 
-        public void doRender(EntityMKAreaEffect entity, double x, double y, double z, float entityYaw, float partialTicks)
-        {
+        public void doRender(EntityMKAreaEffect entity, double x, double y, double z, float entityYaw, float partialTicks) {
             super.doRender(entity, x, y, z, entityYaw, partialTicks);
         }
 
-        protected ResourceLocation getEntityTexture(EntityMKAreaEffect entity)
-        {
+        protected ResourceLocation getEntityTexture(EntityMKAreaEffect entity) {
             return null;
         }
     }

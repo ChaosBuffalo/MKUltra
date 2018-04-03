@@ -18,12 +18,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * Created by Jacob on 7/15/2016.
  */
 @SideOnly(Side.CLIENT)
-public class RenderProjectile implements IRenderFactory<EntityBaseProjectile>
-{
+public class RenderProjectile implements IRenderFactory<EntityBaseProjectile> {
     public Item itemModel;
     public float scale;
 
-    RenderProjectile(Item itemModel, float scale){
+    RenderProjectile(Item itemModel, float scale) {
         this.itemModel = itemModel;
         this.scale = scale;
     }
@@ -44,11 +43,10 @@ public class RenderProjectile implements IRenderFactory<EntityBaseProjectile>
             this.itemModel = itemModel;
             this.scale = scale;
         }
-        public void doRender(EntityBaseProjectile entity, double x, double y, double z, float entityYaw, float partialTicks)
-        {
+
+        public void doRender(EntityBaseProjectile entity, double x, double y, double z, float entityYaw, float partialTicks) {
             boolean flag = false;
-            if (this.bindEntityTexture(entity))
-            {
+            if (this.bindEntityTexture(entity)) {
                 this.renderManager.renderEngine.getTexture(this.getEntityTexture(entity)).setBlurMipmap(true, true);
                 flag = true;
             }
@@ -58,24 +56,22 @@ public class RenderProjectile implements IRenderFactory<EntityBaseProjectile>
             RenderHelper.enableStandardItemLighting();
             GlStateManager.tryBlendFuncSeparate(
                     GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA,
-                    GlStateManager.SourceFactor.ONE,GlStateManager.DestFactor.ZERO
+                    GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO
             );
             Minecraft.getMinecraft().getRenderItem()
                     .renderItem(new ItemStack(this.itemModel), ItemCameraTransforms.TransformType.GROUND);
-            if (this.renderOutlines)
-            {
+            if (this.renderOutlines) {
                 GlStateManager.enableColorMaterial();
                 GlStateManager.enableOutlineMode(this.getTeamColor(entity));
             }
             GlStateManager.pushMatrix();
-            GlStateManager.translate((float)x, (float)y+.33f, (float)z);
+            GlStateManager.translate((float) x, (float) y + .33f, (float) z);
             GlStateManager.scale(this.scale, this.scale, this.scale);
             GlStateManager.rotate(180.0F - this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
-            GlStateManager.rotate((float)(this.renderManager.options.thirdPersonView == 2 ? -1 : 1) * -this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
+            GlStateManager.rotate((float) (this.renderManager.options.thirdPersonView == 2 ? -1 : 1) * -this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
             Minecraft.getMinecraft().getRenderItem().renderItem(new ItemStack(this.itemModel), ItemCameraTransforms.TransformType.GROUND);
             GlStateManager.popMatrix();
-            if (this.renderOutlines)
-            {
+            if (this.renderOutlines) {
                 GlStateManager.disableOutlineMode();
                 GlStateManager.disableColorMaterial();
             }
@@ -83,17 +79,14 @@ public class RenderProjectile implements IRenderFactory<EntityBaseProjectile>
             GlStateManager.disableBlend();
             this.bindEntityTexture(entity);
 
-            if (flag)
-            {
+            if (flag) {
                 this.renderManager.renderEngine.getTexture(this.getEntityTexture(entity)).restoreLastBlurMipmap();
             }
             super.doRender(entity, x, y, z, entityYaw, partialTicks);
         }
 
 
-
-        protected ResourceLocation getEntityTexture(EntityBaseProjectile entity)
-        {
+        protected ResourceLocation getEntityTexture(EntityBaseProjectile entity) {
             return null;
         }
     }

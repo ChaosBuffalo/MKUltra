@@ -111,7 +111,7 @@ public final class ModCrafting {
         addRecipe(event, new ItemStack(Item.getItemFromBlock(ModBlocks.xpTableBlock)),
                 "www", "wiw", "www", 'i', Item.getItemFromBlock(Blocks.IRON_BLOCK),
                 'w', Blocks.PLANKS);
-       addRecipe(event, new ItemStack(Item.getItemFromBlock(ModBlocks.portalBlock), 4),
+        addRecipe(event, new ItemStack(Item.getItemFromBlock(ModBlocks.portalBlock), 4),
                 "ooo", "odo", "ooo", 'o', Item.getItemFromBlock(Blocks.OBSIDIAN),
                 'd', Items.DIAMOND);
         addRecipe(event, new ItemStack(ModItems.forgetfulnessBread, 4),

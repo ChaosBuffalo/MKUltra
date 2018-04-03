@@ -28,17 +28,13 @@ public class ModGuiHandler implements IGuiHandler {
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         if (ID == CLASS_DATA_SCREEN) {
             return new PlayerClassScreen();
-        }
-        else if (ID == LEARN_CLASS_SCREEN){
+        } else if (ID == LEARN_CLASS_SCREEN) {
             return new ChooseClassScreen(true);
-        }
-        else if (ID == XP_TABLE_SCREEN){
+        } else if (ID == XP_TABLE_SCREEN) {
             return new XpTableScreen();
-        }
-        else if (ID == CHANGE_CLASS_SCREEN) {
+        } else if (ID == CHANGE_CLASS_SCREEN) {
             return new ChooseClassScreen(false);
-        }
-        else if (ID == PARTY_INVITE_SCREEN){
+        } else if (ID == PARTY_INVITE_SCREEN) {
             return new PartyInviteScreen();
         }
 

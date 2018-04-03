@@ -59,7 +59,7 @@ public class PlayerClassScreen extends GuiScreen {
         int yCoord = (int) ((statPanelY + 4) * statScalingFactor);
         this.fontRenderer.drawString("Level: " + pData.getLevel(), xCoord, yCoord, 38600);
         this.fontRenderer.drawString("Max Mana: " + pData.getTotalMana(), xCoord, yCoord + 11, 38600);
-        String regenRate = String.format("Mana Regen Rate: %.2f" , pData.getManaRegenRate());
+        String regenRate = String.format("Mana Regen Rate: %.2f", pData.getManaRegenRate());
         this.fontRenderer.drawString(regenRate, xCoord, yCoord + 22, 38600);
         this.fontRenderer.drawString("Unspent Points: " + pData.getUnspentPoints(), xCoord, yCoord + 33, 38600);
         GlStateManager.popMatrix();
@@ -67,7 +67,7 @@ public class PlayerClassScreen extends GuiScreen {
         //drawing ability
         //draw icons
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        IClassProvider classProvider = (IClassProvider)playerClass.getUnlockItem();
+        IClassProvider classProvider = (IClassProvider) playerClass.getUnlockItem();
         ResourceLocation iconLoc1 = classProvider.getIconForProvider();
         this.mc.renderEngine.bindTexture(iconLoc1);
         Gui.drawModalRectWithCustomSizedTexture(xPos + 6, iconHeight, 0, 0, 16, 16, 16, 16);
@@ -117,8 +117,7 @@ public class PlayerClassScreen extends GuiScreen {
             String name;
             if (level > 0) {
                 name = String.format("%s %d", ability.getAbilityName(), level);
-            }
-            else {
+            } else {
                 name = ability.getAbilityName();
             }
             this.fontRenderer.drawString(name, xPos + panelX, yPos + panelY + 3, 38600);
@@ -129,7 +128,7 @@ public class PlayerClassScreen extends GuiScreen {
             int minLevel = Math.max(1, level); // Don't show the stats for a 0-level spell
             this.fontRenderer.drawString("Mana: " + ability.getManaCost(minLevel),
                     (xPos + panelX + 22) * scaleFactor, (yPos + panelY + 16) * scaleFactor, 0);
-            String cooldown = String.format("Cooldown: %.2f", (float)pData.getAbilityCooldown(ability) / (float)GameConstants.TICKS_PER_SECOND);
+            String cooldown = String.format("Cooldown: %.2f", (float) pData.getAbilityCooldown(ability) / (float) GameConstants.TICKS_PER_SECOND);
             this.fontRenderer.drawString(cooldown,
                     (xPos + panelX + 22) * scaleFactor, (yPos + panelY + 23) * scaleFactor, 0);
             this.fontRenderer.drawString("Req. Level: " + reqLevel,

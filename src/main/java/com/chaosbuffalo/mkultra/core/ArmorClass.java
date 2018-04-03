@@ -10,10 +10,10 @@ import java.util.Set;
 
 public class ArmorClass {
 
-    public static ArmorClass HEAVY = new ArmorClass();
-    public static ArmorClass MEDIUM = new ArmorClass();
-    public static ArmorClass LIGHT = new ArmorClass();
-    public static ArmorClass ROBES = new ArmorClass();
+    public static final ArmorClass HEAVY = new ArmorClass();
+    public static final ArmorClass MEDIUM = new ArmorClass();
+    public static final ArmorClass LIGHT = new ArmorClass();
+    public static final ArmorClass ROBES = new ArmorClass();
 
 
     public static void registerDefaults() {
@@ -37,8 +37,8 @@ public class ArmorClass {
                 .register(ItemArmor.ArmorMaterial.IRON);
     }
 
-    private Set<ItemArmor.ArmorMaterial> materials = Sets.newHashSet();
-    private List<ArmorClass> ancestors = Lists.newArrayList();
+    private final Set<ItemArmor.ArmorMaterial> materials = Sets.newHashSet();
+    private final List<ArmorClass> ancestors = Lists.newArrayList();
 
     public ArmorClass() {
     }
@@ -48,7 +48,7 @@ public class ArmorClass {
                 ancestors.stream().anyMatch(a -> a.canWear(material));
     }
 
-    public ArmorClass inherit(ArmorClass armorClass) {
+    private ArmorClass inherit(ArmorClass armorClass) {
         ancestors.add(armorClass);
         return this;
     }

@@ -18,7 +18,7 @@ import org.lwjgl.opengl.GL11;
 import java.util.List;
 
 
-public class ChooseClassScreen extends GuiScreen{
+public class ChooseClassScreen extends GuiScreen {
 
     private boolean learning;
     private List<ResourceLocation> classes;
@@ -52,7 +52,7 @@ public class ChooseClassScreen extends GuiScreen{
             return;
 
         String text;
-        if (player.getHeldItemMainhand().getItem() instanceof IClassProvider){
+        if (player.getHeldItemMainhand().getItem() instanceof IClassProvider) {
             IClassProvider icon = (IClassProvider) player.getHeldItemMainhand().getItem();
             text = icon.getClassSelectionText();
         } else {
@@ -71,8 +71,7 @@ public class ChooseClassScreen extends GuiScreen{
         if (learning) {
             ItemStack main = player.getHeldItemMainhand();
             classes = ClassData.getClassesProvidedByItem(main.getItem());
-        }
-        else {
+        } else {
             classes = ClassData.getValidClasses(knownClasses);
         }
 
@@ -86,8 +85,7 @@ public class ChooseClassScreen extends GuiScreen{
             if (learning) {
                 // Only allow selecting classes we don't know
                 button.enabled = !knownClasses.contains(classId);
-            }
-            else {
+            } else {
                 // Only allow selecting classes other than the current
                 button.enabled = classId.compareTo(data.getClassId()) != 0;
             }
@@ -111,6 +109,4 @@ public class ChooseClassScreen extends GuiScreen{
         return false;
     }
 
-
 }
-

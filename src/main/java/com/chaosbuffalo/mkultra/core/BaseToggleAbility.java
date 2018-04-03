@@ -27,14 +27,14 @@ public abstract class BaseToggleAbility extends BaseAbility {
 
     public abstract void applyEffect(EntityPlayer entity, IPlayerData pData, World theWorld);
 
-    public void removeEffect(EntityPlayer entity, IPlayerData pData, World theWorld){
+    public void removeEffect(EntityPlayer entity, IPlayerData pData, World theWorld) {
         entity.removePotionEffect(getToggleEffect());
     }
 
     @Override
     public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
         pData.startAbility(this);
-        if (entity.getActivePotionEffect(getToggleEffect()) != null){
+        if (entity.getActivePotionEffect(getToggleEffect()) != null) {
             removeEffect(entity, pData, theWorld);
         } else {
             applyEffect(entity, pData, theWorld);

@@ -31,36 +31,34 @@ public class ParticleEffects {
     }
 
     private static double[] getPositionAndMotion(int motionType, int data, Vec3d position,
-                                          double speed, int particleNumber, int count,
-                                          Vec3d radii, Vec3d heading){
+                                                 double speed, int particleNumber, int count,
+                                                 Vec3d radii, Vec3d heading) {
         double[] ret = new double[6];
         double degrees = (360.0 / count) * particleNumber;
-        if (motionType == CIRCLE_MOTION){
+        if (motionType == CIRCLE_MOTION) {
             Vec3d posVec = new Vec3d(position.x + radii.x * Math.cos(degrees),
                     position.y, position.z + radii.z * Math.sin(degrees));
             Vec3d diffVec = posVec.subtract(position).normalize();
             ret[0] = posVec.x;
             ret[1] = posVec.y;
             ret[2] = posVec.z;
-            ret[3] = diffVec.x*speed;
-            ret[4] = diffVec.y*speed;
-            ret[5] = diffVec.z*speed;
-        }
-        else if (motionType == CIRCLE_PILLAR_MOTION){
+            ret[3] = diffVec.x * speed;
+            ret[4] = diffVec.y * speed;
+            ret[5] = diffVec.z * speed;
+        } else if (motionType == CIRCLE_PILLAR_MOTION) {
             ret[0] = position.z + radii.x * Math.cos(degrees);
             ret[1] = position.y;
             ret[2] = position.y + radii.z * Math.sin(degrees);
             ret[3] = 0;
             ret[4] = speed;
             ret[5] = 0;
-        }
-        else if (motionType == SPHERE_MOTION){
+        } else if (motionType == SPHERE_MOTION) {
             //Uses data to determine number of layers in sphere
             int layerCount = count / data;
             int currentLayer = particleNumber / layerCount;
             int realNum = particleNumber % data;
-            double ratio = (double) currentLayer / (double)data;
-            double scaledRatio = 2.0*(ratio - 0.5);
+            double ratio = (double) currentLayer / (double) data;
+            double scaledRatio = 2.0 * (ratio - 0.5);
             double realDegrees = (360.0 / data) * realNum;
             double inverseScale = 1.0 - Math.pow(scaledRatio, 2.0);
             Vec3d posVec = new Vec3d(
@@ -71,11 +69,10 @@ public class ParticleEffects {
             ret[0] = posVec.x;
             ret[1] = posVec.y;
             ret[2] = posVec.z;
-            ret[3] = diffVec.x*speed;
-            ret[4] = diffVec.y*speed;
-            ret[5] = diffVec.z*speed;
-        }
-        else if (motionType == DIRECTED_SPOUT){
+            ret[3] = diffVec.x * speed;
+            ret[4] = diffVec.y * speed;
+            ret[5] = diffVec.z * speed;
+        } else if (motionType == DIRECTED_SPOUT) {
             //Uses data to determine direction -1/+1
             Vec3d posVec = new Vec3d(getRandomInRadiusRange(position.x, radii.x),
                     getRandomInRadiusRange(position.y, radii.y),
@@ -83,16 +80,16 @@ public class ParticleEffects {
             ret[0] = posVec.x;
             ret[1] = posVec.y;
             ret[2] = posVec.z;
-            ret[3] = heading.x*speed*data;
-            ret[4] = heading.y*speed*data;
-            ret[5] = heading.z*speed*data;
+            ret[3] = heading.x * speed * data;
+            ret[4] = heading.y * speed * data;
+            ret[5] = heading.z * speed * data;
         }
 
         return ret;
 
     }
 
-    private static double getRandomInRadiusRange(double coord, double radius){
+    private static double getRandomInRadiusRange(double coord, double radius) {
         return coord + ((Math.random() - 0.5) * 2.0) * radius;
     }
 

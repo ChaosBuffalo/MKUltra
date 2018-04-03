@@ -15,7 +15,7 @@ import java.util.List;
 public class Digger extends BaseClass {
 
     public static final List<BaseAbility> abilities = new ArrayList<>(5);
-    public static ArmorClass ARMORCLASS = new DiggerArmorClass();
+    private static final ArmorClass ARMORCLASS = new DiggerArmorClass();
 
     static {
         abilities.add(new GoldenOpportunity());

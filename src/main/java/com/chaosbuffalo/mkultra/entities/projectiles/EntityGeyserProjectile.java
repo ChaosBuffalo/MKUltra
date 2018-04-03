@@ -16,50 +16,46 @@ import net.minecraft.world.World;
  * Created by Jacob on 7/15/2016.
  */
 public class EntityGeyserProjectile extends EntityBaseProjectile {
-        public EntityGeyserProjectile(World worldIn)
-        {
-            super(worldIn);
-        }
-
-        public EntityGeyserProjectile(World worldIn, EntityLivingBase throwerIn)
-        {
-            super(worldIn, throwerIn);
-
-            this.setDeathTime(1200);
-            this.setDoGroundProc(true);
-            this.setGroundProcTime(50);
-        }
-
-        public EntityGeyserProjectile(World worldIn, double x, double y, double z)
-        {
-            super(worldIn, x, y, z);
-        }
-
-
-        @Override
-        protected boolean onGroundProc(EntityLivingBase caster, int amplifier) {
-            if (!this.world.isRemote && caster != null)
-            {
-                SpellCast geyser = GeyserPotion.Create(caster, 0.0f, 10.0f);
-
-                AreaEffectBuilder.Create(caster, this)
-                        .spellCast(geyser, amplifier, Targeting.TargetType.ALL)
-                        .instant()
-                        .color(39935).radius(4.0f, true)
-                        .spawn();
-                MKUltra.packetHandler.sendToAllAround(
-                        new ParticleEffectSpawnPacket(
-                                EnumParticleTypes.DRIP_WATER.getParticleID(),
-                                ParticleEffects.DIRECTED_SPOUT, 100, 1,
-                                this.posX, this.posY + 1.0,
-                                this.posZ, 1.5, 2.0, 1.5, 1.0,
-                                new Vec3d(0., 1.0, 0.0)),
-                        this.dimension, this.posX, this.posY, this.posZ, 50.0f);
-                return true;
-            }
-            return false;
-        }
-
+    public EntityGeyserProjectile(World worldIn) {
+        super(worldIn);
     }
+
+    public EntityGeyserProjectile(World worldIn, EntityLivingBase throwerIn) {
+        super(worldIn, throwerIn);
+
+        this.setDeathTime(1200);
+        this.setDoGroundProc(true);
+        this.setGroundProcTime(50);
+    }
+
+    public EntityGeyserProjectile(World worldIn, double x, double y, double z) {
+        super(worldIn, x, y, z);
+    }
+
+
+    @Override
+    protected boolean onGroundProc(EntityLivingBase caster, int amplifier) {
+        if (!this.world.isRemote && caster != null) {
+            SpellCast geyser = GeyserPotion.Create(caster, 0.0f, 10.0f);
+
+            AreaEffectBuilder.Create(caster, this)
+                    .spellCast(geyser, amplifier, Targeting.TargetType.ALL)
+                    .instant()
+                    .color(39935).radius(4.0f, true)
+                    .spawn();
+            MKUltra.packetHandler.sendToAllAround(
+                    new ParticleEffectSpawnPacket(
+                            EnumParticleTypes.DRIP_WATER.getParticleID(),
+                            ParticleEffects.DIRECTED_SPOUT, 100, 1,
+                            this.posX, this.posY + 1.0,
+                            this.posZ, 1.5, 2.0, 1.5, 1.0,
+                            new Vec3d(0., 1.0, 0.0)),
+                    this.dimension, this.posX, this.posY, this.posZ, 50.0f);
+            return true;
+        }
+        return false;
+    }
+
+}
 
 

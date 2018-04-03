@@ -37,9 +37,9 @@ public class SteamPoweredOrbTileEntity  extends PoweredEntity {
     public float getEnergyCapacity(ConduitType conduitType) {
         ConduitType[] types = this.getTypes();
 
-        for(int i = 0; i < types.length; ++i) {
+        for (int i = 0; i < types.length; ++i) {
             ConduitType t = types[i];
-            if(ConduitType.areSameType(t, conduitType)) {
+            if (ConduitType.areSameType(t, conduitType)) {
                 return this.energyBufferSizes[i];
             }
         }
@@ -62,9 +62,9 @@ public class SteamPoweredOrbTileEntity  extends PoweredEntity {
         ConduitType[] types = this.getTypes();
         int limit = Math.min(types.length, this.energyBuffers.length);
 
-        for(int i = 0; i < limit; ++i) {
+        for (int i = 0; i < limit; ++i) {
             ConduitType t = types[i];
-            if(ConduitType.areSameType(t, conduitType)) {
+            if (ConduitType.areSameType(t, conduitType)) {
                 return this.energyBuffers[i];
             }
         }
@@ -75,9 +75,9 @@ public class SteamPoweredOrbTileEntity  extends PoweredEntity {
     @Override
     public void setEnergy(float v, ConduitType conduitType) {
         ConduitType[] types = this.getTypes();
-        for(int i = 0; i < types.length; ++i) {
+        for (int i = 0; i < types.length; ++i) {
             ConduitType t = types[i];
-            if(ConduitType.areSameType(t, conduitType)) {
+            if (ConduitType.areSameType(t, conduitType)) {
                 this.energyBuffers[i] = v;
 
             }
@@ -88,42 +88,42 @@ public class SteamPoweredOrbTileEntity  extends PoweredEntity {
     @Override
     public void tickUpdate(boolean isServer) {
 
-        if (isServer){
+        if (isServer) {
             int newState = 0;
             ConduitType steamType = this.getTypes()[0];
             float currentSteam = this.getEnergy(steamType);
-            float ratio = currentSteam/this.getEnergyCapacity(steamType);
-            if (currentSteam > 0.0){
+            float ratio = currentSteam / this.getEnergyCapacity(steamType);
+            if (currentSteam > 0.0) {
                 newState = Math.max((int) Math.round(ratio * 7.0), 1);
             }
             SteamPoweredOrbBlock block = (SteamPoweredOrbBlock) this.world.getBlockState(this.getPos()).getBlock();
             this.world.setBlockState(this.getPos(), block.withPoweredState(newState));
             int count = Math.max(Math.round(ratio * 10), 1);
-            if (this.world.rand.nextInt(count) > 8){
+            if (this.world.rand.nextInt(count) > 8) {
                 damageSurrounding();
             }
-            if (this.getEnergy(this.getTypes()[0]) >= 0.5f){
+            if (this.getEnergy(this.getTypes()[0]) >= 0.5f) {
                 this.subtractEnergy(0.5f, this.getTypes()[0]);
             }
 
         }
     }
 
-    public void damageSurrounding(){
+    public void damageSurrounding() {
         double collisionRadius = 1.65;
         BlockPos pos = this.getPos();
         Vec3d middle = new Vec3d(pos.getX() + .5, pos.getY() + .5, pos.getZ() + .5);
 
         List<EntityLivingBase> targets = this.world.getEntitiesWithinAABB(EntityLivingBase.class,
                 new AxisAlignedBB(middle.x - collisionRadius,
-                middle.y - collisionRadius,middle.z - collisionRadius, middle.x + collisionRadius,
-                middle.y + collisionRadius, middle.z + collisionRadius));
-        for (EntityLivingBase target: targets){
-            if (this.getEnergy(this.getTypes()[0]) >= 10.0f){
+                        middle.y - collisionRadius, middle.z - collisionRadius, middle.x + collisionRadius,
+                        middle.y + collisionRadius, middle.z + collisionRadius));
+        for (EntityLivingBase target : targets) {
+            if (this.getEnergy(this.getTypes()[0]) >= 10.0f) {
                 target.attackEntityFrom(DamageSource.MAGIC, 1.0f);
                 this.subtractEnergy(10.0f, this.getTypes()[0]);
-                if (target instanceof EntityPlayer){
-                    EntityPlayer playerTarget = (EntityPlayer)target;
+                if (target instanceof EntityPlayer) {
+                    EntityPlayer playerTarget = (EntityPlayer) target;
                     playerTarget.getFoodStats().setFoodLevel(Math.max(playerTarget.getFoodStats().getFoodLevel() - 1, 0));
                 }
             }
@@ -150,10 +150,11 @@ public class SteamPoweredOrbTileEntity  extends PoweredEntity {
                 }
             }
         }
-        if (flagUpdate){
+        if (flagUpdate) {
             this.sync();
         }
     }
+
     protected float transmitPowerToConsumers(float availableEnergy, ConduitType powerType, byte minimumPriority) {
         return ConduitRegistry.transmitPowerToConsumers(Math.min(this.getMaximumPowerFlux(), availableEnergy),
                 powerType, minimumPriority, this);
@@ -164,12 +165,12 @@ public class SteamPoweredOrbTileEntity  extends PoweredEntity {
     }
 
     protected byte getMinimumSinkPriority() {
-        return (byte)-50;
+        return (byte) -50;
     }
 
     @Override
     public PowerRequest getPowerRequest(ConduitType conduitType) {
-        if(this.isPowerSink(conduitType)) {
+        if (this.isPowerSink(conduitType)) {
             ConduitType[] types = this.getTypes();
 
             for (ConduitType type : types) {
@@ -186,7 +187,6 @@ public class SteamPoweredOrbTileEntity  extends PoweredEntity {
 
         return PowerRequest.REQUEST_NOTHING;
     }
-
 
 
     @Override

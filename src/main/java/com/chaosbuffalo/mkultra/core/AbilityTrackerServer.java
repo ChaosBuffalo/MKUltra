@@ -12,14 +12,12 @@ public class AbilityTrackerServer extends AbilityTracker {
         this.player = player;
     }
 
-    protected void notifyOnSet(PlayerAbilityInfo itemIn, int ticksIn)
-    {
+    protected void notifyOnSet(PlayerAbilityInfo itemIn, int ticksIn) {
         super.notifyOnSet(itemIn, ticksIn);
         MKUltra.packetHandler.sendTo(new AbilityCooldownPacket(itemIn.id, ticksIn), player);
     }
 
-    protected void notifyOnRemove(PlayerAbilityInfo itemIn)
-    {
+    protected void notifyOnRemove(PlayerAbilityInfo itemIn) {
         super.notifyOnRemove(itemIn);
         MKUltra.packetHandler.sendTo(new AbilityCooldownPacket(itemIn.id, 0), player);
     }

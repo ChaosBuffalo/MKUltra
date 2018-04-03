@@ -22,7 +22,6 @@ public class ManaRegenIdol extends Item {
     private static final UUID MAINHAND_MODIFIER_ID = UUID.fromString("771f39b8-c161-4b80-897f-724f88e08ae4");
 
 
-
     public ManaRegenIdol(String unlocalizedName, float regenBonus, int bonus_mana, int bonus_magic_damage,
                          int magic_armor, int maxDamage) {
         super();

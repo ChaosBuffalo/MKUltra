@@ -17,20 +17,17 @@ import net.minecraft.world.World;
  * Created by Jacob on 7/14/2016.
  */
 public class EntityDrownProjectile extends EntityBaseProjectile {
-    public EntityDrownProjectile(World worldIn)
-    {
+    public EntityDrownProjectile(World worldIn) {
         super(worldIn);
     }
 
-    public EntityDrownProjectile(World worldIn, EntityLivingBase throwerIn)
-    {
+    public EntityDrownProjectile(World worldIn, EntityLivingBase throwerIn) {
         super(worldIn, throwerIn);
 
         this.setDeathTime(40);
     }
 
-    public EntityDrownProjectile(World worldIn, double x, double y, double z)
-    {
+    public EntityDrownProjectile(World worldIn, double x, double y, double z) {
         super(worldIn, x, y, z);
     }
 

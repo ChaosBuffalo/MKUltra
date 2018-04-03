@@ -18,7 +18,7 @@ public class ItemMagicDamageArmor extends ItemArmor {
     private final UUID modifier_id;
 
     public ItemMagicDamageArmor(String unlocalizedName, ItemArmor.ArmorMaterial material, int renderIndex,
-                              EntityEquipmentSlot armorType, float bonusIn, UUID modIdIn) {
+                                EntityEquipmentSlot armorType, float bonusIn, UUID modIdIn) {
         super(material, renderIndex, armorType);
         this.bonus = bonusIn;
         this.modifier_id = modIdIn;
@@ -29,8 +29,8 @@ public class ItemMagicDamageArmor extends ItemArmor {
     public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
 
         Multimap<String, AttributeModifier> mods = super.getAttributeModifiers(slot, stack);
-        if (slot == this.armorType){
-            if (this.bonus > 0){
+        if (slot == this.armorType) {
+            if (this.bonus > 0) {
                 AttributeModifier mod =
                         new AttributeModifier(this.modifier_id, "Bonus Magic Damage", this.bonus, PlayerAttributes.OP_INCREMENT)
                                 .setSaved(false);

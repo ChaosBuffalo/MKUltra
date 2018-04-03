@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
  */
 public class ModEntities {
 
-    public static void registerEntities(){
+    public static void registerEntities() {
         EntityRegistry.registerModEntity(new ResourceLocation(MKUltra.MODID, "EntityMKAreaEffect"),
                 EntityMKAreaEffect.class, "EntityMKAreaEffect", 1,
                 MKUltra.INSTANCE, 64, 1, true);

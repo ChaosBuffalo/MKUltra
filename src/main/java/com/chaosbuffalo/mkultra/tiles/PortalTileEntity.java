@@ -20,7 +20,6 @@ public class PortalTileEntity extends PoweredEntity {
     private final String unlocalizedName = "portalTile";
 
 
-
     public PortalTileEntity() {
 
     }
@@ -30,9 +29,9 @@ public class PortalTileEntity extends PoweredEntity {
     public float getEnergyCapacity(ConduitType conduitType) {
         ConduitType[] types = this.getTypes();
 
-        for(int i = 0; i < types.length; ++i) {
+        for (int i = 0; i < types.length; ++i) {
             ConduitType t = types[i];
-            if(ConduitType.areSameType(t, conduitType)) {
+            if (ConduitType.areSameType(t, conduitType)) {
                 return this.energyBufferSizes[i];
             }
         }
@@ -55,9 +54,9 @@ public class PortalTileEntity extends PoweredEntity {
         ConduitType[] types = this.getTypes();
         int limit = Math.min(types.length, this.energyBuffers.length);
 
-        for(int i = 0; i < limit; ++i) {
+        for (int i = 0; i < limit; ++i) {
             ConduitType t = types[i];
-            if(ConduitType.areSameType(t, conduitType)) {
+            if (ConduitType.areSameType(t, conduitType)) {
                 return this.energyBuffers[i];
             }
         }
@@ -68,9 +67,9 @@ public class PortalTileEntity extends PoweredEntity {
     @Override
     public void setEnergy(float v, ConduitType conduitType) {
         ConduitType[] types = this.getTypes();
-        for(int i = 0; i < types.length; ++i) {
+        for (int i = 0; i < types.length; ++i) {
             ConduitType t = types[i];
-            if(ConduitType.areSameType(t, conduitType)) {
+            if (ConduitType.areSameType(t, conduitType)) {
                 this.energyBuffers[i] = v;
 
             }
@@ -102,10 +101,11 @@ public class PortalTileEntity extends PoweredEntity {
                 }
             }
         }
-        if (flagUpdate){
+        if (flagUpdate) {
             this.sync();
         }
     }
+
     protected float transmitPowerToConsumers(float availableEnergy, ConduitType powerType, byte minimumPriority) {
         return ConduitRegistry.transmitPowerToConsumers(Math.min(this.getMaximumPowerFlux(), availableEnergy),
                 powerType, minimumPriority, this);
@@ -116,12 +116,12 @@ public class PortalTileEntity extends PoweredEntity {
     }
 
     protected byte getMinimumSinkPriority() {
-        return (byte)-50;
+        return (byte) -50;
     }
 
     @Override
     public PowerRequest getPowerRequest(ConduitType conduitType) {
-        if(this.isPowerSink(conduitType)) {
+        if (this.isPowerSink(conduitType)) {
             ConduitType[] types = this.getTypes();
 
             for (ConduitType type : types) {
@@ -138,7 +138,6 @@ public class PortalTileEntity extends PoweredEntity {
 
         return PowerRequest.REQUEST_NOTHING;
     }
-
 
 
     @Override

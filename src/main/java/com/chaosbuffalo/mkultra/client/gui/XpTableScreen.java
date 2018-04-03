@@ -38,7 +38,7 @@ public class XpTableScreen extends GuiScreen {
         int panelHeight = 165;
         int xPos = width / 2 - panelWidth / 2;
         int yPos = height / 2 - panelHeight / 2;
-        IClassProvider classProvider = (IClassProvider)playerClass.getUnlockItem();
+        IClassProvider classProvider = (IClassProvider) playerClass.getUnlockItem();
         ResourceLocation loc = classProvider.getXpTableBackground();
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.renderEngine.bindTexture(loc);
@@ -52,8 +52,8 @@ public class XpTableScreen extends GuiScreen {
         String text = classProvider.getXpTableText();
         this.fontRenderer.drawSplitString(
                 text,
-                (int)((xPos + 20) * scaleFactor),
-                (int)((yPos + 110) * scaleFactor),
+                (int) ((xPos + 20) * scaleFactor),
+                (int) ((yPos + 110) * scaleFactor),
                 (int) (90 * scaleFactor), 0);
         GlStateManager.popMatrix();
         int buttonStartY = yPos + 110 + 25;
@@ -70,12 +70,12 @@ public class XpTableScreen extends GuiScreen {
         int xCoord = (int) ((xPos + 50) * scaleFactor);
         int yCoord = (int) ((yPos + 70) * scaleFactor);
         String levelText;
-        if (pData.getLevel() < 10){
+        if (pData.getLevel() < 10) {
             levelText = Integer.toString(pData.getLevel() + 1);
         } else {
             levelText = "10";
         }
-        if (pData.getLevel() <= 8){
+        if (pData.getLevel() <= 8) {
             levelText = " " + levelText;
         }
         this.fontRenderer.drawString(levelText, xCoord, yCoord, classProvider.getXpTableTextColor());
@@ -92,6 +92,4 @@ public class XpTableScreen extends GuiScreen {
         return false;
     }
 
-
 }
-

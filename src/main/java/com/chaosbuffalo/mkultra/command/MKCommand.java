@@ -46,8 +46,7 @@ public class MKCommand extends CommandTreeBase {
     }
 
 
-    private static class StatCommand extends CommandBase
-    {
+    private static class StatCommand extends CommandBase {
         static List<String> stats = Arrays.asList("mana", "manaregen", "cdr");
 
         /**
@@ -84,14 +83,14 @@ public class MKCommand extends CommandTreeBase {
                     float rate = data.getManaRegenRate();
                     message = String.format("Mana regen rate: %f", rate);
                 } else {
-                    float mana = (float)parseDouble(args[1]);
+                    float mana = (float) parseDouble(args[1]);
                     data.setManaRegen(mana);
                     message = String.format("Mana regen rate set to %f", mana);
                 }
                 sender.sendMessage(new TextComponentString(message));
             } else if (type.equals("cdr")) {
-                float attrVal = (float)player.getEntityAttribute(PlayerAttributes.COOLDOWN).getAttributeValue();
-                float baseVal = (float)player.getEntityAttribute(PlayerAttributes.COOLDOWN).getBaseValue();
+                float attrVal = (float) player.getEntityAttribute(PlayerAttributes.COOLDOWN).getAttributeValue();
+                float baseVal = (float) player.getEntityAttribute(PlayerAttributes.COOLDOWN).getBaseValue();
                 message = String.format("Cooldown rate %f base %f", attrVal, baseVal);
                 sender.sendMessage(new TextComponentString(message));
             }
@@ -102,8 +101,7 @@ public class MKCommand extends CommandTreeBase {
          */
         @Nonnull
         @Override
-        public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos)
-        {
+        public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
             return stats;
         }
 
@@ -112,8 +110,7 @@ public class MKCommand extends CommandTreeBase {
          */
         @Nonnull
         @Override
-        public String getName()
-        {
+        public String getName() {
             return "stat";
         }
 
@@ -121,8 +118,7 @@ public class MKCommand extends CommandTreeBase {
          * Return the required permission level for this command.
          */
         @Override
-        public int getRequiredPermissionLevel()
-        {
+        public int getRequiredPermissionLevel() {
             return 2;
         }
 
@@ -131,14 +127,12 @@ public class MKCommand extends CommandTreeBase {
          */
         @Nonnull
         @Override
-        public String getUsage(@Nonnull ICommandSender sender)
-        {
+        public String getUsage(@Nonnull ICommandSender sender) {
             return String.format("/mk %s <%s>", getName(), stats.stream().collect(Collectors.joining("|")));
         }
     }
 
-    private static class ClassCommand extends CommandBase
-    {
+    private static class ClassCommand extends CommandBase {
         static List<String> options = Arrays.asList("reset", "switch", "learn");
 
         /**
@@ -175,8 +169,7 @@ public class MKCommand extends CommandTreeBase {
          */
         @Nonnull
         @Override
-        public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos)
-        {
+        public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
             return options;
         }
 
@@ -185,8 +178,7 @@ public class MKCommand extends CommandTreeBase {
          */
         @Nonnull
         @Override
-        public String getName()
-        {
+        public String getName() {
             return "class";
         }
 
@@ -194,8 +186,7 @@ public class MKCommand extends CommandTreeBase {
          * Return the required permission level for this command.
          */
         @Override
-        public int getRequiredPermissionLevel()
-        {
+        public int getRequiredPermissionLevel() {
             return 2;
         }
 
@@ -204,15 +195,13 @@ public class MKCommand extends CommandTreeBase {
          */
         @Nonnull
         @Override
-        public String getUsage(@Nonnull ICommandSender sender)
-        {
+        public String getUsage(@Nonnull ICommandSender sender) {
             return String.format("/mk %s <%s>", getName(), options.stream().collect(Collectors.joining("|")));
         }
     }
 
 
-    private static class CooldownCommand extends CommandBase
-    {
+    private static class CooldownCommand extends CommandBase {
         static List<String> options = Arrays.asList("dump", "reset");
 
         /**
@@ -229,7 +218,7 @@ public class MKCommand extends CommandTreeBase {
             if (data == null)
                 return;
 
-            PlayerData playerData = (PlayerData)data;
+            PlayerData playerData = (PlayerData) data;
 
             String type = args[0].toLowerCase();
 
@@ -245,8 +234,7 @@ public class MKCommand extends CommandTreeBase {
          */
         @Nonnull
         @Override
-        public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos)
-        {
+        public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
             return options;
         }
 
@@ -255,8 +243,7 @@ public class MKCommand extends CommandTreeBase {
          */
         @Nonnull
         @Override
-        public String getName()
-        {
+        public String getName() {
             return "cd";
         }
 
@@ -264,8 +251,7 @@ public class MKCommand extends CommandTreeBase {
          * Return the required permission level for this command.
          */
         @Override
-        public int getRequiredPermissionLevel()
-        {
+        public int getRequiredPermissionLevel() {
             return 2;
         }
 
@@ -274,8 +260,7 @@ public class MKCommand extends CommandTreeBase {
          */
         @Nonnull
         @Override
-        public String getUsage(@Nonnull ICommandSender sender)
-        {
+        public String getUsage(@Nonnull ICommandSender sender) {
             return String.format("/mk %s <%s>", getName(), options.stream().collect(Collectors.joining("|")));
         }
     }

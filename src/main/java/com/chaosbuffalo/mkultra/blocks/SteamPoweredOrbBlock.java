@@ -69,24 +69,21 @@ public class SteamPoweredOrbBlock extends Block implements ITypedConduit, ITileE
     }
 
     @Override
-    public boolean isOpaqueCube(IBlockState state)
-    {
+    public boolean isOpaqueCube(IBlockState state) {
         return false;
     }
 
     @Override
-    public boolean isFullCube(IBlockState state)
-    {
+    public boolean isFullCube(IBlockState state) {
         return false;
     }
 
-    private double getHeightFromState(IBlockState state){
+    private double getHeightFromState(IBlockState state) {
         return getPoweredState(state) * .0625;
     }
 
     @Override
-    public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean p_185477_7_)
-    {
+    public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean p_185477_7_) {
         double offset = getHeightFromState(state);
         addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_PEDASTAL_BOT);
         addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_PEDASTAL_MID);
@@ -98,31 +95,28 @@ public class SteamPoweredOrbBlock extends Block implements ITypedConduit, ITileE
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
-    {
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         return FULL_BLOCK_AABB;
     }
 
 
     @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(IBlockState stateIn, World world, BlockPos pos, Random rand)
-    {
+    public void randomDisplayTick(IBlockState stateIn, World world, BlockPos pos, Random rand) {
         SteamPoweredOrbTileEntity portalEntity = (SteamPoweredOrbTileEntity) world.getTileEntity(pos);
         float steamEnergy = portalEntity.getEnergy(this.getTypes()[0]);
 
 
-        if (steamEnergy >= 800.0f && world.rand.nextInt(5) >= 4){
+        if (steamEnergy >= 800.0f && world.rand.nextInt(5) >= 4) {
 
             this.spawnParticles(world, pos, stateIn);
         }
     }
 
-    private void spawnParticles(World worldIn, BlockPos pos, IBlockState state)
-    {
+    private void spawnParticles(World worldIn, BlockPos pos, IBlockState state) {
         ParticleEffects.spawnParticleEffect(
                 EnumParticleTypes.FIREWORKS_SPARK.getParticleID(), ParticleEffects.CIRCLE_MOTION, 0, 0.25, 10,
                 new Vec3d(pos.getX(), pos.getY(), pos.getZ()).add(new Vec3d(0.5, getHeightFromState(state), 0.5)),
-                        new Vec3d(.25, .25, .25), new Vec3d(1.0, 1.0, 1.0), worldIn);
+                new Vec3d(.25, .25, .25), new Vec3d(1.0, 1.0, 1.0), worldIn);
     }
 
 
@@ -166,37 +160,31 @@ public class SteamPoweredOrbBlock extends Block implements ITypedConduit, ITileE
         return false;
     }
 
-    protected PropertyInteger getPoweredStateProperty()
-    {
+    protected PropertyInteger getPoweredStateProperty() {
         return POWERED_STATE;
     }
 
     @Override
-    public IBlockState getStateFromMeta(int meta)
-    {
+    public IBlockState getStateFromMeta(int meta) {
         return this.withPoweredState(meta);
     }
 
     @Override
-    public int getMetaFromState(IBlockState state)
-    {
+    public int getMetaFromState(IBlockState state) {
         return this.getPoweredState(state);
     }
 
 
-    protected int getPoweredState(IBlockState state)
-    {
+    protected int getPoweredState(IBlockState state) {
         return state.getValue(this.getPoweredStateProperty());
     }
 
-    public IBlockState withPoweredState(int poweredState)
-    {
+    public IBlockState withPoweredState(int poweredState) {
         return this.getDefaultState().withProperty(this.getPoweredStateProperty(), poweredState);
     }
 
     @Override
-    protected BlockStateContainer createBlockState()
-    {
+    protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, POWERED_STATE);
     }
 }

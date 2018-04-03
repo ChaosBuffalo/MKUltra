@@ -10,7 +10,7 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
  */
 public class EntityRenderRegister {
 
-    public static void registerEntityRenderers(){
+    public static void registerEntityRenderers() {
         RenderingRegistry.registerEntityRenderingHandler(EntityMKAreaEffect.class, new RenderMKAreaEffect());
         RenderingRegistry.registerEntityRenderingHandler(EntityDrownProjectile.class,
                 new RenderProjectile(ModItems.drownProjectile, 1.0f));

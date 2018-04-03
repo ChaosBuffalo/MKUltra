@@ -12,13 +12,14 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public abstract class BaseAbility extends IForgeRegistryEntry.Impl<BaseAbility> {
 
     public static final int ACTIVE_ABILITY = 0;
     public static final int TOGGLE_ABILITY = 1;
-    
+
     private ResourceLocation abilityId;
 
     public BaseAbility(String domain, String id) {
@@ -51,7 +52,6 @@ public abstract class BaseAbility extends IForgeRegistryEntry.Impl<BaseAbility> 
     public int getIconV() {
         return 0;
     }
-
 
 
     public float getDistance(int currentLevel) {
@@ -97,14 +97,14 @@ public abstract class BaseAbility extends IForgeRegistryEntry.Impl<BaseAbility> 
         return getSingleLivingTarget(caster, distance, true);
     }
 
-    protected List<Entity> getTargetsInLine(EntityLivingBase caster, Vec3d from, Vec3d to, boolean checkValid){
+    protected List<Entity> getTargetsInLine(EntityLivingBase caster, Vec3d from, Vec3d to, boolean checkValid) {
         return RayTraceUtils.getEntitiesInLine(caster, from, to, new Vec3d(0.0f, 0.0f, 0.0f), .25f,
-                e -> !checkValid || (e instanceof EntityLivingBase && isValidTarget(caster, (EntityLivingBase)e)));
+                e -> !checkValid || (e instanceof EntityLivingBase && isValidTarget(caster, (EntityLivingBase) e)));
     }
 
     protected EntityLivingBase getSingleLivingTarget(EntityLivingBase caster, float distance, boolean checkValid) {
         RayTraceResult lookingAt = RayTraceUtils.getLookingAt(caster, distance,
-                e -> !checkValid || (e instanceof EntityLivingBase && isValidTarget(caster, (EntityLivingBase)e)));
+                e -> !checkValid || (e instanceof EntityLivingBase && isValidTarget(caster, (EntityLivingBase) e)));
 
         if (lookingAt != null && lookingAt.entityHit instanceof EntityLivingBase) {
 
@@ -118,6 +118,7 @@ public abstract class BaseAbility extends IForgeRegistryEntry.Impl<BaseAbility> 
         return null;
     }
 
+    @Nonnull
     protected EntityLivingBase getSingleLivingTargetOrSelf(EntityLivingBase caster, float distance, boolean checkValid) {
         EntityLivingBase target = getSingleLivingTarget(caster, distance, checkValid);
         return target != null ? target : caster;

@@ -26,11 +26,10 @@ public class ForgetfulnessBread extends ItemFood {
     }
 
     @Override
-    protected void onFoodEaten(ItemStack stack, World worldIn, EntityPlayer player)
-    {
+    protected void onFoodEaten(ItemStack stack, World worldIn, EntityPlayer player) {
         if (!worldIn.isRemote) {
-            player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 10*20, 100));
-            player.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 10*20, 1));
+            player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 10 * 20, 100));
+            player.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 10 * 20, 1));
 
             IPlayerData data = PlayerDataProvider.get(player);
             if (data != null) {

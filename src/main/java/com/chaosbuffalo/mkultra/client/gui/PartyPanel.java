@@ -107,4 +107,3 @@ public class PartyPanel extends Gui {
         drawPartyMembers();
     }
 }
-

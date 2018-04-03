@@ -29,8 +29,8 @@ public class ItemManaArmor extends ItemArmor {
     public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
 
         Multimap<String, AttributeModifier> mods = super.getAttributeModifiers(slot, stack);
-        if (slot == this.armorType){
-            if (this.bonus_mana > 0){
+        if (slot == this.armorType) {
+            if (this.bonus_mana > 0) {
                 AttributeModifier mod =
                         new AttributeModifier(this.modifier_id, "Bonus Mana", this.bonus_mana, PlayerAttributes.OP_INCREMENT)
                                 .setSaved(false);

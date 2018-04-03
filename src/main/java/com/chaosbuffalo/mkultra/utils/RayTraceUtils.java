@@ -32,7 +32,7 @@ public class RayTraceUtils {
 
 
     public static List<Entity> getEntitiesInLine(final Entity mainEntity, Vec3d from, Vec3d to, Vec3d expansion,
-                                                 float growth, final Predicate<Entity> filter){
+                                                 float growth, final Predicate<Entity> filter) {
         Predicate<Entity> predicate = input -> defaultFilter.test(input) && filter.test(input);
         AxisAlignedBB bb = new AxisAlignedBB(new BlockPos(from), new BlockPos(to))
                 .expand(expansion.x, expansion.y, expansion.z)

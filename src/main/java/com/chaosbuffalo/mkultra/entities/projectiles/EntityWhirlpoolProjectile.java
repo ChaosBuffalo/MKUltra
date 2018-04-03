@@ -18,34 +18,30 @@ import net.minecraft.world.World;
  * Created by Jacob on 3/25/2018.
  */
 public class EntityWhirlpoolProjectile extends EntityBaseProjectile {
-    public EntityWhirlpoolProjectile(World worldIn)
-    {
+    public EntityWhirlpoolProjectile(World worldIn) {
         super(worldIn);
     }
 
-    public EntityWhirlpoolProjectile(World worldIn, EntityLivingBase throwerIn)
-    {
+    public EntityWhirlpoolProjectile(World worldIn, EntityLivingBase throwerIn) {
         super(worldIn, throwerIn);
 
         this.setDeathTime(80);
     }
 
-    public EntityWhirlpoolProjectile(World worldIn, double x, double y, double z)
-    {
+    public EntityWhirlpoolProjectile(World worldIn, double x, double y, double z) {
         super(worldIn, x, y, z);
     }
 
 
     @Override
     protected boolean onImpact(EntityLivingBase caster, RayTraceResult result, int amplifier) {
-        if (!this.world.isRemote && caster != null)
-        {
+        if (!this.world.isRemote && caster != null) {
             SpellCast yank = YankPotion.Create(caster);
             SpellCast whirlpool = WhirlpoolPotion.Create(caster);
 //            SpellCast damagePotion = InstantIndirectMagicDamagePotion.Create(caster, 2.0f, 2.0f);
             AreaEffectBuilder.Create(caster, this)
                     .spellCast(yank, amplifier - 1, Targeting.TargetType.ENEMY)
-                    .spellCast(whirlpool, 20*2*amplifier, amplifier, Targeting.TargetType.ENEMY)
+                    .spellCast(whirlpool, 20 * 2 * amplifier, amplifier, Targeting.TargetType.ENEMY)
 //                    .spellCast(damagePotion, amplifier, Targeting.TargetType.ENEMY)
                     .duration(80).waitTime(0)
                     .setReapplicationDelay(20)

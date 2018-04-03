@@ -40,7 +40,7 @@ public class PotionEventHandler {
                 if (entity instanceof EntityPlayer) {
                     entity.sendMessage(new TextComponentString("My legs are OK"));
                 }
-            } else if (entity.isPotionActive(WhirlpoolPotion.INSTANCE)){
+            } else if (entity.isPotionActive(WhirlpoolPotion.INSTANCE)) {
                 PotionEffect potion = entity.getActivePotionEffect(WhirlpoolPotion.INSTANCE);
                 entity.attackEntityFrom(DamageSource.causeIndirectMagicDamage(source.getImmediateSource(),
                         source.getTrueSource()), 8.0f * potion.getAmplifier());
@@ -75,20 +75,20 @@ public class PotionEventHandler {
 
         // Player is the victim
         if (livingTarget instanceof EntityPlayerMP) {
-            IPlayerData targetData = PlayerDataProvider.get((EntityPlayerMP)livingTarget);
+            IPlayerData targetData = PlayerDataProvider.get((EntityPlayerMP) livingTarget);
             if (targetData == null) {
                 return;
             }
 
-            ArrayList<EntityPlayer> teammates = PartyManager.getPlayersOnTeam((EntityPlayer)livingTarget);
+            ArrayList<EntityPlayer> teammates = PartyManager.getPlayersOnTeam((EntityPlayer) livingTarget);
             ArrayList<EntityPlayer> damageAbsorbers = new ArrayList<>();
-            for (EntityPlayer teammate : teammates){
-                if (teammate == null){
+            for (EntityPlayer teammate : teammates) {
+                if (teammate == null) {
                     continue;
                 }
-                if (teammate.isPotionActive(WaveBreakPotion.INSTANCE)){
+                if (teammate.isPotionActive(WaveBreakPotion.INSTANCE)) {
                     IPlayerData teammatedata = PlayerDataProvider.get(teammate);
-                    if (teammatedata == null){
+                    if (teammatedata == null) {
                         continue;
                     }
                     if (teammatedata.getMana() > 0) {
@@ -102,14 +102,14 @@ public class PotionEventHandler {
             }
             int absorbCount = damageAbsorbers.size();
 
-            if (absorbCount > 0){
-                float newDamage = event.getAmount()/(absorbCount + 1);
-                for (EntityPlayer absorber : damageAbsorbers){
+            if (absorbCount > 0) {
+                float newDamage = event.getAmount() / (absorbCount + 1);
+                for (EntityPlayer absorber : damageAbsorbers) {
                     absorber.attackEntityFrom(source, newDamage);
                 }
                 event.setAmount(newDamage);
             }
-            if (event.getSource().isMagicDamage()){
+            if (source.isMagicDamage()) {
                 float newDamage = targetData.applyMagicArmor(event.getAmount());
                 Log.debug("Magic armor reducing damage from %f to %f", event.getAmount(), newDamage);
                 event.setAmount(newDamage);
@@ -120,8 +120,8 @@ public class PotionEventHandler {
         // Anyone is the victim
 
         // MoonTrance thorns. Source is attacker, event target is player
-        if (event.getSource().getTrueSource() != null && event.getSource().getTrueSource() instanceof EntityLivingBase) {
-            EntityLivingBase livingSource = (EntityLivingBase) event.getSource().getTrueSource();
+        if (source.getTrueSource() != null && source.getTrueSource() instanceof EntityLivingBase) {
+            EntityLivingBase livingSource = (EntityLivingBase) source.getTrueSource();
 
             PotionEffect effect = livingTarget.getActivePotionEffect(MoonTrancePotion.INSTANCE);
             if (effect != null) {

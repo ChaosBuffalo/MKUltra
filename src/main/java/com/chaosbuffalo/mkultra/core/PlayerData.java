@@ -62,9 +62,8 @@ public class PlayerData implements IPlayerData {
         this.player = player;
         regenTime = 0;
         if (isServerSide()) {
-            abilityTracker = new AbilityTrackerServer((EntityPlayerMP)player);
-        }
-        else {
+            abilityTracker = new AbilityTrackerServer((EntityPlayerMP) player);
+        } else {
             abilityTracker = new AbilityTracker();
         }
         privateData = player.getDataManager();
@@ -159,20 +158,20 @@ public class PlayerData implements IPlayerData {
 
     @Override
     public float scaleMagicDamage(float originalDamage) {
-        float mod = (float)player.getEntityAttribute(PlayerAttributes.MAGIC_ATTACK_DAMAGE).getAttributeValue();
+        float mod = (float) player.getEntityAttribute(PlayerAttributes.MAGIC_ATTACK_DAMAGE).getAttributeValue();
         return originalDamage + mod;
     }
 
     @Override
     public float applyMagicArmor(float originalDamage) {
-        float mod = (float)player.getEntityAttribute(PlayerAttributes.MAGIC_ARMOR).getAttributeValue();
+        float mod = (float) player.getEntityAttribute(PlayerAttributes.MAGIC_ARMOR).getAttributeValue();
         return originalDamage - mod;
     }
 
     private int applyCooldownReduction(int originalCooldownTicks) {
-        float mod = (float)player.getEntityAttribute(PlayerAttributes.COOLDOWN).getAttributeValue();
+        float mod = (float) player.getEntityAttribute(PlayerAttributes.COOLDOWN).getAttributeValue();
         float newTicks = mod * originalCooldownTicks;
-        return (int)newTicks;
+        return (int) newTicks;
     }
 
     private int applyManaCostReduction(int originalCost) {
@@ -420,11 +419,11 @@ public class PlayerData implements IPlayerData {
         if (info == null || info.level == GameConstants.ACTION_BAR_INVALID_LEVEL)
             return;
         ItemStack heldItem = this.player.getHeldItem(EnumHand.OFF_HAND);
-        if (heldItem.getItem() instanceof ManaRegenIdol){
+        if (heldItem.getItem() instanceof ManaRegenIdol) {
             ItemHelper.damageStack(player, heldItem, 1);
         }
         ItemStack mainHandItem = this.player.getHeldItem(EnumHand.MAIN_HAND);
-        if (mainHandItem.getItem() instanceof  ManaRegenIdol){
+        if (mainHandItem.getItem() instanceof ManaRegenIdol) {
             ItemHelper.damageStack(player, mainHandItem, 1);
         }
         int manaCost = ability.getManaCost(info.level);
@@ -470,11 +469,11 @@ public class PlayerData implements IPlayerData {
 
     @Override
     public float getManaRegenRate() {
-        return (float)player.getEntityAttribute(PlayerAttributes.MANA_REGEN).getAttributeValue();
+        return (float) player.getEntityAttribute(PlayerAttributes.MANA_REGEN).getAttributeValue();
     }
 
     private float getBaseManaRegenRate() {
-        return (float)player.getEntityAttribute(PlayerAttributes.MANA_REGEN).getBaseValue();
+        return (float) player.getEntityAttribute(PlayerAttributes.MANA_REGEN).getBaseValue();
     }
 
     @Override
@@ -484,11 +483,11 @@ public class PlayerData implements IPlayerData {
 
     @Override
     public int getTotalMana() {
-        return (int)player.getEntityAttribute(PlayerAttributes.MAX_MANA).getAttributeValue();
+        return (int) player.getEntityAttribute(PlayerAttributes.MAX_MANA).getAttributeValue();
     }
 
     private int getBaseTotalMana() {
-        return (int)player.getEntityAttribute(PlayerAttributes.MAX_MANA).getBaseValue();
+        return (int) player.getEntityAttribute(PlayerAttributes.MAX_MANA).getBaseValue();
     }
 
     @Override
@@ -771,7 +770,7 @@ public class PlayerData implements IPlayerData {
             ResourceLocation abilityId = getAbilityInSlot(i);
             BaseAbility ability = ClassData.getAbility(abilityId);
             if (ability != null && ability instanceof BaseToggleAbility && player != null) {
-                BaseToggleAbility toggle = (BaseToggleAbility)ability;
+                BaseToggleAbility toggle = (BaseToggleAbility) ability;
                 toggle.removeEffect(player, this, player.getEntityWorld());
             }
         }
@@ -835,8 +834,7 @@ public class PlayerData implements IPlayerData {
 
         if (cooldownTicks > 0) {
             abilityTracker.setCooldown(info, cooldownTicks);
-        }
-        else {
+        } else {
             abilityTracker.removeCooldown(info);
         }
         return true;

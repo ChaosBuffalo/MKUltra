@@ -11,25 +11,20 @@ import java.util.Map;
 public class AbilityTracker {
 
     private int ticks;
-    private Map<PlayerAbilityInfo, Cooldown> cooldowns = Maps.newHashMap();
+    private final Map<PlayerAbilityInfo, Cooldown> cooldowns = Maps.newHashMap();
 
-    public boolean hasCooldown(PlayerAbilityInfo info)
-    {
+    public boolean hasCooldown(PlayerAbilityInfo info) {
         return getCooldownTicks(info) > 0;
     }
 
-    public float getCooldown(PlayerAbilityInfo itemIn, float partialTicks)
-    {
+    public float getCooldown(PlayerAbilityInfo itemIn, float partialTicks) {
         Cooldown cd = this.cooldowns.get(itemIn);
 
-        if (cd != null)
-        {
-            float totalCooldown = (float)(cd.expireTicks - cd.createTicks);
-            float currentCooldown = (float)cd.expireTicks - ((float)this.ticks + partialTicks);
+        if (cd != null) {
+            float totalCooldown = (float) (cd.expireTicks - cd.createTicks);
+            float currentCooldown = (float) cd.expireTicks - ((float) this.ticks + partialTicks);
             return MathHelper.clamp(currentCooldown / totalCooldown, 0.0F, 1.0F);
-        }
-        else
-        {
+        } else {
             return 0.0F;
         }
     }
@@ -47,16 +42,13 @@ public class AbilityTracker {
     public void tick() {
         ticks++;
 
-        if (!this.cooldowns.isEmpty())
-        {
+        if (!this.cooldowns.isEmpty()) {
             Iterator<Map.Entry<PlayerAbilityInfo, Cooldown>> iterator = this.cooldowns.entrySet().iterator();
 
-            while (iterator.hasNext())
-            {
+            while (iterator.hasNext()) {
                 Map.Entry<PlayerAbilityInfo, Cooldown> entry = iterator.next();
 
-                if (entry.getValue().expireTicks <= this.ticks)
-                {
+                if (entry.getValue().expireTicks <= this.ticks) {
                     iterator.remove();
                     this.notifyOnRemove(entry.getKey());
                 }
@@ -64,34 +56,28 @@ public class AbilityTracker {
         }
     }
 
-    public void setCooldown(PlayerAbilityInfo info, int ticksIn)
-    {
+    public void setCooldown(PlayerAbilityInfo info, int ticksIn) {
         this.cooldowns.put(info, new Cooldown(this.ticks, this.ticks + ticksIn));
         this.notifyOnSet(info, ticksIn);
     }
 
     @SideOnly(Side.CLIENT)
-    public void removeCooldown(PlayerAbilityInfo info)
-    {
+    public void removeCooldown(PlayerAbilityInfo info) {
         this.cooldowns.remove(info);
         this.notifyOnRemove(info);
     }
 
-    protected void notifyOnSet(PlayerAbilityInfo info, int ticksIn)
-    {
+    protected void notifyOnSet(PlayerAbilityInfo info, int ticksIn) {
     }
 
-    protected void notifyOnRemove(PlayerAbilityInfo info)
-    {
+    protected void notifyOnRemove(PlayerAbilityInfo info) {
     }
 
-    class Cooldown
-    {
+    class Cooldown {
         final int createTicks;
         final int expireTicks;
 
-        private Cooldown(int createTicksIn, int expireTicksIn)
-        {
+        private Cooldown(int createTicksIn, int expireTicksIn) {
             this.createTicks = createTicksIn;
             this.expireTicks = expireTicksIn;
         }
