@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.core.abilities;
 
+import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.BaseAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
@@ -117,8 +118,8 @@ public class WaveDash extends BaseAbility {
             pData.setCooldown(getAbilityId(), Math.max(0, pData.getCurrentAbilityCooldown(getAbilityId()) - 2));
             if (entHit instanceof EntityLivingBase){
                 EntityLivingBase livEnt = (EntityLivingBase) entHit;
-                livEnt.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 2 * 20 * level, level, false, true));
-                livEnt.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 2 * 20 * level, 100, false, true));
+                livEnt.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 2 * GameConstants.TICKS_PER_SECOND * level, level, false, true));
+                livEnt.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 2 * GameConstants.TICKS_PER_SECOND * level, 100, false, true));
             }
 
             MKUltra.packetHandler.sendToAllAround(

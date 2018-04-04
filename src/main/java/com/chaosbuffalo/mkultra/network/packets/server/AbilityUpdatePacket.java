@@ -17,8 +17,8 @@ import java.util.List;
 
 public class AbilityUpdatePacket implements IMessage {
 
-    boolean removed;
-    List<PlayerAbilityInfo> skills;
+    private boolean removed;
+    private List<PlayerAbilityInfo> skills;
 
     public AbilityUpdatePacket() {
     }

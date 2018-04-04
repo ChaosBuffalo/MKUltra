@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.effects.spells;
 
+import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
@@ -51,8 +52,8 @@ public class PoisonArrowPotion extends SpellPotionBase {
                 new Vec3d(0.0, 1.0, 0.0), 40, 5, 1.0);
 
         AreaEffectBuilder.Create((EntityLivingBase) caster, target)
-                .effect(new PotionEffect(MobEffects.POISON, 9 * 20, amplifier, false, true), getTargetType())
-                .effect(new PotionEffect(MobEffects.SLOWNESS, 9 * 20, amplifier + 2, false, true), getTargetType())
+                .effect(new PotionEffect(MobEffects.POISON, 9 * GameConstants.TICKS_PER_SECOND, amplifier, false, true), getTargetType())
+                .effect(new PotionEffect(MobEffects.SLOWNESS, 9 * GameConstants.TICKS_PER_SECOND, amplifier + 2, false, true), getTargetType())
                 .spellCast(particlePotion, amplifier, getTargetType())
                 .instant()
                 .particle(EnumParticleTypes.SLIME)

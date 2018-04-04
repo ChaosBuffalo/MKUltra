@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.core.abilities;
 
+import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.Targeting;
 import com.chaosbuffalo.mkultra.effects.spells.SmitePotion;
@@ -97,7 +98,7 @@ public class Smite extends BaseAbility {
             targetEntity.addPotionEffect(SmitePotion.Create(entity, targetEntity, BASE_DAMAGE, DAMAGE_SCALE).toPotionEffect(level));
             targetEntity.addPotionEffect(
                     new PotionEffect(MobEffects.SLOWNESS,
-                            20 * level, 100, false, true));
+                            GameConstants.TICKS_PER_SECOND * level, 100, false, true));
 
             Vec3d lookVec = entity.getLookVec();
             MKUltra.packetHandler.sendToAllAround(

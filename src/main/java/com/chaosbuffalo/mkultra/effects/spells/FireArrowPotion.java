@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.effects.spells;
 
+import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.*;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
@@ -57,7 +58,7 @@ public class FireArrowPotion extends SpellPotionBase {
                     .spawn();
 
         } else {
-            target.setFire(6 * 20);
+            target.setFire(6 * GameConstants.TICKS_PER_SECOND);
         }
 
     }

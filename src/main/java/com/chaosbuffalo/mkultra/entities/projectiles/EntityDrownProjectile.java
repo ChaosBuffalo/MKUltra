@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.entities.projectiles;
 
+import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.Targeting;
 import com.chaosbuffalo.mkultra.effects.spells.DrownPotion;
@@ -48,9 +49,9 @@ public class EntityDrownProjectile extends EntityBaseProjectile {
             return false;
         }
 
-        if (result.entityHit != null && entity instanceof EntityPlayer && result.entityHit instanceof EntityLivingBase) {
+        if (entity instanceof EntityPlayer && result.entityHit instanceof EntityLivingBase) {
             EntityLivingBase targetEntity = (EntityLivingBase) result.entityHit;
-            targetEntity.addPotionEffect(DrownPotion.Create(entity).setTarget(targetEntity).toPotionEffect(20 * 3, level));
+            targetEntity.addPotionEffect(DrownPotion.Create(entity).setTarget(targetEntity).toPotionEffect(GameConstants.TICKS_PER_SECOND * 3, level));
 
 
             Vec3d lookVec = entity.getLookVec();

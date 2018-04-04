@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.entities.projectiles;
 
+import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
@@ -41,7 +42,7 @@ public class EntityWhirlpoolProjectile extends EntityBaseProjectile {
 //            SpellCast damagePotion = InstantIndirectMagicDamagePotion.Create(caster, 2.0f, 2.0f);
             AreaEffectBuilder.Create(caster, this)
                     .spellCast(yank, amplifier - 1, Targeting.TargetType.ENEMY)
-                    .spellCast(whirlpool, 20 * 2 * amplifier, amplifier, Targeting.TargetType.ENEMY)
+                    .spellCast(whirlpool, GameConstants.TICKS_PER_SECOND * 2 * amplifier, amplifier, Targeting.TargetType.ENEMY)
 //                    .spellCast(damagePotion, amplifier, Targeting.TargetType.ENEMY)
                     .duration(80).waitTime(0)
                     .setReapplicationDelay(20)

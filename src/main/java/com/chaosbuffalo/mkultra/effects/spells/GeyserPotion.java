@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.effects.spells;
 
+import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
@@ -48,13 +49,14 @@ public class GeyserPotion extends SpellPotionBase {
 
     @Override
     public void doEffect(Entity applier, Entity caster, EntityLivingBase target, int amplifier, SpellCast cast) {
+        int baseDuration = 2 * GameConstants.TICKS_PER_SECOND * amplifier;
         if (Targeting.isValidTarget(Targeting.TargetType.FRIENDLY, caster, target, !canSelfCast())) {
-            target.addPotionEffect(new PotionEffect(MobEffects.LEVITATION, 2 * 20 * amplifier, amplifier, false, true));
-            target.addPotionEffect(FeatherFallPotion.Create(caster).setTarget(target).toPotionEffect(2 * 20 * amplifier + 40, amplifier));
+            target.addPotionEffect(new PotionEffect(MobEffects.LEVITATION, baseDuration, amplifier, false, true));
+            target.addPotionEffect(FeatherFallPotion.Create(caster).setTarget(target).toPotionEffect(baseDuration + 40, amplifier));
         } else {
             target.attackEntityFrom(DamageSource.causeIndirectMagicDamage(applier, caster), cast.getScaledValue(amplifier));
-            target.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 4 * 20 * amplifier, amplifier, false, true));
-            target.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 2 * 20 * amplifier, amplifier, false, true));
+            target.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, baseDuration * 2, amplifier, false, true));
+            target.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, baseDuration, amplifier, false, true));
         }
         target.addVelocity(0.0, amplifier * 1.5f, 0.0);
         if (target instanceof EntityPlayerMP && !caster.world.isRemote) {

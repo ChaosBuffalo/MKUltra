@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.core.abilities;
 
+import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.Targeting;
 import com.chaosbuffalo.mkultra.effects.spells.PoisonArrowPotion;
@@ -100,8 +101,8 @@ public class PoisonArrow extends BaseAbility {
         SpellCastArrow arrow = new SpellCastArrow(theWorld, entity);
         arrow.shoot(entity, entity.rotationPitch, entity.rotationYaw, 0.0F, 3.0F, 1.0F);
         arrow.setDamage(BASE_ARROW_DAMAGE + level * SCALE_ARROW_DAMAGE);
-        arrow.addEffect(new PotionEffect(MobEffects.POISON, 9 * 20, level, false, true));
-        arrow.addEffect(new PotionEffect(MobEffects.SLOWNESS, 9 * 20, level + 2, false, true));
+        arrow.addEffect(new PotionEffect(MobEffects.POISON, 9 * GameConstants.TICKS_PER_SECOND, level, false, true));
+        arrow.addEffect(new PotionEffect(MobEffects.SLOWNESS, 9 * GameConstants.TICKS_PER_SECOND, level + 2, false, true));
         if (level == 2){
             arrow.addSpellCast(PoisonArrowPotion.Create(entity, 10.0f), level);
         }

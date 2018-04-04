@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.core.abilities;
 
+import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.Targeting;
 import com.chaosbuffalo.mkultra.core.BaseAbility;
@@ -91,13 +92,13 @@ public class StunningShout extends BaseAbility {
 
             targetEntity.addPotionEffect(
                     new PotionEffect(MobEffects.SLOWNESS,
-                            (2 + 2 * level) * 20, 100, false, true));
+                            (2 + 2 * level) * GameConstants.TICKS_PER_SECOND, 100, false, true));
             targetEntity.addPotionEffect(
                     new PotionEffect(MobEffects.BLINDNESS,
-                            (2 + 2 * level) * 20, 100, false, true));
+                            (2 + 2 * level) * GameConstants.TICKS_PER_SECOND, 100, false, true));
             targetEntity.addPotionEffect(
                     new PotionEffect(MobEffects.WEAKNESS,
-                            (2 + 2 * level) * 20, 100, false, true));
+                            (2 + 2 * level) * GameConstants.TICKS_PER_SECOND, 100, false, true));
 
             Vec3d lookVec = entity.getLookVec();
             MKUltra.packetHandler.sendToAllAround(

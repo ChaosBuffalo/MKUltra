@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.item;
 
+import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.core.ClassData;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerDataProvider;
@@ -28,8 +29,8 @@ public class ForgetfulnessBread extends ItemFood {
     @Override
     protected void onFoodEaten(ItemStack stack, World worldIn, EntityPlayer player) {
         if (!worldIn.isRemote) {
-            player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 10 * 20, 100));
-            player.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 10 * 20, 1));
+            player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 10 * GameConstants.TICKS_PER_SECOND, 100));
+            player.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 10 * GameConstants.TICKS_PER_SECOND, 1));
 
             IPlayerData data = PlayerDataProvider.get(player);
             if (data != null) {

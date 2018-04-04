@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.core.abilities;
 
+import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.Targeting;
 import com.chaosbuffalo.mkultra.core.BaseAbility;
@@ -97,7 +98,7 @@ public class KanyeCutter extends BaseAbility {
             pData.startAbility(this);
 
             if (isValidTarget(entity, targetEntity)) {
-                targetEntity.addPotionEffect(new PotionEffect(MobEffects.WITHER, 20 * 3, level));
+                targetEntity.addPotionEffect(new PotionEffect(MobEffects.WITHER, GameConstants.TICKS_PER_SECOND * 3, level));
                 targetEntity.attackEntityFrom(DamageSource.causeIndirectMagicDamage(entity, entity),
                         BASE_DAMAGE + DAMAGE_SCALE * level);
             }
@@ -117,7 +118,7 @@ public class KanyeCutter extends BaseAbility {
             entity.rotationYaw = yaw;
             entity.rotationPitch = pitch;
             entity.setPositionAndUpdate(teleLoc.x, teleLoc.y, teleLoc.z);
-            entity.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 3 * 20, 5));
+            entity.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 3 * GameConstants.TICKS_PER_SECOND, 5));
 
             Vec3d lookVec = entity.getLookVec();
             MKUltra.packetHandler.sendToAllAround(

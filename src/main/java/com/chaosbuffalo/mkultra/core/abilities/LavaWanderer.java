@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.core.abilities;
 
+import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
@@ -87,10 +88,10 @@ public class LavaWanderer extends BaseAbility {
         int level = pData.getLevelForAbility(getAbilityId());
 
         PotionEffect fireResist = new PotionEffect(MobEffects.FIRE_RESISTANCE,
-                20 * DURATION_PER_LEVEL * level,
+                GameConstants.TICKS_PER_SECOND * DURATION_PER_LEVEL * level,
                 level, false, true);
         PotionEffect speed = new PotionEffect(MobEffects.HASTE,
-                20 * DURATION_PER_LEVEL * level,
+                GameConstants.TICKS_PER_SECOND * DURATION_PER_LEVEL * level,
                 level, false, true);
 
         SpellCast particle = ParticlePotion.Create(entity,

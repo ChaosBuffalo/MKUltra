@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.item;
 
+import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerDataProvider;
 import net.minecraft.creativetab.CreativeTabs;
@@ -17,7 +18,7 @@ import static com.chaosbuffalo.mkultra.item.ItemHelper.findSmokeable;
  */
 public class Pipe extends Item {
 
-    static final int COOLDOWN = 10 * 20;
+    static final int COOLDOWN = 10 * GameConstants.TICKS_PER_SECOND;
 
     public Pipe(String unlocalizedName) {
         super();

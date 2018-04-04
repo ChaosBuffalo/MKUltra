@@ -1,8 +1,6 @@
 package com.chaosbuffalo.mkultra;
 
-/**
- * Created by Lee on 3/19/2016.
- */
+
 public class GameConstants {
     public static final int ACTION_BAR_SIZE = 5;
     public static final int ACTION_BAR_INVALID_LEVEL = 0;

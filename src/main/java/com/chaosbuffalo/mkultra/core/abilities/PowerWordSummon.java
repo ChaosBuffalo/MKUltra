@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.core.abilities;
 
+import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.Targeting;
 import com.chaosbuffalo.mkultra.effects.spells.WarpTargetPotion;
@@ -93,7 +94,7 @@ public class PowerWordSummon extends BaseAbility {
             targetEntity.addPotionEffect(WarpTargetPotion.Create(entity).setTarget(targetEntity).toPotionEffect(level));
             targetEntity.addPotionEffect(
                     new PotionEffect(MobEffects.SLOWNESS,
-                            (4 + level) * 20, 100, false, true));
+                            (4 + level) * GameConstants.TICKS_PER_SECOND, 100, false, true));
 
             Vec3d lookVec = entity.getLookVec();
             MKUltra.packetHandler.sendToAllAround(

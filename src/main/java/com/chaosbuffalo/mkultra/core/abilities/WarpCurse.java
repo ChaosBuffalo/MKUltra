@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.core.abilities;
 
+import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.Targeting;
 import com.chaosbuffalo.mkultra.effects.spells.WarpCursePotion;
@@ -92,10 +93,12 @@ public class WarpCurse extends BaseAbility {
         if (targetEntity != null) {
             pData.startAbility(this);
 
-            targetEntity.addPotionEffect(WarpCursePotion.Create(entity).setTarget(targetEntity).toPotionEffect(20 * level * 4, level));
+            targetEntity.addPotionEffect(WarpCursePotion.Create(entity)
+                    .setTarget(targetEntity)
+                    .toPotionEffect(GameConstants.TICKS_PER_SECOND * level * 4, level));
             targetEntity.addPotionEffect(
                     new PotionEffect(MobEffects.SLOWNESS,
-                            20 * level * 4, level, false, true));
+                            GameConstants.TICKS_PER_SECOND * level * 4, level, false, true));
 
             Vec3d lookVec = entity.getLookVec();
             MKUltra.packetHandler.sendToAllAround(

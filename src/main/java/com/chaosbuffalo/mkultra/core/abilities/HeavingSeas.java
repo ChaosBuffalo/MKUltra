@@ -99,7 +99,7 @@ public class HeavingSeas extends BaseAbility {
                 .spellCast(damage, level, getTargetType())
                 .spellCast(particle, level, getTargetType())
                 .spellCast(heavingSeas, level, getTargetType())
-                .duration(6).waitTime(0)
+                .instant()
                 .color(16711935).radius(getDistance(level), true)
                 .particle(EnumParticleTypes.WATER_BUBBLE)
                 .spawn();

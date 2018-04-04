@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.core.abilities;
 
+import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.Targeting;
 import com.chaosbuffalo.mkultra.core.BaseAbility;
@@ -89,9 +90,9 @@ public class FuriousBrooding extends BaseAbility {
         pData.startAbility(this);
 
         entity.addPotionEffect(
-                new PotionEffect(MobEffects.REGENERATION, (10 + 5 * level) * 20, level, false, true));
+                new PotionEffect(MobEffects.REGENERATION, (10 + 5 * level) * GameConstants.TICKS_PER_SECOND, level, false, true));
         entity.addPotionEffect(
-                new PotionEffect(MobEffects.SLOWNESS, (10 + 5 * level) * 20, level - 1, false, true));
+                new PotionEffect(MobEffects.SLOWNESS, (10 + 5 * level) * GameConstants.TICKS_PER_SECOND, level - 1, false, true));
 
         Vec3d lookVec = entity.getLookVec();
         MKUltra.packetHandler.sendToAllAround(
