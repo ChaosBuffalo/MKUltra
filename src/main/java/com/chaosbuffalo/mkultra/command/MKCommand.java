@@ -8,6 +8,7 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
@@ -66,33 +67,47 @@ public class MKCommand extends CommandTreeBase {
             String type = args[0].toLowerCase();
             String message;
 
-            if (type.equals("mana")) {
-                if (args.length == 1) {
-                    message = String.format("You have %d/%d mana", data.getMana(), data.getTotalMana());
-                } else {
-                    int mana = parseInt(args[1]);
-                    if (mana > data.getTotalMana()) {
-                        data.setTotalMana(mana);
+            switch (type) {
+                case "mana": {
+                    if (args.length == 1) {
+                        message = String.format("You have %d/%d mana", data.getMana(), data.getTotalMana());
+                    } else {
+                        int mana = parseInt(args[1]);
+                        if (mana > data.getTotalMana()) {
+                            data.setTotalMana(mana);
+                        }
+                        data.setMana(mana);
+                        message = String.format("Mana set to %d", mana);
                     }
-                    data.setMana(mana);
-                    message = String.format("Mana set to %d", mana);
+                    sender.sendMessage(new TextComponentString(message));
+                    break;
                 }
-                sender.sendMessage(new TextComponentString(message));
-            } else if (type.equals("manaregen")) {
-                if (args.length == 1) {
-                    float rate = data.getManaRegenRate();
-                    message = String.format("Mana regen rate: %f", rate);
-                } else {
-                    float mana = (float) parseDouble(args[1]);
-                    data.setManaRegen(mana);
-                    message = String.format("Mana regen rate set to %f", mana);
+                case "manaregen": {
+                    if (args.length == 1) {
+                        float rate = data.getManaRegenRate();
+                        message = String.format("Mana regen rate: %f", rate);
+                    } else {
+                        float mana = (float) parseDouble(args[1]);
+                        data.setManaRegen(mana);
+                        message = String.format("Mana regen rate set to %f", mana);
+                    }
+                    sender.sendMessage(new TextComponentString(message));
+                    break;
                 }
-                sender.sendMessage(new TextComponentString(message));
-            } else if (type.equals("cdr")) {
-                float attrVal = (float) player.getEntityAttribute(PlayerAttributes.COOLDOWN).getAttributeValue();
-                float baseVal = (float) player.getEntityAttribute(PlayerAttributes.COOLDOWN).getBaseValue();
-                message = String.format("Cooldown rate %f base %f", attrVal, baseVal);
-                sender.sendMessage(new TextComponentString(message));
+                case "cdr": {
+                    float attrVal = (float) player.getEntityAttribute(PlayerAttributes.COOLDOWN).getAttributeValue();
+                    float baseVal = (float) player.getEntityAttribute(PlayerAttributes.COOLDOWN).getBaseValue();
+                    message = String.format("Cooldown rate %f base %f", attrVal, baseVal);
+                    sender.sendMessage(new TextComponentString(message));
+                    break;
+                }
+                case "armor": {
+                    float attrVal = (float) player.getEntityAttribute(SharedMonsterAttributes.ARMOR).getAttributeValue();
+                    float baseVal = (float) player.getEntityAttribute(SharedMonsterAttributes.ARMOR).getBaseValue();
+                    message = String.format("Armor value %f base %f", attrVal, baseVal);
+                    sender.sendMessage(new TextComponentString(message));
+                    break;
+                }
             }
         }
 
