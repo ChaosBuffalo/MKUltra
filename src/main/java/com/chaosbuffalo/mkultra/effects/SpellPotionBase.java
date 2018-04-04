@@ -50,34 +50,36 @@ public abstract class SpellPotionBase extends Potion {
         return true;
     }
 
+    // Called when the potion is being applied by an AreaEffect or thrown potion bottle
     @Override
     public void affectEntity(Entity applier, Entity caster, @Nonnull EntityLivingBase target, int amplifier, double health) {
 
-        SpellCast meta = SpellCast.get(target, this);
-        if (meta == null) {
-            Log.warn("affectEntity cast was null!");
+        SpellCast cast = SpellCast.get(target, this);
+        if (cast == null) {
+            Log.warn("affectEntity cast was null! Spell: %s", getName());
             return;
         }
 
         if (!isValidTarget(getTargetType(), caster, target, !canSelfCast()))
             return;
 
-        doEffect(applier, caster, target, amplifier, meta);
+        doEffect(applier, caster, target, amplifier, cast);
     }
 
+    // Called for effects that are applied directly to an entity
     @Override
     public void performEffect(@Nonnull EntityLivingBase target, int amplifier) {
 
-        SpellCast meta = SpellCast.get(target, this);
-        if (meta == null) {
-            Log.warn("performEffect cast was null!");
+        SpellCast cast = SpellCast.get(target, this);
+        if (cast == null) {
+            Log.warn("performEffect cast was null! Spell: %s", getName());
             return;
         }
 
-        if (!isValidTarget(getTargetType(), meta.getCaster(), target, !canSelfCast()))
+        if (!isValidTarget(getTargetType(), cast.getCaster(), target, !canSelfCast()))
             return;
 
-        doEffect(meta.getApplier(), meta.getCaster(), target, amplifier, meta);
+        doEffect(cast.getApplier(), cast.getCaster(), target, amplifier, cast);
     }
 
     @Override

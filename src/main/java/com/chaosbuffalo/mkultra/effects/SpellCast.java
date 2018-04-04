@@ -12,7 +12,7 @@ import java.util.Map;
 public class SpellCast {
 
     private static Map<EntityLivingBase, Map<SpellPotionBase, SpellCast>> allCasts =
-            new HashMap<>(new HashMap<EntityLivingBase, Map<SpellPotionBase, SpellCast>>());
+            new HashMap<>(new HashMap<>());
 
     private SpellPotionBase potion;
     private Entity applier;
@@ -34,7 +34,7 @@ public class SpellCast {
 
         Map<SpellPotionBase, SpellCast> targetSpells = allCasts.get(target);
         if (targetSpells == null) {
-            Log.warn("Tried to get a spell on an unregistered target!");
+            Log.warn("Tried to get a spell on an unregistered target! Spell: %s", potion.getName());
             return null;
         }
 

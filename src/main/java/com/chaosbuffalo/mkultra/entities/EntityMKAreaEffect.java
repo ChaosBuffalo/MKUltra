@@ -264,7 +264,7 @@ public class EntityMKAreaEffect extends Entity {
 
                     SpellCast cast = spellEffect.cast;
                     if (cast == null) {
-                        Log.warn("MKAREA instant null cast! " + spellEffect.effect.getPotion());
+                        Log.warn("MKAREA instant null cast! Spell: %s", spellEffect.effect.getPotion().getName());
                         continue;
                     }
 
@@ -279,7 +279,7 @@ public class EntityMKAreaEffect extends Entity {
                 if (spBase != null) {
                     SpellCast cast = spellEffect.cast;
                     if (cast == null) {
-                        Log.warn("MKAREA periodic null cast! " + spellEffect.effect);
+                        Log.warn("MKAREA periodic null cast! Spell: %s", spellEffect.effect.getPotion().getName());
                         continue;
                     }
 
