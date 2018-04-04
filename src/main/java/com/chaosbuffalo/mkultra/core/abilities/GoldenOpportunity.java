@@ -60,18 +60,8 @@ public class GoldenOpportunity extends BaseAbility {
     }
 
     @Override
-    public int getIconU() {
-        return 144;
-    }
-
-    @Override
     public int getRequiredLevel(int currentLevel) {
         return currentLevel * 2;
-    }
-
-    @Override
-    public int getIconV() {
-        return 0;
     }
 
     @Override

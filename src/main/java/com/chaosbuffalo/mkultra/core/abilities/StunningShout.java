@@ -38,16 +38,6 @@ public class StunningShout extends BaseAbility {
     }
 
     @Override
-    public int getIconU() {
-        return 0;
-    }
-
-    @Override
-    public int getIconV() {
-        return 18;
-    }
-
-    @Override
     public ResourceLocation getAbilityIcon(){
         return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/stunningshout.png");
     }

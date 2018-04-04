@@ -43,17 +43,6 @@ public class MileysInspiringBangerz extends BaseAbility {
         return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/mileysbangerz.png");
     }
 
-
-    @Override
-    public int getIconU() {
-        return 54;
-    }
-
-    @Override
-    public int getIconV() {
-        return 36;
-    }
-
     @Override
     public int getCooldown(int currentLevel) {
         return 14 + currentLevel * 6;

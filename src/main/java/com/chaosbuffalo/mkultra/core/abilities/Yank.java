@@ -44,16 +44,6 @@ public class Yank extends BaseAbility {
     }
 
     @Override
-    public int getIconU() {
-        return 216;
-    }
-
-    @Override
-    public int getIconV() {
-        return 0;
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 5;
     }

@@ -53,16 +53,6 @@ public class TNTWhisperer extends BaseAbility {
     }
 
     @Override
-    public int getIconU() {
-        return 180;
-    }
-
-    @Override
-    public int getIconV() {
-        return 0;
-    }
-
-    @Override
     public int getManaCost(int currentLevel){
         return 15 - currentLevel * 5;
     }

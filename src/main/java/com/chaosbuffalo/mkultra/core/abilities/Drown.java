@@ -44,16 +44,6 @@ public class Drown extends BaseAbility {
     }
 
     @Override
-    public int getIconU() {
-        return 90;
-    }
-
-    @Override
-    public int getIconV() {
-        return 36;
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 4 - currentLevel;
     }

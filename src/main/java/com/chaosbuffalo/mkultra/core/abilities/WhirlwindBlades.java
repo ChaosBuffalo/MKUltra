@@ -47,16 +47,6 @@ public class WhirlwindBlades extends BaseAbility {
     }
 
     @Override
-    public int getIconU() {
-        return 18;
-    }
-
-    @Override
-    public int getIconV() {
-        return 18;
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 25 - 5 * currentLevel;
     }

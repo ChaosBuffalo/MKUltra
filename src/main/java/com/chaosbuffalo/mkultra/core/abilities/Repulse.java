@@ -44,17 +44,6 @@ public class Repulse extends BaseAbility {
         return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/repulse.png");
     }
 
-
-    @Override
-    public int getIconU() {
-        return 72;
-    }
-
-    @Override
-    public int getIconV() {
-        return 0;
-    }
-
     @Override
     public int getCooldown(int currentLevel) {
         return 15;

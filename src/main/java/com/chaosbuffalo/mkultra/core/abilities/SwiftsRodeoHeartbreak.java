@@ -41,16 +41,6 @@ public class SwiftsRodeoHeartbreak extends BaseAbility {
     }
 
     @Override
-    public int getIconU() {
-        return 18;
-    }
-
-    @Override
-    public int getIconV() {
-        return 36;
-    }
-
-    @Override
     public ResourceLocation getAbilityIcon(){
         return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/swiftsrodeohearthbreak.png");
     }

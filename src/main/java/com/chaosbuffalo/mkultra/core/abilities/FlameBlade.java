@@ -50,16 +50,6 @@ public class FlameBlade  extends BaseAbility {
     }
 
     @Override
-    public int getIconU() {
-        return 216;
-    }
-
-    @Override
-    public int getIconV() {
-        return 36;
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 18 + currentLevel * 5;
     }

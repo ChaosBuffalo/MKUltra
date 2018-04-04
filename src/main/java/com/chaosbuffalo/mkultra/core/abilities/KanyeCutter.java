@@ -44,19 +44,8 @@ public class KanyeCutter extends BaseAbility {
     }
 
     @Override
-    public int getIconU() {
-        return 0;
-    }
-
-    @Override
     public ResourceLocation getAbilityIcon(){
         return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/kanyecutter.png");
-    }
-
-
-    @Override
-    public int getIconV() {
-        return 36;
     }
 
     @Override

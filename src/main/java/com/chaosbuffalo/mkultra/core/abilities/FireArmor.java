@@ -49,16 +49,6 @@ public class FireArmor extends BaseAbility {
     }
 
     @Override
-    public int getIconU() {
-        return 198;
-    }
-
-    @Override
-    public int getIconV() {
-        return 18;
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 150 - currentLevel * 15;
     }

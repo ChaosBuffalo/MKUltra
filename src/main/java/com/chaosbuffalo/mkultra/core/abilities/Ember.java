@@ -47,16 +47,6 @@ public class Ember extends BaseAbility {
     }
 
     @Override
-    public int getIconU() {
-        return 144;
-    }
-
-    @Override
-    public int getIconV() {
-        return 18;
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 6 - 2 * currentLevel;
     }

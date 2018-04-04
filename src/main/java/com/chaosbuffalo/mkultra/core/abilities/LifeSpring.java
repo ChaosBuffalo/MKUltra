@@ -45,17 +45,6 @@ public class LifeSpring  extends BaseAbility {
         return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/lifespring.png");
     }
 
-
-    @Override
-    public int getIconU() {
-        return 234;
-    }
-
-    @Override
-    public int getIconV() {
-        return 36;
-    }
-
     @Override
     public int getCooldown(int currentLevel) {
         return 30 - currentLevel * 5;

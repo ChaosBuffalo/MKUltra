@@ -40,16 +40,6 @@ public class BallLightning extends BaseAbility {
     }
 
     @Override
-    public int getIconU() {
-        return 180;
-    }
-
-    @Override
-    public int getIconV() {
-        return 36;
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 8 - 2 * currentLevel;
     }

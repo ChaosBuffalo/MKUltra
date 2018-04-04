@@ -49,16 +49,6 @@ public class ArrowStorm extends BaseAbility {
     }
 
     @Override
-    public int getIconU() {
-        return 126;
-    }
-
-    @Override
-    public int getIconV() {
-        return 18;
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 40 - 10 * currentLevel;
     }

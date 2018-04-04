@@ -49,16 +49,6 @@ public class EagleAspect extends BaseAbility {
     }
 
     @Override
-    public int getIconU() {
-        return 0;
-    }
-
-    @Override
-    public int getIconV() {
-        return 54;
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 1200 - currentLevel * 300;
     }

@@ -35,8 +35,6 @@ public abstract class BaseAbility extends IForgeRegistryEntry.Impl<BaseAbility> 
         return abilityId;
     }
 
-    public abstract ResourceLocation getAbilityIcon();
-
     public abstract String getAbilityName();
 
     public abstract String getAbilityDescription();
@@ -45,14 +43,15 @@ public abstract class BaseAbility extends IForgeRegistryEntry.Impl<BaseAbility> 
         return "Default";
     }
 
+    public abstract ResourceLocation getAbilityIcon();
+
     public int getIconU() {
-        return 18;
+        return 0;
     }
 
     public int getIconV() {
         return 0;
     }
-
 
     public float getDistance(int currentLevel) {
         return 1.0f;

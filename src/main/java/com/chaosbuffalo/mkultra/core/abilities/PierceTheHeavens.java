@@ -59,16 +59,6 @@ public class PierceTheHeavens extends BaseAbility {
     }
 
     @Override
-    public int getIconU() {
-        return 162;
-    }
-
-    @Override
-    public int getIconV() {
-        return 0;
-    }
-
-    @Override
     public int getRequiredLevel(int currentLevel) {
         return 4 + currentLevel * 2;
     }

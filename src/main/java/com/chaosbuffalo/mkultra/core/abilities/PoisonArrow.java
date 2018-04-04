@@ -54,16 +54,6 @@ public class PoisonArrow extends BaseAbility {
     }
 
     @Override
-    public int getIconU() {
-        return 108;
-    }
-
-    @Override
-    public int getIconV() {
-        return 18;
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 10 - currentLevel * 2;
     }

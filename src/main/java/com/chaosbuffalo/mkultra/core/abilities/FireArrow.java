@@ -51,16 +51,6 @@ public class FireArrow extends BaseAbility {
     }
 
     @Override
-    public int getIconU() {
-        return 72;
-    }
-
-    @Override
-    public int getIconV() {
-        return 18;
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 5 - currentLevel;
     }

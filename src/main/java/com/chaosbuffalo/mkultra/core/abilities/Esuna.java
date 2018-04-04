@@ -43,17 +43,6 @@ public class Esuna extends BaseAbility {
         return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/esuna.png");
     }
 
-
-    @Override
-    public int getIconU() {
-        return 126;
-    }
-
-    @Override
-    public int getIconV() {
-        return 36;
-    }
-
     @Override
     public int getCooldown(int currentLevel) {
         return 25 - currentLevel * 5;

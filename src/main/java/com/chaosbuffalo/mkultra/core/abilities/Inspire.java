@@ -37,19 +37,8 @@ public class Inspire extends BaseAbility {
     }
 
     @Override
-    public int getIconU() {
-        return 108;
-    }
-
-    @Override
     public ResourceLocation getAbilityIcon(){
         return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/inspire.png");
-    }
-
-
-    @Override
-    public int getIconV() {
-        return 0;
     }
 
     @Override

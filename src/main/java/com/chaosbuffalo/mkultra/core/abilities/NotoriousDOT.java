@@ -44,17 +44,6 @@ public class NotoriousDOT extends BaseAbility {
         return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/notoriousdot.png");
     }
 
-
-    @Override
-    public int getIconU() {
-        return 234;
-    }
-
-    @Override
-    public int getIconV() {
-        return 18;
-    }
-
     @Override
     public int getCooldown(int currentLevel) {
         return 20 - currentLevel * 4;

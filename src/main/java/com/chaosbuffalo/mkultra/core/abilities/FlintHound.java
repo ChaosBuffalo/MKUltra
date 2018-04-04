@@ -65,16 +65,6 @@ public class FlintHound extends BaseAbility {
     }
 
     @Override
-    public int getIconU() {
-        return 54;
-    }
-
-    @Override
-    public int getIconV() {
-        return 18;
-    }
-
-    @Override
     public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
         pData.startAbility(this);
 

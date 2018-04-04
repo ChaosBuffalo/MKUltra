@@ -62,16 +62,6 @@ public class LavaWanderer extends BaseAbility {
     }
 
     @Override
-    public int getIconU() {
-        return 198;
-    }
-
-    @Override
-    public int getIconV() {
-        return 0;
-    }
-
-    @Override
     public float getDistance(int currentLevel) {
         return 5.0f + 5.0f * currentLevel;
     }

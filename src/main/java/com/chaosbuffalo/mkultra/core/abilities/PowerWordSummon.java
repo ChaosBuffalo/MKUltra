@@ -39,19 +39,8 @@ public class PowerWordSummon extends BaseAbility {
     }
 
     @Override
-    public int getIconU() {
-        return 72;
-    }
-
-    @Override
     public ResourceLocation getAbilityIcon(){
         return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/powerwordsummon.png");
-    }
-
-
-    @Override
-    public int getIconV() {
-        return 36;
     }
 
     @Override

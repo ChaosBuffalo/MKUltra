@@ -47,16 +47,6 @@ public class FlameWave extends BaseAbility {
     }
 
     @Override
-    public int getIconU() {
-        return 180;
-    }
-
-    @Override
-    public int getIconV() {
-        return 18;
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 20 - currentLevel * 5;
     }

@@ -43,17 +43,6 @@ public class MassDrown extends BaseAbility {
         return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/massdrown.png");
     }
 
-
-    @Override
-    public int getIconU() {
-        return 162;
-    }
-
-    @Override
-    public int getIconV() {
-        return 36;
-    }
-
     @Override
     public int getCooldown(int currentLevel) {
         return 30 - 10 * currentLevel;

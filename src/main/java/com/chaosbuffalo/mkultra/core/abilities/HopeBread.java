@@ -59,16 +59,6 @@ public class HopeBread extends BaseAbility {
     }
 
     @Override
-    public int getIconU() {
-        return 126;
-    }
-
-    @Override
-    public int getIconV() {
-        return 0;
-    }
-
-    @Override
     public int getRequiredLevel(int currentLevel) {
         return currentLevel * 2;
     }

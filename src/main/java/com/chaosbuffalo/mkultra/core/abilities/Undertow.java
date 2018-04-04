@@ -47,16 +47,6 @@ public class Undertow extends BaseAbility {
     }
 
     @Override
-    public int getIconU() {
-        return 144;
-    }
-
-    @Override
-    public int getIconV() {
-        return 36;
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 90 - currentLevel * 15;
     }

@@ -47,16 +47,6 @@ public class WarpCurse extends BaseAbility {
     }
 
     @Override
-    public int getIconU() {
-        return 162;
-    }
-
-    @Override
-    public int getIconV() {
-        return 18;
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 16 - currentLevel * 4;
     }

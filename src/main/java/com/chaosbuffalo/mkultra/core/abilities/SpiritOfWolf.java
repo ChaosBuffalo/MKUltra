@@ -46,16 +46,6 @@ public class SpiritOfWolf extends BaseAbility {
     }
 
     @Override
-    public int getIconU() {
-        return 198;
-    }
-
-    @Override
-    public int getIconV() {
-        return 36;
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 40 - 10 * currentLevel;
     }

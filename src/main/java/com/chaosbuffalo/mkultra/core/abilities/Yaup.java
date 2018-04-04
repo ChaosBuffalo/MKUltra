@@ -45,16 +45,6 @@ public class Yaup extends BaseAbility {
     }
 
     @Override
-    public int getIconU() {
-        return 234;
-    }
-
-    @Override
-    public int getIconV() {
-        return 0;
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 45;
     }
