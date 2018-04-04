@@ -21,7 +21,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class PoisonArrow extends BaseAbility {
-
+    public static float BASE_ARROW_DAMAGE = 6.0f;
+    public static float SCALE_ARROW_DAMAGE = 2.0f;
     public static float BASE_DAMAGE = 2.0f;
     public static float DAMAGE_SCALE = 1.0f;
 
@@ -98,7 +99,7 @@ public class PoisonArrow extends BaseAbility {
 
         SpellCastArrow arrow = new SpellCastArrow(theWorld, entity);
         arrow.shoot(entity, entity.rotationPitch, entity.rotationYaw, 0.0F, 3.0F, 1.0F);
-        arrow.setDamage(BASE_DAMAGE + level * DAMAGE_SCALE);
+        arrow.setDamage(BASE_ARROW_DAMAGE + level * SCALE_ARROW_DAMAGE);
         arrow.addEffect(new PotionEffect(MobEffects.POISON, 9 * 20, level, false, true));
         arrow.addEffect(new PotionEffect(MobEffects.SLOWNESS, 9 * 20, level + 2, false, true));
         if (level == 2){

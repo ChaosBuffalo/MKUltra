@@ -68,7 +68,7 @@ public class ClassData {
         registerClass(new WetWizard());
         registerClass(new Druid());
         registerClass(new MoonKnight());
-        registerClass(new WetKnight());
+        registerClass(new WaveKnight());
     }
 
     @SuppressWarnings("unused")

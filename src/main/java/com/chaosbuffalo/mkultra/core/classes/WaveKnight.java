@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by Jacob on 3/25/2018.
  */
-public class WetKnight extends BaseClass {
+public class WaveKnight extends BaseClass {
 
     private static final List<BaseAbility> abilities = new ArrayList<>(5);
 
@@ -26,8 +26,8 @@ public class WetKnight extends BaseClass {
         abilities.add(new WaveBreak());
     }
 
-    public WetKnight() {
-        super(MKUltra.MODID, "class.wet_knight", "Wet Knight");
+    public WaveKnight() {
+        super(MKUltra.MODID, "class.wave_knight", "Wave Knight");
     }
 
     @Override

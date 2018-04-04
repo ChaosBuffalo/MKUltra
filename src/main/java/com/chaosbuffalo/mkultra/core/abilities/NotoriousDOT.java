@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 
 public class NotoriousDOT extends BaseAbility {
     public static float BASE_DAMAGE = 2.0f;
-    public static float DAMAGE_SCALE = 2.0f;
+    public static float DAMAGE_SCALE = 1.0f;
 
     public NotoriousDOT() {
         super(MKUltra.MODID, "ability.notorious_dot");

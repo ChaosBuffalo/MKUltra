@@ -20,6 +20,8 @@ import net.minecraft.world.World;
 
 public class FireArrow extends BaseAbility {
 
+    public static float BASE_ARROW_DAMAGE = 4.0f;
+    public static float SCALE_ARROW_DAMAGE = 2.0f;
     public static float BASE_DAMAGE = 1.0f;
     public static float DAMAGE_SCALE = 1.0f;
 
@@ -96,7 +98,7 @@ public class FireArrow extends BaseAbility {
 
         SpellCastArrow arrow = new SpellCastArrow(theWorld, entity);
         arrow.shoot(entity, entity.rotationPitch, entity.rotationYaw, 0.0F, 3.0F, 1.0F);
-        arrow.setDamage(BASE_DAMAGE + level * DAMAGE_SCALE);
+        arrow.setDamage(BASE_ARROW_DAMAGE + level * SCALE_ARROW_DAMAGE);
         arrow.addSpellCast(FireArrowPotion.Create(entity, BASE_DAMAGE, DAMAGE_SCALE, 10.0f), 1);
         arrow.pickupStatus = EntityArrow.PickupStatus.DISALLOWED;
         theWorld.spawnEntity(arrow);

@@ -27,8 +27,8 @@ import java.util.List;
  */
 public class WaveDash extends BaseAbility {
 
-    public static float BASE_DAMAGE = 6.0f;
-    public static float DAMAGE_SCALE = 4.0f;
+    public static float BASE_DAMAGE = 4.0f;
+    public static float DAMAGE_SCALE = 3.0f;
     public static float DASH_DISTANCE = 8.0f;
 
     public WaveDash() {

@@ -18,8 +18,8 @@ import net.minecraft.world.World;
  */
 public class EntityDualityRuneProjectile extends EntityBaseProjectile {
 
-        private final static float BASE = 5.0f;
-        private final static float SCALE = 5.0f;
+        private final static float BASE = 4.0f;
+        private final static float SCALE = 4.0f;
 
         public EntityDualityRuneProjectile(World worldIn)
         {
