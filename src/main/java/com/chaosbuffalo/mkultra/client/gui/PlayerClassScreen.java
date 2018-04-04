@@ -71,9 +71,6 @@ public class PlayerClassScreen extends GuiScreen {
         ResourceLocation iconLoc1 = classProvider.getIconForProvider();
         this.mc.renderEngine.bindTexture(iconLoc1);
         Gui.drawModalRectWithCustomSizedTexture(xPos + 6, iconHeight, 0, 0, 16, 16, 16, 16);
-//        this.drawTexturedModalRect(xPos + 6, iconHeight, 0, 0, 16, 16);
-//        ResourceLocation iconLoc2 = new ResourceLocation(MKUltra.MODID, ClassData.getAbilityIconTextures());
-//        this.mc.renderEngine.bindTexture(iconLoc2);
         for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
             BaseAbility ability = playerClass.getOfferedAbilityBySlot(i);
             if (ability == null)
@@ -84,7 +81,7 @@ public class PlayerClassScreen extends GuiScreen {
             mc.getTextureManager().bindTexture(ability.getAbilityIcon());
             Gui.drawModalRectWithCustomSizedTexture(xPos + panelX + 2,
                     yPos + panelY + 2 + 14,
-                    0, 0, 16, 16, 16, 16);
+                    ability.getIconU(), ability.getIconV(), 16, 16, 16, 16);
         }
         //draw text
         this.buttonList.clear();
