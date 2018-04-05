@@ -1,7 +1,7 @@
 package com.chaosbuffalo.mkultra.network.packets.client;
 
 import com.chaosbuffalo.mkultra.core.IPlayerData;
-import com.chaosbuffalo.mkultra.core.PlayerDataProvider;
+import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.network.MessageHandler;
 import com.chaosbuffalo.mkultra.utils.ServerUtils;
 import io.netty.buffer.ByteBuf;
@@ -37,7 +37,7 @@ public class ExecuteActivePacket implements IMessage {
                                             final ExecuteActivePacket message,
                                             MessageContext ctx) {
             ServerUtils.addScheduledTask(() -> {
-                IPlayerData pData = PlayerDataProvider.get(player);
+                IPlayerData pData = MKUPlayerData.get(player);
                 if (pData == null)
                     return;
 

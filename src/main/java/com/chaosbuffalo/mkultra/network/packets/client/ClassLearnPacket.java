@@ -2,7 +2,7 @@
 package com.chaosbuffalo.mkultra.network.packets.client;
 
 import com.chaosbuffalo.mkultra.core.IPlayerData;
-import com.chaosbuffalo.mkultra.core.PlayerDataProvider;
+import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.item.AngelDust;
 import com.chaosbuffalo.mkultra.item.ItemHelper;
 import com.chaosbuffalo.mkultra.network.MessageHandler;
@@ -52,7 +52,7 @@ public class ClassLearnPacket implements IMessage {
                                             final ClassLearnPacket msg,
                                             MessageContext ctx) {
             ServerUtils.addScheduledTask(() -> {
-                IPlayerData data = PlayerDataProvider.get(player);
+                IPlayerData data = MKUPlayerData.get(player);
                 if (data != null) {
                     if (msg.learn) {
                         data.learnClass(msg.classId);

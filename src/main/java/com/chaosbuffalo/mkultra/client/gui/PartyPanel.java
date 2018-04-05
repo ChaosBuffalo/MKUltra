@@ -3,7 +3,7 @@ package com.chaosbuffalo.mkultra.client.gui;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
-import com.chaosbuffalo.mkultra.core.PlayerDataProvider;
+import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
@@ -77,7 +77,7 @@ public class PartyPanel extends Gui {
     private void drawPartyMember(EntityPlayer player, int index, int panelX, int panelY) {
 
         int memberY = panelY + index * PARTY_MEMBER_HEIGHT;
-        IPlayerData data = PlayerDataProvider.get(player);
+        IPlayerData data = MKUPlayerData.get(player);
         int manaSize;
         if (data == null || data.getTotalMana() == 0) {
             manaSize = 0;

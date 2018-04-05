@@ -3,7 +3,7 @@ package com.chaosbuffalo.mkultra.item;
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.core.ClassData;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
-import com.chaosbuffalo.mkultra.core.PlayerDataProvider;
+import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemFood;
@@ -32,7 +32,7 @@ public class ForgetfulnessBread extends ItemFood {
             player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 10 * GameConstants.TICKS_PER_SECOND, 100));
             player.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 10 * GameConstants.TICKS_PER_SECOND, 1));
 
-            IPlayerData data = PlayerDataProvider.get(player);
+            IPlayerData data = MKUPlayerData.get(player);
             if (data != null) {
                 data.activateClass(ClassData.INVALID_CLASS);
             }

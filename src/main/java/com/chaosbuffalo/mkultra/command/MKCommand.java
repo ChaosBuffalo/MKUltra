@@ -60,7 +60,7 @@ public class MKCommand extends CommandTreeBase {
             }
 
             EntityPlayerMP player = getCommandSenderAsPlayer(sender);
-            IPlayerData data = PlayerDataProvider.get(player);
+            IPlayerData data = MKUPlayerData.get(player);
             if (data == null)
                 return;
 
@@ -160,7 +160,7 @@ public class MKCommand extends CommandTreeBase {
             }
 
             EntityPlayerMP playerIn = getCommandSenderAsPlayer(sender);
-            IPlayerData data = PlayerDataProvider.get(playerIn);
+            IPlayerData data = MKUPlayerData.get(playerIn);
             if (data == null)
                 return;
 
@@ -229,7 +229,7 @@ public class MKCommand extends CommandTreeBase {
             }
 
             EntityPlayerMP player = getCommandSenderAsPlayer(sender);
-            IPlayerData data = PlayerDataProvider.get(player);
+            IPlayerData data = MKUPlayerData.get(player);
             if (data == null)
                 return;
 

@@ -2,7 +2,7 @@ package com.chaosbuffalo.mkultra.item;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
-import com.chaosbuffalo.mkultra.core.PlayerDataProvider;
+import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.item.interfaces.IClassProvider;
 import com.chaosbuffalo.mkultra.network.ModGuiHandler;
 import net.minecraft.creativetab.CreativeTabs;
@@ -42,7 +42,7 @@ public class ClassIcon extends Item implements IClassProvider {
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand) {
         if (worldIn.isRemote && hand == EnumHand.MAIN_HAND) {
-            IPlayerData data = PlayerDataProvider.get(playerIn);
+            IPlayerData data = MKUPlayerData.get(playerIn);
             if (data != null && !data.hasChosenClass()) {
                 playerIn.openGui(MKUltra.INSTANCE, ModGuiHandler.LEARN_CLASS_SCREEN, worldIn,
                         (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);

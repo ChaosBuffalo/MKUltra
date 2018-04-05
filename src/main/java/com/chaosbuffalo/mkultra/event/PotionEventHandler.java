@@ -2,7 +2,7 @@ package com.chaosbuffalo.mkultra.event;
 
 
 import com.chaosbuffalo.mkultra.core.IPlayerData;
-import com.chaosbuffalo.mkultra.core.PlayerDataProvider;
+import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.effects.spells.*;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.party.PartyManager;
@@ -50,7 +50,7 @@ public class PotionEventHandler {
         // Player is the source
         if (source.getTrueSource() != null && source.getTrueSource() instanceof EntityPlayerMP) {
             EntityPlayerMP playerSource = (EntityPlayerMP) source.getTrueSource();
-            IPlayerData sourceData = PlayerDataProvider.get(playerSource);
+            IPlayerData sourceData = MKUPlayerData.get(playerSource);
             if (sourceData == null) {
                 return;
             }
@@ -75,7 +75,7 @@ public class PotionEventHandler {
 
         // Player is the victim
         if (livingTarget instanceof EntityPlayerMP) {
-            IPlayerData targetData = PlayerDataProvider.get((EntityPlayerMP) livingTarget);
+            IPlayerData targetData = MKUPlayerData.get((EntityPlayerMP) livingTarget);
             if (targetData == null) {
                 return;
             }
@@ -87,7 +87,7 @@ public class PotionEventHandler {
                     continue;
                 }
                 if (teammate.isPotionActive(WaveBreakPotion.INSTANCE)) {
-                    IPlayerData teammatedata = PlayerDataProvider.get(teammate);
+                    IPlayerData teammatedata = MKUPlayerData.get(teammate);
                     if (teammatedata == null) {
                         continue;
                     }

@@ -1,7 +1,7 @@
 package com.chaosbuffalo.mkultra.event;
 
 import com.chaosbuffalo.mkultra.core.IPlayerData;
-import com.chaosbuffalo.mkultra.core.PlayerDataProvider;
+import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.item.ItemHelper;
 import com.chaosbuffalo.mkultra.item.interfaces.IExtendedReach;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -44,7 +44,7 @@ public class ItemRestrictionHandler {
 
         checkShieldWithSpear(player);
 
-        IPlayerData playerData = PlayerDataProvider.get(player);
+        IPlayerData playerData = MKUPlayerData.get(player);
         if (playerData == null)
             return;
 

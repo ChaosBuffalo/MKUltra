@@ -684,7 +684,7 @@ public class PlayerData implements IPlayerData {
     @Override
     public void clone(EntityPlayer previous) {
 
-        PlayerData prevData = (PlayerData) PlayerDataProvider.get(previous);
+        PlayerData prevData = (PlayerData) MKUPlayerData.get(previous);
         if (prevData == null)
             return;
 

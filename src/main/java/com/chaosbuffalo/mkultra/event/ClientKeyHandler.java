@@ -60,7 +60,7 @@ public class ClientKeyHandler {
         if (player == null)
             return;
 
-        IPlayerData pData = PlayerDataProvider.get(player);
+        IPlayerData pData = MKUPlayerData.get(player);
         if (pData == null || !pData.hasChosenClass()) {
             return;
         }

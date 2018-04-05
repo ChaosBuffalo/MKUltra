@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.event;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
+import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerDataProvider;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
@@ -25,7 +26,7 @@ public class PlayerDataEventHandler {
     @SideOnly(Side.SERVER)
     public static void onEntityJoinWorldEventServer(EntityJoinWorldEvent event) {
         if (event.getEntity() instanceof EntityPlayerMP) {
-            IPlayerData data = PlayerDataProvider.get((EntityPlayer) event.getEntity());
+            IPlayerData data = MKUPlayerData.get((EntityPlayer) event.getEntity());
             if (data != null) {
                 data.onJoinWorld();
             }
@@ -36,7 +37,7 @@ public class PlayerDataEventHandler {
     @SideOnly(Side.CLIENT)
     public static void onEntityJoinWorldEventClient(EntityJoinWorldEvent event) {
         if (event.getEntity() instanceof EntityPlayerSP) {
-            IPlayerData data = PlayerDataProvider.get((EntityPlayer) event.getEntity());
+            IPlayerData data = MKUPlayerData.get((EntityPlayer) event.getEntity());
             if (data != null) {
                 data.onJoinWorld();
             }
@@ -46,7 +47,7 @@ public class PlayerDataEventHandler {
     @SubscribeEvent
     public static void onLivingUpdateTick(LivingEvent.LivingUpdateEvent e) {
         if (e.getEntityLiving() instanceof EntityPlayer) {
-            IPlayerData playerData = PlayerDataProvider.get((EntityPlayer) e.getEntityLiving());
+            IPlayerData playerData = MKUPlayerData.get((EntityPlayer) e.getEntityLiving());
             if (playerData != null) {
                 playerData.onTick();
             }
@@ -59,13 +60,13 @@ public class PlayerDataEventHandler {
         if (e.getEntityPlayer() == null)
             return;
 
-        IPlayerData newData = PlayerDataProvider.get(e.getEntityPlayer());
+        IPlayerData newData = MKUPlayerData.get(e.getEntityPlayer());
         if (newData == null)
             return;
 
         // Die on the original so we can clone properly and not need an immediate update packet
         if (e.isWasDeath()) {
-            IPlayerData oldData = PlayerDataProvider.get(e.getOriginal());
+            IPlayerData oldData = MKUPlayerData.get(e.getOriginal());
             if (oldData == null)
                 return;
             oldData.doDeath();

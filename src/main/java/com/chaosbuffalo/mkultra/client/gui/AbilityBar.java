@@ -147,7 +147,7 @@ public class AbilityBar extends Gui {
             return;
         }
 
-        IPlayerData data = PlayerDataProvider.get(mc.player);
+        IPlayerData data = MKUPlayerData.get(mc.player);
         if (data == null || !data.hasChosenClass())
             return;
 

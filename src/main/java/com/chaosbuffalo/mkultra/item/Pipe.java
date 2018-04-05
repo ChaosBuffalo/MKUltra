@@ -2,7 +2,7 @@ package com.chaosbuffalo.mkultra.item;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
-import com.chaosbuffalo.mkultra.core.PlayerDataProvider;
+import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -30,7 +30,7 @@ public class Pipe extends Item {
     public ActionResult<ItemStack> onItemRightClick(World worldIn,
                                                     EntityPlayer playerIn, EnumHand hand) {
         if (!worldIn.isRemote) {
-            IPlayerData data = PlayerDataProvider.get(playerIn);
+            IPlayerData data = MKUPlayerData.get(playerIn);
             if (data == null || !data.hasChosenClass()) {
                 return super.onItemRightClick(worldIn, playerIn, hand);
             }

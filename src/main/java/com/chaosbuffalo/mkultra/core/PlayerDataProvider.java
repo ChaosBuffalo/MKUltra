@@ -40,11 +40,4 @@ public class PlayerDataProvider implements ICapabilitySerializable<NBTTagCompoun
         return (NBTTagCompound)Capabilities.PLAYER_DATA_CAPABILITY.writeNBT(data, null);
     }
 
-    public static IPlayerData get(EntityPlayer player)
-    {
-        if (player.hasCapability(Capabilities.PLAYER_DATA_CAPABILITY, null)) {
-            return player.getCapability(Capabilities.PLAYER_DATA_CAPABILITY, null);
-        }
-        return null;
-    }
 }

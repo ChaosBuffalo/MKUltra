@@ -1,10 +1,7 @@
 package com.chaosbuffalo.mkultra.client.gui;
 
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.BaseClass;
-import com.chaosbuffalo.mkultra.core.ClassData;
-import com.chaosbuffalo.mkultra.core.IPlayerData;
-import com.chaosbuffalo.mkultra.core.PlayerDataProvider;
+import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.item.interfaces.IClassProvider;
 import com.chaosbuffalo.mkultra.network.packets.client.LevelUpRequestPacket;
 import net.minecraft.client.gui.GuiButton;
@@ -22,7 +19,7 @@ public class XpTableScreen extends GuiScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        IPlayerData pData = PlayerDataProvider.get(this.mc.player);
+        IPlayerData pData = MKUPlayerData.get(this.mc.player);
         if (pData == null)
             return;
 

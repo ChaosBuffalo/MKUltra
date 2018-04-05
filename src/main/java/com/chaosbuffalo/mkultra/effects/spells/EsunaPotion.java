@@ -1,9 +1,9 @@
 package com.chaosbuffalo.mkultra.effects.spells;
 
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.effects.*;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
-import com.chaosbuffalo.mkultra.core.PlayerDataProvider;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
 import net.minecraft.entity.Entity;
@@ -57,7 +57,7 @@ public class EsunaPotion extends SpellPeriodicPotionBase {
 
         if (target instanceof EntityPlayer) {
             EntityPlayer targetPlayer = (EntityPlayer) target;
-            IPlayerData pData = PlayerDataProvider.get(targetPlayer);
+            IPlayerData pData = MKUPlayerData.get(targetPlayer);
             if (pData == null)
                 return;
 

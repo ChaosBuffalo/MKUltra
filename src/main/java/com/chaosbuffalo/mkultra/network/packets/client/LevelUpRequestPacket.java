@@ -1,7 +1,7 @@
 package com.chaosbuffalo.mkultra.network.packets.client;
 
 import com.chaosbuffalo.mkultra.core.IPlayerData;
-import com.chaosbuffalo.mkultra.core.PlayerDataProvider;
+import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.network.MessageHandler;
 import com.chaosbuffalo.mkultra.utils.ServerUtils;
 import io.netty.buffer.ByteBuf;
@@ -32,7 +32,7 @@ public class LevelUpRequestPacket implements IMessage {
                                             LevelUpRequestPacket msg,
                                             MessageContext ctx) {
             ServerUtils.addScheduledTask(() -> {
-                IPlayerData data = PlayerDataProvider.get(player);
+                IPlayerData data = MKUPlayerData.get(player);
                 if (data != null) {
                     data.levelUp();
                 }

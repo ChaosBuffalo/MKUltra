@@ -3,7 +3,7 @@ package com.chaosbuffalo.mkultra.client.gui;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.ClassData;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
-import com.chaosbuffalo.mkultra.core.PlayerDataProvider;
+import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.item.interfaces.IClassProvider;
 import com.chaosbuffalo.mkultra.network.packets.client.ClassLearnPacket;
 import net.minecraft.client.gui.GuiButton;
@@ -47,7 +47,7 @@ public class ChooseClassScreen extends GuiScreen {
 
 
         EntityPlayer player = mc.player;
-        IPlayerData data = PlayerDataProvider.get(player);
+        IPlayerData data = MKUPlayerData.get(player);
         if (data == null)
             return;
 

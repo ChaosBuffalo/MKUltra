@@ -39,7 +39,7 @@ public class PlayerClassScreen extends GuiScreen {
         this.drawTexturedModalRect(xPos, yPos, 0, 0, panelWidth, panelHeight);
         int titleHeight = 10;
 
-        IPlayerData pData = PlayerDataProvider.get(this.mc.player);
+        IPlayerData pData = MKUPlayerData.get(this.mc.player);
         if (pData == null)
             return;
         BaseClass playerClass = ClassData.getClass(pData.getClassId());
@@ -139,7 +139,7 @@ public class PlayerClassScreen extends GuiScreen {
 
     @Override
     protected void actionPerformed(GuiButton button) {
-        IPlayerData pData = PlayerDataProvider.get(mc.player);
+        IPlayerData pData = MKUPlayerData.get(mc.player);
         if (pData == null)
             return;
         BaseClass playerClass = ClassData.getClass(pData.getClassId());
