@@ -1,7 +1,6 @@
 package com.chaosbuffalo.mkultra.item;
 
 import com.chaosbuffalo.mkultra.core.PlayerAttributes;
-import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.inventory.EntityEquipmentSlot;

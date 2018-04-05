@@ -1,7 +1,6 @@
 package com.chaosbuffalo.mkultra.item;
 
 import com.chaosbuffalo.mkultra.core.PlayerAttributes;
-import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -38,7 +37,7 @@ public class ManaRegenIdol extends Item {
     @Override
     public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
 
-        Multimap<String, AttributeModifier> mods = HashMultimap.create();
+        Multimap<String, AttributeModifier> mods = super.getAttributeModifiers(slot, stack);
 
         if (slot == EntityEquipmentSlot.OFFHAND) {
             if (this.regen_amount > 0) {
