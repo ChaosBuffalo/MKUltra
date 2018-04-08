@@ -1,16 +1,23 @@
 package com.chaosbuffalo.mkultra.init;
 
+import com.mcmoddev.basemetals.BaseMetals;
+import com.mcmoddev.basemetals.data.MaterialNames;
+import com.mcmoddev.lib.data.Names;
 import com.mcmoddev.lib.registry.CrusherRecipeRegistry;
+import com.mojang.authlib.GameProfile;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 
 @SuppressWarnings("unused")
@@ -147,6 +154,30 @@ public final class ModCrafting {
                 "whw", 'w', Items.WHEAT, 'h', ModItems.hempSeeds);
         addRecipe(event, new ItemStack(Item.getItemFromBlock(ModBlocks.ropeBlock)),
                 "f", "f", 'f', ModItems.hempFibers);
+
+        GameRegistry.addSmelting(
+                new ItemStack(Items.DIAMOND_CHESTPLATE, 1),
+                new ItemStack(ModItems.angelDust, 20),
+                3.0f
+        );
+        GameRegistry.addSmelting(
+                new ItemStack(Items.DIAMOND_LEGGINGS, 1),
+                new ItemStack(ModItems.angelDust, 16),
+                3.0f
+        );
+        GameRegistry.addSmelting(
+                new ItemStack(Items.DIAMOND_BOOTS, 1),
+                new ItemStack(ModItems.angelDust, 8),
+                3.0f
+        );
+        GameRegistry.addSmelting(
+                new ItemStack(Items.DIAMOND_HELMET, 1),
+                new ItemStack(ModItems.angelDust, 12),
+                3.0f
+        );
+        addRecipe(event, new ItemStack(Items.DIAMOND), "dd", "dd", 'd', ModItems.angelDust);
+        CrusherRecipeRegistry.addNewCrusherRecipe(Blocks.OBSIDIAN,
+                new ItemStack(com.mcmoddev.basemetals.init.Materials.getMaterialByName(MaterialNames.OBSIDIAN).getItem(Names.POWDER), 4));
     }
 
 }

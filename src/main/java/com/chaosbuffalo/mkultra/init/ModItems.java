@@ -94,6 +94,7 @@ public final class ModItems {
     public static Item iron_threaded_boots;
     public static Item duality_rune_projectile;
     public static Item whirlpool_projectile;
+    public static Item phoenix_dust;
 
 
     public static ItemArmor.ArmorMaterial CHAINMAT = EnumHelper.addArmorMaterial("mkultra_chain",
@@ -133,6 +134,7 @@ public final class ModItems {
     public static void initItems() {
         // Class-related
         regInternal(angelDust = new AngelDust("angelDust"));
+        regInternal(phoenix_dust = new PhoenixDust("phoenix_dust"));
         regInternal(sunicon = new ClassIcon("sunicon", "The Sun God will bestow on you great powers. Choose your class: ", 8,
                 new ResourceLocation(MKUltra.MODID, "textures/items/sunicon.png"), "Give your Brouzoufs to Solarius." +
                 "  Receive his blessings.",

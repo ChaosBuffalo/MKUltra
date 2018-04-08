@@ -69,7 +69,7 @@ public class Smite extends BaseAbility {
 
     @Override
     public float getDistance(int currentLevel) {
-        return 15.0f;
+        return 15.0f+5.0f*currentLevel;
     }
 
     @Override

@@ -4,6 +4,7 @@ language.region=US
 language.code=en_US
 
 item.angelDust.name=Diamond Dust
+item.phoenix_dust.name=Phoenix Dust
 item.chainmail_chestplate.name=Chainmail Chestplate
 item.chainmail_leggings.name=Chainmail Leggings
 item.chainmail_helmet.name=Chainmail Helmet
@@ -36,7 +37,7 @@ item.aquariumSpear.name=Aquarium Spear
 item.adamantineSpear.name=Adamantine Spear
 item.copperSpear.name=Copper Spear
 tile.xpTable.name=XP Table
-tile.portalBlock.name=Portal Block
+tile.portalblock.name=Portal Block
 tile.steamPoweredOrbBlock.name=Steam Powered Orb
 item.forgetfulnessBread.name=Forgetfulness Bread
 item.hempLeaves.name=Hemp Leaves

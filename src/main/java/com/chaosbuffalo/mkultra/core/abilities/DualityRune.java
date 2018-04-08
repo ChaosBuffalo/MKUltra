@@ -47,7 +47,7 @@ public class DualityRune extends BaseAbility {
 
     @Override
     public int getCooldown(int currentLevel) {
-        return 24 - 4 * currentLevel;
+        return 20 - 4 * currentLevel;
     }
 
     @Override

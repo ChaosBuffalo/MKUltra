@@ -1,0 +1,5 @@
+{"pattern": ["db", "ff"], "type": "minecraft:crafting_shaped",
+  "result": {"item": "mkultra:phoenix_dust"},
+  "key": {"d": {"item": "mkultra:angeldust"},
+          "b": {"item": "minecraft:dye", "data": 15},
+          "f": {"item": "minecraft:rotten_flesh"}}}

@@ -71,7 +71,7 @@ public class Heal extends BaseAbility {
 
     @Override
     public float getDistance(int currentLevel) {
-        return 10.0f;
+        return 10.0f + 5.0f * currentLevel;
     }
 
     @Override
