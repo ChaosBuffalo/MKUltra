@@ -60,7 +60,7 @@ public class ResurrectPlayerPacket implements IMessage {
                         return;
                     }
 
-                    targetPlayer.setPositionAndUpdate(corpse.posX, corpse.posY + 1, corpse.posZ);
+                    targetPlayer.setPositionAndUpdate(player.posX, player.posY + 1, player.posZ);
 
                     ItemHelper.shrinkStack(player, player.getHeldItemMainhand(), 1);
                 }
