@@ -64,12 +64,12 @@ public class PotionEventHandler {
                     && sourceData.getMana() > 0) {
                 potion = playerSource.getActivePotionEffect(VampiricReverePotion.INSTANCE);
                 sourceData.setMana(sourceData.getMana() - 1);
-                playerSource.heal(event.getAmount() * .15f * potion.getAmplifier());
+                playerSource.heal(event.getAmount() * .25f * potion.getAmplifier());
             }
 
             if (playerSource.isPotionActive(NocturnalCommunionPotion.INSTANCE)) {
                 potion = playerSource.getActivePotionEffect(NocturnalCommunionPotion.INSTANCE);
-                playerSource.heal(event.getAmount() * .1f * potion.getAmplifier());
+                playerSource.heal(event.getAmount() * .20f * potion.getAmplifier());
             }
         }
 
