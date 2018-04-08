@@ -52,6 +52,8 @@ public final class ModItems {
     public static Item stoneSpear;
     public static Item goldSpear;
     public static Item diamondSpear;
+    public static Item emerald_spear;
+    public static Item obsidian_spear;
     public static Item forgetfulnessBread;
     public static Item hempSeeds;
     public static Item hempLeaves;
@@ -95,6 +97,11 @@ public final class ModItems {
     public static Item duality_rune_projectile;
     public static Item whirlpool_projectile;
     public static Item phoenix_dust;
+    public static Item steel_infused_bone_leather;
+    public static Item steel_infused_bone_leggings;
+    public static Item steel_infused_bone_chestplate;
+    public static Item steel_infused_bone_helmet;
+    public static Item steel_infused_bone_boots;
 
 
     public static ItemArmor.ArmorMaterial CHAINMAT = EnumHelper.addArmorMaterial("mkultra_chain",
@@ -115,7 +122,11 @@ public final class ModItems {
     public static ItemArmor.ArmorMaterial IRON_THREADED_MAT = EnumHelper.addArmorMaterial(
             "mkultra_iron_threaded",
             "mkultra:iron_threaded", 28,
-            new int[]{2, 3, 3, 2}, 20, null, 0);
+            new int[]{1, 2, 2, 1}, 20, null, 0);
+
+    public static ItemArmor.ArmorMaterial STEEL_INFUSED_BONE_MAT = EnumHelper.addArmorMaterial("mkultra_steel_infused_bone",
+            "mkultra:steel_infused_bone", 30,
+            new int[]{2, 3, 3, 2}, 12, null, 0);
 
     // can't be public because this is an ObjectHolder
     private static final Set<Item> ALL_ITEMS = new HashSet<>();
@@ -182,12 +193,24 @@ public final class ModItems {
         regInternal(iron_threaded_cloth = new Item().setCreativeTab(CreativeTabs.MATERIALS), "iron_threaded_cloth");
         IRON_THREADED_MAT.setRepairItem(new ItemStack(iron_threaded_cloth));
         regInternal(iron_threaded_chestplate = new ItemMagicDamageArmor("iron_threaded_chestplate", IRON_THREADED_MAT, 1,
-                EntityEquipmentSlot.CHEST, 2.0f, chestUUID));
+                EntityEquipmentSlot.CHEST, 1.0f, chestUUID));
         regInternal(iron_threaded_helmet = new ItemManaRegenArmor("iron_threaded_helmet", IRON_THREADED_MAT, 1,
                 EntityEquipmentSlot.HEAD, 1.0f, helmetUUID));
         regInternal(iron_threaded_leggings = new ItemManaArmor("iron_threaded_leggings", IRON_THREADED_MAT, 2,
                 EntityEquipmentSlot.LEGS, 3, leggingsUUID));
         regInternal(iron_threaded_boots = new ItemManaArmor("iron_threaded_boots", IRON_THREADED_MAT, 2,
+                EntityEquipmentSlot.FEET, 2, feetUUID));
+
+        regInternal(steel_infused_bone_leather = new Item().setCreativeTab(CreativeTabs.MATERIALS), "steel_infused_bone_leather");
+        STEEL_INFUSED_BONE_MAT.setRepairItem(new ItemStack(steel_infused_bone_leather));
+        regInternal(steel_infused_bone_chestplate = new ItemMagicDamageArmor("steel_infused_bone_chestplate",
+                STEEL_INFUSED_BONE_MAT, 1,
+                EntityEquipmentSlot.CHEST, 1.0f, chestUUID));
+        regInternal(steel_infused_bone_helmet = new ItemManaRegenArmor("steel_infused_bone_helmet", STEEL_INFUSED_BONE_MAT, 1,
+                EntityEquipmentSlot.HEAD, 0.5f, helmetUUID));
+        regInternal(steel_infused_bone_leggings = new ItemManaArmor("steel_infused_bone_leggings", STEEL_INFUSED_BONE_MAT, 2,
+                EntityEquipmentSlot.LEGS, 2, leggingsUUID));
+        regInternal(steel_infused_bone_boots = new ItemManaArmor("steel_infused_bone_boots", STEEL_INFUSED_BONE_MAT, 2,
                 EntityEquipmentSlot.FEET, 2, feetUUID));
 
 
@@ -261,6 +284,11 @@ public final class ModItems {
                 Materials.getToolMaterialFor(Materials.getMaterialByName(MaterialNames.AQUARIUM)), spearRange));
         regInternal(adamantineSpear = new ItemRangeSword("adamantineSpear",
                 Materials.getToolMaterialFor(Materials.getMaterialByName(MaterialNames.ADAMANTINE)), spearRange));
+        regInternal(emerald_spear = new ItemRangeSword("emerald_spear",
+                Materials.getToolMaterialFor(Materials.getMaterialByName(MaterialNames.EMERALD)), spearRange));
+        regInternal(obsidian_spear = new ItemRangeSword("obsidian_spear",
+                Materials.getToolMaterialFor(Materials.getMaterialByName(MaterialNames.OBSIDIAN)), spearRange));
+
     }
 
     @SuppressWarnings("unused")

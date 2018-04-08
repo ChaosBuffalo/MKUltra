@@ -24,7 +24,8 @@ public class ArmorClass {
 
         LIGHT.inherit(ROBES)
                 .register(ItemArmor.ArmorMaterial.LEATHER)
-                .register(ModItems.BONEDLEATHERMAT);
+                .register(ModItems.BONEDLEATHERMAT)
+                .register(ModItems.STEEL_INFUSED_BONE_MAT);
 
 
         MEDIUM.inherit(LIGHT)

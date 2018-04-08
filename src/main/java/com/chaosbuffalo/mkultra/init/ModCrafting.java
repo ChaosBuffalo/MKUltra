@@ -115,6 +115,14 @@ public final class ModCrafting {
         addRecipe(event, new ItemStack(ModItems.copperSpear),
                 "  s", " s ", "i  ", 'i', com.mcmoddev.basemetals.init.Items.getItemByName("copper_ingot"),
                 's', Items.STICK);
+        addRecipe(event, new ItemStack(ModItems.emerald_spear),
+                "  s", " s ", "i  ", 'i', Items.EMERALD,
+                's', Items.STICK);
+        addRecipe(event, new ItemStack(ModItems.obsidian_spear),
+                "  s", " s ", "i  ",
+                'i',
+                com.mcmoddev.basemetals.init.Materials.getMaterialByName(MaterialNames.OBSIDIAN).getItem(Names.INGOT),
+                's', Items.STICK);
         addRecipe(event, new ItemStack(Item.getItemFromBlock(ModBlocks.xpTableBlock)),
                 "www", "wiw", "www", 'i', Item.getItemFromBlock(Blocks.IRON_BLOCK),
                 'w', Blocks.PLANKS);
@@ -128,7 +136,7 @@ public final class ModCrafting {
         CrusherRecipeRegistry.addNewCrusherRecipe(Items.DIAMOND, new ItemStack(ModItems.angelDust, 4));
         CrusherRecipeRegistry.addNewCrusherRecipe(ModItems.hempLeaves,
                 new ItemStack(ModItems.hempFibers, 2));
-        addRecipe(event, new ItemStack(ModItems.gold_threaded_cloth, 4),
+        addRecipe(event, new ItemStack(ModItems.gold_threaded_cloth, 9),
                 "fff", "fgf", "fff", 'f', ModItems.hempFibers, 'g', Items.GOLD_INGOT);
         addRecipe(event, new ItemStack(ModItems.gold_threaded_boots),
                 "c c", "c c", 'c', ModItems.gold_threaded_cloth);
