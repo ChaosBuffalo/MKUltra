@@ -164,22 +164,22 @@ public final class ModCrafting {
                 "f", "f", 'f', ModItems.hempFibers);
 
         GameRegistry.addSmelting(
-                new ItemStack(Items.DIAMOND_CHESTPLATE, 1),
+                Items.DIAMOND_CHESTPLATE,
                 new ItemStack(ModItems.angelDust, 20),
                 3.0f
         );
         GameRegistry.addSmelting(
-                new ItemStack(Items.DIAMOND_LEGGINGS, 1),
+                Items.DIAMOND_LEGGINGS,
                 new ItemStack(ModItems.angelDust, 16),
                 3.0f
         );
         GameRegistry.addSmelting(
-                new ItemStack(Items.DIAMOND_BOOTS, 1),
+                Items.DIAMOND_BOOTS,
                 new ItemStack(ModItems.angelDust, 8),
                 3.0f
         );
         GameRegistry.addSmelting(
-                new ItemStack(Items.DIAMOND_HELMET, 1),
+                Items.DIAMOND_HELMET,
                 new ItemStack(ModItems.angelDust, 12),
                 3.0f
         );
