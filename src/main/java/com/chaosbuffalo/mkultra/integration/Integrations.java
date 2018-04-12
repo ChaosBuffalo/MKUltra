@@ -31,8 +31,7 @@ public class Integrations {
 
         try {
             lootableBodyClass = Class.forName(BODY_ENTITY_NAME);
-        }
-        catch (ClassNotFoundException c) {
+        } catch (ClassNotFoundException c) {
 
         }
     }
