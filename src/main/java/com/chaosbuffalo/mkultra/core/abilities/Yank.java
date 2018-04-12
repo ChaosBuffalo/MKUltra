@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 public class Yank extends BaseAbility {
 
     public static float BASE_FORCE = 1.0f;
-    public static float FORCE_SCALE = 1.0f;
+    public static float FORCE_SCALE = .75f;
 
     public Yank() {
         super(MKUltra.MODID, "ability.yank");

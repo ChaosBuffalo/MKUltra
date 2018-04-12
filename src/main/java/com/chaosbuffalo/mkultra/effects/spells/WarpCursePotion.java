@@ -52,9 +52,9 @@ public class WarpCursePotion extends SpellPeriodicPotionBase {
     public void doEffect(Entity source, Entity indirectSource, EntityLivingBase target, int amplifier, SpellCast cast) {
         Vec3d playerOrigin = target.getPositionVector();
         target.attackEntityFrom(DamageSource.causeIndirectMagicDamage(source, indirectSource), amplifier * 3.0f);
-        double nextX = playerOrigin.x + (target.getRNG().nextInt(amplifier * 10) - amplifier * 10);
+        double nextX = playerOrigin.x + (target.getRNG().nextInt(amplifier * 6) - target.getRNG().nextInt(amplifier * 6));
         double nextY = playerOrigin.y + 5.0;
-        double nextZ = playerOrigin.z + (target.getRNG().nextInt(amplifier * 10) - amplifier * 10);
+        double nextZ = playerOrigin.z + (target.getRNG().nextInt(amplifier * 6) - target.getRNG().nextInt(amplifier * 6));
         target.setPositionAndUpdate(nextX, nextY, nextZ);
         MKUltra.packetHandler.sendToAllAround(
                 new ParticleEffectSpawnPacket(

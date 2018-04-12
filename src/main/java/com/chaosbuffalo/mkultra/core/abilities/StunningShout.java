@@ -44,7 +44,7 @@ public class StunningShout extends BaseAbility {
 
     @Override
     public int getCooldown(int currentLevel) {
-        return 10;
+        return 14 - currentLevel * 2;
     }
 
     @Override

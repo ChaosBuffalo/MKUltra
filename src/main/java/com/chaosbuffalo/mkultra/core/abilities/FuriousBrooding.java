@@ -58,7 +58,7 @@ public class FuriousBrooding extends BaseAbility {
 
     @Override
     public int getManaCost(int currentLevel) {
-        return 4 + 3 * currentLevel;
+        return 4 + 2 * currentLevel;
     }
 
     @Override

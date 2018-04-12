@@ -31,11 +31,13 @@ public class ArmorClass {
         MEDIUM.inherit(LIGHT)
                 .register(ItemArmor.ArmorMaterial.GOLD)
                 .register(ItemArmor.ArmorMaterial.CHAIN)
-                .register(ModItems.CHAINMAT);
+                .register(ModItems.CHAINMAT)
+                .register(ModItems.OBSIDIAN_CHAIN);
 
 
         HEAVY.inherit(MEDIUM)
-                .register(ItemArmor.ArmorMaterial.IRON);
+                .register(ItemArmor.ArmorMaterial.IRON)
+                .register(ModItems.DIAMOND_DUSTED_INVAR_MAT);
     }
 
     private final Set<ItemArmor.ArmorMaterial> materials = Sets.newHashSet();

@@ -1,15 +1,12 @@
 package com.chaosbuffalo.mkultra.init;
 
-import com.mcmoddev.basemetals.BaseMetals;
 import com.mcmoddev.basemetals.data.MaterialNames;
 import com.mcmoddev.lib.data.Names;
 import com.mcmoddev.lib.registry.CrusherRecipeRegistry;
-import com.mojang.authlib.GameProfile;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
@@ -17,7 +14,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 
 @SuppressWarnings("unused")
@@ -44,6 +40,41 @@ public final class ModCrafting {
                 "lil", "i i", 'i', Items.IRON_INGOT, 'l', Items.LEATHER);
         addRecipe(event, new ItemStack(ModItems.chainmailBoots),
                 "i i", "l l", 'i', Items.IRON_INGOT, 'l', Items.LEATHER);
+
+        addRecipe(event, new ItemStack(ModItems.obsidian_chain_chestplate),
+                "l l", "ili", "lil", 'i',
+                com.mcmoddev.basemetals.init.Materials.getMaterialByName(MaterialNames.OBSIDIAN).getItem(Names.INGOT),
+                'l', Items.LEATHER);
+        addRecipe(event, new ItemStack(ModItems.obsidian_chain_leggings),
+                "lil", "i i", "l l", 'i',
+                com.mcmoddev.basemetals.init.Materials.getMaterialByName(MaterialNames.OBSIDIAN).getItem(Names.INGOT),
+                'l', Items.LEATHER);
+        addRecipe(event, new ItemStack(ModItems.obsidian_chain_helmet),
+                "lil", "i i", 'i',
+                com.mcmoddev.basemetals.init.Materials.getMaterialByName(MaterialNames.OBSIDIAN).getItem(Names.INGOT),
+                'l', Items.LEATHER);
+        addRecipe(event, new ItemStack(ModItems.obsidian_chain_boots),
+                "i i", "l l", 'i',
+                com.mcmoddev.basemetals.init.Materials.getMaterialByName(MaterialNames.OBSIDIAN).getItem(Names.INGOT),
+                'l', Items.LEATHER);
+
+        addRecipe(event, new ItemStack(ModItems.diamond_dusted_invar_chestplate),
+                "i i", "idi", "iii", 'i',
+                com.mcmoddev.basemetals.init.Materials.getMaterialByName(MaterialNames.INVAR).getItem(Names.INGOT),
+                'd', ModItems.diamond_dust);
+        addRecipe(event, new ItemStack(ModItems.diamond_dusted_invar_leggings),
+                "idi", "i i", "i i", 'i',
+                com.mcmoddev.basemetals.init.Materials.getMaterialByName(MaterialNames.INVAR).getItem(Names.INGOT),
+                'd', ModItems.diamond_dust);
+        addRecipe(event, new ItemStack(ModItems.diamond_dusted_invar_helmet),
+                "idi", "i i", 'i',
+                com.mcmoddev.basemetals.init.Materials.getMaterialByName(MaterialNames.INVAR).getItem(Names.INGOT),
+                'd', ModItems.diamond_dust);
+        addRecipe(event, new ItemStack(ModItems.diamond_dusted_invar_boots),
+                "d d", "i i", 'i',
+                com.mcmoddev.basemetals.init.Materials.getMaterialByName(MaterialNames.INVAR).getItem(Names.INGOT),
+                'd', ModItems.diamond_dust);
+
         addRecipe(event, new ItemStack(ModItems.sunicon),
                 " s ", "sis", " s ",
                 'i',
@@ -133,7 +164,7 @@ public final class ModCrafting {
                 "brb", 'b', Items.BREAD, 'r', Items.ROTTEN_FLESH);
         addRecipe(event, new ItemStack(ModItems.hempSeeds),
                 "ss", "ss", 's', Items.WHEAT_SEEDS);
-        CrusherRecipeRegistry.addNewCrusherRecipe(Items.DIAMOND, new ItemStack(ModItems.angelDust, 4));
+        CrusherRecipeRegistry.addNewCrusherRecipe(Items.DIAMOND, new ItemStack(ModItems.diamond_dust, 4));
         CrusherRecipeRegistry.addNewCrusherRecipe(ModItems.hempLeaves,
                 new ItemStack(ModItems.hempFibers, 2));
         addRecipe(event, new ItemStack(ModItems.gold_threaded_cloth, 9),
@@ -165,25 +196,25 @@ public final class ModCrafting {
 
         GameRegistry.addSmelting(
                 Items.DIAMOND_CHESTPLATE,
-                new ItemStack(ModItems.angelDust, 20),
+                new ItemStack(ModItems.diamond_dust, 20),
                 3.0f
         );
         GameRegistry.addSmelting(
                 Items.DIAMOND_LEGGINGS,
-                new ItemStack(ModItems.angelDust, 16),
+                new ItemStack(ModItems.diamond_dust, 16),
                 3.0f
         );
         GameRegistry.addSmelting(
                 Items.DIAMOND_BOOTS,
-                new ItemStack(ModItems.angelDust, 8),
+                new ItemStack(ModItems.diamond_dust, 8),
                 3.0f
         );
         GameRegistry.addSmelting(
                 Items.DIAMOND_HELMET,
-                new ItemStack(ModItems.angelDust, 12),
+                new ItemStack(ModItems.diamond_dust, 12),
                 3.0f
         );
-        addRecipe(event, new ItemStack(Items.DIAMOND), "dd", "dd", 'd', ModItems.angelDust);
+        addRecipe(event, new ItemStack(Items.DIAMOND), "dd", "dd", 'd', ModItems.diamond_dust);
         CrusherRecipeRegistry.addNewCrusherRecipe(Blocks.OBSIDIAN,
                 new ItemStack(com.mcmoddev.basemetals.init.Materials.getMaterialByName(MaterialNames.OBSIDIAN).getItem(Names.POWDER), 4));
     }

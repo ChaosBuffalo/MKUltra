@@ -2,22 +2,24 @@ package com.chaosbuffalo.mkultra.item;
 
 import com.chaosbuffalo.mkultra.item.interfaces.IExtendedReach;
 import com.google.common.collect.Multimap;
+import com.mcmoddev.lib.item.ItemMMDSword;
+import com.mcmoddev.lib.material.MMDMaterial;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemSword;
 
 
-public class ItemRangeSword extends ItemSword implements IExtendedReach {
+public class ItemRangeSword extends ItemMMDSword implements IExtendedReach {
     private float reach;
     private float realAttackDamage;
 
-    public ItemRangeSword(String unlocalizedName, ToolMaterial mat, float reach) {
+    public ItemRangeSword(String unlocalizedName, MMDMaterial mat, float reach) {
         super(mat);
         setUnlocalizedName(unlocalizedName);
         this.reach = reach;
         // TODO: verify this is right for 1.12
-        this.realAttackDamage = 4.0F + mat.getAttackDamage();
+        this.realAttackDamage = 4.0F + mat.getBaseAttackDamage();
         //this.realAttackDamage = 4.0F + mat.getDamageVsEntity();
     }
 

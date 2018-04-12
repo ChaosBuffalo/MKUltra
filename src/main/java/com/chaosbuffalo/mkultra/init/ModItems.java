@@ -4,6 +4,7 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.item.*;
 import com.mcmoddev.basemetals.data.MaterialNames;
 import com.mcmoddev.basemetals.init.Materials;
+import com.mcmoddev.lib.data.Names;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
@@ -29,7 +30,7 @@ import java.util.UUID;
 @GameRegistry.ObjectHolder(MKUltra.MODID)
 public final class ModItems {
 
-    public static Item angelDust;
+    public static Item diamond_dust;
     public static Item sunicon;
     public static Item moon_icon;
     public static Item manaRegenIdolCopper;
@@ -103,7 +104,20 @@ public final class ModItems {
     public static Item steel_infused_bone_helmet;
     public static Item steel_infused_bone_boots;
 
+    public static Item obsidian_chain_leggings;
+    public static Item obsidian_chain_chestplate;
+    public static Item obsidian_chain_helmet;
+    public static Item obsidian_chain_boots;
 
+    public static Item diamond_dusted_invar_leggings;
+    public static Item diamond_dusted_invar_chestplate;
+    public static Item diamond_dusted_invar_helmet;
+    public static Item diamond_dusted_invar_boots;
+
+
+    public static ItemArmor.ArmorMaterial OBSIDIAN_CHAIN = EnumHelper.addArmorMaterial("mkultra_obsidian_chain",
+            "mkultra:obsidian_chain", 15,
+            new int[]{2, 5, 5, 3}, 20, null, 0);
     public static ItemArmor.ArmorMaterial CHAINMAT = EnumHelper.addArmorMaterial("mkultra_chain",
             "mkultra:chainmail", 15,
             new int[]{1, 4, 5, 2}, 12, null, 0);
@@ -128,6 +142,10 @@ public final class ModItems {
             "mkultra:steel_infused_bone", 30,
             new int[]{2, 3, 3, 2}, 12, null, 0);
 
+    public static ItemArmor.ArmorMaterial DIAMOND_DUSTED_INVAR_MAT = EnumHelper.addArmorMaterial("mkultra_diamond_dusted_invar",
+            "mkultra:diamond_dusted_invar", 35,
+            new int[]{3, 7, 6, 3}, 24, null, 0);
+
     // can't be public because this is an ObjectHolder
     private static final Set<Item> ALL_ITEMS = new HashSet<>();
 
@@ -144,7 +162,7 @@ public final class ModItems {
 
     public static void initItems() {
         // Class-related
-        regInternal(angelDust = new AngelDust("angelDust"));
+        regInternal(diamond_dust = new AngelDust("diamond_dust"));
         regInternal(phoenix_dust = new PhoenixDust("phoenix_dust"));
         regInternal(sunicon = new ClassIcon("sunicon", "The Sun God will bestow on you great powers. Choose your class: ", 8,
                 new ResourceLocation(MKUltra.MODID, "textures/items/sunicon.png"), "Give your Brouzoufs to Solarius." +
@@ -213,6 +231,19 @@ public final class ModItems {
         regInternal(steel_infused_bone_boots = new ItemManaArmor("steel_infused_bone_boots", STEEL_INFUSED_BONE_MAT, 2,
                 EntityEquipmentSlot.FEET, 2, feetUUID));
 
+        regInternal(diamond_dusted_invar_chestplate = new ItemHealthArmor("diamond_dusted_invar_chestplate",
+                DIAMOND_DUSTED_INVAR_MAT, 1,
+                EntityEquipmentSlot.CHEST, 5.0f, chestUUID));
+        regInternal(diamond_dusted_invar_helmet = new ItemManaRegenArmor("diamond_dusted_invar_helmet",
+                DIAMOND_DUSTED_INVAR_MAT, 1,
+                EntityEquipmentSlot.HEAD, 0.75f, helmetUUID));
+        regInternal(diamond_dusted_invar_leggings = new ItemManaArmor("diamond_dusted_invar_leggings",
+                DIAMOND_DUSTED_INVAR_MAT, 2,
+                EntityEquipmentSlot.LEGS, 5, leggingsUUID));
+        regInternal(diamond_dusted_invar_boots = new ItemCDRArmor("diamond_dusted_invar_boots",
+                DIAMOND_DUSTED_INVAR_MAT, 2,
+                EntityEquipmentSlot.FEET, .1f, feetUUID));
+
 
         CHAINMAT.setRepairItem(new ItemStack(Items.IRON_INGOT));
         regInternal(chainmailChestplate = new ItemModArmor("chainmail_chestplate", CHAINMAT, 1, EntityEquipmentSlot.CHEST));
@@ -230,6 +261,17 @@ public final class ModItems {
                 5, leggingsUUID));
         regInternal(gold_threaded_boots = new ItemManaArmor("gold_threaded_boots", ROBEMAT, 2, EntityEquipmentSlot.FEET,
                 5, feetUUID));
+
+        OBSIDIAN_CHAIN.setRepairItem(new ItemStack(Materials.getMaterialByName(MaterialNames.OBSIDIAN).getItem(Names.INGOT)));
+        regInternal(obsidian_chain_boots = new ItemSpeedArmor(
+                "obsidian_chain_boots", OBSIDIAN_CHAIN, 2, EntityEquipmentSlot.FEET, .1f, feetUUID));
+        regInternal(obsidian_chain_chestplate = new ItemCDRArmor(
+                "obsidian_chain_chestplate", OBSIDIAN_CHAIN, 1, EntityEquipmentSlot.CHEST, .1f, chestUUID));
+        regInternal(obsidian_chain_leggings = new ItemHealthArmor(
+                "obsidian_chain_leggings", OBSIDIAN_CHAIN, 2, EntityEquipmentSlot.LEGS, 5, leggingsUUID));
+        regInternal(obsidian_chain_helmet = new ItemManaRegenArmor(
+                "obsidian_chain_helmet", OBSIDIAN_CHAIN, 1, EntityEquipmentSlot.HEAD, 1.0f, helmetUUID));
+
 
         regInternal(bonedLeather = new Item().setCreativeTab(CreativeTabs.MATERIALS), "bonedLeather");
         BONEDLEATHERMAT.setRepairItem(new ItemStack(ModItems.bonedLeather));
@@ -249,45 +291,28 @@ public final class ModItems {
 
         // so many spears
         float spearRange = 4.75f;
-        regInternal(ironSpear = new ItemRangeSword("ironSpear", Item.ToolMaterial.IRON, spearRange));
-        regInternal(woodSpear = new ItemRangeSword("woodSpear", Item.ToolMaterial.WOOD, spearRange));
-        regInternal(stoneSpear = new ItemRangeSword("stoneSpear", Item.ToolMaterial.STONE, spearRange));
-        regInternal(goldSpear = new ItemRangeSword("goldSpear", Item.ToolMaterial.GOLD, spearRange));
-        regInternal(diamondSpear = new ItemRangeSword("diamondSpear", Item.ToolMaterial.DIAMOND, spearRange));
-        regInternal(copperSpear = new ItemRangeSword("copperSpear",
-                Materials.getToolMaterialFor(Materials.getMaterialByName(MaterialNames.COPPER)), spearRange));
-        regInternal(tinSpear = new ItemRangeSword("tinSpear",
-                Materials.getToolMaterialFor(Materials.getMaterialByName(MaterialNames.TIN)), spearRange));
-        regInternal(silverSpear = new ItemRangeSword("silverSpear",
-                Materials.getToolMaterialFor(Materials.getMaterialByName(MaterialNames.SILVER)), spearRange));
-        regInternal(steelSpear = new ItemRangeSword("steelSpear",
-                Materials.getToolMaterialFor(Materials.getMaterialByName(MaterialNames.STEEL)), spearRange));
-        regInternal(starsteelSpear = new ItemRangeSword("starsteelSpear",
-                Materials.getToolMaterialFor(Materials.getMaterialByName(MaterialNames.STARSTEEL)), spearRange));
-        regInternal(nickelSpear = new ItemRangeSword("nickelSpear",
-                Materials.getToolMaterialFor(Materials.getMaterialByName(MaterialNames.NICKEL)), spearRange));
-        regInternal(mithrilSpear = new ItemRangeSword("mithrilSpear",
-                Materials.getToolMaterialFor(Materials.getMaterialByName(MaterialNames.MITHRIL)), spearRange));
-        regInternal(leadSpear = new ItemRangeSword("leadSpear",
-                Materials.getToolMaterialFor(Materials.getMaterialByName(MaterialNames.LEAD)), spearRange));
-        regInternal(invarSpear = new ItemRangeSword("invarSpear",
-                Materials.getToolMaterialFor(Materials.getMaterialByName(MaterialNames.INVAR)), spearRange));
-        regInternal(electrumSpear = new ItemRangeSword("electrumSpear",
-                Materials.getToolMaterialFor(Materials.getMaterialByName(MaterialNames.ELECTRUM)), spearRange));
-        regInternal(coldironSpear = new ItemRangeSword("coldironSpear",
-                Materials.getToolMaterialFor(Materials.getMaterialByName(MaterialNames.COLDIRON)), spearRange));
-        regInternal(bronzeSpear = new ItemRangeSword("bronzeSpear",
-                Materials.getToolMaterialFor(Materials.getMaterialByName(MaterialNames.BRONZE)), spearRange));
-        regInternal(brassSpear = new ItemRangeSword("brassSpear",
-                Materials.getToolMaterialFor(Materials.getMaterialByName(MaterialNames.BRASS)), spearRange));
-        regInternal(aquariumSpear = new ItemRangeSword("aquariumSpear",
-                Materials.getToolMaterialFor(Materials.getMaterialByName(MaterialNames.AQUARIUM)), spearRange));
-        regInternal(adamantineSpear = new ItemRangeSword("adamantineSpear",
-                Materials.getToolMaterialFor(Materials.getMaterialByName(MaterialNames.ADAMANTINE)), spearRange));
-        regInternal(emerald_spear = new ItemRangeSword("emerald_spear",
-                Materials.getToolMaterialFor(Materials.getMaterialByName(MaterialNames.EMERALD)), spearRange));
-        regInternal(obsidian_spear = new ItemRangeSword("obsidian_spear",
-                Materials.getToolMaterialFor(Materials.getMaterialByName(MaterialNames.OBSIDIAN)), spearRange));
+        regInternal(ironSpear = new ItemRangeSword("ironSpear", Materials.getMaterialByName(MaterialNames.IRON), spearRange));
+        regInternal(woodSpear = new ItemRangeSword("woodSpear", Materials.getMaterialByName(MaterialNames.WOOD), spearRange));
+        regInternal(stoneSpear = new ItemRangeSword("stoneSpear", Materials.getMaterialByName(MaterialNames.STONE), spearRange));
+        regInternal(goldSpear = new ItemRangeSword("goldSpear", Materials.getMaterialByName(MaterialNames.GOLD), spearRange));
+        regInternal(diamondSpear = new ItemRangeSword("diamondSpear", Materials.getMaterialByName(MaterialNames.DIAMOND), spearRange));
+        regInternal(copperSpear = new ItemRangeSword("copperSpear", Materials.getMaterialByName(MaterialNames.COPPER), spearRange));
+        regInternal(tinSpear = new ItemRangeSword("tinSpear", Materials.getMaterialByName(MaterialNames.TIN), spearRange));
+        regInternal(silverSpear = new ItemRangeSword("silverSpear", Materials.getMaterialByName(MaterialNames.SILVER), spearRange));
+        regInternal(steelSpear = new ItemRangeSword("steelSpear", Materials.getMaterialByName(MaterialNames.STEEL), spearRange));
+        regInternal(starsteelSpear = new ItemRangeSword("starsteelSpear", Materials.getMaterialByName(MaterialNames.STARSTEEL), spearRange));
+        regInternal(nickelSpear = new ItemRangeSword("nickelSpear", Materials.getMaterialByName(MaterialNames.NICKEL), spearRange));
+        regInternal(mithrilSpear = new ItemRangeSword("mithrilSpear", Materials.getMaterialByName(MaterialNames.MITHRIL), spearRange));
+        regInternal(leadSpear = new ItemRangeSword("leadSpear", Materials.getMaterialByName(MaterialNames.LEAD), spearRange));
+        regInternal(invarSpear = new ItemRangeSword("invarSpear", Materials.getMaterialByName(MaterialNames.INVAR), spearRange));
+        regInternal(electrumSpear = new ItemRangeSword("electrumSpear", Materials.getMaterialByName(MaterialNames.ELECTRUM), spearRange));
+        regInternal(coldironSpear = new ItemRangeSword("coldironSpear", Materials.getMaterialByName(MaterialNames.COLDIRON), spearRange));
+        regInternal(bronzeSpear = new ItemRangeSword("bronzeSpear", Materials.getMaterialByName(MaterialNames.BRONZE), spearRange));
+        regInternal(brassSpear = new ItemRangeSword("brassSpear", Materials.getMaterialByName(MaterialNames.BRASS), spearRange));
+        regInternal(aquariumSpear = new ItemRangeSword("aquariumSpear", Materials.getMaterialByName(MaterialNames.AQUARIUM), spearRange));
+        regInternal(adamantineSpear = new ItemRangeSword("adamantineSpear", Materials.getMaterialByName(MaterialNames.ADAMANTINE), spearRange));
+        regInternal(emerald_spear = new ItemRangeSword("emerald_spear", Materials.getMaterialByName(MaterialNames.EMERALD), spearRange));
+        regInternal(obsidian_spear = new ItemRangeSword("obsidian_spear", Materials.getMaterialByName(MaterialNames.OBSIDIAN), spearRange));
 
     }
 
