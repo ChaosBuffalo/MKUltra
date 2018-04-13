@@ -126,7 +126,7 @@ public final class ModItems {
             new int[]{1, 1, 1, 1}, 35, null, 0);
     public static ItemArmor.ArmorMaterial BONEDLEATHERMAT = EnumHelper.addArmorMaterial("mkultra_boned_leather",
             "mkultra:bone", 24,
-            new int[]{1, 3, 2, 1}, 2, null, 0);
+            new int[]{2, 3, 2, 1}, 2, null, 0);
 
     public static ItemArmor.ArmorMaterial COPPER_THREADED_MAT = EnumHelper.addArmorMaterial(
             "mkultra_copper_threaded",
@@ -144,7 +144,7 @@ public final class ModItems {
 
     public static ItemArmor.ArmorMaterial DIAMOND_DUSTED_INVAR_MAT = EnumHelper.addArmorMaterial("mkultra_diamond_dusted_invar",
             "mkultra:diamond_dusted_invar", 35,
-            new int[]{3, 7, 6, 3}, 24, null, 0);
+            new int[]{3, 6, 6, 3}, 24, null, 0);
 
     // can't be public because this is an ObjectHolder
     private static final Set<Item> ALL_ITEMS = new HashSet<>();
