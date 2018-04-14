@@ -4,6 +4,7 @@ import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.item.ItemHelper;
 import com.chaosbuffalo.mkultra.item.interfaces.IExtendedReach;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
@@ -35,6 +36,28 @@ public class ItemRestrictionHandler {
         }
     }
 
+    private static void checkEquipmentSlot(EntityPlayer player, IPlayerData data, EntityEquipmentSlot slot) {
+        ItemStack stack = player.getItemStackFromSlot(slot);
+        if (!stack.isEmpty()) {
+            checkBlockedArmor((EntityPlayerMP) player, stack, data, slot);
+        }
+    }
+
+    public static void checkEquipment(EntityPlayer player) {
+        if (!(player instanceof EntityPlayerMP))
+            return;
+
+        IPlayerData playerData = MKUPlayerData.get(player);
+        if (playerData == null)
+            return;
+
+        checkEquipmentSlot(player, playerData, EntityEquipmentSlot.HEAD);
+        checkEquipmentSlot(player, playerData, EntityEquipmentSlot.CHEST);
+        checkEquipmentSlot(player, playerData, EntityEquipmentSlot.LEGS);
+        checkEquipmentSlot(player, playerData, EntityEquipmentSlot.FEET);
+    }
+
+    @SuppressWarnings("unused")
     @SubscribeEvent
     public static void onEquipmentChange(LivingEquipmentChangeEvent event) {
         if (!(event.getEntityLiving() instanceof EntityPlayerMP))
