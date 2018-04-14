@@ -67,6 +67,12 @@ public interface IPlayerData {
 
     float getHealth();
 
+    float getCooldownProgessSpeed();
+
+    float getMagicDamageBonus();
+
+    float getMagicArmor();
+
     float scaleMagicDamage(float originalDamage);
 
     float applyMagicArmor(float originalDamage);

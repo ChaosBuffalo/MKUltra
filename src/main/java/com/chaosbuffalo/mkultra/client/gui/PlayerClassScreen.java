@@ -19,6 +19,9 @@ import org.lwjgl.opengl.GL11;
 public class PlayerClassScreen extends GuiScreen {
 
 
+    private int[] abilityPanelYs = {22, 88, 154, 88, 154};
+    private int[] abilityPanelXs = {10, 10, 10, 138, 138};
+
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         this.drawDefaultBackground();
@@ -29,8 +32,6 @@ public class PlayerClassScreen extends GuiScreen {
         int panelHeight = 224;
         int xPos = width / 2 - panelWidth / 2;
         int yPos = height / 2 - panelHeight / 2;
-        int[] abilityPanelYs = {22, 88, 154, 88, 154};
-        int[] abilityPanelXs = {10, 10, 10, 138, 138};
 
         ResourceLocation loc = new ResourceLocation(MKUltra.MODID, "textures/gui/class_background.png");
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
@@ -49,20 +50,7 @@ public class PlayerClassScreen extends GuiScreen {
         this.fontRenderer.drawString(playerClass.getClassName(), xPos + 28, yPos + 9, 8129636);
         int iconHeight = yPos + 6;
         //drawing stats
-        int statPanelX = xPos + 141;
-        int statPanelY = yPos + 11;
-        float statScalingFactor = 1.5f;
-
-        GlStateManager.pushMatrix();
-        GlStateManager.scale(1.0f / statScalingFactor, 1.0f / statScalingFactor, 1.0f / statScalingFactor);
-        int xCoord = (int) ((statPanelX + 3) * statScalingFactor);
-        int yCoord = (int) ((statPanelY + 4) * statScalingFactor);
-        this.fontRenderer.drawString("Level: " + pData.getLevel(), xCoord, yCoord, 38600);
-        this.fontRenderer.drawString("Max Mana: " + pData.getTotalMana(), xCoord, yCoord + 11, 38600);
-        String regenRate = String.format("Mana Regen Rate: %.2f", pData.getManaRegenRate());
-        this.fontRenderer.drawString(regenRate, xCoord, yCoord + 22, 38600);
-        this.fontRenderer.drawString("Unspent Points: " + pData.getUnspentPoints(), xCoord, yCoord + 33, 38600);
-        GlStateManager.popMatrix();
+        drawStatPanel(pData, xPos, yPos);
 
         //drawing ability
         //draw icons
@@ -134,6 +122,31 @@ public class PlayerClassScreen extends GuiScreen {
                     (xPos + panelX) * scaleFactor, (yPos + panelY + 36) * scaleFactor, 114 * scaleFactor, 0);
             GlStateManager.popMatrix();
         }
+    }
+
+    private void drawStatPanel(IPlayerData pData, int xPos, int yPos) {
+        int statPanelX = xPos + 141;
+        int statPanelY = yPos + 11;
+        float statScalingFactor = 1.5f;
+
+        GlStateManager.pushMatrix();
+        GlStateManager.scale(1.0f / statScalingFactor, 1.0f / statScalingFactor, 1.0f / statScalingFactor);
+        int xCoord = (int) ((statPanelX + 3) * statScalingFactor);
+        int yCoord = (int) ((statPanelY + 4) * statScalingFactor);
+
+        String regenRate = String.format("Mana Regen Rate: %.2f", pData.getManaRegenRate());
+        String cdRate = String.format("Cooldown Reduction: %.2f%%", (pData.getCooldownProgessSpeed() - 1) * 100);
+        String magicArmor = String.format("Magic Armor: %.2f", pData.getMagicArmor());
+        String magicDamageBonus = String.format("Magic Damage Bonus: %.2f", pData.getMagicDamageBonus());
+
+        this.fontRenderer.drawString("Level: " + pData.getLevel(), xCoord, yCoord, 38600);
+        this.fontRenderer.drawString("Max Mana: " + pData.getTotalMana(), xCoord, yCoord + 11, 38600);
+        this.fontRenderer.drawString(regenRate, xCoord, yCoord + 22, 38600);
+        this.fontRenderer.drawString("Unspent Points: " + pData.getUnspentPoints(), xCoord, yCoord + 33, 38600);
+        this.fontRenderer.drawString(magicArmor, xCoord, yCoord + 44, 38600);
+        this.fontRenderer.drawString(magicDamageBonus, xCoord, yCoord + 55, 38600);
+        this.fontRenderer.drawString(cdRate, xCoord, yCoord + 66, 38600);
+        GlStateManager.popMatrix();
     }
 
 

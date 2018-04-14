@@ -158,19 +158,34 @@ public class PlayerData implements IPlayerData {
     }
 
     @Override
+    public float getCooldownProgessSpeed() {
+        return (float) player.getEntityAttribute(PlayerAttributes.COOLDOWN).getAttributeValue();
+    }
+
+    @Override
+    public float getMagicDamageBonus() {
+        return (float) player.getEntityAttribute(PlayerAttributes.MAGIC_ATTACK_DAMAGE).getAttributeValue();
+    }
+
+    @Override
+    public float getMagicArmor() {
+        return (float) player.getEntityAttribute(PlayerAttributes.MAGIC_ARMOR).getAttributeValue();
+    }
+
+    @Override
     public float scaleMagicDamage(float originalDamage) {
-        float mod = (float) player.getEntityAttribute(PlayerAttributes.MAGIC_ATTACK_DAMAGE).getAttributeValue();
+        float mod = getMagicDamageBonus();
         return originalDamage + mod;
     }
 
     @Override
     public float applyMagicArmor(float originalDamage) {
-        float mod = (float) player.getEntityAttribute(PlayerAttributes.MAGIC_ARMOR).getAttributeValue();
+        float mod = getMagicArmor();
         return originalDamage - mod;
     }
 
     private int applyCooldownReduction(int originalCooldownTicks) {
-        float mod = (float) player.getEntityAttribute(PlayerAttributes.COOLDOWN).getAttributeValue();
+        float mod = 2.0f - getCooldownProgessSpeed();
         float newTicks = mod * originalCooldownTicks;
         return (int) newTicks;
     }
@@ -770,7 +785,7 @@ public class PlayerData implements IPlayerData {
         for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
             ResourceLocation abilityId = getAbilityInSlot(i);
             BaseAbility ability = ClassData.getAbility(abilityId);
-            if (ability != null && ability instanceof BaseToggleAbility && player != null) {
+            if (ability instanceof BaseToggleAbility && player != null) {
                 BaseToggleAbility toggle = (BaseToggleAbility) ability;
                 toggle.removeEffect(player, this, player.getEntityWorld());
             }

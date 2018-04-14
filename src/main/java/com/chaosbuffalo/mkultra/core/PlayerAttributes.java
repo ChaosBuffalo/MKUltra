@@ -20,7 +20,7 @@ public class PlayerAttributes {
             .setDescription("Magic Armor")
             .setShouldWatch(true);
 
-    public static final IAttribute COOLDOWN = new RangedAttribute(null, "mkultra.cooldown_rate", 1, 0.5, 1)
+    public static final IAttribute COOLDOWN = new RangedAttribute(null, "mkultra.cooldown_rate", 1, 1, 1.5)
             .setDescription("Cooldown Rate")
             .setShouldWatch(true);
 
