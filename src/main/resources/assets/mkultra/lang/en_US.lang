@@ -3,7 +3,7 @@ language.name=English
 language.region=US
 language.code=en_US
 
-item.angelDust.name=Diamond Dust
+item.diamond_dust.name=Diamond Dust
 item.phoenix_dust.name=Phoenix Dust
 item.chainmail_chestplate.name=Chainmail Chestplate
 item.chainmail_leggings.name=Chainmail Leggings
