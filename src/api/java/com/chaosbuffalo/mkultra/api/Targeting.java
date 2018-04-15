@@ -1,4 +1,4 @@
-package com.chaosbuffalo.mkultra.effects;
+package com.chaosbuffalo.mkultra.api;
 
 import com.chaosbuffalo.mkultra.log.Log;
 import com.google.common.collect.Sets;

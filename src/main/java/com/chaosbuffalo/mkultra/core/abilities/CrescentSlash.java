@@ -3,7 +3,7 @@ package com.chaosbuffalo.mkultra.core.abilities;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
-import com.chaosbuffalo.mkultra.effects.Targeting;
+import com.chaosbuffalo.mkultra.api.Targeting;
 import com.chaosbuffalo.mkultra.effects.spells.InstantIndirectDamagePotion;
 import com.chaosbuffalo.mkultra.effects.spells.ParticlePotion;
 import com.chaosbuffalo.mkultra.core.BaseAbility;

@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.effects;
 
+import com.chaosbuffalo.mkultra.api.Targeting;
 import com.chaosbuffalo.mkultra.entities.EntityMKAreaEffect;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

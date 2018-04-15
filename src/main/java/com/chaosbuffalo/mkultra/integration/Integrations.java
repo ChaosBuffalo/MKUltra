@@ -1,7 +1,7 @@
 package com.chaosbuffalo.mkultra.integration;
 
 import com.chaosbuffalo.mkultra.core.ArmorClass;
-import com.chaosbuffalo.mkultra.effects.Targeting;
+import com.chaosbuffalo.mkultra.api.Targeting;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.google.common.collect.Lists;
 import com.mcmoddev.basemetals.data.MaterialNames;

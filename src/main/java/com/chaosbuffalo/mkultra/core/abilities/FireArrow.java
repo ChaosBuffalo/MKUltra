@@ -1,7 +1,7 @@
 package com.chaosbuffalo.mkultra.core.abilities;
 
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.effects.Targeting;
+import com.chaosbuffalo.mkultra.api.Targeting;
 import com.chaosbuffalo.mkultra.effects.spells.FireArrowPotion;
 import com.chaosbuffalo.mkultra.entities.projectiles.SpellCastArrow;
 import com.chaosbuffalo.mkultra.core.BaseAbility;

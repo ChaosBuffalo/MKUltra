@@ -1,7 +1,7 @@
 package com.chaosbuffalo.mkultra.core;
 
 import com.chaosbuffalo.mkultra.GameConstants;
-import com.chaosbuffalo.mkultra.effects.Targeting;
+import com.chaosbuffalo.mkultra.api.Targeting;
 import com.chaosbuffalo.mkultra.utils.RayTraceUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

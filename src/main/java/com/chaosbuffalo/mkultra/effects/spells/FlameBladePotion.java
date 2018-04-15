@@ -5,7 +5,7 @@ import com.chaosbuffalo.mkultra.core.abilities.FlameBlade;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
-import com.chaosbuffalo.mkultra.effects.Targeting;
+import com.chaosbuffalo.mkultra.api.Targeting;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

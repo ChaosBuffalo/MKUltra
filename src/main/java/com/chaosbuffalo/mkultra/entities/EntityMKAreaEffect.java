@@ -2,7 +2,7 @@ package com.chaosbuffalo.mkultra.entities;
 
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
-import com.chaosbuffalo.mkultra.effects.Targeting;
+import com.chaosbuffalo.mkultra.api.Targeting;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
