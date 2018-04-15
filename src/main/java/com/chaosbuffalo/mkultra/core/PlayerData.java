@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.core;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.event.ItemRestrictionHandler;
 import com.chaosbuffalo.mkultra.item.ItemHelper;
 import com.chaosbuffalo.mkultra.item.ManaRegenIdol;
 import com.chaosbuffalo.mkultra.log.Log;
@@ -807,6 +808,7 @@ public class PlayerData implements IPlayerData {
         setLevel(level);
         setUnspentPoints(unspent);
         setActiveAbilities(hotbar);
+        ItemRestrictionHandler.checkEquipment(player);
     }
 
     @Override

@@ -35,7 +35,7 @@ public class EntityDrownProjectile extends EntityBaseProjectile {
     @Override
     protected boolean isValidEntityTarget(Entity entity) {
         if (entity instanceof EntityLivingBase && getThrower() != null) {
-            return Targeting.isValidTarget(Targeting.TargetType.ENEMY, getThrower(), (EntityLivingBase) entity, false);
+            return Targeting.isValidTarget(Targeting.TargetType.ENEMY, getThrower(), entity, false);
         }
         return super.isValidEntityTarget(entity);
     }

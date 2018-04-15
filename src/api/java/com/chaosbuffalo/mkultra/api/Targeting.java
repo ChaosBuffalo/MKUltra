@@ -1,6 +1,4 @@
 package com.chaosbuffalo.mkultra.api;
-//
-//import com.chaosbuffalo.mkultra.log.Log;
 import com.google.common.collect.Sets;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -29,7 +27,7 @@ public class Targeting {
         friendlyEntityTypes.add(className);
     }
 
-    public static boolean isValidTarget(TargetType type, Entity caster, EntityLivingBase target, boolean excludeCaster) {
+    public static boolean isValidTarget(TargetType type, Entity caster, Entity target, boolean excludeCaster) {
 
         if (excludeCaster && caster.isEntityEqual(target)) {
             return false;
@@ -95,14 +93,18 @@ public class Targeting {
         }
 
         if (target instanceof IEntityOwnable) {
-            Entity owner = ((IEntityOwnable)target).getOwner();
+            IEntityOwnable ownable = (IEntityOwnable) target;
 
+            Entity owner = ownable.getOwner();
             if (owner != null) {
+                // Owner is online, perform the normal checks
                 return isValidFriendly(caster, owner);
+            } else if (ownable.getOwnerId() != null) {
+                // Entity is owned, but the owner is offline
+                // If the owner if offline then there's not much we can do.
+                // Returning false for right now due to Lycanites AI quirks
+                return false;
             }
-//            else {
-//                Log.info("isFriendlyPlayerControlled: owner was null!");
-//            }
         }
 
         return false;
@@ -141,7 +143,7 @@ public class Targeting {
         return false;
     }
 
-    private static boolean isValidEnemy(Entity caster, EntityLivingBase target) {
+    private static boolean isValidEnemy(Entity caster, Entity target) {
         return !isValidFriendly(caster, target);
     }
 

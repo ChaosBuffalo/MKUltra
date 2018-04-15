@@ -18,6 +18,8 @@ import javax.annotation.Nonnull;
  */
 public class PhoenixDust extends Item {
 
+    public static float RANGE = 10.0f;
+
     public PhoenixDust(String unlocalizedName) {
         super();
         this.setUnlocalizedName(unlocalizedName);
@@ -33,8 +35,4 @@ public class PhoenixDust extends Item {
 
         return super.onItemRightClick(worldIn, playerIn, hand);
     }
-
-
-
 }
-

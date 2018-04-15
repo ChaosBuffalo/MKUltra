@@ -1,5 +1,4 @@
 package com.chaosbuffalo.mkultra.integration;
-
 import com.chaosbuffalo.mkultra.core.ArmorClass;
 import com.chaosbuffalo.mkultra.api.Targeting;
 import com.chaosbuffalo.mkultra.log.Log;
