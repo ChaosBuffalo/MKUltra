@@ -1,6 +1,6 @@
 package com.chaosbuffalo.mkultra.api;
-
-import com.chaosbuffalo.mkultra.log.Log;
+//
+//import com.chaosbuffalo.mkultra.log.Log;
 import com.google.common.collect.Sets;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -100,9 +100,9 @@ public class Targeting {
             if (owner != null) {
                 return isValidFriendly(caster, owner);
             }
-            else {
-                Log.info("isFriendlyPlayerControlled: owner was null!");
-            }
+//            else {
+//                Log.info("isFriendlyPlayerControlled: owner was null!");
+//            }
         }
 
         return false;
