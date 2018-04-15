@@ -97,7 +97,7 @@ public class RayTraceUtils {
         RayTraceResult block = rayTraceBlocks(world, from, to, stopOnLiquid);
         if (block != null)
             to = block.hitVec;
-        RayTraceResult entity = rayTraceEntities(world, from, to, new Vec3d(0, 0, 0), 0.25f, 0.3f, entityFilter);
+        RayTraceResult entity = rayTraceEntities(world, from, to, new Vec3d(0, 0, 0), 0.5f, 0.5f, entityFilter);
 
         if (block == null) {
             if (entity == null) {

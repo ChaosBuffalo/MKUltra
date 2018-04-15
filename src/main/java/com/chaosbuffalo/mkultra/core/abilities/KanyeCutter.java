@@ -93,7 +93,7 @@ public class KanyeCutter extends BaseAbility {
             }
 
             Vec3d position = entity.getPositionVector();
-            Vec3d movementVec = position.subtract(targetEntity.getPositionVector()).normalize().scale(5.0f);
+            Vec3d movementVec = targetEntity.getPositionVector().subtract(position).normalize().scale(5.0f);
             Vec3d teleLoc = targetEntity.getPositionVector().add(new Vec3d(movementVec.x, 0.0, movementVec.z));
             RayTraceResult colTrace = RayTraceUtils.rayTraceBlocks(theWorld, targetEntity.getPositionVector(),
                     teleLoc, false);
