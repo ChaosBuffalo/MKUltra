@@ -21,10 +21,26 @@ public class Targeting {
         SELF,
     }
 
+    private static class Association {
+        public Class Source;
+        public Class Target;
+        public TargetType TargetType;
+    }
+
     private static Set<String> friendlyEntityTypes = Sets.newHashSet();
+
+    private static Set<Association> associations = Sets.newHashSet();
 
     public static void registerFriendlyEntity(String className) {
         friendlyEntityTypes.add(className);
+    }
+
+    public static void registerClassAssociation(Class sourceClass, Class targetClass, TargetType targetType) {
+        Association a = new Association();
+        a.Source = sourceClass;
+        a.Target = targetClass;
+        a.TargetType = targetType;
+        associations.add(a);
     }
 
     public static boolean isValidTarget(TargetType type, Entity caster, Entity target, boolean excludeCaster) {
@@ -32,6 +48,14 @@ public class Targeting {
         if (excludeCaster && caster.isEntityEqual(target)) {
             return false;
         }
+
+        // Targets should be alive
+        if (!target.isEntityAlive())
+            return false;
+
+        // Ignore spectators
+        if (target instanceof EntityPlayer && ((EntityPlayer) target).isSpectator())
+            return false;
 
         switch (type) {
             case ALL:
@@ -110,6 +134,12 @@ public class Targeting {
         return false;
     }
 
+    private static boolean checkAssociation(Entity caster, Entity target, TargetType type) {
+        return associations.stream()
+                .filter(a -> a.TargetType == type)
+                .filter(a -> caster.getClass().isAssignableFrom(a.Source))
+                .anyMatch(a -> target.getClass().isAssignableFrom(a.Target));
+    }
 
     private static boolean isValidFriendly(Entity caster, Entity target) {
 
@@ -139,6 +169,9 @@ public class Targeting {
             if (isValidFriendlyCreature(caster, targetLiving))
                 return true;
         }
+
+        if (checkAssociation(caster, target, TargetType.FRIENDLY))
+            return true;
 
         return false;
     }

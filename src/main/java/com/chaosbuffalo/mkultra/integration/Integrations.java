@@ -78,7 +78,20 @@ public class Integrations {
 
 
     private static void setupMinecolonies() {
-        Targeting.registerFriendlyEntity("com.minecolonies.coremod.entity.EntityCitizen");
+        if (!Loader.isModLoaded("minecolonies"))
+            return;
+
+        final String CITIZEN_CLASS_NAME = "com.minecolonies.coremod.entity.EntityCitizen";
+        Targeting.registerFriendlyEntity(CITIZEN_CLASS_NAME);
+
+        try {
+            Class citizenClass = Class.forName(CITIZEN_CLASS_NAME);
+            Targeting.registerClassAssociation(citizenClass, EntityPlayer.class, Targeting.TargetType.FRIENDLY);
+        }
+        catch (Exception e) {
+            Log.error("Failed to register EntityCitizen->EntityPlayer Friendly association!");
+            e.printStackTrace();
+        }
     }
 
     private static void setupLycanites() {
