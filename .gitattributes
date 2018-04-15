@@ -1,0 +1,9 @@
+*	text=auto
+
+*.java	text
+*.json	text
+*.lang	text
+
+*.jar	binary
+*.png	binary
+
