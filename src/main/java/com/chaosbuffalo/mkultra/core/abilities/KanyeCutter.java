@@ -100,12 +100,15 @@ public class KanyeCutter extends BaseAbility {
             if (colTrace != null && colTrace.typeOfHit == RayTraceResult.Type.BLOCK){
                 teleLoc = colTrace.hitVec;
             }
-            Vec3d newLookVec = targetEntity.getPositionVector().subtract(teleLoc).normalize();
-            float pitch = (float)Math.asin(-newLookVec.y);
-            float yaw = (float)Math.atan2(newLookVec.x, newLookVec.z);
+            Vec3d lookDelta = teleLoc.subtract(targetEntity.getPositionVector().add(new Vec3d(0.0f, .5f, 0.0f))).normalize();
+            double pitch = Math.asin(lookDelta.y);
+            double yaw = Math.atan2(lookDelta.z, lookDelta.x);
+            pitch = pitch * 180.0 / Math.PI;
+            yaw = yaw * 180.0 / Math.PI;
+            yaw += 90f;
             // Unfortunately setRotation is protected so we have to set these directly.
-            entity.rotationYaw = yaw;
-            entity.rotationPitch = pitch;
+            entity.rotationYaw = (float)yaw;
+            entity.rotationPitch = (float)pitch;
             entity.setPositionAndUpdate(teleLoc.x, teleLoc.y, teleLoc.z);
             entity.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 3 * GameConstants.TICKS_PER_SECOND, 5));
 
