@@ -24,26 +24,6 @@ public class PowerWordSummon extends BaseAbility {
     }
 
     @Override
-    public String getAbilityName() {
-        return "Power Word Summon";
-    }
-
-    @Override
-    public String getAbilityDescription() {
-        return "Summons your target, rooting them for a short time.";
-    }
-
-    @Override
-    public String getAbilityType() {
-        return "Single Target";
-    }
-
-    @Override
-    public ResourceLocation getAbilityIcon(){
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/powerwordsummon.png");
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 16 - 4 * currentLevel;
     }

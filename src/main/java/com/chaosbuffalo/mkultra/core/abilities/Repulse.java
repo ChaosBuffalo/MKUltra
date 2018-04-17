@@ -25,26 +25,6 @@ public class Repulse extends BaseAbility {
     }
 
     @Override
-    public String getAbilityName() {
-        return "Repulse";
-    }
-
-    @Override
-    public String getAbilityDescription() {
-        return "Pushes all around you away.";
-    }
-
-    @Override
-    public String getAbilityType() {
-        return "AOE";
-    }
-
-    @Override
-    public ResourceLocation getAbilityIcon(){
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/repulse.png");
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 15;
     }

@@ -19,27 +19,6 @@ public class BallLightning extends BaseAbility {
     }
 
     @Override
-    public String getAbilityName() {
-        return "Ball Lightning";
-    }
-
-    @Override
-    public ResourceLocation getAbilityIcon(){
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/balllightning.png");
-    }
-
-
-    @Override
-    public String getAbilityDescription() {
-        return "Launches a projectile that deals lightning damage";
-    }
-
-    @Override
-    public String getAbilityType() {
-        return "Projectile";
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 8 - 2 * currentLevel;
     }

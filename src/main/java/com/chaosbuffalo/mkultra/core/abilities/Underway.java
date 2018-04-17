@@ -30,27 +30,6 @@ public class Underway extends BaseAbility {
     }
 
     @Override
-    public String getAbilityName() {
-        return "Underway";
-    }
-
-    @Override
-    public String getAbilityDescription() {
-        return "Buffs all surrounding players, giving them move speed and cooldown reduction.";
-    }
-
-    @Override
-    public ResourceLocation getAbilityIcon() {
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/underway.png");
-    }
-
-
-    @Override
-    public String getAbilityType() {
-        return "Group Buff";
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return BASE_DURATION + currentLevel * DURATION_SCALE;
     }

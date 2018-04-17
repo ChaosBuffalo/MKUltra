@@ -29,26 +29,6 @@ public class ArrowStorm extends BaseAbility {
     }
 
     @Override
-    public ResourceLocation getAbilityIcon(){
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/arrowstorm.png");
-    }
-
-    @Override
-    public String getAbilityName() {
-        return "Arrow Storm";
-    }
-
-    @Override
-    public String getAbilityDescription() {
-        return "Launches many arrows at once.";
-    }
-
-    @Override
-    public String getAbilityType() {
-        return "Projectile";
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 40 - 10 * currentLevel;
     }

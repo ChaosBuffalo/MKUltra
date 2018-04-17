@@ -26,26 +26,6 @@ public class SwiftsRodeoHeartbreak extends BaseAbility {
     }
 
     @Override
-    public String getAbilityName() {
-        return "Swift's Rodeo";
-    }
-
-    @Override
-    public String getAbilityDescription() {
-        return "Speeds up all your surrounding allies.";
-    }
-
-    @Override
-    public String getAbilityType() {
-        return "Group Buff";
-    }
-
-    @Override
-    public ResourceLocation getAbilityIcon(){
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/swiftsrodeohearthbreak.png");
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 30 - currentLevel * 4;
     }

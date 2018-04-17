@@ -27,27 +27,6 @@ public class Smite extends BaseAbility {
     }
 
     @Override
-    public String getAbilityName() {
-        return "Smite";
-    }
-
-    @Override
-    public String getAbilityDescription() {
-        return "Calls upon holy powers to damage your enemy, rooting them for a short time.";
-    }
-
-    @Override
-    public ResourceLocation getAbilityIcon(){
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/smite.png");
-    }
-
-
-    @Override
-    public String getAbilityType() {
-        return "Single Target";
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 6 - currentLevel;
     }

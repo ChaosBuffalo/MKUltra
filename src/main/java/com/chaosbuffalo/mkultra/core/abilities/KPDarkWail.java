@@ -31,26 +31,6 @@ public class KPDarkWail extends BaseAbility {
     }
 
     @Override
-    public String getAbilityName() {
-        return "KP's Dark Wail";
-    }
-
-    @Override
-    public String getAbilityDescription() {
-        return "Damages and roots all enemies around you.";
-    }
-
-    @Override
-    public String getAbilityType() {
-        return "AOE";
-    }
-
-    @Override
-    public ResourceLocation getAbilityIcon(){
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/kpdarkwail.png");
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 16 - 2 * currentLevel;
     }

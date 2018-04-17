@@ -23,26 +23,6 @@ public class MassDrown extends BaseAbility {
     }
 
     @Override
-    public String getAbilityName() {
-        return "Mass Drown";
-    }
-
-    @Override
-    public String getAbilityDescription() {
-        return "Spreads drown from the target to surrounding targets.";
-    }
-
-    @Override
-    public String getAbilityType() {
-        return "Single Target";
-    }
-
-    @Override
-    public ResourceLocation getAbilityIcon(){
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/massdrown.png");
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 30 - 10 * currentLevel;
     }

@@ -32,28 +32,6 @@ public class PoisonArrow extends BaseAbility {
     }
 
     @Override
-    public String getAbilityName() {
-        return "Poison Arrow";
-    }
-
-    @Override
-    public String getAbilityDescription() {
-        return "Launches a magic arrow that poisons and slows an enemy. " +
-                "At level 2 the effects are spread to nearby enemies.";
-    }
-
-    @Override
-    public ResourceLocation getAbilityIcon(){
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/poisonarrow.png");
-    }
-
-
-    @Override
-    public String getAbilityType() {
-        return "Projectile";
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 10 - currentLevel * 2;
     }

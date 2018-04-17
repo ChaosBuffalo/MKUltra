@@ -29,27 +29,6 @@ public class FlameBlade  extends BaseAbility {
     }
 
     @Override
-    public String getAbilityName() {
-        return "Flame Blade";
-    }
-
-    @Override
-    public String getAbilityDescription() {
-        return "Buffs all surrounding players, giving them burning damage on hit";
-    }
-
-    @Override
-    public ResourceLocation getAbilityIcon(){
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/flameblade.png");
-    }
-
-
-    @Override
-    public String getAbilityType() {
-        return "Group Buff";
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 18 + currentLevel * 5;
     }

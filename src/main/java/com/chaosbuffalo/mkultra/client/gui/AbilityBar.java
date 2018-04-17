@@ -109,7 +109,7 @@ public class AbilityBar extends Gui {
             mc.getTextureManager().bindTexture(ability.getAbilityIcon());
             Gui.drawModalRectWithCustomSizedTexture(slotAbilityOffsetX,
                     barStartY + slotAbilityOffsetY + (i * SLOT_HEIGHT),
-                    ability.getIconU(), ability.getIconV(), ABILITY_ICON_SIZE, ABILITY_ICON_SIZE, ABILITY_ICON_SIZE, ABILITY_ICON_SIZE);
+                    0, 0, ABILITY_ICON_SIZE, ABILITY_ICON_SIZE, ABILITY_ICON_SIZE, ABILITY_ICON_SIZE);
 
             float cooldownFactor = data.getCooldownPercent(ability, partialTicks);
             if (globalCooldown > 0.0f && cooldownFactor == 0) {

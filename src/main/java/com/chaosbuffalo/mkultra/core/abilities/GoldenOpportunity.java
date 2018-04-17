@@ -24,30 +24,9 @@ public class GoldenOpportunity extends BaseAbility {
     }
 
     @Override
-    public String getAbilityName() {
-        return "Golden Opportunity";
-    }
-
-    @Override
-    public String getAbilityDescription() {
-        return "Creates a Gold/Iron Pickaxe out of the nearby materials lying around.";
-    }
-
-    @Override
-    public String getAbilityType() {
-        return "Summon";
-    }
-
-    @Override
     public int getCooldown(int currentLevel){
         return 30;
     }
-
-    @Override
-    public ResourceLocation getAbilityIcon(){
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/goldenopportunity.png");
-    }
-
 
     @Override
     public Targeting.TargetType getTargetType() {

@@ -24,26 +24,6 @@ public class Esuna extends BaseAbility {
     }
 
     @Override
-    public String getAbilityName() {
-        return "Esuna";
-    }
-
-    @Override
-    public String getAbilityDescription() {
-        return "Restores mana and cures nearby allies";
-    }
-
-    @Override
-    public String getAbilityType() {
-        return "AOE";
-    }
-
-    @Override
-    public ResourceLocation getAbilityIcon(){
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/esuna.png");
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 25 - currentLevel * 5;
     }

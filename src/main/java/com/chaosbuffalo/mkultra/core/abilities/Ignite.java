@@ -29,28 +29,6 @@ public class Ignite extends BaseAbility {
     }
 
     @Override
-    public String getAbilityName() {
-        return "Ignite";
-    }
-
-    @Override
-    public String getAbilityDescription() {
-        return "Damages your target, and if the target is on fire, ignites the area damaging all" +
-                "surrounding targets and setting them on fire.";
-    }
-
-    @Override
-    public ResourceLocation getAbilityIcon(){
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/ignite.png");
-    }
-
-
-    @Override
-    public String getAbilityType() {
-        return "Single Target";
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 17 - 2 * currentLevel;
     }

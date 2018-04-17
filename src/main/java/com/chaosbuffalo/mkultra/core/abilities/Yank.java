@@ -24,26 +24,6 @@ public class Yank extends BaseAbility {
     }
 
     @Override
-    public String getAbilityName() {
-        return "Yank";
-    }
-
-    @Override
-    public String getAbilityDescription() {
-        return "Pulls an enemy or ally towards you.";
-    }
-
-    @Override
-    public ResourceLocation getAbilityIcon(){
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/yank.png");
-    }
-
-    @Override
-    public String getAbilityType() {
-        return "Target";
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 5;
     }

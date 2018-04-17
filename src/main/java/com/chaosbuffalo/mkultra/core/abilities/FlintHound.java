@@ -24,30 +24,9 @@ public class FlintHound extends BaseAbility {
     }
 
     @Override
-    public String getAbilityName() {
-        return "Flint Hound";
-    }
-
-    @Override
-    public String getAbilityDescription() {
-        return "Summons flint and feathers for the making of arrows.";
-    }
-
-    @Override
-    public String getAbilityType() {
-        return "Summon";
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 600;
     }
-
-    @Override
-    public ResourceLocation getAbilityIcon(){
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/flinthound.png");
-    }
-
 
     @Override
     public Targeting.TargetType getTargetType() {

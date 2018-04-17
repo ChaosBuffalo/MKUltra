@@ -28,27 +28,6 @@ public class EagleAspect extends BaseAbility {
     }
 
     @Override
-    public String getAbilityName() {
-        return "Eagle Aspect";
-    }
-
-    @Override
-    public ResourceLocation getAbilityIcon(){
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/eagle_aspect.png");
-    }
-
-
-    @Override
-    public String getAbilityDescription() {
-        return "Buffs all surrounding players, granting them flight.";
-    }
-
-    @Override
-    public String getAbilityType() {
-        return "Group Buff";
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 1200 - currentLevel * 300;
     }

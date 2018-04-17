@@ -29,26 +29,6 @@ public class KanyeCutter extends BaseAbility {
     }
 
     @Override
-    public String getAbilityName() {
-        return "Kanye Cutter";
-    }
-
-    @Override
-    public String getAbilityDescription() {
-        return "Warps you to your target, damaging and withering them.";
-    }
-
-    @Override
-    public String getAbilityType() {
-        return "Single Target";
-    }
-
-    @Override
-    public ResourceLocation getAbilityIcon(){
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/kanyecutter.png");
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 8 - currentLevel;
     }

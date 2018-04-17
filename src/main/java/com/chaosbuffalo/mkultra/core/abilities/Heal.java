@@ -25,26 +25,6 @@ public class Heal extends BaseAbility {
     }
 
     @Override
-    public String getAbilityName() {
-        return "Heal";
-    }
-
-    @Override
-    public String getAbilityDescription() {
-        return "Heals your target, or you if you have no target. Damage undead.";
-    }
-
-    @Override
-    public String getAbilityType() {
-        return "Single Target";
-    }
-
-    @Override
-    public ResourceLocation getAbilityIcon(){
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/heal.png");
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 6 - currentLevel;
     }

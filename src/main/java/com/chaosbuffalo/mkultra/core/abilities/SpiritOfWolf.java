@@ -26,26 +26,6 @@ public class SpiritOfWolf extends BaseAbility {
     }
 
     @Override
-    public String getAbilityName() {
-        return "Spirit of Wolf";
-    }
-
-    @Override
-    public String getAbilityDescription() {
-        return "Speeds your target up.";
-    }
-
-    @Override
-    public String getAbilityType() {
-        return "Buff";
-    }
-
-    @Override
-    public ResourceLocation getAbilityIcon(){
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/spiritofwolf.png");
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 40 - 10 * currentLevel;
     }

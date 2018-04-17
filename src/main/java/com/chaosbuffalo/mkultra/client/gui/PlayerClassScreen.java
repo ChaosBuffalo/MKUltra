@@ -69,7 +69,7 @@ public class PlayerClassScreen extends GuiScreen {
             mc.getTextureManager().bindTexture(ability.getAbilityIcon());
             Gui.drawModalRectWithCustomSizedTexture(xPos + panelX + 2,
                     yPos + panelY + 2 + 14,
-                    ability.getIconU(), ability.getIconV(), 16, 16, 16, 16);
+                    0, 0, 16, 16, 16, 16);
         }
         //draw text
         this.buttonList.clear();

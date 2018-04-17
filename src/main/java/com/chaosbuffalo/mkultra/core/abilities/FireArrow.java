@@ -30,27 +30,6 @@ public class FireArrow extends BaseAbility {
     }
 
     @Override
-    public String getAbilityName() {
-        return "Fire Arrow";
-    }
-
-    @Override
-    public String getAbilityDescription() {
-        return "Launches an arrow that ignites an enemy. If the enemy is already on fire, they explode.";
-    }
-
-    @Override
-    public ResourceLocation getAbilityIcon(){
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/firearrow.png");
-    }
-
-
-    @Override
-    public String getAbilityType() {
-        return "Projectile";
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 5 - currentLevel;
     }

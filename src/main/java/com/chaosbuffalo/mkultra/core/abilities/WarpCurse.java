@@ -27,26 +27,6 @@ public class WarpCurse extends BaseAbility {
     }
 
     @Override
-    public String getAbilityName() {
-        return "Warp Curse";
-    }
-
-    @Override
-    public String getAbilityDescription() {
-        return "Places a DOT on your target that warps them around while damaging them.";
-    }
-
-    @Override
-    public ResourceLocation getAbilityIcon(){
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/warp_curse.png");
-    }
-
-    @Override
-    public String getAbilityType() {
-        return "Single Target";
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 16 - currentLevel * 4;
     }

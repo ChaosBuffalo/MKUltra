@@ -26,30 +26,9 @@ public class LavaWanderer extends BaseAbility {
     }
 
     @Override
-    public String getAbilityName() {
-        return "Lava Wanderer";
-    }
-
-    @Override
-    public String getAbilityDescription() {
-        return "Grants fire resistance and haste to allies";
-    }
-
-    @Override
-    public String getAbilityType() {
-        return "Group Buff";
-    }
-
-    @Override
     public int getCooldown(int currentLevel){
         return 30;
     }
-
-    @Override
-    public ResourceLocation getAbilityIcon(){
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/lavawanderer.png");
-    }
-
 
     @Override
     public Targeting.TargetType getTargetType() {
