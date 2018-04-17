@@ -23,30 +23,9 @@ public class HopeBread extends BaseAbility {
     }
 
     @Override
-    public String getAbilityName() {
-        return "Hope Bread";
-    }
-
-    @Override
-    public String getAbilityDescription() {
-        return "Creates bread out of the nearby latent hope.";
-    }
-
-    @Override
-    public String getAbilityType() {
-        return "Summon";
-    }
-
-    @Override
     public int getCooldown(int currentLevel){
         return 100;
     }
-
-    @Override
-    public ResourceLocation getAbilityIcon(){
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/hopebread.png");
-    }
-
 
     @Override
     public Targeting.TargetType getTargetType() {

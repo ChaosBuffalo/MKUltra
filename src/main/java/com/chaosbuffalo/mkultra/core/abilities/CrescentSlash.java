@@ -30,26 +30,6 @@ public class CrescentSlash extends BaseAbility {
     }
 
     @Override
-    public String getAbilityName() {
-        return "Crescent Slash";
-    }
-
-    @Override
-    public String getAbilityDescription() {
-        return "Strikes an enemy and all enemies around it.";
-    }
-
-    @Override
-    public String getAbilityType() {
-        return "AOE";
-    }
-
-    @Override
-    public ResourceLocation getAbilityIcon(){
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/crescent_slash.png");
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 7 -  currentLevel;
     }

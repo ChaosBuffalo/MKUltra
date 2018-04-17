@@ -22,26 +22,6 @@ public class Inspire extends BaseAbility {
     }
 
     @Override
-    public String getAbilityName() {
-        return "Inspire";
-    }
-
-    @Override
-    public String getAbilityDescription() {
-        return "Encourage your allies, increasing their attack speed and giving them regeneration.";
-    }
-
-    @Override
-    public String getAbilityType() {
-        return "Group Buff";
-    }
-
-    @Override
-    public ResourceLocation getAbilityIcon(){
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/inspire.png");
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 35;
     }

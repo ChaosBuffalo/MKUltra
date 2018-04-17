@@ -20,27 +20,7 @@ import net.minecraft.world.World;
 public class MileysInspiringBangerz extends BaseAbility {
 
     public MileysInspiringBangerz() {
-        super(MKUltra.MODID, "ability.mileys_inspiring_bangerz");
-    }
-
-    @Override
-    public String getAbilityName() {
-        return "Miley's Bangerz";
-    }
-
-    @Override
-    public String getAbilityDescription() {
-        return "Gives all your allies absorption and buffs their damage.";
-    }
-
-    @Override
-    public String getAbilityType() {
-        return "Group Buff";
-    }
-
-    @Override
-    public ResourceLocation getAbilityIcon(){
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/mileysbangerz.png");
+        super(MKUltra.MODID, "ability.mileys_bangerz");
     }
 
     @Override

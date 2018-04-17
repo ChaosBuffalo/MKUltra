@@ -26,26 +26,6 @@ public class DualityRune extends BaseAbility {
     }
 
     @Override
-    public String getAbilityName() {
-        return "Duality Rune";
-    }
-
-    @Override
-    public String getAbilityDescription() {
-        return "Places a rune on the ground that explodes after a second, damaging enemies and healing allies around it.";
-    }
-
-    @Override
-    public String getAbilityType() {
-        return "Delayed Projectile";
-    }
-
-    @Override
-    public ResourceLocation getAbilityIcon(){
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/duality_rune.png");
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 20 - 4 * currentLevel;
     }

@@ -22,26 +22,6 @@ public class FuriousBrooding extends BaseAbility {
     }
 
     @Override
-    public String getAbilityName() {
-        return "Furious Brooding";
-    }
-
-    @Override
-    public String getAbilityDescription() {
-        return "Regenerates health while slowing the caster for a short period.";
-    }
-
-    @Override
-    public String getAbilityType() {
-        return "Self";
-    }
-
-    @Override
-    public ResourceLocation getAbilityIcon(){
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/furiousbrooding.png");
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 30;
     }

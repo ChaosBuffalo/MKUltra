@@ -23,27 +23,6 @@ public class PierceTheHeavens extends BaseAbility {
     }
 
     @Override
-    public String getAbilityName() {
-        return "Pierce the Heavens";
-    }
-
-    @Override
-    public String getAbilityDescription() {
-        return "Creates some ladders so that you make an escape from the doldrums.";
-    }
-
-    @Override
-    public String getAbilityType() {
-        return "Summon";
-    }
-
-    @Override
-    public ResourceLocation getAbilityIcon(){
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/piercetheheavens.png");
-    }
-
-
-    @Override
     public int getCooldown(int currentLevel){
         return 30;
     }

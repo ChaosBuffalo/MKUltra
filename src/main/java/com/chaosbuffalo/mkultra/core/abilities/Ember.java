@@ -26,27 +26,6 @@ public class Ember extends BaseAbility {
     }
 
     @Override
-    public String getAbilityName() {
-        return "Ember";
-    }
-
-    @Override
-    public ResourceLocation getAbilityIcon(){
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/ember.png");
-    }
-
-
-    @Override
-    public String getAbilityDescription() {
-        return "Damages your target and sets them ablaze";
-    }
-
-    @Override
-    public String getAbilityType() {
-        return "Single Target";
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 6 - 2 * currentLevel;
     }

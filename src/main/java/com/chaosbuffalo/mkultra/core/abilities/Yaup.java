@@ -25,26 +25,6 @@ public class Yaup extends BaseAbility {
     }
 
     @Override
-    public String getAbilityName() {
-        return "Yaup";
-    }
-
-    @Override
-    public String getAbilityDescription() {
-        return "Increase your allies attack speed and damage for a short time.";
-    }
-
-    @Override
-    public String getAbilityType() {
-        return "Group Buff";
-    }
-
-    @Override
-    public ResourceLocation getAbilityIcon(){
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/yaup.png");
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 45;
     }

@@ -23,26 +23,6 @@ public class Geyser extends BaseAbility {
     }
 
     @Override
-    public String getAbilityName() {
-        return "Geyser";
-    }
-
-    @Override
-    public String getAbilityDescription() {
-        return "Launches a projectile that sits for a second, then explodes.";
-    }
-
-    @Override
-    public String getAbilityType() {
-        return "Delayed Projectile";
-    }
-
-    @Override
-    public ResourceLocation getAbilityIcon(){
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/geyser.png");
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 14 - 3 * currentLevel;
     }

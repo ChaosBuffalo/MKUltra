@@ -27,27 +27,6 @@ public class WaveBreak extends BaseToggleAbility {
     }
 
     @Override
-    public String getAbilityName() {
-        return "Wave Break";
-    }
-
-    @Override
-    public String getAbilityDescription() {
-        return "Toggle ability that gives you a large buff to health, armor, and magic armor and causes you to" +
-                "absorb most of your teammates damage.";
-    }
-
-    @Override
-    public ResourceLocation getAbilityIcon(){
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/wave_break.png");
-    }
-
-    @Override
-    public String getAbilityType() {
-        return "Self";
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 4 - currentLevel;
     }

@@ -27,27 +27,6 @@ public class VampiricRevere extends BaseToggleAbility {
     }
 
     @Override
-    public String getAbilityName() {
-        return "Vampiric Revere";
-    }
-
-    @Override
-    public String getAbilityDescription() {
-        return "Toggle ability that gives you lifesteal on hit, but drains 1 mana" +
-                "every time you attack.";
-    }
-
-    @Override
-    public ResourceLocation getAbilityIcon(){
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/vampiric_revere.png");
-    }
-
-    @Override
-    public String getAbilityType() {
-        return "Self";
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 4 - currentLevel;
     }

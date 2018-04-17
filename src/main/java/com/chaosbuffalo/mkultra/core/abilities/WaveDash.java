@@ -37,26 +37,6 @@ public class WaveDash extends BaseAbility {
     }
 
     @Override
-    public String getAbilityName() {
-        return "Wave Dash";
-    }
-
-    @Override
-    public String getAbilityDescription() {
-        return "Dashes forward hitting all targets that cross your path.";
-    }
-
-    @Override
-    public String getAbilityType() {
-        return "Line Attack";
-    }
-
-    @Override
-    public ResourceLocation getAbilityIcon(){
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/wave_dash.png");
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 8 - currentLevel;
     }

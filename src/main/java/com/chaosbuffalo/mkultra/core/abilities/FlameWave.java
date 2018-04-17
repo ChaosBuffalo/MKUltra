@@ -26,27 +26,6 @@ public class FlameWave extends BaseAbility {
     }
 
     @Override
-    public String getAbilityName() {
-        return "Flame wave";
-    }
-
-    @Override
-    public String getAbilityDescription() {
-        return "Damages all enemies around you, dealing double damage if they are burning.";
-    }
-
-    @Override
-    public ResourceLocation getAbilityIcon(){
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/flamewave.png");
-    }
-
-
-    @Override
-    public String getAbilityType() {
-        return "PBAOE";
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 20 - currentLevel * 5;
     }

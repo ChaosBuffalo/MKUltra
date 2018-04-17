@@ -23,27 +23,6 @@ public class Drown extends BaseAbility {
     }
 
     @Override
-    public String getAbilityName() {
-        return "Drown";
-    }
-
-    @Override
-    public ResourceLocation getAbilityIcon(){
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/drown.png");
-    }
-
-
-    @Override
-    public String getAbilityDescription() {
-        return "Launches a projectile that inflicts a short DoT";
-    }
-
-    @Override
-    public String getAbilityType() {
-        return "Projectile";
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 4 - currentLevel;
     }

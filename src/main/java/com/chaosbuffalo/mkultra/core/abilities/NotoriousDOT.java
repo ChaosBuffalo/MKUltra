@@ -25,26 +25,6 @@ public class NotoriousDOT extends BaseAbility {
     }
 
     @Override
-    public String getAbilityName() {
-        return "Notorious DoT";
-    }
-
-    @Override
-    public String getAbilityDescription() {
-        return "Damages all enemies around you.";
-    }
-
-    @Override
-    public String getAbilityType() {
-        return "AOE";
-    }
-
-    @Override
-    public ResourceLocation getAbilityIcon(){
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/notoriousdot.png");
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 20 - currentLevel * 4;
     }

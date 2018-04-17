@@ -26,26 +26,6 @@ public class Whirlpool extends BaseAbility {
     }
 
     @Override
-    public String getAbilityName() {
-        return "Whirlpool";
-    }
-
-    @Override
-    public String getAbilityDescription() {
-        return "Places a whirlpool on the ground, sucking enemies in and dotting them.";
-    }
-
-    @Override
-    public String getAbilityType() {
-        return "Delayed Projectile";
-    }
-
-    @Override
-    public ResourceLocation getAbilityIcon(){
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/whirlpool.png");
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 12 - 4 * currentLevel;
     }

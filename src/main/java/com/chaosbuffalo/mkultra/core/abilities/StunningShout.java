@@ -23,26 +23,6 @@ public class StunningShout extends BaseAbility {
     }
 
     @Override
-    public String getAbilityName() {
-        return "Stunning Shout";
-    }
-
-    @Override
-    public String getAbilityDescription() {
-        return "Stuns a single target for 4.0/6.0 seconds.";
-    }
-
-    @Override
-    public String getAbilityType() {
-        return "Single Target";
-    }
-
-    @Override
-    public ResourceLocation getAbilityIcon(){
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/stunningshout.png");
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 14 - currentLevel * 2;
     }

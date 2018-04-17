@@ -30,27 +30,6 @@ public class MoonTrance extends BaseAbility {
     }
 
     @Override
-    public String getAbilityName() {
-        return "Moon Trance";
-    }
-
-    @Override
-    public String getAbilityDescription() {
-        return "Buffs all surrounding players, giving them mana regen and damage shield.";
-    }
-
-    @Override
-    public ResourceLocation getAbilityIcon() {
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/moon_trance.png");
-    }
-
-
-    @Override
-    public String getAbilityType() {
-        return "Group Buff";
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return BASE_DURATION + currentLevel * DURATION_SCALE;
     }

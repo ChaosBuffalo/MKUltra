@@ -31,26 +31,6 @@ public class HeavingSeas extends BaseAbility {
     }
 
     @Override
-    public String getAbilityName() {
-        return "Heaving Seas";
-    }
-
-    @Override
-    public String getAbilityDescription() {
-        return "Damages and knocks up enemies around you, slowing them.";
-    }
-
-    @Override
-    public String getAbilityType() {
-        return "AOE";
-    }
-
-    @Override
-    public ResourceLocation getAbilityIcon(){
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/heaving_seas.png");
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 12 - 2 * currentLevel;
     }

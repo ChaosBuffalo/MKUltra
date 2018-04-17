@@ -40,7 +40,7 @@ public class FlameBladePotion extends SpellPotionBase {
 
     @Override
     public ResourceLocation getIconTexture() {
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/flameblade.png");
+        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/flame_blade.png");
     }
 
     @Override

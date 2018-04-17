@@ -27,26 +27,6 @@ public class WhirlwindBlades extends BaseAbility {
     }
 
     @Override
-    public String getAbilityName() {
-        return "Whirlwind Blades";
-    }
-
-    @Override
-    public String getAbilityDescription() {
-        return "Strikes enemies close to you repeatedly";
-    }
-
-    @Override
-    public String getAbilityType() {
-        return "AOE";
-    }
-
-    @Override
-    public ResourceLocation getAbilityIcon(){
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/whirlwind_blades.png");
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 25 - 5 * currentLevel;
     }

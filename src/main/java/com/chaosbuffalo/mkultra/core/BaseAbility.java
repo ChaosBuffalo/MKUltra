@@ -3,6 +3,7 @@ package com.chaosbuffalo.mkultra.core;
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.api.Targeting;
 import com.chaosbuffalo.mkultra.utils.RayTraceUtils;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,6 +15,7 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import javax.annotation.Nonnull;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public abstract class BaseAbility extends IForgeRegistryEntry.Impl<BaseAbility> {
 
@@ -35,23 +37,22 @@ public abstract class BaseAbility extends IForgeRegistryEntry.Impl<BaseAbility> 
         return abilityId;
     }
 
-    public abstract String getAbilityName();
-
-    public abstract String getAbilityDescription();
-
-    public String getAbilityType() {
-        return "Default";
+    public String getAbilityName()
+    {
+        return I18n.format(String.format("%s.%s.name", abilityId.getResourceDomain(), abilityId.getResourcePath()));
     }
 
-    public abstract ResourceLocation getAbilityIcon();
-
-    public int getIconU() {
-        return 0;
+    public String getAbilityDescription()
+    {
+        return I18n.format(String.format("%s.%s.description", abilityId.getResourceDomain(), abilityId.getResourcePath()));
     }
 
-    public int getIconV() {
-        return 0;
+
+    public ResourceLocation getAbilityIcon()
+    {
+        return new ResourceLocation(abilityId.getResourceDomain(), String.format("textures/class/abilities/%s.png", abilityId.getResourcePath().split(Pattern.quote("."))[1]));
     }
+
 
     public float getDistance(int currentLevel) {
         return 1.0f;

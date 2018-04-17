@@ -23,28 +23,8 @@ public class TNTWhisperer extends BaseAbility {
     }
 
     @Override
-    public String getAbilityName() {
-        return "TNT Whisperer";
-    }
-
-    @Override
-    public String getAbilityDescription() {
-        return "Creates TNT out of the nearby materials lying around.";
-    }
-
-    @Override
-    public String getAbilityType() {
-        return "Summon";
-    }
-
-    @Override
     public int getCooldown(int currentLevel){
         return 300;
-    }
-
-    @Override
-    public ResourceLocation getAbilityIcon(){
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/tntwhisperer.png");
     }
 
     @Override

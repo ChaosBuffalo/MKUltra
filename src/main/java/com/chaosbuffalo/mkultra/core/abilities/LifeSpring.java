@@ -26,26 +26,6 @@ public class LifeSpring  extends BaseAbility {
     }
 
     @Override
-    public String getAbilityName() {
-        return "Life Spring";
-    }
-
-    @Override
-    public String getAbilityDescription() {
-        return "Heals all allies in the area.";
-    }
-
-    @Override
-    public String getAbilityType() {
-        return "AOE";
-    }
-
-    @Override
-    public ResourceLocation getAbilityIcon(){
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/lifespring.png");
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 30 - currentLevel * 5;
     }

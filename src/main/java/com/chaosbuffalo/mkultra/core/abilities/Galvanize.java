@@ -24,26 +24,6 @@ public class Galvanize extends BaseAbility {
     }
 
     @Override
-    public String getAbilityName() {
-        return "Galvanize";
-    }
-
-    @Override
-    public String getAbilityDescription() {
-        return "Cures players around you and gives them a jump buff.";
-    }
-
-    @Override
-    public String getAbilityType() {
-        return "AOE";
-    }
-
-    @Override
-    public ResourceLocation getAbilityIcon(){
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/galvanize.png");
-    }
-
-    @Override
     public int getCooldown(int currentLevel) {
         return 25;
     }
