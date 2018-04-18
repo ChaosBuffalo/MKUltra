@@ -1,7 +1,7 @@
 package com.chaosbuffalo.mkultra.integration;
 import com.chaosbuffalo.mkultra.core.ArmorClass;
-import com.chaosbuffalo.mkultra.api.Targeting;
 import com.chaosbuffalo.mkultra.log.Log;
+import com.chaosbuffalo.targeting_api.Targeting;
 import com.google.common.collect.Lists;
 import com.mcmoddev.basemetals.data.MaterialNames;
 import com.mcmoddev.basemetals.init.Materials;
@@ -94,9 +94,9 @@ public class Integrations {
         }
     }
 
-    private static void setupLycanites() {
-        Targeting.registerFriendlyEntity("com.lycanitesmobs.elementalmobs.entity.EntityNymph");
-    }
+//    private static void setupLycanites() {
+//        Targeting.registerFriendlyEntity("com.lycanitesmobs.elementalmobs.entity.EntityNymph");
+//    }
 
     private static void setupBasemetals() {
         ArmorClass.ROBES
@@ -136,6 +136,5 @@ public class Integrations {
         setupBasemetals();
         setupLootableBodies();
         setupMinecolonies();
-        setupLycanites();
     }
 }

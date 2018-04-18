@@ -1,7 +1,7 @@
 package com.chaosbuffalo.mkultra.effects;
 
-import com.chaosbuffalo.mkultra.api.Targeting;
 import com.chaosbuffalo.mkultra.entities.EntityMKAreaEffect;
+import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.PotionEffect;
