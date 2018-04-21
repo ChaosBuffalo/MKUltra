@@ -22,5 +22,7 @@ public class EntityRenderRegister {
                 new RenderProjectile(ModItems.duality_rune_projectile, 1.0f));
         RenderingRegistry.registerEntityRenderingHandler(EntityWhirlpoolProjectile.class,
                 new RenderProjectile(ModItems.whirlpool_projectile, 1.0f));
+        RenderingRegistry.registerEntityRenderingHandler(EntityFlameBladeProjectile.class,
+                new RenderProjectile(ModItems.flame_blade_projectile, 1.0f));
     }
 }

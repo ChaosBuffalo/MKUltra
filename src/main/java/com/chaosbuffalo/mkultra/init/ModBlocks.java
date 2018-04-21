@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.init;
 
+import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.blocks.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -32,13 +33,18 @@ public final class ModBlocks {
     static {
         regInternal(xpTableBlock = new XpTableBlock(
                 "xpTable", Material.ANVIL, 5.0f, 1000.0f)
-                .setLightLevel(1.0f));
-        regInternal(hempBlock = new HempBlock());
-        regInternal(ropeBlock = new RopeBlock());
+                .setLightLevel(1.0f)
+                .setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(hempBlock = new HempBlock().setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(ropeBlock = new RopeBlock().setCreativeTab(MKUltra.MKULTRA_TAB));
         // FIXME: re-enable these when poweradvantage works again
-        regInternal(portalBlock = new PortalBlock("portalblock", Material.ANVIL, 5.0f, 1000.0f));
-        regInternal(steamPoweredOrbBlock = new SteamPoweredOrbBlock("steamPoweredOrbBlock",
-                Material.ANVIL, 5.0f, 1000.0f));
+        regInternal(portalBlock = new PortalBlock(
+                "portalblock", Material.ANVIL, 5.0f, 1000.0f)
+                .setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(steamPoweredOrbBlock = new SteamPoweredOrbBlock(
+                "steamPoweredOrbBlock",
+                Material.ANVIL, 5.0f, 1000.0f)
+                .setCreativeTab(MKUltra.MKULTRA_TAB));
         steamPoweredOrbBlock.setHarvestLevel("pickaxe", 2);
         portalBlock.setHarvestLevel("pickaxe", 3);
     }

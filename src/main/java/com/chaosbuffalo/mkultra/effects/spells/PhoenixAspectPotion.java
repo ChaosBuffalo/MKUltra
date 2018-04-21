@@ -1,12 +1,14 @@
 package com.chaosbuffalo.mkultra.effects.spells;
 
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.core.PlayerAttributes;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.attributes.AbstractAttributeMap;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.play.server.SPacketPlayerAbilities;
 import net.minecraft.potion.Potion;
@@ -15,10 +17,19 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@Mod.EventBusSubscriber(modid = MKUltra.MODID)
-public class FlightPotion extends SpellPotionBase {
+import java.util.UUID;
 
-    public static final FlightPotion INSTANCE = new FlightPotion();
+@Mod.EventBusSubscriber(modid = MKUltra.MODID)
+public class PhoenixAspectPotion extends SpellPotionBase {
+
+    public static final UUID MODIFIER_ID = UUID.fromString("721f69b8-c361-4b80-897f-724f84e08ae7");
+
+    public static final PhoenixAspectPotion INSTANCE = (PhoenixAspectPotion) new PhoenixAspectPotion()
+            .registerPotionAttributeModifier(PlayerAttributes.COOLDOWN, MODIFIER_ID.toString(),
+                    -0.33, PlayerAttributes.OP_INCREMENT)
+            .registerPotionAttributeModifier(PlayerAttributes.MANA_REGEN, MODIFIER_ID.toString(),
+                    1.0f, PlayerAttributes.OP_INCREMENT)
+            ;
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {
@@ -29,14 +40,20 @@ public class FlightPotion extends SpellPotionBase {
         return INSTANCE.newSpellCast(source);
     }
 
-    private FlightPotion() {
+    private PhoenixAspectPotion() {
         super(false, 4393423);
-        register(MKUltra.MODID, "effect.flight");
+        register(MKUltra.MODID, "effect.phoenix_aspect");
+    }
+
+    @Override
+    public double getAttributeModifierAmount(int amplifier, AttributeModifier modifier)
+    {
+        return modifier.getAmount() * (double)(amplifier);
     }
 
     @Override
     public ResourceLocation getIconTexture() {
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/eagle_aspect.png");
+        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/phoenix_aspect.png");
     }
 
     @Override

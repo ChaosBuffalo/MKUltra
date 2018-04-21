@@ -5,7 +5,7 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.FeatherFallPotion;
-import com.chaosbuffalo.mkultra.effects.spells.FlightPotion;
+import com.chaosbuffalo.mkultra.effects.spells.PhoenixAspectPotion;
 import com.chaosbuffalo.mkultra.effects.spells.ParticlePotion;
 import com.chaosbuffalo.mkultra.core.BaseAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
@@ -14,22 +14,21 @@ import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class EagleAspect extends BaseAbility {
+public class PhoenixAspect extends BaseAbility {
 
-    public static int BASE_DURATION = 0;
-    public static int DURATION_SCALE = 60;
+    public static int BASE_DURATION = 30;
+    public static int DURATION_SCALE = 30;
 
-    public EagleAspect() {
-        super(MKUltra.MODID, "ability.eagle_aspect");
+    public PhoenixAspect() {
+        super(MKUltra.MODID, "ability.phoenix_aspect");
     }
 
     @Override
     public int getCooldown(int currentLevel) {
-        return 1200 - currentLevel * 300;
+        return 500 - currentLevel * 100;
     }
 
     @Override
@@ -65,7 +64,7 @@ public class EagleAspect extends BaseAbility {
 
         // What to do for each target hit
         int duration = (BASE_DURATION + DURATION_SCALE * level) * GameConstants.TICKS_PER_SECOND;
-        SpellCast effect = FlightPotion.Create(entity);
+        SpellCast effect = PhoenixAspectPotion.Create(entity);
         SpellCast feather = FeatherFallPotion.Create(entity);
         SpellCast particlePotion = ParticlePotion.Create(entity,
                 EnumParticleTypes.FIREWORKS_SPARK.getParticleID(),

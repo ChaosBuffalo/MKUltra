@@ -3,7 +3,9 @@ package com.chaosbuffalo.mkultra.event;
 
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
+import com.chaosbuffalo.mkultra.core.abilities.FlameBlade;
 import com.chaosbuffalo.mkultra.effects.spells.*;
+import com.chaosbuffalo.mkultra.entities.projectiles.EntityFlameBladeProjectile;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.party.PartyManager;
 import net.minecraft.entity.Entity;
@@ -13,6 +15,8 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.world.World;
+import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -147,4 +151,5 @@ public class PotionEventHandler {
             FlameBladePotion.INSTANCE.onAttackEntity(player, target, potion);
         }
     }
+
 }

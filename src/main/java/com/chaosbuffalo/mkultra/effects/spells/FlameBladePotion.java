@@ -5,6 +5,7 @@ import com.chaosbuffalo.mkultra.core.abilities.FlameBlade;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
+import com.chaosbuffalo.mkultra.entities.projectiles.EntityFlameBladeProjectile;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
@@ -15,6 +16,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -74,14 +76,23 @@ public class FlameBladePotion extends SpellPotionBase {
         SpellCast particles = ParticlePotion.Create(player,
                 EnumParticleTypes.LAVA.getParticleID(),
                 ParticleEffects.SPHERE_MOTION, false, new Vec3d(1.0, 1.0, 1.0),
-                new Vec3d(0.0, 1.0, 0.0), 15, 5, 1.0);
+                new Vec3d(0.0, 1.0, 0.0), 4, 4, 1.0);
 
         AreaEffectBuilder.Create(player, target)
                 .spellCast(flames, potion.getAmplifier(), Targeting.TargetType.ENEMY)
                 .spellCast(particles, potion.getAmplifier(), Targeting.TargetType.ENEMY)
                 .instant()
-                .color(16737305).radius(2.0f, true)
+                .color(16737305).radius(1.0f, true)
                 .particle(EnumParticleTypes.LAVA)
                 .spawn();
+        if (player.isPotionActive(PhoenixAspectPotion.INSTANCE))
+        {
+            World world = player.getEntityWorld();
+            EntityFlameBladeProjectile flamep = new EntityFlameBladeProjectile(world, player);
+            flamep.setAmplifier(potion.getAmplifier());
+            flamep.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, FlameBlade.PROJECTILE_SPEED,
+                    FlameBlade.PROJECTILE_INACCURACY);
+            world.spawnEntity(flamep);
+        }
     }
 }

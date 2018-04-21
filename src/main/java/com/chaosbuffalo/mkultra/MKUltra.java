@@ -1,8 +1,10 @@
 package com.chaosbuffalo.mkultra;
 
 import com.chaosbuffalo.mkultra.command.MKCommand;
+import com.chaosbuffalo.mkultra.item.MKUltraTab;
 import com.chaosbuffalo.mkultra.network.PacketHandler;
 import com.chaosbuffalo.mkultra.party.PartyCommand;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -17,6 +19,8 @@ public class MKUltra {
     public static final String MODID = "mkultra";
     public static final String VERSION = "@VERSION@";
     public static final String MODNAME = "MKUltra";
+
+    public static final CreativeTabs MKULTRA_TAB = new MKUltraTab(CreativeTabs.getNextID(), MODID + ".general");
 
     @Mod.Instance
     public static MKUltra INSTANCE = new MKUltra();

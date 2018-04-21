@@ -20,7 +20,7 @@ public class Druid extends BaseClass {
         abilities.add(new FlameBlade());
         abilities.add(new SpiritOfWolf());
         abilities.add(new LifeSpring());
-        abilities.add(new EagleAspect());
+        abilities.add(new PhoenixAspect());
     }
 
     public Druid() {
