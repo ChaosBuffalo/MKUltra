@@ -97,6 +97,7 @@ public final class ModItems {
     public static Item iron_threaded_boots;
     public static Item duality_rune_projectile;
     public static Item whirlpool_projectile;
+    public static Item flame_blade_projectile;
     public static Item phoenix_dust;
     public static Item steel_infused_bone_leather;
     public static Item steel_infused_bone_leggings;
@@ -115,16 +116,20 @@ public final class ModItems {
     public static Item diamond_dusted_invar_boots;
 
 
-    public static ItemArmor.ArmorMaterial OBSIDIAN_CHAIN = EnumHelper.addArmorMaterial("mkultra_obsidian_chain",
+    public static ItemArmor.ArmorMaterial OBSIDIAN_CHAIN = EnumHelper.addArmorMaterial(
+            "mkultra_obsidian_chain",
             "mkultra:obsidian_chain", 15,
             new int[]{2, 5, 5, 3}, 20, null, 0);
-    public static ItemArmor.ArmorMaterial CHAINMAT = EnumHelper.addArmorMaterial("mkultra_chain",
+    public static ItemArmor.ArmorMaterial CHAINMAT = EnumHelper.addArmorMaterial(
+            "mkultra_chain",
             "mkultra:chainmail", 15,
             new int[]{1, 4, 5, 2}, 12, null, 0);
-    public static ItemArmor.ArmorMaterial ROBEMAT = EnumHelper.addArmorMaterial("mkultra_gold_threaded",
+    public static ItemArmor.ArmorMaterial ROBEMAT = EnumHelper.addArmorMaterial(
+            "mkultra_gold_threaded",
             "mkultra:gold_threaded", 20,
             new int[]{1, 1, 1, 1}, 35, null, 0);
-    public static ItemArmor.ArmorMaterial BONEDLEATHERMAT = EnumHelper.addArmorMaterial("mkultra_boned_leather",
+    public static ItemArmor.ArmorMaterial BONEDLEATHERMAT = EnumHelper.addArmorMaterial(
+            "mkultra_boned_leather",
             "mkultra:bone", 24,
             new int[]{2, 3, 2, 1}, 2, null, 0);
 
@@ -138,11 +143,13 @@ public final class ModItems {
             "mkultra:iron_threaded", 28,
             new int[]{1, 2, 2, 1}, 20, null, 0);
 
-    public static ItemArmor.ArmorMaterial STEEL_INFUSED_BONE_MAT = EnumHelper.addArmorMaterial("mkultra_steel_infused_bone",
+    public static ItemArmor.ArmorMaterial STEEL_INFUSED_BONE_MAT = EnumHelper.addArmorMaterial(
+            "mkultra_steel_infused_bone",
             "mkultra:steel_infused_bone", 30,
             new int[]{2, 3, 3, 2}, 12, null, 0);
 
-    public static ItemArmor.ArmorMaterial DIAMOND_DUSTED_INVAR_MAT = EnumHelper.addArmorMaterial("mkultra_diamond_dusted_invar",
+    public static ItemArmor.ArmorMaterial DIAMOND_DUSTED_INVAR_MAT = EnumHelper.addArmorMaterial(
+            "mkultra_diamond_dusted_invar",
             "mkultra:diamond_dusted_invar", 35,
             new int[]{3, 6, 6, 3}, 24, null, 0);
 
@@ -162,157 +169,273 @@ public final class ModItems {
 
     public static void initItems() {
         // Class-related
-        regInternal(diamond_dust = new AngelDust("diamond_dust"));
-        regInternal(phoenix_dust = new PhoenixDust("phoenix_dust"));
-        regInternal(sunicon = new ClassIcon("sunicon", "The Sun God will bestow on you great powers. Choose your class: ", 8,
-                new ResourceLocation(MKUltra.MODID, "textures/items/sunicon.png"), "Give your Brouzoufs to Solarius." +
-                "  Receive his blessings.",
+        regInternal(diamond_dust = new AngelDust("diamond_dust")
+                .setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(phoenix_dust = new PhoenixDust("phoenix_dust")
+                .setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(sunicon = new ClassIcon("sunicon",
+                "The Sun God will bestow on you great powers. Choose your class: ", 8,
+                new ResourceLocation(MKUltra.MODID, "textures/items/sunicon.png"),
+                "Give your Brouzoufs to Solarius. Receive his blessings.",
                 new ResourceLocation(MKUltra.MODID, "textures/gui/xp_table_background.png")
-                , 38600), "sunicon");
-        regInternal(moon_icon = new ClassIcon("moon_icon", "The Mysterious Moon Goddess offers her arts to you. Choose your class: ", 1,
+                , 38600).setCreativeTab(MKUltra.MKULTRA_TAB), "sunicon");
+        regInternal(moon_icon = new ClassIcon("moon_icon",
+                "The Mysterious Moon Goddess offers her arts to you. Choose your class: ", 1,
                 new ResourceLocation(MKUltra.MODID, "textures/items/moon_icon.png"),
-                "Thalassa, Goddess of the Moon, demands brouzouf in exchange for her powers. ",
+                "Thalassa, Goddess of the Moon, demands brouzouf in exchange for her powers.",
                 new ResourceLocation(MKUltra.MODID, "textures/gui/xp_table_background_moon.png")
-                , 4404838), "moon_icon");
-        regInternal(forgetfulnessBread = new ForgetfulnessBread(8, 1.0f, false), "forgetfulnessBread");
+                , 4404838).setCreativeTab(MKUltra.MKULTRA_TAB), "moon_icon");
+        regInternal(forgetfulnessBread = new ForgetfulnessBread(8, 1.0f, false)
+                .setCreativeTab(MKUltra.MKULTRA_TAB), "forgetfulnessBread");
 
 
         //Projectile items
-        regInternal(drownProjectile = new Item().setCreativeTab(CreativeTabs.MATERIALS), "drownProjectile");
-        regInternal(geyserProjectile = new Item().setCreativeTab(CreativeTabs.MATERIALS), "geyserProjectile");
-        regInternal(duality_rune_projectile = new Item().setCreativeTab(CreativeTabs.MATERIALS), "duality_rune_projectile");
-        regInternal(ballLightning = new Item().setCreativeTab(CreativeTabs.MATERIALS), "ballLightning");
-        regInternal(whirlpool_projectile = new Item().setCreativeTab(CreativeTabs.MATERIALS), "whirlpool_projectile");
+        regInternal(drownProjectile = new Item().setCreativeTab(MKUltra.MKULTRA_TAB),
+                "drownProjectile");
+        regInternal(geyserProjectile = new Item().setCreativeTab(MKUltra.MKULTRA_TAB),
+                "geyserProjectile");
+        regInternal(duality_rune_projectile = new Item().setCreativeTab(MKUltra.MKULTRA_TAB),
+                "duality_rune_projectile");
+        regInternal(ballLightning = new Item().setCreativeTab(MKUltra.MKULTRA_TAB),
+                "ballLightning");
+        regInternal(whirlpool_projectile = new Item().setCreativeTab(MKUltra.MKULTRA_TAB),
+                "whirlpool_projectile");
+        regInternal(flame_blade_projectile = new Item().setCreativeTab(MKUltra.MKULTRA_TAB),
+                "flame_blade_projectile");
 
-        regInternal(manaRegenIdolCopper = new ManaRegenIdol("mana_regen_idol_copper", .5f, 0, 0, 0, 125));
-        regInternal(manaRegenIdolIron = new ManaRegenIdol("mana_regen_idol_iron", .5f, 0, 2, 0, 175));
-        regInternal(manaRegenIdolWood = new ManaRegenIdol("mana_regen_idol_wood", .25f, 5, 0, 1, 50));
-        regInternal(manaRegenIdolBrass = new ManaRegenIdol("mana_regen_idol_brass", 0.25f, 5, 1, 0, 75));
-        regInternal(manaRegenIdolBronze = new ManaRegenIdol("mana_regen_idol_bronze", .5f, 5, 0, 0, 150));
-        regInternal(manaRegenIdolGold = new ManaRegenIdol("mana_regen_idol_gold", 1.0f, 5, 0, 4, 125));
-        regInternal(manaRegenIdolSilver = new ManaRegenIdol("mana_regen_idol_silver", .75f, 5, 2, 4, 150));
+        regInternal(manaRegenIdolCopper = new ManaRegenIdol(
+                "mana_regen_idol_copper", .5f, 0, 0, 0, 125)
+                .setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(manaRegenIdolIron = new ManaRegenIdol(
+                "mana_regen_idol_iron", .5f, 0, 2, 0, 175)
+                .setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(manaRegenIdolWood = new ManaRegenIdol(
+                "mana_regen_idol_wood", .25f, 5, 0, 1, 50)
+                .setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(manaRegenIdolBrass = new ManaRegenIdol(
+                "mana_regen_idol_brass", 0.25f, 5, 1, 0, 75)
+                .setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(manaRegenIdolBronze = new ManaRegenIdol(
+                "mana_regen_idol_bronze", .5f, 5, 0, 0, 150)
+                .setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(manaRegenIdolGold = new ManaRegenIdol(
+                "mana_regen_idol_gold", 1.0f, 5, 0, 4, 125)
+                .setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(manaRegenIdolSilver = new ManaRegenIdol(
+                "mana_regen_idol_silver", .75f, 5, 2, 4, 150)
+                .setCreativeTab(MKUltra.MKULTRA_TAB));
 
         UUID chestUUID = UUID.fromString("77ab4b54-5885-4f7f-ab41-71af536309d1");
         UUID leggingsUUID = UUID.fromString("8d827c58-8f61-4c77-8dcd-f62f0e69121b");
         UUID helmetUUID = UUID.fromString("fb16408c-0421-4138-a283-8da7038e5970");
         UUID feetUUID = UUID.fromString("fb16408c-0421-4138-a283-8da7038e5972");
 
-        regInternal(copper_threaded_cloth = new Item().setCreativeTab(CreativeTabs.MATERIALS), "copper_threaded_cloth");
+        regInternal(copper_threaded_cloth = new Item().setCreativeTab(MKUltra.MKULTRA_TAB),
+                "copper_threaded_cloth");
         COPPER_THREADED_MAT.setRepairItem(new ItemStack(copper_threaded_cloth));
-        regInternal(copper_threaded_chestplate = new ItemManaArmor("copper_threaded_chestplate", COPPER_THREADED_MAT, 1,
-                EntityEquipmentSlot.CHEST, 2, chestUUID));
-        regInternal(copper_threaded_helmet = new ItemManaRegenArmor("copper_threaded_helmet", COPPER_THREADED_MAT, 1,
-                EntityEquipmentSlot.HEAD, 0.5f, helmetUUID));
-        regInternal(copper_threaded_leggings = new ItemManaArmor("copper_threaded_leggings", COPPER_THREADED_MAT, 2,
-                EntityEquipmentSlot.LEGS, 2, leggingsUUID));
-        regInternal(copper_threaded_boots = new ItemManaArmor("copper_threaded_boots", COPPER_THREADED_MAT, 2,
-                EntityEquipmentSlot.FEET, 1, feetUUID));
+        regInternal(copper_threaded_chestplate = new ItemManaArmor(
+                "copper_threaded_chestplate", COPPER_THREADED_MAT, 1,
+                EntityEquipmentSlot.CHEST, 2, chestUUID).setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(copper_threaded_helmet = new ItemManaRegenArmor(
+                "copper_threaded_helmet", COPPER_THREADED_MAT, 1,
+                EntityEquipmentSlot.HEAD, 0.5f, helmetUUID).setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(copper_threaded_leggings = new ItemManaArmor(
+                "copper_threaded_leggings", COPPER_THREADED_MAT, 2,
+                EntityEquipmentSlot.LEGS, 2, leggingsUUID).setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(copper_threaded_boots = new ItemManaArmor(
+                "copper_threaded_boots", COPPER_THREADED_MAT, 2,
+                EntityEquipmentSlot.FEET, 1, feetUUID).setCreativeTab(MKUltra.MKULTRA_TAB));
 
-        regInternal(iron_threaded_cloth = new Item().setCreativeTab(CreativeTabs.MATERIALS), "iron_threaded_cloth");
+        regInternal(iron_threaded_cloth = new Item().setCreativeTab(MKUltra.MKULTRA_TAB),
+                "iron_threaded_cloth");
         IRON_THREADED_MAT.setRepairItem(new ItemStack(iron_threaded_cloth));
-        regInternal(iron_threaded_chestplate = new ItemMagicDamageArmor("iron_threaded_chestplate", IRON_THREADED_MAT, 1,
-                EntityEquipmentSlot.CHEST, 1.0f, chestUUID));
-        regInternal(iron_threaded_helmet = new ItemManaRegenArmor("iron_threaded_helmet", IRON_THREADED_MAT, 1,
-                EntityEquipmentSlot.HEAD, 1.0f, helmetUUID));
-        regInternal(iron_threaded_leggings = new ItemManaArmor("iron_threaded_leggings", IRON_THREADED_MAT, 2,
-                EntityEquipmentSlot.LEGS, 3, leggingsUUID));
-        regInternal(iron_threaded_boots = new ItemManaArmor("iron_threaded_boots", IRON_THREADED_MAT, 2,
-                EntityEquipmentSlot.FEET, 2, feetUUID));
+        regInternal(iron_threaded_chestplate = new ItemMagicDamageArmor(
+                "iron_threaded_chestplate", IRON_THREADED_MAT, 1,
+                EntityEquipmentSlot.CHEST, 1.0f, chestUUID).setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(iron_threaded_helmet = new ItemManaRegenArmor(
+                "iron_threaded_helmet", IRON_THREADED_MAT, 1,
+                EntityEquipmentSlot.HEAD, 1.0f, helmetUUID).setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(iron_threaded_leggings = new ItemManaArmor(
+                "iron_threaded_leggings", IRON_THREADED_MAT, 2,
+                EntityEquipmentSlot.LEGS, 3, leggingsUUID).setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(iron_threaded_boots = new ItemManaArmor(
+                "iron_threaded_boots", IRON_THREADED_MAT, 2,
+                EntityEquipmentSlot.FEET, 2, feetUUID).setCreativeTab(MKUltra.MKULTRA_TAB));
 
-        regInternal(steel_infused_bone_leather = new Item().setCreativeTab(CreativeTabs.MATERIALS), "steel_infused_bone_leather");
+        regInternal(steel_infused_bone_leather = new Item().setCreativeTab(MKUltra.MKULTRA_TAB),
+                "steel_infused_bone_leather");
         STEEL_INFUSED_BONE_MAT.setRepairItem(new ItemStack(steel_infused_bone_leather));
-        regInternal(steel_infused_bone_chestplate = new ItemMagicDamageArmor("steel_infused_bone_chestplate",
+        regInternal(steel_infused_bone_chestplate = new ItemMagicDamageArmor(
+                "steel_infused_bone_chestplate",
                 STEEL_INFUSED_BONE_MAT, 1,
-                EntityEquipmentSlot.CHEST, 1.0f, chestUUID));
-        regInternal(steel_infused_bone_helmet = new ItemManaRegenArmor("steel_infused_bone_helmet", STEEL_INFUSED_BONE_MAT, 1,
-                EntityEquipmentSlot.HEAD, 0.5f, helmetUUID));
-        regInternal(steel_infused_bone_leggings = new ItemManaArmor("steel_infused_bone_leggings", STEEL_INFUSED_BONE_MAT, 2,
-                EntityEquipmentSlot.LEGS, 2, leggingsUUID));
-        regInternal(steel_infused_bone_boots = new ItemManaArmor("steel_infused_bone_boots", STEEL_INFUSED_BONE_MAT, 2,
-                EntityEquipmentSlot.FEET, 2, feetUUID));
+                EntityEquipmentSlot.CHEST, 1.0f, chestUUID).setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(steel_infused_bone_helmet = new ItemManaRegenArmor(
+                "steel_infused_bone_helmet", STEEL_INFUSED_BONE_MAT, 1,
+                EntityEquipmentSlot.HEAD, 0.5f, helmetUUID).setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(steel_infused_bone_leggings = new ItemManaArmor(
+                "steel_infused_bone_leggings", STEEL_INFUSED_BONE_MAT, 2,
+                EntityEquipmentSlot.LEGS, 2, leggingsUUID).setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(steel_infused_bone_boots = new ItemManaArmor(
+                "steel_infused_bone_boots", STEEL_INFUSED_BONE_MAT, 2,
+                EntityEquipmentSlot.FEET, 2, feetUUID).setCreativeTab(MKUltra.MKULTRA_TAB));
 
-        regInternal(diamond_dusted_invar_chestplate = new ItemHealthArmor("diamond_dusted_invar_chestplate",
+        regInternal(diamond_dusted_invar_chestplate = new ItemHealthArmor(
+                "diamond_dusted_invar_chestplate",
                 DIAMOND_DUSTED_INVAR_MAT, 1,
-                EntityEquipmentSlot.CHEST, 5.0f, chestUUID));
-        regInternal(diamond_dusted_invar_helmet = new ItemManaRegenArmor("diamond_dusted_invar_helmet",
+                EntityEquipmentSlot.CHEST, 5.0f, chestUUID).setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(diamond_dusted_invar_helmet = new ItemManaRegenArmor(
+                "diamond_dusted_invar_helmet",
                 DIAMOND_DUSTED_INVAR_MAT, 1,
-                EntityEquipmentSlot.HEAD, 0.75f, helmetUUID));
-        regInternal(diamond_dusted_invar_leggings = new ItemManaArmor("diamond_dusted_invar_leggings",
+                EntityEquipmentSlot.HEAD, 0.75f, helmetUUID).setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(diamond_dusted_invar_leggings = new ItemManaArmor(
+                "diamond_dusted_invar_leggings",
                 DIAMOND_DUSTED_INVAR_MAT, 2,
-                EntityEquipmentSlot.LEGS, 5, leggingsUUID));
-        regInternal(diamond_dusted_invar_boots = new ItemCDRArmor("diamond_dusted_invar_boots",
+                EntityEquipmentSlot.LEGS, 5, leggingsUUID).setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(diamond_dusted_invar_boots = new ItemCDRArmor(
+                "diamond_dusted_invar_boots",
                 DIAMOND_DUSTED_INVAR_MAT, 2,
-                EntityEquipmentSlot.FEET, .1f, feetUUID));
+                EntityEquipmentSlot.FEET, .1f, feetUUID).setCreativeTab(MKUltra.MKULTRA_TAB));
 
 
         CHAINMAT.setRepairItem(new ItemStack(Items.IRON_INGOT));
-        regInternal(chainmailChestplate = new ItemModArmor("chainmail_chestplate", CHAINMAT, 1, EntityEquipmentSlot.CHEST));
-        regInternal(chainmailHelmet = new ItemModArmor("chainmail_helmet", CHAINMAT, 1, EntityEquipmentSlot.HEAD));
-        regInternal(chainmailLeggings = new ItemModArmor("chainmail_leggings", CHAINMAT, 2, EntityEquipmentSlot.LEGS));
-        regInternal(chainmailBoots = new ItemModArmor("chainmail_boots", CHAINMAT, 2, EntityEquipmentSlot.FEET));
+        regInternal(chainmailChestplate = new ItemModArmor(
+                "chainmail_chestplate", CHAINMAT, 1, EntityEquipmentSlot.CHEST)
+                .setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(chainmailHelmet = new ItemModArmor(
+                "chainmail_helmet", CHAINMAT, 1, EntityEquipmentSlot.HEAD)
+                .setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(chainmailLeggings = new ItemModArmor(
+                "chainmail_leggings", CHAINMAT, 2, EntityEquipmentSlot.LEGS)
+                .setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(chainmailBoots = new ItemModArmor(
+                "chainmail_boots", CHAINMAT, 2, EntityEquipmentSlot.FEET)
+                .setCreativeTab(MKUltra.MKULTRA_TAB));
 
-        regInternal(gold_threaded_cloth = new Item().setCreativeTab(CreativeTabs.MATERIALS), "gold_threaded_cloth");
+        regInternal(gold_threaded_cloth = new Item()
+                .setCreativeTab(MKUltra.MKULTRA_TAB), "gold_threaded_cloth");
         ROBEMAT.setRepairItem(new ItemStack(ModItems.gold_threaded_cloth));
-        regInternal(gold_threaded_chestplate = new ItemMagicDamageArmor("gold_threaded_chestplate", ROBEMAT, 1, EntityEquipmentSlot.CHEST,
-                2.0f, chestUUID));
-        regInternal(gold_threaded_helmet = new ItemManaRegenArmor("gold_threaded_helmet", ROBEMAT, 1, EntityEquipmentSlot.HEAD,
-                1.5f, helmetUUID));
-        regInternal(gold_threaded_leggings = new ItemManaArmor("gold_threaded_leggings", ROBEMAT, 2, EntityEquipmentSlot.LEGS,
-                5, leggingsUUID));
-        regInternal(gold_threaded_boots = new ItemManaArmor("gold_threaded_boots", ROBEMAT, 2, EntityEquipmentSlot.FEET,
-                5, feetUUID));
+        regInternal(gold_threaded_chestplate = new ItemMagicDamageArmor(
+                "gold_threaded_chestplate", ROBEMAT, 1, EntityEquipmentSlot.CHEST,
+                2.0f, chestUUID).setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(gold_threaded_helmet = new ItemManaRegenArmor(
+                "gold_threaded_helmet", ROBEMAT, 1, EntityEquipmentSlot.HEAD,
+                1.5f, helmetUUID).setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(gold_threaded_leggings = new ItemManaArmor(
+                "gold_threaded_leggings", ROBEMAT, 2, EntityEquipmentSlot.LEGS,
+                5, leggingsUUID).setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(gold_threaded_boots = new ItemManaArmor(
+                "gold_threaded_boots", ROBEMAT, 2, EntityEquipmentSlot.FEET,
+                5, feetUUID).setCreativeTab(MKUltra.MKULTRA_TAB));
 
-        OBSIDIAN_CHAIN.setRepairItem(new ItemStack(Materials.getMaterialByName(MaterialNames.OBSIDIAN).getItem(Names.INGOT)));
+        OBSIDIAN_CHAIN.setRepairItem(new ItemStack(
+                Materials.getMaterialByName(MaterialNames.OBSIDIAN).getItem(Names.INGOT)));
         regInternal(obsidian_chain_boots = new ItemSpeedArmor(
-                "obsidian_chain_boots", OBSIDIAN_CHAIN, 2, EntityEquipmentSlot.FEET, .1f, feetUUID));
+                "obsidian_chain_boots", OBSIDIAN_CHAIN, 2, EntityEquipmentSlot.FEET, .1f, feetUUID)
+                .setCreativeTab(MKUltra.MKULTRA_TAB));
         regInternal(obsidian_chain_chestplate = new ItemCDRArmor(
-                "obsidian_chain_chestplate", OBSIDIAN_CHAIN, 1, EntityEquipmentSlot.CHEST, .1f, chestUUID));
+                "obsidian_chain_chestplate", OBSIDIAN_CHAIN, 1, EntityEquipmentSlot.CHEST, .1f, chestUUID)
+                .setCreativeTab(MKUltra.MKULTRA_TAB));
         regInternal(obsidian_chain_leggings = new ItemHealthArmor(
-                "obsidian_chain_leggings", OBSIDIAN_CHAIN, 2, EntityEquipmentSlot.LEGS, 5, leggingsUUID));
+                "obsidian_chain_leggings", OBSIDIAN_CHAIN, 2, EntityEquipmentSlot.LEGS, 5, leggingsUUID)
+                .setCreativeTab(MKUltra.MKULTRA_TAB));
         regInternal(obsidian_chain_helmet = new ItemManaRegenArmor(
-                "obsidian_chain_helmet", OBSIDIAN_CHAIN, 1, EntityEquipmentSlot.HEAD, 1.0f, helmetUUID));
+                "obsidian_chain_helmet", OBSIDIAN_CHAIN, 1, EntityEquipmentSlot.HEAD, 1.0f, helmetUUID)
+                .setCreativeTab(MKUltra.MKULTRA_TAB));
 
 
-        regInternal(bonedLeather = new Item().setCreativeTab(CreativeTabs.MATERIALS), "bonedLeather");
+        regInternal(bonedLeather = new Item().setCreativeTab(MKUltra.MKULTRA_TAB), "bonedLeather");
         BONEDLEATHERMAT.setRepairItem(new ItemStack(ModItems.bonedLeather));
-        regInternal(bonedLeatherChestplate = new ItemModArmor("bonedLeatherChestplate", BONEDLEATHERMAT, 1, EntityEquipmentSlot.CHEST));
-        regInternal(bonedLeatherHelmet = new ItemModArmor("bonedLeatherHelmet", BONEDLEATHERMAT, 1, EntityEquipmentSlot.HEAD));
-        regInternal(bonedLeatherLeggings = new ItemModArmor("bonedLeatherLeggings", BONEDLEATHERMAT, 2, EntityEquipmentSlot.LEGS));
-        regInternal(bonedLeatherBoots = new ItemModArmor("bonedLeatherBoots", BONEDLEATHERMAT, 2, EntityEquipmentSlot.FEET));
+        regInternal(bonedLeatherChestplate = new ItemModArmor(
+                "bonedLeatherChestplate", BONEDLEATHERMAT, 1, EntityEquipmentSlot.CHEST)
+                .setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(bonedLeatherHelmet = new ItemModArmor(
+                "bonedLeatherHelmet", BONEDLEATHERMAT, 1, EntityEquipmentSlot.HEAD)
+                .setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(bonedLeatherLeggings = new ItemModArmor(
+                "bonedLeatherLeggings", BONEDLEATHERMAT, 2, EntityEquipmentSlot.LEGS)
+                .setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(bonedLeatherBoots = new ItemModArmor(
+                "bonedLeatherBoots", BONEDLEATHERMAT, 2, EntityEquipmentSlot.FEET)
+                .setCreativeTab(MKUltra.MKULTRA_TAB));
 
 
         // All things hemp
-        regInternal(hempSeeds = new ItemSeeds(ModBlocks.hempBlock, Blocks.FARMLAND), "hempSeeds");
-        regInternal(hempLeaves = new Item().setCreativeTab(CreativeTabs.MATERIALS), "hempLeaves");
-        regInternal(hempFibers = new Item().setCreativeTab(CreativeTabs.MATERIALS), "hempFibers");
+        regInternal(hempSeeds = new ItemSeeds(ModBlocks.hempBlock, Blocks.FARMLAND)
+                .setCreativeTab(MKUltra.MKULTRA_TAB), "hempSeeds");
+        regInternal(hempLeaves = new Item().setCreativeTab(MKUltra.MKULTRA_TAB), "hempLeaves");
+        regInternal(hempFibers = new Item().setCreativeTab(MKUltra.MKULTRA_TAB), "hempFibers");
         regInternal(hempSeedBread = new ItemFood(7, 8.0f, false), "hempSeedBread");
-        regInternal(pipe = new Pipe("hemp_pipe"), "hemp_pipe");
+        regInternal(pipe = new Pipe("hemp_pipe").setCreativeTab(MKUltra.MKULTRA_TAB), "hemp_pipe");
 
 
         // so many spears
         float spearRange = 4.75f;
-        regInternal(ironSpear = new ItemRangeSword("ironSpear", Materials.getMaterialByName(MaterialNames.IRON), spearRange));
-        regInternal(woodSpear = new ItemRangeSword("woodSpear", Materials.getMaterialByName(MaterialNames.WOOD), spearRange));
-        regInternal(stoneSpear = new ItemRangeSword("stoneSpear", Materials.getMaterialByName(MaterialNames.STONE), spearRange));
-        regInternal(goldSpear = new ItemRangeSword("goldSpear", Materials.getMaterialByName(MaterialNames.GOLD), spearRange));
-        regInternal(diamondSpear = new ItemRangeSword("diamondSpear", Materials.getMaterialByName(MaterialNames.DIAMOND), spearRange));
-        regInternal(copperSpear = new ItemRangeSword("copperSpear", Materials.getMaterialByName(MaterialNames.COPPER), spearRange));
-        regInternal(tinSpear = new ItemRangeSword("tinSpear", Materials.getMaterialByName(MaterialNames.TIN), spearRange));
-        regInternal(silverSpear = new ItemRangeSword("silverSpear", Materials.getMaterialByName(MaterialNames.SILVER), spearRange));
-        regInternal(steelSpear = new ItemRangeSword("steelSpear", Materials.getMaterialByName(MaterialNames.STEEL), spearRange));
-        regInternal(starsteelSpear = new ItemRangeSword("starsteelSpear", Materials.getMaterialByName(MaterialNames.STARSTEEL), spearRange));
-        regInternal(nickelSpear = new ItemRangeSword("nickelSpear", Materials.getMaterialByName(MaterialNames.NICKEL), spearRange));
-        regInternal(mithrilSpear = new ItemRangeSword("mithrilSpear", Materials.getMaterialByName(MaterialNames.MITHRIL), spearRange));
-        regInternal(leadSpear = new ItemRangeSword("leadSpear", Materials.getMaterialByName(MaterialNames.LEAD), spearRange));
-        regInternal(invarSpear = new ItemRangeSword("invarSpear", Materials.getMaterialByName(MaterialNames.INVAR), spearRange));
-        regInternal(electrumSpear = new ItemRangeSword("electrumSpear", Materials.getMaterialByName(MaterialNames.ELECTRUM), spearRange));
-        regInternal(coldironSpear = new ItemRangeSword("coldironSpear", Materials.getMaterialByName(MaterialNames.COLDIRON), spearRange));
-        regInternal(bronzeSpear = new ItemRangeSword("bronzeSpear", Materials.getMaterialByName(MaterialNames.BRONZE), spearRange));
-        regInternal(brassSpear = new ItemRangeSword("brassSpear", Materials.getMaterialByName(MaterialNames.BRASS), spearRange));
-        regInternal(aquariumSpear = new ItemRangeSword("aquariumSpear", Materials.getMaterialByName(MaterialNames.AQUARIUM), spearRange));
-        regInternal(adamantineSpear = new ItemRangeSword("adamantineSpear", Materials.getMaterialByName(MaterialNames.ADAMANTINE), spearRange));
-        regInternal(emerald_spear = new ItemRangeSword("emerald_spear", Materials.getMaterialByName(MaterialNames.EMERALD), spearRange));
-        regInternal(obsidian_spear = new ItemRangeSword("obsidian_spear", Materials.getMaterialByName(MaterialNames.OBSIDIAN), spearRange));
+        regInternal(ironSpear = new ItemRangeSword(
+                "ironSpear", Materials.getMaterialByName(MaterialNames.IRON), spearRange)
+                .setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(woodSpear = new ItemRangeSword(
+                "woodSpear", Materials.getMaterialByName(MaterialNames.WOOD), spearRange)
+                .setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(stoneSpear = new ItemRangeSword(
+                "stoneSpear", Materials.getMaterialByName(MaterialNames.STONE), spearRange)
+                .setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(goldSpear = new ItemRangeSword(
+                "goldSpear", Materials.getMaterialByName(MaterialNames.GOLD), spearRange)
+                .setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(diamondSpear = new ItemRangeSword(
+                "diamondSpear", Materials.getMaterialByName(MaterialNames.DIAMOND), spearRange)
+                .setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(copperSpear = new ItemRangeSword(
+                "copperSpear", Materials.getMaterialByName(MaterialNames.COPPER), spearRange)
+                .setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(tinSpear = new ItemRangeSword(
+                "tinSpear", Materials.getMaterialByName(MaterialNames.TIN), spearRange)
+                .setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(silverSpear = new ItemRangeSword(
+                "silverSpear", Materials.getMaterialByName(MaterialNames.SILVER), spearRange)
+                .setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(steelSpear = new ItemRangeSword(
+                "steelSpear", Materials.getMaterialByName(MaterialNames.STEEL), spearRange)
+                .setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(starsteelSpear = new ItemRangeSword(
+                "starsteelSpear", Materials.getMaterialByName(MaterialNames.STARSTEEL), spearRange)
+                .setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(nickelSpear = new ItemRangeSword(
+                "nickelSpear", Materials.getMaterialByName(MaterialNames.NICKEL), spearRange)
+                .setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(mithrilSpear = new ItemRangeSword(
+                "mithrilSpear", Materials.getMaterialByName(MaterialNames.MITHRIL), spearRange)
+                .setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(leadSpear = new ItemRangeSword(
+                "leadSpear", Materials.getMaterialByName(MaterialNames.LEAD), spearRange)
+                .setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(invarSpear = new ItemRangeSword(
+                "invarSpear", Materials.getMaterialByName(MaterialNames.INVAR), spearRange)
+                .setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(electrumSpear = new ItemRangeSword(
+                "electrumSpear", Materials.getMaterialByName(MaterialNames.ELECTRUM), spearRange)
+                .setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(coldironSpear = new ItemRangeSword(
+                "coldironSpear", Materials.getMaterialByName(MaterialNames.COLDIRON), spearRange)
+                .setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(bronzeSpear = new ItemRangeSword(
+                "bronzeSpear", Materials.getMaterialByName(MaterialNames.BRONZE), spearRange)
+                .setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(brassSpear = new ItemRangeSword(
+                "brassSpear", Materials.getMaterialByName(MaterialNames.BRASS), spearRange)
+                .setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(aquariumSpear = new ItemRangeSword(
+                "aquariumSpear", Materials.getMaterialByName(MaterialNames.AQUARIUM), spearRange)
+                .setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(adamantineSpear = new ItemRangeSword(
+                "adamantineSpear", Materials.getMaterialByName(MaterialNames.ADAMANTINE), spearRange)
+                .setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(emerald_spear = new ItemRangeSword(
+                "emerald_spear", Materials.getMaterialByName(MaterialNames.EMERALD), spearRange)
+                .setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(obsidian_spear = new ItemRangeSword(
+                "obsidian_spear", Materials.getMaterialByName(MaterialNames.OBSIDIAN), spearRange)
+                .setCreativeTab(MKUltra.MKULTRA_TAB));
 
     }
 
