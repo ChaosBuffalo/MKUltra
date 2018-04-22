@@ -6,6 +6,7 @@ import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
@@ -67,18 +68,21 @@ public abstract class SongPotionBase extends SpellPotionBase {
     public void doEffect(Entity source, Entity indirectSource, EntityLivingBase target, int amplifier, SpellCast cast) {
 
         if (!isSelfOnly){
-            AreaEffectBuilder builder = AreaEffectBuilder.Create(target, target)
-                    .instant()
-                    .particle(EnumParticleTypes.NOTE)
-                    .color(16762905).radius(getDistance(amplifier), true);
+            if (source instanceof EntityPlayer) {
+                EntityPlayer player = (EntityPlayer) source;
+                AreaEffectBuilder builder = AreaEffectBuilder.Create(player, player)
+                        .instant()
+                        .particle(EnumParticleTypes.NOTE)
+                        .color(16762905).radius(getDistance(amplifier), true);
 
-            for (Potion effect : getPotionsToApply(target)) {
-                builder.effect(new PotionEffect(effect, period, amplifier), getTargetType());
+                for (Potion effect : getPotionsToApply(target)) {
+                    builder.effect(new PotionEffect(effect, period, amplifier), getTargetType());
+                }
+                for (SpellCast toCast : getSpellCasts(target)) {
+                    builder.spellCast(toCast, amplifier, getTargetType());
+                }
+                builder.spawn();
             }
-            for (SpellCast toCast : getSpellCasts(target)){
-                builder.spellCast(toCast, amplifier, getTargetType());
-            }
-            builder.spawn();
         } else {
             for (Potion effect : getPotionsToApply(target)) {
                 PotionEffect newEffect = new PotionEffect(effect, period, amplifier);
