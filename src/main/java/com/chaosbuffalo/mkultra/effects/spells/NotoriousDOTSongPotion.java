@@ -37,7 +37,7 @@ public class NotoriousDOTSongPotion extends SongPotionBase{
     }
 
     private NotoriousDOTSongPotion() {
-        super(PERIOD, true, false, false, 1665535);
+        super(PERIOD, true, false, false, 16750080);
         register(MKUltra.MODID, "effect.notorious_dot_song");
     }
 

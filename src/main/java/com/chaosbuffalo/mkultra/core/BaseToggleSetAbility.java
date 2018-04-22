@@ -28,8 +28,11 @@ public abstract class BaseToggleSetAbility extends BaseToggleAbility {
         if (entity.getActivePotionEffect(getToggleEffect()) != null) {
             removeEffect(entity, pData, theWorld);
         } else {
-            getToggleGroup().stream().filter(
-                    effect -> entity.isPotionActive(effect)).forEach(entity::removePotionEffect);
+            for (SpellPotionBase spellPotion : getToggleGroup()){
+                if (entity.isPotionActive(spellPotion)){
+                    entity.removePotionEffect(spellPotion);
+                }
+            }
             applyEffect(entity, pData, theWorld);
         }
 

@@ -5,12 +5,9 @@ import com.chaosbuffalo.mkultra.core.BaseToggleSetAbility;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
-import com.chaosbuffalo.mkultra.effects.spells.InstantIndirectMagicDamagePotion;
-import com.chaosbuffalo.mkultra.effects.spells.NotoriousDOTSongPotion;
-import com.chaosbuffalo.mkultra.effects.spells.ParticlePotion;
+import com.chaosbuffalo.mkultra.effects.spells.*;
 import com.chaosbuffalo.mkultra.core.BaseAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
-import com.chaosbuffalo.mkultra.effects.spells.WaveBreakPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
@@ -20,6 +17,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,7 +25,8 @@ public class NotoriousDOT extends BaseToggleSetAbility {
     public static float BASE_DAMAGE = 2.0f;
     public static float DAMAGE_SCALE = 1.0f;
     public static int BASE_DURATION = 32767;
-    public static final Set<SpellPotionBase> TOGGLE_GROUP = new HashSet<>();
+    public static final Set<SpellPotionBase> TOGGLE_GROUP = new HashSet<>(Arrays.asList(SwiftsRodeoHBSongPotion.INSTANCE,
+            MileysInspiringBangerzSongPotion.INSTANCE));
 
     public NotoriousDOT() {
         super(MKUltra.MODID, "ability.notorious_dot");
@@ -35,7 +34,7 @@ public class NotoriousDOT extends BaseToggleSetAbility {
 
     @Override
     public int getCooldown(int currentLevel) {
-        return 20 - currentLevel * 4;
+        return 5;
     }
 
     @Override
@@ -55,7 +54,7 @@ public class NotoriousDOT extends BaseToggleSetAbility {
 
     @Override
     public int getManaCost(int currentLevel) {
-        return 6 + 2 * currentLevel;
+        return currentLevel;
     }
 
     @Override
@@ -77,8 +76,6 @@ public class NotoriousDOT extends BaseToggleSetAbility {
     public void applyEffect(EntityPlayer entity, IPlayerData pData, World theWorld) {
 
         int level = pData.getLevelForAbility(getAbilityId());
-        System.out.println("Applying effect for notorious dot");
-        // What to do for each target hit
         entity.addPotionEffect(NotoriousDOTSongPotion.Create(entity).setTarget(entity)
                 .toPotionEffect(BASE_DURATION, level));
         Vec3d lookVec = entity.getLookVec();

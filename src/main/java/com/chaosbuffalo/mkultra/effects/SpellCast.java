@@ -8,6 +8,7 @@ import net.minecraft.potion.PotionEffect;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 public class SpellCast {
 
