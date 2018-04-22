@@ -63,7 +63,7 @@ public class EntityMKAreaEffect extends Entity {
     }
 
     private static final float DEFAULT_RADIUS = 3.0f;
-    private static final float DEFAULT_HEIGHT = 0.5f;
+    private static final float DEFAULT_HEIGHT = 1.0f;
 
     public EntityMKAreaEffect(World worldIn) {
         super(worldIn);

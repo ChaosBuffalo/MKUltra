@@ -1,23 +1,33 @@
 package com.chaosbuffalo.mkultra.core.abilities;
 
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.core.BaseToggleSetAbility;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
+import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
 import com.chaosbuffalo.mkultra.effects.spells.InstantIndirectMagicDamagePotion;
+import com.chaosbuffalo.mkultra.effects.spells.NotoriousDOTSongPotion;
 import com.chaosbuffalo.mkultra.effects.spells.ParticlePotion;
 import com.chaosbuffalo.mkultra.core.BaseAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
+import com.chaosbuffalo.mkultra.effects.spells.WaveBreakPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class NotoriousDOT extends BaseAbility {
+import java.util.HashSet;
+import java.util.Set;
+
+public class NotoriousDOT extends BaseToggleSetAbility {
     public static float BASE_DAMAGE = 2.0f;
     public static float DAMAGE_SCALE = 1.0f;
+    public static int BASE_DURATION = 32767;
+    public static final Set<SpellPotionBase> TOGGLE_GROUP = new HashSet<>();
 
     public NotoriousDOT() {
         super(MKUltra.MODID, "ability.notorious_dot");
@@ -29,13 +39,18 @@ public class NotoriousDOT extends BaseAbility {
     }
 
     @Override
+    public Potion getToggleEffect() {
+        return NotoriousDOTSongPotion.INSTANCE;
+    }
+
+    @Override
     public int getType() {
-        return ACTIVE_ABILITY;
+        return TOGGLE_ABILITY;
     }
 
     @Override
     public Targeting.TargetType getTargetType() {
-        return Targeting.TargetType.ENEMY;
+        return Targeting.TargetType.SELF;
     }
 
     @Override
@@ -54,31 +69,18 @@ public class NotoriousDOT extends BaseAbility {
     }
 
     @Override
-    public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
-        pData.startAbility(this);
+    public Set<SpellPotionBase> getToggleGroup() {
+        return TOGGLE_GROUP;
+    }
+
+    @Override
+    public void applyEffect(EntityPlayer entity, IPlayerData pData, World theWorld) {
 
         int level = pData.getLevelForAbility(getAbilityId());
-
+        System.out.println("Applying effect for notorious dot");
         // What to do for each target hit
-        SpellCast damage = InstantIndirectMagicDamagePotion.Create(entity, BASE_DAMAGE, DAMAGE_SCALE);
-        SpellCast particle = ParticlePotion.Create(entity,
-                EnumParticleTypes.DAMAGE_INDICATOR.getParticleID(),
-                ParticleEffects.CIRCLE_MOTION, false, new Vec3d(1.0, 1.0, 1.0),
-                new Vec3d(0.0, 1.0, 0.0), 10, 0, .25);
-
-
-        int totalDuration = getCooldownTicks(level);
-        int tickSpeed = 30;
-
-        AreaEffectBuilder.Create(entity, entity)
-                .spellCast(damage, level, getTargetType())
-                .spellCast(particle, level, getTargetType())
-                .duration(totalDuration).waitTime(0)
-                .color(13168640).radius(getDistance(level), true)
-                .setReapplicationDelay(tickSpeed)
-                .particle(EnumParticleTypes.NOTE)
-                .spawn();
-
+        entity.addPotionEffect(NotoriousDOTSongPotion.Create(entity).setTarget(entity)
+                .toPotionEffect(BASE_DURATION, level));
         Vec3d lookVec = entity.getLookVec();
         MKUltra.packetHandler.sendToAllAround(
                 new ParticleEffectSpawnPacket(
@@ -88,6 +90,5 @@ public class NotoriousDOT extends BaseAbility {
                         entity.posZ, 1.0, 1.0, 1.0, 1.0f,
                         lookVec),
                 entity, 50.0f);
-
     }
 }
