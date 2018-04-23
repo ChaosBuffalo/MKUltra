@@ -54,6 +54,11 @@ public class NotoriousDOTSongPotion extends SongPotionBase{
         return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/notorious_dot.png");
     }
 
+    @Override
+    public ResourceLocation getAssociatedAbilityId() {
+        return new ResourceLocation("mkultra", "ability.notorious_dot");
+    }
+
 
     @Override
     public Targeting.TargetType getTargetType() {

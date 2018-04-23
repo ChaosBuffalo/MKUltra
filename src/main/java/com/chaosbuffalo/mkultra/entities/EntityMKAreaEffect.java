@@ -161,6 +161,10 @@ public class EntityMKAreaEffect extends Entity {
                 this.setDead();
                 return;
             }
+            if (getOwner() == null){
+                this.setDead();
+                return;
+            }
 
             boolean mustWait = this.ticksExisted < this.waitTime;
 

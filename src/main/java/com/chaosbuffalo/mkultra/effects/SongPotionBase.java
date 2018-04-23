@@ -10,6 +10,8 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,7 +23,7 @@ public abstract class SongPotionBase extends SpellPotionBase {
 
     private int period;
     private boolean isVisible;
-    private boolean isHostSong;
+    public boolean isHostSong;
 
     protected SongPotionBase(int period, boolean isHostSong, boolean isVisible, boolean isBadEffectIn, int liquidColorIn) {
         super(isBadEffectIn, liquidColorIn);
@@ -35,6 +37,8 @@ public abstract class SongPotionBase extends SpellPotionBase {
     public Set<SpellCast> getSpellCasts(Entity source) { return new HashSet<>(); }
 
     public abstract float getDistance(int level);
+
+    public abstract ResourceLocation getAssociatedAbilityId();
 
     @Override
     public boolean isReady(int duration, int amplitude) {
@@ -73,6 +77,11 @@ public abstract class SongPotionBase extends SpellPotionBase {
         if (source instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) source;
             IPlayerData pData = MKUPlayerData.get(player);
+            if (pData.getMana() > 1){
+                pData.setMana(pData.getMana() - 1);
+            } else {
+                player.removePotionEffect(this);
+            }
             if (!isHostSong){
                 AreaEffectBuilder builder = AreaEffectBuilder.Create(player, player)
                         .instant()
@@ -87,12 +96,6 @@ public abstract class SongPotionBase extends SpellPotionBase {
                 }
                 builder.spawn();
             } else {
-                if (pData.getMana() > 1){
-                    pData.setMana(pData.getMana() - 1);
-                } else {
-                    player.removePotionEffect(this);
-                }
-
                 getPotionsToApply(player, amplifier).forEach(player::addPotionEffect);
 
                 for (SpellCast toCast : getSpellCasts(player)) {

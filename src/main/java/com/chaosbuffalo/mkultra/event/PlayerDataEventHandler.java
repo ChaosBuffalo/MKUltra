@@ -4,10 +4,12 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerDataProvider;
+import com.chaosbuffalo.mkultra.effects.SongPotionBase;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -30,17 +32,37 @@ public class PlayerDataEventHandler {
             if (data != null) {
                 data.onJoinWorld();
             }
+//            for (PotionEffect effect : ((EntityPlayer) event.getEntity()).getActivePotionEffects()) {
+//                System.out.println(effect.getPotion().getRegistryName().toString());
+//                if (effect.getPotion() instanceof SongPotionBase) {
+//                    SongPotionBase songPotion = (SongPotionBase) effect.getPotion();
+//                    if (songPotion.isHostSong) {
+//                        ((EntityPlayer)event.getEntity()).removePotionEffect(songPotion);
+//                    }
+//                }
+//            }
         }
     }
+
 
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public static void onEntityJoinWorldEventClient(EntityJoinWorldEvent event) {
+
         if (event.getEntity() instanceof EntityPlayerSP) {
             IPlayerData data = MKUPlayerData.get((EntityPlayer) event.getEntity());
             if (data != null) {
                 data.onJoinWorld();
             }
+//            for (PotionEffect effect : ((EntityPlayer) event.getEntity()).getActivePotionEffects()) {
+//                System.out.println(effect.getPotion().getRegistryName().toString());
+//                if (effect.getPotion() instanceof SongPotionBase) {
+//                    SongPotionBase songPotion = (SongPotionBase) effect.getPotion();
+//                    if (songPotion.isHostSong) {
+//                        ((EntityPlayer)event.getEntity()).removePotionEffect(songPotion);
+//                    }
+//                }
+//            }
         }
     }
 

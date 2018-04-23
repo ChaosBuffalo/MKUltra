@@ -25,7 +25,7 @@ import java.util.Set;
 @Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class NotoriousDOTPotion extends SongPotionBase{
     public static final NotoriousDOTPotion INSTANCE = new NotoriousDOTPotion();
-    public static final int PERIOD = 30;
+    public static final int PERIOD = 3 * GameConstants.TICKS_PER_SECOND;
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {
@@ -46,6 +46,11 @@ public class NotoriousDOTPotion extends SongPotionBase{
     private NotoriousDOTPotion() {
         super(PERIOD, false, true, false, 16750080);
         register(MKUltra.MODID, "effect.notorious_dot");
+    }
+
+    @Override
+    public ResourceLocation getAssociatedAbilityId() {
+        return new ResourceLocation("mkultra", "ability.notorious_dot");
     }
 
     @Override

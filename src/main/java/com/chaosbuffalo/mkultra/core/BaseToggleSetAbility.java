@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.core;
 
+import com.chaosbuffalo.mkultra.effects.SongPotionBase;
 import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -31,6 +32,11 @@ public abstract class BaseToggleSetAbility extends BaseToggleAbility {
             for (SpellPotionBase spellPotion : getToggleGroup()){
                 if (entity.isPotionActive(spellPotion)){
                     entity.removePotionEffect(spellPotion);
+                    if (spellPotion instanceof SongPotionBase) {
+                        SongPotionBase songPotion = (SongPotionBase) spellPotion;
+                        pData.setCooldown(songPotion.getAssociatedAbilityId(),
+                                pData.getAbilityCooldown(ClassData.getAbility(songPotion.getAssociatedAbilityId())));
+                    }
                 }
             }
             applyEffect(entity, pData, theWorld);

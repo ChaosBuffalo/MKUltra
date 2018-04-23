@@ -58,6 +58,11 @@ public class MileysInspiringBangerzPotion extends SongPotionBase {
     }
 
     @Override
+    public ResourceLocation getAssociatedAbilityId() {
+        return new ResourceLocation("mkultra", "ability.mileys_bangerz");
+    }
+
+    @Override
     public Targeting.TargetType getTargetType() {
         return Targeting.TargetType.FRIENDLY;
     }

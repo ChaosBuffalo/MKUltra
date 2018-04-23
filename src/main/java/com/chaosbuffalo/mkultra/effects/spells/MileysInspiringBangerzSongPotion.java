@@ -40,6 +40,11 @@ public class MileysInspiringBangerzSongPotion extends SongPotionBase {
     }
 
     @Override
+    public ResourceLocation getAssociatedAbilityId() {
+        return new ResourceLocation("mkultra", "ability.mileys_bangerz");
+    }
+
+    @Override
     public Set<SpellCast> getSpellCasts(Entity source) {
         HashSet<SpellCast> ret = new HashSet<SpellCast>();
         ret.add(MileysInspiringBangerzPotion.Create(source));

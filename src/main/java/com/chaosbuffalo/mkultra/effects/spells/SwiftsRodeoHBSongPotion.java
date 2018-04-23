@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.effects.spells;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.core.abilities.SwiftsRodeoHeartbreak;
 import com.chaosbuffalo.mkultra.effects.SongPotionBase;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.targeting_api.Targeting;
@@ -61,6 +62,11 @@ public class SwiftsRodeoHBSongPotion extends SongPotionBase {
     @Override
     public float getDistance(int level) {
         return 1.0f;
+    }
+
+    @Override
+    public ResourceLocation getAssociatedAbilityId() {
+        return new ResourceLocation("mkultra", "ability.swifts_rodeo_heartbreak");
     }
 }
 
