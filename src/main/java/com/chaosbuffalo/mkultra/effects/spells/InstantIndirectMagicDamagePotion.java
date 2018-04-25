@@ -38,9 +38,7 @@ public class InstantIndirectMagicDamagePotion extends SpellPotionBase {
 
     @Override
     public void doEffect(Entity applier, Entity caster, EntityLivingBase target, int amplifier, SpellCast cast) {
-
         float damage = cast.getScaledValue(amplifier);
-
         target.attackEntityFrom(DamageSource.causeIndirectMagicDamage(applier, caster), damage);
     }
 }

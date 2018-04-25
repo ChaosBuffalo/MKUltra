@@ -78,7 +78,10 @@ public abstract class SpellPotionBase extends Potion {
         }
 
         if (!isValidTarget(getTargetType(), cast.getCaster(), target, !canSelfCast()))
+        {
             return;
+        }
+
 
         doEffect(cast.getApplier(), cast.getCaster(), target, amplifier, cast);
     }

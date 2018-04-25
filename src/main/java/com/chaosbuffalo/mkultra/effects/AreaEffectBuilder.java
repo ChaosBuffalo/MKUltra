@@ -74,6 +74,7 @@ public class AreaEffectBuilder {
         if (makeCube) {
             AxisAlignedBB bb = areaEffectCloud.getEntityBoundingBox();
             bb = bb.expand(0, radius, 0);
+            bb = bb.expand(0, -radius, 0);
             areaEffectCloud.setEntityBoundingBox(bb);
         }
         return this;
