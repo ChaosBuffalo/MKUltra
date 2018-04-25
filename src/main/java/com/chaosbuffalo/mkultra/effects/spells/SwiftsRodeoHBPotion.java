@@ -7,6 +7,7 @@ package com.chaosbuffalo.mkultra.effects.spells;
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.abilities.NotoriousDOT;
+import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SongPotionBase;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.targeting_api.Targeting;
@@ -38,10 +39,9 @@ public class SwiftsRodeoHBPotion extends SongPotionBase {
     }
 
     @Override
-    public Set<PotionEffect> getPotionsToApply(Entity source, int level) {
-        HashSet<PotionEffect> ret = new HashSet<>();
-        ret.add(new PotionEffect(MobEffects.SPEED, PERIOD, level));
-        return ret;
+    public AreaEffectBuilder prepareAreaEffect(Entity source, int level, AreaEffectBuilder builder){
+        builder.effect(new PotionEffect(MobEffects.SPEED, PERIOD, level), Targeting.TargetType.FRIENDLY);
+        return builder;
     }
 
     private SwiftsRodeoHBPotion() {
@@ -62,10 +62,6 @@ public class SwiftsRodeoHBPotion extends SongPotionBase {
         return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/swifts_rodeo_heartbreak.png");
     }
 
-    @Override
-    public Targeting.TargetType getTargetType() {
-        return Targeting.TargetType.FRIENDLY;
-    }
 
     @Override
     public float getDistance(int level) {

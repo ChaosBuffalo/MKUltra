@@ -61,11 +61,6 @@ public class NotoriousDOTSongPotion extends SongPotionBase{
 
 
     @Override
-    public Targeting.TargetType getTargetType() {
-        return Targeting.TargetType.SELF;
-    }
-
-    @Override
     public float getDistance(int level) {
         return 1.0f;
     }

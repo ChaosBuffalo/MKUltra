@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.effects.spells;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SongPotionBase;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.targeting_api.Targeting;
@@ -24,7 +25,7 @@ import java.util.Set;
 @Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class MileysInspiringBangerzPotion extends SongPotionBase {
     public static final MileysInspiringBangerzPotion INSTANCE = new MileysInspiringBangerzPotion();
-    public static final int PERIOD = 4 * GameConstants.TICKS_PER_SECOND;
+    public static final int PERIOD = 6 * GameConstants.TICKS_PER_SECOND;
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {
@@ -36,12 +37,11 @@ public class MileysInspiringBangerzPotion extends SongPotionBase {
     }
 
     @Override
-    public Set<PotionEffect> getPotionsToApply(Entity source, int level) {
-        HashSet<PotionEffect> ret = new HashSet<>();
-        ret.add(new PotionEffect(MobEffects.ABSORPTION, PERIOD, level - 1));
-        ret.add(new PotionEffect(MobEffects.RESISTANCE, PERIOD, level));
-        ret.add(new PotionEffect(MobEffects.REGENERATION, PERIOD, level));
-        return ret;
+    public AreaEffectBuilder prepareAreaEffect(Entity source, int level, AreaEffectBuilder builder){
+        builder.effect(new PotionEffect(MobEffects.ABSORPTION, PERIOD, 0), Targeting.TargetType.FRIENDLY);
+        builder.effect(new PotionEffect(MobEffects.RESISTANCE, PERIOD, level), Targeting.TargetType.FRIENDLY);
+        builder.effect(new PotionEffect(MobEffects.REGENERATION, PERIOD, level), Targeting.TargetType.FRIENDLY);
+        return builder;
     }
 
     private MileysInspiringBangerzPotion() {
@@ -62,10 +62,6 @@ public class MileysInspiringBangerzPotion extends SongPotionBase {
         return new ResourceLocation("mkultra", "ability.mileys_bangerz");
     }
 
-    @Override
-    public Targeting.TargetType getTargetType() {
-        return Targeting.TargetType.FRIENDLY;
-    }
 
     @Override
     public float getDistance(int level) {

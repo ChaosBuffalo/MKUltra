@@ -57,12 +57,6 @@ public class MileysInspiringBangerzSongPotion extends SongPotionBase {
         return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/mileys_bangerz.png");
     }
 
-
-    @Override
-    public Targeting.TargetType getTargetType() {
-        return Targeting.TargetType.SELF;
-    }
-
     @Override
     public float getDistance(int level) {
         return 1.0f;

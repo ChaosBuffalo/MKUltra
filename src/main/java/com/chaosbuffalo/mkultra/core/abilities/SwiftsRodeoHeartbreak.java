@@ -60,7 +60,7 @@ public class SwiftsRodeoHeartbreak extends BaseToggleSetAbility {
 
     @Override
     public int getManaCost(int currentLevel) {
-        return 1;
+        return currentLevel;
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,6 +13,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 
+import java.awt.geom.Area;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,6 +34,10 @@ public abstract class SongPotionBase extends SpellPotionBase {
         this.isHostSong = isHostSong;
     }
 
+    public AreaEffectBuilder prepareAreaEffect(Entity source, int level, AreaEffectBuilder builder) {
+        return builder;
+    }
+
     public Set<PotionEffect> getPotionsToApply(Entity source, int level) { return new HashSet<>(); }
 
     public Set<SpellCast> getSpellCasts(Entity source) { return new HashSet<>(); }
@@ -48,6 +54,11 @@ public abstract class SongPotionBase extends SpellPotionBase {
     @Override
     public boolean isInstant() {
         return false;
+    }
+
+    @Override
+    public Targeting.TargetType getTargetType() {
+        return Targeting.TargetType.SELF;
     }
 
     @Override
@@ -87,14 +98,8 @@ public abstract class SongPotionBase extends SpellPotionBase {
                         .instant()
                         .particle(getSongParticle())
                         .color(16762905).radius(getDistance(amplifier), true);
+                prepareAreaEffect(player, amplifier, builder).spawn();
 
-                for (PotionEffect effect : getPotionsToApply(target, amplifier)) {
-                    builder.effect(effect, getTargetType());
-                }
-                for (SpellCast toCast : getSpellCasts(target)) {
-                    builder.spellCast(toCast, amplifier, getTargetType());
-                }
-                builder.spawn();
             } else {
                 getPotionsToApply(player, amplifier).forEach(player::addPotionEffect);
 

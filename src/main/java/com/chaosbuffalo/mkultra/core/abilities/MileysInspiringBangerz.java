@@ -75,7 +75,7 @@ public class MileysInspiringBangerz extends BaseToggleSetAbility {
 
     @Override
     public int getManaCost(int currentLevel) {
-        return 2;
+        return 1 + currentLevel;
     }
 
     @Override

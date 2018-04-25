@@ -3,11 +3,11 @@ package com.chaosbuffalo.mkultra.effects.spells;
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.abilities.NotoriousDOT;
+import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SongPotionBase;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
@@ -37,10 +37,11 @@ public class NotoriousDOTPotion extends SongPotionBase{
     }
 
     @Override
-    public Set<SpellCast> getSpellCasts(Entity source) {
-        HashSet<SpellCast> ret = new HashSet<>();
-        ret.add(InstantIndirectMagicDamagePotion.Create(source, NotoriousDOT.BASE_DAMAGE, NotoriousDOT.DAMAGE_SCALE));
-        return ret;
+    public AreaEffectBuilder prepareAreaEffect(Entity source, int level, AreaEffectBuilder builder){
+        builder.spellCast(InstantIndirectMagicDamagePotion.Create(
+                source, NotoriousDOT.BASE_DAMAGE, NotoriousDOT.DAMAGE_SCALE),
+                level, Targeting.TargetType.ENEMY);
+        return builder;
     }
 
     private NotoriousDOTPotion() {
@@ -63,7 +64,7 @@ public class NotoriousDOTPotion extends SongPotionBase{
 
     @Override
     public Targeting.TargetType getTargetType() {
-        return Targeting.TargetType.ENEMY;
+        return Targeting.TargetType.SELF;
     }
 
     @Override
