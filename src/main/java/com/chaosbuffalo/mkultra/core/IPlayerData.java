@@ -66,7 +66,7 @@ public interface IPlayerData {
 
     float getHealth();
 
-    float getCooldownProgessSpeed();
+    float getCooldownProgressSpeed();
 
     float getMagicDamageBonus();
 

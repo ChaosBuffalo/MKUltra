@@ -157,7 +157,7 @@ public class PlayerData implements IPlayerData {
     }
 
     @Override
-    public float getCooldownProgessSpeed() {
+    public float getCooldownProgressSpeed() {
         return (float) player.getEntityAttribute(PlayerAttributes.COOLDOWN).getAttributeValue();
     }
 
@@ -184,7 +184,7 @@ public class PlayerData implements IPlayerData {
     }
 
     private int applyCooldownReduction(int originalCooldownTicks) {
-        float mod = 2.0f - getCooldownProgessSpeed();
+        float mod = 2.0f - getCooldownProgressSpeed();
         float newTicks = mod * originalCooldownTicks;
         return (int) newTicks;
     }
