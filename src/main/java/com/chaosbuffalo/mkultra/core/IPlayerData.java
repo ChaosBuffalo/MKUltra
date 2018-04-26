@@ -72,10 +72,6 @@ public interface IPlayerData {
 
     float getMagicArmor();
 
-    float scaleMagicDamage(float originalDamage);
-
-    float applyMagicArmor(float originalDamage);
-
     boolean learnClass(ResourceLocation classId);
 
     void activateClass(ResourceLocation classId);

@@ -171,24 +171,6 @@ public class PlayerData implements IPlayerData {
         return (float) player.getEntityAttribute(PlayerAttributes.MAGIC_ARMOR).getAttributeValue();
     }
 
-    @Override
-    public float scaleMagicDamage(float originalDamage) {
-        float mod = getMagicDamageBonus();
-        return originalDamage + mod;
-    }
-
-    @Override
-    public float applyMagicArmor(float originalDamage) {
-        float mod = getMagicArmor();
-        return originalDamage - mod;
-    }
-
-    private int applyCooldownReduction(int originalCooldownTicks) {
-        float mod = 2.0f - getCooldownProgressSpeed();
-        float newTicks = mod * originalCooldownTicks;
-        return (int) newTicks;
-    }
-
     private int applyManaCostReduction(int originalCost) {
         return originalCost;
     }
@@ -299,7 +281,7 @@ public class PlayerData implements IPlayerData {
 
     @Override
     public int getAbilityCooldown(BaseAbility ability) {
-        return applyCooldownReduction(ability.getCooldownTicks(getLevelForAbility(ability.getAbilityId())));
+        return PlayerFormulas.applyCooldownReduction(this, ability.getCooldownTicks(getLevelForAbility(ability.getAbilityId())));
     }
 
     @Override
@@ -446,7 +428,7 @@ public class PlayerData implements IPlayerData {
         setMana(getMana() - manaCost);
 
         int cooldown = ability.getCooldownTicks(info.level);
-        cooldown = applyCooldownReduction(cooldown);
+        cooldown = PlayerFormulas.applyCooldownReduction(this, cooldown);
         setCooldown(info.id, cooldown);
     }
 
