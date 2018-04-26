@@ -22,7 +22,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class NotoriousDOTPotion extends SongEffect {
     public static final NotoriousDOTPotion INSTANCE = new NotoriousDOTPotion();
-    public static final int PERIOD = 3 * GameConstants.TICKS_PER_SECOND;
+    public static final int PERIOD = 6 * GameConstants.TICKS_PER_SECOND;
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {

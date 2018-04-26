@@ -22,7 +22,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class NotoriousDOT extends BaseToggleSetAbility {
-    public static float BASE_DAMAGE = 2.0f;
+    public static float BASE_DAMAGE = 0.0f;
     public static float DAMAGE_SCALE = 2.0f;
     public static int BASE_DURATION = 32767;
     public static final Set<SpellPotionBase> TOGGLE_GROUP = new HashSet<>(Arrays.asList(SwiftsRodeoHBSongPotion.INSTANCE,
