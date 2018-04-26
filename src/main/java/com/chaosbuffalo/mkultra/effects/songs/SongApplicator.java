@@ -1,8 +1,7 @@
 package com.chaosbuffalo.mkultra.effects.songs;
 
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.IPlayerData;
-import com.chaosbuffalo.mkultra.core.MKUPlayerData;
+import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
@@ -31,9 +30,10 @@ public abstract class SongApplicator extends SongPotionBase {
             IPlayerData pData = MKUPlayerData.get(player);
             if (pData == null)
                 return;
+            BaseAbility ability = ClassData.getAbility(BaseToggleAbility.getToggleAbilityIdForPotion(this));
 
-            if (pData.getMana() > 1) {
-                pData.setMana(pData.getMana() - 1);
+            if (pData.getMana() >= ability.getManaCost(amplifier)) {
+                pData.setMana(pData.getMana() - ability.getManaCost(amplifier));
             } else {
                 player.removePotionEffect(this);
             }
