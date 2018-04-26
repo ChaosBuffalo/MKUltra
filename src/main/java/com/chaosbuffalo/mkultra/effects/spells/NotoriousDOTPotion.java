@@ -47,11 +47,6 @@ public class NotoriousDOTPotion extends SongEffect {
     }
 
     @Override
-    public ResourceLocation getAssociatedAbilityId() {
-        return new ResourceLocation("mkultra", "ability.notorious_dot");
-    }
-
-    @Override
     public EnumParticleTypes getSongParticle() {
         return EnumParticleTypes.DAMAGE_INDICATOR;
     }

@@ -54,11 +54,6 @@ public class MileysInspiringBangerzPotion extends SongEffect {
         return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/mileys_bangerz.png");
     }
 
-    @Override
-    public ResourceLocation getAssociatedAbilityId() {
-        return new ResourceLocation("mkultra", "ability.mileys_bangerz");
-    }
-
 
     @Override
     public float getSongDistance(int level) {
