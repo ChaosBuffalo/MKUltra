@@ -1,7 +1,7 @@
 package com.chaosbuffalo.mkultra.network.packets.client;
 
-import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
+import com.chaosbuffalo.mkultra.core.PlayerData;
 import com.chaosbuffalo.mkultra.network.MessageHandler;
 import com.chaosbuffalo.mkultra.utils.ServerUtils;
 import io.netty.buffer.ByteBuf;
@@ -28,7 +28,7 @@ public class PlayerSyncRequestPacket implements IMessage {
         @Override
         public IMessage handleServerMessage(final EntityPlayer player, PlayerSyncRequestPacket msg, MessageContext ctx) {
             ServerUtils.addScheduledTask(() -> {
-                IPlayerData data = MKUPlayerData.get(player);
+                PlayerData data = (PlayerData) MKUPlayerData.get(player);
                 if (data != null) {
                     data.forceUpdate();
                 }

@@ -1,6 +1,5 @@
 package com.chaosbuffalo.mkultra.core;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
@@ -77,22 +76,6 @@ public interface IPlayerData {
 
     float applyMagicArmor(float originalDamage);
 
-    void setPlayerStats();
-
-    void onTick();
-
-    void doDeath();
-
-    void onRespawn();
-
-    void onJoinWorld();
-
-    void clientSkillListUpdate(PlayerAbilityInfo info, boolean removed);
-
-    void clientKnownClassUpdate(PlayerClassInfo info);
-
-    void forceUpdate();
-
     boolean learnClass(ResourceLocation classId);
 
     void activateClass(ResourceLocation classId);
@@ -102,8 +85,6 @@ public interface IPlayerData {
     void serialize(NBTTagCompound tag);
 
     void deserialize(NBTTagCompound tag);
-
-    void clone(EntityPlayer previous);
 
     boolean canWearArmorMaterial(ItemArmor.ArmorMaterial material);
 }
