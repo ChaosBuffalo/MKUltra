@@ -27,8 +27,8 @@ public abstract class SongEffect extends SongPotionBase {
             if (pData == null)
                 return;
 
-            if (pData.getMana() >= 1) {
-                pData.setMana(pData.getMana() - 1);
+            if (pData.getMana() >= amplifier) {
+                pData.setMana(pData.getMana() - amplifier);
             } else {
                 player.removePotionEffect(this);
             }
