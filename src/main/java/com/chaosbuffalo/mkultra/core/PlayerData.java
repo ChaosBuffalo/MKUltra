@@ -112,8 +112,7 @@ public class PlayerData implements IPlayerData {
         return ClassData.INVALID_ABILITY;
     }
 
-    @Override
-    public void setPlayerStats() {
+    private void setPlayerStats() {
         if (!hasChosenClass()) {
             setMana(0);
             setTotalMana(0);
@@ -158,7 +157,7 @@ public class PlayerData implements IPlayerData {
     }
 
     @Override
-    public float getCooldownProgessSpeed() {
+    public float getCooldownProgressSpeed() {
         return (float) player.getEntityAttribute(PlayerAttributes.COOLDOWN).getAttributeValue();
     }
 
@@ -170,24 +169,6 @@ public class PlayerData implements IPlayerData {
     @Override
     public float getMagicArmor() {
         return (float) player.getEntityAttribute(PlayerAttributes.MAGIC_ARMOR).getAttributeValue();
-    }
-
-    @Override
-    public float scaleMagicDamage(float originalDamage) {
-        float mod = getMagicDamageBonus();
-        return originalDamage + mod;
-    }
-
-    @Override
-    public float applyMagicArmor(float originalDamage) {
-        float mod = getMagicArmor();
-        return originalDamage - mod;
-    }
-
-    private int applyCooldownReduction(int originalCooldownTicks) {
-        float mod = 2.0f - getCooldownProgessSpeed();
-        float newTicks = mod * originalCooldownTicks;
-        return (int) newTicks;
     }
 
     private int applyManaCostReduction(int originalCost) {
@@ -300,7 +281,7 @@ public class PlayerData implements IPlayerData {
 
     @Override
     public int getAbilityCooldown(BaseAbility ability) {
-        return applyCooldownReduction(ability.getCooldownTicks(getLevelForAbility(ability.getAbilityId())));
+        return PlayerFormulas.applyCooldownReduction(this, ability.getCooldownTicks(getLevelForAbility(ability.getAbilityId())));
     }
 
     @Override
@@ -447,7 +428,7 @@ public class PlayerData implements IPlayerData {
         setMana(getMana() - manaCost);
 
         int cooldown = ability.getCooldownTicks(info.level);
-        cooldown = applyCooldownReduction(cooldown);
+        cooldown = PlayerFormulas.applyCooldownReduction(this, cooldown);
         setCooldown(info.id, cooldown);
     }
 
@@ -533,7 +514,6 @@ public class PlayerData implements IPlayerData {
         return this.player instanceof EntityPlayerMP;
     }
 
-    @Override
     public void forceUpdate() {
         markEntityDataDirty();
         sendBulkAbilityUpdate(abilityInfoMap.values());
@@ -541,11 +521,9 @@ public class PlayerData implements IPlayerData {
         updateActiveAbilities();
     }
 
-    @Override
     public void onRespawn() {
     }
 
-    @Override
     public void onJoinWorld() {
         Log.trace("PlayerData@onJoinWorld\n");
 
@@ -558,7 +536,6 @@ public class PlayerData implements IPlayerData {
 
     }
 
-    @Override
     public void onTick() {
         abilityTracker.tick();
 
@@ -596,7 +573,7 @@ public class PlayerData implements IPlayerData {
         }
     }
 
-    @Override
+    @SideOnly(Side.CLIENT)
     public void clientKnownClassUpdate(PlayerClassInfo info) {
         knownClasses.put(info.classId, info);
     }
@@ -697,7 +674,6 @@ public class PlayerData implements IPlayerData {
         deserializeClasses(nbt);
     }
 
-    @Override
     public void clone(EntityPlayer previous) {
 
         PlayerData prevData = (PlayerData) MKUPlayerData.get(previous);
@@ -710,7 +686,6 @@ public class PlayerData implements IPlayerData {
         updateActiveAbilities();
     }
 
-    @Override
     public void doDeath() {
         if (getLevel() > 1) {
             int curUnspent = getUnspentPoints();
@@ -877,23 +852,6 @@ public class PlayerData implements IPlayerData {
         sender.sendMessage(new TextComponentString(msg));
         for (PlayerAbilityInfo info : abilityInfoMap.values()) {
             BaseAbility ability = ClassData.getAbility(info.id);
-
-            msg = String.format("%s: %d / %d", ability.getAbilityName(), abilityTracker.getCooldownTicks(info), getAbilityCooldown(ability));
-            sender.sendMessage(new TextComponentString(msg));
-        }
-    }
-
-    public void debugDumpCurrentClassAbilities(ICommandSender sender) {
-        BaseClass playerClass = ClassData.getClass(getClassId());
-        if (playerClass == null)
-            return;
-
-        String msg = String.format("%s Abilities:", playerClass.getClassName());
-        sender.sendMessage(new TextComponentString(msg));
-        for (BaseAbility ability : playerClass.getAbilities()) {
-            PlayerAbilityInfo info = getAbilityInfo(ability.getAbilityId());
-            if (info == null)
-                continue;
 
             msg = String.format("%s: %d / %d", ability.getAbilityName(), abilityTracker.getCooldownTicks(info), getAbilityCooldown(ability));
             sender.sendMessage(new TextComponentString(msg));

@@ -135,7 +135,7 @@ public class PlayerClassScreen extends GuiScreen {
         int yCoord = (int) ((statPanelY + 4) * statScalingFactor);
 
         String regenRate = String.format("Mana Regen Rate: %.2f", pData.getManaRegenRate());
-        String cdRate = String.format("Cooldown Reduction: %.2f%%", (pData.getCooldownProgessSpeed() - 1) * 100);
+        String cdRate = String.format("Cooldown Reduction: %.2f%%", (pData.getCooldownProgressSpeed() - 1) * 100);
         String magicArmor = String.format("Magic Armor: %.2f", pData.getMagicArmor());
         String magicDamageBonus = String.format("Magic Damage Bonus: %.2f", pData.getMagicDamageBonus());
 

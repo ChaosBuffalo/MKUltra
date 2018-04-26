@@ -3,6 +3,7 @@ package com.chaosbuffalo.mkultra.event;
 
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
+import com.chaosbuffalo.mkultra.core.PlayerFormulas;
 import com.chaosbuffalo.mkultra.core.abilities.FlameBlade;
 import com.chaosbuffalo.mkultra.effects.spells.*;
 import com.chaosbuffalo.mkultra.entities.projectiles.EntityFlameBladeProjectile;
@@ -59,7 +60,7 @@ public class PotionEventHandler {
                 return;
             }
             if (source.isMagicDamage()) {
-                float newDamage = sourceData.scaleMagicDamage(event.getAmount());
+                float newDamage = PlayerFormulas.scaleMagicDamage(sourceData, event.getAmount());
                 Log.debug("Scaling magic damage from %f to %f", event.getAmount(), newDamage);
                 event.setAmount(newDamage);
             }
@@ -114,7 +115,7 @@ public class PotionEventHandler {
                 event.setAmount(newDamage);
             }
             if (source.isMagicDamage()) {
-                float newDamage = targetData.applyMagicArmor(event.getAmount());
+                float newDamage = PlayerFormulas.applyMagicArmor(targetData, event.getAmount());
                 Log.debug("Magic armor reducing damage from %f to %f", event.getAmount(), newDamage);
                 event.setAmount(newDamage);
             }
