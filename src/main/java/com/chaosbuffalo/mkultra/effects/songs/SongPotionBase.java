@@ -19,8 +19,6 @@ public abstract class SongPotionBase extends SpellPeriodicPotionBase {
         this.isVisible = isVisible;
     }
 
-    public abstract ResourceLocation getAssociatedAbilityId();
-
     @Override
     public Targeting.TargetType getTargetType() {
         return Targeting.TargetType.SELF;

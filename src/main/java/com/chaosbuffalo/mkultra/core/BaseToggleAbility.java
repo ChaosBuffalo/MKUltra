@@ -1,14 +1,23 @@
 package com.chaosbuffalo.mkultra.core;
 
+import com.google.common.collect.Maps;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
+import java.util.Map;
+
 /**
  * Created by Jacob on 3/24/2018.
  */
 public abstract class BaseToggleAbility extends BaseAbility {
+
+    private static final Map<Potion, ResourceLocation> toggleAbilityMap = Maps.newHashMap();
+
+    public static ResourceLocation getToggleAbilityIdForPotion(Potion potion) {
+        return toggleAbilityMap.get(potion);
+    }
 
     public BaseToggleAbility(String domain, String id) {
         this(new ResourceLocation(domain, id));
@@ -16,6 +25,7 @@ public abstract class BaseToggleAbility extends BaseAbility {
 
     public BaseToggleAbility(ResourceLocation abilityId) {
         super(abilityId);
+        toggleAbilityMap.put(getToggleEffect(), abilityId);
     }
 
     public abstract Potion getToggleEffect();
