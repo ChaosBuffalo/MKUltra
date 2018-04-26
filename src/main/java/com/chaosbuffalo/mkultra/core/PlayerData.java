@@ -573,6 +573,7 @@ public class PlayerData implements IPlayerData {
         }
     }
 
+    @SideOnly(Side.CLIENT)
     public void clientKnownClassUpdate(PlayerClassInfo info) {
         knownClasses.put(info.classId, info);
     }
