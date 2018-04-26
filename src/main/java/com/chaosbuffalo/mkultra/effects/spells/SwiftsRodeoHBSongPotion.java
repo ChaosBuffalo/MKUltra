@@ -50,8 +50,4 @@ public class SwiftsRodeoHBSongPotion extends SongApplicator {
         return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/swifts_rodeo_heartbreak.png");
     }
 
-    @Override
-    public ResourceLocation getAssociatedAbilityId() {
-        return new ResourceLocation("mkultra", "ability.swifts_rodeo_heartbreak");
-    }
 }

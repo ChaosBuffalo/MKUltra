@@ -47,11 +47,6 @@ public class SwiftsRodeoHBPotion extends SongEffect {
     }
 
     @Override
-    public ResourceLocation getAssociatedAbilityId() {
-        return new ResourceLocation("mkultra", "ability.swifts_rodeo_heartbreak");
-    }
-
-    @Override
     public EnumParticleTypes getSongParticle() { return EnumParticleTypes.NOTE; }
 
     @Override
