@@ -19,4 +19,8 @@ public abstract class SpellPeriodicPotionBase extends SpellPotionBase {
     public boolean isInstant() {
         return false;
     }
+
+    public int getPeriod() {
+        return period;
+    }
 }

@@ -3,28 +3,46 @@ package com.chaosbuffalo.mkultra.effects;
 import com.chaosbuffalo.mkultra.log.Log;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.world.World;
 
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.WeakHashMap;
+import java.util.UUID;
 
 public class SpellCast {
 
-    private static Map<EntityLivingBase, Map<SpellPotionBase, SpellCast>> allCasts =
+    private static Map<UUID, Map<SpellPotionBase, SpellCast>> allCasts =
             new HashMap<>(new HashMap<>());
 
     private SpellPotionBase potion;
-    private Entity applier;
-    private Entity caster;
+    private WeakReference<Entity> applier;
+    private WeakReference<Entity> caster;
     private NBTTagCompound data;
+    private UUID casterUUID;
+    private UUID applierUUID;
 
     public SpellCast(SpellPotionBase potion, Entity caster) {
         this.potion = potion;
-        this.applier = caster;
-        this.caster = caster;
+        this.applier = new WeakReference<>(caster);
+        this.caster = new WeakReference<>(caster);
         this.data = new NBTTagCompound();
+        if (caster instanceof EntityPlayer) {
+            this.casterUUID = caster.getUniqueID();
+            this.applierUUID = caster.getUniqueID();
+        }
+    }
+
+    private void updateRefs(World world) {
+        if (casterUUID != null) {
+            caster = new WeakReference<>(world.getPlayerEntityByUUID(casterUUID));
+        }
+        if (applierUUID != null) {
+            applier = new WeakReference<>(world.getPlayerEntityByUUID(applierUUID));
+        }
     }
 
     public static SpellCast create(SpellPotionBase potion, Entity caster) {
@@ -33,32 +51,34 @@ public class SpellCast {
 
     public static SpellCast get(EntityLivingBase target, SpellPotionBase potion) {
 
-        Map<SpellPotionBase, SpellCast> targetSpells = allCasts.get(target);
+        Map<SpellPotionBase, SpellCast> targetSpells = allCasts.get(target.getUniqueID());
         if (targetSpells == null) {
             Log.warn("Tried to get a spell on an unregistered target! Spell: %s", potion.getName());
             return null;
         }
 
-        return targetSpells.get(potion);
+        SpellCast cast = targetSpells.get(potion);
+        cast.updateRefs(target.world);
+        return cast;
     }
 
     public static void registerTarget(SpellCast cast, EntityLivingBase target) {
 
-        Map<SpellPotionBase, SpellCast> targetSpells = allCasts.get(target);
+        Map<SpellPotionBase, SpellCast> targetSpells = allCasts.get(target.getUniqueID());
         if (targetSpells == null) {
-            allCasts.put(target, new HashMap<>());
-            targetSpells = allCasts.get(target);
+            allCasts.put(target.getUniqueID(), new HashMap<>());
+            targetSpells = allCasts.get(target.getUniqueID());
         }
 
         targetSpells.put(cast.potion, cast);
     }
 
     public Entity getApplier() {
-        return applier;
+        return applier.get();
     }
 
     public Entity getCaster() {
-        return caster;
+        return caster.get();
     }
 
     public SpellCast setTarget(EntityLivingBase target) {
@@ -135,4 +155,8 @@ public class SpellCast {
         return potion.toPotionEffect(duration, amplifier);
     }
 
+    @Override
+    public String toString() {
+        return String.format("Cast[%s, %s]", potion.getName(), caster);
+    }
 }

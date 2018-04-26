@@ -4,8 +4,8 @@ import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.abilities.NotoriousDOT;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
-import com.chaosbuffalo.mkultra.effects.SongPotionBase;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
+import com.chaosbuffalo.mkultra.effects.songs.SongEffect;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
 import net.minecraft.potion.Potion;
@@ -15,15 +15,12 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import java.util.HashSet;
-import java.util.Set;
-
 
 /**
  * Created by Jacob on 4/21/2018.
  */
 @Mod.EventBusSubscriber(modid = MKUltra.MODID)
-public class NotoriousDOTPotion extends SongPotionBase{
+public class NotoriousDOTPotion extends SongEffect {
     public static final NotoriousDOTPotion INSTANCE = new NotoriousDOTPotion();
     public static final int PERIOD = 3 * GameConstants.TICKS_PER_SECOND;
 
@@ -37,7 +34,7 @@ public class NotoriousDOTPotion extends SongPotionBase{
     }
 
     @Override
-    public AreaEffectBuilder prepareAreaEffect(Entity source, int level, AreaEffectBuilder builder){
+    public AreaEffectBuilder prepareAreaEffect(Entity source, int level, AreaEffectBuilder builder) {
         builder.spellCast(InstantIndirectMagicDamagePotion.Create(
                 source, NotoriousDOT.BASE_DAMAGE, NotoriousDOT.DAMAGE_SCALE),
                 level, Targeting.TargetType.ENEMY);
@@ -45,7 +42,7 @@ public class NotoriousDOTPotion extends SongPotionBase{
     }
 
     private NotoriousDOTPotion() {
-        super(PERIOD, false, true, false, 16750080);
+        super(PERIOD, false, 16750080);
         register(MKUltra.MODID, "effect.notorious_dot");
     }
 
@@ -55,7 +52,9 @@ public class NotoriousDOTPotion extends SongPotionBase{
     }
 
     @Override
-    public EnumParticleTypes getSongParticle() { return EnumParticleTypes.DAMAGE_INDICATOR; }
+    public EnumParticleTypes getSongParticle() {
+        return EnumParticleTypes.DAMAGE_INDICATOR;
+    }
 
     @Override
     public ResourceLocation getIconTexture() {
@@ -68,7 +67,7 @@ public class NotoriousDOTPotion extends SongPotionBase{
     }
 
     @Override
-    public float getDistance(int level) {
+    public float getSongDistance(int level) {
         return 3.0f + level * 3.0f;
     }
 }
