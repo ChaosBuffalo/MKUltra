@@ -11,4 +11,6 @@ public class GameConstants {
     public static final int MAX_ABILITY_LEVEL = 2;
 
     public static final int TICKS_PER_SECOND = 20;
+
+    public static final int GLOBAL_COOLDOWN_TICKS = 1 * TICKS_PER_SECOND;
 }

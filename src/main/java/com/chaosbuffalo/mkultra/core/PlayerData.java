@@ -112,7 +112,7 @@ public class PlayerData implements IPlayerData {
         return ClassData.INVALID_ABILITY;
     }
 
-    private void setPlayerStats() {
+    private void updatePlayerStats() {
         if (!hasChosenClass()) {
             setMana(0);
             setTotalMana(0);
@@ -171,9 +171,6 @@ public class PlayerData implements IPlayerData {
         return (float) player.getEntityAttribute(PlayerAttributes.MAGIC_ARMOR).getAttributeValue();
     }
 
-    private int applyManaCostReduction(int originalCost) {
-        return originalCost;
-    }
 
     @Override
     public boolean hasChosenClass() {
@@ -185,16 +182,14 @@ public class PlayerData implements IPlayerData {
         return privateData.get(UNSPENT_POINTS);
     }
 
-    @Override
-    public void setUnspentPoints(int unspentPoints) {
+    private void setUnspentPoints(int unspentPoints) {
         // You shouldn't have more unspent points than your levels
         if (unspentPoints > getLevel())
             return;
         privateData.set(UNSPENT_POINTS, unspentPoints);
     }
 
-    @Override
-    public void setClassId(ResourceLocation classId) {
+    private void setClassId(ResourceLocation classId) {
         privateData.set(CLASS_ID, classId.toString());
     }
 
@@ -225,11 +220,9 @@ public class PlayerData implements IPlayerData {
         }
     }
 
-    @Override
-    public void setLevel(int level) {
-        Log.debug("Setting player level " + level);
+    private void setLevel(int level) {
         privateData.set(LEVEL, level);
-        setPlayerStats();
+        updatePlayerStats();
     }
 
     private void setActiveAbilities(ResourceLocation[] abilities) {
@@ -376,7 +369,7 @@ public class PlayerData implements IPlayerData {
 
     private void updateToggleAbility(PlayerAbilityInfo info) {
         BaseAbility ability = ClassData.getAbility(info.id);
-        if (ability != null && ability instanceof BaseToggleAbility && player != null) {
+        if (ability instanceof BaseToggleAbility && player != null) {
             BaseToggleAbility toggle = (BaseToggleAbility) ability;
 
             if (info.level > GameConstants.ACTION_BAR_INVALID_LEVEL) {
@@ -424,7 +417,7 @@ public class PlayerData implements IPlayerData {
             ItemHelper.damageStack(player, mainHandItem, 1);
         }
         int manaCost = ability.getManaCost(info.level);
-        manaCost = applyManaCostReduction(manaCost);
+        manaCost = PlayerFormulas.applyManaCostReduction(this, manaCost);
         setMana(getMana() - manaCost);
 
         int cooldown = ability.getCooldownTicks(info.level);
@@ -528,7 +521,7 @@ public class PlayerData implements IPlayerData {
         Log.trace("PlayerData@onJoinWorld\n");
 
         if (isServerSide()) {
-            setPlayerStats();
+            updatePlayerStats();
         } else {
             Log.trace("PlayerData@onJoinWorld - Client sending sync req\n");
             MKUltra.packetHandler.sendToServer(new PlayerSyncRequestPacket());
@@ -709,7 +702,7 @@ public class PlayerData implements IPlayerData {
                         // level to go up a rank, not the required level for the current rank
                         int newAbilityLevel = getLevelForAbility(a.getAbilityId()) - 1;
                         int reqLevel = a.getRequiredLevel(newAbilityLevel);
-                        reqLevel = reqLevel < 1 ? 1 : reqLevel;
+                        reqLevel = Math.max(1, reqLevel);
                         return reqLevel > newLevel;
                     })
                     .forEach(a -> unlearnAbility(a.getAbilityId(), true));
@@ -784,9 +777,7 @@ public class PlayerData implements IPlayerData {
             level = 1;
             unspent = 1;
             hotbar = new ResourceLocation[GameConstants.ACTION_BAR_SIZE];
-            for (int i = 0; i < hotbar.length; i++) {
-                hotbar[i] = ClassData.INVALID_ABILITY;
-            }
+            Arrays.fill(hotbar, ClassData.INVALID_ABILITY);
         } else {
             PlayerClassInfo info = knownClasses.get(classId);
             level = info.level;

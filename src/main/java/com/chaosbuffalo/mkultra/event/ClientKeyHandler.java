@@ -28,7 +28,6 @@ public class ClientKeyHandler {
     private static KeyBinding[] abilityBinds;
 
     private static int currentGCDTicks;
-    private static final int totalGCDTicks = 1 * GameConstants.TICKS_PER_SECOND;
 
     public static void initKeybinds() {
         skillSelectBind = new KeyBinding("key.hud.classpanel", Keyboard.KEY_J, "key.mkultra.category");
@@ -50,7 +49,7 @@ public class ClientKeyHandler {
     }
 
     public static float getTotalGlobalCooldown() {
-        return (float) totalGCDTicks / GameConstants.TICKS_PER_SECOND;
+        return (float) GameConstants.GLOBAL_COOLDOWN_TICKS / GameConstants.TICKS_PER_SECOND;
     }
 
     @SideOnly(Side.CLIENT)
@@ -86,7 +85,7 @@ public class ClientKeyHandler {
 
                 if (ability.meetsRequirements(pData)) {
                     MKUltra.packetHandler.sendToServer(new ExecuteActivePacket(i));
-                    currentGCDTicks = totalGCDTicks;
+                    currentGCDTicks = GameConstants.GLOBAL_COOLDOWN_TICKS;
                     break;
                 }
             }

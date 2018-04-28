@@ -8,13 +8,9 @@ import java.util.List;
 
 public interface IPlayerData {
 
-    void setClassId(ResourceLocation classId);
-
     ResourceLocation getClassId();
 
     boolean hasChosenClass();
-
-    void setUnspentPoints(int unspentPoints);
 
     int getUnspentPoints();
 
@@ -23,8 +19,6 @@ public interface IPlayerData {
     boolean unlearnAbility(ResourceLocation abilityId, boolean refundPoint);
 
     boolean executeHotBarAbility(int abilitySlot);
-
-    void setLevel(int level);
 
     boolean canLevelUp();
 

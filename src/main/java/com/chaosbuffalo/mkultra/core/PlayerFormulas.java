@@ -17,4 +17,8 @@ public class PlayerFormulas {
         float newTicks = mod * originalCooldownTicks;
         return (int) newTicks;
     }
+
+    public static int applyManaCostReduction(IPlayerData playerData, int originalCost) {
+        return originalCost;
+    }
 }

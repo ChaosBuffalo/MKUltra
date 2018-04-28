@@ -7,6 +7,7 @@ import com.chaosbuffalo.mkultra.effects.SpellCast;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.EnumParticleTypes;
 
 public abstract class SongEffect extends SongPotionBase {
     protected SongEffect(int period, boolean isBadEffectIn, int liquidColorIn) {
@@ -18,6 +19,8 @@ public abstract class SongEffect extends SongPotionBase {
     }
 
     public abstract float getSongDistance(int level);
+
+    public EnumParticleTypes getSongParticle() { return EnumParticleTypes.NOTE; }
 
     @Override
     public void doEffect(Entity source, Entity indirectSource, EntityLivingBase target, int amplifier, SpellCast cast) {
