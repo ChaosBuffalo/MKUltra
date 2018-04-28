@@ -679,7 +679,28 @@ public class PlayerData implements IPlayerData {
         updateActiveAbilities();
     }
 
+    private void validateAbilityPoints() {
+        int totalPoints = getUnspentPoints();
+        for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
+            ResourceLocation abilityId = getAbilityInSlot(i);
+
+            if (abilityId.compareTo(ClassData.INVALID_ABILITY) == 0)
+                continue;
+
+            PlayerAbilityInfo info = getAbilityInfo(abilityId);
+            if (info == null)
+                continue;
+
+            if (info.level > 0) {
+                totalPoints += info.level;
+            }
+        }
+
+        Log.info("validateAbilityPoints: %s expected %d calculated %d", player.getName(), getLevel(), totalPoints);
+    }
+
     public void doDeath() {
+        validateAbilityPoints();
         if (getLevel() > 1) {
             int curUnspent = getUnspentPoints();
             if (curUnspent > 0) {
