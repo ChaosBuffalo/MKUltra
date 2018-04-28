@@ -811,6 +811,23 @@ public class PlayerData implements IPlayerData {
         setUnspentPoints(unspent);
         setActiveAbilities(hotbar);
         ItemRestrictionHandler.checkEquipment(player);
+        checkClassFixes();
+    }
+
+    private void checkClassFixes() {
+        if (getClassId().compareTo(new ResourceLocation(MKUltra.MODID, "class.druid")) == 0) {
+            ResourceLocation eagleAspect = new ResourceLocation(MKUltra.MODID, "ability.eagle_aspect");
+
+            PlayerAbilityInfo info = getAbilityInfo(eagleAspect);
+            if (info != null) {
+                if (info.level > GameConstants.ACTION_BAR_INVALID_LEVEL) {
+                    Log.info("Found 'Eagle Aspect', refunding %d points", info.level);
+                    setUnspentPoints(getUnspentPoints() + info.level);
+                    info.level = 0;
+                    sendSingleAbilityUpdate(info);
+                }
+            }
+        }
     }
 
     @Override
