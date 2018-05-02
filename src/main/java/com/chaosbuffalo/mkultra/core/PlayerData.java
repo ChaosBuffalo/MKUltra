@@ -539,8 +539,8 @@ public class PlayerData implements IPlayerData {
 
     public void forceUpdate() {
         markEntityDataDirty();
-        sendBulkAbilityUpdate(abilityInfoMap.values());
-        sendBulkClassUpdate(knownClasses.values());
+        sendBulkAbilityUpdate();
+        sendBulkClassUpdate();
         updateActiveAbilities();
     }
 
@@ -575,15 +575,15 @@ public class PlayerData implements IPlayerData {
         }
     }
 
-    private void sendBulkAbilityUpdate(Collection<PlayerAbilityInfo> updated) {
+    private void sendBulkAbilityUpdate() {
         if (isServerSide()) {
-            MKUltra.packetHandler.sendTo(new AbilityUpdatePacket(updated), (EntityPlayerMP) player);
+            MKUltra.packetHandler.sendTo(new AbilityUpdatePacket(abilityInfoMap.values()), (EntityPlayerMP) player);
         }
     }
 
-    private void sendBulkClassUpdate(Collection<PlayerClassInfo> updated) {
+    private void sendBulkClassUpdate() {
         if (isServerSide()) {
-            MKUltra.packetHandler.sendTo(new ClassUpdatePacket(updated), (EntityPlayerMP) player);
+            MKUltra.packetHandler.sendTo(new ClassUpdatePacket(knownClasses.values()), (EntityPlayerMP) player);
         }
     }
 
@@ -597,8 +597,9 @@ public class PlayerData implements IPlayerData {
     }
 
     @SideOnly(Side.CLIENT)
-    public void clientKnownClassUpdate(PlayerClassInfo info) {
-        knownClasses.put(info.classId, info);
+    public void clientBulkKnownClassUpdate(List<PlayerClassInfo> info) {
+        knownClasses.clear();
+        info.forEach(ci -> knownClasses.put(ci.classId, ci));
     }
 
     private void serializeSkills(NBTTagCompound tag) {
@@ -627,7 +628,7 @@ public class PlayerData implements IPlayerData {
                 abilityInfoMap.put(info.id, info);
             }
 
-            sendBulkAbilityUpdate(abilityInfoMap.values());
+            sendBulkAbilityUpdate();
         }
     }
 
@@ -769,15 +770,21 @@ public class PlayerData implements IPlayerData {
             PlayerClassInfo info = new PlayerClassInfo(classId);
             knownClasses.put(classId, info);
 
-            if (isServerSide()) {
-                MKUltra.packetHandler.sendTo(new ClassUpdatePacket(knownClasses.values()), (EntityPlayerMP) player);
-            }
+            sendBulkClassUpdate();
 
             // Changed
             return true;
         }
         // No change
         return false;
+    }
+
+    public void unlearnClass(ResourceLocation classId) {
+        if (isClassKnown(classId)) {
+            activateClass(ClassData.INVALID_CLASS);
+            knownClasses.remove(classId);
+            sendBulkClassUpdate();
+        }
     }
 
     private boolean isClassKnown(ResourceLocation classId) {

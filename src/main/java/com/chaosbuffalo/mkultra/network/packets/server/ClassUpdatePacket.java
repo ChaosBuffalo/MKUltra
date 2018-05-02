@@ -65,9 +65,7 @@ public class ClassUpdatePacket implements IMessage {
                 if (data == null)
                     return;
 
-                for (PlayerClassInfo info : msg.classes) {
-                    data.clientKnownClassUpdate(info);
-                }
+                data.clientBulkKnownClassUpdate(msg.classes);
             });
             return null;
 
