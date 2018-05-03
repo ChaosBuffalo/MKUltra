@@ -14,6 +14,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -756,10 +757,25 @@ public class PlayerData implements IPlayerData {
         }
     }
 
+    private boolean checkClassLearnItem(ResourceLocation classId) {
+        ItemStack mainHandStack = player.getHeldItemMainhand();
+        if (mainHandStack.isEmpty())
+            return false;
+
+        BaseClass baseClass = ClassData.getClass(classId);
+        if (baseClass == null)
+            return false;
+
+        Item mainHand = mainHandStack.getItem();
+        return mainHand == baseClass.getUnlockItem();
+    }
 
     @Override
     public boolean learnClass(ResourceLocation classId) {
         if (!isClassKnown(classId)) {
+            if (!checkClassLearnItem(classId))
+                return false;
+
             PlayerClassInfo info = new PlayerClassInfo(classId);
             knownClasses.put(classId, info);
 
