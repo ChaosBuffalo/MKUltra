@@ -5,14 +5,46 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
 public class PlayerAbilityInfo {
-    public ResourceLocation id;
-    public int level;
+    private ResourceLocation id;
+    private int level;
     private int cooldown;
 
     public PlayerAbilityInfo(ResourceLocation abilityId) {
         id = abilityId;
         level = GameConstants.ACTION_BAR_INVALID_LEVEL;
         cooldown = 0;
+    }
+
+    public PlayerAbilityInfo(ResourceLocation abilityId, int level) {
+        id = abilityId;
+        this.level = level;
+        cooldown = 0;
+    }
+
+    public ResourceLocation getId() {
+        return id;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public boolean isCurrentlyKnown() {
+        return level > GameConstants.ACTION_BAR_INVALID_LEVEL;
+    }
+
+    public void upgrade() {
+        if (level < GameConstants.MAX_ABILITY_LEVEL) {
+            level += 1;
+        }
+    }
+
+    public boolean downgrade() {
+        if (isCurrentlyKnown()) {
+            level -= 1;
+            return true;
+        }
+        return false;
     }
 
     public int getCooldown() {

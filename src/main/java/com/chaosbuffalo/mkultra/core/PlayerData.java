@@ -25,7 +25,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.event.world.NoteBlockEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -310,7 +309,7 @@ public class PlayerData implements IPlayerData {
     @Override
     public int getLevelForAbility(ResourceLocation abilityId) {
         PlayerAbilityInfo abilityInfo = getAbilityInfo(abilityId);
-        return abilityInfo != null ? abilityInfo.level : GameConstants.ACTION_BAR_INVALID_LEVEL;
+        return abilityInfo != null ? abilityInfo.getLevel() : GameConstants.ACTION_BAR_INVALID_LEVEL;
     }
 
     @Override
@@ -336,14 +335,14 @@ public class PlayerData implements IPlayerData {
             }
         }
 
-        info.level += 1;
+        info.upgrade();
         classInfo.addToSpendOrder(abilityId);
 
         if (abilityTracker.hasCooldown(info)) {
             BaseAbility ability = ClassData.getAbility(abilityId);
             int newMaxCooldown = getAbilityCooldown(ability);
             int current = abilityTracker.getCooldownTicks(info);
-            setCooldown(info.id, Math.min(current, newMaxCooldown));
+            setCooldown(info.getId(), Math.min(current, newMaxCooldown));
         }
 
         abilityInfoMap.put(abilityId, info);
@@ -369,21 +368,16 @@ public class PlayerData implements IPlayerData {
     @Override
     public boolean unlearnAbility(ResourceLocation abilityId, boolean refundPoint) {
         PlayerAbilityInfo info = getAbilityInfo(abilityId);
-        if (info == null || info.level == GameConstants.ACTION_BAR_INVALID_LEVEL) {
+        if (info == null || !info.isCurrentlyKnown()) {
             // We never knew it or it exists but is currently unlearned
             return false;
         }
 
-        info.level -= 1;
+        info.downgrade();
 
         if (refundPoint) {
             int curUnspent = getUnspentPoints();
             setUnspentPoints(curUnspent + 1);
-        }
-
-        if (info.level <= GameConstants.ACTION_BAR_INVALID_LEVEL) {
-            // Unlearning completely. Keep the PlayerAbilityInfo around so we can continue to track cooldowns
-            info.level = GameConstants.ACTION_BAR_INVALID_LEVEL;
         }
 
         updateToggleAbility(info);
@@ -398,11 +392,11 @@ public class PlayerData implements IPlayerData {
     }
 
     private void updateToggleAbility(PlayerAbilityInfo info) {
-        BaseAbility ability = ClassData.getAbility(info.id);
+        BaseAbility ability = ClassData.getAbility(info.getId());
         if (ability instanceof BaseToggleAbility && player != null) {
             BaseToggleAbility toggle = (BaseToggleAbility) ability;
 
-            if (info.level > GameConstants.ACTION_BAR_INVALID_LEVEL) {
+            if (info.isCurrentlyKnown()) {
                 // If this is a toggle ability we must re-apply the effect to make sure it's working at the proper level
                 if (player.isPotionActive(toggle.getToggleEffect())) {
                     toggle.removeEffect(player, this, player.getEntityWorld());
@@ -436,7 +430,7 @@ public class PlayerData implements IPlayerData {
     @Override
     public void startAbility(BaseAbility ability) {
         PlayerAbilityInfo info = getAbilityInfo(ability.getAbilityId());
-        if (info == null || info.level == GameConstants.ACTION_BAR_INVALID_LEVEL)
+        if (info == null || !info.isCurrentlyKnown())
             return;
         ItemStack heldItem = this.player.getHeldItem(EnumHand.OFF_HAND);
         if (heldItem.getItem() instanceof ManaRegenIdol) {
@@ -446,13 +440,13 @@ public class PlayerData implements IPlayerData {
         if (mainHandItem.getItem() instanceof ManaRegenIdol) {
             ItemHelper.damageStack(player, mainHandItem, 1);
         }
-        int manaCost = ability.getManaCost(info.level);
+        int manaCost = ability.getManaCost(info.getLevel());
         manaCost = PlayerFormulas.applyManaCostReduction(this, manaCost);
         setMana(getMana() - manaCost);
 
-        int cooldown = ability.getCooldownTicks(info.level);
+        int cooldown = ability.getCooldownTicks(info.getLevel());
         cooldown = PlayerFormulas.applyCooldownReduction(this, cooldown);
-        setCooldown(info.id, cooldown);
+        setCooldown(info.getId(), cooldown);
     }
 
     private PlayerAbilityInfo getAbilityInfo(ResourceLocation abilityId) {
@@ -463,9 +457,9 @@ public class PlayerData implements IPlayerData {
         ResourceLocation abilityId = getAbilityInSlot(index);
         PlayerAbilityInfo abilityInfo = getAbilityInfo(abilityId);
 
-        boolean valid = abilityInfo != null && abilityInfo.level != GameConstants.ACTION_BAR_INVALID_LEVEL;
-        ResourceLocation id = valid ? abilityInfo.id : ClassData.INVALID_ABILITY;
-        int level = valid ? abilityInfo.level : GameConstants.ACTION_BAR_INVALID_LEVEL;
+        boolean valid = abilityInfo != null && abilityInfo.isCurrentlyKnown();
+        ResourceLocation id = valid ? abilityInfo.getId() : ClassData.INVALID_ABILITY;
+        int level = valid ? abilityInfo.getLevel() : GameConstants.ACTION_BAR_INVALID_LEVEL;
 
         setAbilityInSlot(index, id);
         privateData.set(ACTION_BAR_ABILITY_LEVEL[index], level);
@@ -588,10 +582,10 @@ public class PlayerData implements IPlayerData {
 
     @SideOnly(Side.CLIENT)
     public void clientSkillListUpdate(PlayerAbilityInfo info) {
-        if (info.level == GameConstants.ACTION_BAR_INVALID_LEVEL) {
-            abilityInfoMap.remove(info.id);
+        if (!info.isCurrentlyKnown()) {
+            abilityInfoMap.remove(info.getId());
         } else {
-            abilityInfoMap.put(info.id, info);
+            abilityInfoMap.put(info.getId(), info);
         }
     }
 
@@ -624,7 +618,7 @@ public class PlayerData implements IPlayerData {
 
                 abilityTracker.setCooldown(info, info.getCooldown());
 
-                abilityInfoMap.put(info.id, info);
+                abilityInfoMap.put(info.getId(), info);
             }
 
             sendBulkAbilityUpdate();
@@ -721,8 +715,8 @@ public class PlayerData implements IPlayerData {
             if (info == null)
                 continue;
 
-            if (info.level > 0) {
-                totalPoints += info.level;
+            if (info.isCurrentlyKnown()) {
+                totalPoints += info.getLevel();
             }
         }
 
@@ -847,23 +841,6 @@ public class PlayerData implements IPlayerData {
         setUnspentPoints(unspent);
         setActiveAbilities(hotbar);
         ItemRestrictionHandler.checkEquipment(player);
-        checkClassFixes();
-    }
-
-    private void checkClassFixes() {
-        if (getClassId().compareTo(new ResourceLocation(MKUltra.MODID, "class.druid")) == 0) {
-            ResourceLocation eagleAspect = new ResourceLocation(MKUltra.MODID, "ability.eagle_aspect");
-
-            PlayerAbilityInfo info = getAbilityInfo(eagleAspect);
-            if (info != null) {
-                if (info.level > GameConstants.ACTION_BAR_INVALID_LEVEL) {
-                    Log.info("Found 'Eagle Aspect', refunding %d points", info.level);
-                    setUnspentPoints(getUnspentPoints() + info.level);
-                    info.level = 0;
-                    sendSingleAbilityUpdate(info);
-                }
-            }
-        }
     }
 
     @Override
@@ -900,12 +877,12 @@ public class PlayerData implements IPlayerData {
     @Override
     public float getCooldownPercent(BaseAbility ability, float partialTicks) {
         PlayerAbilityInfo info = getAbilityInfo(ability.getAbilityId());
-        return abilityTracker.getCooldown(info, partialTicks);
+        return info != null ? abilityTracker.getCooldown(info, partialTicks) : 0.0f;
     }
 
     public void debugResetAllCooldowns() {
         for (PlayerAbilityInfo info : abilityInfoMap.values()) {
-            setCooldown(info.id, 0);
+            setCooldown(info.getId(), 0);
         }
 
         updateActiveAbilities();
@@ -916,7 +893,7 @@ public class PlayerData implements IPlayerData {
         String msg = "All Abilities:";
         sender.sendMessage(new TextComponentString(msg));
         for (PlayerAbilityInfo info : abilityInfoMap.values()) {
-            BaseAbility ability = ClassData.getAbility(info.id);
+            BaseAbility ability = ClassData.getAbility(info.getId());
 
             msg = String.format("%s: %d / %d", ability.getAbilityName(), abilityTracker.getCooldownTicks(info), getAbilityCooldown(ability));
             sender.sendMessage(new TextComponentString(msg));
