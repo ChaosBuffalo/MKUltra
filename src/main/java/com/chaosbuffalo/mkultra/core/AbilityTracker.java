@@ -97,12 +97,12 @@ public class AbilityTracker {
 
         protected void notifyOnSet(PlayerAbilityInfo itemIn, int ticksIn) {
             super.notifyOnSet(itemIn, ticksIn);
-            MKUltra.packetHandler.sendTo(new AbilityCooldownPacket(itemIn.id, ticksIn), player);
+            MKUltra.packetHandler.sendTo(new AbilityCooldownPacket(itemIn.getId(), ticksIn), player);
         }
 
         protected void notifyOnRemove(PlayerAbilityInfo itemIn) {
             super.notifyOnRemove(itemIn);
-            MKUltra.packetHandler.sendTo(new AbilityCooldownPacket(itemIn.id, 0), player);
+            MKUltra.packetHandler.sendTo(new AbilityCooldownPacket(itemIn.getId(), 0), player);
         }
     }
 

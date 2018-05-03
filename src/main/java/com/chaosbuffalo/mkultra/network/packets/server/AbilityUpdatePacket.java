@@ -39,8 +39,7 @@ public class AbilityUpdatePacket implements IMessage {
         skills = new ArrayList<>(count);
 
         for (int i = 0; i < count; i++) {
-            PlayerAbilityInfo info = new PlayerAbilityInfo(pb.readResourceLocation());
-            info.level = pb.readVarInt();
+            PlayerAbilityInfo info = new PlayerAbilityInfo(pb.readResourceLocation(), pb.readVarInt());
             skills.add(info);
         }
     }
@@ -51,8 +50,8 @@ public class AbilityUpdatePacket implements IMessage {
         pb.writeVarInt(skills.size());
 
         for (PlayerAbilityInfo info : skills) {
-            pb.writeResourceLocation(info.id);
-            pb.writeVarInt(info.level);
+            pb.writeResourceLocation(info.getId());
+            pb.writeVarInt(info.getLevel());
         }
     }
 
