@@ -570,8 +570,7 @@ public class PlayerData implements IPlayerData {
 
     private void sendSingleAbilityUpdate(PlayerAbilityInfo info) {
         if (isServerSide()) {
-            boolean removed = info.level == GameConstants.ACTION_BAR_INVALID_LEVEL;
-            MKUltra.packetHandler.sendTo(new AbilityUpdatePacket(info, removed), (EntityPlayerMP) player);
+            MKUltra.packetHandler.sendTo(new AbilityUpdatePacket(info), (EntityPlayerMP) player);
         }
     }
 
@@ -588,8 +587,8 @@ public class PlayerData implements IPlayerData {
     }
 
     @SideOnly(Side.CLIENT)
-    public void clientSkillListUpdate(PlayerAbilityInfo info, boolean removed) {
-        if (removed) {
+    public void clientSkillListUpdate(PlayerAbilityInfo info) {
+        if (info.level == GameConstants.ACTION_BAR_INVALID_LEVEL) {
             abilityInfoMap.remove(info.id);
         } else {
             abilityInfoMap.put(info.id, info);
