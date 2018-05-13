@@ -772,20 +772,20 @@ public class PlayerData implements IPlayerData {
 
     @Override
     public boolean learnClass(ResourceLocation classId) {
-        if (!isClassKnown(classId)) {
-            if (!checkClassLearnItem(classId))
-                return false;
-
-            PlayerClassInfo info = new PlayerClassInfo(classId);
-            knownClasses.put(classId, info);
-
-            sendBulkClassUpdate();
-
-            // Changed
+        if (isClassKnown(classId)) {
+            // Class was already known
             return true;
         }
-        // No change
-        return false;
+
+        if (!checkClassLearnItem(classId))
+            return false;
+
+        PlayerClassInfo info = new PlayerClassInfo(classId);
+        knownClasses.put(classId, info);
+        sendBulkClassUpdate();
+
+        // Learned class
+        return true;
     }
 
     public void unlearnClass(ResourceLocation classId) {
