@@ -81,10 +81,16 @@ public class ItemHelper {
         }
     }
 
-    public static void shrinkStack(EntityPlayer player, ItemStack stack, int amount) {
+    public static boolean shrinkStack(EntityPlayer player, ItemStack stack, int amount) {
+        if (stack.getCount() < amount) {
+            return false;
+        }
+
         stack.shrink(amount);
         if (stack.getCount() == 0) {
             player.inventory.deleteStack(stack);
         }
+
+        return true;
     }
 }
