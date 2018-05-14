@@ -16,8 +16,6 @@ public interface IPlayerData {
 
     boolean learnAbility(ResourceLocation abilityId, boolean consumePoint);
 
-    boolean unlearnAbility(ResourceLocation abilityId, boolean refundPoint);
-
     boolean executeHotBarAbility(int abilitySlot);
 
     boolean canLevelUp();
