@@ -366,19 +366,28 @@ public class PlayerData implements IPlayerData {
         return true;
     }
 
-    @Override
-    public boolean unlearnAbility(ResourceLocation abilityId, boolean refundPoint) {
+    public boolean unlearnAbility(ResourceLocation abilityId, boolean refundPoint, boolean allRanks) {
         PlayerAbilityInfo info = getAbilityInfo(abilityId);
         if (info == null || !info.isCurrentlyKnown()) {
             // We never knew it or it exists but is currently unlearned
             return false;
         }
 
-        info.downgrade();
+        int ranks = 0;
+        if (allRanks) {
+            while (info.isCurrentlyKnown())
+                if (info.downgrade())
+                    ranks += 1;
+        }
+        else {
+            if (info.isCurrentlyKnown())
+                if (info.downgrade())
+                    ranks += 1;
+        }
 
         if (refundPoint) {
             int curUnspent = getUnspentPoints();
-            setUnspentPoints(curUnspent + 1);
+            setUnspentPoints(curUnspent + ranks);
         }
 
         updateToggleAbility(info);
@@ -733,7 +742,7 @@ public class PlayerData implements IPlayerData {
             } else {
                 ResourceLocation lastAbility = getLastLeveledAbility();
                 if (lastAbility.compareTo(ClassData.INVALID_ABILITY) != 0) {
-                    unlearnAbility(lastAbility, false);
+                    unlearnAbility(lastAbility, false, false);
                 }
             }
 
@@ -751,7 +760,7 @@ public class PlayerData implements IPlayerData {
                         reqLevel = Math.max(1, reqLevel);
                         return reqLevel > newLevel;
                     })
-                    .forEach(a -> unlearnAbility(a.getAbilityId(), true));
+                    .forEach(a -> unlearnAbility(a.getAbilityId(), true, false));
 
             setLevel(newLevel);
         }
@@ -792,6 +801,13 @@ public class PlayerData implements IPlayerData {
         if (isClassKnown(classId)) {
             activateClass(ClassData.INVALID_CLASS);
             knownClasses.remove(classId);
+
+            // Unlearn all abilities offered by this class
+            BaseClass bc = ClassData.getClass(classId);
+            if (bc != null) {
+                bc.getAbilities().forEach(a -> unlearnAbility(a.getAbilityId(), false, true));
+            }
+
             sendBulkClassUpdate();
         }
     }

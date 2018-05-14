@@ -1,7 +1,7 @@
 package com.chaosbuffalo.mkultra.network.packets.client;
 
-import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
+import com.chaosbuffalo.mkultra.core.PlayerData;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.network.MessageHandler;
 import com.chaosbuffalo.mkultra.utils.ServerUtils;
@@ -49,7 +49,7 @@ public class LevelAbilityPacket implements IMessage {
                                             final LevelAbilityPacket msg,
                                             MessageContext ctx) {
             ServerUtils.addScheduledTask(() -> {
-                IPlayerData pData = MKUPlayerData.get(player);
+                PlayerData pData = (PlayerData) MKUPlayerData.get(player);
                 if (pData == null)
                     return;
 
@@ -58,7 +58,7 @@ public class LevelAbilityPacket implements IMessage {
                 if (msg.raise) {
                     pData.learnAbility(msg.abilityId, true);
                 } else {
-                    pData.unlearnAbility(msg.abilityId, true);
+                    pData.unlearnAbility(msg.abilityId, true, false);
                 }
             });
             return null;
