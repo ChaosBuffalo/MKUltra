@@ -34,29 +34,8 @@ public class MKUltra {
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent e) {
-
         LOG = e.getModLog();
-
-        updateCheck(MKUltra.MODID);
-        updateCheck("versionchecker");
-
-        // Cyano mods
-        updateCheck("basemetals");
-        updateCheck("poweradvantage");
-        updateCheck("steamadvantage");
-        updateCheck("lootablebodies"); // Cyano Lootable Bodies
-        updateCheck("orespawn");
-
-        updateCheck("lycanitesmobs");
-
-
         proxy.preInit(e);
-    }
-
-    public static void updateCheck(String modId) {
-        // modId must be the value declared by the mod in the @Mod annotation!
-        String url = String.format("https://bitbucket.org/thecubereich/releases-1.12/raw/master/%s/version.json", modId);
-        FMLInterModComms.sendRuntimeMessage(modId, "versionchecker", "addVersionCheck", url);
     }
 
     @EventHandler
