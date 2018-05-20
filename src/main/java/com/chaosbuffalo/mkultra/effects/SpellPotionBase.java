@@ -61,7 +61,7 @@ public abstract class SpellPotionBase extends Potion {
     @Override
     public void affectEntity(Entity applier, Entity caster, @Nonnull EntityLivingBase target, int amplifier, double health) {
 
-        SpellCast cast = SpellCast.get(target, this);
+        SpellCast cast = SpellManager.get(target, this);
         if (cast == null) {
             Log.warn("affectEntity cast was null! Spell: %s", getName());
             return;
@@ -77,7 +77,7 @@ public abstract class SpellPotionBase extends Potion {
     @Override
     public void performEffect(@Nonnull EntityLivingBase target, int amplifier) {
 
-        SpellCast cast = SpellCast.get(target, this);
+        SpellCast cast = SpellManager.get(target, this);
         if (cast == null) {
             Log.warn("performEffect cast was null! Spell: %s", getName());
             return;
@@ -94,7 +94,7 @@ public abstract class SpellPotionBase extends Potion {
 
     @Override
     public void applyAttributesModifiersToEntity(EntityLivingBase target, @Nonnull AbstractAttributeMap attributes, int amplifier) {
-        SpellCast cast = SpellCast.get(target, this);
+        SpellCast cast = SpellManager.get(target, this);
         if (cast != null) {
             onPotionAdd(cast, target, attributes, amplifier);
         }
@@ -105,7 +105,7 @@ public abstract class SpellPotionBase extends Potion {
 
     @Override
     public void removeAttributesModifiersFromEntity(EntityLivingBase target, @Nonnull AbstractAttributeMap attributes, int amplifier) {
-        SpellCast cast = SpellCast.get(target, this);
+        SpellCast cast = SpellManager.get(target, this);
         if (cast != null) {
             onPotionRemove(cast, target, attributes, amplifier);
         }
@@ -139,7 +139,7 @@ public abstract class SpellPotionBase extends Potion {
     }
 
     public SpellCast newSpellCast(Entity caster) {
-        return SpellCast.create(this, caster);
+        return SpellManager.create(this, caster);
     }
 
     @Override

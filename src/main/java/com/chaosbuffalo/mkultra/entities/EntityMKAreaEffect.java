@@ -1,6 +1,7 @@
 package com.chaosbuffalo.mkultra.entities;
 
 import com.chaosbuffalo.mkultra.effects.SpellCast;
+import com.chaosbuffalo.mkultra.effects.SpellManager;
 import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.targeting_api.Targeting;
@@ -288,7 +289,7 @@ public class EntityMKAreaEffect extends Entity {
                     }
 
                     // The cast given to MKAreaEffect has no target, so we need to register
-                    SpellCast.registerTarget(cast, target);
+                    SpellManager.registerTarget(cast, target);
                 }
 
                 target.addPotionEffect(new PotionEffect(eff));
