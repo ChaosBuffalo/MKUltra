@@ -29,7 +29,7 @@ public class SpellCastArrow extends EntityTippedArrow {
     @Override
     protected void arrowHit(EntityLivingBase target) {
         for (SpellCast cast : casts) {
-            SpellCast.registerTarget(cast, target);
+            cast.setTarget(target);
 
             target.addPotionEffect(cast.toPotionEffect(cast.getInt("amplifier"), cast.getInt("duration")));
         }
