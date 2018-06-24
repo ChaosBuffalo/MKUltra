@@ -3,6 +3,7 @@ package com.chaosbuffalo.mkultra.client.render.entities;
 import com.chaosbuffalo.mkultra.entities.EntityMKAreaEffect;
 import com.chaosbuffalo.mkultra.entities.projectiles.*;
 import com.chaosbuffalo.mkultra.init.ModItems;
+import net.minecraft.client.renderer.entity.Render;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 
 /**
@@ -24,5 +25,7 @@ public class EntityRenderRegister {
                 new RenderProjectile(ModItems.whirlpool_projectile, 1.0f));
         RenderingRegistry.registerEntityRenderingHandler(EntityFlameBladeProjectile.class,
                 new RenderProjectile(ModItems.flame_blade_projectile, 1.0f));
+        RenderingRegistry.registerEntityRenderingHandler(EntityFairyFireProjectile.class,
+                new RenderProjectile(ModItems.fairy_fire_projectile, 1.0f));
     }
 }

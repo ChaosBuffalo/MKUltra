@@ -62,6 +62,7 @@ public final class ModItems {
     public static Item gold_threaded_cloth;
     public static Item hempSeedBread;
     public static Item pipe;
+
     public static Item copperSpear;
     public static Item tinSpear;
     public static Item silverSpear;
@@ -77,28 +78,36 @@ public final class ModItems {
     public static Item brassSpear;
     public static Item aquariumSpear;
     public static Item adamantineSpear;
-    public static Item drownProjectile;
-    public static Item geyserProjectile;
-    public static Item ballLightning;
+
     public static Item bonedLeather;
     public static Item bonedLeatherLeggings;
     public static Item bonedLeatherChestplate;
     public static Item bonedLeatherHelmet;
     public static Item bonedLeatherBoots;
+
     public static Item copper_threaded_cloth;
     public static Item copper_threaded_leggings;
     public static Item copper_threaded_chestplate;
     public static Item copper_threaded_helmet;
     public static Item copper_threaded_boots;
+
     public static Item iron_threaded_cloth;
     public static Item iron_threaded_leggings;
     public static Item iron_threaded_chestplate;
     public static Item iron_threaded_helmet;
     public static Item iron_threaded_boots;
+
+    public static Item drownProjectile;
+    public static Item geyserProjectile;
+    public static Item ballLightning;
     public static Item duality_rune_projectile;
     public static Item whirlpool_projectile;
     public static Item flame_blade_projectile;
+    public static Item fairy_fire_projectile;
+
+
     public static Item phoenix_dust;
+
     public static Item steel_infused_bone_leather;
     public static Item steel_infused_bone_leggings;
     public static Item steel_infused_bone_chestplate;
@@ -202,6 +211,8 @@ public final class ModItems {
                 "whirlpool_projectile");
         regInternal(flame_blade_projectile = new Item().setCreativeTab(MKUltra.MKULTRA_TAB),
                 "flame_blade_projectile");
+        regInternal(fairy_fire_projectile = new Item().setCreativeTab(MKUltra.MKULTRA_TAB),
+                "fairy_fire_projectile");
 
         regInternal(manaRegenIdolCopper = new ManaRegenIdol(
                 "mana_regen_idol_copper", .5f, 0, 0, 0, 125)
