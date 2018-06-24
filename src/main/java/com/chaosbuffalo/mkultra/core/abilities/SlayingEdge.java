@@ -8,14 +8,11 @@ import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.ParticlePotion;
 import com.chaosbuffalo.mkultra.effects.spells.SlayingEdgePotion;
-import com.chaosbuffalo.mkultra.effects.spells.SmitePotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.MobEffects;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.Vec3d;
@@ -60,7 +57,7 @@ public class SlayingEdge extends BaseAbility {
 
     @Override
     public int getRequiredLevel(int currentLevel) {
-        return 4 + currentLevel * 2;
+        return 6 + currentLevel * 2;
     }
 
     @Override

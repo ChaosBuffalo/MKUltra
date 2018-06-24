@@ -50,7 +50,7 @@ public class DesperateSurge extends BaseAbility {
 
     @Override
     public int getManaCost(int currentLevel) {
-        return 4 + 2 * currentLevel;
+        return 2 + 2 * currentLevel;
     }
 
     @Override
@@ -68,7 +68,6 @@ public class DesperateSurge extends BaseAbility {
         int level = pData.getLevelForAbility(getAbilityId());
         if (entity.getFoodStats().getFoodLevel() >= FOOD_COST + level * FOOD_SCALE){
             pData.startAbility(this);
-            entity.getFoodStats().setFoodSaturationLevel(0);
             entity.getFoodStats().setFoodLevel(entity.getFoodStats().getFoodLevel() - (FOOD_COST + level * FOOD_SCALE));
             int duration = (BASE_DURATION + DURATION_SCALE * level) * GameConstants.TICKS_PER_SECOND;
             entity.addPotionEffect(ShieldingPotion.Create(entity).setTarget(entity).toPotionEffect(

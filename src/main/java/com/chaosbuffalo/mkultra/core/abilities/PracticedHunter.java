@@ -46,7 +46,7 @@ public class PracticedHunter extends BaseAbility{
 
     @Override
     public int getManaCost(int currentLevel) {
-        return 2 + 2 * currentLevel;
+        return 2 * currentLevel;
     }
 
     @Override
