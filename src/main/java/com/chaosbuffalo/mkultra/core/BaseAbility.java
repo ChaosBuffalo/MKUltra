@@ -98,7 +98,7 @@ public abstract class BaseAbility extends IForgeRegistryEntry.Impl<BaseAbility> 
     }
 
     protected List<Entity> getTargetsInLine(EntityLivingBase caster, Vec3d from, Vec3d to, boolean checkValid) {
-        return RayTraceUtils.getEntitiesInLine(caster, from, to, new Vec3d(0.0f, 0.0f, 0.0f), .25f,
+        return RayTraceUtils.getEntitiesInLine(caster, from, to, new Vec3d(0.0f, 0.0f, 0.0f), .75f,
                 e -> !checkValid || (e instanceof EntityLivingBase && isValidTarget(caster, (EntityLivingBase) e)));
     }
 

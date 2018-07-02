@@ -10,10 +10,12 @@ import com.chaosbuffalo.mkultra.effects.spells.InstantIndirectMagicDamagePotion;
 import com.chaosbuffalo.mkultra.effects.spells.ParticlePotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkultra.utils.EnvironmentUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 
 /**
@@ -82,6 +84,8 @@ public class HeavingSeas extends BaseAbility {
                 .color(16711935).radius(getDistance(level), true)
                 .particle(EnumParticleTypes.WATER_BUBBLE)
                 .spawn();
+
+        EnvironmentUtils.putOutFires(entity.getEntityWorld(), entity.getPosition(), new Vec3i(10, 6, 10));
 
         Vec3d lookVec = entity.getLookVec();
         MKUltra.packetHandler.sendToAllAround(

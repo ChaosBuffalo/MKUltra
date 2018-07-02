@@ -85,6 +85,7 @@ item.mana_regen_idol_gold.name=Gold Idol
 item.mana_regen_idol_wood.name=Wood Idol
 item.mana_regen_idol_iron.name=Iron Idol
 item.hempSeedBread.name=Hemp Seed Bread
+item.fire_extinguisher_flask.name=Fire Extinguisher Flask
 tile.ropeBlock.name=Rope
 attribute.name.mkultra.manaRegen=Mana Regen
 attribute.name.mkultra.maxMana=Max Mana

@@ -5,13 +5,16 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.spells.DrownPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkultra.utils.EnvironmentUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 
 /**
@@ -51,29 +54,21 @@ public class EntityDrownProjectile extends EntityBaseProjectile {
 
         if (entity instanceof EntityPlayer && result.entityHit instanceof EntityLivingBase) {
             EntityLivingBase targetEntity = (EntityLivingBase) result.entityHit;
-            targetEntity.addPotionEffect(DrownPotion.Create(entity).setTarget(targetEntity).toPotionEffect(GameConstants.TICKS_PER_SECOND * 3, level));
+            targetEntity.addPotionEffect(DrownPotion.Create(entity).setTarget(targetEntity)
+                    .toPotionEffect(GameConstants.TICKS_PER_SECOND * 3, level));
 
-
-            Vec3d lookVec = entity.getLookVec();
+        }
+        if (entity != null) {
             MKUltra.packetHandler.sendToAllAround(
                     new ParticleEffectSpawnPacket(
                             EnumParticleTypes.WATER_BUBBLE.getParticleID(),
-                            ParticleEffects.SPHERE_MOTION, 60, 10,
-                            targetEntity.posX, targetEntity.posY + 1.0,
-                            targetEntity.posZ, 1.0, 1.0, 1.0, 1.0,
-                            lookVec),
-                    entity.dimension, targetEntity.posX,
-                    targetEntity.posY, targetEntity.posZ, 50.0f);
-        } else if (entity != null) {
-            MKUltra.packetHandler.sendToAllAround(
-                    new ParticleEffectSpawnPacket(
-                            EnumParticleTypes.WATER_BUBBLE.getParticleID(),
-                            ParticleEffects.SPHERE_MOTION, 60, 10,
+                            ParticleEffects.SPHERE_MOTION, 30, 10,
                             result.hitVec.x, result.hitVec.y + 1.0,
                             result.hitVec.z, 1.0, 1.0, 1.0, 1.0,
                             new Vec3d(0., 1.0, 0.0)),
                     entity.dimension, result.hitVec.x,
                     result.hitVec.y, result.hitVec.z, 50.0f);
+            EnvironmentUtils.putOutFires(entity.getEntityWorld(), result.getBlockPos(), new Vec3i(10, 10, 10));
         }
 
         return true;

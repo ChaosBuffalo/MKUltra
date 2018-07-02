@@ -29,7 +29,7 @@ public class ClassIcon extends Item implements IClassProvider {
                      String xpTableText, ResourceLocation xpTableBackground, int xpTableTextColor) {
         super();
         this.setUnlocalizedName(unlocalizedName);
-        this.setCreativeTab(CreativeTabs.MATERIALS);
+        this.setCreativeTab(MKUltra.MKULTRA_TAB);
         this.iconText = iconText;
         this.iconLoc = iconLoc;
         this.xpTableText = xpTableText;

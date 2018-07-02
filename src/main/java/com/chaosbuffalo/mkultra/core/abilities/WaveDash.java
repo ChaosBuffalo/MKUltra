@@ -7,6 +7,7 @@ import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.effects.spells.WhirlpoolPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkultra.utils.EnvironmentUtils;
 import com.chaosbuffalo.mkultra.utils.RayTraceUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
@@ -76,6 +77,10 @@ public class WaveDash extends BaseAbility {
         Vec3d lookVec = entity.getLookVec();
         List<Entity> entityHit = getTargetsInLine(entity, from, to, true);
         float damage = BASE_DAMAGE + DAMAGE_SCALE * level;
+        Vec3d perpVec = RayTraceUtils.getPerpendicular(to.subtract(from)).normalize();
+        EnvironmentUtils.putOutFiresInLine(theWorld, from, to);
+        EnvironmentUtils.putOutFiresInLine(theWorld, from.add(perpVec), to.add(perpVec));
+        EnvironmentUtils.putOutFiresInLine(theWorld, from.subtract(perpVec), to.subtract(perpVec));
         for (Entity entHit : entityHit){
             if (entHit instanceof EntityLivingBase){
                 if (((EntityLivingBase)entHit).isPotionActive(WhirlpoolPotion.INSTANCE)){
@@ -106,6 +111,7 @@ public class WaveDash extends BaseAbility {
             to = blockHit.hitVec;
         }
         entity.setPositionAndUpdate(to.x, to.y, to.z);
+
         MKUltra.packetHandler.sendToAllAround(
                 new ParticleEffectSpawnPacket(
                         EnumParticleTypes.END_ROD.getParticleID(),

@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.item;
 
+import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.PlayerAttributes;
 import com.google.common.collect.Multimap;
 import net.minecraft.creativetab.CreativeTabs;
@@ -31,7 +32,7 @@ public class ManaRegenIdol extends Item {
         this.magic_armor = magic_armor;
         this.setMaxDamage(maxDamage);
         this.setMaxStackSize(1);
-        this.setCreativeTab(CreativeTabs.MATERIALS);
+        this.setCreativeTab(MKUltra.MKULTRA_TAB);
     }
 
     @Override

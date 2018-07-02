@@ -12,6 +12,7 @@ import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.Vec3d;
@@ -22,8 +23,8 @@ import net.minecraft.world.World;
  */
 public class DesperateSurge extends BaseAbility {
 
-    public static int BASE_DURATION = 10;
-    public static int DURATION_SCALE = -2;
+    public static int BASE_DURATION = 6;
+    public static int DURATION_SCALE = 2;
     public static int BASE_SHIELDING = 0;
     public static int SHIELDING_SCALE = 2;
     public static int FOOD_COST = 2;
@@ -35,7 +36,7 @@ public class DesperateSurge extends BaseAbility {
 
     @Override
     public int getCooldown(int currentLevel) {
-        return BASE_DURATION + currentLevel * DURATION_SCALE;
+        return 16 - 2 * currentLevel;
     }
 
     @Override
@@ -50,7 +51,7 @@ public class DesperateSurge extends BaseAbility {
 
     @Override
     public int getManaCost(int currentLevel) {
-        return 2 + 2 * currentLevel;
+        return 4 + 2 * currentLevel;
     }
 
     @Override
@@ -72,6 +73,7 @@ public class DesperateSurge extends BaseAbility {
             int duration = (BASE_DURATION + DURATION_SCALE * level) * GameConstants.TICKS_PER_SECOND;
             entity.addPotionEffect(ShieldingPotion.Create(entity).setTarget(entity).toPotionEffect(
                             duration, BASE_SHIELDING + level * SHIELDING_SCALE));
+            entity.addPotionEffect(new PotionEffect(MobEffects.SPEED, duration * 2, 2 + level));
             entity.heal(2.0f * level);
             Vec3d lookVec = entity.getLookVec();
             MKUltra.packetHandler.sendToAllAround(

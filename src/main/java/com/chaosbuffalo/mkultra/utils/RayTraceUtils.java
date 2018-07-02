@@ -31,6 +31,16 @@ public class RayTraceUtils {
     private static Predicate<Entity> defaultFilter = e -> EntitySelectors.IS_ALIVE.apply(e) && EntitySelectors.NOT_SPECTATING.apply(e);
 
 
+    public static Vec3d getPerpendicular(Vec3d vec){
+        Vec3d cVec;
+        if (vec.y != 0 || vec.z != 0){
+            cVec = new Vec3d(1, 0, 0);
+        } else{
+            cVec = new Vec3d(0, 1, 0);
+        }
+        return vec.crossProduct(cVec);
+    }
+
     public static List<Entity> getEntitiesInLine(final Entity mainEntity, Vec3d from, Vec3d to, Vec3d expansion,
                                                  float growth, final Predicate<Entity> filter) {
         Predicate<Entity> predicate = input -> defaultFilter.test(input) && filter.test(input);

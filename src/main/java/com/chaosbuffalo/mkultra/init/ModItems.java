@@ -124,42 +124,44 @@ public final class ModItems {
     public static Item diamond_dusted_invar_helmet;
     public static Item diamond_dusted_invar_boots;
 
+    public static Item fire_extinguisher_flask;
+
 
     public static ItemArmor.ArmorMaterial OBSIDIAN_CHAIN = EnumHelper.addArmorMaterial(
             "mkultra_obsidian_chain",
-            "mkultra:obsidian_chain", 15,
+            "mkultra:obsidian_chain", 50,
             new int[]{2, 5, 5, 3}, 20, null, 0);
     public static ItemArmor.ArmorMaterial CHAINMAT = EnumHelper.addArmorMaterial(
             "mkultra_chain",
-            "mkultra:chainmail", 15,
+            "mkultra:chainmail", 20,
             new int[]{1, 4, 5, 2}, 12, null, 0);
     public static ItemArmor.ArmorMaterial ROBEMAT = EnumHelper.addArmorMaterial(
             "mkultra_gold_threaded",
-            "mkultra:gold_threaded", 20,
+            "mkultra:gold_threaded", 65,
             new int[]{1, 1, 1, 1}, 35, null, 0);
     public static ItemArmor.ArmorMaterial BONEDLEATHERMAT = EnumHelper.addArmorMaterial(
             "mkultra_boned_leather",
-            "mkultra:bone", 24,
+            "mkultra:bone", 35,
             new int[]{2, 3, 2, 1}, 2, null, 0);
 
     public static ItemArmor.ArmorMaterial COPPER_THREADED_MAT = EnumHelper.addArmorMaterial(
             "mkultra_copper_threaded",
-            "mkultra:copper_threaded", 15,
+            "mkultra:copper_threaded", 35,
             new int[]{0, 1, 1, 0}, 5, null, 0);
 
     public static ItemArmor.ArmorMaterial IRON_THREADED_MAT = EnumHelper.addArmorMaterial(
             "mkultra_iron_threaded",
-            "mkultra:iron_threaded", 28,
+            "mkultra:iron_threaded", 45,
             new int[]{1, 2, 2, 1}, 20, null, 0);
 
     public static ItemArmor.ArmorMaterial STEEL_INFUSED_BONE_MAT = EnumHelper.addArmorMaterial(
             "mkultra_steel_infused_bone",
-            "mkultra:steel_infused_bone", 30,
+            "mkultra:steel_infused_bone", 40,
             new int[]{2, 3, 3, 2}, 12, null, 0);
 
     public static ItemArmor.ArmorMaterial DIAMOND_DUSTED_INVAR_MAT = EnumHelper.addArmorMaterial(
             "mkultra_diamond_dusted_invar",
-            "mkultra:diamond_dusted_invar", 35,
+            "mkultra:diamond_dusted_invar", 50,
             new int[]{3, 6, 6, 3}, 24, null, 0);
 
     // can't be public because this is an ObjectHolder
@@ -377,7 +379,7 @@ public final class ModItems {
         regInternal(hempFibers = new Item().setCreativeTab(MKUltra.MKULTRA_TAB), "hempFibers");
         regInternal(hempSeedBread = new ItemFood(7, 8.0f, false), "hempSeedBread");
         regInternal(pipe = new Pipe("hemp_pipe").setCreativeTab(MKUltra.MKULTRA_TAB), "hemp_pipe");
-
+        regInternal(fire_extinguisher_flask = new FireExtinguisherFlask(), "fire_extinguisher_flask");
 
         // so many spears
         float spearRange = 4.75f;

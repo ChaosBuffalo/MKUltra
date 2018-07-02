@@ -26,7 +26,7 @@ public class FairyFire extends BaseAbility {
 
     @Override
     public int getCooldown(int currentLevel) {
-        return 20 - currentLevel * 5;
+        return 12 - currentLevel * 2;
     }
 
     @Override

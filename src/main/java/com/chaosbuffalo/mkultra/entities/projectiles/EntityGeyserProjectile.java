@@ -6,10 +6,12 @@ import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.GeyserPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkultra.utils.EnvironmentUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 
 /**
@@ -51,6 +53,7 @@ public class EntityGeyserProjectile extends EntityBaseProjectile {
                             this.posZ, 1.5, 2.0, 1.5, 1.0,
                             new Vec3d(0., 1.0, 0.0)),
                     this.dimension, this.posX, this.posY, this.posZ, 50.0f);
+            EnvironmentUtils.putOutFires(caster.getEntityWorld(), this.getPosition(), new Vec3i(16, 8, 16));
             return true;
         }
         return false;

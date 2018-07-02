@@ -7,17 +7,21 @@ import com.chaosbuffalo.mkultra.core.PlayerDataStorage;
 import com.chaosbuffalo.mkultra.integration.Integrations;
 import com.chaosbuffalo.mkultra.core.ArmorClass;
 import com.chaosbuffalo.mkultra.init.ModItems;
+import com.chaosbuffalo.mkultra.item.FireExtinguisherFlask;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.network.ModGuiHandler;
 import com.chaosbuffalo.mkultra.network.PacketHandler;
 import com.chaosbuffalo.mkultra.network.packets.client.*;
 import com.chaosbuffalo.mkultra.network.packets.server.*;
 import com.chaosbuffalo.mkultra.tiles.ModTileEntities;
+import com.chaosbuffalo.mkultra.utils.EnvironmentUtils;
+import net.minecraft.block.Block;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
 public class CommonProxy {
@@ -59,6 +63,14 @@ public class CommonProxy {
     }
 
     public void postInit(FMLPostInitializationEvent e) {
+        GameRegistry.findRegistry(Block.class).getKeys().forEach( key -> {
+            if (key.getResourcePath().toString().toLowerCase().contains("fire")){
+                EnvironmentUtils.addFireBlock(
+                        GameRegistry.findRegistry(Block.class).getValue(key)
+                );
+                Log.info(String.format("Registering fire: %s", key.toString()));
+            }
+        });
         Log.info("post init");
     }
 }

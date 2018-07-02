@@ -58,7 +58,9 @@ public class SpellCast {
         }
 
         SpellCast cast = targetSpells.get(potion);
-        cast.updateRefs(target.world);
+        if (cast != null) {
+            cast.updateRefs(target.world);
+        }
         return cast;
     }
 

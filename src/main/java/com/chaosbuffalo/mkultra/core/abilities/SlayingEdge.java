@@ -47,7 +47,7 @@ public class SlayingEdge extends BaseAbility {
 
     @Override
     public int getManaCost(int currentLevel) {
-        return 8 + currentLevel * 2;
+        return 4 + currentLevel * 2;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.chaosbuffalo.mkultra.item;
 
 import com.chaosbuffalo.mkultra.GameConstants;
+import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import net.minecraft.creativetab.CreativeTabs;
@@ -23,7 +24,7 @@ public class Pipe extends Item {
     public Pipe(String unlocalizedName) {
         super();
         this.setUnlocalizedName(unlocalizedName);
-        this.setCreativeTab(CreativeTabs.MATERIALS);
+        this.setCreativeTab(MKUltra.MKULTRA_TAB);
     }
 
     @Override

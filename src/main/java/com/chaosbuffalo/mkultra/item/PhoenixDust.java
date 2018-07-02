@@ -23,7 +23,7 @@ public class PhoenixDust extends Item {
     public PhoenixDust(String unlocalizedName) {
         super();
         this.setUnlocalizedName(unlocalizedName);
-        this.setCreativeTab(CreativeTabs.MATERIALS);
+        this.setCreativeTab(MKUltra.MKULTRA_TAB);
     }
 
     @Nonnull

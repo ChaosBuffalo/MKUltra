@@ -58,7 +58,7 @@ public class WildToxin extends BaseToggleAbility {
 
     @Override
     public int getRequiredLevel(int currentLevel) {
-        return 2 + currentLevel * 2;
+        return 4 + currentLevel * 2;
     }
 
     @Override

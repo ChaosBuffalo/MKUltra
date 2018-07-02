@@ -20,7 +20,7 @@ public class AngelDust extends Item implements IClassProvider {
     public AngelDust(String unlocalizedName) {
         super();
         this.setUnlocalizedName(unlocalizedName);
-        this.setCreativeTab(CreativeTabs.MATERIALS);
+        this.setCreativeTab(MKUltra.MKULTRA_TAB);
     }
 
     @Override

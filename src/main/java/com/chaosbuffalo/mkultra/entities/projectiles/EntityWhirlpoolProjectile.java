@@ -8,11 +8,13 @@ import com.chaosbuffalo.mkultra.effects.spells.WhirlpoolPotion;
 import com.chaosbuffalo.mkultra.effects.spells.YankPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkultra.utils.EnvironmentUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 
 /**
@@ -48,6 +50,7 @@ public class EntityWhirlpoolProjectile extends EntityBaseProjectile {
                     .setReapplicationDelay(20)
                     .color(39935).radius(3.0f, true)
                     .spawn();
+            EnvironmentUtils.putOutFires(caster.getEntityWorld(), result.getBlockPos(), new Vec3i(16, 8, 16));
             MKUltra.packetHandler.sendToAllAround(
                     new ParticleEffectSpawnPacket(
                             EnumParticleTypes.DRIP_WATER.getParticleID(),
