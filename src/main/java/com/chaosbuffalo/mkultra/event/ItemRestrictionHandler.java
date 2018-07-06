@@ -3,10 +3,11 @@ package com.chaosbuffalo.mkultra.event;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.item.ItemHelper;
-import com.chaosbuffalo.mkultra.item.interfaces.IExtendedReach;
+import com.chaosbuffalo.mkultra.item.ItemRangeSword;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemShield;
 import net.minecraft.item.ItemStack;
@@ -14,8 +15,21 @@ import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Mod.EventBusSubscriber
 public class ItemRestrictionHandler {
+
+    public static final Set<Class<? extends Item>> NO_SHIELD_ITEMS = new HashSet<>();
+
+    static {
+        add_no_shield_item(ItemRangeSword.class);
+    }
+
+    public static void add_no_shield_item(Class<? extends Item> itemClass) {
+        NO_SHIELD_ITEMS.add(itemClass);
+    }
 
     private static void checkBlockedArmor(EntityPlayerMP player, ItemStack armor, IPlayerData playerClass, EntityEquipmentSlot slot) {
         if (!(armor.getItem() instanceof ItemArmor))
@@ -27,11 +41,11 @@ public class ItemRestrictionHandler {
         }
     }
 
-    private static void checkShieldWithSpear(EntityPlayerMP player) {
+    private static void checkNoShield(EntityPlayerMP player) {
         ItemStack main = player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND);
         ItemStack off = player.getItemStackFromSlot(EntityEquipmentSlot.OFFHAND);
 
-        if (main.getItem() instanceof IExtendedReach && off.getItem() instanceof ItemShield) {
+        if (NO_SHIELD_ITEMS.contains(main.getItem().getClass()) && off.getItem() instanceof ItemShield){
             ItemHelper.unequip(player, EntityEquipmentSlot.OFFHAND);
         }
     }
@@ -65,7 +79,7 @@ public class ItemRestrictionHandler {
 
         EntityPlayerMP player = (EntityPlayerMP) event.getEntityLiving();
 
-        checkShieldWithSpear(player);
+        checkNoShield(player);
 
         IPlayerData playerData = MKUPlayerData.get(player);
         if (playerData == null)

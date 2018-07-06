@@ -1,12 +1,15 @@
 package com.chaosbuffalo.mkultra.integration;
 import com.chaosbuffalo.mkultra.core.ArmorClass;
+import com.chaosbuffalo.mkultra.event.ItemRestrictionHandler;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.targeting_api.Targeting;
 import com.google.common.collect.Lists;
 import com.mcmoddev.basemetals.data.MaterialNames;
 import com.mcmoddev.basemetals.init.Materials;
+import com.oblivioussp.spartanweaponry.item.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemBow;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Loader;
 
@@ -17,6 +20,8 @@ public class Integrations {
     public static boolean isLootableBodiesPresent() {
         return Loader.isModLoaded("lootablebodies");
     }
+
+    public static boolean isSpartanWeaponryPresent() { return Loader.isModLoaded("spartanweaponry"); }
 
     private static Class lootableBodyClass;
     private final static String BODY_ENTITY_NAME = "cyano.lootable.entities.EntityLootableBody";
@@ -34,6 +39,20 @@ public class Integrations {
         catch (ClassNotFoundException c) {
 
         }
+    }
+
+    private static void setupSpartanWeaponry() {
+        if (!isSpartanWeaponryPresent()){
+            return;
+        }
+
+        ItemRestrictionHandler.add_no_shield_item(ItemLongbow.class);
+        ItemRestrictionHandler.add_no_shield_item(ItemKatana.class);
+        ItemRestrictionHandler.add_no_shield_item(ItemCrossbow.class);
+        ItemRestrictionHandler.add_no_shield_item(ItemHalberd.class);
+        ItemRestrictionHandler.add_no_shield_item(ItemWarhammer.class);
+        ItemRestrictionHandler.add_no_shield_item(ItemGreatsword.class);
+        ItemRestrictionHandler.add_no_shield_item(ItemPike.class);
     }
 
     public static List<Entity> getLootableBodiesForPlayer(EntityPlayer player) {
@@ -113,5 +132,6 @@ public class Integrations {
     public static void setup() {
         setupBasemetals();
         setupLootableBodies();
+        setupSpartanWeaponry();
     }
 }
