@@ -217,25 +217,25 @@ public final class ModItems {
                 "fairy_fire_projectile");
 
         regInternal(manaRegenIdolCopper = new ManaRegenIdol(
-                "mana_regen_idol_copper", .5f, 0, 0, 0, 125)
+                "mana_regen_idol_copper", .5f, 0, 0, 0, 250)
                 .setCreativeTab(MKUltra.MKULTRA_TAB));
         regInternal(manaRegenIdolIron = new ManaRegenIdol(
-                "mana_regen_idol_iron", .5f, 0, 2, 0, 175)
+                "mana_regen_idol_iron", .5f, 0, 2, 0, 350)
                 .setCreativeTab(MKUltra.MKULTRA_TAB));
         regInternal(manaRegenIdolWood = new ManaRegenIdol(
-                "mana_regen_idol_wood", .25f, 5, 0, 1, 50)
+                "mana_regen_idol_wood", .25f, 5, 0, 1, 150)
                 .setCreativeTab(MKUltra.MKULTRA_TAB));
         regInternal(manaRegenIdolBrass = new ManaRegenIdol(
-                "mana_regen_idol_brass", 0.25f, 5, 1, 0, 75)
+                "mana_regen_idol_brass", 0.25f, 5, 1, 0, 200)
                 .setCreativeTab(MKUltra.MKULTRA_TAB));
         regInternal(manaRegenIdolBronze = new ManaRegenIdol(
-                "mana_regen_idol_bronze", .5f, 5, 0, 0, 150)
+                "mana_regen_idol_bronze", .5f, 5, 0, 0, 300)
                 .setCreativeTab(MKUltra.MKULTRA_TAB));
         regInternal(manaRegenIdolGold = new ManaRegenIdol(
-                "mana_regen_idol_gold", 1.0f, 5, 0, 4, 125)
+                "mana_regen_idol_gold", 1.0f, 5, 0, 4, 500)
                 .setCreativeTab(MKUltra.MKULTRA_TAB));
         regInternal(manaRegenIdolSilver = new ManaRegenIdol(
-                "mana_regen_idol_silver", .75f, 5, 2, 4, 150)
+                "mana_regen_idol_silver", .75f, 5, 2, 4, 400)
                 .setCreativeTab(MKUltra.MKULTRA_TAB));
 
         UUID chestUUID = UUID.fromString("77ab4b54-5885-4f7f-ab41-71af536309d1");

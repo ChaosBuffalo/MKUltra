@@ -40,8 +40,8 @@ public class PartyManager {
 
     private static void gainBrouzoufs(EntityPlayer player) {
 
-        if (player instanceof EntityPlayerMP && player.getEntityWorld().rand.nextInt(10) <= 1) {
-            getServer().getPlayerList().sendMessage(new TextComponentString("You gain brouzoufs"));
+        if (player instanceof EntityPlayerMP && player.getEntityWorld().rand.nextInt(100) <= 5) {
+            player.sendMessage(new TextComponentString("You gain brouzoufs"));
         }
     }
 

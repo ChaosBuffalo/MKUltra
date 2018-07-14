@@ -60,6 +60,10 @@ public interface IPlayerData {
 
     float getHealth();
 
+    float getMeleeCritChance();
+
+    void setMeleeCritChance(float critChance);
+
     float getCooldownProgressSpeed();
 
     float getMagicDamageBonus();

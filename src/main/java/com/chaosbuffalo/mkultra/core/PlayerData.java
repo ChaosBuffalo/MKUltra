@@ -25,6 +25,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.event.world.NoteBlockEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -75,6 +76,7 @@ public class PlayerData implements IPlayerData {
         player.getAttributeMap().registerAttribute(PlayerAttributes.MAGIC_ATTACK_DAMAGE);
         player.getAttributeMap().registerAttribute(PlayerAttributes.MAGIC_ARMOR);
         player.getAttributeMap().registerAttribute(PlayerAttributes.COOLDOWN);
+        player.getAttributeMap().registerAttribute(PlayerAttributes.MELEE_CRIT);
     }
 
     private void setupWatcher() {
@@ -154,6 +156,16 @@ public class PlayerData implements IPlayerData {
     @Override
     public float getHealth() {
         return player.getHealth();
+    }
+
+    @Override
+    public float getMeleeCritChance() {
+        return (float) player.getEntityAttribute(PlayerAttributes.MELEE_CRIT).getAttributeValue();
+    }
+
+    @Override
+    public void setMeleeCritChance(float critChance) {
+        player.getEntityAttribute(PlayerAttributes.MELEE_CRIT).setBaseValue(critChance);
     }
 
     @Override

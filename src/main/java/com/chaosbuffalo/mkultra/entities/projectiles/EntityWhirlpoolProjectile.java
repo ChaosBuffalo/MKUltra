@@ -50,7 +50,17 @@ public class EntityWhirlpoolProjectile extends EntityBaseProjectile {
                     .setReapplicationDelay(20)
                     .color(39935).radius(3.0f, true)
                     .spawn();
-            EnvironmentUtils.putOutFires(caster.getEntityWorld(), result.getBlockPos(), new Vec3i(16, 8, 16));
+            switch (result.typeOfHit){
+                case BLOCK:
+                    EnvironmentUtils.putOutFires(caster.getEntityWorld(), result.getBlockPos(), new Vec3i(16, 8, 16));
+                    break;
+                case ENTITY:
+                    EnvironmentUtils.putOutFires(caster.getEntityWorld(), result.entityHit.getPosition(),
+                            new Vec3i(16, 8, 16));
+                    break;
+                case MISS:
+                    break;
+            }
             MKUltra.packetHandler.sendToAllAround(
                     new ParticleEffectSpawnPacket(
                             EnumParticleTypes.DRIP_WATER.getParticleID(),

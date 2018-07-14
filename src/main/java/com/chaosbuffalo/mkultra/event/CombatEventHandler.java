@@ -1,18 +1,25 @@
 package com.chaosbuffalo.mkultra.event;
 
 
+import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerFormulas;
 import com.chaosbuffalo.mkultra.effects.spells.*;
+import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.log.Log;
+import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.mkultra.party.PartyManager;
+import com.chaosbuffalo.mkultra.utils.ItemUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
@@ -23,12 +30,18 @@ import java.util.ArrayList;
 
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber
-public class PotionEventHandler {
+public class CombatEventHandler {
 
     public static boolean isPlayerPhysicalDamage(DamageSource source) {
         return (!source.isFireDamage() && !source.isExplosion() && !source.isMagicDamage() &&
                 source.getDamageType().equals("player"));
     }
+
+    public static float getCombinedCritChance(IPlayerData data, EntityPlayerMP player){
+        return data.getMeleeCritChance() + ItemUtils.getCritChanceForItem(player.getHeldItemMainhand());
+    }
+
+
 
     @SubscribeEvent
     public static void onLivingHurt(LivingHurtEvent event) {
@@ -60,15 +73,40 @@ public class PotionEventHandler {
                 Log.debug("Scaling magic damage from %f to %f", event.getAmount(), newDamage);
                 event.setAmount(newDamage);
             }
-            PotionEffect potion;
-            if (playerSource.isPotionActive(VampiricReverePotion.INSTANCE) && isPlayerPhysicalDamage(source)
-                    && sourceData.getMana() > 0) {
-                potion = playerSource.getActivePotionEffect(VampiricReverePotion.INSTANCE);
-                sourceData.setMana(sourceData.getMana() - 1);
-                playerSource.heal(event.getAmount() * .25f * potion.getAmplifier());
+
+            if (isPlayerPhysicalDamage(source)){
+                PotionEffect potion;
+                if (playerSource.isPotionActive(VampiricReverePotion.INSTANCE) && sourceData.getMana() > 0) {
+                    potion = playerSource.getActivePotionEffect(VampiricReverePotion.INSTANCE);
+                    sourceData.setMana(sourceData.getMana() - 1);
+                    playerSource.heal(event.getAmount() * .25f * potion.getAmplifier());
+                }
+
+                if (playerSource.getRNG().nextFloat() >= 1.0f - getCombinedCritChance(sourceData, playerSource)){
+                    ItemStack mainHand = playerSource.getHeldItemMainhand();
+                    float newDamage = event.getAmount() * ItemUtils.getCritDamageForItem(
+                            mainHand);
+                    event.setAmount(newDamage);
+                    playerSource.sendMessage(new TextComponentString(
+                            String.format("You just crit with: %s for %f",
+                            mainHand.getDisplayName(), newDamage)));
+                    Vec3d lookVec = livingTarget.getLookVec();
+                    MKUltra.packetHandler.sendToAllAround(
+                            new ParticleEffectSpawnPacket(
+                                    EnumParticleTypes.CRIT.getParticleID(),
+                                    ParticleEffects.SPHERE_MOTION, 30, 6,
+                                    livingTarget.posX, livingTarget.posY + 1.0f,
+                                    livingTarget.posZ, .5f, .5f, .5f, 1.5,
+                                    lookVec),
+                            livingTarget.dimension, livingTarget.posX,
+                            livingTarget.posY, livingTarget.posZ, 50.0f);
+                }
+
             }
 
+
             if (playerSource.isPotionActive(NocturnalCommunionPotion.INSTANCE)) {
+                PotionEffect potion;
                 potion = playerSource.getActivePotionEffect(NocturnalCommunionPotion.INSTANCE);
                 playerSource.heal(event.getAmount() * .20f * potion.getAmplifier());
             }

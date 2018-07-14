@@ -17,6 +17,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 
+import static net.minecraft.util.math.RayTraceResult.*;
+
 /**
  * Created by Jacob on 7/14/2016.
  */
@@ -68,7 +70,17 @@ public class EntityDrownProjectile extends EntityBaseProjectile {
                             new Vec3d(0., 1.0, 0.0)),
                     entity.dimension, result.hitVec.x,
                     result.hitVec.y, result.hitVec.z, 50.0f);
-            EnvironmentUtils.putOutFires(entity.getEntityWorld(), result.getBlockPos(), new Vec3i(10, 10, 10));
+            switch (result.typeOfHit){
+                case BLOCK:
+                    EnvironmentUtils.putOutFires(entity.getEntityWorld(), result.getBlockPos(), new Vec3i(10, 10, 10));
+                    break;
+                case ENTITY:
+                    EnvironmentUtils.putOutFires(entity.getEntityWorld(), result.entityHit.getPosition(),
+                            new Vec3i(10, 10, 10));
+                    break;
+                case MISS:
+                    break;
+            }
         }
 
         return true;
