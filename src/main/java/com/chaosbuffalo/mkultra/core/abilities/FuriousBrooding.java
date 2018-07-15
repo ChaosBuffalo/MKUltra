@@ -23,7 +23,7 @@ public class FuriousBrooding extends BaseAbility {
 
     @Override
     public int getCooldown(int currentLevel) {
-        return 30;
+        return 18;
     }
 
     @Override
@@ -59,9 +59,9 @@ public class FuriousBrooding extends BaseAbility {
         pData.startAbility(this);
 
         entity.addPotionEffect(
-                new PotionEffect(MobEffects.REGENERATION, (10 + 5 * level) * GameConstants.TICKS_PER_SECOND, level, false, true));
+                new PotionEffect(MobEffects.REGENERATION, (6 + 5 * level) * GameConstants.TICKS_PER_SECOND, level + 1, false, true));
         entity.addPotionEffect(
-                new PotionEffect(MobEffects.SLOWNESS, (10 + 5 * level) * GameConstants.TICKS_PER_SECOND, level - 1, false, true));
+                new PotionEffect(MobEffects.SLOWNESS, (6 + 5 * level) * GameConstants.TICKS_PER_SECOND, level - 1, false, true));
 
         Vec3d lookVec = entity.getLookVec();
         MKUltra.packetHandler.sendToAllAround(

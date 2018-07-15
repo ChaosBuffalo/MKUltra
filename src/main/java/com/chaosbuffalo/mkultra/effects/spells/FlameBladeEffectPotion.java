@@ -1,6 +1,8 @@
 package com.chaosbuffalo.mkultra.effects.spells;
 
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.core.MKDamageSource;
+import com.chaosbuffalo.mkultra.core.abilities.FlameBlade;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
 import com.chaosbuffalo.targeting_api.Targeting;
@@ -44,6 +46,7 @@ public class FlameBladeEffectPotion extends SpellPotionBase {
             damage = damage * 2.0f;
         }
 
-        target.attackEntityFrom(DamageSource.causeIndirectMagicDamage(applier, caster), damage);
+        target.attackEntityFrom(MKDamageSource.causeIndirectMagicDamage(
+                new FlameBlade().getAbilityId(), applier, caster), damage);
     }
 }

@@ -1,6 +1,8 @@
 package com.chaosbuffalo.mkultra.effects.spells;
 
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.core.MKDamageSource;
+import com.chaosbuffalo.mkultra.core.abilities.Undertow;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
 import com.chaosbuffalo.targeting_api.Targeting;
@@ -70,7 +72,7 @@ public class UndertowPotion extends SpellPotionBase {
         if (target instanceof EntityLivingBase) {
             EntityLivingBase livingEnt = (EntityLivingBase) target;
             if (livingEnt.isPotionActive(DrownPotion.INSTANCE)) {
-                livingEnt.attackEntityFrom(DamageSource.causeIndirectMagicDamage(livingEnt, player),
+                livingEnt.attackEntityFrom(MKDamageSource.causeIndirectMagicDamage(new Undertow().getAbilityId(), livingEnt, player),
                         5.0f * effect.getAmplifier());
             }
         }

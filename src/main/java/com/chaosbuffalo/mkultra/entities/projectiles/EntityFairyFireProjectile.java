@@ -64,7 +64,7 @@ public class EntityFairyFireProjectile extends EntityBaseProjectile {
                     .color(11540991).radius(3.0f, true)
                     .spawn();
 
-            targetEntity.addPotionEffect(DrownPotion.Create(entity).setTarget(targetEntity).toPotionEffect(GameConstants.TICKS_PER_SECOND * 3, level));
+            targetEntity.addPotionEffect(FairyFirePotion.Create(entity).setTarget(targetEntity).toPotionEffect(GameConstants.TICKS_PER_SECOND * 3, level));
 
 
             Vec3d lookVec = entity.getLookVec();

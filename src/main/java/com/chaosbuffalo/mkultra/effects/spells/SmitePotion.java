@@ -1,6 +1,8 @@
 package com.chaosbuffalo.mkultra.effects.spells;
 
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.core.MKDamageSource;
+import com.chaosbuffalo.mkultra.core.abilities.Smite;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
 import com.chaosbuffalo.targeting_api.Targeting;
@@ -42,9 +44,10 @@ public class SmitePotion extends SpellPotionBase {
 
         float damage = cast.getScaledValue(amplifier);
         if (target.isEntityUndead()) {
-            target.attackEntityFrom(DamageSource.causeIndirectMagicDamage(applier, caster), 2.0f * damage);
-        } else {
-            target.attackEntityFrom(DamageSource.causeIndirectMagicDamage(applier, caster), damage);
+            damage *= 2.0f;
         }
+        target.attackEntityFrom(MKDamageSource.causeIndirectMagicDamage(
+                new Smite().getAbilityId(), applier, caster), damage);
+
     }
 }

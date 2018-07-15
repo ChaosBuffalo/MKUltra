@@ -1,6 +1,8 @@
 package com.chaosbuffalo.mkultra.effects.spells;
 
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.core.MKDamageSource;
+import com.chaosbuffalo.mkultra.core.abilities.Whirlpool;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellPeriodicPotionBase;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
@@ -53,7 +55,7 @@ public class WhirlpoolPotion extends SpellPeriodicPotionBase {
 
     @Override
     public void doEffect(Entity source, Entity indirectSource, EntityLivingBase target, int amplifier, SpellCast cast) {
-        target.attackEntityFrom(DamageSource.causeIndirectMagicDamage(source, indirectSource), amplifier * 2.0f);
+        target.attackEntityFrom(MKDamageSource.causeIndirectMagicDamage(new Whirlpool().getAbilityId(), source, indirectSource), amplifier * 2.0f);
         MKUltra.packetHandler.sendToAllAround(
                 new ParticleEffectSpawnPacket(
                         EnumParticleTypes.WATER_SPLASH.getParticleID(),

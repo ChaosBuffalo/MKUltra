@@ -40,7 +40,6 @@ public class ItemUtils {
         addCriticalStats(ItemHalberd.class, 1, .1f, 2.0f);
         addCriticalStats(ItemPike.class, 1, .05f, 2.0f);
         addCriticalStats(ItemLance.class, 1, .05f, 2.5f);
-
     }
 
 
@@ -52,7 +51,6 @@ public class ItemUtils {
         for (ItemCriticalStats stat : CRITICAL_PRIORITY){
             Class<? extends Item> itemClass = stat.item;
             if (itemClass.isInstance(item)){
-                Log.info("Getting critical chance for item %s", itemClass.toString());
                 return stat.chance;
             }
         }
@@ -67,7 +65,6 @@ public class ItemUtils {
         for (ItemCriticalStats stat : CRITICAL_PRIORITY){
             Class<? extends Item> itemClass = stat.item;
             if (itemClass.isInstance(item)){
-                Log.info("Getting critical damage for item %s", itemClass.toString());
                 return stat.damageMultiplier;
             }
         }

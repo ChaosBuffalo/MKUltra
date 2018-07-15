@@ -26,7 +26,7 @@ public class LifeSpring  extends BaseAbility {
 
     @Override
     public int getCooldown(int currentLevel) {
-        return 30 - currentLevel * 5;
+        return 28 - currentLevel * 5;
     }
 
     @Override

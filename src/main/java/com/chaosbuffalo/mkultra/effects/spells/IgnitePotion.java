@@ -1,6 +1,8 @@
 package com.chaosbuffalo.mkultra.effects.spells;
 
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.core.MKDamageSource;
+import com.chaosbuffalo.mkultra.core.abilities.Ignite;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
@@ -46,7 +48,8 @@ public class IgnitePotion extends SpellPotionBase {
 
         float damage = cast.getScaledValue(amplifier);
         target.setFire(amplifier * 4);
-        target.attackEntityFrom(DamageSource.causeIndirectMagicDamage(applier, caster), damage);
+        target.attackEntityFrom(MKDamageSource.causeIndirectMagicDamage(
+                new Ignite().getAbilityId(), applier, caster), damage);
         Vec3d lookVec = target.getLookVec();
         MKUltra.packetHandler.sendToAllAround(
                 new ParticleEffectSpawnPacket(
