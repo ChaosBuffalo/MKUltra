@@ -3,7 +3,7 @@ package com.chaosbuffalo.mkultra.entities.projectiles;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
-import com.chaosbuffalo.mkultra.effects.spells.LightningDamagePotion;
+import com.chaosbuffalo.mkultra.effects.spells.BallLightningPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
@@ -50,7 +50,7 @@ public class EntityBallLightningProjectile extends EntityBaseProjectile {
 
         if (result.entityHit != null && entity instanceof EntityPlayer && result.entityHit instanceof EntityLivingBase) {
             EntityLivingBase targetEntity = (EntityLivingBase) result.entityHit;
-            SpellCast ballLightning = LightningDamagePotion.Create(entity, 5.0f, 5.0f);
+            SpellCast ballLightning = BallLightningPotion.Create(entity, 5.0f, 5.0f);
 
             AreaEffectBuilder.Create(entity, this)
                     .spellCast(ballLightning, level, Targeting.TargetType.ENEMY)
@@ -95,7 +95,7 @@ public class EntityBallLightningProjectile extends EntityBaseProjectile {
     @Override
     protected void onAirProc(EntityLivingBase caster, int amplifier) {
         if (caster != null) {
-            SpellCast ballLightning = LightningDamagePotion.Create(caster, 4.0f, 4.0f);
+            SpellCast ballLightning = BallLightningPotion.Create(caster, 4.0f, 4.0f);
             this.setTicksInAir(0);
             MKUltra.packetHandler.sendToAllAround(
                     new ParticleEffectSpawnPacket(

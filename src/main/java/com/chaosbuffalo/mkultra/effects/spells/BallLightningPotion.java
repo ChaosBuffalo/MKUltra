@@ -2,25 +2,21 @@ package com.chaosbuffalo.mkultra.effects.spells;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.MKDamageSource;
+import com.chaosbuffalo.mkultra.core.abilities.BallLightning;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Mod.EventBusSubscriber(modid = MKUltra.MODID)
-public class LightningDamagePotion extends SpellPotionBase {
+public class BallLightningPotion extends SpellPotionBase {
 
-    public static ResourceLocation INDIRECT_LIGHTNING_DMG_ABILITY_ID = new ResourceLocation(
-            MKUltra.MODID, "ability.instant_indirect_lightning_damage");
-
-    public static final LightningDamagePotion INSTANCE = new LightningDamagePotion();
+    public static final BallLightningPotion INSTANCE = new BallLightningPotion();
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {
@@ -31,9 +27,9 @@ public class LightningDamagePotion extends SpellPotionBase {
         return INSTANCE.newSpellCast(source).setScalingParameters(baseDamage, scaling);
     }
 
-    private LightningDamagePotion() {
+    private BallLightningPotion() {
         super(true, 123);
-        register(MKUltra.MODID, "effect.instant_lightning_damage");
+        register(MKUltra.MODID, "effect.ball_lightning_damage");
     }
 
     @Override
@@ -46,6 +42,6 @@ public class LightningDamagePotion extends SpellPotionBase {
 
         float damage = cast.getScaledValue(amplifier);
         target.attackEntityFrom(MKDamageSource.causeIndirectMagicDamage(
-                INDIRECT_LIGHTNING_DMG_ABILITY_ID, applier, caster), damage);
+                new BallLightning().getAbilityId(), applier, caster), damage);
     }
 }
