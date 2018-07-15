@@ -46,7 +46,7 @@ public class KPDarkWail extends BaseAbility {
 
     @Override
     public int getManaCost(int currentLevel) {
-        return 6 + currentLevel * 2;
+        return 4 + currentLevel * 2;
     }
 
     @Override

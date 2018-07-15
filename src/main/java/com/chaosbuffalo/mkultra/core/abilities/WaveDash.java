@@ -4,6 +4,7 @@ import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.BaseAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
+import com.chaosbuffalo.mkultra.core.MKDamageSource;
 import com.chaosbuffalo.mkultra.effects.spells.WhirlpoolPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
@@ -87,7 +88,7 @@ public class WaveDash extends BaseAbility {
                     damage = damage * 2.0f;
                 }
             }
-            entHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(entity, entity), damage);
+            entHit.attackEntityFrom(MKDamageSource.causeIndirectMagicDamage(getAbilityId(), entity, entity), damage);
             pData.setCooldown(getAbilityId(), Math.max(0, pData.getCurrentAbilityCooldown(getAbilityId()) - 2));
             if (entHit instanceof EntityLivingBase){
                 EntityLivingBase livEnt = (EntityLivingBase) entHit;
