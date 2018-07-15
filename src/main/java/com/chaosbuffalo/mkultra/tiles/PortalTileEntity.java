@@ -184,4 +184,8 @@ public class PortalTileEntity extends PoweredEntity {
         return false;
     }
 
+    @Override
+    public void update() {
+        func_73660_a();
+    }
 }
