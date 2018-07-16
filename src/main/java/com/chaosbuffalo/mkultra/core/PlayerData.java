@@ -63,11 +63,7 @@ public class PlayerData implements IPlayerData {
     public PlayerData(EntityPlayer player) {
         this.player = player;
         regenTime = 0;
-        if (isServerSide()) {
-            abilityTracker = new AbilityTrackerServer((EntityPlayerMP) player);
-        } else {
-            abilityTracker = new AbilityTracker();
-        }
+        abilityTracker = AbilityTracker.getTracker(player);
         privateData = player.getDataManager();
         setupWatcher();
 
