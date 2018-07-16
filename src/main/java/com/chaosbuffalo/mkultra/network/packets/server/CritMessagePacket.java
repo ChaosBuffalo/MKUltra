@@ -3,6 +3,7 @@ package com.chaosbuffalo.mkultra.network.packets.server;
 import com.chaosbuffalo.mkultra.core.BaseAbility;
 import com.chaosbuffalo.mkultra.core.ClassData;
 import com.chaosbuffalo.mkultra.network.MessageHandler;
+import com.chaosbuffalo.mkultra.utils.ClientUtils;
 import com.chaosbuffalo.mkultra.utils.ServerUtils;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
@@ -84,7 +85,7 @@ public class CritMessagePacket implements IMessage {
         public IMessage handleClientMessage(final EntityPlayer player,
                                             final CritMessagePacket msg,
                                             MessageContext ctx) {
-            ServerUtils.addScheduledTask(() -> {
+            ClientUtils.addScheduledTask(() -> {
                 Style messageStyle = new Style();
                 boolean isSelf = player.getUniqueID().equals(msg.sourceUUID);
                 EntityPlayer playerSource = player.getEntityWorld().getPlayerEntityByUUID(msg.sourceUUID);
