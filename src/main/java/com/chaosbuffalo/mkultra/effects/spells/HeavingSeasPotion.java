@@ -26,7 +26,7 @@ public class HeavingSeasPotion extends SpellPotionBase {
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {
-        event.getRegistry().register(INSTANCE);
+        event.getRegistry().register(INSTANCE.finish());
     }
 
     public static SpellCast Create(Entity source) {
@@ -36,7 +36,7 @@ public class HeavingSeasPotion extends SpellPotionBase {
     private HeavingSeasPotion() {
         // boolean isBadEffectIn, int liquidColorIn
         super(true, 1665535);
-        register(MKUltra.MODID, "effect.heavingseas");
+        setPotionName("effect.heavingseas");
     }
 
     @Override

@@ -29,7 +29,7 @@ public class MoonTrancePotion extends SpellPeriodicPotionBase {
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {
-        event.getRegistry().register(INSTANCE);
+        event.getRegistry().register(INSTANCE.finish());
     }
 
     public static SpellCast Create(Entity source) {
@@ -38,7 +38,7 @@ public class MoonTrancePotion extends SpellPeriodicPotionBase {
 
     private MoonTrancePotion() {
         super(DEFAULT_PERIOD, false, 4393423);
-        register(MKUltra.MODID, "effect.moon_trance");
+        setPotionName("effect.moon_trance");
     }
 
     @Override

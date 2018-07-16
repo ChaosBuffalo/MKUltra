@@ -24,7 +24,7 @@ public class GeyserPotion extends SpellPotionBase {
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {
-        event.getRegistry().register(INSTANCE);
+        event.getRegistry().register(INSTANCE.finish());
     }
 
     public static SpellCast Create(Entity source, float base, float scale) {
@@ -34,7 +34,7 @@ public class GeyserPotion extends SpellPotionBase {
     private GeyserPotion() {
         // boolean isBadEffectIn, int liquidColorIn
         super(true, 4393423);
-        register(MKUltra.MODID, "effect.geyser");
+        setPotionName("effect.geyser");
     }
 
     @Override

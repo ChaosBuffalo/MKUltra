@@ -19,7 +19,7 @@ public class WarpTargetPotion extends SpellPotionBase {
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {
-        event.getRegistry().register(INSTANCE);
+        event.getRegistry().register(INSTANCE.finish());
     }
 
     public static SpellCast Create(Entity source) {
@@ -29,7 +29,7 @@ public class WarpTargetPotion extends SpellPotionBase {
     private WarpTargetPotion() {
         // boolean isBadEffectIn, int liquidColorIn
         super(true, 4393423);
-        register(MKUltra.MODID, "effect.warp_target");
+        setPotionName("effect.warp_target");
     }
 
     @Override

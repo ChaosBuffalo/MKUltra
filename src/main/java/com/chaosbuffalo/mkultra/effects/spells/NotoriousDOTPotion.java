@@ -26,7 +26,7 @@ public class NotoriousDOTPotion extends SongEffect {
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {
-        event.getRegistry().register(INSTANCE);
+        event.getRegistry().register(INSTANCE.finish());
     }
 
     public static SpellCast Create(Entity source) {
@@ -43,7 +43,7 @@ public class NotoriousDOTPotion extends SongEffect {
 
     private NotoriousDOTPotion() {
         super(PERIOD, false, 16750080);
-        register(MKUltra.MODID, "effect.notorious_dot");
+        setPotionName("effect.notorious_dot");
     }
 
     @Override

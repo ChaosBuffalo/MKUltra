@@ -20,7 +20,7 @@ public class BallLightningPotion extends SpellPotionBase {
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {
-        event.getRegistry().register(INSTANCE);
+        event.getRegistry().register(INSTANCE.finish());
     }
 
     public static SpellCast Create(Entity source, float baseDamage, float scaling) {
@@ -29,7 +29,7 @@ public class BallLightningPotion extends SpellPotionBase {
 
     private BallLightningPotion() {
         super(true, 123);
-        register(MKUltra.MODID, "effect.ball_lightning_damage");
+        setPotionName("effect.ball_lightning_damage");
     }
 
     @Override

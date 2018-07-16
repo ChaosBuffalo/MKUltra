@@ -26,7 +26,7 @@ public class EsunaPotion extends SpellPeriodicPotionBase {
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {
-        event.getRegistry().register(INSTANCE);
+        event.getRegistry().register(INSTANCE.finish());
     }
 
     public static SpellCast Create(Entity source) {
@@ -35,7 +35,7 @@ public class EsunaPotion extends SpellPeriodicPotionBase {
 
     private EsunaPotion() {
         super(DEFAULT_PERIOD, false, 4393423);
-        register(MKUltra.MODID, "effect.esuna");
+        setPotionName("effect.esuna");
     }
 
     @Override

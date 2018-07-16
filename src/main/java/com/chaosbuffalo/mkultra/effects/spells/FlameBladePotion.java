@@ -28,7 +28,7 @@ public class FlameBladePotion extends SpellPotionBase {
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {
-        event.getRegistry().register(INSTANCE);
+        event.getRegistry().register(INSTANCE.finish());
     }
 
     public static SpellCast Create(Entity source) {
@@ -37,7 +37,7 @@ public class FlameBladePotion extends SpellPotionBase {
 
     private FlameBladePotion() {
         super(false, 4393423);
-        register(MKUltra.MODID, "effect.flame_blade");
+        setPotionName("effect.flame_blade");
     }
 
     @Override

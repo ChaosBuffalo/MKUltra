@@ -25,7 +25,7 @@ public class SwiftsRodeoHBSongPotion extends SongApplicator {
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {
-        event.getRegistry().register(INSTANCE);
+        event.getRegistry().register(INSTANCE.finish());
     }
 
     public static SpellCast Create(Entity source) {
@@ -34,7 +34,7 @@ public class SwiftsRodeoHBSongPotion extends SongApplicator {
 
     private SwiftsRodeoHBSongPotion() {
         super(PERIOD, false, 65330);
-        register(MKUltra.MODID, "effect.swifts_rodeo_hb_song");
+        setPotionName("effect.swifts_rodeo_hb_song");
     }
 
     @Override

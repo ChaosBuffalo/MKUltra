@@ -17,9 +17,15 @@ import javax.annotation.Nonnull;
 
 public abstract class SpellPotionBase extends Potion {
 
-    public void register(String modId, String name) {
-        setRegistryName(modId, name);
+    public void register(String name) {
         setPotionName(name);
+    }
+
+    public SpellPotionBase finish() {
+        // This method is called from the registry callback, so our mod is the active mod
+        // The single parameter overload of setRegistryName uses the domain of the active mod automatically
+        setRegistryName(getName());
+        return this;
     }
 
     protected SpellPotionBase(boolean isBadEffectIn, int liquidColorIn) {
