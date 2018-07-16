@@ -47,7 +47,7 @@ public class EntityWhirlpoolProjectile extends EntityBaseProjectile {
                     .spellCast(whirlpool, GameConstants.TICKS_PER_SECOND * 2 * amplifier, amplifier, Targeting.TargetType.ENEMY)
 //                    .spellCast(damagePotion, amplifier, Targeting.TargetType.ENEMY)
                     .duration(80).waitTime(0)
-                    .setReapplicationDelay(20)
+                    .period(20)
                     .color(39935).radius(3.0f, true)
                     .spawn();
             switch (result.typeOfHit){
