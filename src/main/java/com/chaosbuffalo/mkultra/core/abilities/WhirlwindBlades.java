@@ -77,7 +77,7 @@ public class WhirlwindBlades extends BaseAbility {
                 .spellCast(particlePotion, level, getTargetType())
                 .duration(totalDuration).waitTime(0)
                 .color(16409620).radius(getDistance(level), true)
-                .setReapplicationDelay(tickSpeed)
+                .period(tickSpeed)
                 .particle(EnumParticleTypes.CRIT)
                 .spawn();
 

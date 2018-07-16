@@ -90,7 +90,7 @@ public class AreaEffectBuilder {
         return this;
     }
 
-    public AreaEffectBuilder setReapplicationDelay(int ticksBetweenApplication) {
+    public AreaEffectBuilder period(int ticksBetweenApplication) {
         areaEffectCloud.setReapplicationDelay(ticksBetweenApplication);
         return this;
     }

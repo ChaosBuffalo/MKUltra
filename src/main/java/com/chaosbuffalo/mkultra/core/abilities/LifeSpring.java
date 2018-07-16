@@ -76,7 +76,7 @@ public class LifeSpring  extends BaseAbility {
                 .spellCast(particle, level, getTargetType())
                 .duration(totalDuration).waitTime(0)
                 .color(65480).radius(getDistance(level), true)
-                .setReapplicationDelay(tickSpeed)
+                .period(tickSpeed)
                 .particle(EnumParticleTypes.VILLAGER_HAPPY)
                 .spawn();
 
