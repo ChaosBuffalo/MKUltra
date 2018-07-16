@@ -42,7 +42,7 @@ public class ShieldingPotion extends SpellPotionBase {
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {
-        event.getRegistry().register(INSTANCE);
+        event.getRegistry().register(INSTANCE.finish());
     }
 
     public static SpellCast Create(Entity source) {
@@ -51,7 +51,7 @@ public class ShieldingPotion extends SpellPotionBase {
 
     private ShieldingPotion() {
         super(false, 1665535);
-        register(MKUltra.MODID, "effect.shielding_potion");
+        setPotionName("effect.shielding_potion");
     }
 
     @Override

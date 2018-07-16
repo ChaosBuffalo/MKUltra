@@ -22,7 +22,7 @@ public class VampiricReverePotion extends SpellPotionBase {
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {
-        event.getRegistry().register(INSTANCE);
+        event.getRegistry().register(INSTANCE.finish());
     }
 
     public static SpellCast Create(Entity source) {
@@ -31,7 +31,7 @@ public class VampiricReverePotion extends SpellPotionBase {
 
     private VampiricReverePotion() {
         super(false, 4393423);
-        register(MKUltra.MODID, "effect.vampiric_revere");
+        setPotionName("effect.vampiric_revere");
     }
 
     @Override

@@ -33,7 +33,7 @@ public class PhoenixAspectPotion extends SpellPotionBase {
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {
-        event.getRegistry().register(INSTANCE);
+        event.getRegistry().register(INSTANCE.finish());
     }
 
     public static SpellCast Create(Entity source) {
@@ -42,7 +42,7 @@ public class PhoenixAspectPotion extends SpellPotionBase {
 
     private PhoenixAspectPotion() {
         super(false, 4393423);
-        register(MKUltra.MODID, "effect.phoenix_aspect");
+        setPotionName("effect.phoenix_aspect");
     }
 
     @Override

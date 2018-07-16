@@ -31,7 +31,7 @@ public class WildToxinEffectPotion extends SpellPotionBase {
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {
-        event.getRegistry().register(INSTANCE);
+        event.getRegistry().register(INSTANCE.finish());
     }
 
     public static SpellCast Create(Entity source) {
@@ -40,7 +40,7 @@ public class WildToxinEffectPotion extends SpellPotionBase {
 
     private WildToxinEffectPotion() {
         super(false, 10223410);
-        register(MKUltra.MODID, "effect.wild_toxin_effect");
+        setPotionName("effect.wild_toxin_effect");
     }
 
     @Override

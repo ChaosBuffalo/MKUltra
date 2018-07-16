@@ -19,7 +19,7 @@ public class FeatherFallPotion extends SpellPotionBase {
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {
-        event.getRegistry().register(INSTANCE);
+        event.getRegistry().register(INSTANCE.finish());
     }
 
     public static SpellCast Create(Entity source) {
@@ -28,7 +28,7 @@ public class FeatherFallPotion extends SpellPotionBase {
 
     private FeatherFallPotion() {
         super(false, 4393423);
-        register(MKUltra.MODID, "effect.featherfall");
+        setPotionName("effect.featherfall");
     }
 
     @Override

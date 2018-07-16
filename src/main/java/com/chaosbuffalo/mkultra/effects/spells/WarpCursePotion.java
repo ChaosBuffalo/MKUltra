@@ -11,7 +11,6 @@ import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
@@ -28,7 +27,7 @@ public class WarpCursePotion extends SpellPeriodicPotionBase {
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {
-        event.getRegistry().register(INSTANCE);
+        event.getRegistry().register(INSTANCE.finish());
     }
 
     public static SpellCast Create(Entity source) {
@@ -37,7 +36,7 @@ public class WarpCursePotion extends SpellPeriodicPotionBase {
 
     private WarpCursePotion() {
         super(DEFAULT_PERIOD, true, 4393423);
-        register(MKUltra.MODID, "effect.warp_curse");
+        setPotionName("effect.warp_curse");
     }
 
     @Override
