@@ -10,7 +10,6 @@ import com.mcmoddev.basemetals.init.Materials;
 import com.oblivioussp.spartanweaponry.item.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemBow;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Loader;
 
@@ -47,13 +46,13 @@ public class Integrations {
             return;
         }
 
-        ItemRestrictionHandler.add_no_shield_item(ItemLongbow.class);
-        ItemRestrictionHandler.add_no_shield_item(ItemKatana.class);
-        ItemRestrictionHandler.add_no_shield_item(ItemCrossbow.class);
-        ItemRestrictionHandler.add_no_shield_item(ItemHalberd.class);
-        ItemRestrictionHandler.add_no_shield_item(ItemWarhammer.class);
-        ItemRestrictionHandler.add_no_shield_item(ItemGreatsword.class);
-        ItemRestrictionHandler.add_no_shield_item(ItemPike.class);
+        ItemRestrictionHandler.addShieldRestrictedItem(ItemLongbow.class);
+        ItemRestrictionHandler.addShieldRestrictedItem(ItemKatana.class);
+        ItemRestrictionHandler.addShieldRestrictedItem(ItemCrossbow.class);
+        ItemRestrictionHandler.addShieldRestrictedItem(ItemHalberd.class);
+        ItemRestrictionHandler.addShieldRestrictedItem(ItemWarhammer.class);
+        ItemRestrictionHandler.addShieldRestrictedItem(ItemGreatsword.class);
+        ItemRestrictionHandler.addShieldRestrictedItem(ItemPike.class);
 
         ItemUtils.addCriticalStats(ItemKatana.class, 1, .1f, 3.0f);
         ItemUtils.addCriticalStats(ItemRapier.class, 1, .1f, 2.5f);
