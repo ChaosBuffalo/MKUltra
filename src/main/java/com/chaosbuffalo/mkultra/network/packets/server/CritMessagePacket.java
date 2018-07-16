@@ -1,4 +1,4 @@
-package com.chaosbuffalo.mkultra.network.packets.client;
+package com.chaosbuffalo.mkultra.network.packets.server;
 
 import com.chaosbuffalo.mkultra.core.BaseAbility;
 import com.chaosbuffalo.mkultra.core.ClassData;
@@ -77,11 +77,11 @@ public class CritMessagePacket implements IMessage {
 
     // ========================================================================
 
-    public static class Handler extends MessageHandler.Server<CritMessagePacket> {
+    public static class Handler extends MessageHandler.Client<CritMessagePacket> {
 
 
         @Override
-        public IMessage handleServerMessage(final EntityPlayer player,
+        public IMessage handleClientMessage(final EntityPlayer player,
                                             final CritMessagePacket msg,
                                             MessageContext ctx) {
             ServerUtils.addScheduledTask(() -> {
