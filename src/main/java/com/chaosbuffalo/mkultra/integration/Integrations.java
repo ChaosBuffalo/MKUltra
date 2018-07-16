@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.integration;
 import com.chaosbuffalo.mkultra.core.ArmorClass;
 import com.chaosbuffalo.mkultra.event.ItemRestrictionHandler;
 import com.chaosbuffalo.mkultra.log.Log;
+import com.chaosbuffalo.mkultra.utils.ItemUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import com.google.common.collect.Lists;
 import com.mcmoddev.basemetals.data.MaterialNames;
@@ -53,6 +54,18 @@ public class Integrations {
         ItemRestrictionHandler.add_no_shield_item(ItemWarhammer.class);
         ItemRestrictionHandler.add_no_shield_item(ItemGreatsword.class);
         ItemRestrictionHandler.add_no_shield_item(ItemPike.class);
+
+        ItemUtils.addCriticalStats(ItemKatana.class, 1, .1f, 3.0f);
+        ItemUtils.addCriticalStats(ItemRapier.class, 1, .1f, 2.5f);
+        ItemUtils.addCriticalStats(ItemLongsword.class, 1, .05f, 2.5f);
+        ItemUtils.addCriticalStats(ItemSaber.class, 1, .05f, 2.5f);
+        ItemUtils.addCriticalStats(ItemHammer.class, 1, .15f, 2.0f);
+        ItemUtils.addCriticalStats(ItemWarhammer.class, 1, .15f, 2.0f);
+        ItemUtils.addCriticalStats(ItemCaestus.class, 1, .2f, 1.5f);
+        ItemUtils.addCriticalStats(ItemSpear.class, 1, .05f, 2.5f);
+        ItemUtils.addCriticalStats(ItemHalberd.class, 1, .1f, 2.0f);
+        ItemUtils.addCriticalStats(ItemPike.class, 1, .05f, 2.0f);
+        ItemUtils.addCriticalStats(ItemLance.class, 1, .05f, 2.5f);
     }
 
     public static List<Entity> getLootableBodiesForPlayer(EntityPlayer player) {

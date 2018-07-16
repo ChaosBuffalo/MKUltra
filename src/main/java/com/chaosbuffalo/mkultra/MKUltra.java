@@ -14,7 +14,7 @@ import org.apache.logging.log4j.Logger;
 
 @Mod(modid = MKUltra.MODID, name= MKUltra.MODNAME, version = MKUltra.VERSION,
         dependencies="required-after:basemetals;required-after:poweradvantage;required-after:targeting_api;" +
-                "after:minecolonies;after:lycanitesmobs")
+                "after:minecolonies;after:lycanitesmobs;after:spartanweaponry")
 public class MKUltra {
     public static final String MODID = "mkultra";
     public static final String VERSION = "@VERSION@";

@@ -1,7 +1,5 @@
 package com.chaosbuffalo.mkultra.utils;
 
-import com.chaosbuffalo.mkultra.log.Log;
-import com.oblivioussp.spartanweaponry.item.*;
 import net.minecraft.item.*;
 
 import java.util.ArrayList;
@@ -27,19 +25,8 @@ public class ItemUtils {
 
     static {
         addCriticalStats(ItemSword.class, 0, .05f, 2.0f);
-        addCriticalStats(ItemKatana.class, 1, .1f, 3.0f);
         addCriticalStats(ItemAxe.class, 0, .15f, 2.0f);
         addCriticalStats(ItemPickaxe.class, 0, .05f, 1.5f);
-        addCriticalStats(ItemRapier.class, 1, .1f, 2.5f);
-        addCriticalStats(ItemLongsword.class, 1, .05f, 2.5f);
-        addCriticalStats(ItemSaber.class, 1, .05f, 2.5f);
-        addCriticalStats(ItemHammer.class, 1, .15f, 2.0f);
-        addCriticalStats(ItemWarhammer.class, 1, .15f, 2.0f);
-        addCriticalStats(ItemCaestus.class, 1, .2f, 1.5f);
-        addCriticalStats(ItemSpear.class, 1, .05f, 2.5f);
-        addCriticalStats(ItemHalberd.class, 1, .1f, 2.0f);
-        addCriticalStats(ItemPike.class, 1, .05f, 2.0f);
-        addCriticalStats(ItemLance.class, 1, .05f, 2.5f);
     }
 
 
