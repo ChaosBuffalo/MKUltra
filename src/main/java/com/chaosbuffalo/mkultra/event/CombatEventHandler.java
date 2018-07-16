@@ -6,6 +6,7 @@ import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.effects.spells.*;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.log.Log;
+import com.chaosbuffalo.mkultra.network.packets.server.CritMessagePacket;
 import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.mkultra.party.PartyManager;
 import com.chaosbuffalo.mkultra.utils.ItemUtils;
@@ -18,9 +19,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -47,15 +46,6 @@ public class CombatEventHandler {
         return source.getDamageType().equals(MKDamageSource.ABILITY_DMG_TYPE);
     }
 
-    public static void messageTeammates(EntityPlayerMP player, String message, Style messageStyle){
-        ArrayList<EntityPlayer> partymates = PartyManager.getPlayersOnTeam(player);
-        for (EntityPlayer mate : partymates){
-            if (player.getDistance(mate) <= MAX_CRIT_MESSAGE_DISTANCE){
-                mate.sendMessage(new TextComponentString(message).setStyle(messageStyle));
-            }
-        }
-    }
-
     public static void doVampiricRevere(EntityPlayerMP playerSource, IPlayerData sourceData, LivingHurtEvent event){
         if (playerSource.isPotionActive(VampiricReverePotion.INSTANCE) && sourceData.getMana() > 0) {
             PotionEffect potion = playerSource.getActivePotionEffect(VampiricReverePotion.INSTANCE);
@@ -64,58 +54,16 @@ public class CombatEventHandler {
         }
     }
 
-    public static void doLightningCritical(EntityPlayerMP playerSource, IPlayerData sourceData, LivingHurtEvent event,
-                                           EntityLivingBase livingTarget, TextFormatting msgColor){
-        if (playerSource.getRNG().nextFloat() >= 1.0f - sourceData.getSpellCritChance()){
-            Style messageStyle = new Style();
-            messageStyle.setColor(msgColor);
-            float newDamage = event.getAmount() * sourceData.getSpellCritDamage();
-            event.setAmount(newDamage);
-            playerSource.sendMessage(new TextComponentString(
-                    String.format("Your lightning just crit %s for %s",
-                            livingTarget.getDisplayName().getUnformattedText(),
-                            Float.toString(newDamage)))
-                    .setStyle(messageStyle)
-            );
-            String team_message = String.format("%s's lightning just crit %s for %s",
-                    playerSource.getDisplayName().getUnformattedText(),
-                    livingTarget.getDisplayName().getUnformattedText(),
-                    Float.toString(newDamage));
-            messageTeammates(playerSource, team_message, messageStyle);
-            Vec3d lookVec = livingTarget.getLookVec();
-            MKUltra.packetHandler.sendToAllAround(
-                    new ParticleEffectSpawnPacket(
-                            EnumParticleTypes.EXPLOSION_NORMAL.getParticleID(),
-                            ParticleEffects.SPHERE_MOTION, 20, 4,
-                            livingTarget.posX, livingTarget.posY + 1.0f,
-                            livingTarget.posZ, .5f, .5f, .5f, 1.5,
-                            lookVec),
-                    livingTarget.dimension, livingTarget.posX,
-                    livingTarget.posY, livingTarget.posZ, 50.0f);
-        }
-    }
-
     public static void doAbilityMagicCritical(EntityPlayerMP playerSource, IPlayerData sourceData, LivingHurtEvent event,
-                                               EntityLivingBase livingTarget, TextFormatting msgColor, BaseAbility ability){
+                                               EntityLivingBase livingTarget, BaseAbility ability){
         if (playerSource.getRNG().nextFloat() >= 1.0f - sourceData.getSpellCritChance()){
-            Style messageStyle = new Style();
-            messageStyle.setColor(msgColor);
             float newDamage = event.getAmount() * sourceData.getSpellCritDamage();
             event.setAmount(newDamage);
-            playerSource.sendMessage(new TextComponentString(
-                    String.format("Your %s spell just crit %s for %s",
-                            ability.getAbilityName(),
-                            livingTarget.getDisplayName().getUnformattedText(),
-                            Float.toString(newDamage)))
-                    .setStyle(messageStyle)
-            );
-
-            String team_message = String.format("%s's %s spell just crit %s for %s",
-                    playerSource.getDisplayName().getUnformattedText(),
-                    ability.getAbilityName(),
-                    livingTarget.getDisplayName().getUnformattedText(),
-                    Float.toString(newDamage));
-            messageTeammates(playerSource, team_message, messageStyle);
+            MKUltra.packetHandler.sendToAllAround(new CritMessagePacket(
+                    livingTarget.getEntityId(), playerSource.getUniqueID(),
+                    newDamage, ability.getAbilityId()),
+                    playerSource.dimension, playerSource.posX,
+                    playerSource.posY, playerSource.posZ, 50.0f);
             Vec3d lookVec = livingTarget.getLookVec();
             MKUltra.packetHandler.sendToAllAround(
                     new ParticleEffectSpawnPacket(
@@ -130,23 +78,15 @@ public class CombatEventHandler {
     }
 
     public static void doIndirectMagicCritical(EntityPlayerMP playerSource, IPlayerData sourceData, LivingHurtEvent event,
-                                           EntityLivingBase livingTarget, TextFormatting msgColor){
+                                           EntityLivingBase livingTarget){
         if (playerSource.getRNG().nextFloat() >= 1.0f - sourceData.getSpellCritChance()){
-            Style messageStyle = new Style();
-            messageStyle.setColor(msgColor);
             float newDamage = event.getAmount() * sourceData.getSpellCritDamage();
             event.setAmount(newDamage);
-            playerSource.sendMessage(new TextComponentString(
-                    String.format("Your magic spell just crit %s for %s",
-                            livingTarget.getDisplayName().getUnformattedText(),
-                            Float.toString(newDamage)))
-                    .setStyle(messageStyle)
-            );
-            String team_message = String.format("%s's magic spell just crit %s for %s",
-                    playerSource.getDisplayName().getUnformattedText(),
-                    livingTarget.getDisplayName().getUnformattedText(),
-                    Float.toString(newDamage));
-            messageTeammates(playerSource, team_message, messageStyle);
+            MKUltra.packetHandler.sendToAllAround(new CritMessagePacket(
+                            livingTarget.getEntityId(), playerSource.getUniqueID(),
+                            newDamage, CritMessagePacket.CritType.INDIRECT_MAGIC_CRIT),
+                    playerSource.dimension, playerSource.posX,
+                    playerSource.posY, playerSource.posZ, 50.0f);
             Vec3d lookVec = livingTarget.getLookVec();
             MKUltra.packetHandler.sendToAllAround(
                     new ParticleEffectSpawnPacket(
@@ -161,27 +101,18 @@ public class CombatEventHandler {
     }
 
     public static void doMeleeCritical(EntityPlayerMP playerSource, IPlayerData sourceData, LivingHurtEvent event,
-                                       EntityLivingBase livingTarget, TextFormatting msgColor){
-        Log.info("Crit chance for %s: %f", playerSource.getHeldItemMainhand().getDisplayName().toString(), getCombinedCritChance(sourceData, playerSource));
+                                       EntityLivingBase livingTarget, boolean isDirect){
         if (playerSource.getRNG().nextFloat() >= 1.0f - getCombinedCritChance(sourceData, playerSource)){
-            Style messageStyle = new Style();
-            messageStyle.setColor(msgColor);
             ItemStack mainHand = playerSource.getHeldItemMainhand();
             float newDamage = event.getAmount() * ItemUtils.getCritDamageForItem(
                     mainHand);
             event.setAmount(newDamage);
-            playerSource.sendMessage(new TextComponentString(
-                    String.format("You just crit %s with %s for %s",
-                            livingTarget.getDisplayName().getUnformattedText(), mainHand.getDisplayName(),
-                            Float.toString(newDamage)))
-                    .setStyle(messageStyle)
-            );
-            String team_message = String.format("%s just crit %s with %s for %s",
-                    playerSource.getDisplayName().getUnformattedText(),
-                    livingTarget.getDisplayName().getUnformattedText(),
-                    mainHand.getDisplayName(),
-                    Float.toString(newDamage));
-            messageTeammates(playerSource, team_message, messageStyle);
+            CritMessagePacket.CritType type = isDirect ? CritMessagePacket.CritType.MELEE_CRIT : CritMessagePacket.CritType.INDIRECT_CRIT;
+            MKUltra.packetHandler.sendToAllAround(new CritMessagePacket(
+                            livingTarget.getEntityId(), playerSource.getUniqueID(),
+                            newDamage, type),
+                    playerSource.dimension, playerSource.posX,
+                    playerSource.posY, playerSource.posZ, 50.0f);
             Vec3d lookVec = livingTarget.getLookVec();
             MKUltra.packetHandler.sendToAllAround(
                     new ParticleEffectSpawnPacket(
@@ -229,20 +160,20 @@ public class CombatEventHandler {
                 MKDamageSource mkSource = (MKDamageSource) source;
                 // Handle 'melee damage' abilities
                 if (mkSource.ability_id.equals(InstantIndirectDamagePotion.INDIRECT_DMG_ABILITY_ID)){
-                    doMeleeCritical(playerSource, sourceData, event, livingTarget, TextFormatting.GOLD);
+                    doMeleeCritical(playerSource, sourceData, event, livingTarget, false);
                     doVampiricRevere(playerSource, sourceData, event);
                 // Handle the generic magic damage potions
                 } else if (mkSource.ability_id.equals(InstantIndirectMagicDamagePotion.INDIRECT_MAGIC_DMG_ABILITY_ID)){
-                    doIndirectMagicCritical(playerSource, sourceData, event, livingTarget, TextFormatting.BLUE);
+                    doIndirectMagicCritical(playerSource, sourceData, event, livingTarget);
                 // Handle the actual abilities
                 } else {
-                    doAbilityMagicCritical(playerSource, sourceData, event, livingTarget, TextFormatting.AQUA,
+                    doAbilityMagicCritical(playerSource, sourceData, event, livingTarget,
                             ClassData.getAbility(mkSource.ability_id));
                 }
             }
 
             if (isPlayerPhysicalDamage(source)){
-                doMeleeCritical(playerSource, sourceData, event, livingTarget, TextFormatting.DARK_RED);
+                doMeleeCritical(playerSource, sourceData, event, livingTarget, true);
                 doVampiricRevere(playerSource, sourceData, event);
             }
 

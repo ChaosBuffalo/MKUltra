@@ -59,7 +59,7 @@ public class CommonProxy {
         packetHandler.registerPacket(PartyInvitePacket.class, new PartyInvitePacket.Handler(), Side.CLIENT);
         packetHandler.registerPacket(ForceOpenClientGUIPacket.class, new ForceOpenClientGUIPacket.Handler(), Side.CLIENT);
         packetHandler.registerPacket(AbilityCooldownPacket.class, new AbilityCooldownPacket.Handler(), Side.CLIENT);
-
+        packetHandler.registerPacket(CritMessagePacket.class, new CritMessagePacket.Handler(), Side.CLIENT);
     }
 
     public void postInit(FMLPostInitializationEvent e) {
