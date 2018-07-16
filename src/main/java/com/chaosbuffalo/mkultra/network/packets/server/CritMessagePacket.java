@@ -4,7 +4,6 @@ import com.chaosbuffalo.mkultra.core.BaseAbility;
 import com.chaosbuffalo.mkultra.core.ClassData;
 import com.chaosbuffalo.mkultra.network.MessageHandler;
 import com.chaosbuffalo.mkultra.utils.ClientUtils;
-import com.chaosbuffalo.mkultra.utils.ServerUtils;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -115,6 +114,7 @@ public class CritMessagePacket implements IMessage {
                                             Float.toString(msg.critDamage))
                             ).setStyle(messageStyle));
                         }
+                        break;
                     case INDIRECT_MAGIC_CRIT:
                         messageStyle.setColor(TextFormatting.BLUE);
                         if (isSelf){
@@ -131,6 +131,7 @@ public class CritMessagePacket implements IMessage {
                                             Float.toString(msg.critDamage)))
                                     .setStyle(messageStyle));
                         }
+                        break;
                     case SPELL_CRIT:
                         messageStyle.setColor(TextFormatting.AQUA);
                         BaseAbility ability = ClassData.getAbility(msg.abilityName);
@@ -153,6 +154,7 @@ public class CritMessagePacket implements IMessage {
                                     .setStyle(messageStyle)
                             );
                         }
+                        break;
                 }
             });
             return null;
