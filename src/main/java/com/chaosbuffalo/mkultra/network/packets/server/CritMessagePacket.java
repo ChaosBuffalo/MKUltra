@@ -54,10 +54,10 @@ public class CritMessagePacket implements IMessage {
     @Override
     public void fromBytes(ByteBuf buf) {
         PacketBuffer pb = new PacketBuffer(buf);
+        this.type = CritType.values()[pb.readInt()];
         this.targetId = pb.readInt();
         this.sourceUUID = pb.readUniqueId();
         this.critDamage = pb.readFloat();
-        this.type = CritType.values()[pb.readInt()];
         if (type == CritType.SPELL_CRIT){
             this.abilityName = pb.readResourceLocation();
         }
@@ -66,10 +66,10 @@ public class CritMessagePacket implements IMessage {
     @Override
     public void toBytes(ByteBuf buf) {
         PacketBuffer pb = new PacketBuffer(buf);
+        pb.writeInt(type.ordinal());
         pb.writeInt(targetId);
         pb.writeUniqueId(sourceUUID);
         pb.writeFloat(critDamage);
-        pb.writeInt(type.ordinal());
         if (type == CritType.SPELL_CRIT){
             pb.writeResourceLocation(this.abilityName);
         }
