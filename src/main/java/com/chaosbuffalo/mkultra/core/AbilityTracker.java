@@ -65,7 +65,6 @@ public class AbilityTracker {
         this.notifyOnSet(info, ticksIn);
     }
 
-    @SideOnly(Side.CLIENT)
     public void removeCooldown(PlayerAbilityInfo info) {
         this.cooldowns.remove(info);
         this.notifyOnRemove(info);
