@@ -32,7 +32,18 @@ minecraft {
     makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 }
 
+repositories {
+    mavenCentral()
+    maven { // BaseMetals
+        name 'MMD'
+        url 'https://maven.mcmoddev.com/'
+    }
+}
+
 dependencies {
+    deobfCompile("com.mcmoddev:BaseMetals:${config.mc_version_main}-${config.bme_version}") {
+        transitive = false
+    }
     compile fileTree(dir: 'libs', include: '*.jar')
 }
 
