@@ -3,12 +3,17 @@ package com.chaosbuffalo.mkultra.effects.spells;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
+import com.chaosbuffalo.mkultra.effects.SpellTriggers;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -29,6 +34,7 @@ public class FeatherFallPotion extends SpellPotionBase {
     private FeatherFallPotion() {
         super(false, 4393423);
         setPotionName("effect.featherfall");
+        SpellTriggers.FALL.register(this::onFall);
     }
 
     @Override
@@ -59,5 +65,14 @@ public class FeatherFallPotion extends SpellPotionBase {
     @Override
     public boolean isInstant() {
         return false;
+    }
+
+    private void onFall(LivingHurtEvent event, DamageSource source, EntityLivingBase entity) {
+        if (entity.isPotionActive(INSTANCE)) {
+            event.setAmount(0.0f);
+            if (entity instanceof EntityPlayer) {
+                entity.sendMessage(new TextComponentString("My legs are OK"));
+            }
+        }
     }
 }

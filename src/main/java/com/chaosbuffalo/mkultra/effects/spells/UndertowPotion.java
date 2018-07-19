@@ -5,6 +5,7 @@ import com.chaosbuffalo.mkultra.core.MKDamageSource;
 import com.chaosbuffalo.mkultra.core.abilities.Undertow;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
+import com.chaosbuffalo.mkultra.effects.SpellTriggers;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -34,6 +35,7 @@ public class UndertowPotion extends SpellPotionBase {
     private UndertowPotion() {
         super(false, 4393423);
         setPotionName("effect.undertow");
+        SpellTriggers.ATTACK_ENTITY.register(this, this::onAttackEntity);
     }
 
     @Override
@@ -67,7 +69,7 @@ public class UndertowPotion extends SpellPotionBase {
     }
 
 
-    public void onAttackEntity(EntityPlayer player, Entity target, PotionEffect effect) {
+    private void onAttackEntity(EntityPlayer player, Entity target, PotionEffect effect) {
         if (target instanceof EntityLivingBase) {
             EntityLivingBase livingEnt = (EntityLivingBase) target;
             if (livingEnt.isPotionActive(DrownPotion.INSTANCE)) {
