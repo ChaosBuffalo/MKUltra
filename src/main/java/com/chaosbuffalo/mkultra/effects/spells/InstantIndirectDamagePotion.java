@@ -45,6 +45,6 @@ public class InstantIndirectDamagePotion extends SpellPotionBase {
 
         float damage = cast.getScaledValue(amplifier);
 
-        target.attackEntityFrom(MKDamageSource.causeIndirectMeleeDamage(INDIRECT_DMG_ABILITY_ID, applier, caster), damage);
+        target.attackEntityFrom(MKDamageSource.fromMeleeSkill(INDIRECT_DMG_ABILITY_ID, applier, caster), damage);
     }
 }

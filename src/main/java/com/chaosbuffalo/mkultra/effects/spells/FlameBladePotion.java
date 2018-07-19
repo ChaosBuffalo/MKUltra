@@ -5,6 +5,7 @@ import com.chaosbuffalo.mkultra.core.abilities.FlameBlade;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
+import com.chaosbuffalo.mkultra.effects.SpellTriggers;
 import com.chaosbuffalo.mkultra.entities.projectiles.EntityFlameBladeProjectile;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.targeting_api.Targeting;
@@ -38,6 +39,7 @@ public class FlameBladePotion extends SpellPotionBase {
     private FlameBladePotion() {
         super(false, 4393423);
         setPotionName("effect.flame_blade");
+        SpellTriggers.ATTACK_ENTITY.register(this, this::onAttackEntity);
     }
 
     @Override
@@ -71,7 +73,7 @@ public class FlameBladePotion extends SpellPotionBase {
     }
 
 
-    public void onAttackEntity(EntityPlayer player, Entity target, PotionEffect potion) {
+    private void onAttackEntity(EntityPlayer player, Entity target, PotionEffect potion) {
         SpellCast flames = FlameBladeEffectPotion.Create(player, FlameBlade.BASE_DAMAGE, FlameBlade.DAMAGE_SCALE);
         SpellCast particles = ParticlePotion.Create(player,
                 EnumParticleTypes.LAVA.getParticleID(),

@@ -5,15 +5,19 @@ import com.chaosbuffalo.mkultra.core.MKDamageSource;
 import com.chaosbuffalo.mkultra.core.abilities.Whirlpool;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellPeriodicPotionBase;
+import com.chaosbuffalo.mkultra.effects.SpellTriggers;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -39,6 +43,7 @@ public class WhirlpoolPotion extends SpellPeriodicPotionBase {
     private WhirlpoolPotion() {
         super(DEFAULT_PERIOD, true, 1665535);
         setPotionName("effect.whirlpool");
+        SpellTriggers.FALL.register(this::onFall);
     }
 
     @Override
@@ -63,6 +68,14 @@ public class WhirlpoolPotion extends SpellPeriodicPotionBase {
                         target.getLookVec()),
                 target.dimension, target.posX,
                 target.posY, target.posZ, 50.0f);
+    }
+
+    private void onFall(LivingHurtEvent event, DamageSource source, EntityLivingBase entity) {
+        if (entity.isPotionActive(WhirlpoolPotion.INSTANCE)) {
+            PotionEffect potion = entity.getActivePotionEffect(WhirlpoolPotion.INSTANCE);
+            entity.attackEntityFrom(DamageSource.causeIndirectMagicDamage(source.getImmediateSource(),
+                    source.getTrueSource()), 8.0f * potion.getAmplifier());
+        }
     }
 }
 
