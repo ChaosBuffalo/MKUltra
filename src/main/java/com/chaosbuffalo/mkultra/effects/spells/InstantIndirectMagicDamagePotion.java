@@ -8,7 +8,6 @@ import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -24,7 +23,7 @@ public class InstantIndirectMagicDamagePotion extends SpellPotionBase {
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {
-        event.getRegistry().register(INSTANCE);
+        event.getRegistry().register(INSTANCE.finish());
     }
 
     public static SpellCast Create(Entity source, float baseDamage, float scaling) {
@@ -33,7 +32,7 @@ public class InstantIndirectMagicDamagePotion extends SpellPotionBase {
 
     private InstantIndirectMagicDamagePotion() {
         super(true, 123);
-        register(MKUltra.MODID, "effect.instant_indirect_magic_damage");
+        setPotionName("effect.instant_indirect_magic_damage");
     }
 
     @Override

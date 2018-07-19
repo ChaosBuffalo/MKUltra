@@ -37,7 +37,7 @@ public class UnderwayPotion extends SpellPotionBase {
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {
-        event.getRegistry().register(INSTANCE);
+        event.getRegistry().register(INSTANCE.finish());
     }
 
     public static SpellCast Create(Entity source) {
@@ -46,7 +46,7 @@ public class UnderwayPotion extends SpellPotionBase {
 
     private UnderwayPotion() {
         super(false, 1665535);
-        register(MKUltra.MODID, "effect.underway");
+        setPotionName("effect.underway");
     }
 
     @Override

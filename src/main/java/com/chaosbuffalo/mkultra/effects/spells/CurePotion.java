@@ -24,7 +24,7 @@ public class CurePotion extends SpellPotionBase {
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {
-        event.getRegistry().register(INSTANCE);
+        event.getRegistry().register(INSTANCE.finish());
     }
 
     public static SpellCast Create(Entity source) {
@@ -34,7 +34,7 @@ public class CurePotion extends SpellPotionBase {
     private CurePotion() {
         // boolean isBadEffectIn, int liquidColorIn
         super(false, 4393423);
-        register(MKUltra.MODID, "effect.cure");
+        setPotionName("effect.cure");
     }
 
     private static void apply(EntityLivingBase entity) {

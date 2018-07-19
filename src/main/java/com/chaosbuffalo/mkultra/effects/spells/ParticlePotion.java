@@ -20,7 +20,7 @@ public class ParticlePotion extends SpellPotionBase {
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {
-        event.getRegistry().register(INSTANCE);
+        event.getRegistry().register(INSTANCE.finish());
     }
 
     public static SpellCast Create(Entity source, int particleId, int motionType, boolean includeSelf,
@@ -33,7 +33,7 @@ public class ParticlePotion extends SpellPotionBase {
 
     protected ParticlePotion() {
         super(true, 123);
-        register(MKUltra.MODID, "effect.particle_potion");
+        setPotionName("effect.particle_potion");
     }
 
     private ParticlePotion setParameters(SpellCast cast, int particleId, int motionType, boolean includeSelf,

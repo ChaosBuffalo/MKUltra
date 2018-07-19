@@ -7,12 +7,10 @@ import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellPeriodicPotionBase;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
-import com.chaosbuffalo.mkultra.utils.EnvironmentUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
@@ -31,7 +29,7 @@ public class WhirlpoolPotion extends SpellPeriodicPotionBase {
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {
-        event.getRegistry().register(INSTANCE);
+        event.getRegistry().register(INSTANCE.finish());
     }
 
     public static SpellCast Create(Entity source) {
@@ -40,7 +38,7 @@ public class WhirlpoolPotion extends SpellPeriodicPotionBase {
 
     private WhirlpoolPotion() {
         super(DEFAULT_PERIOD, true, 1665535);
-        register(MKUltra.MODID, "effect.whirlpool");
+        setPotionName("effect.whirlpool");
     }
 
     @Override

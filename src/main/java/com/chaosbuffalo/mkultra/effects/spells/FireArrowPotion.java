@@ -21,7 +21,7 @@ public class FireArrowPotion extends SpellPotionBase {
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {
-        event.getRegistry().register(INSTANCE);
+        event.getRegistry().register(INSTANCE.finish());
     }
 
     public static SpellCast Create(Entity source, float baseDamage, float scaling, float range) {
@@ -33,7 +33,7 @@ public class FireArrowPotion extends SpellPotionBase {
     private FireArrowPotion() {
         // boolean isBadEffectIn, int liquidColorIn
         super(true, 4393423);
-        register(MKUltra.MODID, "effect.fire_arrow");
+        setPotionName("effect.fire_arrow");
     }
 
     @Override

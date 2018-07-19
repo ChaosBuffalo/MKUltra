@@ -31,7 +31,7 @@ public class WaveBreakPotion extends SpellPotionBase {
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {
-        event.getRegistry().register(INSTANCE);
+        event.getRegistry().register(INSTANCE.finish());
     }
 
     public static SpellCast Create(Entity source) {
@@ -40,7 +40,7 @@ public class WaveBreakPotion extends SpellPotionBase {
 
     private WaveBreakPotion() {
         super(false, 1665535);
-        register(MKUltra.MODID, "effect.wave_break");
+        setPotionName("effect.wave_break");
     }
 
     @Override

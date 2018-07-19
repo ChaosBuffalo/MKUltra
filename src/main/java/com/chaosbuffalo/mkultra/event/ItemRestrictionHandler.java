@@ -24,10 +24,10 @@ public class ItemRestrictionHandler {
     public static final Set<Class<? extends Item>> NO_SHIELD_ITEMS = new HashSet<>();
 
     static {
-        add_no_shield_item(ItemRangeSword.class);
+        addShieldRestrictedItem(ItemRangeSword.class);
     }
 
-    public static void add_no_shield_item(Class<? extends Item> itemClass) {
+    public static void addShieldRestrictedItem(Class<? extends Item> itemClass) {
         NO_SHIELD_ITEMS.add(itemClass);
     }
 
@@ -41,7 +41,7 @@ public class ItemRestrictionHandler {
         }
     }
 
-    private static void checkNoShield(EntityPlayerMP player) {
+    private static void checkShieldRestriction(EntityPlayerMP player) {
         ItemStack main = player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND);
         ItemStack off = player.getItemStackFromSlot(EntityEquipmentSlot.OFFHAND);
 
@@ -79,7 +79,7 @@ public class ItemRestrictionHandler {
 
         EntityPlayerMP player = (EntityPlayerMP) event.getEntityLiving();
 
-        checkNoShield(player);
+        checkShieldRestriction(player);
 
         IPlayerData playerData = MKUPlayerData.get(player);
         if (playerData == null)

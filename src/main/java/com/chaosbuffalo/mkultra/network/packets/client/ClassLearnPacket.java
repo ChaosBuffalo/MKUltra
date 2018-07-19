@@ -54,21 +54,26 @@ public class ClassLearnPacket implements IMessage {
             ServerUtils.addScheduledTask(() -> {
                 IPlayerData data = MKUPlayerData.get(player);
                 if (data != null) {
+                    boolean canSwitch;
                     if (msg.learn) {
-                        data.learnClass(msg.classId);
-                        ItemStack heldItem = player.getHeldItem(EnumHand.MAIN_HAND);
-                        ItemHelper.damageStack(player, heldItem, 1);
+                        canSwitch = data.learnClass(msg.classId);
+                        if (canSwitch) {
+                            ItemStack heldItem = player.getHeldItem(EnumHand.MAIN_HAND);
+                            ItemHelper.damageStack(player, heldItem, 1);
+                        }
                     } else {
                         // switching. need to consume item
                         ItemStack dust = player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND);
                         if (!(dust.getItem() instanceof AngelDust)) {
                             return;
                         } else {
-                            ItemHelper.shrinkStack(player, dust, 1);
+                            canSwitch = ItemHelper.shrinkStack(player, dust, 1);
                         }
                     }
 
-                    data.activateClass(msg.classId);
+                    if (canSwitch) {
+                        data.activateClass(msg.classId);
+                    }
                 }
             });
             return null;

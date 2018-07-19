@@ -13,7 +13,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.potion.Potion;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
@@ -38,7 +37,7 @@ public class FairyFirePotion extends SpellPeriodicPotionBase {
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {
-        event.getRegistry().register(INSTANCE);
+        event.getRegistry().register(INSTANCE.finish());
     }
 
     public static SpellCast Create(Entity source) {
@@ -47,7 +46,7 @@ public class FairyFirePotion extends SpellPeriodicPotionBase {
 
     private FairyFirePotion() {
         super(DEFAULT_PERIOD, true, 11540991);
-        register(MKUltra.MODID, "effect.fairy_fire");
+        setPotionName("effect.fairy_fire");
     }
 
     @Override

@@ -25,7 +25,7 @@ public class MileysInspiringBangerzSongPotion extends SongApplicator {
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {
-        event.getRegistry().register(INSTANCE);
+        event.getRegistry().register(INSTANCE.finish());
     }
 
     public static SpellCast Create(Entity source) {
@@ -34,7 +34,7 @@ public class MileysInspiringBangerzSongPotion extends SongApplicator {
 
     private MileysInspiringBangerzSongPotion() {
         super(PERIOD, false, 16762880);
-        register(MKUltra.MODID, "effect.mileys_bangerz_song");
+        setPotionName("effect.mileys_bangerz_song");
     }
 
     @Override

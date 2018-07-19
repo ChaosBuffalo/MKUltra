@@ -9,7 +9,6 @@ import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
-import net.minecraft.util.DamageSource;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -21,7 +20,7 @@ public class ClericHealPotion extends SpellPotionBase {
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {
-        event.getRegistry().register(INSTANCE);
+        event.getRegistry().register(INSTANCE.finish());
     }
 
     public static SpellCast Create(Entity source, EntityLivingBase target, float base, float scaling) {
@@ -36,7 +35,7 @@ public class ClericHealPotion extends SpellPotionBase {
     private ClericHealPotion() {
         // boolean isBadEffectIn, int liquidColorIn
         super(false, 4393481);
-        register(MKUltra.MODID, "effect.cleric_heal");
+        setPotionName("effect.cleric_heal");
     }
 
     @Override

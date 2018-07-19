@@ -22,7 +22,7 @@ public class YankPotion extends SpellPotionBase {
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {
-        event.getRegistry().register(INSTANCE);
+        event.getRegistry().register(INSTANCE.finish());
     }
 
     public static SpellCast Create(Entity source, EntityLivingBase target) {
@@ -36,7 +36,7 @@ public class YankPotion extends SpellPotionBase {
     private YankPotion() {
         // boolean isBadEffectIn, int liquidColorIn
         super(true, 4393423);
-        register(MKUltra.MODID, "effect.yank");
+        setPotionName("effect.yank");
     }
 
     @Override

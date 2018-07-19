@@ -9,7 +9,6 @@ import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
-import net.minecraft.util.DamageSource;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -21,7 +20,7 @@ public class SmitePotion extends SpellPotionBase {
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {
-        event.getRegistry().register(INSTANCE);
+        event.getRegistry().register(INSTANCE.finish());
     }
 
     public static SpellCast Create(Entity source, EntityLivingBase target, float damageBase, float damageScale) {
@@ -31,7 +30,7 @@ public class SmitePotion extends SpellPotionBase {
     private SmitePotion() {
         // boolean isBadEffectIn, int liquidColorIn
         super(true, 4393481);
-        register(MKUltra.MODID, "effect.smite");
+        setPotionName("effect.smite");
     }
 
     @Override

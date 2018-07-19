@@ -25,7 +25,7 @@ public class NotoriousDOTSongPotion extends SongApplicator {
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {
-        event.getRegistry().register(INSTANCE);
+        event.getRegistry().register(INSTANCE.finish());
     }
 
     public static SpellCast Create(Entity source) {
@@ -34,7 +34,7 @@ public class NotoriousDOTSongPotion extends SongApplicator {
 
     private NotoriousDOTSongPotion() {
         super(PERIOD, false, 16750080);
-        register(MKUltra.MODID, "effect.notorious_dot_song");
+        setPotionName("effect.notorious_dot_song");
     }
 
     @Override

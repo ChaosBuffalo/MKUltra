@@ -17,37 +17,29 @@ import java.util.List;
 
 public class AbilityUpdatePacket implements IMessage {
 
-    private boolean removed;
     private List<PlayerAbilityInfo> skills;
 
     public AbilityUpdatePacket() {
     }
 
-    public AbilityUpdatePacket(PlayerAbilityInfo abilityInfo, boolean remove) {
+    public AbilityUpdatePacket(PlayerAbilityInfo abilityInfo) {
         skills = new ArrayList<>(1);
         skills.add(abilityInfo);
-        removed = remove;
     }
 
     public AbilityUpdatePacket(Collection<PlayerAbilityInfo> knownSkills) {
         skills = new ArrayList<>(1);
         skills.addAll(knownSkills);
-        removed = false;
     }
 
     @Override
     public void fromBytes(ByteBuf buf) {
         PacketBuffer pb = new PacketBuffer(buf);
-        int count = pb.readInt();
-        removed = pb.readBoolean();
+        int count = pb.readVarInt();
         skills = new ArrayList<>(count);
 
         for (int i = 0; i < count; i++) {
-            PlayerAbilityInfo info = new PlayerAbilityInfo(pb.readResourceLocation());
-            if (!removed) {
-                info.level = buf.readInt();
-            }
-
+            PlayerAbilityInfo info = new PlayerAbilityInfo(pb.readResourceLocation(), pb.readVarInt());
             skills.add(info);
         }
     }
@@ -55,14 +47,11 @@ public class AbilityUpdatePacket implements IMessage {
     @Override
     public void toBytes(ByteBuf buf) {
         PacketBuffer pb = new PacketBuffer(buf);
-        pb.writeInt(skills.size());
-        pb.writeBoolean(removed);
+        pb.writeVarInt(skills.size());
 
         for (PlayerAbilityInfo info : skills) {
-            pb.writeResourceLocation(info.id);
-            if (!removed) {
-                buf.writeInt(info.level);
-            }
+            pb.writeResourceLocation(info.getId());
+            pb.writeVarInt(info.getLevel());
         }
     }
 
@@ -79,7 +68,7 @@ public class AbilityUpdatePacket implements IMessage {
                     return;
 
                 for (PlayerAbilityInfo info : msg.skills) {
-                    data.clientSkillListUpdate(info, msg.removed);
+                    data.clientSkillListUpdate(info);
                 }
             });
             return null;

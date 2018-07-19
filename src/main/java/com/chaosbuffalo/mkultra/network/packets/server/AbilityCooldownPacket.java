@@ -13,8 +13,8 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class AbilityCooldownPacket implements IMessage {
 
-    ResourceLocation skillId;
-    int cooldown;
+    private ResourceLocation skillId;
+    private int cooldown;
 
     public AbilityCooldownPacket() {
     }

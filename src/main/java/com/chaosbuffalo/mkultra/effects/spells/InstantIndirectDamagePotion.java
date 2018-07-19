@@ -23,7 +23,7 @@ public class InstantIndirectDamagePotion extends SpellPotionBase {
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {
-        event.getRegistry().register(INSTANCE);
+        event.getRegistry().register(INSTANCE.finish());
     }
 
     public static SpellCast Create(Entity source, float baseDamage, float scaling) {
@@ -32,7 +32,7 @@ public class InstantIndirectDamagePotion extends SpellPotionBase {
 
     private InstantIndirectDamagePotion() {
         super(true, 123);
-        register(MKUltra.MODID, "effect.instant_indirect_damage");
+        setPotionName("effect.instant_indirect_damage");
     }
 
     @Override

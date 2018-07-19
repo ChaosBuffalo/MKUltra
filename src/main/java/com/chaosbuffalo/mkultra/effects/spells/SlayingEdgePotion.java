@@ -30,7 +30,7 @@ public class SlayingEdgePotion extends SpellPotionBase {
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {
-        event.getRegistry().register(INSTANCE);
+        event.getRegistry().register(INSTANCE.finish());
     }
 
     public static SpellCast Create(Entity source) {
@@ -39,7 +39,7 @@ public class SlayingEdgePotion extends SpellPotionBase {
 
     private SlayingEdgePotion() {
         super(false, 10158335);
-        register(MKUltra.MODID, "effect.slaying_edge");
+        setPotionName("effect.slaying_edge");
     }
 
     @Override
