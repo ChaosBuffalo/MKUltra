@@ -7,6 +7,7 @@ import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -74,24 +75,29 @@ public class WildToxinPotion extends SpellPotionBase {
 
     public void onAttackEntity(EntityPlayer player, Entity target, PotionEffect potion) {
 
-        if (target instanceof EntityLivingBase){
+        if (target instanceof EntityLivingBase) {
             IPlayerData pData = MKUPlayerData.get(player);
-            if (pData.getMana() >= potion.getAmplifier()){
+            if (pData.getMana() >= potion.getAmplifier()) {
                 pData.setMana(pData.getMana() - potion.getAmplifier());
-                EntityLivingBase living_target = (EntityLivingBase) target;
+                EntityLivingBase livingTarget = (EntityLivingBase) target;
+
                 SpellCast toxin = WildToxinEffectPotion.Create(player);
-                SpellCast particles = ParticlePotion.Create(player,
-                        EnumParticleTypes.SPELL_MOB.getParticleID(),
-                        ParticleEffects.SPHERE_MOTION, false, new Vec3d(1.0, 1.0, 1.0),
-                        new Vec3d(0.0, 1.0, 0.0), 4, 4, 1.0);
-                living_target.addPotionEffect(toxin.setTarget(living_target).toPotionEffect(
+                livingTarget.addPotionEffect(toxin.setTarget(livingTarget).toPotionEffect(
                         potion.getAmplifier() * 6 * GameConstants.TICKS_PER_SECOND,
                         potion.getAmplifier()));
-                living_target.addPotionEffect(particles.setTarget(living_target).toPotionEffect(potion.getAmplifier()));
+
+                MKUltra.packetHandler.sendToAllAround(
+                        new ParticleEffectSpawnPacket(
+                                EnumParticleTypes.SPELL_MOB.getParticleID(),
+                                ParticleEffects.SPHERE_MOTION, 4, 4,
+                                1.0, 1.0, 1.0,
+                                target.posX, target.posY + 1.0f, target.posZ,
+                                1.0,
+                                target.getLookVec()),
+                        target, 50.0f);
             } else {
                 player.removePotionEffect(WildToxinPotion.INSTANCE);
             }
         }
     }
 }
-
