@@ -5,6 +5,7 @@ import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.item.ItemHelper;
 import com.chaosbuffalo.mkultra.item.ItemRangeSword;
+import com.chaosbuffalo.mkultra.utils.ItemUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -17,20 +18,23 @@ import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 @Mod.EventBusSubscriber
 public class ItemRestrictionHandler {
 
-    public static final Set<Class<? extends Item>> NO_SHIELD_ITEMS = new HashSet<>();
+    public static final ArrayList<ShieldRestrictionEntry> NO_SHIELD_ITEMS = new ArrayList<>();
 
     static {
-        addShieldRestrictedItem(ItemRangeSword.class);
+        addShieldRestrictedItem(ItemRangeSword.class, 0);
     }
 
-    public static void addShieldRestrictedItem(Class<? extends Item> itemClass) {
-        NO_SHIELD_ITEMS.add(itemClass);
+    public static void addShieldRestrictedItem(Class<? extends Item> itemClass, int priority) {
+        NO_SHIELD_ITEMS.add(new ShieldRestrictionEntry(itemClass, priority));
+        Collections.sort(NO_SHIELD_ITEMS);
     }
 
     private static void checkBlockedArmor(EntityPlayerMP player, ItemStack armor, IPlayerData playerClass, EntityEquipmentSlot slot) {
@@ -43,11 +47,20 @@ public class ItemRestrictionHandler {
         }
     }
 
+    public static boolean isNoShieldItem(Item item){
+        for (ShieldRestrictionEntry entry : NO_SHIELD_ITEMS){
+            if (ItemUtils.isItemInstance(entry.item, item)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     private static void checkShieldRestriction(EntityPlayerMP player) {
         ItemStack main = player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND);
         ItemStack off = player.getItemStackFromSlot(EntityEquipmentSlot.OFFHAND);
 
-        if (NO_SHIELD_ITEMS.contains(main.getItem().getClass()) && off.getItem() instanceof ItemShield){
+        if (isNoShieldItem(main.getItem()) && off.getItem() instanceof ItemShield){
             ItemHelper.unequip(player, EntityEquipmentSlot.OFFHAND);
         }
     }
