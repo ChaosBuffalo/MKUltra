@@ -1,5 +1,9 @@
 package com.chaosbuffalo.mkultra.core;
 
+import com.chaosbuffalo.mkultra.utils.ItemUtils;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+
 public class PlayerFormulas {
 
     public static float scaleMagicDamage(IPlayerData playerData, float originalDamage) {
@@ -20,5 +24,9 @@ public class PlayerFormulas {
 
     public static int applyManaCostReduction(IPlayerData playerData, int originalCost) {
         return originalCost;
+    }
+
+    public static float getMeleeCritChanceForItem(IPlayerData data, EntityPlayerMP player, ItemStack item) {
+        return data.getMeleeCritChance() + ItemUtils.getCritChanceForItem(item);
     }
 }

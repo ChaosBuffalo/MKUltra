@@ -26,17 +26,13 @@ import java.util.Map;
 public class SpellTriggers {
 
 
-    private static boolean isMKUltraAbilityDamage(DamageSource source){
+    private static boolean isMKUltraAbilityDamage(DamageSource source) {
         return source instanceof MKDamageSource;
     }
 
     private static boolean isPlayerPhysicalDamage(DamageSource source) {
         return (!source.isFireDamage() && !source.isExplosion() && !source.isMagicDamage() &&
                 source.getDamageType().equals("player"));
-    }
-
-    private static float getCombinedCritChance(IPlayerData data, EntityPlayerMP player) {
-        return data.getMeleeCritChance() + ItemUtils.getCritChanceForItem(player.getHeldItemMainhand());
     }
 
 
@@ -136,10 +132,14 @@ public class SpellTriggers {
             playerHurtEntityPostTriggers.forEach(f -> f.apply(event, source, livingTarget, playerSource, sourceData));
         }
 
+        private static boolean checkCrit(EntityPlayerMP player, float chance) {
+            return player.getRNG().nextFloat() >= 1.0f - chance;
+        }
+
         private static void handleMagic(LivingHurtEvent event, EntityLivingBase livingTarget, EntityPlayerMP playerSource,
                                         IPlayerData sourceData, MKDamageSource mkSource) {
 
-            if (playerSource.getRNG().nextFloat() >= 1.0f - sourceData.getSpellCritChance()) {
+            if (checkCrit(playerSource, sourceData.getSpellCritChance())) {
                 float newDamage = event.getAmount() * sourceData.getSpellCritDamage();
                 event.setAmount(newDamage);
 
@@ -161,8 +161,8 @@ public class SpellTriggers {
 
         private static void handleMelee(LivingHurtEvent event, DamageSource source, EntityLivingBase livingTarget,
                                         EntityPlayerMP playerSource, IPlayerData sourceData, boolean isDirect) {
-            if (playerSource.getRNG().nextFloat() >= 1.0f - getCombinedCritChance(sourceData, playerSource)) {
-                ItemStack mainHand = playerSource.getHeldItemMainhand();
+            ItemStack mainHand = playerSource.getHeldItemMainhand();
+            if (checkCrit(playerSource, PlayerFormulas.getMeleeCritChanceForItem(sourceData, playerSource, mainHand))) {
                 float newDamage = event.getAmount() * ItemUtils.getCritDamageForItem(mainHand);
                 event.setAmount(newDamage);
                 CritMessagePacket.CritType type = isDirect ?
