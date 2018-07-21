@@ -8,6 +8,7 @@ import com.chaosbuffalo.mkultra.core.ArmorClass;
 import com.chaosbuffalo.mkultra.init.ModItems;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
+import net.minecraft.util.ResourceLocation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.List;
 public class Digger extends BaseClass {
 
     public static final List<BaseAbility> abilities = new ArrayList<>(5);
-    private static final ArmorClass ARMORCLASS = new DiggerArmorClass();
+    private static final ArmorClass ARMORCLASS = new DiggerArmorClass(new ResourceLocation(MKUltra.MODID, "armor_class.digger"));
 
     static {
         abilities.add(new GoldenOpportunity());
@@ -76,6 +77,10 @@ public class Digger extends BaseClass {
     }
 
     private static class DiggerArmorClass extends ArmorClass {
+        public DiggerArmorClass(ResourceLocation location){
+            super(location);
+        }
+
         @Override
         public boolean canWear(ItemArmor.ArmorMaterial material) {
             return true;

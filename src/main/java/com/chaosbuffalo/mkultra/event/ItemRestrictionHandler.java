@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.event;
 
+import com.chaosbuffalo.mkultra.core.ArmorClass;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.item.ItemHelper;
@@ -12,6 +13,7 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemShield;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -70,6 +72,7 @@ public class ItemRestrictionHandler {
         checkEquipmentSlot(player, playerData, EntityEquipmentSlot.LEGS);
         checkEquipmentSlot(player, playerData, EntityEquipmentSlot.FEET);
     }
+
 
     @SuppressWarnings("unused")
     @SubscribeEvent

@@ -29,6 +29,24 @@ public class ItemUtils {
         addCriticalStats(ItemPickaxe.class, 0, .05f, 1.5f);
     }
 
+    public static boolean itemHasCriticalChance(Item item){
+        for (ItemCriticalStats stat : CRITICAL_PRIORITY){
+            if (matchesThisCritStats(stat, item)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean matchesThisCritStats(ItemCriticalStats stat, Item item){
+        Class<? extends Item> itemClass = stat.item;
+        if (itemClass.isInstance(item)){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     public static float getCritChanceForItem(ItemStack itemInHand) {
         if (itemInHand.equals(ItemStack.EMPTY)){
@@ -36,8 +54,7 @@ public class ItemUtils {
         }
         Item item = itemInHand.getItem();
         for (ItemCriticalStats stat : CRITICAL_PRIORITY){
-            Class<? extends Item> itemClass = stat.item;
-            if (itemClass.isInstance(item)){
+            if (matchesThisCritStats(stat, item)){
                 return stat.chance;
             }
         }
@@ -50,8 +67,7 @@ public class ItemUtils {
         }
         Item item = itemInHand.getItem();
         for (ItemCriticalStats stat : CRITICAL_PRIORITY){
-            Class<? extends Item> itemClass = stat.item;
-            if (itemClass.isInstance(item)){
+            if (matchesThisCritStats(stat, item)){
                 return stat.damageMultiplier;
             }
         }

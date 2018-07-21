@@ -102,27 +102,29 @@ public class CombatEventHandler {
 
     public static void doMeleeCritical(EntityPlayerMP playerSource, IPlayerData sourceData, LivingHurtEvent event,
                                        EntityLivingBase livingTarget, boolean isDirect){
-        if (playerSource.getRNG().nextFloat() >= 1.0f - getCombinedCritChance(sourceData, playerSource)){
-            ItemStack mainHand = playerSource.getHeldItemMainhand();
-            float newDamage = event.getAmount() * ItemUtils.getCritDamageForItem(
-                    mainHand);
-            event.setAmount(newDamage);
-            CritMessagePacket.CritType type = isDirect ? CritMessagePacket.CritType.MELEE_CRIT : CritMessagePacket.CritType.INDIRECT_CRIT;
-            MKUltra.packetHandler.sendToAllAround(new CritMessagePacket(
-                            livingTarget.getEntityId(), playerSource.getUniqueID(),
-                            newDamage, type),
-                    playerSource.dimension, playerSource.posX,
-                    playerSource.posY, playerSource.posZ, 50.0f);
-            Vec3d lookVec = livingTarget.getLookVec();
-            MKUltra.packetHandler.sendToAllAround(
-                    new ParticleEffectSpawnPacket(
-                            EnumParticleTypes.CRIT.getParticleID(),
-                            ParticleEffects.SPHERE_MOTION, 30, 6,
-                            livingTarget.posX, livingTarget.posY + 1.0f,
-                            livingTarget.posZ, .5f, .5f, .5f, 1.5,
-                            lookVec),
-                    livingTarget.dimension, livingTarget.posX,
-                    livingTarget.posY, livingTarget.posZ, 50.0f);
+        ItemStack mainHand = playerSource.getHeldItemMainhand();
+        if (ItemUtils.itemHasCriticalChance(mainHand.getItem())){
+            if (playerSource.getRNG().nextFloat() >= 1.0f - getCombinedCritChance(sourceData, playerSource)){
+                float newDamage = event.getAmount() * ItemUtils.getCritDamageForItem(
+                        mainHand);
+                event.setAmount(newDamage);
+                CritMessagePacket.CritType type = isDirect ? CritMessagePacket.CritType.MELEE_CRIT : CritMessagePacket.CritType.INDIRECT_CRIT;
+                MKUltra.packetHandler.sendToAllAround(new CritMessagePacket(
+                                livingTarget.getEntityId(), playerSource.getUniqueID(),
+                                newDamage, type),
+                        playerSource.dimension, playerSource.posX,
+                        playerSource.posY, playerSource.posZ, 50.0f);
+                Vec3d lookVec = livingTarget.getLookVec();
+                MKUltra.packetHandler.sendToAllAround(
+                        new ParticleEffectSpawnPacket(
+                                EnumParticleTypes.CRIT.getParticleID(),
+                                ParticleEffects.SPHERE_MOTION, 30, 6,
+                                livingTarget.posX, livingTarget.posY + 1.0f,
+                                livingTarget.posZ, .5f, .5f, .5f, 1.5,
+                                lookVec),
+                        livingTarget.dimension, livingTarget.posX,
+                        livingTarget.posY, livingTarget.posZ, 50.0f);
+            }
         }
     }
 
