@@ -47,6 +47,10 @@ public class ItemUtils {
         }
     }
 
+    public static boolean isItemInstance(Class<? extends Item> itemClass, Item toCheck){
+        return itemClass.isInstance(toCheck);
+    }
+
 
     public static float getCritChanceForItem(ItemStack itemInHand) {
         if (itemInHand.equals(ItemStack.EMPTY)){

@@ -46,13 +46,13 @@ public class Integrations {
             return;
         }
 
-        ItemRestrictionHandler.addShieldRestrictedItem(ItemLongbow.class);
-        ItemRestrictionHandler.addShieldRestrictedItem(ItemKatana.class);
-        ItemRestrictionHandler.addShieldRestrictedItem(ItemCrossbow.class);
-        ItemRestrictionHandler.addShieldRestrictedItem(ItemHalberd.class);
-        ItemRestrictionHandler.addShieldRestrictedItem(ItemWarhammer.class);
-        ItemRestrictionHandler.addShieldRestrictedItem(ItemGreatsword.class);
-        ItemRestrictionHandler.addShieldRestrictedItem(ItemPike.class);
+        ItemRestrictionHandler.addShieldRestrictedItem(ItemLongbow.class, 0);
+        ItemRestrictionHandler.addShieldRestrictedItem(ItemKatana.class, 0);
+        ItemRestrictionHandler.addShieldRestrictedItem(ItemCrossbow.class, 0);
+        ItemRestrictionHandler.addShieldRestrictedItem(ItemHalberd.class, 0);
+        ItemRestrictionHandler.addShieldRestrictedItem(ItemWarhammer.class, 0);
+        ItemRestrictionHandler.addShieldRestrictedItem(ItemGreatsword.class, 0);
+        ItemRestrictionHandler.addShieldRestrictedItem(ItemPike.class, 0);
 
         ItemUtils.addCriticalStats(ItemKatana.class, 1, .1f, 3.0f);
         ItemUtils.addCriticalStats(ItemRapier.class, 1, .1f, 2.5f);

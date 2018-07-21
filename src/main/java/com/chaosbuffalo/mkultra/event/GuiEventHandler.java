@@ -38,6 +38,10 @@ public class GuiEventHandler {
         event.getToolTip().add(tooltip);
     }
 
+    private static void doNoShieldTooltip(ItemTooltipEvent event){
+        event.getToolTip().add("Cannot Equip Shield");
+    }
+
     @SuppressWarnings("unused")
     @SubscribeEvent
     public static void onItemTooltipEvent(ItemTooltipEvent event){
@@ -46,6 +50,9 @@ public class GuiEventHandler {
         }
         if (ItemUtils.itemHasCriticalChance(event.getItemStack().getItem())){
             doCritTooltip(event);
+        }
+        if (ItemRestrictionHandler.isNoShieldItem(event.getItemStack().getItem())){
+            doNoShieldTooltip(event);
         }
     }
 }
