@@ -32,7 +32,7 @@ public class PlayerAttributes {
             .setDescription("Spell Critical Chance")
             .setShouldWatch(true);
 
-    public static final IAttribute SPELL_CRITICAL_DAMAGE = new RangedAttribute(null, "mkultra.spell_critical_damage", 1.5, 0.0, 10.0)
+    public static final IAttribute SPELL_CRITICAL_DAMAGE = new RangedAttribute(null, "mkultra.spell_crit_damage", 1.5, 0.0, 10.0)
             .setDescription("Spell Critical Damage")
             .setShouldWatch(true);
 
