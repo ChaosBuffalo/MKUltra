@@ -21,6 +21,6 @@ public class MKUltraTab extends CreativeTabs {
     @Override
     @SideOnly(Side.CLIENT)
     public ItemStack getTabIconItem() {
-        return new ItemStack(ModItems.sunicon);
+        return new ItemStack(ModItems.sun_icon);
     }
 }

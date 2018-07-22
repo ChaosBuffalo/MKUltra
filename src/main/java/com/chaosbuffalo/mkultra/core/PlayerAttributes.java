@@ -4,15 +4,15 @@ import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.ai.attributes.RangedAttribute;
 
 public class PlayerAttributes {
-    public static final IAttribute MAX_MANA = new RangedAttribute(null, "mkultra.maxMana", 0, 0, 1024)
+    public static final RangedAttribute MAX_MANA = (RangedAttribute) new RangedAttribute(null, "mkultra.maxMana", 0, 0, 1024)
             .setDescription("Max Mana")
             .setShouldWatch(true);
 
-    public static final IAttribute MANA_REGEN = new RangedAttribute(null, "mkultra.manaRegen", 0, 0, 1024)
+    public static final RangedAttribute MANA_REGEN = (RangedAttribute) new RangedAttribute(null, "mkultra.manaRegen", 0, 0, 1024)
             .setDescription("Mana Regen")
             .setShouldWatch(true);
 
-    public static final IAttribute MAGIC_ATTACK_DAMAGE = new RangedAttribute(null, "mkultra.magicAttackDamage", 0, 0, 2048)
+    public static final RangedAttribute MAGIC_ATTACK_DAMAGE = (RangedAttribute) new RangedAttribute(null, "mkultra.magicAttackDamage", 0, 0, 2048)
             .setDescription("Magic Attack Damage")
             .setShouldWatch(true);
 
@@ -39,7 +39,7 @@ public class PlayerAttributes {
     /**
      * Operation 0: Increment X by Amount
      * The game first sets X = Base, then executes all Operation 0 modifiers, then sets Y = X, then executes all Operation 1 modifiers, and finally executes all Operation 2 modifiers.
-     *
+     * <p>
      * +- amount
      */
     public static final int OP_INCREMENT = 0;
@@ -47,7 +47,7 @@ public class PlayerAttributes {
     /**
      * Operation 1: Increment Y by X * Amount
      * The game first sets X = Base, then executes all Operation 0 modifiers, then sets Y = X, then executes all Operation 1 modifiers, and finally executes all Operation 2 modifiers.
-     *
+     * <p>
      * +- amount % (additive)
      */
     public static final int OP_SCALE_ADDITIVE = 1;
@@ -55,7 +55,7 @@ public class PlayerAttributes {
     /**
      * Operation 2: Y = Y * (1 + Amount) (equivalent to Increment Y by Y * Amount)
      * The game first sets X = Base, then executes all Operation 0 modifiers, then sets Y = X, then executes all Operation 1 modifiers, and finally executes all Operation 2 modifiers.
-     *
+     * <p>
      * +- amount % (multiplicative)
      */
     public static final int OP_SCALE_MULTIPLICATIVE = 2;

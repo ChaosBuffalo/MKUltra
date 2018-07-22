@@ -37,7 +37,7 @@ public class AngelDust extends Item implements IClassProvider {
 
     @Override
     public ResourceLocation getIconForProvider() {
-        return new ResourceLocation(MKUltra.MODID, "textures/items/sunicon.png");
+        return new ResourceLocation(MKUltra.MODID, "textures/items/sun_icon.png");
     }
 
     @Override

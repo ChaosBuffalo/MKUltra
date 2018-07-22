@@ -73,7 +73,7 @@ public class Digger extends BaseClass {
 
     @Override
     public Item getUnlockItem() {
-        return ModItems.sunicon;
+        return ModItems.sun_icon;
     }
 
     private static class DiggerArmorClass extends ArmorClass {

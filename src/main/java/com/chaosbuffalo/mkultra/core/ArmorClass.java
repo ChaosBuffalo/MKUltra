@@ -23,26 +23,22 @@ public class ArmorClass {
 
     public static void registerDefaults() {
         ROBES.register(ModItems.ROBEMAT)
-                .register(ModItems.COPPER_THREADED_MAT)
                 .register(ModItems.IRON_THREADED_MAT);
 
 
         LIGHT.inherit(ROBES)
                 .register(ItemArmor.ArmorMaterial.LEATHER)
-                .register(ModItems.BONEDLEATHERMAT)
-                .register(ModItems.STEEL_INFUSED_BONE_MAT);
+                .register(ModItems.BONEDLEATHERMAT);
 
 
         MEDIUM.inherit(LIGHT)
                 .register(ItemArmor.ArmorMaterial.GOLD)
                 .register(ItemArmor.ArmorMaterial.CHAIN)
-                .register(ModItems.CHAINMAT)
-                .register(ModItems.OBSIDIAN_CHAIN);
+                .register(ModItems.CHAINMAT);
 
 
         HEAVY.inherit(MEDIUM)
-                .register(ItemArmor.ArmorMaterial.IRON)
-                .register(ModItems.DIAMOND_DUSTED_INVAR_MAT);
+                .register(ItemArmor.ArmorMaterial.IRON);
     }
 
     private final Set<ItemArmor.ArmorMaterial> materials = Sets.newHashSet();

@@ -7,7 +7,6 @@ import com.chaosbuffalo.mkultra.core.PlayerDataStorage;
 import com.chaosbuffalo.mkultra.integration.Integrations;
 import com.chaosbuffalo.mkultra.core.ArmorClass;
 import com.chaosbuffalo.mkultra.init.ModItems;
-import com.chaosbuffalo.mkultra.item.FireExtinguisherFlask;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.network.ModGuiHandler;
 import com.chaosbuffalo.mkultra.network.PacketHandler;
@@ -45,7 +44,6 @@ public class CommonProxy {
         PacketHandler packetHandler = MKUltra.packetHandler;
 
         packetHandler.registerPacket(PlayerSyncRequestPacket.class, new PlayerSyncRequestPacket.Handler(), Side.SERVER);
-        packetHandler.registerPacket(RangeSwordAttackPacket.class, new RangeSwordAttackPacket.Handler(), Side.SERVER);
         packetHandler.registerPacket(ClassLearnPacket.class, new ClassLearnPacket.Handler(), Side.SERVER);
         packetHandler.registerPacket(LevelAbilityPacket.class, new LevelAbilityPacket.Handler(), Side.SERVER);
         packetHandler.registerPacket(ExecuteActivePacket.class, new ExecuteActivePacket.Handler(), Side.SERVER);

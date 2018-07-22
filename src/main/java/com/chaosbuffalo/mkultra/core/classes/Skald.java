@@ -68,6 +68,6 @@ public class Skald extends BaseClass {
 
     @Override
     public Item getUnlockItem() {
-        return ModItems.sunicon;
+        return ModItems.sun_icon;
     }
 }

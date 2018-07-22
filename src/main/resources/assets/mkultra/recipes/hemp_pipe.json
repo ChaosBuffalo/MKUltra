@@ -1,1 +1,15 @@
-{"pattern": ["s ", " s"], "type": "minecraft:crafting_shaped", "result": {"item": "mkultra:hemp_pipe"}, "key": {"s": {"item": "minecraft:stick"}}}
+{
+  "pattern": [
+    "s ",
+    " s"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "mkultra:hemp_pipe"
+  },
+  "key": {
+    "s": {
+      "item": "minecraft:stick"
+    }
+  }
+}

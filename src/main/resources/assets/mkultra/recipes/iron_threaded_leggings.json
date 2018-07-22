@@ -1,1 +1,16 @@
-{"pattern": ["www", "w w", "w w"], "type": "minecraft:crafting_shaped", "result": {"item": "mkultra:iron_threaded_leggings"}, "key": {"w": {"item": "mkultra:iron_threaded_cloth"}}}
+{
+  "pattern": [
+    "www",
+    "w w",
+    "w w"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "mkultra:iron_threaded_leggings"
+  },
+  "key": {
+    "w": {
+      "item": "mkultra:iron_threaded_cloth"
+    }
+  }
+}
