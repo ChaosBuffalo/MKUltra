@@ -1,1 +1,1 @@
-{"pattern": ["www", "w w"], "type": "minecraft:crafting_shaped", "result": {"item": "mkultra:steel_infused_bone_helmet"}, "key": {"w": {"item": "mkultra:steel_infused_bone_leather"}}}
+{"pattern": ["www", "w w"], "type": "minecraft:crafting_shaped", "result": {"item": "mkultrax:steel_infused_bone_helmet"}, "key": {"w": {"item": "mkultrax:steel_infused_bone_leather"}}}
