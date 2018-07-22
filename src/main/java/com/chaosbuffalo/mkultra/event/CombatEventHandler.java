@@ -1,24 +1,21 @@
 package com.chaosbuffalo.mkultra.event;
 
-
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.effects.SpellTriggers;
-import com.chaosbuffalo.mkultra.effects.spells.MoonTrancePotion;
-import com.chaosbuffalo.mkultra.log.Log;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
 
 @SuppressWarnings("unused")
-@Mod.EventBusSubscriber
+@Mod.EventBusSubscriber(Side.SERVER)
 public class CombatEventHandler {
 
     private static float MAX_CRIT_MESSAGE_DISTANCE = 50.0f;
