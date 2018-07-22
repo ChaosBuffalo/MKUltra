@@ -95,7 +95,7 @@ public class BaseMetalSilo {
 
     private static void regInternal(Item item, String pathName) {
         item.setUnlocalizedName(pathName);
-        item.setRegistryName(MKUltra.MODID, pathName);
+        item.setRegistryName("mkultrax", pathName);
         ALL_ITEMS.add(item);
     }
 
