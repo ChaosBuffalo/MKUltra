@@ -4,6 +4,7 @@ import com.chaosbuffalo.mkultra.init.ModEntities;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerDataStorage;
+import com.chaosbuffalo.mkultra.integration.BaseMetalSilo;
 import com.chaosbuffalo.mkultra.integration.Integrations;
 import com.chaosbuffalo.mkultra.core.ArmorClass;
 import com.chaosbuffalo.mkultra.init.ModItems;
@@ -32,6 +33,7 @@ public class CommonProxy {
         ModEntities.registerEntities();
 
         ModItems.initItems();
+        BaseMetalSilo.initItems();
 
         CapabilityManager.INSTANCE.register(IPlayerData.class, new PlayerDataStorage(), PlayerData.class);
     }
@@ -40,6 +42,7 @@ public class CommonProxy {
         Log.info("init");
         ArmorClass.registerDefaults();
         Integrations.setup();
+        BaseMetalSilo.init();
         NetworkRegistry.INSTANCE.registerGuiHandler(MKUltra.INSTANCE, new ModGuiHandler());
         MKUltra.packetHandler = new PacketHandler(MKUltra.MODID);
         PacketHandler packetHandler = MKUltra.packetHandler;
