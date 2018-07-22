@@ -1,0 +1,20 @@
+{
+  "pattern": [
+    " s ",
+    "sis",
+    " s "
+  ],
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "mkultra:sun_icon"
+  },
+  "key": {
+    "s": {
+      "ore": "ingotIron",
+      "type": "forge:ore_dict"
+    },
+    "i":{
+      "item": "minecraft:redstone"
+    }
+  }
+}

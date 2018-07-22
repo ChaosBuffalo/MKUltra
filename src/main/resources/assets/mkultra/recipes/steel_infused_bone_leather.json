@@ -1,8 +1,23 @@
-{"pattern":
-["hhh", "sbs", "hhh"],
+{
+  "pattern": [
+    "hhh",
+    "sbs",
+    "hhh"
+  ],
   "type": "minecraft:crafting_shaped",
-  "result": {"count": 9, "item": "mkultra:steel_infused_bone_leather"},
+  "result": {
+    "count": 9,
+    "item": "mkultra:steel_infused_bone_leather"
+  },
   "key": {
-    "s": {"item": "basemetals:steel_powder"},
-    "h": {"item": "minecraft:leather"},
-    "b": {"item": "minecraft:bone"}}}
+    "s": {
+      "item": "basemetals:steel_powder"
+    },
+    "h": {
+      "item": "minecraft:leather"
+    },
+    "b": {
+      "item": "minecraft:bone"
+    }
+  }
+}

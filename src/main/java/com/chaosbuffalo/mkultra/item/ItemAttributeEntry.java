@@ -1,24 +1,20 @@
 package com.chaosbuffalo.mkultra.item;
 
-import java.util.UUID;
+import net.minecraft.entity.ai.attributes.RangedAttribute;
 
 /**
  * Created by Jacob on 7/22/2018.
  */
 public class ItemAttributeEntry {
 
-    public final UUID modifier_id;
     public final double amount;
     public final int operation;
-    public final String name;
-    public final String attr_name;
+    public final RangedAttribute attr;
 
-    public ItemAttributeEntry(UUID modifier_id, double amount, int operation, String name, String attr_name){
-        this.modifier_id = modifier_id;
+    public ItemAttributeEntry(double amount, int operation, RangedAttribute attr){
         this.amount = amount;
         this.operation = operation;
-        this.name = name;
-        this.attr_name = attr_name;
+        this.attr = attr;
 
     }
 }
