@@ -6,6 +6,8 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
@@ -13,51 +15,37 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 @Mod.EventBusSubscriber
 public class Remapper {
 
-    /*
-    mkultra:copper_threaded_leggings
-    mkultra:copper_threaded_helmet
-    mkultra:obsidian_chain_chestplate
-    mkultra:steel_infused_bone_chestplate
-    mkultra:diamond_dusted_invar_leggings
-    mkultra:mana_regen_idol_brass
-    mkultra:diamond_dusted_invar_chestplate
-    mkultra:copper_threaded_boots
-    mkultra:steel_infused_bone_leather
-    mkultra:diamond_dusted_invar_helmet
-    mkultra:steel_infused_bone_leggings
-    mkultra:obsidian_chain_boots
-    mkultra:mana_regen_idol_silver
-    mkultra:obsidian_chain_leggings
-    mkultra:diamond_dusted_invar_boots
-    mkultra:mana_regen_idol_copper
-    mkultra:copper_threaded_cloth
-    mkultra:mana_regen_idol_bronze
-    mkultra:copper_threaded_chestplate
-    mkultra:steel_infused_bone_boots
-    mkultra:steel_infused_bone_helmet
-    mkultra:obsidian_chain_helmet
-     */
+    static final String MKX_MOD_ID = "mkultrax";
+
 
     private static ResourceLocation mkxRes(String path) {
-        return new ResourceLocation("mkultrax", path);
+        return new ResourceLocation(MKX_MOD_ID, path);
     }
 
-    private static boolean remapToMKX(RegistryEvent.MissingMappings.Mapping<Item> entry) {
+    private static boolean tryRemapToMKX(RegistryEvent.MissingMappings.Mapping<Item> entry) {
 
+        // Only remap items that used to be in the mkultra core
         if (!entry.key.getResourceDomain().equals(MKUltra.MODID)) {
             return false;
         }
 
-        Item newItem = ForgeRegistries.ITEMS.getValue(mkxRes(entry.key.getResourcePath()));
+        ResourceLocation mkxPath = mkxRes(entry.key.getResourcePath());
+        Item newItem = ForgeRegistries.ITEMS.getValue(mkxPath);
 
-        Log.info("Remapping %s to mkx: %b", entry.key.toString(), newItem != null);
+        Log.info("Remapping %s to mkx %s: %b", entry.key.toString(), mkxPath.toString(), newItem != null);
 
         if (newItem != null) {
             entry.remap(newItem);
             return true;
-        } else {
+        }
+        else if (!Loader.isModLoaded(MKX_MOD_ID)) {
+            Log.info("MKCompat not found! Dropping item %s", entry.key.toString());
+            entry.ignore();
+            return true;
+        }
+        else {
             Log.info("Failed to find remap target for %s", entry.key.toString());
-            Runtime.getRuntime().exit(1);
+            FMLCommonHandler.instance().exitJava(1, false);
         }
 
         return false;
@@ -74,6 +62,12 @@ public class Remapper {
                     entry.ignore();
                     continue;
                 }
+
+                // sunicon -> sun_icon
+                if (entry.key.getResourcePath().equals("sunicon")) {
+                    entry.remap(ModItems.sun_icon);
+                    continue;
+                }
             }
 
             if (entry.key.getResourceDomain().equals("minekampf")) {
@@ -82,7 +76,7 @@ public class Remapper {
                 continue;
             }
 
-            if (remapToMKX(entry)) {
+            if (tryRemapToMKX(entry)) {
                 continue;
             }
         }
