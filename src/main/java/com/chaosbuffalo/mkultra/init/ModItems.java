@@ -1,12 +1,14 @@
 package com.chaosbuffalo.mkultra.init;
 
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.core.PlayerAttributes;
 import com.chaosbuffalo.mkultra.item.*;
 import com.mcmoddev.basemetals.data.MaterialNames;
 import com.mcmoddev.basemetals.init.Materials;
 import com.mcmoddev.lib.data.Names;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -29,7 +31,12 @@ import java.util.UUID;
 @Mod.EventBusSubscriber
 @GameRegistry.ObjectHolder(MKUltra.MODID)
 public final class ModItems {
-
+    private static String manaRegenName = "Bonus Mana Regen";
+    private static String maxManaName = "Bonus Mana";
+    private static String magicDamageName = "Bonus Magic Damage";
+    private static String healthName = "Bonus Health";
+    private static String cdrName = "Cooldown Reduction";
+    private static String speedName = "Bonus Speed";
     public static Item diamond_dust;
     public static Item sunicon;
     public static Item moon_icon;
@@ -133,7 +140,7 @@ public final class ModItems {
             new int[]{2, 5, 5, 3}, 20, null, 0);
     public static ItemArmor.ArmorMaterial CHAINMAT = EnumHelper.addArmorMaterial(
             "mkultra_chain",
-            "mkultra:chainmail", 20,
+            "mkultra:chainmail", 30,
             new int[]{1, 4, 5, 2}, 12, null, 0);
     public static ItemArmor.ArmorMaterial ROBEMAT = EnumHelper.addArmorMaterial(
             "mkultra_gold_threaded",
@@ -246,68 +253,112 @@ public final class ModItems {
         regInternal(copper_threaded_cloth = new Item().setCreativeTab(MKUltra.MKULTRA_TAB),
                 "copper_threaded_cloth");
         COPPER_THREADED_MAT.setRepairItem(new ItemStack(copper_threaded_cloth));
-        regInternal(copper_threaded_chestplate = new ItemManaArmor(
+
+        regInternal(copper_threaded_chestplate = new ItemAttributeArmor(
                 "copper_threaded_chestplate", COPPER_THREADED_MAT, 1,
-                EntityEquipmentSlot.CHEST, 2, chestUUID).setCreativeTab(MKUltra.MKULTRA_TAB));
-        regInternal(copper_threaded_helmet = new ItemManaRegenArmor(
+                EntityEquipmentSlot.CHEST,
+                new ItemAttributeEntry(chestUUID, 2, PlayerAttributes.OP_INCREMENT, maxManaName,
+                        PlayerAttributes.MAX_MANA.getName())).setCreativeTab(MKUltra.MKULTRA_TAB));
+
+        regInternal(copper_threaded_helmet = new ItemAttributeArmor(
                 "copper_threaded_helmet", COPPER_THREADED_MAT, 1,
-                EntityEquipmentSlot.HEAD, 0.5f, helmetUUID).setCreativeTab(MKUltra.MKULTRA_TAB));
-        regInternal(copper_threaded_leggings = new ItemManaArmor(
+                EntityEquipmentSlot.HEAD,
+                new ItemAttributeEntry(helmetUUID, 0.5, PlayerAttributes.OP_INCREMENT, manaRegenName,
+                        PlayerAttributes.MANA_REGEN.getName())).setCreativeTab(MKUltra.MKULTRA_TAB));
+
+        regInternal(copper_threaded_leggings = new ItemAttributeArmor(
                 "copper_threaded_leggings", COPPER_THREADED_MAT, 2,
-                EntityEquipmentSlot.LEGS, 2, leggingsUUID).setCreativeTab(MKUltra.MKULTRA_TAB));
-        regInternal(copper_threaded_boots = new ItemManaArmor(
+                EntityEquipmentSlot.LEGS,
+                new ItemAttributeEntry(leggingsUUID, 2, PlayerAttributes.OP_INCREMENT, maxManaName,
+                        PlayerAttributes.MAX_MANA.getName())).setCreativeTab(MKUltra.MKULTRA_TAB));
+
+        regInternal(copper_threaded_boots = new ItemAttributeArmor(
                 "copper_threaded_boots", COPPER_THREADED_MAT, 2,
-                EntityEquipmentSlot.FEET, 1, feetUUID).setCreativeTab(MKUltra.MKULTRA_TAB));
+                EntityEquipmentSlot.FEET, new ItemAttributeEntry(feetUUID, 2,
+                PlayerAttributes.OP_INCREMENT, maxManaName,
+                PlayerAttributes.MAX_MANA.getName())).setCreativeTab(MKUltra.MKULTRA_TAB));
 
         regInternal(iron_threaded_cloth = new Item().setCreativeTab(MKUltra.MKULTRA_TAB),
                 "iron_threaded_cloth");
         IRON_THREADED_MAT.setRepairItem(new ItemStack(iron_threaded_cloth));
-        regInternal(iron_threaded_chestplate = new ItemMagicDamageArmor(
+        regInternal(iron_threaded_chestplate = new ItemAttributeArmor(
                 "iron_threaded_chestplate", IRON_THREADED_MAT, 1,
-                EntityEquipmentSlot.CHEST, 1.0f, chestUUID).setCreativeTab(MKUltra.MKULTRA_TAB));
-        regInternal(iron_threaded_helmet = new ItemManaRegenArmor(
+                EntityEquipmentSlot.CHEST,
+                new ItemAttributeEntry(chestUUID, 1.0, PlayerAttributes.OP_INCREMENT, magicDamageName,
+                        PlayerAttributes.MAGIC_ATTACK_DAMAGE.getName())).setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(iron_threaded_helmet = new ItemAttributeArmor(
                 "iron_threaded_helmet", IRON_THREADED_MAT, 1,
-                EntityEquipmentSlot.HEAD, 1.0f, helmetUUID).setCreativeTab(MKUltra.MKULTRA_TAB));
-        regInternal(iron_threaded_leggings = new ItemManaArmor(
+                EntityEquipmentSlot.HEAD,
+                new ItemAttributeEntry(helmetUUID, 1.0, PlayerAttributes.OP_INCREMENT, manaRegenName,
+                        PlayerAttributes.MANA_REGEN.getName()))
+                .setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(iron_threaded_leggings = new ItemAttributeArmor(
                 "iron_threaded_leggings", IRON_THREADED_MAT, 2,
-                EntityEquipmentSlot.LEGS, 3, leggingsUUID).setCreativeTab(MKUltra.MKULTRA_TAB));
-        regInternal(iron_threaded_boots = new ItemManaArmor(
+                EntityEquipmentSlot.LEGS, new ItemAttributeEntry(leggingsUUID, 3,
+                PlayerAttributes.OP_INCREMENT, maxManaName,
+                PlayerAttributes.MAX_MANA.getName())).setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(iron_threaded_boots = new ItemAttributeArmor(
                 "iron_threaded_boots", IRON_THREADED_MAT, 2,
-                EntityEquipmentSlot.FEET, 2, feetUUID).setCreativeTab(MKUltra.MKULTRA_TAB));
+                EntityEquipmentSlot.FEET, new ItemAttributeEntry(feetUUID, 2,
+                PlayerAttributes.OP_INCREMENT, maxManaName,
+                PlayerAttributes.MAX_MANA.getName())).setCreativeTab(MKUltra.MKULTRA_TAB));
 
         regInternal(steel_infused_bone_leather = new Item().setCreativeTab(MKUltra.MKULTRA_TAB),
                 "steel_infused_bone_leather");
         STEEL_INFUSED_BONE_MAT.setRepairItem(new ItemStack(steel_infused_bone_leather));
-        regInternal(steel_infused_bone_chestplate = new ItemMagicDamageArmor(
+        regInternal(steel_infused_bone_chestplate = new ItemAttributeArmor(
                 "steel_infused_bone_chestplate",
                 STEEL_INFUSED_BONE_MAT, 1,
-                EntityEquipmentSlot.CHEST, 1.0f, chestUUID).setCreativeTab(MKUltra.MKULTRA_TAB));
-        regInternal(steel_infused_bone_helmet = new ItemManaRegenArmor(
+                EntityEquipmentSlot.CHEST,
+                new ItemAttributeEntry(chestUUID, 1.0, PlayerAttributes.OP_INCREMENT, magicDamageName,
+                        PlayerAttributes.MAGIC_ATTACK_DAMAGE.getName())).setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(steel_infused_bone_helmet = new ItemAttributeArmor(
                 "steel_infused_bone_helmet", STEEL_INFUSED_BONE_MAT, 1,
-                EntityEquipmentSlot.HEAD, 0.5f, helmetUUID).setCreativeTab(MKUltra.MKULTRA_TAB));
-        regInternal(steel_infused_bone_leggings = new ItemManaArmor(
+                EntityEquipmentSlot.HEAD,
+                new ItemAttributeEntry(helmetUUID, 0.5, PlayerAttributes.OP_INCREMENT, manaRegenName,
+                        PlayerAttributes.MANA_REGEN.getName())).setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(steel_infused_bone_leggings = new ItemAttributeArmor(
                 "steel_infused_bone_leggings", STEEL_INFUSED_BONE_MAT, 2,
-                EntityEquipmentSlot.LEGS, 2, leggingsUUID).setCreativeTab(MKUltra.MKULTRA_TAB));
-        regInternal(steel_infused_bone_boots = new ItemManaArmor(
+                EntityEquipmentSlot.LEGS,
+                new ItemAttributeEntry(leggingsUUID, 2,
+                PlayerAttributes.OP_INCREMENT, maxManaName,
+                PlayerAttributes.MAX_MANA.getName())).setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(steel_infused_bone_boots = new ItemAttributeArmor(
                 "steel_infused_bone_boots", STEEL_INFUSED_BONE_MAT, 2,
-                EntityEquipmentSlot.FEET, 2, feetUUID).setCreativeTab(MKUltra.MKULTRA_TAB));
+                EntityEquipmentSlot.FEET, new ItemAttributeEntry(feetUUID, 2,
+                PlayerAttributes.OP_INCREMENT, maxManaName,
+                PlayerAttributes.MAX_MANA.getName())).setCreativeTab(MKUltra.MKULTRA_TAB));
 
-        regInternal(diamond_dusted_invar_chestplate = new ItemHealthArmor(
+        regInternal(diamond_dusted_invar_chestplate = new ItemAttributeArmor(
                 "diamond_dusted_invar_chestplate",
                 DIAMOND_DUSTED_INVAR_MAT, 1,
-                EntityEquipmentSlot.CHEST, 5.0f, chestUUID).setCreativeTab(MKUltra.MKULTRA_TAB));
-        regInternal(diamond_dusted_invar_helmet = new ItemManaRegenArmor(
+                EntityEquipmentSlot.CHEST,
+                new ItemAttributeEntry(chestUUID, 5.0,
+                        PlayerAttributes.OP_INCREMENT, healthName,
+                        SharedMonsterAttributes.MAX_HEALTH.getName())).setCreativeTab(MKUltra.MKULTRA_TAB));
+
+        regInternal(diamond_dusted_invar_helmet = new ItemAttributeArmor(
                 "diamond_dusted_invar_helmet",
                 DIAMOND_DUSTED_INVAR_MAT, 1,
-                EntityEquipmentSlot.HEAD, 0.75f, helmetUUID).setCreativeTab(MKUltra.MKULTRA_TAB));
-        regInternal(diamond_dusted_invar_leggings = new ItemManaArmor(
+                EntityEquipmentSlot.HEAD,
+                new ItemAttributeEntry(helmetUUID, 0.75, PlayerAttributes.OP_INCREMENT, manaRegenName,
+                        PlayerAttributes.MANA_REGEN.getName())).setCreativeTab(MKUltra.MKULTRA_TAB));
+
+        regInternal(diamond_dusted_invar_leggings = new ItemAttributeArmor(
                 "diamond_dusted_invar_leggings",
                 DIAMOND_DUSTED_INVAR_MAT, 2,
-                EntityEquipmentSlot.LEGS, 5, leggingsUUID).setCreativeTab(MKUltra.MKULTRA_TAB));
-        regInternal(diamond_dusted_invar_boots = new ItemCDRArmor(
+                EntityEquipmentSlot.LEGS,
+                new ItemAttributeEntry(leggingsUUID, 5.0,
+                        PlayerAttributes.OP_INCREMENT, maxManaName,
+                        PlayerAttributes.MAX_MANA.getName())).setCreativeTab(MKUltra.MKULTRA_TAB));
+
+        regInternal(diamond_dusted_invar_boots = new ItemAttributeArmor(
                 "diamond_dusted_invar_boots",
                 DIAMOND_DUSTED_INVAR_MAT, 2,
-                EntityEquipmentSlot.FEET, .1f, feetUUID).setCreativeTab(MKUltra.MKULTRA_TAB));
+                EntityEquipmentSlot.FEET,
+                new ItemAttributeEntry(feetUUID, .1,
+                        PlayerAttributes.OP_SCALE_ADDITIVE, cdrName,
+                        PlayerAttributes.COOLDOWN.getName())).setCreativeTab(MKUltra.MKULTRA_TAB));
 
 
         CHAINMAT.setRepairItem(new ItemStack(Items.IRON_INGOT));
@@ -327,32 +378,47 @@ public final class ModItems {
         regInternal(gold_threaded_cloth = new Item()
                 .setCreativeTab(MKUltra.MKULTRA_TAB), "gold_threaded_cloth");
         ROBEMAT.setRepairItem(new ItemStack(ModItems.gold_threaded_cloth));
-        regInternal(gold_threaded_chestplate = new ItemMagicDamageArmor(
+
+        regInternal(gold_threaded_chestplate = new ItemAttributeArmor(
                 "gold_threaded_chestplate", ROBEMAT, 1, EntityEquipmentSlot.CHEST,
-                2.0f, chestUUID).setCreativeTab(MKUltra.MKULTRA_TAB));
-        regInternal(gold_threaded_helmet = new ItemManaRegenArmor(
+                new ItemAttributeEntry(chestUUID, 2.0, PlayerAttributes.OP_INCREMENT, magicDamageName,
+                        PlayerAttributes.MAGIC_ATTACK_DAMAGE.getName())).setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(gold_threaded_helmet = new ItemAttributeArmor(
                 "gold_threaded_helmet", ROBEMAT, 1, EntityEquipmentSlot.HEAD,
-                1.5f, helmetUUID).setCreativeTab(MKUltra.MKULTRA_TAB));
-        regInternal(gold_threaded_leggings = new ItemManaArmor(
+                new ItemAttributeEntry(helmetUUID, 1.5, PlayerAttributes.OP_INCREMENT, manaRegenName,
+                        PlayerAttributes.MANA_REGEN.getName())).setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(gold_threaded_leggings = new ItemAttributeArmor(
                 "gold_threaded_leggings", ROBEMAT, 2, EntityEquipmentSlot.LEGS,
-                5, leggingsUUID).setCreativeTab(MKUltra.MKULTRA_TAB));
-        regInternal(gold_threaded_boots = new ItemManaArmor(
+                new ItemAttributeEntry(leggingsUUID, 5.0,
+                        PlayerAttributes.OP_INCREMENT, maxManaName,
+                        PlayerAttributes.MAX_MANA.getName())).setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(gold_threaded_boots = new ItemAttributeArmor(
                 "gold_threaded_boots", ROBEMAT, 2, EntityEquipmentSlot.FEET,
-                5, feetUUID).setCreativeTab(MKUltra.MKULTRA_TAB));
+                new ItemAttributeEntry(feetUUID, 5.0,
+                        PlayerAttributes.OP_INCREMENT, maxManaName,
+                        PlayerAttributes.MAX_MANA.getName())).setCreativeTab(MKUltra.MKULTRA_TAB));
 
         OBSIDIAN_CHAIN.setRepairItem(new ItemStack(
                 Materials.getMaterialByName(MaterialNames.OBSIDIAN).getItem(Names.INGOT)));
-        regInternal(obsidian_chain_boots = new ItemSpeedArmor(
-                "obsidian_chain_boots", OBSIDIAN_CHAIN, 2, EntityEquipmentSlot.FEET, .1f, feetUUID)
+        regInternal(obsidian_chain_boots = new ItemAttributeArmor(
+                "obsidian_chain_boots", OBSIDIAN_CHAIN, 2, EntityEquipmentSlot.FEET,
+                new ItemAttributeEntry(feetUUID, .1, PlayerAttributes.OP_SCALE_ADDITIVE, speedName,
+                        SharedMonsterAttributes.MOVEMENT_SPEED.getName()))
                 .setCreativeTab(MKUltra.MKULTRA_TAB));
-        regInternal(obsidian_chain_chestplate = new ItemCDRArmor(
-                "obsidian_chain_chestplate", OBSIDIAN_CHAIN, 1, EntityEquipmentSlot.CHEST, .1f, chestUUID)
+        regInternal(obsidian_chain_chestplate = new ItemAttributeArmor(
+                "obsidian_chain_chestplate", OBSIDIAN_CHAIN, 1, EntityEquipmentSlot.CHEST,
+                new ItemAttributeEntry(chestUUID, .1, PlayerAttributes.OP_SCALE_ADDITIVE,
+                        cdrName, PlayerAttributes.COOLDOWN.getName()))
                 .setCreativeTab(MKUltra.MKULTRA_TAB));
-        regInternal(obsidian_chain_leggings = new ItemHealthArmor(
-                "obsidian_chain_leggings", OBSIDIAN_CHAIN, 2, EntityEquipmentSlot.LEGS, 5, leggingsUUID)
-                .setCreativeTab(MKUltra.MKULTRA_TAB));
-        regInternal(obsidian_chain_helmet = new ItemManaRegenArmor(
-                "obsidian_chain_helmet", OBSIDIAN_CHAIN, 1, EntityEquipmentSlot.HEAD, 1.0f, helmetUUID)
+        regInternal(obsidian_chain_leggings = new ItemAttributeArmor(
+                "obsidian_chain_leggings", OBSIDIAN_CHAIN, 2, EntityEquipmentSlot.LEGS,
+                new ItemAttributeEntry(leggingsUUID, 5.0,
+                        PlayerAttributes.OP_INCREMENT, healthName,
+                        SharedMonsterAttributes.MAX_HEALTH.getName())).setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(obsidian_chain_helmet = new ItemAttributeArmor(
+                "obsidian_chain_helmet", OBSIDIAN_CHAIN, 1, EntityEquipmentSlot.HEAD,
+                new ItemAttributeEntry(helmetUUID, 1.0, PlayerAttributes.OP_INCREMENT, manaRegenName,
+                        PlayerAttributes.MANA_REGEN.getName()))
                 .setCreativeTab(MKUltra.MKULTRA_TAB));
 
 
