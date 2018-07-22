@@ -1,7 +1,7 @@
 package com.chaosbuffalo.mkultra.item;
 
-import com.chaosbuffalo.mkultra.core.PlayerAttributes;
 import com.google.common.collect.Multimap;
+import com.google.common.collect.Sets;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
@@ -32,30 +32,15 @@ public class ItemAttributeArmor extends ItemArmor {
     }
 
     public ItemAttributeArmor(String unlocalizedName, ItemArmor.ArmorMaterial material, int renderIndex,
-                               EntityEquipmentSlot armorType, HashSet<ItemAttributeEntry> attributes) {
+                              EntityEquipmentSlot armorType, ItemAttributeEntry... attributes) {
         super(material, renderIndex, armorType);
-        this.attributes = attributes;
-        this.setUnlocalizedName(unlocalizedName);
-    }
-
-    public ItemAttributeArmor(String unlocalizedName, ItemArmor.ArmorMaterial material, int renderIndex,
-                              EntityEquipmentSlot armorType) {
-        super(material, renderIndex, armorType);
-        this.attributes = new HashSet<>();
+        this.attributes = Sets.newHashSet(attributes);
         this.setUnlocalizedName(unlocalizedName);
     }
 
     public ItemAttributeArmor addAttribute(ItemAttributeEntry entry){
         this.attributes.add(entry);
         return this;
-    }
-
-    public ItemAttributeArmor(String unlocalizedName, ItemArmor.ArmorMaterial material, int renderIndex,
-    EntityEquipmentSlot armorType, ItemAttributeEntry attribute) {
-        super(material, renderIndex, armorType);
-        this.attributes = new HashSet<>();
-        this.attributes.add(attribute);
-        this.setUnlocalizedName(unlocalizedName);
     }
 
     @Override

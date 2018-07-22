@@ -4,7 +4,6 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.PlayerAttributes;
 import com.chaosbuffalo.mkultra.item.*;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.entity.ai.attributes.RangedAttribute;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -22,7 +21,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 @Mod.EventBusSubscriber
 @GameRegistry.ObjectHolder(MKUltra.MODID)
@@ -172,26 +170,22 @@ public final class ModItems {
         regInternal(iron_threaded_chestplate = new ItemAttributeArmor(
                 "iron_threaded_chestplate", IRON_THREADED_MAT, 1,
                 EntityEquipmentSlot.CHEST,
-                new ItemAttributeEntry(1.0, PlayerAttributes.OP_INCREMENT,
-                        (RangedAttribute)PlayerAttributes.MAGIC_ATTACK_DAMAGE))
+                new ItemAttributeEntry(1.0, PlayerAttributes.OP_INCREMENT, PlayerAttributes.MAGIC_ATTACK_DAMAGE))
                 .setCreativeTab(MKUltra.MKULTRA_TAB));
         regInternal(iron_threaded_helmet = new ItemAttributeArmor(
                 "iron_threaded_helmet", IRON_THREADED_MAT, 1,
                 EntityEquipmentSlot.HEAD,
-                new ItemAttributeEntry(1.0, PlayerAttributes.OP_INCREMENT,
-                        (RangedAttribute)PlayerAttributes.MANA_REGEN))
+                new ItemAttributeEntry(1.0, PlayerAttributes.OP_INCREMENT, PlayerAttributes.MANA_REGEN))
                 .setCreativeTab(MKUltra.MKULTRA_TAB));
         regInternal(iron_threaded_leggings = new ItemAttributeArmor(
                 "iron_threaded_leggings", IRON_THREADED_MAT, 2,
                 EntityEquipmentSlot.LEGS,
-                new ItemAttributeEntry(3, PlayerAttributes.OP_INCREMENT,
-                        (RangedAttribute)PlayerAttributes.MAX_MANA))
+                new ItemAttributeEntry(3, PlayerAttributes.OP_INCREMENT, PlayerAttributes.MAX_MANA))
                 .setCreativeTab(MKUltra.MKULTRA_TAB));
         regInternal(iron_threaded_boots = new ItemAttributeArmor(
                 "iron_threaded_boots", IRON_THREADED_MAT, 2,
                 EntityEquipmentSlot.FEET,
-                new ItemAttributeEntry(2, PlayerAttributes.OP_INCREMENT,
-                        (RangedAttribute)PlayerAttributes.MAX_MANA))
+                new ItemAttributeEntry(2, PlayerAttributes.OP_INCREMENT, PlayerAttributes.MAX_MANA))
                 .setCreativeTab(MKUltra.MKULTRA_TAB));
 
 
@@ -215,23 +209,19 @@ public final class ModItems {
 
         regInternal(gold_threaded_chestplate = new ItemAttributeArmor(
                 "gold_threaded_chestplate", ROBEMAT, 1, EntityEquipmentSlot.CHEST,
-                new ItemAttributeEntry(2.0, PlayerAttributes.OP_INCREMENT,
-                        (RangedAttribute)PlayerAttributes.MAGIC_ATTACK_DAMAGE))
+                new ItemAttributeEntry(2.0, PlayerAttributes.OP_INCREMENT, PlayerAttributes.MAGIC_ATTACK_DAMAGE))
                 .setCreativeTab(MKUltra.MKULTRA_TAB));
         regInternal(gold_threaded_helmet = new ItemAttributeArmor(
                 "gold_threaded_helmet", ROBEMAT, 1, EntityEquipmentSlot.HEAD,
-                new ItemAttributeEntry(1.5, PlayerAttributes.OP_INCREMENT,
-                        (RangedAttribute)PlayerAttributes.MANA_REGEN))
+                new ItemAttributeEntry(1.5, PlayerAttributes.OP_INCREMENT, PlayerAttributes.MANA_REGEN))
                 .setCreativeTab(MKUltra.MKULTRA_TAB));
         regInternal(gold_threaded_leggings = new ItemAttributeArmor(
                 "gold_threaded_leggings", ROBEMAT, 2, EntityEquipmentSlot.LEGS,
-                new ItemAttributeEntry(5.0, PlayerAttributes.OP_INCREMENT,
-                        (RangedAttribute)PlayerAttributes.MAX_MANA))
+                new ItemAttributeEntry(5.0, PlayerAttributes.OP_INCREMENT, PlayerAttributes.MAX_MANA))
                 .setCreativeTab(MKUltra.MKULTRA_TAB));
         regInternal(gold_threaded_boots = new ItemAttributeArmor(
                 "gold_threaded_boots", ROBEMAT, 2, EntityEquipmentSlot.FEET,
-                new ItemAttributeEntry(5.0, PlayerAttributes.OP_INCREMENT,
-                        (RangedAttribute)PlayerAttributes.MAX_MANA))
+                new ItemAttributeEntry(5.0, PlayerAttributes.OP_INCREMENT, PlayerAttributes.MAX_MANA))
                 .setCreativeTab(MKUltra.MKULTRA_TAB));
 
 
