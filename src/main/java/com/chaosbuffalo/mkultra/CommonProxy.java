@@ -45,7 +45,6 @@ public class CommonProxy {
         PacketHandler packetHandler = MKUltra.packetHandler;
 
         packetHandler.registerPacket(PlayerSyncRequestPacket.class, new PlayerSyncRequestPacket.Handler(), Side.SERVER);
-        packetHandler.registerPacket(RangeSwordAttackPacket.class, new RangeSwordAttackPacket.Handler(), Side.SERVER);
         packetHandler.registerPacket(ClassLearnPacket.class, new ClassLearnPacket.Handler(), Side.SERVER);
         packetHandler.registerPacket(LevelAbilityPacket.class, new LevelAbilityPacket.Handler(), Side.SERVER);
         packetHandler.registerPacket(ExecuteActivePacket.class, new ExecuteActivePacket.Handler(), Side.SERVER);

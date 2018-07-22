@@ -1,10 +1,9 @@
 package com.chaosbuffalo.mkultra;
 
-import com.chaosbuffalo.mkultra.client.render.entities.EntityRenderRegister;
 import com.chaosbuffalo.mkultra.client.gui.AbilityBar;
 import com.chaosbuffalo.mkultra.client.gui.PartyPanel;
+import com.chaosbuffalo.mkultra.client.render.entities.EntityRenderRegister;
 import com.chaosbuffalo.mkultra.event.ClientKeyHandler;
-import com.chaosbuffalo.mkultra.event.MouseHandler;
 import com.chaosbuffalo.mkultra.party.PartyData;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
@@ -30,8 +29,6 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void init(FMLInitializationEvent e) {
         super.init(e);
-
-        MinecraftForge.EVENT_BUS.register(new MouseHandler());
     }
 
     @Override
