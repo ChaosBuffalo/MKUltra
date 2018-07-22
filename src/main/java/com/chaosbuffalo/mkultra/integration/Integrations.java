@@ -1,12 +1,9 @@
 package com.chaosbuffalo.mkultra.integration;
-import com.chaosbuffalo.mkultra.core.ArmorClass;
 import com.chaosbuffalo.mkultra.event.ItemRestrictionHandler;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.utils.ItemUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import com.google.common.collect.Lists;
-import com.mcmoddev.basemetals.data.MaterialNames;
-import com.mcmoddev.basemetals.init.Materials;
 import com.oblivioussp.spartanweaponry.item.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -105,7 +102,6 @@ public class Integrations {
 
         return null;
     }
-
 
     public static void setup() {
         setupLootableBodies();

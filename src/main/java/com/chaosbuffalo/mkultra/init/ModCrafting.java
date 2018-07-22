@@ -1,8 +1,5 @@
 package com.chaosbuffalo.mkultra.init;
 
-import com.mcmoddev.basemetals.data.MaterialNames;
-import com.mcmoddev.lib.data.Names;
-import com.mcmoddev.lib.registry.CrusherRecipeRegistry;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -40,40 +37,6 @@ public final class ModCrafting {
                 "lil", "i i", 'i', Items.IRON_INGOT, 'l', Items.LEATHER);
         addRecipe(event, new ItemStack(ModItems.chainmailBoots),
                 "i i", "l l", 'i', Items.IRON_INGOT, 'l', Items.LEATHER);
-
-        addRecipe(event, new ItemStack(ModItems.obsidian_chain_chestplate),
-                "l l", "ili", "lil", 'i',
-                com.mcmoddev.basemetals.init.Materials.getMaterialByName(MaterialNames.OBSIDIAN).getItem(Names.INGOT),
-                'l', Items.LEATHER);
-        addRecipe(event, new ItemStack(ModItems.obsidian_chain_leggings),
-                "lil", "i i", "l l", 'i',
-                com.mcmoddev.basemetals.init.Materials.getMaterialByName(MaterialNames.OBSIDIAN).getItem(Names.INGOT),
-                'l', Items.LEATHER);
-        addRecipe(event, new ItemStack(ModItems.obsidian_chain_helmet),
-                "lil", "i i", 'i',
-                com.mcmoddev.basemetals.init.Materials.getMaterialByName(MaterialNames.OBSIDIAN).getItem(Names.INGOT),
-                'l', Items.LEATHER);
-        addRecipe(event, new ItemStack(ModItems.obsidian_chain_boots),
-                "i i", "l l", 'i',
-                com.mcmoddev.basemetals.init.Materials.getMaterialByName(MaterialNames.OBSIDIAN).getItem(Names.INGOT),
-                'l', Items.LEATHER);
-
-        addRecipe(event, new ItemStack(ModItems.diamond_dusted_invar_chestplate),
-                "i i", "idi", "iii", 'i',
-                com.mcmoddev.basemetals.init.Materials.getMaterialByName(MaterialNames.INVAR).getItem(Names.INGOT),
-                'd', ModItems.diamond_dust);
-        addRecipe(event, new ItemStack(ModItems.diamond_dusted_invar_leggings),
-                "idi", "i i", "i i", 'i',
-                com.mcmoddev.basemetals.init.Materials.getMaterialByName(MaterialNames.INVAR).getItem(Names.INGOT),
-                'd', ModItems.diamond_dust);
-        addRecipe(event, new ItemStack(ModItems.diamond_dusted_invar_helmet),
-                "idi", "i i", 'i',
-                com.mcmoddev.basemetals.init.Materials.getMaterialByName(MaterialNames.INVAR).getItem(Names.INGOT),
-                'd', ModItems.diamond_dust);
-        addRecipe(event, new ItemStack(ModItems.diamond_dusted_invar_boots),
-                "d d", "i i", 'i',
-                com.mcmoddev.basemetals.init.Materials.getMaterialByName(MaterialNames.INVAR).getItem(Names.INGOT),
-                'd', ModItems.diamond_dust);
         addRecipe(event, new ItemStack(Item.getItemFromBlock(ModBlocks.xpTableBlock)),
                 "www", "wiw", "www", 'i', Item.getItemFromBlock(Blocks.IRON_BLOCK),
                 'w', Blocks.PLANKS);
@@ -84,9 +47,7 @@ public final class ModCrafting {
                 "brb", 'b', Items.BREAD, 'r', Items.ROTTEN_FLESH);
         addRecipe(event, new ItemStack(ModItems.hempSeeds),
                 "ss", "ss", 's', Items.WHEAT_SEEDS);
-        CrusherRecipeRegistry.addNewCrusherRecipe(Items.DIAMOND, new ItemStack(ModItems.diamond_dust, 4));
-        CrusherRecipeRegistry.addNewCrusherRecipe(ModItems.hempLeaves,
-                new ItemStack(ModItems.hempFibers, 2));
+
         addRecipe(event, new ItemStack(ModItems.gold_threaded_cloth, 9),
                 "fff", "fgf", "fff", 'f', ModItems.hempFibers, 'g', Items.GOLD_INGOT);
         addRecipe(event, new ItemStack(ModItems.gold_threaded_boots),
@@ -138,8 +99,7 @@ public final class ModCrafting {
                 3.0f
         );
         addRecipe(event, new ItemStack(Items.DIAMOND), "dd", "dd", 'd', ModItems.diamond_dust);
-        CrusherRecipeRegistry.addNewCrusherRecipe(Blocks.OBSIDIAN,
-                new ItemStack(com.mcmoddev.basemetals.init.Materials.getMaterialByName(MaterialNames.OBSIDIAN).getItem(Names.POWDER), 4));
+
     }
 
 }

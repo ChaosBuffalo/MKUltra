@@ -1,10 +1,8 @@
 package com.chaosbuffalo.mkultra.event;
 
-import com.chaosbuffalo.mkultra.core.ArmorClass;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.item.ItemHelper;
-import com.chaosbuffalo.mkultra.item.ItemRangeSword;
 import com.chaosbuffalo.mkultra.utils.ItemUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -14,14 +12,11 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemShield;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
-import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 
 @Mod.EventBusSubscriber
 public class ItemRestrictionHandler {
@@ -29,7 +24,6 @@ public class ItemRestrictionHandler {
     public static final ArrayList<ShieldRestrictionEntry> NO_SHIELD_ITEMS = new ArrayList<>();
 
     static {
-        addShieldRestrictedItem(ItemRangeSword.class, 0);
     }
 
     public static void addShieldRestrictedItem(Class<? extends Item> itemClass, int priority) {
