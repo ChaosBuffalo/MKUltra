@@ -98,6 +98,7 @@ public class SpellManager implements IWorldEventListener {
     @Override
     public void onEntityAdded(Entity entityIn) {
 
+
     }
 
     @Override
