@@ -48,13 +48,6 @@ public final class ModItems {
     public static Item gold_threaded_boots;
     public static Item gold_threaded_chestplate;
     public static Item gold_threaded_leggings;
-    public static Item woodSpear;
-    public static Item ironSpear;
-    public static Item stoneSpear;
-    public static Item goldSpear;
-    public static Item diamondSpear;
-    public static Item emerald_spear;
-    public static Item obsidian_spear;
     public static Item forgetfulnessBread;
     public static Item hempSeeds;
     public static Item hempLeaves;
@@ -62,22 +55,6 @@ public final class ModItems {
     public static Item gold_threaded_cloth;
     public static Item hempSeedBread;
     public static Item pipe;
-
-    public static Item copperSpear;
-    public static Item tinSpear;
-    public static Item silverSpear;
-    public static Item steelSpear;
-    public static Item starsteelSpear;
-    public static Item nickelSpear;
-    public static Item mithrilSpear;
-    public static Item leadSpear;
-    public static Item invarSpear;
-    public static Item electrumSpear;
-    public static Item coldironSpear;
-    public static Item bronzeSpear;
-    public static Item brassSpear;
-    public static Item aquariumSpear;
-    public static Item adamantineSpear;
 
     public static Item bonedLeather;
     public static Item bonedLeatherLeggings;
@@ -380,76 +357,6 @@ public final class ModItems {
         regInternal(hempSeedBread = new ItemFood(7, 8.0f, false), "hempSeedBread");
         regInternal(pipe = new Pipe("hemp_pipe").setCreativeTab(MKUltra.MKULTRA_TAB), "hemp_pipe");
         regInternal(fire_extinguisher_flask = new FireExtinguisherFlask(), "fire_extinguisher_flask");
-
-        // so many spears
-        float spearRange = 4.75f;
-        regInternal(ironSpear = new ItemRangeSword(
-                "ironSpear", Materials.getMaterialByName(MaterialNames.IRON), spearRange)
-                .setCreativeTab(MKUltra.MKULTRA_TAB));
-        regInternal(woodSpear = new ItemRangeSword(
-                "woodSpear", Materials.getMaterialByName(MaterialNames.WOOD), spearRange)
-                .setCreativeTab(MKUltra.MKULTRA_TAB));
-        regInternal(stoneSpear = new ItemRangeSword(
-                "stoneSpear", Materials.getMaterialByName(MaterialNames.STONE), spearRange)
-                .setCreativeTab(MKUltra.MKULTRA_TAB));
-        regInternal(goldSpear = new ItemRangeSword(
-                "goldSpear", Materials.getMaterialByName(MaterialNames.GOLD), spearRange)
-                .setCreativeTab(MKUltra.MKULTRA_TAB));
-        regInternal(diamondSpear = new ItemRangeSword(
-                "diamondSpear", Materials.getMaterialByName(MaterialNames.DIAMOND), spearRange)
-                .setCreativeTab(MKUltra.MKULTRA_TAB));
-        regInternal(copperSpear = new ItemRangeSword(
-                "copperSpear", Materials.getMaterialByName(MaterialNames.COPPER), spearRange)
-                .setCreativeTab(MKUltra.MKULTRA_TAB));
-        regInternal(tinSpear = new ItemRangeSword(
-                "tinSpear", Materials.getMaterialByName(MaterialNames.TIN), spearRange)
-                .setCreativeTab(MKUltra.MKULTRA_TAB));
-        regInternal(silverSpear = new ItemRangeSword(
-                "silverSpear", Materials.getMaterialByName(MaterialNames.SILVER), spearRange)
-                .setCreativeTab(MKUltra.MKULTRA_TAB));
-        regInternal(steelSpear = new ItemRangeSword(
-                "steelSpear", Materials.getMaterialByName(MaterialNames.STEEL), spearRange)
-                .setCreativeTab(MKUltra.MKULTRA_TAB));
-        regInternal(starsteelSpear = new ItemRangeSword(
-                "starsteelSpear", Materials.getMaterialByName(MaterialNames.STARSTEEL), spearRange)
-                .setCreativeTab(MKUltra.MKULTRA_TAB));
-        regInternal(nickelSpear = new ItemRangeSword(
-                "nickelSpear", Materials.getMaterialByName(MaterialNames.NICKEL), spearRange)
-                .setCreativeTab(MKUltra.MKULTRA_TAB));
-        regInternal(mithrilSpear = new ItemRangeSword(
-                "mithrilSpear", Materials.getMaterialByName(MaterialNames.MITHRIL), spearRange)
-                .setCreativeTab(MKUltra.MKULTRA_TAB));
-        regInternal(leadSpear = new ItemRangeSword(
-                "leadSpear", Materials.getMaterialByName(MaterialNames.LEAD), spearRange)
-                .setCreativeTab(MKUltra.MKULTRA_TAB));
-        regInternal(invarSpear = new ItemRangeSword(
-                "invarSpear", Materials.getMaterialByName(MaterialNames.INVAR), spearRange)
-                .setCreativeTab(MKUltra.MKULTRA_TAB));
-        regInternal(electrumSpear = new ItemRangeSword(
-                "electrumSpear", Materials.getMaterialByName(MaterialNames.ELECTRUM), spearRange)
-                .setCreativeTab(MKUltra.MKULTRA_TAB));
-        regInternal(coldironSpear = new ItemRangeSword(
-                "coldironSpear", Materials.getMaterialByName(MaterialNames.COLDIRON), spearRange)
-                .setCreativeTab(MKUltra.MKULTRA_TAB));
-        regInternal(bronzeSpear = new ItemRangeSword(
-                "bronzeSpear", Materials.getMaterialByName(MaterialNames.BRONZE), spearRange)
-                .setCreativeTab(MKUltra.MKULTRA_TAB));
-        regInternal(brassSpear = new ItemRangeSword(
-                "brassSpear", Materials.getMaterialByName(MaterialNames.BRASS), spearRange)
-                .setCreativeTab(MKUltra.MKULTRA_TAB));
-        regInternal(aquariumSpear = new ItemRangeSword(
-                "aquariumSpear", Materials.getMaterialByName(MaterialNames.AQUARIUM), spearRange)
-                .setCreativeTab(MKUltra.MKULTRA_TAB));
-        regInternal(adamantineSpear = new ItemRangeSword(
-                "adamantineSpear", Materials.getMaterialByName(MaterialNames.ADAMANTINE), spearRange)
-                .setCreativeTab(MKUltra.MKULTRA_TAB));
-        regInternal(emerald_spear = new ItemRangeSword(
-                "emerald_spear", Materials.getMaterialByName(MaterialNames.EMERALD), spearRange)
-                .setCreativeTab(MKUltra.MKULTRA_TAB));
-        regInternal(obsidian_spear = new ItemRangeSword(
-                "obsidian_spear", Materials.getMaterialByName(MaterialNames.OBSIDIAN), spearRange)
-                .setCreativeTab(MKUltra.MKULTRA_TAB));
-
     }
 
     @SuppressWarnings("unused")
