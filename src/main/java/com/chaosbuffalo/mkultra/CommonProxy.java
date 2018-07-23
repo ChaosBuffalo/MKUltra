@@ -4,7 +4,6 @@ import com.chaosbuffalo.mkultra.init.ModEntities;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerDataStorage;
-import com.chaosbuffalo.mkultra.integration.Integrations;
 import com.chaosbuffalo.mkultra.core.ArmorClass;
 import com.chaosbuffalo.mkultra.init.ModItems;
 import com.chaosbuffalo.mkultra.log.Log;
@@ -38,7 +37,6 @@ public class CommonProxy {
     public void init(FMLInitializationEvent e) {
         Log.info("init");
         ArmorClass.registerDefaults();
-        Integrations.setup();
         NetworkRegistry.INSTANCE.registerGuiHandler(MKUltra.INSTANCE, new ModGuiHandler());
         MKUltra.packetHandler = new PacketHandler(MKUltra.MODID);
         PacketHandler packetHandler = MKUltra.packetHandler;
@@ -49,7 +47,6 @@ public class CommonProxy {
         packetHandler.registerPacket(ExecuteActivePacket.class, new ExecuteActivePacket.Handler(), Side.SERVER);
         packetHandler.registerPacket(LevelUpRequestPacket.class, new LevelUpRequestPacket.Handler(), Side.SERVER);
         packetHandler.registerPacket(PartyInviteResponsePacket.class, new PartyInviteResponsePacket.Handler(), Side.SERVER);
-        packetHandler.registerPacket(ResurrectPlayerPacket.class, new ResurrectPlayerPacket.Handler(), Side.SERVER);
 
         packetHandler.registerPacket(ParticleEffectSpawnPacket.class, new ParticleEffectSpawnPacket.Handler(), Side.CLIENT);
         packetHandler.registerPacket(AbilityUpdatePacket.class, new AbilityUpdatePacket.Handler(), Side.CLIENT);
