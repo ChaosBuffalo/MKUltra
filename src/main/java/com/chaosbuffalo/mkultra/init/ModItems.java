@@ -116,7 +116,7 @@ public final class ModItems {
 
     public static void initItems() {
         // Class-related
-        regInternal(diamond_dust = new AngelDust("diamond_dust")
+        regInternal(diamond_dust = new DiamondDust("diamond_dust")
                 .setCreativeTab(MKUltra.MKULTRA_TAB));
         regInternal(phoenix_dust = new PhoenixDust("phoenix_dust")
                 .setCreativeTab(MKUltra.MKULTRA_TAB));
