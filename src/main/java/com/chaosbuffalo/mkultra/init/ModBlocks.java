@@ -22,10 +22,9 @@ import java.util.Set;
 public final class ModBlocks {
 
     public static Block xpTableBlock;
-    public static Block portalBlock;
     public static Block hempBlock;
     public static Block ropeBlock;
-    public static Block steamPoweredOrbBlock;
+
 
     // can't be public because this is an ObjectHolder
     private static final Set<Block> ALL_BLOCKS = new HashSet<>();
@@ -37,16 +36,6 @@ public final class ModBlocks {
                 .setCreativeTab(MKUltra.MKULTRA_TAB));
         regInternal(hempBlock = new HempBlock().setCreativeTab(MKUltra.MKULTRA_TAB));
         regInternal(ropeBlock = new RopeBlock().setCreativeTab(MKUltra.MKULTRA_TAB));
-        // FIXME: re-enable these when poweradvantage works again
-        regInternal(portalBlock = new PortalBlock(
-                "portalblock", Material.ANVIL, 5.0f, 1000.0f)
-                .setCreativeTab(MKUltra.MKULTRA_TAB));
-        regInternal(steamPoweredOrbBlock = new SteamPoweredOrbBlock(
-                "steamPoweredOrbBlock",
-                Material.ANVIL, 5.0f, 1000.0f)
-                .setCreativeTab(MKUltra.MKULTRA_TAB));
-        steamPoweredOrbBlock.setHarvestLevel("pickaxe", 2);
-        portalBlock.setHarvestLevel("pickaxe", 3);
     }
 
     private static void regInternal(Block block) {
