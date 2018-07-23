@@ -11,6 +11,7 @@ import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
@@ -133,13 +134,13 @@ public class HempBlock extends BlockCrops implements IGrowable {
     @Nonnull
     @Override
     protected Item getSeed() {
-        return ModItems.hempSeeds;
+        return Items.WHEAT_SEEDS;
     }
 
     @Nonnull
     @Override
     protected Item getCrop() {
-        return ModItems.hempLeaves;
+        return Items.WHEAT;
     }
 
     @Override

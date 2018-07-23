@@ -14,7 +14,8 @@
       "item": "minecraft:iron_ingot"
     },
     "w": {
-      "item": "mkultra:hempfibers"
+      "item": "minecraft:wool",
+      "data": 32767
     }
   }
 }

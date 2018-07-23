@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.item;
 
 import com.chaosbuffalo.mkultra.init.ModItems;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemStack;
@@ -15,7 +16,8 @@ public class ItemHelper {
     }
 
     public static boolean isSmokeable(ItemStack stack) {
-        return !stack.isEmpty() && stack.getItem().equals(ModItems.hempLeaves);
+        // TEMP
+        return !stack.isEmpty() && stack.getItem().equals(Items.WHEAT);
     }
 
     public static ItemStack findSmokeable(EntityPlayer player)
