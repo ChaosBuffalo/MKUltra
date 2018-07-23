@@ -3,7 +3,7 @@ package com.chaosbuffalo.mkultra.network.packets.client;
 
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
-import com.chaosbuffalo.mkultra.item.AngelDust;
+import com.chaosbuffalo.mkultra.item.DiamondDust;
 import com.chaosbuffalo.mkultra.item.ItemHelper;
 import com.chaosbuffalo.mkultra.network.MessageHandler;
 import com.chaosbuffalo.mkultra.utils.ServerUtils;
@@ -64,7 +64,7 @@ public class ClassLearnPacket implements IMessage {
                     } else {
                         // switching. need to consume item
                         ItemStack dust = player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND);
-                        if (!(dust.getItem() instanceof AngelDust)) {
+                        if (!(dust.getItem() instanceof DiamondDust)) {
                             return;
                         } else {
                             canSwitch = ItemHelper.shrinkStack(player, dust, 1);
