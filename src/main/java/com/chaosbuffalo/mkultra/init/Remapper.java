@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.init;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.log.Log;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -13,6 +14,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 @Mod.EventBusSubscriber
@@ -21,6 +23,7 @@ public class Remapper {
     private static final String MKX_MOD_ID = "mkultrax";
 
     private static Map<String, String> internalReplacements = Maps.newHashMap();
+    private static ArrayList<ResourceLocation> drops = Lists.newArrayList();
 
     static {
         internalReplacements.put("sunicon", "sun_icon");
@@ -29,6 +32,9 @@ public class Remapper {
         internalReplacements.put("bonedleatherhelmet", "boned_leather_helmet");
         internalReplacements.put("bonedleatherleggings", "boned_leather_leggings");
         internalReplacements.put("bonedleatherboots", "boned_leather_boots");
+
+        drops.add(new ResourceLocation(MKUltra.MODID, "steampoweredorbblock"));
+        drops.add(new ResourceLocation(MKUltra.MODID, "portalblock"));
     }
 
     private static boolean tryRemapToMKX(RegistryEvent.MissingMappings.Mapping<Item> entry) {
@@ -80,6 +86,12 @@ public class Remapper {
                     continue;
                 }
 
+                if (drops.contains(entry.key)) {
+                    Log.info("Removing old MK Item %s", entry.key.toString());
+                    entry.ignore();
+                    continue;
+                }
+
                 if (internalReplacements.containsKey(key)) {
                     ResourceLocation newKey = new ResourceLocation(MKUltra.MODID, internalReplacements.get(key));
                     if (tryRemap(entry, newKey)) {
@@ -103,6 +115,12 @@ public class Remapper {
     public static void missingBlockMapping(RegistryEvent.MissingMappings<Block> event) {
         for (RegistryEvent.MissingMappings.Mapping<Block> entry : event.getAllMappings()) {
             if (entry.key.getResourceDomain().equals("minekampf")) {
+                Log.info("Removing old MK Block %s", entry.key.toString());
+                entry.ignore();
+                continue;
+            }
+
+            if (drops.contains(entry.key)) {
                 Log.info("Removing old MK Block %s", entry.key.toString());
                 entry.ignore();
                 continue;
