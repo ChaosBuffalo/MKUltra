@@ -8,9 +8,6 @@ public class ModTileEntities {
 
 
     public static void registerTileEntities() {
-        GameRegistry.registerTileEntity(PortalTileEntity.class, "portalTile");
-        GameRegistry.registerTileEntity(SteamPoweredOrbTileEntity.class, "steamPoweredOrbTile");
-
     }
 }
 

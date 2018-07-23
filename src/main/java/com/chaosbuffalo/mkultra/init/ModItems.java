@@ -67,11 +67,6 @@ public final class ModItems {
     public static Item flame_blade_projectile;
     public static Item fairy_fire_projectile;
 
-
-    public static Item phoenix_dust;
-
-
-
     public static Item fire_extinguisher_flask;
 
 
@@ -118,8 +113,7 @@ public final class ModItems {
         // Class-related
         regInternal(diamond_dust = new AngelDust("diamond_dust")
                 .setCreativeTab(MKUltra.MKULTRA_TAB));
-        regInternal(phoenix_dust = new PhoenixDust("phoenix_dust")
-                .setCreativeTab(MKUltra.MKULTRA_TAB));
+
         regInternal(sun_icon = new ClassIcon("sun_icon",
                 "The Sun God will bestow on you great powers. Choose your class: ", 8,
                 new ResourceLocation(MKUltra.MODID, "textures/items/sun_icon.png"),
