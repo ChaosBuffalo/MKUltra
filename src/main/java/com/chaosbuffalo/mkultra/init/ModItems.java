@@ -84,9 +84,9 @@ public final class ModItems {
             "mkultra_gold_threaded",
             "mkultra:gold_threaded", 65,
             new int[]{1, 1, 1, 1}, 35, null, 0);
-    public static ItemArmor.ArmorMaterial BONEDLEATHERMAT = EnumHelper.addArmorMaterial(
+    public static ItemArmor.ArmorMaterial BONED_LEATHER_MAT = EnumHelper.addArmorMaterial(
             "mkultra_boned_leather",
-            "mkultra:bone", 35,
+            "mkultra:boned_leather", 35,
             new int[]{2, 3, 2, 1}, 2, null, 0);
 
 
@@ -225,19 +225,19 @@ public final class ModItems {
                 .setCreativeTab(MKUltra.MKULTRA_TAB));
 
 
-        regInternal(bonedLeather = new Item().setCreativeTab(MKUltra.MKULTRA_TAB), "bonedLeather");
-        BONEDLEATHERMAT.setRepairItem(new ItemStack(ModItems.bonedLeather));
+        regInternal(bonedLeather = new Item().setCreativeTab(MKUltra.MKULTRA_TAB), "boned_leather");
+        BONED_LEATHER_MAT.setRepairItem(new ItemStack(ModItems.bonedLeather));
         regInternal(bonedLeatherChestplate = new ItemModArmor(
-                "bonedLeatherChestplate", BONEDLEATHERMAT, 1, EntityEquipmentSlot.CHEST)
+                "boned_leather_chestplate", BONED_LEATHER_MAT, 1, EntityEquipmentSlot.CHEST)
                 .setCreativeTab(MKUltra.MKULTRA_TAB));
         regInternal(bonedLeatherHelmet = new ItemModArmor(
-                "bonedLeatherHelmet", BONEDLEATHERMAT, 1, EntityEquipmentSlot.HEAD)
+                "boned_leather_helmet", BONED_LEATHER_MAT, 1, EntityEquipmentSlot.HEAD)
                 .setCreativeTab(MKUltra.MKULTRA_TAB));
         regInternal(bonedLeatherLeggings = new ItemModArmor(
-                "bonedLeatherLeggings", BONEDLEATHERMAT, 2, EntityEquipmentSlot.LEGS)
+                "boned_leather_leggings", BONED_LEATHER_MAT, 2, EntityEquipmentSlot.LEGS)
                 .setCreativeTab(MKUltra.MKULTRA_TAB));
         regInternal(bonedLeatherBoots = new ItemModArmor(
-                "bonedLeatherBoots", BONEDLEATHERMAT, 2, EntityEquipmentSlot.FEET)
+                "boned_leather_boots", BONED_LEATHER_MAT, 2, EntityEquipmentSlot.FEET)
                 .setCreativeTab(MKUltra.MKULTRA_TAB));
 
 
