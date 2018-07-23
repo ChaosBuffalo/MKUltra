@@ -28,6 +28,7 @@ public class ItemUtils {
         addCriticalStats(ItemSword.class, 0, .05f, 2.0f);
         addCriticalStats(ItemAxe.class, 0, .15f, 2.0f);
         addCriticalStats(ItemPickaxe.class, 0, .05f, 1.5f);
+        addCriticalStats(ItemSpade.class, 0, .05f, 1.5f);
     }
 
     public static boolean itemHasCriticalChance(Item item){
