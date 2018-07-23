@@ -38,6 +38,7 @@ public class Remapper {
         drops.add(new ResourceLocation(MKUltra.MODID, "ropeblock"));
         drops.add(new ResourceLocation(MKUltra.MODID, "hempfibers"));
         drops.add(new ResourceLocation(MKUltra.MODID, "hempleaves"));
+        drops.add(new ResourceLocation(MKUltra.MODID, "hempblock"));
     }
 
     private static void internalReplacement(String oldName, String newName) {
