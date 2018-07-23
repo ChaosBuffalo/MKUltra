@@ -37,16 +37,14 @@ public final class ModCrafting {
                 "lil", "i i", 'i', Items.IRON_INGOT, 'l', Items.LEATHER);
         addRecipe(event, new ItemStack(ModItems.chainmailBoots),
                 "i i", "l l", 'i', Items.IRON_INGOT, 'l', Items.LEATHER);
-        addRecipe(event, new ItemStack(Item.getItemFromBlock(ModBlocks.xpTableBlock)),
+        addRecipe(event, new ItemStack(ModBlocks.xpTableBlock),
                 "www", "wiw", "www", 'i', Item.getItemFromBlock(Blocks.IRON_BLOCK),
                 'w', Blocks.PLANKS);
         addRecipe(event, new ItemStack(ModItems.forgetfulnessBread, 4),
                 "brb", 'b', Items.BREAD, 'r', Items.ROTTEN_FLESH);
-        addRecipe(event, new ItemStack(ModItems.hempSeeds),
-                "ss", "ss", 's', Items.WHEAT_SEEDS);
 
         addRecipe(event, new ItemStack(ModItems.gold_threaded_cloth, 9),
-                "fff", "fgf", "fff", 'f', ModItems.hempFibers, 'g', Items.GOLD_INGOT);
+                "fff", "fgf", "fff", 'f', new ItemStack(Blocks.WOOL), 'g', Items.GOLD_INGOT);
         addRecipe(event, new ItemStack(ModItems.gold_threaded_boots),
                 "c c", "c c", 'c', ModItems.gold_threaded_cloth);
         addRecipe(event, new ItemStack(ModItems.gold_threaded_helmet),
@@ -67,8 +65,6 @@ public final class ModCrafting {
         addRecipe(event, new ItemStack(ModItems.bonedLeatherLeggings),
                 "ccc", "c c", "c c", 'c', ModItems.bonedLeather);
 
-        addRecipe(event, new ItemStack(ModItems.hempSeedBread),
-                "whw", 'w', Items.WHEAT, 'h', ModItems.hempSeeds);
 
         addRecipe(event, new ItemStack(ModItems.fire_extinguisher_flask, 8),
                 "bbb", "bwb", "bbb", 'b', Items.GLASS_BOTTLE, 'w', Items.WATER_BUCKET);
