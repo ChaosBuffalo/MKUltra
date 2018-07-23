@@ -35,6 +35,7 @@ public class Remapper {
 
         drops.add(new ResourceLocation(MKUltra.MODID, "steampoweredorbblock"));
         drops.add(new ResourceLocation(MKUltra.MODID, "portalblock"));
+        drops.add(new ResourceLocation(MKUltra.MODID, "ropeblock"));
     }
 
     private static boolean tryRemapToMKX(RegistryEvent.MissingMappings.Mapping<Item> entry) {
