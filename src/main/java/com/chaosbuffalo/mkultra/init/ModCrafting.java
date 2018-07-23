@@ -69,8 +69,6 @@ public final class ModCrafting {
 
         addRecipe(event, new ItemStack(ModItems.hempSeedBread),
                 "whw", 'w', Items.WHEAT, 'h', ModItems.hempSeeds);
-        addRecipe(event, new ItemStack(Item.getItemFromBlock(ModBlocks.ropeBlock)),
-                "f", "f", 'f', ModItems.hempFibers);
 
         addRecipe(event, new ItemStack(ModItems.fire_extinguisher_flask, 8),
                 "bbb", "bwb", "bbb", 'b', Items.GLASS_BOTTLE, 'w', Items.WATER_BUCKET);

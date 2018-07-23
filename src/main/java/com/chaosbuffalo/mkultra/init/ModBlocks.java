@@ -23,7 +23,6 @@ public final class ModBlocks {
 
     public static Block xpTableBlock;
     public static Block hempBlock;
-    public static Block ropeBlock;
 
 
     // can't be public because this is an ObjectHolder
@@ -35,7 +34,6 @@ public final class ModBlocks {
                 .setLightLevel(1.0f)
                 .setCreativeTab(MKUltra.MKULTRA_TAB));
         regInternal(hempBlock = new HempBlock().setCreativeTab(MKUltra.MKULTRA_TAB));
-        regInternal(ropeBlock = new RopeBlock().setCreativeTab(MKUltra.MKULTRA_TAB));
     }
 
     private static void regInternal(Block block) {
