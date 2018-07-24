@@ -19,19 +19,26 @@ public class ItemHelper {
     }
 
 
-    private static final HashSet<Item> SMOKEABLES = new HashSet<>();
+    private static final HashSet<ItemStack> SMOKEABLES = new HashSet<>();
 
     {
-        SMOKEABLES.add(Items.BLAZE_POWDER);
+        SMOKEABLES.add(new ItemStack(Items.BLAZE_POWDER));
     }
 
-    public static void registerSMokeable(Item item){
+    public static void registerSMokeable(ItemStack item){
         SMOKEABLES.add(item);
     }
 
     public static boolean isSmokeable(ItemStack stack) {
         // TEMP
-        return !stack.isEmpty() && SMOKEABLES.contains(stack.getItem());
+        if (!stack.isEmpty()){
+            for (ItemStack smokeable : SMOKEABLES){
+                if (smokeable.areItemStacksEqual(smokeable, stack)){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public static ItemStack findSmokeable(EntityPlayer player)
@@ -45,7 +52,10 @@ public class ItemHelper {
             {
                 ItemStack itemstack = player.inventory.getStackInSlot(i);
 
-                if (isSmokeable(itemstack))
+
+                ItemStack smokeableStack = itemstack.copy();
+                smokeableStack.setCount(1);
+                if (isSmokeable(smokeableStack))
                 {
                     return itemstack;
                 }
