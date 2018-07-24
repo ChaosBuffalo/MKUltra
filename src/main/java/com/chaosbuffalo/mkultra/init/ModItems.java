@@ -40,11 +40,7 @@ public final class ModItems {
     public static Item gold_threaded_chestplate;
     public static Item gold_threaded_leggings;
     public static Item forgetfulnessBread;
-    public static Item hempSeeds;
-    public static Item hempLeaves;
-    public static Item hempFibers;
     public static Item gold_threaded_cloth;
-    public static Item hempSeedBread;
     public static Item pipe;
 
     public static Item bonedLeather;
@@ -234,13 +230,6 @@ public final class ModItems {
                 "boned_leather_boots", BONED_LEATHER_MAT, 2, EntityEquipmentSlot.FEET)
                 .setCreativeTab(MKUltra.MKULTRA_TAB));
 
-
-        // All things hemp
-        regInternal(hempSeeds = new ItemSeeds(ModBlocks.hempBlock, Blocks.FARMLAND)
-                .setCreativeTab(MKUltra.MKULTRA_TAB), "hempSeeds");
-        regInternal(hempLeaves = new Item().setCreativeTab(MKUltra.MKULTRA_TAB), "hempLeaves");
-        regInternal(hempFibers = new Item().setCreativeTab(MKUltra.MKULTRA_TAB), "hempFibers");
-        regInternal(hempSeedBread = new ItemFood(7, 8.0f, false), "hempSeedBread");
         regInternal(pipe = new Pipe("hemp_pipe").setCreativeTab(MKUltra.MKULTRA_TAB), "hemp_pipe");
         regInternal(fire_extinguisher_flask = new FireExtinguisherFlask(), "fire_extinguisher_flask");
     }

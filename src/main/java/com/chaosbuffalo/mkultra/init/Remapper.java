@@ -22,20 +22,31 @@ public class Remapper {
 
     private static final String MKX_MOD_ID = "mkultrax";
 
-    private static Map<String, String> internalReplacements = Maps.newHashMap();
+    private static Map<ResourceLocation, ResourceLocation> replacements = Maps.newHashMap();
     private static ArrayList<ResourceLocation> drops = Lists.newArrayList();
 
     static {
-        internalReplacements.put("sunicon", "sun_icon");
-        internalReplacements.put("bonedleather", "boned_leather");
-        internalReplacements.put("bonedleatherchestplate", "boned_leather_chestplate");
-        internalReplacements.put("bonedleatherhelmet", "boned_leather_helmet");
-        internalReplacements.put("bonedleatherleggings", "boned_leather_leggings");
-        internalReplacements.put("bonedleatherboots", "boned_leather_boots");
+        internalReplacement("sunicon", "sun_icon");
+        internalReplacement("bonedleather", "boned_leather");
+        internalReplacement("bonedleatherchestplate", "boned_leather_chestplate");
+        internalReplacement("bonedleatherhelmet", "boned_leather_helmet");
+        internalReplacement("bonedleatherleggings", "boned_leather_leggings");
+        internalReplacement("bonedleatherboots", "boned_leather_boots");
 
         drops.add(new ResourceLocation(MKUltra.MODID, "steampoweredorbblock"));
         drops.add(new ResourceLocation(MKUltra.MODID, "portalblock"));
         drops.add(new ResourceLocation(MKUltra.MODID, "ropeblock"));
+        drops.add(new ResourceLocation(MKUltra.MODID, "hempfibers"));
+        drops.add(new ResourceLocation(MKUltra.MODID, "hempleaves"));
+        drops.add(new ResourceLocation(MKUltra.MODID, "hempblock"));
+    }
+
+    private static void internalReplacement(String oldName, String newName) {
+        replacements.put(new ResourceLocation(MKUltra.MODID, oldName), new ResourceLocation(MKUltra.MODID, newName));
+    }
+
+    public static void replace(ResourceLocation oldName, ResourceLocation newName) {
+        replacements.put(oldName, newName);
     }
 
     private static boolean tryRemapToMKX(RegistryEvent.MissingMappings.Mapping<Item> entry) {
@@ -93,17 +104,19 @@ public class Remapper {
                     continue;
                 }
 
-                if (internalReplacements.containsKey(key)) {
-                    ResourceLocation newKey = new ResourceLocation(MKUltra.MODID, internalReplacements.get(key));
-                    if (tryRemap(entry, newKey)) {
-                        continue;
-                    }
-                }
+
 
             } else if (entry.key.getResourceDomain().equals("minekampf")) {
                 Log.info("Removing old MK Item %s", entry.key.toString());
                 entry.ignore();
                 continue;
+            }
+
+            if (replacements.containsKey(entry.key)) {
+                ResourceLocation newKey = replacements.get(entry.key);
+                if (tryRemap(entry, newKey)) {
+                    continue;
+                }
             }
 
             if (tryRemapToMKX(entry)) {
