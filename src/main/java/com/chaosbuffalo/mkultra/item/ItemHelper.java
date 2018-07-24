@@ -4,9 +4,12 @@ import com.chaosbuffalo.mkultra.init.ModItems;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
+
+import java.util.HashSet;
 
 public class ItemHelper {
 
@@ -15,9 +18,20 @@ public class ItemHelper {
         return !stack.isEmpty() && stack.getItem() instanceof ItemArrow;
     }
 
+
+    private static final HashSet<Item> SMOKEABLES = new HashSet<>();
+
+    {
+        SMOKEABLES.add(Items.BLAZE_POWDER);
+    }
+
+    public static void registerSMokeable(Item item){
+        SMOKEABLES.add(item);
+    }
+
     public static boolean isSmokeable(ItemStack stack) {
         // TEMP
-        return !stack.isEmpty() && stack.getItem().equals(Items.WHEAT);
+        return !stack.isEmpty() && SMOKEABLES.contains(stack.getItem());
     }
 
     public static ItemStack findSmokeable(EntityPlayer player)

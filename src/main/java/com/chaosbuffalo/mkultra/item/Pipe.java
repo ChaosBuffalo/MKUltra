@@ -25,6 +25,7 @@ public class Pipe extends Item {
         super();
         this.setUnlocalizedName(unlocalizedName);
         this.setCreativeTab(MKUltra.MKULTRA_TAB);
+        this.setMaxDamage(150);
     }
 
     @Override
@@ -42,6 +43,8 @@ public class Pipe extends Item {
             if (!smokeable.isEmpty() && currentMana < augMax){
                 data.setMana(Math.min(augMax, currentMana + 10));
                 ItemHelper.shrinkStack(playerIn, smokeable, 1);
+                ItemStack pipe_item = playerIn.getHeldItem(hand);
+                ItemHelper.damageStack(playerIn, pipe_item, 1);
 
                 playerIn.getCooldownTracker().setCooldown(this, COOLDOWN);
             }
