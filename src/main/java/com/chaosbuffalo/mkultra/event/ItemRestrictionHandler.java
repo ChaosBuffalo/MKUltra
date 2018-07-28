@@ -21,7 +21,7 @@ import java.util.Collections;
 @Mod.EventBusSubscriber
 public class ItemRestrictionHandler {
 
-    public static final ArrayList<ShieldRestrictionEntry> NO_SHIELD_ITEMS = new ArrayList<>();
+    private static final ArrayList<ShieldRestrictionEntry> NO_SHIELD_ITEMS = new ArrayList<>();
 
     static {
     }
@@ -97,6 +97,22 @@ public class ItemRestrictionHandler {
 
         if (event.getSlot().getSlotType() == EntityEquipmentSlot.Type.ARMOR) {
             checkBlockedArmor(player, event.getTo(), playerData, event.getSlot());
+        }
+    }
+
+    private static class ShieldRestrictionEntry implements Comparable<ShieldRestrictionEntry> {
+        public final Class<? extends Item> item;
+
+        public final int priority;
+
+        public ShieldRestrictionEntry(Class<? extends Item> itemClass, int priorityIn){
+            item = itemClass;
+            priority = priorityIn;
+        }
+
+        @Override
+        public int compareTo(ShieldRestrictionEntry o) {
+            return o.priority - priority;
         }
     }
 }
