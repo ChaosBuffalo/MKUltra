@@ -6,6 +6,7 @@ import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.network.packets.server.CritMessagePacket;
 import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkultra.utils.EntityUtils;
 import com.chaosbuffalo.mkultra.utils.ItemUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -19,6 +20,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.fml.common.registry.IThrowableEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -33,6 +35,14 @@ public class SpellTriggers {
     private static boolean isPlayerPhysicalDamage(DamageSource source) {
         return (!source.isFireDamage() && !source.isExplosion() && !source.isMagicDamage() &&
                 source.getDamageType().equals("player"));
+    }
+
+    private static boolean isMislabeledThrowable(DamageSource source){
+        return source.getImmediateSource() instanceof IThrowableEntity;
+    }
+
+    private static boolean isProjectileDamage(DamageSource source){
+        return source.isProjectile();
     }
 
 
@@ -126,7 +136,16 @@ public class SpellTriggers {
 
             // If this is a weapon swing
             if (isPlayerPhysicalDamage(source)) {
-                handleMelee(event, source, livingTarget, playerSource, sourceData, true);
+                if (isMislabeledThrowable(source)){
+                    handleProjectile(event, source, livingTarget, playerSource, sourceData);
+                } else {
+                    handleMelee(event, source, livingTarget, playerSource, sourceData, true);
+                }
+
+            }
+
+            if (isProjectileDamage(source)){
+                handleProjectile(event, source, livingTarget, playerSource, sourceData);
             }
 
             playerHurtEntityPostTriggers.forEach(f -> f.apply(event, source, livingTarget, playerSource, sourceData));
@@ -157,6 +176,24 @@ public class SpellTriggers {
             }
 
             playerHurtEntityMagicTriggers.forEach(f -> f.apply(event, mkSource, livingTarget, playerSource, sourceData));
+        }
+
+        private static void handleProjectile(LivingHurtEvent event, DamageSource source, EntityLivingBase livingTarget,
+                                             EntityPlayerMP playerSource, IPlayerData sourceData)
+        {
+            if (source.getImmediateSource() != null &&
+                checkCrit(playerSource, PlayerFormulas.getRangedCritChanceForEntity(sourceData,
+                        playerSource, source.getImmediateSource()))){
+                float damageMultiplier = EntityUtils.getCritDamageForEntity(source.getImmediateSource());
+                if (livingTarget.isGlowing()) {
+                    damageMultiplier += 1.0f;
+                }
+                float newDamage = event.getAmount() * damageMultiplier;
+                event.setAmount(newDamage);
+                sendCritPacket(livingTarget, playerSource,
+                        new CritMessagePacket(livingTarget.getEntityId(), playerSource.getUniqueID(), newDamage,
+                                source.getImmediateSource().getEntityId()));
+            }
         }
 
         private static void handleMelee(LivingHurtEvent event, DamageSource source, EntityLivingBase livingTarget,

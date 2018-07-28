@@ -39,7 +39,7 @@ public class Galvanize extends BaseAbility {
 
     @Override
     public int getManaCost(int currentLevel) {
-        return 10;
+        return 10 - 2 * currentLevel;
     }
 
     @Override

@@ -48,7 +48,7 @@ public class HeavingSeas extends BaseAbility {
 
     @Override
     public int getManaCost(int currentLevel) {
-        return 8 + currentLevel * 2;
+        return 6 + currentLevel * 2;
     }
 
     @Override

@@ -42,7 +42,7 @@ public class WhirlwindBlades extends BaseAbility {
 
     @Override
     public int getManaCost(int currentLevel) {
-        return 5 + 2 * currentLevel;
+        return 3 + 2 * currentLevel;
     }
 
     @Override

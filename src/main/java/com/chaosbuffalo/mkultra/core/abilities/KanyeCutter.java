@@ -68,7 +68,7 @@ public class KanyeCutter extends BaseAbility {
 
             if (isValidTarget(entity, targetEntity)) {
                 targetEntity.addPotionEffect(new PotionEffect(MobEffects.WITHER, GameConstants.TICKS_PER_SECOND * 3, level));
-                targetEntity.attackEntityFrom(MKDamageSource.causeIndirectMagicDamage(getAbilityId(), entity, entity),
+                targetEntity.attackEntityFrom(MKDamageSource.fromMeleeSkill(getAbilityId(), entity, entity),
                         BASE_DAMAGE + DAMAGE_SCALE * level);
             }
 

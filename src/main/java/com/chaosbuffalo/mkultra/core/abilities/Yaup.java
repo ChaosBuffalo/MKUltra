@@ -4,6 +4,7 @@ import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
+import com.chaosbuffalo.mkultra.effects.spells.CriticalChancePotion;
 import com.chaosbuffalo.mkultra.effects.spells.ParticlePotion;
 import com.chaosbuffalo.mkultra.core.BaseAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
@@ -40,7 +41,7 @@ public class Yaup extends BaseAbility {
 
     @Override
     public int getManaCost(int currentLevel) {
-        return 4 + currentLevel * 2;
+        return 2 + currentLevel * 2;
     }
 
     @Override
@@ -72,6 +73,7 @@ public class Yaup extends BaseAbility {
         AreaEffectBuilder.Create(entity, entity)
                 .effect(hasteEffect, getTargetType())
                 .effect(damageEffect, getTargetType())
+                .spellCast(CriticalChancePotion.Create(entity), level + 1, Targeting.TargetType.SELF)
                 .spellCast(particlePotion, 0, getTargetType())
                 .instant().color(16751360).radius(getDistance(level), true)
                 .spawn();

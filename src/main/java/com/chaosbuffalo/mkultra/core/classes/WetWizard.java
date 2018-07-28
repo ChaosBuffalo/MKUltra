@@ -23,7 +23,7 @@ public class WetWizard extends BaseClass {
     }
 
     public WetWizard() {
-        super(MKUltra.MODID, "class.wet_wizard", "Wet Wizard");
+        super(MKUltra.MODID, "class.wet_wizard", "Brine Wizard");
     }
 
     @Override

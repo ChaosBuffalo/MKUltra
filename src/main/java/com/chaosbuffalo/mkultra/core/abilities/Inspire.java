@@ -37,7 +37,7 @@ public class Inspire extends BaseAbility {
 
     @Override
     public int getManaCost(int currentLevel) {
-        return 8;
+        return 4 + currentLevel * 2;
     }
 
     @Override

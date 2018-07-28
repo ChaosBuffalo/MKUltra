@@ -35,7 +35,7 @@ public class BallLightning extends BaseAbility {
 
     @Override
     public int getManaCost(int currentLevel) {
-        return 1 +  2 * currentLevel;
+        return 1 + 2 * currentLevel;
     }
 
 

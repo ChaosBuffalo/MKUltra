@@ -27,12 +27,14 @@ public class CritMessagePacket implements IMessage {
         MELEE_CRIT,
         SPELL_CRIT,
         INDIRECT_CRIT,
+        PROJECTILE_CRIT,
     }
     private int targetId;
     private UUID sourceUUID;
     private ResourceLocation abilityName;
     private float critDamage;
     private CritType type;
+    private int projectileId;
 
     public CritMessagePacket() {
     }
@@ -52,6 +54,14 @@ public class CritMessagePacket implements IMessage {
         this.abilityName = abilityName;
     }
 
+    public CritMessagePacket(int targetId, UUID sourceUUID, float critDamage, int projectileId){
+        this.type = CritType.PROJECTILE_CRIT;
+        this.targetId = targetId;
+        this.sourceUUID = sourceUUID;
+        this.critDamage = critDamage;
+        this.projectileId = projectileId;
+    }
+
     @Override
     public void fromBytes(ByteBuf buf) {
         PacketBuffer pb = new PacketBuffer(buf);
@@ -61,6 +71,9 @@ public class CritMessagePacket implements IMessage {
         this.critDamage = pb.readFloat();
         if (type == CritType.SPELL_CRIT){
             this.abilityName = pb.readResourceLocation();
+        }
+        if (type == CritType.PROJECTILE_CRIT){
+            this.projectileId = pb.readInt();
         }
     }
 
@@ -73,6 +86,9 @@ public class CritMessagePacket implements IMessage {
         pb.writeFloat(critDamage);
         if (type == CritType.SPELL_CRIT){
             pb.writeResourceLocation(this.abilityName);
+        }
+        if (type ==  CritType.PROJECTILE_CRIT){
+            pb.writeInt(this.projectileId);
         }
     }
 
@@ -154,6 +170,28 @@ public class CritMessagePacket implements IMessage {
                                             Float.toString(msg.critDamage)))
                                     .setStyle(messageStyle)
                             );
+                        }
+                        break;
+                    case PROJECTILE_CRIT:
+                        Entity projectile = player.getEntityWorld().getEntityByID(msg.projectileId);
+                        if (projectile != null){
+                            messageStyle.setColor(TextFormatting.LIGHT_PURPLE);
+                            if (isSelf){
+                                player.sendMessage(new TextComponentString(
+                                        String.format("You just crit %s with %s for %s",
+                                                target.getDisplayName().getUnformattedText(),
+                                                projectile.getDisplayName().getUnformattedText(),
+                                                Float.toString(msg.critDamage)))
+                                        .setStyle(messageStyle));
+                            } else {
+                                player.sendMessage(new TextComponentString(
+                                        String.format("%s just crit %s with %s for %s",
+                                                playerSource.getDisplayName().getUnformattedText(),
+                                                target.getDisplayName().getUnformattedText(),
+                                                projectile.getDisplayName().getUnformattedText(),
+                                                Float.toString(msg.critDamage))
+                                ).setStyle(messageStyle));
+                            }
                         }
                         break;
                 }

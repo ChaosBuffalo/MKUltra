@@ -59,7 +59,7 @@ public class Brawler extends BaseClass {
 
     @Override
     public int getBaseMana() {
-        return 8;
+        return 10;
     }
 
     @Override

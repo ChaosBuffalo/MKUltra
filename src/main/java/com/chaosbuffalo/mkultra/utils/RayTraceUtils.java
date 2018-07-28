@@ -87,7 +87,7 @@ public class RayTraceUtils {
                 .grow(aaGrowth);
         List<Entity> entities = world.getEntitiesWithinAABB(Entity.class, bb, predicate::test);
         for (Entity entity : entities) {
-            AxisAlignedBB entityBB = entity.getEntityBoundingBox().expand(entityExpansion, entityExpansion, entityExpansion);
+            AxisAlignedBB entityBB = entity.getEntityBoundingBox().grow(entityExpansion);
             RayTraceResult intercept = entityBB.calculateIntercept(from, to);
             if (intercept != null) {
                 double dist = from.distanceTo(intercept.hitVec);
@@ -107,7 +107,7 @@ public class RayTraceUtils {
         RayTraceResult block = rayTraceBlocks(world, from, to, stopOnLiquid);
         if (block != null)
             to = block.hitVec;
-        RayTraceResult entity = rayTraceEntities(world, from, to, new Vec3d(0, 0, 0), 0.5f, 0.5f, entityFilter);
+        RayTraceResult entity = rayTraceEntities(world, from, to, new Vec3d(0, 0, 0), 1.5f, .5f, entityFilter);
 
         if (block == null) {
             if (entity == null) {

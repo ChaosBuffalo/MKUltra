@@ -20,8 +20,8 @@ import net.minecraft.world.World;
 
 public class KPDarkWail extends BaseAbility {
 
-    public static float BASE_DAMAGE = 2.0f;
-    public static float DAMAGE_SCALE = 1.0f;
+    public static float BASE_DAMAGE = 6.0f;
+    public static float DAMAGE_SCALE = 2.0f;
     public static int DURATION_BASE = 4;
     public static int DURATION_SCALE = 2;
 
@@ -31,7 +31,7 @@ public class KPDarkWail extends BaseAbility {
 
     @Override
     public int getCooldown(int currentLevel) {
-        return 16 - 2 * currentLevel;
+        return 14 - 2 * currentLevel;
     }
 
     @Override
@@ -46,12 +46,12 @@ public class KPDarkWail extends BaseAbility {
 
     @Override
     public int getManaCost(int currentLevel) {
-        return 4 + currentLevel * 2;
+        return 2 + currentLevel * 2;
     }
 
     @Override
     public float getDistance(int currentLevel) {
-        return 2.0f + currentLevel * 2.0f;
+        return 1.0f + currentLevel * 2.0f;
     }
 
     @Override
@@ -68,9 +68,9 @@ public class KPDarkWail extends BaseAbility {
         // What to do for each target hit
         SpellCast damage = InstantIndirectMagicDamagePotion.Create(entity, BASE_DAMAGE, DAMAGE_SCALE);
         SpellCast particle = ParticlePotion.Create(entity,
-                EnumParticleTypes.NOTE.getParticleID(),
+                EnumParticleTypes.CRIT_MAGIC.getParticleID(),
                 ParticleEffects.CIRCLE_PILLAR_MOTION, false, new Vec3d(1.0, 1.0, 1.0),
-                new Vec3d(0.0, 1.0, 0.0), 40, 5, 1.0);
+                new Vec3d(0.0, 1.0, 0.0), 20, 5, 1.0);
 
         PotionEffect slow = new PotionEffect(MobEffects.SLOWNESS,
                 DURATION_BASE + DURATION_SCALE * level * GameConstants.TICKS_PER_SECOND, 100);
@@ -87,7 +87,7 @@ public class KPDarkWail extends BaseAbility {
         Vec3d lookVec = entity.getLookVec();
         MKUltra.packetHandler.sendToAllAround(
                 new ParticleEffectSpawnPacket(
-                        EnumParticleTypes.NOTE.getParticleID(),
+                        EnumParticleTypes.CRIT_MAGIC.getParticleID(),
                         ParticleEffects.CIRCLE_MOTION, 20, 0,
                         entity.posX, entity.posY + 1.0,
                         entity.posZ, 1.0, 1.0, 1.0, 2.0,

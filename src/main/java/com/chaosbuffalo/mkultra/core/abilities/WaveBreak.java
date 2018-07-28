@@ -65,6 +65,7 @@ public class WaveBreak extends BaseToggleAbility {
 
         // What to do for each target hit
         entity.addPotionEffect(WaveBreakPotion.Create(entity).setTarget(entity).toPotionEffect(BASE_DURATION, level));
+        entity.heal(level * 5);
         Vec3d lookVec = entity.getLookVec();
         MKUltra.packetHandler.sendToAllAround(
                 new ParticleEffectSpawnPacket(

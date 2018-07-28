@@ -7,7 +7,6 @@ import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
@@ -18,22 +17,14 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import java.util.UUID;
 
 /**
- * Created by Jacob on 3/25/2018.
+ * Created by Jacob on 7/26/2018.
  */
 @Mod.EventBusSubscriber(modid = MKUltra.MODID)
-public class UnderwayPotion extends SpellPotionBase {
-
-    public static final UUID MODIFIER_ID = UUID.fromString("771f39b8-c161-4b80-897f-724f84e08ae7");
-
-    public static final UnderwayPotion INSTANCE = (UnderwayPotion)(new UnderwayPotion()
-        .registerPotionAttributeModifier(PlayerAttributes.COOLDOWN, MODIFIER_ID.toString(),
-                -0.1, PlayerAttributes.OP_INCREMENT)
-        .registerPotionAttributeModifier(SharedMonsterAttributes.MOVEMENT_SPEED, MODIFIER_ID.toString(),
-                .15, PlayerAttributes.OP_SCALE_MULTIPLICATIVE)
+public class CriticalChancePotion extends SpellPotionBase {
+    public static final UUID MODIFIER_ID = UUID.fromString("0dcba474-eabd-4d13-86ef-22d9abc2cc8f");
+    public static final CriticalChancePotion INSTANCE = (CriticalChancePotion) (new CriticalChancePotion()
+            .registerPotionAttributeModifier(PlayerAttributes.MELEE_CRIT, MODIFIER_ID.toString(), .05, PlayerAttributes.OP_INCREMENT)
     );
-
-
-
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {
@@ -44,14 +35,19 @@ public class UnderwayPotion extends SpellPotionBase {
         return INSTANCE.newSpellCast(source);
     }
 
-    private UnderwayPotion() {
-        super(false, 1665535);
-        setPotionName("effect.underway");
+    private CriticalChancePotion() {
+        super(false, 4117247);
+        setPotionName("effect.critical_chance");
     }
 
     @Override
     public ResourceLocation getIconTexture() {
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/underway.png");
+        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/crit_chance.png");
+    }
+
+    @Override
+    public double getAttributeModifierAmount(int amplifier, AttributeModifier modifier) {
+        return modifier.getAmount() * (double) (amplifier);
     }
 
     @Override
@@ -62,12 +58,6 @@ public class UnderwayPotion extends SpellPotionBase {
     @Override
     public void doEffect(Entity applier, Entity caster, EntityLivingBase target, int amplifier, SpellCast cast) {
 
-    }
-
-    @Override
-    public double getAttributeModifierAmount(int amplifier, AttributeModifier modifier)
-    {
-        return modifier.getAmount() * (double)(amplifier);
     }
 
     @Override

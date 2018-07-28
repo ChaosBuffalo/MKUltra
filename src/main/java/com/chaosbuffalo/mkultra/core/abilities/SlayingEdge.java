@@ -4,6 +4,7 @@ import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.BaseAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
+import com.chaosbuffalo.mkultra.core.MKDamageSource;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.ParticlePotion;
@@ -68,7 +69,7 @@ public class SlayingEdge extends BaseAbility {
         if (targetEntity != null) {
             pData.startAbility(this);
             targetEntity.attackEntityFrom(
-                    DamageSource.causeIndirectMagicDamage(entity, entity),
+                    MKDamageSource.fromMeleeSkill(getAbilityId(), entity, entity),
                     BASE_DAMAGE + DAMAGE_SCALE * level);
             if (!targetEntity.isEntityAlive()){
                 SpellCast slaying_edge = SlayingEdgePotion.Create(entity);

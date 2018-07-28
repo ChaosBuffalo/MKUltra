@@ -46,7 +46,7 @@ public class FireArrow extends BaseAbility {
 
     @Override
     public int getManaCost(int currentLevel) {
-        return 7 - currentLevel;
+        return 5 - currentLevel;
     }
 
 

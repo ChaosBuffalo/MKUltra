@@ -41,7 +41,7 @@ public class LifeSpring  extends BaseAbility {
 
     @Override
     public int getManaCost(int currentLevel) {
-        return 8 + 3 * currentLevel;
+        return 4 + 2 * currentLevel;
     }
 
     @Override

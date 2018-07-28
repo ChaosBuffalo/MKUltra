@@ -44,7 +44,7 @@ public class Ignite extends BaseAbility {
 
     @Override
     public int getManaCost(int currentLevel) {
-        return 10 + currentLevel * 4;
+        return 8 + currentLevel * 2;
     }
 
     @Override

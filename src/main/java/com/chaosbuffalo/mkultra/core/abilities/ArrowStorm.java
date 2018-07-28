@@ -20,9 +20,9 @@ import net.minecraft.world.World;
 
 public class ArrowStorm extends BaseAbility {
 
-    public static float BASE_DAMAGE = 8.0f;
-    public static float DAMAGE_SCALE = -2.0f;
-    public static int ARROW_PER_LEVEL = 5;
+    public static float BASE_DAMAGE = 6.0f;
+    public static float DAMAGE_SCALE = 2.0f;
+    public static int ARROW_PER_LEVEL = 4;
 
     public ArrowStorm() {
         super(MKUltra.MODID, "ability.arrow_storm");
@@ -45,7 +45,7 @@ public class ArrowStorm extends BaseAbility {
 
     @Override
     public int getManaCost(int currentLevel) {
-        return 14 - currentLevel * 3;
+        return 14 - currentLevel * 2;
     }
 
 

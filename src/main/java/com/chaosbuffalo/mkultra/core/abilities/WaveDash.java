@@ -76,7 +76,7 @@ public class WaveDash extends BaseAbility {
         Vec3d to = from.add(look);
 
         Vec3d lookVec = entity.getLookVec();
-        List<Entity> entityHit = getTargetsInLine(entity, from, to, true);
+        List<Entity> entityHit = getTargetsInLine(entity, from, to, true, 1.0f);
         float damage = BASE_DAMAGE + DAMAGE_SCALE * level;
         Vec3d perpVec = RayTraceUtils.getPerpendicular(to.subtract(from)).normalize();
         EnvironmentUtils.putOutFiresInLine(theWorld, from, to);
@@ -88,7 +88,7 @@ public class WaveDash extends BaseAbility {
                     damage = damage * 2.0f;
                 }
             }
-            entHit.attackEntityFrom(MKDamageSource.causeIndirectMagicDamage(getAbilityId(), entity, entity), damage);
+            entHit.attackEntityFrom(MKDamageSource.fromMeleeSkill(getAbilityId(), entity, entity), damage);
             pData.setCooldown(getAbilityId(), Math.max(0, pData.getCurrentAbilityCooldown(getAbilityId()) - 2));
             if (entHit instanceof EntityLivingBase){
                 EntityLivingBase livEnt = (EntityLivingBase) entHit;

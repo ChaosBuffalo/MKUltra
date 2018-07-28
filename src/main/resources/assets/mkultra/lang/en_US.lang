@@ -74,6 +74,7 @@ effect.shielding_potion=Shielding
 effect.wild_toxin=Wild Toxin
 effect.wild_toxin_effect=Wild Toxin Effect
 effect.slaying_edge=Slaying Edge
+effect.critical_chance=Critical Chance
 mkultra.item_stats.crit_damage.name=Damage
 mkultra.item_stats.crit_chance.name=Crit Chance
 mkultra.armor_class.heavy.name=Heavy Armor
@@ -191,7 +192,7 @@ mkultra.ability.whirlwind_blades.description=Strikes enemies close to you repeat
 mkultra.ability.yank.name=Yank
 mkultra.ability.yank.description=Pulls an enemy or ally towards you.
 mkultra.ability.yaup.name=Yaup
-mkultra.ability.yaup.description=Increase your allies attack speed and damage for a short time.
+mkultra.ability.yaup.description=Increase you and your allies attack speed and damage for a short time and increases your own critical chance.
 
 
 

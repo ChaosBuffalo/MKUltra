@@ -44,7 +44,7 @@ public class FireArmor extends BaseAbility {
 
     @Override
     public int getManaCost(int currentLevel) {
-        return 20 - currentLevel * 4;
+        return 16 - currentLevel * 4;
     }
 
     @Override

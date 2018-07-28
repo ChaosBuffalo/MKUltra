@@ -42,7 +42,7 @@ public class Undertow extends BaseAbility {
 
     @Override
     public int getManaCost(int currentLevel) {
-        return 4 + currentLevel * 4;
+        return 4 + currentLevel * 2;
     }
 
     @Override
