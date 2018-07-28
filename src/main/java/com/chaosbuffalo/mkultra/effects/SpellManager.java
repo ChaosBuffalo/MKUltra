@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-@Mod.EventBusSubscriber(Side.SERVER)
+@Mod.EventBusSubscriber
 public class SpellManager implements IWorldEventListener {
     public static SpellManager INSTANCE = new SpellManager();
 
@@ -34,7 +34,9 @@ public class SpellManager implements IWorldEventListener {
 
         Log.info("Loading world %d", world.provider.getDimension());
 
-        world.addEventListener(INSTANCE);
+        if (!world.isRemote) {
+            world.addEventListener(INSTANCE);
+        }
     }
 
     public static SpellCast create(SpellPotionBase potion, Entity caster) {

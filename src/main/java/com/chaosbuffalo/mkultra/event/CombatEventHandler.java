@@ -15,7 +15,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
 @SuppressWarnings("unused")
-@Mod.EventBusSubscriber(Side.SERVER)
+@Mod.EventBusSubscriber
 public class CombatEventHandler {
 
     private static float MAX_CRIT_MESSAGE_DISTANCE = 50.0f;
@@ -23,8 +23,11 @@ public class CombatEventHandler {
 
     @SubscribeEvent
     public static void onLivingHurt(LivingHurtEvent event) {
-        DamageSource source = event.getSource();
         EntityLivingBase livingTarget = event.getEntityLiving();
+        if (livingTarget.world.isRemote)
+            return;
+
+        DamageSource source = event.getSource();
         Entity trueSource = source.getTrueSource();
         if (source == DamageSource.FALL) { // TODO: maybe just use LivingFallEvent?
             SpellTriggers.FALL.onLivingFall(event, source, livingTarget);
@@ -55,6 +58,8 @@ public class CombatEventHandler {
     @SubscribeEvent
     public static void onAttackEntityEvent(AttackEntityEvent event) {
         EntityPlayer player = event.getEntityPlayer();
+        if (player.world.isRemote)
+            return;
         Entity target = event.getTarget();
 
         SpellTriggers.ATTACK_ENTITY.onAttackEntity(player, target);
