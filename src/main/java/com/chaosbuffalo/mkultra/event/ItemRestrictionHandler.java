@@ -43,7 +43,7 @@ public class ItemRestrictionHandler {
 
     public static boolean isNoShieldItem(Item item){
         for (ShieldRestrictionEntry entry : NO_SHIELD_ITEMS){
-            if (ItemUtils.isItemInstance(entry.item, item)){
+            if (entry.matches(item)){
                 return true;
             }
         }

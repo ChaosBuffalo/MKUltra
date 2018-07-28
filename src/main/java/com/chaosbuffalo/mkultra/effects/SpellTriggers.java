@@ -184,7 +184,7 @@ public class SpellTriggers {
             if (source.getImmediateSource() != null &&
                 checkCrit(playerSource, PlayerFormulas.getRangedCritChanceForEntity(sourceData,
                         playerSource, source.getImmediateSource()))){
-                float damageMultiplier = EntityUtils.getCritDamageForEntity(source.getImmediateSource());
+                float damageMultiplier = EntityUtils.ENTITY_CRIT.getDamage(source.getImmediateSource());
                 if (livingTarget.isGlowing()) {
                     damageMultiplier += 1.0f;
                 }

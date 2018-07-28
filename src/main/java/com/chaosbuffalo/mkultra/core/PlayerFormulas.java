@@ -3,7 +3,6 @@ package com.chaosbuffalo.mkultra.core;
 import com.chaosbuffalo.mkultra.utils.EntityUtils;
 import com.chaosbuffalo.mkultra.utils.ItemUtils;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 
@@ -34,6 +33,6 @@ public class PlayerFormulas {
     }
 
     public static float getRangedCritChanceForEntity(IPlayerData data, EntityPlayerMP player, Entity entity){
-        return EntityUtils.getCritChanceForEntity(entity);
+        return EntityUtils.ENTITY_CRIT.getChance(entity);
     }
 }
