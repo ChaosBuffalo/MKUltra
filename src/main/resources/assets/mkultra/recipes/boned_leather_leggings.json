@@ -1,0 +1,16 @@
+{
+  "pattern": [
+    "ccc",
+    "c c",
+    "c c"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "mkultra:boned_leather_leggings"
+  },
+  "key": {
+    "c": {
+      "item": "mkultra:boned_leather"
+    }
+  }
+}

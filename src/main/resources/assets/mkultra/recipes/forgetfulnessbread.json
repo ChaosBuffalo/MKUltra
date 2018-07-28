@@ -1,0 +1,18 @@
+{
+  "pattern": [
+    "brb"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "count": 4,
+    "item": "mkultra:forgetfulnessbread"
+  },
+  "key": {
+    "b": {
+      "item": "minecraft:bread"
+    },
+    "r": {
+      "item": "minecraft:rotten_flesh"
+    }
+  }
+}

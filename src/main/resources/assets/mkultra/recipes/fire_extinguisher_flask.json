@@ -1,0 +1,20 @@
+{
+  "pattern": [
+    "bbb",
+    "bwb",
+    "bbb"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "count": 8,
+    "item": "mkultra:fire_extinguisher_flask"
+  },
+  "key": {
+    "b": {
+      "item": "minecraft:glass_bottle"
+    },
+    "w": {
+      "item": "minecraft:water_bucket"
+    }
+  }
+}

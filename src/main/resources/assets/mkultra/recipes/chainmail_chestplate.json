@@ -1,0 +1,19 @@
+{
+  "pattern": [
+    "l l",
+    "ili",
+    "lil"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "mkultra:chainmail_chestplate"
+  },
+  "key": {
+    "l": {
+      "item": "minecraft:leather"
+    },
+    "i": {
+      "item": "minecraft:iron_ingot"
+    }
+  }
+}
