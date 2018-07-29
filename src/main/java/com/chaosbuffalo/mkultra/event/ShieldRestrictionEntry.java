@@ -15,6 +15,10 @@ public class ShieldRestrictionEntry implements Comparable<ShieldRestrictionEntry
         priority = priorityIn;
     }
 
+    public boolean matches(Item other) {
+        return  item.isInstance(other);
+    }
+
     @Override
     public int compareTo(ShieldRestrictionEntry o) {
         return o.priority - priority;

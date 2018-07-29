@@ -48,7 +48,7 @@ public class GuiEventHandler {
         if (event.getItemStack().getItem() instanceof ItemArmor) {
             doArmorClassTooltip(event);
         }
-        if (ItemUtils.itemHasCriticalChance(event.getItemStack().getItem())){
+        if (ItemUtils.CRIT.hasChance(event.getItemStack().getItem())){
             doCritTooltip(event);
         }
         if (ItemRestrictionHandler.isNoShieldItem(event.getItemStack().getItem())){
