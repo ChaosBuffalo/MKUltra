@@ -1,0 +1,16 @@
+{
+  "pattern": [
+    "c c",
+    "ccc",
+    "ccc"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "mkultra:gold_threaded_chestplate"
+  },
+  "key": {
+    "c": {
+      "item": "mkultra:gold_threaded_cloth"
+    }
+  }
+}

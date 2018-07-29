@@ -1,0 +1,15 @@
+{
+  "pattern": [
+    "ccc",
+    "c c"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "mkultra:boned_leather_helmet"
+  },
+  "key": {
+    "c": {
+      "item": "mkultra:boned_leather"
+    }
+  }
+}

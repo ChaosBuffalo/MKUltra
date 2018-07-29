@@ -1,0 +1,15 @@
+{
+  "pattern": [
+    "dd",
+    "dd"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "minecraft:diamond"
+  },
+  "key": {
+    "d": {
+      "item": "mkultra:diamond_dust"
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "pattern": [
+    "lil",
+    "i i"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "mkultra:chainmail_helmet"
+  },
+  "key": {
+    "l": {
+      "item": "minecraft:leather"
+    },
+    "i": {
+      "item": "minecraft:iron_ingot"
+    }
+  }
+}

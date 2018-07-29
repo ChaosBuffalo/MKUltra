@@ -1,0 +1,20 @@
+{
+  "pattern": [
+    "www",
+    "wiw",
+    "www"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "mkultra:xptable"
+  },
+  "key": {
+    "w": {
+      "ore": "plankWood",
+      "type": "forge:ore_dict"
+    },
+    "i": {
+      "item": "minecraft:iron_block"
+    }
+  }
+}

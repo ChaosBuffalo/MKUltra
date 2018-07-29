@@ -1,0 +1,19 @@
+{
+  "pattern": [
+    "bbb",
+    "blb"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "count": 5,
+    "item": "mkultra:boned_leather"
+  },
+  "key": {
+    "b": {
+      "item": "minecraft:bone"
+    },
+    "l": {
+      "item": "minecraft:leather"
+    }
+  }
+}

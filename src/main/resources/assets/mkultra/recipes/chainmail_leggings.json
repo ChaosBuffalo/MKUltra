@@ -1,0 +1,19 @@
+{
+  "pattern": [
+    "lil",
+    "i i",
+    "l l"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "mkultra:chainmail_leggings"
+  },
+  "key": {
+    "l": {
+      "item": "minecraft:leather"
+    },
+    "i": {
+      "item": "minecraft:iron_ingot"
+    }
+  }
+}

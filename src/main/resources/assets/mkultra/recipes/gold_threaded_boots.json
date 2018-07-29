@@ -1,0 +1,15 @@
+{
+  "pattern": [
+    "c c",
+    "c c"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "mkultra:gold_threaded_boots"
+  },
+  "key": {
+    "c": {
+      "item": "mkultra:gold_threaded_cloth"
+    }
+  }
+}
