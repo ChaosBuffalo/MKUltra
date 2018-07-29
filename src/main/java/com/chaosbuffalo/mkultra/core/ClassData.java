@@ -70,6 +70,7 @@ public class ClassData {
         registerClass(new MoonKnight());
         registerClass(new WaveKnight());
         registerClass(new Ranger());
+        registerClass(new GreenKnight());
     }
 
     @SuppressWarnings("unused")

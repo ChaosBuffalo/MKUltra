@@ -27,5 +27,9 @@ public class EntityRenderRegister {
                 new RenderProjectile(ModItems.flame_blade_projectile, 1.0f));
         RenderingRegistry.registerEntityRenderingHandler(EntityFairyFireProjectile.class,
                 new RenderProjectile(ModItems.fairy_fire_projectile, 1.0f));
+        RenderingRegistry.registerEntityRenderingHandler(EntityCleansingSeedProjectile.class,
+                new RenderProjectile(ModItems.cleansing_seed_projectile, 1.0f));
+        RenderingRegistry.registerEntityRenderingHandler(EntitySpiritBombProjectile.class,
+                new RenderProjectile(ModItems.spirit_bomb_projectile, 1.0f));
     }
 }

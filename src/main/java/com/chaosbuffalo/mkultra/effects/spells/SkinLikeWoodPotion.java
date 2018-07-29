@@ -1,0 +1,99 @@
+package com.chaosbuffalo.mkultra.effects.spells;
+
+import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.core.IPlayerData;
+import com.chaosbuffalo.mkultra.core.MKUPlayerData;
+import com.chaosbuffalo.mkultra.core.PlayerAttributes;
+import com.chaosbuffalo.mkultra.effects.SpellCast;
+import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
+import com.chaosbuffalo.mkultra.effects.SpellTriggers;
+import com.chaosbuffalo.mkultra.party.PartyManager;
+import com.chaosbuffalo.targeting_api.Targeting;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.potion.Potion;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
+import java.util.ArrayList;
+import java.util.UUID;
+
+/**
+ * Created by Jacob on 7/28/2018.
+ */
+@Mod.EventBusSubscriber(modid = MKUltra.MODID)
+public class SkinLikeWoodPotion extends SpellPotionBase {
+    public static final UUID MODIFIER_ID = UUID.fromString("60f31ee6-4a8e-4c35-8746-6c5950187e77");
+    public static final SkinLikeWoodPotion INSTANCE = (SkinLikeWoodPotion) (new SkinLikeWoodPotion()
+            .registerPotionAttributeModifier(SharedMonsterAttributes.ARMOR, MODIFIER_ID.toString(), 2, PlayerAttributes.OP_INCREMENT)
+    );
+
+    @SubscribeEvent
+    public static void register(RegistryEvent.Register<Potion> event) {
+        event.getRegistry().register(INSTANCE.finish());
+    }
+
+    public static SpellCast Create(Entity source) {
+        return INSTANCE.newSpellCast(source);
+    }
+
+    private SkinLikeWoodPotion() {
+        super(false, 1665535);
+        setPotionName("effect.skin_like_wood");
+        SpellTriggers.ENTITY_HURT_PLAYER.registerPreScale(this::playerHurtPreScale);
+    }
+
+    @Override
+    public ResourceLocation getIconTexture() {
+        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/skin_like_wood.png");
+    }
+
+    @Override
+    public double getAttributeModifierAmount(int amplifier, AttributeModifier modifier) {
+        return modifier.getAmount() * (double) (amplifier);
+    }
+
+    @Override
+    public Targeting.TargetType getTargetType() {
+        return Targeting.TargetType.FRIENDLY;
+    }
+
+    @Override
+    public void doEffect(Entity applier, Entity caster, EntityLivingBase target, int amplifier, SpellCast cast) {
+
+    }
+
+    @Override
+    public boolean canSelfCast() {
+        return true;
+    }
+
+    @Override
+    public boolean isReady(int duration, int amplitude) {
+        return false;
+    }
+
+    @Override
+    public boolean isInstant() {
+        return false;
+    }
+
+    private void playerHurtPreScale(LivingHurtEvent event, DamageSource source, EntityPlayer livingTarget, IPlayerData targetData) {
+
+        if (livingTarget.isPotionActive(SkinLikeWoodPotion.INSTANCE)){
+            if (targetData.getMana() > 0){
+                targetData.setMana(targetData.getMana() - 1);
+            } else {
+                livingTarget.removePotionEffect(SkinLikeWoodPotion.INSTANCE);
+            }
+        }
+    }
+}
+

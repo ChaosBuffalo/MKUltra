@@ -28,6 +28,7 @@ public final class ModItems {
     public static Item diamond_dust;
     public static Item sun_icon;
     public static Item moon_icon;
+    public static Item desperate_icon;
     public static Item manaRegenIdolIron;
     public static Item manaRegenIdolGold;
     public static Item manaRegenIdolWood;
@@ -62,6 +63,8 @@ public final class ModItems {
     public static Item whirlpool_projectile;
     public static Item flame_blade_projectile;
     public static Item fairy_fire_projectile;
+    public static Item cleansing_seed_projectile;
+    public static Item spirit_bomb_projectile;
 
     public static Item fire_extinguisher_flask;
 
@@ -122,6 +125,12 @@ public final class ModItems {
                 "Thalassa, Goddess of the Moon, demands brouzouf in exchange for her powers.",
                 new ResourceLocation(MKUltra.MODID, "textures/gui/xp_table_background_moon.png")
                 , 4404838).setCreativeTab(MKUltra.MKULTRA_TAB), "moon_icon");
+        regInternal(desperate_icon = new ClassIcon("desperate_icon",
+                "The Enigmatic Wood Spirit offers her power to you. Choose your class: ",
+                1, new ResourceLocation(MKUltra.MODID, "textures/items/desperate_icon.png"),
+                "Ydira, Elusive Spirit of the Wood, will increase your powers in exchange for brouzouf.",
+                new ResourceLocation(MKUltra.MODID, "textures/gui/xp_table_background_desperate.png"),
+                32025).setCreativeTab(MKUltra.MKULTRA_TAB), "desperate_icon");
         regInternal(forgetfulnessBread = new ForgetfulnessBread(8, 1.0f, false)
                 .setCreativeTab(MKUltra.MKULTRA_TAB), "forgetfulnessBread");
 
@@ -141,6 +150,10 @@ public final class ModItems {
                 "flame_blade_projectile");
         regInternal(fairy_fire_projectile = new Item().setCreativeTab(MKUltra.MKULTRA_TAB),
                 "fairy_fire_projectile");
+        regInternal(cleansing_seed_projectile = new Item().setCreativeTab(MKUltra.MKULTRA_TAB),
+                "cleansing_seed_projectile");
+        regInternal(spirit_bomb_projectile = new Item().setCreativeTab(MKUltra.MKULTRA_TAB),
+                "spirit_bomb_projectile");
 
 
         regInternal(manaRegenIdolIron = new ManaRegenIdol(

@@ -1,15 +1,19 @@
 package com.chaosbuffalo.mkultra.entities.projectiles;
 
+import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.GeyserPotion;
+import com.chaosbuffalo.mkultra.effects.spells.WhirlpoolPotion;
+import com.chaosbuffalo.mkultra.effects.spells.YankPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.mkultra.utils.EnvironmentUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
@@ -34,11 +38,9 @@ public class EntityGeyserProjectile extends EntityBaseProjectile {
         super(worldIn, x, y, z);
     }
 
-
-    @Override
-    protected boolean onGroundProc(EntityLivingBase caster, int amplifier) {
+    private boolean doEffect(EntityLivingBase caster, int amplifier, float baseDamage, float damageScale){
         if (!this.world.isRemote && caster != null) {
-            SpellCast geyser = GeyserPotion.Create(caster, 0.0f, 10.0f);
+            SpellCast geyser = GeyserPotion.Create(caster, baseDamage, damageScale);
 
             AreaEffectBuilder.Create(caster, this)
                     .spellCast(geyser, amplifier, Targeting.TargetType.ALL)
@@ -55,6 +57,28 @@ public class EntityGeyserProjectile extends EntityBaseProjectile {
                     this.dimension, this.posX, this.posY, this.posZ, 50.0f);
             EnvironmentUtils.putOutFires(caster.getEntityWorld(), this.getPosition(), new Vec3i(16, 8, 16));
             return true;
+        }
+        return false;
+    }
+
+
+    @Override
+    protected boolean onGroundProc(EntityLivingBase caster, int amplifier) {
+        return doEffect(caster, amplifier, 0.0f, 10.0f);
+    }
+
+    @Override
+    protected boolean onImpact(EntityLivingBase caster, RayTraceResult result, int amplifier) {
+        if (!this.world.isRemote && caster != null) {
+            switch (result.typeOfHit){
+                case BLOCK:
+                    return false;
+                case ENTITY:
+                    doEffect(caster, amplifier, 0.0f, 8.0f);
+                    return true;
+                case MISS:
+                    return false;
+            }
         }
         return false;
     }

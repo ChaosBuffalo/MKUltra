@@ -1,0 +1,20 @@
+{
+  "pattern": [
+    " i ",
+    "sss",
+    " s "
+  ],
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "mkultra:desperate_icon"
+  },
+  "key": {
+    "s": {
+      "item": "minecraft:stick"
+    },
+    "i":{
+      "ore": "treeSapling",
+      "type": "forge:ore_dict"
+    }
+  }
+}
