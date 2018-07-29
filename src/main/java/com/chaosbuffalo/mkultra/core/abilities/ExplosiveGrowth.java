@@ -74,32 +74,30 @@ public class ExplosiveGrowth extends BaseAbility {
         Vec3d to = from.add(look);
 
         Vec3d lookVec = entity.getLookVec();
-        List<Entity> entityHit = getTargetsInLine(entity, from, to, true, 1.0f);
+        List<EntityLivingBase> entityHit = getTargetsInLine(entity, from, to, true, 1.0f);
         float damage = BASE_DAMAGE + DAMAGE_SCALE * level;
 
-        for (Entity entHit : entityHit){
-            if (entHit instanceof EntityLivingBase){
-                EntityLivingBase entLiv = (EntityLivingBase) entHit;
-                if (Targeting.isValidTarget(Targeting.TargetType.ENEMY, entity, entHit, true)){
-                    entHit.attackEntityFrom(MKDamageSource.fromMeleeSkill(getAbilityId(), entity, entity), damage);
-                } else if (Targeting.isValidTarget(Targeting.TargetType.FRIENDLY, entity, entHit, false)){
-                    entLiv.addPotionEffect(CurePotion.Create(entity).setTarget(entLiv).toPotionEffect(level));
-                    entLiv.addPotionEffect(
-                            NaturesRemedyPotion.Create(
-                                    entity, entLiv, NaturesRemedy.BASE_VALUE, NaturesRemedy.VALUE_SCALE)
-                            .toPotionEffect((NaturesRemedy.BASE_DURATION + NaturesRemedy.DURATION_SCALE * level)
-                                    * GameConstants.TICKS_PER_SECOND, level));
-                }
-                MKUltra.packetHandler.sendToAllAround(
-                        new ParticleEffectSpawnPacket(
-                                EnumParticleTypes.SPELL_MOB_AMBIENT.getParticleID(),
-                                ParticleEffects.CIRCLE_MOTION, 20, 10,
-                                entHit.posX, entHit.posY + 1.0,
-                                entHit.posZ, 1.0, 1.0, 1.0, 2.0,
-                                lookVec),
-                        entity.dimension, entHit.posX,
-                        entHit.posY, entHit.posZ, 50.0f);
+        for (EntityLivingBase entHit : entityHit){
+
+            if (Targeting.isValidTarget(Targeting.TargetType.ENEMY, entity, entHit, true)){
+                entHit.attackEntityFrom(MKDamageSource.fromMeleeSkill(getAbilityId(), entity, entity), damage);
+            } else if (Targeting.isValidTarget(Targeting.TargetType.FRIENDLY, entity, entHit, false)){
+                entHit.addPotionEffect(CurePotion.Create(entity).setTarget(entHit).toPotionEffect(level));
+                entHit.addPotionEffect(
+                        NaturesRemedyPotion.Create(
+                                entity, entHit, NaturesRemedy.BASE_VALUE, NaturesRemedy.VALUE_SCALE)
+                        .toPotionEffect((NaturesRemedy.BASE_DURATION + NaturesRemedy.DURATION_SCALE * level)
+                                * GameConstants.TICKS_PER_SECOND, level));
             }
+            MKUltra.packetHandler.sendToAllAround(
+                    new ParticleEffectSpawnPacket(
+                            EnumParticleTypes.SPELL_MOB_AMBIENT.getParticleID(),
+                            ParticleEffects.CIRCLE_MOTION, 20, 10,
+                            entHit.posX, entHit.posY + 1.0,
+                            entHit.posZ, 1.0, 1.0, 1.0, 2.0,
+                            lookVec),
+                    entity.dimension, entHit.posX,
+                    entHit.posY, entHit.posZ, 50.0f);
         }
 
         RayTraceResult blockHit = RayTraceUtils.rayTraceBlocks(entity.getEntityWorld(), from, to, false);

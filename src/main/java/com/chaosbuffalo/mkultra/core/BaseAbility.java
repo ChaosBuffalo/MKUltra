@@ -4,7 +4,6 @@ import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.utils.RayTraceUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -97,14 +96,20 @@ public abstract class BaseAbility extends IForgeRegistryEntry.Impl<BaseAbility> 
         return getSingleLivingTarget(caster, distance, true);
     }
 
-    protected List<Entity> getTargetsInLine(EntityLivingBase caster, Vec3d from, Vec3d to, boolean checkValid, float growth) {
-        return RayTraceUtils.getEntitiesInLine(caster, from, to, new Vec3d(0.0f, 0.0f, 0.0f), growth,
-                e -> !checkValid || (e instanceof EntityLivingBase && isValidTarget(caster, (EntityLivingBase) e)));
+
+    protected List<EntityLivingBase> getTargetsInLine(EntityLivingBase caster, Vec3d from, Vec3d to, boolean checkValid, float growth) {
+        return RayTraceUtils.getEntitiesInLine(EntityLivingBase.class, caster, from, to, Vec3d.ZERO, growth,
+                e -> !checkValid || (e != null && isValidTarget(caster, e)));
     }
 
     protected EntityLivingBase getSingleLivingTarget(EntityLivingBase caster, float distance, boolean checkValid) {
-        RayTraceResult lookingAt = RayTraceUtils.getLookingAt(caster, distance,
-                e -> !checkValid || (e instanceof EntityLivingBase && isValidTarget(caster, (EntityLivingBase) e)));
+        return getSingleLivingTarget(EntityLivingBase.class, caster, distance, checkValid);
+    }
+
+    protected <E extends EntityLivingBase> E getSingleLivingTarget(Class<E> clazz, EntityLivingBase caster,
+                                                                    float distance, boolean checkValid) {
+        RayTraceResult lookingAt = RayTraceUtils.getLookingAt(clazz, caster, distance,
+                e -> !checkValid || (e != null && isValidTarget(caster, e)));
 
         if (lookingAt != null && lookingAt.entityHit instanceof EntityLivingBase) {
 
@@ -112,7 +117,7 @@ public abstract class BaseAbility extends IForgeRegistryEntry.Impl<BaseAbility> 
                 return null;
             }
 
-            return (EntityLivingBase) lookingAt.entityHit;
+            return (E) lookingAt.entityHit;
         }
 
         return null;

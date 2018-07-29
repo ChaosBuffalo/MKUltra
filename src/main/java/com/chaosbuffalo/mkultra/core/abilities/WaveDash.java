@@ -11,7 +11,6 @@ import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket
 import com.chaosbuffalo.mkultra.utils.EnvironmentUtils;
 import com.chaosbuffalo.mkultra.utils.RayTraceUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
@@ -76,25 +75,26 @@ public class WaveDash extends BaseAbility {
         Vec3d to = from.add(look);
 
         Vec3d lookVec = entity.getLookVec();
-        List<Entity> entityHit = getTargetsInLine(entity, from, to, true, 1.0f);
         float damage = BASE_DAMAGE + DAMAGE_SCALE * level;
         Vec3d perpVec = RayTraceUtils.getPerpendicular(to.subtract(from)).normalize();
         EnvironmentUtils.putOutFiresInLine(theWorld, from, to);
         EnvironmentUtils.putOutFiresInLine(theWorld, from.add(perpVec), to.add(perpVec));
         EnvironmentUtils.putOutFiresInLine(theWorld, from.subtract(perpVec), to.subtract(perpVec));
-        for (Entity entHit : entityHit){
-            if (entHit instanceof EntityLivingBase){
-                if (((EntityLivingBase)entHit).isPotionActive(WhirlpoolPotion.INSTANCE)){
-                    damage = damage * 2.0f;
-                }
+
+        List<EntityLivingBase> entityHit = getTargetsInLine(entity, from, to, true, .75f);
+        for (EntityLivingBase entHit : entityHit){
+            if (entHit == null) {
+                continue;
+            }
+
+            if (entHit.isPotionActive(WhirlpoolPotion.INSTANCE)){
+                damage = damage * 2.0f;
             }
             entHit.attackEntityFrom(MKDamageSource.fromMeleeSkill(getAbilityId(), entity, entity), damage);
             pData.setCooldown(getAbilityId(), Math.max(0, pData.getCurrentAbilityCooldown(getAbilityId()) - 2));
-            if (entHit instanceof EntityLivingBase){
-                EntityLivingBase livEnt = (EntityLivingBase) entHit;
-                livEnt.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 2 * GameConstants.TICKS_PER_SECOND * level, level, false, true));
-                livEnt.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 2 * GameConstants.TICKS_PER_SECOND * level, 100, false, true));
-            }
+
+            entHit.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 2 * GameConstants.TICKS_PER_SECOND * level, level, false, true));
+            entHit.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 2 * GameConstants.TICKS_PER_SECOND * level, 100, false, true));
 
             MKUltra.packetHandler.sendToAllAround(
                     new ParticleEffectSpawnPacket(
@@ -103,9 +103,9 @@ public class WaveDash extends BaseAbility {
                             entHit.posX, entHit.posY + 1.0,
                             entHit.posZ, 1.0, 1.0, 1.0, 2.0,
                             lookVec),
-                    entity.dimension, entHit.posX,
-                    entHit.posY, entHit.posZ, 50.0f);
+                    entHit, 50.0f);
         }
+
         RayTraceResult blockHit = RayTraceUtils.rayTraceBlocks(entity.getEntityWorld(), from, to, false);
         if (blockHit != null && blockHit.typeOfHit == RayTraceResult.Type.BLOCK)
         {
@@ -120,8 +120,7 @@ public class WaveDash extends BaseAbility {
                         entity.posX, entity.posY + 1.0,
                         entity.posZ, 1.0, 1.0, 1.0, 2.0,
                         lookVec),
-                entity.dimension, entity.posX,
-                entity.posY, entity.posZ, 50.0f);
+                entity, 50.0f);
 
     }
 }
