@@ -13,11 +13,13 @@ import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**
  * Created by Jacob on 7/28/2018.
  */
+@Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class NaturesRemedyPotion extends SpellPeriodicPotionBase {
 
     private static final int DEFAULT_PERIOD = 40;

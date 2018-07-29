@@ -26,7 +26,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**
  * Created by Jacob on 3/24/2018.
- */@Mod.EventBusSubscriber(modid = MKUltra.MODID)
+ */
+@Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class MoonTrancePotion extends SpellPeriodicPotionBase {
     private static final int DEFAULT_PERIOD = 40;
 
