@@ -41,4 +41,5 @@ public class ItemUtils {
         Item item = itemInHand.getItem();
         return CRIT.getDamage(item);
     }
+
 }
