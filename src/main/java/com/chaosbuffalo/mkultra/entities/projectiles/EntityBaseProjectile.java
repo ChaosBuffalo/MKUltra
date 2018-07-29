@@ -247,7 +247,9 @@ public abstract class EntityBaseProjectile extends Entity implements IProjectile
         } else {
             ++this.ticksInAir;
             if (this.getDoAirProc() && this.ticksInAir == this.getAirProcTime()) {
-                this.onAirProc(this.getThrower(), this.getAmplifier());
+                if (this.onAirProc(this.getThrower(), this.getAmplifier())){
+                    this.setDead();
+                }
             }
 
             Vec3d traceStart = new Vec3d(this.posX, this.posY, this.posZ);
@@ -399,7 +401,8 @@ public abstract class EntityBaseProjectile extends Entity implements IProjectile
         return false;
     }
 
-    protected void onAirProc(EntityLivingBase caster, int amplifier) {
+    protected boolean onAirProc(EntityLivingBase caster, int amplifier) {
+        return false;
     }
 
     protected boolean isValidEntityTarget(Entity entity) {

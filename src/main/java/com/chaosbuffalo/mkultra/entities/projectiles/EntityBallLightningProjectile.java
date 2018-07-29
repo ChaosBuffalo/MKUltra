@@ -93,7 +93,7 @@ public class EntityBallLightningProjectile extends EntityBaseProjectile {
 
 
     @Override
-    protected void onAirProc(EntityLivingBase caster, int amplifier) {
+    protected boolean onAirProc(EntityLivingBase caster, int amplifier) {
         if (caster != null) {
             SpellCast ballLightning = BallLightningPotion.Create(caster, 4.0f, 4.0f);
             this.setTicksInAir(0);
@@ -109,8 +109,8 @@ public class EntityBallLightningProjectile extends EntityBaseProjectile {
                     .instant()
                     .color(16769280).radius(3.0f, true)
                     .spawn();
-
         }
+        return false;
 
     }
 }
