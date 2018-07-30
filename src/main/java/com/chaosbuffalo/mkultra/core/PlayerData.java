@@ -81,10 +81,10 @@ public class PlayerData implements IPlayerData {
 
         privateData.register(MANA, 0);
         privateData.register(UNSPENT_POINTS, 0);
-        privateData.register(CLASS_ID, ClassData.INVALID_CLASS.toString());
+        privateData.register(CLASS_ID, MKURegistry.INVALID_CLASS.toString());
         privateData.register(LEVEL, 0);
         for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
-            privateData.register(ACTION_BAR_ABILITY_ID[i], ClassData.INVALID_ABILITY.toString());
+            privateData.register(ACTION_BAR_ABILITY_ID[i], MKURegistry.INVALID_ABILITY.toString());
             privateData.register(ACTION_BAR_ABILITY_LEVEL[i], GameConstants.ACTION_BAR_INVALID_LEVEL);
         }
     }
@@ -109,7 +109,7 @@ public class PlayerData implements IPlayerData {
         if (cinfo != null) {
             return cinfo.getLastLeveledAbility();
         }
-        return ClassData.INVALID_ABILITY;
+        return MKURegistry.INVALID_ABILITY;
     }
 
     private void updatePlayerStats() {
@@ -120,7 +120,7 @@ public class PlayerData implements IPlayerData {
             setHealth(Math.min(20, this.player.getHealth()));
             setTotalHealth(20);
         } else {
-            BaseClass playerClass = ClassData.getClass(getClassId());
+            BaseClass playerClass = MKURegistry.getClass(getClassId());
             if (playerClass == null)
                 return;
 
@@ -204,7 +204,7 @@ public class PlayerData implements IPlayerData {
 
     @Override
     public boolean hasChosenClass() {
-        return this.getClassId().compareTo(ClassData.INVALID_CLASS) != 0;
+        return this.getClassId().compareTo(MKURegistry.INVALID_CLASS) != 0;
     }
 
     @Override
@@ -285,7 +285,7 @@ public class PlayerData implements IPlayerData {
     }
 
     private int getFirstFreeAbilitySlot() {
-        return getCurrentSlotForAbility(ClassData.INVALID_ABILITY);
+        return getCurrentSlotForAbility(MKURegistry.INVALID_ABILITY);
     }
 
     @Override
@@ -293,7 +293,7 @@ public class PlayerData implements IPlayerData {
         if (index < ACTION_BAR_ABILITY_ID.length) {
             return new ResourceLocation(privateData.get(ACTION_BAR_ABILITY_ID[index]));
         }
-        return ClassData.INVALID_ABILITY;
+        return MKURegistry.INVALID_ABILITY;
     }
 
     @Override
@@ -340,7 +340,7 @@ public class PlayerData implements IPlayerData {
         classInfo.addToSpendOrder(abilityId);
 
         if (abilityTracker.hasCooldown(info)) {
-            BaseAbility ability = ClassData.getAbility(abilityId);
+            BaseAbility ability = MKURegistry.getAbility(abilityId);
             int newMaxCooldown = getAbilityCooldown(ability);
             int current = abilityTracker.getCooldownTicks(info);
             setCooldown(info.getId(), Math.min(current, newMaxCooldown));
@@ -402,7 +402,7 @@ public class PlayerData implements IPlayerData {
     }
 
     private void updateToggleAbility(PlayerAbilityInfo info) {
-        BaseAbility ability = ClassData.getAbility(info.getId());
+        BaseAbility ability = MKURegistry.getAbility(info.getId());
         if (ability instanceof BaseToggleAbility && player != null) {
             BaseToggleAbility toggle = (BaseToggleAbility) ability;
 
@@ -422,12 +422,12 @@ public class PlayerData implements IPlayerData {
     @Override
     public boolean executeHotBarAbility(int slotIndex) {
         ResourceLocation abilityId = getAbilityInSlot(slotIndex);
-        if (abilityId.compareTo(ClassData.INVALID_ABILITY) == 0)
+        if (abilityId.compareTo(MKURegistry.INVALID_ABILITY) == 0)
             return false;
 
         if (getCurrentAbilityCooldown(abilityId) == 0) {
 
-            BaseAbility ability = ClassData.getAbility(abilityId);
+            BaseAbility ability = MKURegistry.getAbility(abilityId);
             if (ability != null && ability.meetsRequirements(this)) {
                 ability.execute(player, this, player.getEntityWorld());
                 return true;
@@ -468,7 +468,7 @@ public class PlayerData implements IPlayerData {
         PlayerAbilityInfo abilityInfo = getAbilityInfo(abilityId);
 
         boolean valid = abilityInfo != null && abilityInfo.isCurrentlyKnown();
-        ResourceLocation id = valid ? abilityInfo.getId() : ClassData.INVALID_ABILITY;
+        ResourceLocation id = valid ? abilityInfo.getId() : MKURegistry.INVALID_ABILITY;
         int level = valid ? abilityInfo.getLevel() : GameConstants.ACTION_BAR_INVALID_LEVEL;
 
         setAbilityInSlot(index, id);
@@ -667,12 +667,12 @@ public class PlayerData implements IPlayerData {
             ResourceLocation classId = new ResourceLocation(tag.getString("activeClassId"));
             // If the character was saved with a class that doesn't exist anymore (say from a plugin),
             // reset the character to have no class
-            if (ClassData.getClass(classId) == null)
-                classId = ClassData.INVALID_CLASS;
+            if (MKURegistry.getClass(classId) == null)
+                classId = MKURegistry.INVALID_CLASS;
 
             activateClass(classId);
         } else {
-            activateClass(ClassData.INVALID_CLASS);
+            activateClass(MKURegistry.INVALID_CLASS);
         }
     }
 
@@ -718,7 +718,7 @@ public class PlayerData implements IPlayerData {
         for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
             ResourceLocation abilityId = getAbilityInSlot(i);
 
-            if (abilityId.compareTo(ClassData.INVALID_ABILITY) == 0)
+            if (abilityId.compareTo(MKURegistry.INVALID_ABILITY) == 0)
                 continue;
 
             PlayerAbilityInfo info = getAbilityInfo(abilityId);
@@ -741,7 +741,7 @@ public class PlayerData implements IPlayerData {
                 setUnspentPoints(curUnspent - 1);
             } else {
                 ResourceLocation lastAbility = getLastLeveledAbility();
-                if (lastAbility.compareTo(ClassData.INVALID_ABILITY) != 0) {
+                if (lastAbility.compareTo(MKURegistry.INVALID_ABILITY) != 0) {
                     unlearnAbility(lastAbility, false, false);
                 }
             }
@@ -750,8 +750,8 @@ public class PlayerData implements IPlayerData {
             // If so, unlearn the spell and refund the point.
             int newLevel = getLevel() - 1;
             Arrays.stream(getActiveAbilities())
-                    .filter(r -> ClassData.getAbility(r) != null)
-                    .map(ClassData::getAbility)
+                    .filter(r -> MKURegistry.getAbility(r) != null)
+                    .map(MKURegistry::getAbility)
                     .filter(a -> {
                         // Subtract 1 because getRequiredLevel is a little weird. It actually tells you the required
                         // level to go up a rank, not the required level for the current rank
@@ -771,7 +771,7 @@ public class PlayerData implements IPlayerData {
         if (mainHandStack.isEmpty())
             return false;
 
-        BaseClass baseClass = ClassData.getClass(classId);
+        BaseClass baseClass = MKURegistry.getClass(classId);
         if (baseClass == null)
             return false;
 
@@ -799,11 +799,11 @@ public class PlayerData implements IPlayerData {
 
     public void unlearnClass(ResourceLocation classId) {
         if (isClassKnown(classId)) {
-            activateClass(ClassData.INVALID_CLASS);
+            activateClass(MKURegistry.INVALID_CLASS);
             knownClasses.remove(classId);
 
             // Unlearn all abilities offered by this class
-            BaseClass bc = ClassData.getClass(classId);
+            BaseClass bc = MKURegistry.getClass(classId);
             if (bc != null) {
                 bc.getAbilities().forEach(a -> unlearnAbility(a.getAbilityId(), false, true));
             }
@@ -835,7 +835,7 @@ public class PlayerData implements IPlayerData {
     private void deactivateCurrentToggleAbilities() {
         for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
             ResourceLocation abilityId = getAbilityInSlot(i);
-            BaseAbility ability = ClassData.getAbility(abilityId);
+            BaseAbility ability = MKURegistry.getAbility(abilityId);
             if (ability instanceof BaseToggleAbility && player != null) {
                 BaseToggleAbility toggle = (BaseToggleAbility) ability;
                 toggle.removeEffect(player, this, player.getEntityWorld());
@@ -853,14 +853,14 @@ public class PlayerData implements IPlayerData {
         saveCurrentClass();
         deactivateCurrentToggleAbilities();
 
-        if (classId.compareTo(ClassData.INVALID_CLASS) == 0 || !isClassKnown(classId)) {
+        if (classId.compareTo(MKURegistry.INVALID_CLASS) == 0 || !isClassKnown(classId)) {
             // Switching to no class
 
-            classId = ClassData.INVALID_CLASS;
+            classId = MKURegistry.INVALID_CLASS;
             level = 1;
             unspent = 1;
             hotbar = new ResourceLocation[GameConstants.ACTION_BAR_SIZE];
-            Arrays.fill(hotbar, ClassData.INVALID_ABILITY);
+            Arrays.fill(hotbar, MKURegistry.INVALID_ABILITY);
         } else {
             PlayerClassInfo info = knownClasses.get(classId);
             level = info.level;
@@ -882,7 +882,7 @@ public class PlayerData implements IPlayerData {
 
     public boolean canWearArmorMaterial(ItemArmor.ArmorMaterial material) {
 
-        BaseClass currentClass = ClassData.getClass(getClassId());
+        BaseClass currentClass = MKURegistry.getClass(getClassId());
         // If no class, default to vanilla behaviour of wearing anything
         // Then check the current class if it's allowed
         // Then check for special exceptions granted by other means
@@ -925,7 +925,7 @@ public class PlayerData implements IPlayerData {
         String msg = "All Abilities:";
         sender.sendMessage(new TextComponentString(msg));
         for (PlayerAbilityInfo info : abilityInfoMap.values()) {
-            BaseAbility ability = ClassData.getAbility(info.getId());
+            BaseAbility ability = MKURegistry.getAbility(info.getId());
 
             msg = String.format("%s: %d / %d", ability.getAbilityName(), abilityTracker.getCooldownTicks(info), getAbilityCooldown(ability));
             sender.sendMessage(new TextComponentString(msg));

@@ -167,7 +167,7 @@ public class SpellTriggers {
                     packet = new CritMessagePacket(livingTarget.getEntityId(), playerSource.getUniqueID(),
                             newDamage, CritMessagePacket.CritType.INDIRECT_MAGIC_CRIT);
                 } else {
-                    BaseAbility ability = ClassData.getAbility(mkSource.getAbilityId());
+                    BaseAbility ability = MKURegistry.getAbility(mkSource.getAbilityId());
                     packet = new CritMessagePacket(livingTarget.getEntityId(), playerSource.getUniqueID(),
                             newDamage, ability.getAbilityId());
                 }

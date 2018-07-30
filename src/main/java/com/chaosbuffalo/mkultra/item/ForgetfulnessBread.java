@@ -1,7 +1,7 @@
 package com.chaosbuffalo.mkultra.item;
 
 import com.chaosbuffalo.mkultra.GameConstants;
-import com.chaosbuffalo.mkultra.core.ClassData;
+import com.chaosbuffalo.mkultra.core.MKURegistry;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import net.minecraft.entity.player.EntityPlayer;
@@ -34,7 +34,7 @@ public class ForgetfulnessBread extends ItemFood {
 
             IPlayerData data = MKUPlayerData.get(player);
             if (data != null) {
-                data.activateClass(ClassData.INVALID_CLASS);
+                data.activateClass(MKURegistry.INVALID_CLASS);
             }
         }
     }

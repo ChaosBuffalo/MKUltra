@@ -1,7 +1,7 @@
 package com.chaosbuffalo.mkultra.blocks;
 
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.ClassData;
+import com.chaosbuffalo.mkultra.core.MKURegistry;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.network.ModGuiHandler;
@@ -43,7 +43,7 @@ public class XpTableBlock extends Block {
                                     EnumFacing side,
                                     float hitX, float hitY, float hitZ) {
         IPlayerData pData = MKUPlayerData.get(player);
-        if (pData == null || ClassData.getClass(pData.getClassId()) == null)
+        if (pData == null || MKURegistry.getClass(pData.getClassId()) == null)
             return true;
 
         player.openGui(MKUltra.INSTANCE, ModGuiHandler.XP_TABLE_SCREEN, player.world,

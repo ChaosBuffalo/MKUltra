@@ -43,7 +43,7 @@ public class PlayerClassScreen extends GuiScreen {
         IPlayerData pData = MKUPlayerData.get(this.mc.player);
         if (pData == null)
             return;
-        BaseClass playerClass = ClassData.getClass(pData.getClassId());
+        BaseClass playerClass = MKURegistry.getClass(pData.getClassId());
         if (playerClass == null)
             return;
 
@@ -155,7 +155,7 @@ public class PlayerClassScreen extends GuiScreen {
         IPlayerData pData = MKUPlayerData.get(mc.player);
         if (pData == null)
             return;
-        BaseClass playerClass = ClassData.getClass(pData.getClassId());
+        BaseClass playerClass = MKURegistry.getClass(pData.getClassId());
         if (playerClass == null)
             return;
         BaseAbility ability = playerClass.getOfferedAbilityBySlot(button.id % GameConstants.ACTION_BAR_SIZE);
