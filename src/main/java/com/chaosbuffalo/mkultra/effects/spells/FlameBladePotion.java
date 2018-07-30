@@ -2,10 +2,7 @@ package com.chaosbuffalo.mkultra.effects.spells;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.abilities.FlameBlade;
-import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
-import com.chaosbuffalo.mkultra.effects.SpellCast;
-import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
-import com.chaosbuffalo.mkultra.effects.SpellTriggers;
+import com.chaosbuffalo.mkultra.effects.*;
 import com.chaosbuffalo.mkultra.entities.projectiles.EntityFlameBladeProjectile;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.targeting_api.Targeting;
@@ -24,7 +21,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 
 @Mod.EventBusSubscriber(modid = MKUltra.MODID)
-public class FlameBladePotion extends SpellPotionBase {
+public class FlameBladePotion extends PassiveEffect {
     public static final FlameBladePotion INSTANCE = new FlameBladePotion();
 
     @SubscribeEvent
@@ -46,32 +43,6 @@ public class FlameBladePotion extends SpellPotionBase {
     public ResourceLocation getIconTexture() {
         return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/flame_blade.png");
     }
-
-    @Override
-    public Targeting.TargetType getTargetType() {
-        return Targeting.TargetType.FRIENDLY;
-    }
-
-    @Override
-    public void doEffect(Entity applier, Entity caster, EntityLivingBase target, int amplifier, SpellCast cast) {
-
-    }
-
-    @Override
-    public boolean canSelfCast() {
-        return true;
-    }
-
-    @Override
-    public boolean isReady(int duration, int amplitude) {
-        return false;
-    }
-
-    @Override
-    public boolean isInstant() {
-        return false;
-    }
-
 
     private void onAttackEntity(EntityPlayer player, Entity target, PotionEffect potion) {
         SpellCast flames = FlameBladeEffectPotion.Create(player, FlameBlade.BASE_DAMAGE, FlameBlade.DAMAGE_SCALE);

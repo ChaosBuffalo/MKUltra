@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.effects.spells;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.PlayerAttributes;
+import com.chaosbuffalo.mkultra.effects.PassiveEffect;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
 import com.chaosbuffalo.targeting_api.Targeting;
@@ -21,7 +22,7 @@ import java.util.UUID;
  * Created by Jacob on 6/23/2018.
  */
 @Mod.EventBusSubscriber(modid = MKUltra.MODID)
-public class WildToxinEffectPotion extends SpellPotionBase {
+public class WildToxinEffectPotion extends PassiveEffect {
     public static final UUID MODIFIER_ID = UUID.fromString("222f29b8-c161-4b80-897f-724f84e08ae7");
     public static final WildToxinEffectPotion INSTANCE = (WildToxinEffectPotion) (new WildToxinEffectPotion()
             .registerPotionAttributeModifier(SharedMonsterAttributes.ATTACK_SPEED, MODIFIER_ID.toString(), -.40, PlayerAttributes.OP_SCALE_MULTIPLICATIVE)
@@ -60,22 +61,7 @@ public class WildToxinEffectPotion extends SpellPotionBase {
     }
 
     @Override
-    public void doEffect(Entity applier, Entity caster, EntityLivingBase target, int amplifier, SpellCast cast) {
-
-    }
-
-    @Override
     public boolean canSelfCast() {
-        return false;
-    }
-
-    @Override
-    public boolean isReady(int duration, int amplitude) {
-        return false;
-    }
-
-    @Override
-    public boolean isInstant() {
         return false;
     }
 }
