@@ -41,7 +41,7 @@ public class EntityWhirlpoolProjectile extends EntityBaseProjectile {
         if (!this.world.isRemote && caster != null) {
             SpellCast yank = YankPotion.Create(caster);
             SpellCast whirlpool = WhirlpoolPotion.Create(caster);
-//            SpellCast damagePotion = InstantIndirectMagicDamagePotion.Create(caster, 2.0f, 2.0f);
+//            SpellCast damagePotion = AbilityMagicDamage.Create(caster, 2.0f, 2.0f);
             AreaEffectBuilder.Create(caster, this)
                     .spellCast(yank, amplifier - 1, Targeting.TargetType.ENEMY)
                     .spellCast(whirlpool, GameConstants.TICKS_PER_SECOND * 2 * amplifier, amplifier, Targeting.TargetType.ENEMY)

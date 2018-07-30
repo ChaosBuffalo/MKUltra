@@ -4,7 +4,7 @@ import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
-import com.chaosbuffalo.mkultra.effects.spells.InstantIndirectDamagePotion;
+import com.chaosbuffalo.mkultra.effects.spells.AbilityMeleeDamage;
 import com.chaosbuffalo.mkultra.effects.spells.ParticlePotion;
 import com.chaosbuffalo.mkultra.core.BaseAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
@@ -62,7 +62,7 @@ public class WhirlwindBlades extends BaseAbility {
         int level = pData.getLevelForAbility(getAbilityId());
 
         // What to do for each target hit
-        SpellCast damage = InstantIndirectDamagePotion.Create(entity, BASE_DAMAGE, DAMAGE_SCALE);
+        SpellCast damage = AbilityMeleeDamage.Create(entity, BASE_DAMAGE, DAMAGE_SCALE);
         SpellCast particlePotion = ParticlePotion.Create(entity,
                 EnumParticleTypes.SWEEP_ATTACK.getParticleID(),
                 ParticleEffects.CIRCLE_MOTION, false, new Vec3d(1.0, 1.0, 1.0),

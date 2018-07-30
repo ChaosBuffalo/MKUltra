@@ -4,7 +4,7 @@ import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
-import com.chaosbuffalo.mkultra.effects.spells.InstantIndirectMagicDamagePotion;
+import com.chaosbuffalo.mkultra.effects.spells.AbilityMagicDamage;
 import com.chaosbuffalo.mkultra.effects.spells.ParticlePotion;
 import com.chaosbuffalo.mkultra.core.BaseAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
@@ -66,7 +66,7 @@ public class KPDarkWail extends BaseAbility {
         int level = pData.getLevelForAbility(getAbilityId());
 
         // What to do for each target hit
-        SpellCast damage = InstantIndirectMagicDamagePotion.Create(entity, BASE_DAMAGE, DAMAGE_SCALE);
+        SpellCast damage = AbilityMagicDamage.Create(entity, BASE_DAMAGE, DAMAGE_SCALE);
         SpellCast particle = ParticlePotion.Create(entity,
                 EnumParticleTypes.CRIT_MAGIC.getParticleID(),
                 ParticleEffects.CIRCLE_PILLAR_MOTION, false, new Vec3d(1.0, 1.0, 1.0),
