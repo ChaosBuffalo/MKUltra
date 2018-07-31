@@ -4,6 +4,7 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerAttributes;
+import com.chaosbuffalo.mkultra.effects.PassiveEffect;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
 import com.chaosbuffalo.mkultra.effects.SpellTriggers;
@@ -29,7 +30,7 @@ import java.util.UUID;
  * Created by Jacob on 7/28/2018.
  */
 @Mod.EventBusSubscriber(modid = MKUltra.MODID)
-public class SkinLikeWoodPotion extends SpellPotionBase {
+public class SkinLikeWoodPotion extends PassiveEffect {
     public static final UUID MODIFIER_ID = UUID.fromString("60f31ee6-4a8e-4c35-8746-6c5950187e77");
     public static final SkinLikeWoodPotion INSTANCE = (SkinLikeWoodPotion) (new SkinLikeWoodPotion()
             .registerPotionAttributeModifier(SharedMonsterAttributes.ARMOR, MODIFIER_ID.toString(), 2, PlayerAttributes.OP_INCREMENT)
@@ -58,31 +59,6 @@ public class SkinLikeWoodPotion extends SpellPotionBase {
     @Override
     public double getAttributeModifierAmount(int amplifier, AttributeModifier modifier) {
         return modifier.getAmount() * (double) (amplifier);
-    }
-
-    @Override
-    public Targeting.TargetType getTargetType() {
-        return Targeting.TargetType.FRIENDLY;
-    }
-
-    @Override
-    public void doEffect(Entity applier, Entity caster, EntityLivingBase target, int amplifier, SpellCast cast) {
-
-    }
-
-    @Override
-    public boolean canSelfCast() {
-        return true;
-    }
-
-    @Override
-    public boolean isReady(int duration, int amplitude) {
-        return false;
-    }
-
-    @Override
-    public boolean isInstant() {
-        return false;
     }
 
     private void playerHurtPreScale(LivingHurtEvent event, DamageSource source, EntityPlayer livingTarget, IPlayerData targetData) {

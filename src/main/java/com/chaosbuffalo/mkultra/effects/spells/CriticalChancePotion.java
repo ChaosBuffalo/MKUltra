@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.effects.spells;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.PlayerAttributes;
+import com.chaosbuffalo.mkultra.effects.PassiveEffect;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
 import com.chaosbuffalo.targeting_api.Targeting;
@@ -20,7 +21,7 @@ import java.util.UUID;
  * Created by Jacob on 7/26/2018.
  */
 @Mod.EventBusSubscriber(modid = MKUltra.MODID)
-public class CriticalChancePotion extends SpellPotionBase {
+public class CriticalChancePotion extends PassiveEffect {
     public static final UUID MODIFIER_ID = UUID.fromString("0dcba474-eabd-4d13-86ef-22d9abc2cc8f");
     public static final CriticalChancePotion INSTANCE = (CriticalChancePotion) (new CriticalChancePotion()
             .registerPotionAttributeModifier(PlayerAttributes.MELEE_CRIT, MODIFIER_ID.toString(), .05, PlayerAttributes.OP_INCREMENT)
@@ -48,30 +49,5 @@ public class CriticalChancePotion extends SpellPotionBase {
     @Override
     public double getAttributeModifierAmount(int amplifier, AttributeModifier modifier) {
         return modifier.getAmount() * (double) (amplifier);
-    }
-
-    @Override
-    public Targeting.TargetType getTargetType() {
-        return Targeting.TargetType.FRIENDLY;
-    }
-
-    @Override
-    public void doEffect(Entity applier, Entity caster, EntityLivingBase target, int amplifier, SpellCast cast) {
-
-    }
-
-    @Override
-    public boolean canSelfCast() {
-        return true;
-    }
-
-    @Override
-    public boolean isReady(int duration, int amplitude) {
-        return false;
-    }
-
-    @Override
-    public boolean isInstant() {
-        return false;
     }
 }

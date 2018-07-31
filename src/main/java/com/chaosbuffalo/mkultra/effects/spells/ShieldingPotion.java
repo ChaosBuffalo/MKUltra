@@ -1,6 +1,7 @@
 package com.chaosbuffalo.mkultra.effects.spells;
 
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.effects.PassiveEffect;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
 import com.chaosbuffalo.targeting_api.Targeting;
@@ -19,26 +20,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
  */
 
 @Mod.EventBusSubscriber(modid = MKUltra.MODID)
-public class ShieldingPotion extends SpellPotionBase {
-
+public class ShieldingPotion extends PassiveEffect {
 
     public static final ShieldingPotion INSTANCE = new ShieldingPotion();
-
-    @Override
-    public void onPotionAdd(SpellCast cast, EntityLivingBase target, AbstractAttributeMap attributes, int amplifier) {
-        target.setAbsorptionAmount(target.getAbsorptionAmount() + (float)(amplifier));
-
-    }
-
-    @Override
-    public void onPotionRemove(SpellCast cast, EntityLivingBase target, AbstractAttributeMap attributes, int amplifier) {
-        target.setAbsorptionAmount(target.getAbsorptionAmount() - (float)(amplifier));
-    }
-
-    @Override
-    public void doEffect(Entity applier, Entity caster, EntityLivingBase target, int amplifier, SpellCast cast) {
-
-    }
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {
@@ -60,28 +44,19 @@ public class ShieldingPotion extends SpellPotionBase {
     }
 
     @Override
-    public Targeting.TargetType getTargetType() {
-        return Targeting.TargetType.FRIENDLY;
-    }
-
-    @Override
     public double getAttributeModifierAmount(int amplifier, AttributeModifier modifier)
     {
         return modifier.getAmount() * (double)(amplifier);
     }
 
     @Override
-    public boolean canSelfCast() {
-        return true;
+    public void onPotionAdd(SpellCast cast, EntityLivingBase target, AbstractAttributeMap attributes, int amplifier) {
+        target.setAbsorptionAmount(target.getAbsorptionAmount() + (float)(amplifier));
+
     }
 
     @Override
-    public boolean isReady(int duration, int amplitude) {
-        return false;
-    }
-
-    @Override
-    public boolean isInstant() {
-        return false;
+    public void onPotionRemove(SpellCast cast, EntityLivingBase target, AbstractAttributeMap attributes, int amplifier) {
+        target.setAbsorptionAmount(target.getAbsorptionAmount() - (float)(amplifier));
     }
 }
