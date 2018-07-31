@@ -35,7 +35,7 @@ public abstract class BaseToggleSetAbility extends BaseToggleAbility {
                     if (spellPotion instanceof SongApplicator) {
                         ResourceLocation abilityId = BaseToggleAbility.getToggleAbilityIdForPotion(spellPotion);
                         if (abilityId != null) {
-                            pData.setCooldown(abilityId, pData.getAbilityCooldown(ClassData.getAbility(abilityId)));
+                            pData.setCooldown(abilityId, pData.getAbilityCooldown(MKURegistry.getAbility(abilityId)));
                         }
                     }
                 }

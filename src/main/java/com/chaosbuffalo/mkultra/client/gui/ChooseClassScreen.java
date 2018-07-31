@@ -1,7 +1,7 @@
 package com.chaosbuffalo.mkultra.client.gui;
 
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.ClassData;
+import com.chaosbuffalo.mkultra.core.MKURegistry;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.item.interfaces.IClassProvider;
@@ -10,7 +10,6 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.texture.ITextureObject;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -80,9 +79,9 @@ public class ChooseClassScreen extends GuiScreen {
 
         if (learning) {
             ItemStack main = player.getHeldItemMainhand();
-            classes = ClassData.getClassesProvidedByItem(main.getItem());
+            classes = MKURegistry.getClassesProvidedByItem(main.getItem());
         } else {
-            classes = ClassData.getValidClasses(knownClasses);
+            classes = MKURegistry.getValidClasses(knownClasses);
         }
         List<ResourceLocation> class_subset = classes;
         boolean wasLarge = class_subset.size() > PER_PAGE;
@@ -94,7 +93,7 @@ public class ChooseClassScreen extends GuiScreen {
         // draw choose class buttons
         for (int i = 0; i < classes.size(); i++) {
             ResourceLocation classId = classes.get(i);
-            String className = ClassData.getClassName(classId);
+            String className = MKURegistry.getClassName(classId);
             xPos = buttonStartX + i % 2 * 110;
             yPos = buttonStartY + i / 2 * chooseButtonHeight;
 

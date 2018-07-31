@@ -99,10 +99,10 @@ public class AbilityBar extends Gui {
 
         for (int i = 0; i < SLOT_COUNT; i++) {
             ResourceLocation abilityId = data.getAbilityInSlot(i);
-            if (abilityId.compareTo(ClassData.INVALID_ABILITY) == 0)
+            if (abilityId.compareTo(MKURegistry.INVALID_ABILITY) == 0)
                 continue;
 
-            BaseAbility ability = ClassData.getAbility(abilityId);
+            BaseAbility ability = MKURegistry.getAbility(abilityId);
             if (ability == null)
                 continue;
 
