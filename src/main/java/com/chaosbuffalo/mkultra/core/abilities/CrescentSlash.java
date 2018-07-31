@@ -3,7 +3,7 @@ package com.chaosbuffalo.mkultra.core.abilities;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
-import com.chaosbuffalo.mkultra.effects.spells.InstantIndirectDamagePotion;
+import com.chaosbuffalo.mkultra.effects.spells.AbilityMeleeDamage;
 import com.chaosbuffalo.mkultra.effects.spells.ParticlePotion;
 import com.chaosbuffalo.mkultra.core.BaseAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
@@ -13,7 +13,6 @@ import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -68,7 +67,7 @@ public class CrescentSlash extends BaseAbility {
             pData.startAbility(this);
 
             // What to do for each target hit
-            SpellCast damage = InstantIndirectDamagePotion.Create(entity, BASE_DAMAGE, DAMAGE_SCALE);
+            SpellCast damage = AbilityMeleeDamage.Create(entity, BASE_DAMAGE, DAMAGE_SCALE);
             SpellCast particlePotion = ParticlePotion.Create(entity,
                     EnumParticleTypes.SWEEP_ATTACK.getParticleID(),
                     ParticleEffects.CIRCLE_MOTION, false, new Vec3d(1.0, 1.0, 1.0),

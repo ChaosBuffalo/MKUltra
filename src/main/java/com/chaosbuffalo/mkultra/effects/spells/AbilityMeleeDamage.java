@@ -14,12 +14,12 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Mod.EventBusSubscriber(modid = MKUltra.MODID)
-public class InstantIndirectDamagePotion extends SpellPotionBase {
+public class AbilityMeleeDamage extends SpellPotionBase {
 
     public static ResourceLocation INDIRECT_DMG_ABILITY_ID = new ResourceLocation(
             MKUltra.MODID, "ability.instant_indirect_damage");
 
-    public static final InstantIndirectDamagePotion INSTANCE = new InstantIndirectDamagePotion();
+    public static final AbilityMeleeDamage INSTANCE = new AbilityMeleeDamage();
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {
@@ -30,7 +30,7 @@ public class InstantIndirectDamagePotion extends SpellPotionBase {
         return INSTANCE.newSpellCast(source).setScalingParameters(baseDamage, scaling);
     }
 
-    private InstantIndirectDamagePotion() {
+    private AbilityMeleeDamage() {
         super(true, 123);
         setPotionName("effect.instant_indirect_damage");
     }

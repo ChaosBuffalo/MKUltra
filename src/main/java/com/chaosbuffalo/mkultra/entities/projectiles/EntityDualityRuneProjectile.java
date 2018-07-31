@@ -3,8 +3,8 @@ package com.chaosbuffalo.mkultra.entities.projectiles;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
+import com.chaosbuffalo.mkultra.effects.spells.AbilityMagicDamage;
 import com.chaosbuffalo.mkultra.effects.spells.ClericHealPotion;
-import com.chaosbuffalo.mkultra.effects.spells.InstantIndirectMagicDamagePotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
@@ -42,7 +42,7 @@ public class EntityDualityRuneProjectile extends EntityBaseProjectile {
     protected boolean onGroundProc(EntityLivingBase caster, int amplifier) {
         if (!this.world.isRemote && caster != null) {
             SpellCast heal = ClericHealPotion.Create(caster, BASE, SCALE);
-            SpellCast damage = InstantIndirectMagicDamagePotion.Create(caster, BASE, SCALE);
+            SpellCast damage = AbilityMagicDamage.Create(caster, BASE, SCALE);
 
             AreaEffectBuilder.Create(caster, this)
                     .spellCast(heal, amplifier, Targeting.TargetType.FRIENDLY)

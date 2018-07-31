@@ -4,8 +4,7 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.abilities.SpiritBomb;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
-import com.chaosbuffalo.mkultra.effects.spells.ClericHealPotion;
-import com.chaosbuffalo.mkultra.effects.spells.InstantIndirectMagicDamagePotion;
+import com.chaosbuffalo.mkultra.effects.spells.AbilityMagicDamage;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
@@ -46,7 +45,7 @@ public class EntitySpiritBombProjectile extends EntityBaseProjectile {
 
     private boolean doEffect(EntityLivingBase caster, int amplifier){
         if (!this.world.isRemote && caster != null) {
-            SpellCast damage = InstantIndirectMagicDamagePotion.Create(caster, SpiritBomb.BASE, SpiritBomb.SCALE);
+            SpellCast damage = AbilityMagicDamage.Create(caster, SpiritBomb.BASE, SpiritBomb.SCALE);
             AreaEffectBuilder.Create(caster, this)
                     .spellCast(damage, amplifier, Targeting.TargetType.ENEMY)
                     .instant()
