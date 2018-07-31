@@ -26,8 +26,8 @@ import java.util.List;
  */
 public class ExplosiveGrowth extends BaseAbility {
 
-    public static float BASE_DAMAGE = 8.0f;
-    public static float DAMAGE_SCALE = 4.0f;
+    public static float BASE_DAMAGE = 10.0f;
+    public static float DAMAGE_SCALE = 5.0f;
     public static float DASH_BASE = 6.0f;
     public static float DASH_SCALE = 2.0f;
 
@@ -37,7 +37,7 @@ public class ExplosiveGrowth extends BaseAbility {
 
     @Override
     public int getCooldown(int currentLevel) {
-        return 25 - 5 * currentLevel;
+        return 35 - 5 * currentLevel;
     }
 
     @Override

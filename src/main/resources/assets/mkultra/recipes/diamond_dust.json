@@ -1,0 +1,15 @@
+{
+  "pattern": [
+    "d"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "count": 2,
+    "item": "mkultra:diamond_dust"
+  },
+  "key": {
+    "d": {
+      "item": "minecraft:diamond"
+    }
+  }
+}
