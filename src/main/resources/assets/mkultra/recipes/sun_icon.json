@@ -14,7 +14,7 @@
       "type": "forge:ore_dict"
     },
     "i":{
-      "item": "minecraft:redstone"
+      "item": "minecraft:torch"
     }
   }
 }
