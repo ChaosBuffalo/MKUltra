@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.core;
 
+import com.chaosbuffalo.mkultra.MKConfig;
 import com.chaosbuffalo.mkultra.core.classes.*;
 import com.google.common.collect.Lists;
 import net.minecraftforge.event.RegistryEvent;
@@ -9,8 +10,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import java.util.List;
 
 @Mod.EventBusSubscriber
-class CorePlugin {
-    private static List<BaseClass> BUILTIN_CLASSES = Lists.newArrayList();
+public class CorePlugin {
+    public static List<BaseClass> BUILTIN_CLASSES = Lists.newArrayList();
 
     static {
         BUILTIN_CLASSES.add(new Archer());
@@ -31,17 +32,24 @@ class CorePlugin {
     @SubscribeEvent
     public static void registerClasses(RegistryEvent.Register<BaseClass> event) {
         BUILTIN_CLASSES.forEach(c -> {
-            c.setRegistryName(c.getClassId());
-            event.getRegistry().register(c);
+            if (MKConfig.ENABLED_CLASSES.get(c.getClassId())){
+                c.setRegistryName(c.getClassId());
+                event.getRegistry().register(c);
+            }
+
         });
     }
 
     @SuppressWarnings("unused")
     @SubscribeEvent
     public static void registerAbilities(RegistryEvent.Register<BaseAbility> event) {
-        BUILTIN_CLASSES.forEach(bc -> bc.getAbilities().forEach(a -> {
-            a.setRegistryName(a.getAbilityId());
-            event.getRegistry().register(a);
-        }));
+        BUILTIN_CLASSES.forEach(bc -> {
+            if (MKConfig.ENABLED_CLASSES.get(bc.getClassId())) {
+                bc.getAbilities().forEach(a -> {
+                            a.setRegistryName(a.getAbilityId());
+                            event.getRegistry().register(a);
+                });
+            }
+        });
     }
 }

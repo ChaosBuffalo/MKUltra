@@ -22,7 +22,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class NaturesRemedyPotion extends SpellPeriodicPotionBase {
 
-    private static final int DEFAULT_PERIOD = 40;
+    private static final int DEFAULT_PERIOD = 20;
 
     public static final NaturesRemedyPotion INSTANCE = new NaturesRemedyPotion();
 

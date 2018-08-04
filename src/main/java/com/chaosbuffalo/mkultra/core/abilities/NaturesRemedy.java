@@ -22,7 +22,7 @@ import net.minecraft.world.World;
  */
 public class NaturesRemedy extends BaseAbility {
 
-    public static float BASE_VALUE = 2.0f;
+    public static float BASE_VALUE = 1.0f;
     public static float VALUE_SCALE = 1.0f;
     public static int BASE_DURATION = 0;
     public static int DURATION_SCALE = 5;

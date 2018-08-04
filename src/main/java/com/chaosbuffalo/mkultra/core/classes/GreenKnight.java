@@ -42,7 +42,7 @@ public class GreenKnight extends BaseClass {
 
     @Override
     public int getBaseHealth(){
-        return 22;
+        return 24;
     }
 
     @Override
