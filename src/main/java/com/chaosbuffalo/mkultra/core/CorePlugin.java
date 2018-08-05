@@ -11,7 +11,7 @@ import java.util.List;
 
 @Mod.EventBusSubscriber
 public class CorePlugin {
-    public static List<BaseClass> BUILTIN_CLASSES = Lists.newArrayList();
+    private static List<BaseClass> BUILTIN_CLASSES = Lists.newArrayList();
 
     static {
         BUILTIN_CLASSES.add(new Archer());
@@ -32,7 +32,7 @@ public class CorePlugin {
     @SubscribeEvent
     public static void registerClasses(RegistryEvent.Register<BaseClass> event) {
         BUILTIN_CLASSES.forEach(c -> {
-            if (MKConfig.ENABLED_CLASSES.get(c.getClassId())){
+            if (MKConfig.isClassEnabled(c.getClassId())) {
                 c.setRegistryName(c.getClassId());
                 event.getRegistry().register(c);
             }
@@ -44,10 +44,10 @@ public class CorePlugin {
     @SubscribeEvent
     public static void registerAbilities(RegistryEvent.Register<BaseAbility> event) {
         BUILTIN_CLASSES.forEach(bc -> {
-            if (MKConfig.ENABLED_CLASSES.get(bc.getClassId())) {
+            if (MKConfig.isClassEnabled(bc.getClassId())) {
                 bc.getAbilities().forEach(a -> {
-                            a.setRegistryName(a.getAbilityId());
-                            event.getRegistry().register(a);
+                    a.setRegistryName(a.getAbilityId());
+                    event.getRegistry().register(a);
                 });
             }
         });
