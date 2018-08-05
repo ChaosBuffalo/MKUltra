@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.event;
 
+import com.chaosbuffalo.mkultra.MKConfig;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.item.ItemHelper;
@@ -88,13 +89,16 @@ public class ItemRestrictionHandler {
 
         EntityPlayerMP player = (EntityPlayerMP) event.getEntityLiving();
 
-        checkShieldRestriction(player);
+        if (!MKConfig.BIG_HANDS_MODE){
+            checkShieldRestriction(player);
+        }
+
 
         IPlayerData playerData = MKUPlayerData.get(player);
         if (playerData == null)
             return;
 
-        if (event.getSlot().getSlotType() == EntityEquipmentSlot.Type.ARMOR) {
+        if (!MKConfig.TOUGH_GUY_MODE && event.getSlot().getSlotType() == EntityEquipmentSlot.Type.ARMOR) {
             checkBlockedArmor(player, event.getTo(), playerData, event.getSlot());
         }
     }
@@ -115,7 +119,7 @@ public class ItemRestrictionHandler {
         }
 
         private boolean matches(Item obj){
-            return item.getClass().isInstance(obj);
+            return item.isInstance(obj);
         }
 
     }

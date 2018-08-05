@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.event;
 
+import com.chaosbuffalo.mkultra.MKConfig;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
@@ -86,7 +87,7 @@ public class PlayerDataEventHandler {
             return;
 
         // Die on the original so we can clone properly and not need an immediate update packet
-        if (e.isWasDeath()) {
+        if (e.isWasDeath() && !MKConfig.PEPSI_BLUE_MODE) {
             IPlayerData oldData = MKUPlayerData.get(e.getOriginal());
             if (oldData == null)
                 return;

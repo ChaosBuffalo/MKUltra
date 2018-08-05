@@ -34,6 +34,7 @@ public class MKUltra {
     @EventHandler
     public void preInit(FMLPreInitializationEvent e) {
         LOG = e.getModLog();
+        MKConfig.init(e.getSuggestedConfigurationFile());
         proxy.preInit(e);
     }
 

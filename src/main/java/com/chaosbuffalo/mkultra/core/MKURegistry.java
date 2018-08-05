@@ -18,8 +18,8 @@ import java.util.stream.Collectors;
 
 @Mod.EventBusSubscriber
 public class MKURegistry {
-    private static IForgeRegistry<BaseClass> REGISTRY_CLASSES = null;
-    private static IForgeRegistry<BaseAbility> REGISTRY_ABILITIES = null;
+    public static IForgeRegistry<BaseClass> REGISTRY_CLASSES = null;
+    public static IForgeRegistry<BaseAbility> REGISTRY_ABILITIES = null;
 
     public static ResourceLocation INVALID_CLASS = new ResourceLocation(MKUltra.MODID, "class.invalid");
     public static ResourceLocation INVALID_ABILITY = new ResourceLocation(MKUltra.MODID, "ability.invalid");

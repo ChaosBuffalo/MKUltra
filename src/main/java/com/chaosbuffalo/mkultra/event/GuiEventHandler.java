@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.event;
 
+import com.chaosbuffalo.mkultra.MKConfig;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.ArmorClass;
 import com.chaosbuffalo.mkultra.utils.ItemUtils;
@@ -45,13 +46,13 @@ public class GuiEventHandler {
     @SuppressWarnings("unused")
     @SubscribeEvent
     public static void onItemTooltipEvent(ItemTooltipEvent event){
-        if (event.getItemStack().getItem() instanceof ItemArmor) {
+        if (!MKConfig.TOUGH_GUY_MODE && event.getItemStack().getItem() instanceof ItemArmor) {
             doArmorClassTooltip(event);
         }
         if (ItemUtils.CRIT.hasChance(event.getItemStack().getItem())){
             doCritTooltip(event);
         }
-        if (ItemRestrictionHandler.isNoShieldItem(event.getItemStack().getItem())){
+        if (!MKConfig.BIG_HANDS_MODE && ItemRestrictionHandler.isNoShieldItem(event.getItemStack().getItem())){
             doNoShieldTooltip(event);
         }
     }

@@ -7,18 +7,19 @@ import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.AbilityMagicDamage;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkultra.utils.EnvironmentUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 
 /**
  * Created by Jacob on 7/28/2018.
  */
 public class EntitySpiritBombProjectile extends EntityBaseProjectile {
-
-
 
     public EntitySpiritBombProjectile(World worldIn) {
         super(worldIn);
@@ -32,6 +33,40 @@ public class EntitySpiritBombProjectile extends EntityBaseProjectile {
         this.setDoAirProc(true);
         this.setDoGroundProc(true);
         this.setGroundProcTime(40);
+    }
+
+    @Override
+    protected boolean onImpact(EntityLivingBase entity, RayTraceResult result, int amplifier){
+        if (entity != null) {
+            MKUltra.packetHandler.sendToAllAround(
+                    new ParticleEffectSpawnPacket(
+                            EnumParticleTypes.SPELL_MOB_AMBIENT.getParticleID(),
+                            ParticleEffects.SPHERE_MOTION, 30, 10,
+                            result.hitVec.x, result.hitVec.y + 1.0,
+                            result.hitVec.z, 1.0, 1.0, 1.0, 1.0,
+                            new Vec3d(0., 1.0, 0.0)),
+                    entity.dimension, result.hitVec.x,
+                    result.hitVec.y, result.hitVec.z, 50.0f);
+            switch (result.typeOfHit){
+                case BLOCK:
+                    break;
+                case ENTITY:
+                    if (Targeting.isValidTarget(Targeting.TargetType.ENEMY, entity, result.entityHit, true)){
+                        this.motionX = 0.0;
+                        this.motionY = 0.0;
+                        this.motionZ = 0.0;
+                    }
+                    break;
+                case MISS:
+                    break;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public float getGravityVelocity() {
+        return 0.00F;
     }
 
     @Override

@@ -21,9 +21,9 @@ public class EntityUtils {
     }
 
     static {
-        addCriticalStats(EntityArrow.class, 0, .05f, 2.5f);
-        addCriticalStats(EntityTippedArrow.class, 1, .1f, 2.5f);
-        addCriticalStats(EntitySpectralArrow.class, 1, .15f, 2.5f);
+        addCriticalStats(EntityArrow.class, 0, .1f, 2.0f);
+        addCriticalStats(EntityTippedArrow.class, 1, .1f, 2.0f);
+        addCriticalStats(EntitySpectralArrow.class, 1, .15f, 2.0f);
         addCriticalStats(EntityThrowable.class, 0, .05f, 2.0f);
     }
 }
