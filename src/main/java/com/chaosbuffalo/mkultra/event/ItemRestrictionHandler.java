@@ -93,7 +93,7 @@ public class ItemRestrictionHandler {
             checkShieldRestriction(player);
         }
 
-        
+
         IPlayerData playerData = MKUPlayerData.get(player);
         if (playerData == null)
             return;
