@@ -1,12 +1,10 @@
 package com.chaosbuffalo.mkultra.network;
 
-import com.chaosbuffalo.mkultra.client.gui.ChooseClassScreen;
-import com.chaosbuffalo.mkultra.client.gui.PartyInviteScreen;
-import com.chaosbuffalo.mkultra.client.gui.PlayerClassScreen;
-import com.chaosbuffalo.mkultra.client.gui.XpTableScreen;
+import com.chaosbuffalo.mkultra.client.gui.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 /**
  * Created by Jacob on 3/15/2016.
@@ -18,9 +16,14 @@ public class ModGuiHandler implements IGuiHandler {
     public static final int XP_TABLE_SCREEN = 2;
     public static final int CHANGE_CLASS_SCREEN = 3;
     public static final int PARTY_INVITE_SCREEN = 4;
+    public static final int PIPE_CONTAINER_SCREEN = 5;
 
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+        if (ID == PIPE_CONTAINER_SCREEN){
+            return new PipeContainer(player.getHeldItemMainhand().getCapability(
+                    CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null), player);
+        }
         return null;
     }
 
@@ -36,6 +39,9 @@ public class ModGuiHandler implements IGuiHandler {
             return new ChooseClassScreen(false);
         } else if (ID == PARTY_INVITE_SCREEN) {
             return new PartyInviteScreen();
+        } else if (ID == PIPE_CONTAINER_SCREEN){
+            return new PipeGui(player.getHeldItemMainhand().getCapability(
+                    CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null), player);
         }
 
         return null;

@@ -8,6 +8,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 import java.util.HashSet;
 
@@ -21,8 +22,8 @@ public class ItemHelper {
 
     private static final HashSet<ItemStack> SMOKEABLES = new HashSet<>();
 
-    {
-        SMOKEABLES.add(new ItemStack(Items.BLAZE_POWDER));
+    static {
+        registerSMokeable(new ItemStack(Items.BLAZE_POWDER));
     }
 
     public static void registerSMokeable(ItemStack item){
@@ -33,7 +34,7 @@ public class ItemHelper {
         // TEMP
         if (!stack.isEmpty()){
             for (ItemStack smokeable : SMOKEABLES){
-                if (smokeable.areItemStacksEqual(smokeable, stack)){
+                if (ItemHandlerHelper.canItemStacksStack(smokeable, stack)){
                     return true;
                 }
             }
