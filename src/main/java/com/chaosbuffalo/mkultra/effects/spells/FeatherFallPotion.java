@@ -51,4 +51,9 @@ public class FeatherFallPotion extends PassiveEffect {
             }
         }
     }
+
+    @Override
+    protected boolean shouldShowParticles() {
+        return false;
+    }
 }

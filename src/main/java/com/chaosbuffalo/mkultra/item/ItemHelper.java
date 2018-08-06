@@ -19,53 +19,6 @@ public class ItemHelper {
         return !stack.isEmpty() && stack.getItem() instanceof ItemArrow;
     }
 
-
-    private static final HashSet<ItemStack> SMOKEABLES = new HashSet<>();
-
-    static {
-        registerSMokeable(new ItemStack(Items.BLAZE_POWDER));
-    }
-
-    public static void registerSMokeable(ItemStack item){
-        SMOKEABLES.add(item);
-    }
-
-    public static boolean isSmokeable(ItemStack stack) {
-        // TEMP
-        if (!stack.isEmpty()){
-            for (ItemStack smokeable : SMOKEABLES){
-                if (ItemHandlerHelper.canItemStacksStack(smokeable, stack)){
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    public static ItemStack findSmokeable(EntityPlayer player)
-    {
-        if (isSmokeable(player.getHeldItem(EnumHand.OFF_HAND))){
-            return player.getHeldItem((EnumHand.OFF_HAND));
-        } else if (isSmokeable(player.getHeldItem(EnumHand.MAIN_HAND))){
-            return player.getHeldItem(EnumHand.MAIN_HAND);
-        } else {
-            for (int i = 0; i < player.inventory.getSizeInventory(); ++i)
-            {
-                ItemStack itemstack = player.inventory.getStackInSlot(i);
-
-
-                ItemStack smokeableStack = itemstack.copy();
-                smokeableStack.setCount(1);
-                if (isSmokeable(smokeableStack))
-                {
-                    return itemstack;
-                }
-            }
-
-            return ItemStack.EMPTY;
-        }
-    }
-
     public static ItemStack findAmmo(EntityPlayer player)
     {
         if (isArrow(player.getHeldItem(EnumHand.OFF_HAND)))

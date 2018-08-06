@@ -59,4 +59,9 @@ public class ShieldingPotion extends PassiveEffect {
     public void onPotionRemove(SpellCast cast, EntityLivingBase target, AbstractAttributeMap attributes, int amplifier) {
         target.setAbsorptionAmount(target.getAbsorptionAmount() - (float)(amplifier));
     }
+
+    @Override
+    protected boolean shouldShowParticles() {
+        return false;
+    }
 }

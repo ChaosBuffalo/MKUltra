@@ -12,6 +12,10 @@ public class PlayerAttributes {
             .setDescription("Mana Regen")
             .setShouldWatch(true);
 
+    public static final RangedAttribute HEALTH_REGEN = (RangedAttribute) new RangedAttribute(null, "mkultra.healthRegen", 0, 0, 1024)
+            .setDescription("Health Regen")
+            .setShouldWatch(true);
+
     public static final RangedAttribute MAGIC_ATTACK_DAMAGE = (RangedAttribute) new RangedAttribute(null, "mkultra.magicAttackDamage", 0, 0, 2048)
             .setDescription("Magic Attack Damage")
             .setShouldWatch(true);

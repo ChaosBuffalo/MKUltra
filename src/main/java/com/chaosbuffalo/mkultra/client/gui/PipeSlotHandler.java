@@ -1,6 +1,7 @@
 package com.chaosbuffalo.mkultra.client.gui;
 
 import com.chaosbuffalo.mkultra.item.ItemHelper;
+import com.chaosbuffalo.mkultra.utils.SmokeUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
@@ -19,7 +20,7 @@ public class PipeSlotHandler extends SlotItemHandler {
     @Override
     public boolean isItemValid(@Nonnull ItemStack stack)
     {
-        if (!ItemHelper.isSmokeable(stack)){
+        if (!SmokeUtils.isSmokeable(stack)){
             return false;
         }
         return super.isItemValid(stack);
