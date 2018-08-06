@@ -4,8 +4,10 @@ import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
+import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.init.ModItems;
 import com.chaosbuffalo.mkultra.network.ModGuiHandler;
+import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
 import net.minecraft.block.BlockShulkerBox;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -69,14 +72,20 @@ public class Pipe extends Item {
                 IItemHandler inventory = pipe.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
                 if (inventory != null){
                     ItemStack smokeable = inventory.getStackInSlot(0);
-
                     if (!smokeable.isEmpty() && currentMana < augMax){
                         data.setMana(Math.min(augMax, currentMana + 10));
-                        ItemHelper.shrinkStack(playerIn, smokeable, 1);
                         ItemStack pipe_item = playerIn.getHeldItem(hand);
                         ItemHelper.damageStack(playerIn, pipe_item, 1);
-
+                        inventory.extractItem(0, 1, false);
                         playerIn.getCooldownTracker().setCooldown(this, COOLDOWN);
+                        MKUltra.packetHandler.sendToAllAround(
+                                new ParticleEffectSpawnPacket(
+                                        EnumParticleTypes.SMOKE_LARGE.getParticleID(),
+                                        ParticleEffects.SPHERE_MOTION, 30, 5,
+                                        playerIn.posX, playerIn.posY + 1.0,
+                                        playerIn.posZ, 1.0, 1.0, 1.0, .01f,
+                                        playerIn.getLookVec()),
+                                playerIn, 50.0f);
                     }
                 }
 
