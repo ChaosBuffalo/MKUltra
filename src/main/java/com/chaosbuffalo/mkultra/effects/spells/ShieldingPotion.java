@@ -60,8 +60,4 @@ public class ShieldingPotion extends PassiveEffect {
         target.setAbsorptionAmount(target.getAbsorptionAmount() - (float)(amplifier));
     }
 
-    @Override
-    protected boolean shouldShowParticles() {
-        return false;
-    }
 }

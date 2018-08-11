@@ -20,7 +20,6 @@ import java.util.UUID;
  */
 
 @Mod.EventBusSubscriber(modid = MKUltra.MODID)
-
 public class HealthRegenSmokeEffect extends PassiveEffect {
     public static final UUID MODIFIER_ID = UUID.fromString("fc94013c-9a25-45f9-a3a9-e1d5404dcdc3");
     public static final HealthRegenSmokeEffect INSTANCE = (HealthRegenSmokeEffect) (new HealthRegenSmokeEffect()
@@ -50,10 +49,5 @@ public class HealthRegenSmokeEffect extends PassiveEffect {
     @Override
     public double getAttributeModifierAmount(int amplifier, AttributeModifier modifier) {
         return modifier.getAmount() * (double) (amplifier);
-    }
-
-    @Override
-    protected boolean shouldShowParticles() {
-        return false;
     }
 }

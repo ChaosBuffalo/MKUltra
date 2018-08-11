@@ -7,6 +7,7 @@ import com.chaosbuffalo.mkultra.init.ModItems;
 import com.chaosbuffalo.mkultra.network.ModGuiHandler;
 import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.mkultra.utils.SmokeUtils;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -17,11 +18,14 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 
 /**
@@ -29,13 +33,14 @@ import javax.annotation.Nullable;
  */
 public class Pipe extends Item {
 
-    static final int COOLDOWN = 10 * GameConstants.TICKS_PER_SECOND;
+    static final int COOLDOWN = 5 * GameConstants.TICKS_PER_SECOND;
 
     public Pipe(String unlocalizedName) {
         super();
         this.setUnlocalizedName(unlocalizedName);
         this.setCreativeTab(MKUltra.MKULTRA_TAB);
         this.setMaxDamage(150);
+        this.setMaxStackSize(1);
     }
 
     @Override
@@ -45,6 +50,25 @@ public class Pipe extends Item {
             return new PipeProvider();
         }
         return null;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+    {
+        tooltip.add("Right click while sneaking to load the Pipe.");
+        // We can't do this because Item Capabilities dont auto sync with the client. Would need to implement some kind of
+        // packet.
+//        IItemHandler inventory = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+//        if (inventory != null){
+//            ItemStack smokeable = inventory.getStackInSlot(0);
+//            if (!smokeable.isEmpty()){
+//                tooltip.add(String.format("Contains: %s", smokeable.getDisplayName()));
+//            } else {
+//                tooltip.add("The pipe is empty.");
+//            }
+//        }
+        super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
     @Override
@@ -61,7 +85,7 @@ public class Pipe extends Item {
                 if (inventory != null){
                     ItemStack smokeable = inventory.getStackInSlot(0);
                     if (!smokeable.isEmpty()){
-                        PotionEffect effect_to_add = SmokeUtils.getPotionEffectForSmokeable(smokeable);
+                        PotionEffect effect_to_add = SmokeUtils.getPotionEffectForSmokeable(smokeable, playerIn);
                         if (effect_to_add != null){
                             playerIn.addPotionEffect(effect_to_add);
                         }

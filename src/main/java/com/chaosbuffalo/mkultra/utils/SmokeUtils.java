@@ -1,7 +1,11 @@
 package com.chaosbuffalo.mkultra.utils;
 
 import com.chaosbuffalo.mkultra.GameConstants;
+import com.chaosbuffalo.mkultra.effects.SpellCast;
+import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
 import com.chaosbuffalo.mkultra.effects.spells.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -26,52 +30,74 @@ public class SmokeUtils {
         public final ItemStack item;
         public final Potion effect;
         public final int duration;
+        public final int level;
 
-        public SmokeableEntry(ItemStack item, Potion potion, int duration) {
+        public SmokeableEntry(ItemStack item, Potion potion, int duration, int level) {
             this.item = item;
             this.effect = potion;
             this.duration = duration;
+            this.level = level;
         }
     }
 
     static {
-        registerSmokeable(Items.BLAZE_POWDER, ManaSmokeEffect.INSTANCE, 20 * GameConstants.TICKS_PER_SECOND);
-        registerSmokeable(Items.BONE, HealthRegenSmokeEffect.INSTANCE, 8*GameConstants.TICKS_PER_SECOND);
-        registerSmokeable(Items.FEATHER, FeatherFallPotion.INSTANCE, 10*GameConstants.TICKS_PER_SECOND);
-        registerSmokeable(Items.SNOWBALL, CurePotion.INSTANCE, 1);
-        registerSmokeable(Items.GLOWSTONE_DUST, SpeedSmokeEffect.INSTANCE, 60*GameConstants.TICKS_PER_SECOND);
-        registerSmokeable(Items.WHEAT_SEEDS, ShieldingPotion.INSTANCE, 6*GameConstants.TICKS_PER_SECOND);
+        registerSmokeable(Items.BLAZE_POWDER, ManaSmokeEffect.INSTANCE, 30 * GameConstants.TICKS_PER_SECOND, 1);
+        registerSmokeable(Items.BONE, HealthRegenSmokeEffect.INSTANCE, 10*GameConstants.TICKS_PER_SECOND, 1);
+        registerSmokeable(Items.FEATHER, FeatherFallPotion.INSTANCE, 10*GameConstants.TICKS_PER_SECOND, 1);
+        registerSmokeable(Items.SNOWBALL, CurePotion.INSTANCE, 1, 1);
+        registerSmokeable(Items.GLOWSTONE_DUST, SpeedSmokeEffect.INSTANCE, 60*GameConstants.TICKS_PER_SECOND, 1);
+        registerSmokeable(Items.WHEAT_SEEDS, ShieldingPotion.INSTANCE, 10*GameConstants.TICKS_PER_SECOND, 1);
     }
 
-    public static void registerSmokeable(ItemStack item, Potion potion, int duration){
-        SMOKEABLES.add(new SmokeableEntry(item, potion, duration));
+    public static void registerSmokeable(ItemStack item, Potion potion, int duration, int level){
+        SMOKEABLES.add(new SmokeableEntry(item, potion, duration, level));
     }
 
-    public static void registerSmokeable(Item item, Potion potion, int duration){
-        registerSmokeable(new ItemStack(item), potion, duration);
+    public static void registerSmokeable(Item item, Potion potion, int duration, int level){
+        registerSmokeable(new ItemStack(item), potion, duration, level);
     }
 
     public static boolean isSmokeable(ItemStack stack) {
         // TEMP
         if (!stack.isEmpty()){
-            for (SmokeableEntry smokeable : SMOKEABLES){
-                if (ItemHandlerHelper.canItemStacksStack(smokeable.item, stack)){
-                    return true;
-                }
+            SmokeableEntry entry = find_smokeable_entry(stack);
+            if (entry != null){
+                return true;
             }
         }
         return false;
     }
 
-   @Nullable
-    public static PotionEffect getPotionEffectForSmokeable(ItemStack stack){
-        for (SmokeableEntry smokeable : SMOKEABLES) {
-            if (ItemHandlerHelper.canItemStacksStack(smokeable.item, stack)){
-                return new PotionEffect(smokeable.effect, smokeable.duration, 1);
+    public static boolean is_smokeable_match(SmokeableEntry smokeable, ItemStack stack){
+        return ItemHandlerHelper.canItemStacksStack(smokeable.item, stack);
+    }
+
+    @Nullable
+    public static SmokeableEntry find_smokeable_entry(ItemStack stack){
+        for (SmokeableEntry smokeable : SMOKEABLES){
+            if (is_smokeable_match(smokeable, stack)){
+                return smokeable;
             }
         }
         return null;
     }
+
+   @Nullable
+    public static PotionEffect getPotionEffectForSmokeable(ItemStack stack, EntityLivingBase caster){
+       SmokeableEntry smokeable = find_smokeable_entry(stack);
+       if (smokeable != null){
+           if (smokeable.effect instanceof SpellPotionBase){
+               SpellPotionBase potionBase = (SpellPotionBase) smokeable.effect;
+               SpellCast cast = potionBase.newSpellCast(caster);
+               cast.setTarget(caster);
+               return cast.toPotionEffect(smokeable.duration, smokeable.level);
+           } else {
+               return  new PotionEffect(smokeable.effect, smokeable.duration, smokeable.level);
+           }
+       }
+       return null;
+    }
+
 
     public static ItemStack findSmokeable(EntityPlayer player)
     {

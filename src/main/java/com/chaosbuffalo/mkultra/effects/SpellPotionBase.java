@@ -46,7 +46,7 @@ public abstract class SpellPotionBase extends Potion {
     }
 
     public boolean isValidTarget(Targeting.TargetType targetType, Entity caster, EntityLivingBase target, boolean excludeCaster) {
-        return Targeting.isValidTarget(targetType, caster, target, excludeCaster);
+        return !(caster == null || target == null) && Targeting.isValidTarget(targetType, caster, target, excludeCaster);
     }
 
     @Override
@@ -61,7 +61,8 @@ public abstract class SpellPotionBase extends Potion {
         return true;
     }
 
-    // Called when the potion is being applied by an AreaEffect or thrown potion bottle
+    // Called when the potion is being applied by an
+    // AreaEffect or thrown potion bottle
     @Override
     public void affectEntity(Entity applier, Entity caster, @Nonnull EntityLivingBase target, int amplifier, double health) {
 

@@ -4,6 +4,7 @@ import com.chaosbuffalo.mkultra.MKConfig;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.ArmorClass;
 import com.chaosbuffalo.mkultra.utils.ItemUtils;
+import com.chaosbuffalo.mkultra.utils.SmokeUtils;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
@@ -23,6 +24,10 @@ public class GuiEventHandler {
         ArmorClass armorClass = ArmorClass.getArmorClassForArmorMat(
                 ((ItemArmor) event.getItemStack().getItem()).getArmorMaterial());
         event.getToolTip().add(armorClass.getName());
+    }
+
+    private static void doSmokeableTooltip(ItemTooltipEvent event){
+        event.getToolTip().add("Smokeable");
     }
 
     private static void doCritTooltip(ItemTooltipEvent event){
@@ -54,6 +59,9 @@ public class GuiEventHandler {
         }
         if (!MKConfig.BIG_HANDS_MODE && ItemRestrictionHandler.isNoShieldItem(event.getItemStack().getItem())){
             doNoShieldTooltip(event);
+        }
+        if (SmokeUtils.isSmokeable(event.getItemStack())){
+            doSmokeableTooltip(event);
         }
     }
 }

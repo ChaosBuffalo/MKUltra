@@ -47,8 +47,4 @@ public class ManaRegenSmokeEffect extends PassiveEffect {
         return modifier.getAmount() * (double) (amplifier);
     }
 
-    @Override
-    protected boolean shouldShowParticles() {
-        return false;
-    }
 }
