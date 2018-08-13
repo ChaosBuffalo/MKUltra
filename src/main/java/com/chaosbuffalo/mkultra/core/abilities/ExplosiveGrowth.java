@@ -52,7 +52,7 @@ public class ExplosiveGrowth extends BaseAbility {
 
     @Override
     public int getManaCost(int currentLevel) {
-        return 6 + currentLevel * 3;
+        return 6 + currentLevel * 2;
     }
 
     @Override

@@ -1,12 +1,14 @@
 package com.chaosbuffalo.mkultra.network;
 
-import com.chaosbuffalo.mkultra.client.gui.ChooseClassScreen;
-import com.chaosbuffalo.mkultra.client.gui.PartyInviteScreen;
-import com.chaosbuffalo.mkultra.client.gui.PlayerClassScreen;
-import com.chaosbuffalo.mkultra.client.gui.XpTableScreen;
+import com.chaosbuffalo.mkultra.client.gui.*;
+import com.chaosbuffalo.mkultra.init.ModItems;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.network.IGuiHandler;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 /**
  * Created by Jacob on 3/15/2016.
@@ -18,9 +20,26 @@ public class ModGuiHandler implements IGuiHandler {
     public static final int XP_TABLE_SCREEN = 2;
     public static final int CHANGE_CLASS_SCREEN = 3;
     public static final int PARTY_INVITE_SCREEN = 4;
+    public static final int PIPE_CONTAINER_SCREEN = 5;
 
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+        if (ID == PIPE_CONTAINER_SCREEN){
+            ItemStack main_hand = player.getHeldItemMainhand();
+            ItemStack off_hand = player.getHeldItemOffhand();
+            ItemStack selected = null;
+            if (main_hand.getItem() == ModItems.pipe){
+                selected = main_hand;
+            } else if (off_hand.getItem() == ModItems.pipe){
+                selected = off_hand;
+            }
+            if (selected != null){
+                IItemHandler itemHandler = selected.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+                if (itemHandler != null){
+                    return new PipeContainer(itemHandler, player);
+                }
+            }
+        }
         return null;
     }
 
@@ -36,6 +55,21 @@ public class ModGuiHandler implements IGuiHandler {
             return new ChooseClassScreen(false);
         } else if (ID == PARTY_INVITE_SCREEN) {
             return new PartyInviteScreen();
+        } else if (ID == PIPE_CONTAINER_SCREEN){
+            ItemStack main_hand = player.getHeldItemMainhand();
+            ItemStack off_hand = player.getHeldItemOffhand();
+            ItemStack selected = null;
+            if (main_hand.getItem() == ModItems.pipe){
+                selected = main_hand;
+            } else if (off_hand.getItem() == ModItems.pipe){
+                selected = off_hand;
+            }
+            if (selected != null){
+                IItemHandler itemHandler = selected.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+                if (itemHandler != null){
+                    return new PipeGui(itemHandler, player);
+                }
+            }
         }
 
         return null;

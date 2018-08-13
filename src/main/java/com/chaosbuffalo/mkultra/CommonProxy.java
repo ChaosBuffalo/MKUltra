@@ -15,6 +15,7 @@ import com.chaosbuffalo.mkultra.tiles.ModTileEntities;
 import com.chaosbuffalo.mkultra.utils.EnvironmentUtils;
 import net.minecraft.block.Block;
 import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -25,17 +26,13 @@ import net.minecraftforge.fml.relauncher.Side;
 public class CommonProxy {
 
     public void preInit(FMLPreInitializationEvent e) {
-        Log.info("pre init");
         ModTileEntities.registerTileEntities();
         ModEntities.registerEntities();
-
         ModItems.initItems();
-
         CapabilityManager.INSTANCE.register(IPlayerData.class, new PlayerDataStorage(), PlayerData.class);
     }
 
     public void init(FMLInitializationEvent e) {
-        Log.info("init");
         ArmorClass.registerDefaults();
         NetworkRegistry.INSTANCE.registerGuiHandler(MKUltra.INSTANCE, new ModGuiHandler());
         MKUltra.packetHandler = new PacketHandler(MKUltra.MODID);
@@ -66,6 +63,5 @@ public class CommonProxy {
                 Log.info(String.format("Registering fire: %s", key.toString()));
             }
         });
-        Log.info("post init");
     }
 }

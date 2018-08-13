@@ -8,6 +8,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 import java.util.HashSet;
 
@@ -16,53 +17,6 @@ public class ItemHelper {
     public static boolean isArrow(ItemStack stack)
     {
         return !stack.isEmpty() && stack.getItem() instanceof ItemArrow;
-    }
-
-
-    private static final HashSet<ItemStack> SMOKEABLES = new HashSet<>();
-
-    {
-        SMOKEABLES.add(new ItemStack(Items.BLAZE_POWDER));
-    }
-
-    public static void registerSMokeable(ItemStack item){
-        SMOKEABLES.add(item);
-    }
-
-    public static boolean isSmokeable(ItemStack stack) {
-        // TEMP
-        if (!stack.isEmpty()){
-            for (ItemStack smokeable : SMOKEABLES){
-                if (smokeable.areItemStacksEqual(smokeable, stack)){
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    public static ItemStack findSmokeable(EntityPlayer player)
-    {
-        if (isSmokeable(player.getHeldItem(EnumHand.OFF_HAND))){
-            return player.getHeldItem((EnumHand.OFF_HAND));
-        } else if (isSmokeable(player.getHeldItem(EnumHand.MAIN_HAND))){
-            return player.getHeldItem(EnumHand.MAIN_HAND);
-        } else {
-            for (int i = 0; i < player.inventory.getSizeInventory(); ++i)
-            {
-                ItemStack itemstack = player.inventory.getStackInSlot(i);
-
-
-                ItemStack smokeableStack = itemstack.copy();
-                smokeableStack.setCount(1);
-                if (isSmokeable(smokeableStack))
-                {
-                    return itemstack;
-                }
-            }
-
-            return ItemStack.EMPTY;
-        }
     }
 
     public static ItemStack findAmmo(EntityPlayer player)

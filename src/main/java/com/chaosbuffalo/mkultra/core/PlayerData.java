@@ -55,6 +55,7 @@ public class PlayerData implements IPlayerData {
     private final EntityPlayer player;
     private final EntityDataManager privateData;
     private float regenTime;
+    private float healthRegenTime;
     private AbilityTracker abilityTracker;
     private Map<ResourceLocation, PlayerClassInfo> knownClasses = new HashMap<>();
     private Map<ResourceLocation, PlayerAbilityInfo> abilityInfoMap = new HashMap<>(5);
@@ -63,6 +64,7 @@ public class PlayerData implements IPlayerData {
     public PlayerData(EntityPlayer player) {
         this.player = player;
         regenTime = 0;
+        healthRegenTime = 0;
         abilityTracker = AbilityTracker.getTracker(player);
         privateData = player.getDataManager();
         setupWatcher();
@@ -75,6 +77,7 @@ public class PlayerData implements IPlayerData {
         player.getAttributeMap().registerAttribute(PlayerAttributes.MELEE_CRIT);
         player.getAttributeMap().registerAttribute(PlayerAttributes.SPELL_CRIT);
         player.getAttributeMap().registerAttribute(PlayerAttributes.SPELL_CRITICAL_DAMAGE);
+        player.getAttributeMap().registerAttribute(PlayerAttributes.HEALTH_REGEN);
     }
 
     private void setupWatcher() {
@@ -117,6 +120,7 @@ public class PlayerData implements IPlayerData {
             setMana(0);
             setTotalMana(0);
             setManaRegen(0);
+            setHealthRegen(0);
             setHealth(Math.min(20, this.player.getHealth()));
             setTotalHealth(20);
         } else {
@@ -133,6 +137,7 @@ public class PlayerData implements IPlayerData {
             setTotalHealth(newTotalHealth);
             setHealth(Math.min(newTotalHealth, this.player.getHealth()));
             setManaRegen(newManaRegen);
+            setHealthRegen(0);
         }
     }
 
@@ -492,8 +497,22 @@ public class PlayerData implements IPlayerData {
     }
 
     @Override
+    public void setHealthRegen(float healthRegenRate) {
+        player.getEntityAttribute(PlayerAttributes.HEALTH_REGEN).setBaseValue(healthRegenRate);
+    }
+
+    @Override
+    public float getHealthRegenRate() {
+        return (float) player.getEntityAttribute(PlayerAttributes.HEALTH_REGEN).getAttributeValue();
+    }
+
+    @Override
     public float getManaRegenRate() {
         return (float) player.getEntityAttribute(PlayerAttributes.MANA_REGEN).getAttributeValue();
+    }
+
+    private float getBaseHealthRegenRate() {
+        return (float) player.getEntityAttribute(PlayerAttributes.HEALTH_REGEN).getBaseValue();
     }
 
     private float getBaseManaRegenRate() {
@@ -524,16 +543,31 @@ public class PlayerData implements IPlayerData {
         return privateData.get(MANA);
     }
 
-
     private void updateMana() {
+        if (this.getManaRegenRate() == 0.0f){
+            return;
+        }
         regenTime += 1. / 20.;
         float i_regen = 3.0f / this.getManaRegenRate();
         if (regenTime >= i_regen) {
             if (this.getMana() < this.getTotalMana()) {
                 this.setMana(this.getMana() + 1);
             }
-
             regenTime -= i_regen;
+        }
+    }
+
+    private void updateHealth() {
+        if (this.getHealthRegenRate() == 0.0f){
+            return;
+        }
+        healthRegenTime += 1. / 20.;
+        float i_regen = 3.0f / this.getHealthRegenRate();
+        if (healthRegenTime >= i_regen) {
+            if (this.getHealth() < this.getTotalHealth()) {
+                this.setHealth(this.getHealth() + 1);
+            }
+            healthRegenTime -= i_regen;
         }
     }
 
@@ -570,6 +604,7 @@ public class PlayerData implements IPlayerData {
             return;
 
         updateMana();
+        updateHealth();
     }
 
     private void sendSingleAbilityUpdate(PlayerAbilityInfo info) {
@@ -681,6 +716,7 @@ public class PlayerData implements IPlayerData {
         nbt.setInteger("mana", getMana());
         nbt.setFloat("manaRegenRate", getBaseManaRegenRate());
         nbt.setInteger("totalMana", getBaseTotalMana());
+        nbt.setFloat("healthRegenRate", getBaseHealthRegenRate());
         serializeSkills(nbt);
         serializeClasses(nbt);
     }
@@ -695,6 +731,9 @@ public class PlayerData implements IPlayerData {
         }
         if (nbt.hasKey("totalMana", 3)) {
             setTotalMana(nbt.getInteger("totalMana"));
+        }
+        if (nbt.hasKey("healthRegenRate", 3)){
+            setHealthRegen(nbt.getFloat("healthRegenRate"));
         }
 
         deserializeSkills(nbt);

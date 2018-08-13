@@ -73,8 +73,4 @@ public class CurePotion extends SpellPotionBase {
                 target.posY, target.posZ, 50.0f);
     }
 
-    @Override
-    protected boolean shouldShowParticles() {
-        return false;
-    }
 }

@@ -40,6 +40,10 @@ public interface IPlayerData {
 
     void setManaRegen(float manaRegenRate);
 
+    float getHealthRegenRate();
+
+    void setHealthRegen(float healthRegenRate);
+
     float getManaRegenRate();
 
     void setMana(int mana);

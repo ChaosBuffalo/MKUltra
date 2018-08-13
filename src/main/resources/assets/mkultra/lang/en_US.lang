@@ -207,4 +207,10 @@ mkultra.ability.cleansing_seed.description=Shoot a projectile that removes negat
 mkultra.ability.explosive_growth.name=Explosive Growth
 mkultra.ability.explosive_growth.description=Dash forward, damaging all enemies you hit and casting Cleansing Seed and Nature's Remedy on your allies and yourself.
 
+attribute.name.mkultra.healthRegen=Health Regen
+effect.speed_smoke=Speed Smoke
+effect.hellfire_smoke=Hellfire Smoke
+effect.mana_regen_smoke=Mana Regen Smoke
+effect.mana_smoke=Mana Smoke
+effect.health_regen_smoke=Health Regen Smoke
 
