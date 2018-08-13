@@ -42,7 +42,7 @@ public class SmokeUtils {
 
     static {
         registerSmokeable(Items.BLAZE_POWDER, ManaSmokeEffect.INSTANCE, 30 * GameConstants.TICKS_PER_SECOND, 1);
-        registerSmokeable(Items.BONE, HealthRegenSmokeEffect.INSTANCE, 10*GameConstants.TICKS_PER_SECOND, 1);
+        registerSmokeable(Items.BONE, HealthRegenSmokeEffect.INSTANCE, 10*GameConstants.TICKS_PER_SECOND, 2);
         registerSmokeable(Items.FEATHER, FeatherFallPotion.INSTANCE, 10*GameConstants.TICKS_PER_SECOND, 1);
         registerSmokeable(Items.SNOWBALL, CurePotion.INSTANCE, 1, 1);
         registerSmokeable(Items.GLOWSTONE_DUST, SpeedSmokeEffect.INSTANCE, 60*GameConstants.TICKS_PER_SECOND, 1);

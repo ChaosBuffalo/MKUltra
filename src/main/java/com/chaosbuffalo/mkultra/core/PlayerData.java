@@ -543,20 +543,24 @@ public class PlayerData implements IPlayerData {
         return privateData.get(MANA);
     }
 
-
     private void updateMana() {
+        if (this.getManaRegenRate() == 0.0f){
+            return;
+        }
         regenTime += 1. / 20.;
         float i_regen = 3.0f / this.getManaRegenRate();
         if (regenTime >= i_regen) {
             if (this.getMana() < this.getTotalMana()) {
                 this.setMana(this.getMana() + 1);
             }
-
             regenTime -= i_regen;
         }
     }
 
     private void updateHealth() {
+        if (this.getHealthRegenRate() == 0.0f){
+            return;
+        }
         healthRegenTime += 1. / 20.;
         float i_regen = 3.0f / this.getHealthRegenRate();
         if (healthRegenTime >= i_regen) {
