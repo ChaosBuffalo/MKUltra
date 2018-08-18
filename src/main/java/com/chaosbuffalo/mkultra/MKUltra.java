@@ -5,6 +5,7 @@ import com.chaosbuffalo.mkultra.item.MKUltraTab;
 import com.chaosbuffalo.mkultra.network.PacketHandler;
 import com.chaosbuffalo.mkultra.party.PartyCommand;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemArmor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -45,6 +46,7 @@ public class MKUltra {
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent e) {
+        MKConfig.registerArmors();
         proxy.postInit(e);
     }
 
