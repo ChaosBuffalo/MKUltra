@@ -94,7 +94,7 @@ public class EntityBallLightningProjectile extends EntityBaseProjectile {
 
     @Override
     protected boolean onAirProc(EntityLivingBase caster, int amplifier) {
-        if (caster != null) {
+        if (!this.world.isRemote && caster != null) {
             SpellCast ballLightning = BallLightningPotion.Create(caster, 4.0f, 4.0f);
             this.setTicksInAir(0);
             MKUltra.packetHandler.sendToAllAround(

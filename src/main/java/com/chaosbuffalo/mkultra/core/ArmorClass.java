@@ -21,6 +21,13 @@ public class ArmorClass {
 
     public final ResourceLocation location;
 
+    public static void clearArmorClasses(){
+        HEAVY.materials.clear();
+        MEDIUM.materials.clear();
+        LIGHT.materials.clear();
+        ROBES.materials.clear();
+    }
+
     public static void registerDefaults() {
         LIGHT.inherit(ROBES);
         MEDIUM.inherit(LIGHT);
@@ -37,6 +44,11 @@ public class ArmorClass {
     public String getName()
     {
         return I18n.format(String.format("%s.%s.name", location.getResourceDomain(), location.getResourcePath()));
+    }
+
+    public ResourceLocation getLocation()
+    {
+        return location;
     }
 
     public boolean canWear(ItemArmor.ArmorMaterial material) {
