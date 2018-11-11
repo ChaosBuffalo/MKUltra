@@ -27,6 +27,9 @@ public class MKConfig {
     @Config.Comment("These classes are not allowed to be used")
     public static String[] BANNED_CLASSES = new String[0];
 
+    @Config.Comment("Show armor material names in tooltip")
+    public static boolean SHOW_ARMOR_MAT = false;
+
 
     @Config.Comment("Armor Materials for Robes Armor Class")
     public static String[] ROBES_ARMOR = {
@@ -127,6 +130,7 @@ public class MKConfig {
             Log.info("Big hands mode is: %b", BIG_HANDS_MODE);
             Log.info("Pepsi blue mode is: %b", PEPSI_BLUE_MODE);
             Log.info("Tough guy mode is: %b", TOUGH_GUY_MODE);
+            Log.info("Show Armor Mat is: %b", SHOW_ARMOR_MAT);
             if (config.hasChanged())
                 config.save();
         }
