@@ -52,11 +52,11 @@ public class Remapper {
     private static boolean tryRemapToMKX(RegistryEvent.MissingMappings.Mapping<Item> entry) {
 
         // Only remap items that used to be in the mkultra core
-        if (!entry.key.getResourceDomain().equals(MKUltra.MODID)) {
+        if (!entry.key.getNamespace().equals(MKUltra.MODID)) {
             return false;
         }
 
-        ResourceLocation mkxPath = new ResourceLocation(MKX_MOD_ID, entry.key.getResourcePath());
+        ResourceLocation mkxPath = new ResourceLocation(MKX_MOD_ID, entry.key.getPath());
 
         if (tryRemap(entry, mkxPath)) {
             return true;
@@ -90,8 +90,8 @@ public class Remapper {
         for (RegistryEvent.MissingMappings.Mapping<Item> entry : event.getAllMappings()) {
             Log.info("Remapping request for Item %s", entry.key.toString());
 
-            if (entry.key.getResourceDomain().equals(MKUltra.MODID)) {
-                String key = entry.key.getResourcePath();
+            if (entry.key.getNamespace().equals(MKUltra.MODID)) {
+                String key = entry.key.getPath();
                 if (key.endsWith("spear")) {
                     Log.info("Ignoring spear %s", entry.key.toString());
                     entry.ignore();
@@ -106,7 +106,7 @@ public class Remapper {
 
 
 
-            } else if (entry.key.getResourceDomain().equals("minekampf")) {
+            } else if (entry.key.getNamespace().equals("minekampf")) {
                 Log.info("Removing old MK Item %s", entry.key.toString());
                 entry.ignore();
                 continue;
@@ -128,7 +128,7 @@ public class Remapper {
     @SubscribeEvent
     public static void missingBlockMapping(RegistryEvent.MissingMappings<Block> event) {
         for (RegistryEvent.MissingMappings.Mapping<Block> entry : event.getAllMappings()) {
-            if (entry.key.getResourceDomain().equals("minekampf")) {
+            if (entry.key.getNamespace().equals("minekampf")) {
                 Log.info("Removing old MK Block %s", entry.key.toString());
                 entry.ignore();
                 continue;

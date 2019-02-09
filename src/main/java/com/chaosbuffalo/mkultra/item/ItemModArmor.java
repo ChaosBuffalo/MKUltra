@@ -10,7 +10,7 @@ public class ItemModArmor extends ItemArmor {
 
     public ItemModArmor(String unlocalizedName, ItemArmor.ArmorMaterial material, int renderIndex, EntityEquipmentSlot armorType) {
         super(material, renderIndex, armorType);
-        this.setUnlocalizedName(unlocalizedName);
+        this.setTranslationKey(unlocalizedName);
     }
 
 }

@@ -19,7 +19,7 @@ public class CooldownReductionTestItem extends Item {
 
     public CooldownReductionTestItem(String unlocalizedName) {
         super();
-        this.setUnlocalizedName(unlocalizedName);
+        this.setTranslationKey(unlocalizedName);
         this.setCreativeTab(CreativeTabs.COMBAT);
     }
 

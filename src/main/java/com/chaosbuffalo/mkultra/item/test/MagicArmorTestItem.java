@@ -21,7 +21,7 @@ public class MagicArmorTestItem extends Item {
 
     public MagicArmorTestItem(String unlocalizedName) {
         super();
-        this.setUnlocalizedName(unlocalizedName);
+        this.setTranslationKey(unlocalizedName);
         this.setCreativeTab(CreativeTabs.COMBAT);
     }
 

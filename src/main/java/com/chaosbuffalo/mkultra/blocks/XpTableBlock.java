@@ -22,7 +22,7 @@ public class XpTableBlock extends Block {
 
     public XpTableBlock(String unlocalizedName, Material material, float hardness, float resistance) {
         super(material);
-        this.setUnlocalizedName(unlocalizedName);
+        this.setTranslationKey(unlocalizedName);
         this.setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
         this.setHardness(hardness);
         this.setResistance(resistance);

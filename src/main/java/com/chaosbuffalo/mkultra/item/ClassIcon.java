@@ -28,7 +28,7 @@ public class ClassIcon extends Item implements IClassProvider {
     public ClassIcon(String unlocalizedName, String iconText, int maxDamageIn, ResourceLocation iconLoc,
                      String xpTableText, ResourceLocation xpTableBackground, int xpTableTextColor) {
         super();
-        this.setUnlocalizedName(unlocalizedName);
+        this.setTranslationKey(unlocalizedName);
         this.setCreativeTab(MKUltra.MKULTRA_TAB);
         this.iconText = iconText;
         this.iconLoc = iconLoc;

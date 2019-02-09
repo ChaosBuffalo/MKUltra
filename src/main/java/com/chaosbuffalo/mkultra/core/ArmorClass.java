@@ -43,7 +43,7 @@ public class ArmorClass {
 
     public String getName()
     {
-        return I18n.format(String.format("%s.%s.name", location.getResourceDomain(), location.getResourcePath()));
+        return I18n.format(String.format("%s.%s.name", location.getNamespace(), location.getPath()));
     }
 
     public ResourceLocation getLocation()

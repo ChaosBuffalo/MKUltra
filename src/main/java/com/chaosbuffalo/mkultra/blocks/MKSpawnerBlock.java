@@ -29,7 +29,7 @@ public class MKSpawnerBlock extends Block implements ITileEntityProvider {
 
     public MKSpawnerBlock(String unlocalizedName, Material material, float hardness, float resistance) {
         super(material);
-        this.setUnlocalizedName(unlocalizedName);
+        this.setTranslationKey(unlocalizedName);
         this.setCreativeTab(MKUltra.MKULTRA_TAB);
         this.setHardness(hardness);
         this.setResistance(resistance);
@@ -64,7 +64,7 @@ public class MKSpawnerBlock extends Block implements ITileEntityProvider {
     }
 
     @Override
-    public BlockRenderLayer getBlockLayer() {
+    public BlockRenderLayer getRenderLayer() {
         return BlockRenderLayer.CUTOUT;
     }
 

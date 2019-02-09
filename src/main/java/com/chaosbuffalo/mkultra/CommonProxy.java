@@ -56,7 +56,7 @@ public class CommonProxy {
 
     public void postInit(FMLPostInitializationEvent e) {
         GameRegistry.findRegistry(Block.class).getKeys().forEach( key -> {
-            if (key.getResourcePath().toLowerCase().contains("fire")){
+            if (key.getPath().toLowerCase().contains("fire")){
                 EnvironmentUtils.addFireBlock(
                         GameRegistry.findRegistry(Block.class).getValue(key)
                 );

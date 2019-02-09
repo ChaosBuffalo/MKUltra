@@ -99,14 +99,14 @@ public final class ModItems {
     private static final Set<Item> ALL_ITEMS = new HashSet<>();
 
     private static void regInternal(Item item, String pathName) {
-        item.setUnlocalizedName(pathName);
+        item.setTranslationKey(pathName);
         item.setRegistryName(MKUltra.MODID, pathName);
         ALL_ITEMS.add(item);
     }
 
     private static void regInternal(Item item) {
         // skip 'item.'
-        regInternal(item, item.getUnlocalizedName().substring(5));
+        regInternal(item, item.getTranslationKey().substring(5));
     }
 
     public static void initItems() {

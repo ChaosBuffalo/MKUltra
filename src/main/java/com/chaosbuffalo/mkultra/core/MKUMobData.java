@@ -1,8 +1,9 @@
 package com.chaosbuffalo.mkultra.core;
 
 import com.chaosbuffalo.mkultra.Capabilities;
-import jline.internal.Nullable;
 import net.minecraft.entity.EntityLivingBase;
+
+import javax.annotation.Nullable;
 
 public class MKUMobData {
 

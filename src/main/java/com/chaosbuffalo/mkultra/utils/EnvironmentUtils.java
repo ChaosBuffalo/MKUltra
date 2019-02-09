@@ -40,7 +40,7 @@ public class EnvironmentUtils {
 
         Vec3d diff = end.subtract(start);
         Vec3d step = diff.normalize().scale(.5);
-        for (int i = 0; i <= Math.ceil(diff.lengthVector()) * 2; i++){
+        for (int i = 0; i <= Math.ceil(diff.length()) * 2; i++){
             Vec3d loc = start.add(step.scale(i));
             BlockPos pos = new BlockPos(loc);
             if (FIRE_BLOCKS.contains(worldIn.getBlockState(pos).getBlock())){

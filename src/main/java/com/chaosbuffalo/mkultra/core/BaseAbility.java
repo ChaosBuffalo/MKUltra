@@ -38,18 +38,18 @@ public abstract class BaseAbility extends IForgeRegistryEntry.Impl<BaseAbility> 
 
     public String getAbilityName()
     {
-        return I18n.format(String.format("%s.%s.name", abilityId.getResourceDomain(), abilityId.getResourcePath()));
+        return I18n.format(String.format("%s.%s.name", abilityId.getNamespace(), abilityId.getPath()));
     }
 
     public String getAbilityDescription()
     {
-        return I18n.format(String.format("%s.%s.description", abilityId.getResourceDomain(), abilityId.getResourcePath()));
+        return I18n.format(String.format("%s.%s.description", abilityId.getNamespace(), abilityId.getPath()));
     }
 
 
     public ResourceLocation getAbilityIcon()
     {
-        return new ResourceLocation(abilityId.getResourceDomain(), String.format("textures/class/abilities/%s.png", abilityId.getResourcePath().split(Pattern.quote("."))[1]));
+        return new ResourceLocation(abilityId.getNamespace(), String.format("textures/class/abilities/%s.png", abilityId.getPath().split(Pattern.quote("."))[1]));
     }
 
 

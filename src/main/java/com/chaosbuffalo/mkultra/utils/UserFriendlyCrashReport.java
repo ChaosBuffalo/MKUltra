@@ -40,7 +40,6 @@ public class UserFriendlyCrashReport extends CrashReport {
         for (int i = 0; i < 87; ++i)
             stringbuilder.append("-");
         stringbuilder.append("\n\n");
-        net.minecraftforge.fml.common.asm.transformers.BlamingTransformer.onCrash(stringbuilder);
         net.minecraftforge.fml.relauncher.CoreModManager.onCrash(stringbuilder);
         this.getSectionsInStringBuilder(stringbuilder);
         stringbuilder.append("\n\n");

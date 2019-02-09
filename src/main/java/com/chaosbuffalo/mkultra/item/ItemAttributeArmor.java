@@ -35,7 +35,7 @@ public class ItemAttributeArmor extends ItemArmor {
                               EntityEquipmentSlot armorType, ItemAttributeEntry... attributes) {
         super(material, renderIndex, armorType);
         this.attributes = Sets.newHashSet(attributes);
-        this.setUnlocalizedName(unlocalizedName);
+        this.setTranslationKey(unlocalizedName);
     }
 
     public ItemAttributeArmor addAttribute(ItemAttributeEntry entry){

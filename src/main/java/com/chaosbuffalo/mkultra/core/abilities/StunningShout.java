@@ -64,7 +64,7 @@ public class StunningShout extends BaseAbility {
         int level = pData.getLevelForAbility(getAbilityId());
         pData.startAbility(this);
         Vec3d look = entity.getLookVec().scale(getDistance(level));
-        Vec3d from = entity.getPositionVector().addVector(0, entity.getEyeHeight(), 0);
+        Vec3d from = entity.getPositionVector().add(0, entity.getEyeHeight(), 0);
         Vec3d to = from.add(look);
 
         Vec3d lookVec = entity.getLookVec();

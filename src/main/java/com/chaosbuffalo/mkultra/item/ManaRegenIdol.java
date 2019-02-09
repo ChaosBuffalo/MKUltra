@@ -25,7 +25,7 @@ public class ManaRegenIdol extends Item {
     public ManaRegenIdol(String unlocalizedName, float regenBonus, int bonus_mana, int bonus_magic_damage,
                          int magic_armor, int maxDamage) {
         super();
-        this.setUnlocalizedName(unlocalizedName);
+        this.setTranslationKey(unlocalizedName);
         this.regen_amount = regenBonus;
         this.bonus_magic_damage = bonus_magic_damage;
         this.bonus_mana = bonus_mana;

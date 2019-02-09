@@ -49,7 +49,7 @@ public class RayTraceUtils {
 
         if (mainEntity.world != null) {
             Vec3d look = mainEntity.getLookVec().scale(distance);
-            Vec3d from = mainEntity.getPositionVector().addVector(0, mainEntity.getEyeHeight(), 0);
+            Vec3d from = mainEntity.getPositionVector().add(0, mainEntity.getEyeHeight(), 0);
             Vec3d to = from.add(look);
             position = rayTraceBlocksAndEntities(clazz, mainEntity.world, from, to, false, finalFilter);
         }

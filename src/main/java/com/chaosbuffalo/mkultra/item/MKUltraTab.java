@@ -2,7 +2,6 @@ package com.chaosbuffalo.mkultra.item;
 
 import com.chaosbuffalo.mkultra.init.ModItems;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -20,7 +19,7 @@ public class MKUltraTab extends CreativeTabs {
     // ========== Tab Icon ==========
     @Override
     @SideOnly(Side.CLIENT)
-    public ItemStack getTabIconItem() {
+    public ItemStack createIcon() {
         return new ItemStack(ModItems.sun_icon);
     }
 }

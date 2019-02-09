@@ -19,7 +19,7 @@ public class DiamondDust extends Item implements IClassProvider {
 
     public DiamondDust(String unlocalizedName) {
         super();
-        this.setUnlocalizedName(unlocalizedName);
+        this.setTranslationKey(unlocalizedName);
         this.setCreativeTab(MKUltra.MKULTRA_TAB);
     }
 

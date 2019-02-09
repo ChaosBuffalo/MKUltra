@@ -37,7 +37,7 @@ public class Pipe extends Item {
 
     public Pipe(String unlocalizedName) {
         super();
-        this.setUnlocalizedName(unlocalizedName);
+        this.setTranslationKey(unlocalizedName);
         this.setCreativeTab(MKUltra.MKULTRA_TAB);
         this.setMaxDamage(150);
         this.setMaxStackSize(1);
