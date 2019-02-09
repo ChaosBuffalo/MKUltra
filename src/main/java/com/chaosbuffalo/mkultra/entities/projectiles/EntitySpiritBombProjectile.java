@@ -37,7 +37,7 @@ public class EntitySpiritBombProjectile extends EntityBaseProjectile {
 
     @Override
     protected boolean onImpact(EntityLivingBase entity, RayTraceResult result, int amplifier){
-        if (entity != null) {
+        if (!this.world.isRemote && entity != null) {
             MKUltra.packetHandler.sendToAllAround(
                     new ParticleEffectSpawnPacket(
                             EnumParticleTypes.SPELL_MOB_AMBIENT.getParticleID(),

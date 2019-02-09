@@ -24,6 +24,11 @@ public class GuiEventHandler {
         ArmorClass armorClass = ArmorClass.getArmorClassForArmorMat(
                 ((ItemArmor) event.getItemStack().getItem()).getArmorMaterial());
         event.getToolTip().add(armorClass.getName());
+        if (MKConfig.SHOW_ARMOR_MAT) {
+            event.getToolTip().add(String.format("Armor Material: %s",
+                    ((ItemArmor) event.getItemStack().getItem()).getArmorMaterial().getName()));
+        }
+
     }
 
     private static void doSmokeableTooltip(ItemTooltipEvent event){

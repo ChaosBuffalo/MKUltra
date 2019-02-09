@@ -21,24 +21,17 @@ public class ArmorClass {
 
     public final ResourceLocation location;
 
+    public static void clearArmorClasses(){
+        HEAVY.materials.clear();
+        MEDIUM.materials.clear();
+        LIGHT.materials.clear();
+        ROBES.materials.clear();
+    }
+
     public static void registerDefaults() {
-        ROBES.register(ModItems.ROBEMAT)
-                .register(ModItems.IRON_THREADED_MAT);
-
-
-        LIGHT.inherit(ROBES)
-                .register(ItemArmor.ArmorMaterial.LEATHER)
-                .register(ModItems.BONED_LEATHER_MAT);
-
-
-        MEDIUM.inherit(LIGHT)
-                .register(ItemArmor.ArmorMaterial.GOLD)
-                .register(ItemArmor.ArmorMaterial.CHAIN)
-                .register(ModItems.CHAINMAT);
-
-
-        HEAVY.inherit(MEDIUM)
-                .register(ItemArmor.ArmorMaterial.IRON);
+        LIGHT.inherit(ROBES);
+        MEDIUM.inherit(LIGHT);
+        HEAVY.inherit(MEDIUM);
     }
 
     private final Set<ItemArmor.ArmorMaterial> materials = Sets.newHashSet();
@@ -51,6 +44,11 @@ public class ArmorClass {
     public String getName()
     {
         return I18n.format(String.format("%s.%s.name", location.getResourceDomain(), location.getResourcePath()));
+    }
+
+    public ResourceLocation getLocation()
+    {
+        return location;
     }
 
     public boolean canWear(ItemArmor.ArmorMaterial material) {
