@@ -7,6 +7,7 @@ import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellPeriodicPotionBase;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkultra.utils.AbilityUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -54,10 +55,14 @@ public class WarpCursePotion extends SpellPeriodicPotionBase {
         Vec3d playerOrigin = target.getPositionVector();
         target.attackEntityFrom(MKDamageSource.causeIndirectMagicDamage(
                 new WarpCurse().getAbilityId(), source, indirectSource), amplifier * 3.0f);
-        double nextX = playerOrigin.x + (target.getRNG().nextInt(amplifier * 6) - target.getRNG().nextInt(amplifier * 6));
-        double nextY = playerOrigin.y + 5.0;
-        double nextZ = playerOrigin.z + (target.getRNG().nextInt(amplifier * 6) - target.getRNG().nextInt(amplifier * 6));
-        target.setPositionAndUpdate(nextX, nextY, nextZ);
+
+        if (AbilityUtils.canTeleportEntity(target)){
+            double nextX = playerOrigin.x + (target.getRNG().nextInt(amplifier * 6) - target.getRNG().nextInt(amplifier * 6));
+            double nextY = playerOrigin.y + 5.0;
+            double nextZ = playerOrigin.z + (target.getRNG().nextInt(amplifier * 6) - target.getRNG().nextInt(amplifier * 6));
+            AbilityUtils.safeTeleportEntity(target.world, target, new Vec3d(nextX, nextY, nextZ));
+        }
+
         MKUltra.packetHandler.sendToAllAround(
                 new ParticleEffectSpawnPacket(
                         EnumParticleTypes.LAVA.getParticleID(),

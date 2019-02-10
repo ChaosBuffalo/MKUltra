@@ -39,6 +39,9 @@ public class MKConfig {
     @Config.Comment("Set to true if you want heals to damage undead")
     public static boolean HEALS_DAMAGE_UNDEAD = true;
 
+    @Config.Comment("Multiplier to scale healing damage to undead by if HEALS_DAMAGE_UNDEAD is true")
+    public static float HEAL_DAMAGE_MULTIPLIER = 2.0f;
+
 
     @Config.Comment("Armor Materials for Robes Armor Class")
     public static String[] ROBES_ARMOR = {
