@@ -25,6 +25,8 @@ public class ModGuiHandler implements IGuiHandler {
     public static final int PARTY_INVITE_SCREEN = 4;
     public static final int PIPE_CONTAINER_SCREEN = 5;
     public static final int MK_SPAWNER_SCREEN = 6;
+    public static final int LEARN_CLASS_SCREEN_ADMIN = 7;
+    public static final int CHANGE_CLASS_SCREEN_ADMIN = 8;
 
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
@@ -52,11 +54,15 @@ public class ModGuiHandler implements IGuiHandler {
         if (ID == CLASS_DATA_SCREEN) {
             return new PlayerClassScreen();
         } else if (ID == LEARN_CLASS_SCREEN) {
-            return new ChooseClassScreen(true);
+            return new ChooseClassScreen(true, true);
         } else if (ID == XP_TABLE_SCREEN) {
             return new XpTableScreen();
         } else if (ID == CHANGE_CLASS_SCREEN) {
-            return new ChooseClassScreen(false);
+            return new ChooseClassScreen(false, true);
+        } else if (ID == CHANGE_CLASS_SCREEN_ADMIN) {
+            return new ChooseClassScreen(false, false);
+        } else if (ID == LEARN_CLASS_SCREEN_ADMIN) {
+            return new ChooseClassScreen(true, false);
         } else if (ID == PARTY_INVITE_SCREEN) {
             return new PartyInviteScreen();
         } else if (ID == PIPE_CONTAINER_SCREEN){
