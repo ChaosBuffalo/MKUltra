@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.effects.spells;
 
+import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.MKDamageSource;
 import com.chaosbuffalo.mkultra.core.abilities.FlameWave;
@@ -8,7 +9,9 @@ import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.MobEffects;
 import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -42,9 +45,9 @@ public class FlameWavePotion extends SpellPotionBase {
 
         float damage = cast.getScaledValue(amplifier);
         if (target.isBurning()) {
-            damage = damage * 2.0f;
+            target.addPotionEffect(new PotionEffect(MobEffects.WITHER, GameConstants.TICKS_PER_SECOND * 4));
+            damage = damage * 1.5f;
         }
-
         target.attackEntityFrom(MKDamageSource.causeIndirectMagicDamage(
                 new FlameWave().getAbilityId(), applier, caster), damage);
     }

@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.network.packets.server;
 
+import com.chaosbuffalo.mkultra.MKConfig;
 import com.chaosbuffalo.mkultra.core.BaseAbility;
 import com.chaosbuffalo.mkultra.core.MKURegistry;
 import com.chaosbuffalo.mkultra.network.MessageHandler;
@@ -107,6 +108,16 @@ public class CritMessagePacket implements IMessage {
                 Entity target = player.getEntityWorld().getEntityByID(msg.targetId);
                 if (target == null || playerSource == null){
                     return;
+                }
+                boolean isSelfTarget = player.getUniqueID().equals(msg.targetId);
+                if (isSelf || isSelfTarget){
+                    if (!MKConfig.SHOW_MY_CRITS) {
+                        return;
+                    }
+                } else {
+                    if (!MKConfig.SHOW_OTHER_CRITS){
+                        return;
+                    }
                 }
                 switch (msg.type){
                     case MELEE_CRIT:

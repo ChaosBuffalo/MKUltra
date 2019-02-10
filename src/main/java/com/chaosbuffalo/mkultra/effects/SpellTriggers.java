@@ -216,7 +216,7 @@ public class SpellTriggers {
 
     private static void sendCritPacket(EntityLivingBase livingTarget, EntityPlayerMP playerSource,
                                        CritMessagePacket packet) {
-        MKUltra.packetHandler.sendToAllAround(packet, playerSource, 50.0f);
+        MKUltra.packetHandler.sendToAllAround(packet, playerSource, 25.0f);
 
         Vec3d lookVec = livingTarget.getLookVec();
         MKUltra.packetHandler.sendToAllAround(
@@ -226,7 +226,7 @@ public class SpellTriggers {
                         livingTarget.posX, livingTarget.posY + 1.0f,
                         livingTarget.posZ, .5f, .5f, .5f, 1.5,
                         lookVec),
-                livingTarget, 50.0f);
+                livingTarget, 25.0f);
     }
 
 
