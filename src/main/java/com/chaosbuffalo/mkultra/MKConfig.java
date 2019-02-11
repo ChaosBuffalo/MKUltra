@@ -30,6 +30,18 @@ public class MKConfig {
     @Config.Comment("Show armor material names in tooltip")
     public static boolean SHOW_ARMOR_MAT = false;
 
+    @Config.Comment("Show my crit messages")
+    public static boolean SHOW_MY_CRITS = true;
+
+    @Config.Comment("Show other's crit messages")
+    public static boolean SHOW_OTHER_CRITS = true;
+
+    @Config.Comment("Set to true if you want heals to damage undead")
+    public static boolean HEALS_DAMAGE_UNDEAD = true;
+
+    @Config.Comment("Multiplier to scale healing damage to undead by if HEALS_DAMAGE_UNDEAD is true")
+    public static float HEAL_DAMAGE_MULTIPLIER = 2.0f;
+
 
     @Config.Comment("Armor Materials for Robes Armor Class")
     public static String[] ROBES_ARMOR = {
