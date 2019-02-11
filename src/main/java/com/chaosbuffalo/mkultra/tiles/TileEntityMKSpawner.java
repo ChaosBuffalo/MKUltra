@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.tiles;
 import com.chaosbuffalo.mkultra.GameConstants;
+import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IMobData;
 import com.chaosbuffalo.mkultra.core.MKUMobData;
 import com.chaosbuffalo.mkultra.log.Log;
@@ -18,6 +19,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -117,7 +119,7 @@ public class TileEntityMKSpawner extends TileEntity implements ITickable {
     }
 
     private void spawnEntity(World theWorld, String mobDefinitionName){
-        MobDefinition definition = SpawnerUtils.getDefinition(mobDefinitionName);
+        MobDefinition definition = SpawnerUtils.getDefinition(new ResourceLocation(MKUltra.MODID, mobDefinitionName));
         if (definition != SpawnerUtils.EMPTY_MOB){
             EntityLivingBase entity = getEntity(theWorld, definition);
             if (entity == null){
@@ -130,7 +132,7 @@ public class TileEntityMKSpawner extends TileEntity implements ITickable {
                 return;
             }
 
-            definition.applyStats(entity);
+            definition.applyStats(entity, 5);
             entity.setLocationAndAngles(
                     getPos().getX() + .5f, getPos().getY() + .5f, getPos().getZ() + .5f,
                     theWorld.rand.nextFloat() * 360.0F, 0.0F);
