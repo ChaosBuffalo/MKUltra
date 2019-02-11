@@ -12,7 +12,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -132,7 +131,7 @@ public class TileEntityMKSpawner extends TileEntity implements ITickable {
                 return;
             }
 
-            definition.applyStats(entity, 5);
+            definition.applyDefinition(entity, 5);
             entity.setLocationAndAngles(
                     getPos().getX() + .5f, getPos().getY() + .5f, getPos().getZ() + .5f,
                     theWorld.rand.nextFloat() * 360.0F, 0.0F);

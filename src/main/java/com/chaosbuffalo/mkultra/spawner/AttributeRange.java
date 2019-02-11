@@ -9,13 +9,12 @@ public class AttributeRange extends MobOption {
     private final BiFunction<EntityLivingBase, AttributeRange, Boolean> applyFunc;
     public double start;
     public double stop;
-    public int level;
-    public int maxLevel;
 
-    public AttributeRange(BiFunction<EntityLivingBase, AttributeRange, Boolean> applyFunc, double startIn, double stopIn) {
+
+    public AttributeRange(BiFunction<EntityLivingBase, AttributeRange, Boolean> applyFunc, double start, double stop) {
         this.applyFunc = applyFunc;
-        start = startIn;
-        stop = stopIn;
+        this.start = start;
+        this.stop = stop;
     }
 
     @Override

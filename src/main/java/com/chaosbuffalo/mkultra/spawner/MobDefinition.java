@@ -10,12 +10,14 @@ public class MobDefinition {
 
     public final Class<? extends EntityLivingBase> entityClass;
     public final int spawnWeight;
-    public final HashSet<AttributeRange> attributeRanges;
+    private final HashSet<AttributeRange> attributeRanges;
+    private final HashSet<ItemOption> itemOptions;
 
     public MobDefinition(Class<? extends EntityLivingBase> entityClass, int spawnWeight){
         this.entityClass = entityClass;
         this.spawnWeight = spawnWeight;
         attributeRanges = new HashSet<>();
+        itemOptions = new HashSet<>();
 
     }
 
@@ -24,9 +26,17 @@ public class MobDefinition {
         return this;
     }
 
-    public void applyStats(EntityLivingBase entity, int level){
+    public MobDefinition withItemOptions(ItemOption... options){
+        itemOptions.addAll(Arrays.asList(options));
+        return this;
+    }
+
+    public void applyDefinition(EntityLivingBase entity, int level){
         for (AttributeRange range : attributeRanges){
             range.apply(entity, level, SpawnerUtils.MAX_LEVEL);
+        }
+        for (ItemOption option : itemOptions){
+            option.apply(entity, level, SpawnerUtils.MAX_LEVEL);
         }
     }
 }

@@ -12,7 +12,7 @@ import java.util.function.BiFunction;
 import static com.chaosbuffalo.mkultra.utils.MathUtils.lerp_double;
 
 public class BaseSpawnAttributes {
-    
+
     public static BiFunction<EntityLivingBase, AttributeRange, Boolean> MAX_HEALTH = (entity, range) -> {
         setEntityAttributeBaseValueFromRange(entity, SharedMonsterAttributes.MAX_HEALTH, range);
         return Boolean.TRUE;

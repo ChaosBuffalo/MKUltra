@@ -4,6 +4,7 @@ import com.chaosbuffalo.mkultra.command.MKCommand;
 import com.chaosbuffalo.mkultra.item.MKUltraTab;
 import com.chaosbuffalo.mkultra.network.PacketHandler;
 import com.chaosbuffalo.mkultra.party.PartyCommand;
+import com.chaosbuffalo.mkultra.utils.SpawnerUtils;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemArmor;
 import net.minecraftforge.fml.common.Mod;
@@ -47,6 +48,7 @@ public class MKUltra {
     @EventHandler
     public void postInit(FMLPostInitializationEvent e) {
         MKConfig.registerArmors();
+        SpawnerUtils.setup();
         proxy.postInit(e);
     }
 
