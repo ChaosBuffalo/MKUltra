@@ -132,7 +132,7 @@ public class TileEntityMKSpawner extends TileEntity implements ITickable {
 
             definition.applyStats(entity);
             entity.setLocationAndAngles(
-                    getPos().getX() + .5f, getPos().getY() + 1.0f, getPos().getZ() + .5f,
+                    getPos().getX() + .5f, getPos().getY() + .5f, getPos().getZ() + .5f,
                     theWorld.rand.nextFloat() * 360.0F, 0.0F);
 
             // Testing remove AI
