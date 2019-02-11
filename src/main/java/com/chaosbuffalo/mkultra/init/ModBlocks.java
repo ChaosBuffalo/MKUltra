@@ -22,6 +22,7 @@ import java.util.Set;
 public final class ModBlocks {
 
     public static Block xpTableBlock;
+    public static Block mkSpawnerBlock;
 
 
     // can't be public because this is an ObjectHolder
@@ -32,6 +33,7 @@ public final class ModBlocks {
                 "xpTable", Material.ANVIL, 5.0f, 1000.0f)
                 .setLightLevel(1.0f)
                 .setCreativeTab(MKUltra.MKULTRA_TAB));
+        regInternal(mkSpawnerBlock = new MKSpawnerBlock("mk_spawner"));
     }
 
     private static void regInternal(Block block) {

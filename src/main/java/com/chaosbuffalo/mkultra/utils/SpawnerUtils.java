@@ -21,7 +21,7 @@ public class SpawnerUtils {
     public static final MobDefinition EMPTY_MOB = new MobDefinition(null, 0);
 
     private static final HashMap<String, MobDefinition> MOB_DEFINITIONS = new HashMap<>();
-    {
+    static {
         MOB_DEFINITIONS.put("empty_mob", EMPTY_MOB);
         BiFunction<EntityLivingBase, StatRange,Boolean> healthRange = (entity, range) -> {
           entity.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(

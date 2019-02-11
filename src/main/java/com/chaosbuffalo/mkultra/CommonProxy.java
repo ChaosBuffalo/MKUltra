@@ -1,10 +1,7 @@
 package com.chaosbuffalo.mkultra;
 
+import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.init.ModEntities;
-import com.chaosbuffalo.mkultra.core.IPlayerData;
-import com.chaosbuffalo.mkultra.core.PlayerData;
-import com.chaosbuffalo.mkultra.core.PlayerDataStorage;
-import com.chaosbuffalo.mkultra.core.ArmorClass;
 import com.chaosbuffalo.mkultra.init.ModItems;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.network.ModGuiHandler;
@@ -30,6 +27,7 @@ public class CommonProxy {
         ModEntities.registerEntities();
         ModItems.initItems();
         CapabilityManager.INSTANCE.register(IPlayerData.class, new PlayerDataStorage(), PlayerData.class);
+        CapabilityManager.INSTANCE.register(IMobData.class, new MobDataStorage(), MobData.class);
     }
 
     public void init(FMLInitializationEvent e) {
