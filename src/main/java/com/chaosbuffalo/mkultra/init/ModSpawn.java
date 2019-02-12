@@ -49,7 +49,8 @@ public class ModSpawn {
                 .withItemOptions(MKURegistry.getItemOption(
                         new ResourceLocation(MKUltra.MODID, "mh_test")))
                 .withAIModifiers(MKURegistry.REGISTRY_MOB_AI_MODS.getValue(
-                        new ResourceLocation(MKUltra.MODID, "remove_wander")));
+                        new ResourceLocation(MKUltra.MODID, "remove_wander")))
+                .withMobName("Test Skeleton");
         event.getRegistry().register(test_mob);
     }
 

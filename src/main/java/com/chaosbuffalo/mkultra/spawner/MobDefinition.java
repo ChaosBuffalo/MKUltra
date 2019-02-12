@@ -15,6 +15,7 @@ public class MobDefinition extends IForgeRegistryEntry.Impl<MobDefinition> {
     private final HashSet<AttributeRange> attributeRanges;
     private final HashSet<ItemOption> itemOptions;
     private final HashSet<AIModifier> aiModifiers;
+    private String mobName;
 
     public MobDefinition(ResourceLocation name, Class<? extends EntityLivingBase> entityClass, int spawnWeight){
         setRegistryName(name);
@@ -30,6 +31,11 @@ public class MobDefinition extends IForgeRegistryEntry.Impl<MobDefinition> {
         return this;
     }
 
+    public MobDefinition withMobName(String name){
+        mobName = name;
+        return this;
+    }
+
     public MobDefinition withItemOptions(ItemOption... options){
         itemOptions.addAll(Arrays.asList(options));
         return this;
@@ -41,6 +47,9 @@ public class MobDefinition extends IForgeRegistryEntry.Impl<MobDefinition> {
     }
 
     public void applyDefinition(EntityLivingBase entity, int level){
+        if (mobName != null){
+            entity.setCustomNameTag(mobName);
+        }
         for (AttributeRange range : attributeRanges){
             range.apply(entity, level, ModSpawn.MAX_LEVEL);
         }
