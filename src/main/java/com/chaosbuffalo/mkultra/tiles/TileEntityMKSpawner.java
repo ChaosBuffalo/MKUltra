@@ -3,9 +3,9 @@ import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IMobData;
 import com.chaosbuffalo.mkultra.core.MKUMobData;
+import com.chaosbuffalo.mkultra.core.MKURegistry;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.spawner.MobDefinition;
-import com.chaosbuffalo.mkultra.utils.SpawnerUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -118,8 +118,8 @@ public class TileEntityMKSpawner extends TileEntity implements ITickable {
     }
 
     private void spawnEntity(World theWorld, String mobDefinitionName){
-        MobDefinition definition = SpawnerUtils.getDefinition(new ResourceLocation(MKUltra.MODID, mobDefinitionName));
-        if (definition != SpawnerUtils.EMPTY_MOB){
+        MobDefinition definition = MKURegistry.getMobDefinition(new ResourceLocation(MKUltra.MODID, mobDefinitionName));
+        if (definition != MKURegistry.EMPTY_MOB){
             EntityLivingBase entity = getEntity(theWorld, definition);
             if (entity == null){
                 Log.info("Get entity returned null");
@@ -135,20 +135,6 @@ public class TileEntityMKSpawner extends TileEntity implements ITickable {
             entity.setLocationAndAngles(
                     getPos().getX() + .5f, getPos().getY() + .5f, getPos().getZ() + .5f,
                     theWorld.rand.nextFloat() * 360.0F, 0.0F);
-
-            // Testing remove AI
-            if (entity instanceof EntityLiving){
-                EntityLiving entLiv = (EntityLiving) entity;
-                HashSet<EntityAITasks.EntityAITaskEntry> toRemove = new HashSet<>();
-                for (EntityAITasks.EntityAITaskEntry task : entLiv.tasks.taskEntries){
-                    if (task.action instanceof EntityAIWanderAvoidWater){
-                        toRemove.add(task);
-                    }
-                }
-                for (EntityAITasks.EntityAITaskEntry entry : toRemove){
-                    entLiv.tasks.removeTask(entry.action);
-                }
-            }
             currentMob = entity.getEntityId();
             Log.info("Spawning entity at %s", getPos().toString());
             theWorld.spawnEntity(entity);

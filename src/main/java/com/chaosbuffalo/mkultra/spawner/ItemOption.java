@@ -2,23 +2,29 @@ package com.chaosbuffalo.mkultra.spawner;
 
 import com.chaosbuffalo.mkultra.choice.RandomCollection;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.function.BiFunction;
+import java.util.function.BiConsumer;
 
-public class ItemOption extends MobOption {
+public class ItemOption extends IForgeRegistryEntry.Impl<ItemOption> {
 
-    private final BiFunction<EntityLivingBase, ItemChoice, Boolean> applyFunc;
+    public int level;
+    public int maxLevel;
+    private final BiConsumer<EntityLivingBase, ItemChoice> applyFunc;
     public final HashSet<ItemChoice> choices;
 
-    public ItemOption(BiFunction<EntityLivingBase, ItemChoice, Boolean> func, ItemChoice... choices){
+    public ItemOption(ResourceLocation name,
+                      BiConsumer<EntityLivingBase, ItemChoice> func,
+                      ItemChoice... choices){
+        setRegistryName(name);
         this.applyFunc = func;
-        this.choices = new HashSet<ItemChoice>();
+        this.choices = new HashSet<>();
         this.choices.addAll(Arrays.asList(choices));
     }
 
-    @Override
     public void apply(EntityLivingBase entity, int level, int maxLevel) {
         this.level = level;
         this.maxLevel = maxLevel;
@@ -28,6 +34,8 @@ public class ItemOption extends MobOption {
                 current_choices.add(choice.weight, choice);
             }
         }
-        this.applyFunc.apply(entity, current_choices.next());
+        this.applyFunc.accept(entity, current_choices.next());
     }
+
+
 }

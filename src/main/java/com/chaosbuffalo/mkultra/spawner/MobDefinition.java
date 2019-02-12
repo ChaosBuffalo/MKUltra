@@ -1,24 +1,28 @@
 package com.chaosbuffalo.mkultra.spawner;
-import com.chaosbuffalo.mkultra.utils.SpawnerUtils;
+import com.chaosbuffalo.mkultra.init.ModSpawn;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import java.util.Arrays;
 import java.util.HashSet;
 
 
-public class MobDefinition {
+public class MobDefinition extends IForgeRegistryEntry.Impl<MobDefinition> {
 
     public final Class<? extends EntityLivingBase> entityClass;
     public final int spawnWeight;
     private final HashSet<AttributeRange> attributeRanges;
     private final HashSet<ItemOption> itemOptions;
+    private final HashSet<AIModifier> aiModifiers;
 
-    public MobDefinition(Class<? extends EntityLivingBase> entityClass, int spawnWeight){
+    public MobDefinition(ResourceLocation name, Class<? extends EntityLivingBase> entityClass, int spawnWeight){
+        setRegistryName(name);
         this.entityClass = entityClass;
         this.spawnWeight = spawnWeight;
         attributeRanges = new HashSet<>();
         itemOptions = new HashSet<>();
-
+        aiModifiers = new HashSet<>();
     }
 
     public MobDefinition withAttributeRanges(AttributeRange... ranges){
@@ -31,12 +35,20 @@ public class MobDefinition {
         return this;
     }
 
+    public MobDefinition withAIModifiers(AIModifier... modifiers){
+        aiModifiers.addAll(Arrays.asList(modifiers));
+        return this;
+    }
+
     public void applyDefinition(EntityLivingBase entity, int level){
         for (AttributeRange range : attributeRanges){
-            range.apply(entity, level, SpawnerUtils.MAX_LEVEL);
+            range.apply(entity, level, ModSpawn.MAX_LEVEL);
         }
         for (ItemOption option : itemOptions){
-            option.apply(entity, level, SpawnerUtils.MAX_LEVEL);
+            option.apply(entity, level, ModSpawn.MAX_LEVEL);
+        }
+        for (AIModifier mod : aiModifiers){
+            mod.apply(entity, level, ModSpawn.MAX_LEVEL);
         }
     }
 }
