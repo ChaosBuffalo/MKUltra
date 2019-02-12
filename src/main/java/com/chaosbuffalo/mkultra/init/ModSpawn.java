@@ -62,6 +62,14 @@ public class ModSpawn {
                 AIModifiers.REMOVE_AI,
                 new BehaviorChoice(EntityAIWanderAvoidWater.class, 0));
         event.getRegistry().register(remove_wander);
+        AIModifier remove_all_tasks = new AIModifier(
+                new ResourceLocation(MKUltra.MODID, "remove_all_tasks"),
+                AIModifiers.REMOVE_ALL_TASKS);
+        event.getRegistry().register(remove_all_tasks);
+        AIModifier remove_all_target_tasks = new AIModifier(
+                new ResourceLocation(MKUltra.MODID, "remove_all_target_tasks"),
+                AIModifiers.REMOVE_ALL_TARGET_TASKS);
+        event.getRegistry().register(remove_all_target_tasks);
     }
 
 }

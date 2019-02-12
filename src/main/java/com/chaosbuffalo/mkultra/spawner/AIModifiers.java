@@ -31,4 +31,30 @@ public class AIModifiers {
         }
     };
 
+    public static BiConsumer<EntityLivingBase, AIModifier> REMOVE_ALL_TASKS = (entity, modifier) -> {
+        if (entity instanceof EntityLiving){
+            EntityLiving entLiv = (EntityLiving) entity;
+            HashSet<EntityAITasks.EntityAITaskEntry> toRemove = new HashSet<>();
+            for (EntityAITasks.EntityAITaskEntry task : entLiv.tasks.taskEntries){
+                toRemove.add(task);
+            }
+            for (EntityAITasks.EntityAITaskEntry entry : toRemove){
+                entLiv.tasks.removeTask(entry.action);
+            }
+        }
+    };
+
+    public static BiConsumer<EntityLivingBase, AIModifier> REMOVE_ALL_TARGET_TASKS = (entity, modifier) -> {
+        if (entity instanceof EntityLiving){
+            EntityLiving entLiv = (EntityLiving) entity;
+            HashSet<EntityAITasks.EntityAITaskEntry> toRemove = new HashSet<>();
+            for (EntityAITasks.EntityAITaskEntry task : entLiv.targetTasks.taskEntries){
+                toRemove.add(task);
+            }
+            for (EntityAITasks.EntityAITaskEntry entry : toRemove){
+                entLiv.targetTasks.removeTask(entry.action);
+            }
+        }
+    };
+
 }

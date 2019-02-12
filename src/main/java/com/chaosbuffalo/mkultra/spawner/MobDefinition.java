@@ -4,6 +4,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -14,7 +15,7 @@ public class MobDefinition extends IForgeRegistryEntry.Impl<MobDefinition> {
     public final int spawnWeight;
     private final HashSet<AttributeRange> attributeRanges;
     private final HashSet<ItemOption> itemOptions;
-    private final HashSet<AIModifier> aiModifiers;
+    private final ArrayList<AIModifier> aiModifiers;
     private String mobName;
 
     public MobDefinition(ResourceLocation name, Class<? extends EntityLivingBase> entityClass, int spawnWeight){
@@ -23,7 +24,7 @@ public class MobDefinition extends IForgeRegistryEntry.Impl<MobDefinition> {
         this.spawnWeight = spawnWeight;
         attributeRanges = new HashSet<>();
         itemOptions = new HashSet<>();
-        aiModifiers = new HashSet<>();
+        aiModifiers = new ArrayList<>();
     }
 
     public MobDefinition withAttributeRanges(AttributeRange... ranges){
