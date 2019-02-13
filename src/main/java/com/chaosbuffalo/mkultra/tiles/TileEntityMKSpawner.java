@@ -87,6 +87,7 @@ public class TileEntityMKSpawner extends TileEntity implements ITickable {
                         active = true;
                         tickCount = ticksBeforeSpawn;
                         internalTickInterval = TICK_INTERVAL;
+                        ticksSincePlayer = 0;
                     }
                     float averageLevel = getAverageLevel(players);
                     Log.info("In mk spawner update, entity id is %d, tick count is: %d", currentMob, tickCount);
