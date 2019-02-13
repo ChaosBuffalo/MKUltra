@@ -95,7 +95,9 @@ public class TileEntityMKSpawner extends TileEntity implements ITickable {
                         if (entity == null){
                             Log.info("No entity found with id %d", currentMob);
                             currentMob = -1;
-                            tickCount = 0;
+                            // we reset to 1 instead of 0 because otherwise we would trigger 2 ticks in a row
+                            // everytime we reset
+                            tickCount = 1;
                         }
                     } else if (tickCount >= ticksBeforeSpawn){
                         Log.info("Trying to spawn new entity %s", mobDefinitionToSpawn);
