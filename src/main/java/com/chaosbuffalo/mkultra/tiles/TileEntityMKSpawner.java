@@ -1,21 +1,19 @@
 package com.chaosbuffalo.mkultra.tiles;
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.IMobData;
-import com.chaosbuffalo.mkultra.core.MKUMobData;
-import com.chaosbuffalo.mkultra.core.MKURegistry;
+import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.spawner.MobDefinition;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -23,42 +21,96 @@ import java.util.List;
 
 
 public class TileEntityMKSpawner extends TileEntity implements ITickable {
-
+    public static double RANGE = 200.0;
+    public static int TICK_INTERVAL = GameConstants.TICKS_PER_SECOND;
+    public static int CLEANUP_THRESHOLD = 180 * GameConstants.TICKS_PER_SECOND;
+    public static int SLEEP_TICK_INTERVAL = 10 * GameConstants.TICKS_PER_SECOND;
     public int ticksBeforeSpawn;
     public String mobDefinitionToSpawn;
     public int currentMob;
     public int tickCount;
+    public boolean active;
+    private int ticksSincePlayer;
+    private int internalTickInterval;
 
     public TileEntityMKSpawner(){
         ticksBeforeSpawn = 5 * GameConstants.TICKS_PER_SECOND;
         mobDefinitionToSpawn = "test_skeleton";
         currentMob = -1;
-        tickCount = 0;
+        tickCount = ticksBeforeSpawn;
+        ticksSincePlayer = 0;
+        active = false;
+        internalTickInterval = TICK_INTERVAL;
     }
 
+    public List<EntityPlayer> getPlayersAround(){
+        double halfRange = RANGE / 2.0;
+        double x1 = (double)this.pos.getX() - halfRange;
+        double y1 = (double)this.pos.getY() - halfRange;
+        double z1 = (double)this.pos.getZ() - halfRange;
+        double x2 = (double)this.pos.getX() + halfRange;
+        double y2 = (double)this.pos.getY() + halfRange;
+        double z2 = (double)this.pos.getZ() + halfRange;
+        AxisAlignedBB scanBox = new AxisAlignedBB(x1, y1, z1, x2, y2, z2);
+        return getWorld().getEntitiesWithinAABB(EntityPlayer.class, scanBox);
+    }
+
+    public float getAverageLevel(List<EntityPlayer> players){
+        float levelTotal = 0;
+        int count = 0;
+        for (EntityPlayer player : players){
+            IPlayerData playerData = MKUPlayerData.get(player);
+            if (playerData != null) {
+                levelTotal += playerData.getLevel();
+                count++;
+            }
+        }
+        return levelTotal / count;
+    }
+
+    public void cleanupMob(){
+        Entity mob = getWorld().getEntityByID(currentMob);
+        if (mob != null){
+            mob.setDead();
+        }
+    }
 
     @Override
     public void update()
     {
         if (!getWorld().isRemote){
             tickCount++;
-            Log.info("In mk spawner update, entity id is %d, tick count is: %d", currentMob, tickCount);
-            if (currentMob != -1){
-                Entity entity = getWorld().getEntityByID(currentMob);
-                if (entity == null){
-                    Log.info("No entity found with id %d", currentMob);
-                    currentMob = -1;
-                    tickCount = 0;
+            if (tickCount % internalTickInterval == 0){
+                List<EntityPlayer> players = getPlayersAround();
+                if (players.size() > 0){
+                    if (!active){
+                        active = true;
+                        tickCount = ticksBeforeSpawn;
+                        internalTickInterval = TICK_INTERVAL;
+                    }
+                    float averageLevel = getAverageLevel(players);
+                    Log.info("In mk spawner update, entity id is %d, tick count is: %d", currentMob, tickCount);
+                    if (currentMob != -1){
+                        Entity entity = getWorld().getEntityByID(currentMob);
+                        if (entity == null){
+                            Log.info("No entity found with id %d", currentMob);
+                            currentMob = -1;
+                            tickCount = 0;
+                        }
+                    } else if (tickCount >= ticksBeforeSpawn){
+                        Log.info("Trying to spawn new entity %s", mobDefinitionToSpawn);
+                        spawnEntity(getWorld(), mobDefinitionToSpawn, Math.round(averageLevel));
+                    }
                 } else {
-                    Log.info("Found entity with id %d", currentMob);
+                    ticksSincePlayer++;
+                    if (ticksSincePlayer >= CLEANUP_THRESHOLD && currentMob != -1){
+                        cleanupMob();
+                        active = false;
+                        internalTickInterval = SLEEP_TICK_INTERVAL;
+                    }
                 }
-            } else if (tickCount > ticksBeforeSpawn){
-                Log.info("Trying to spawn new entity %s", mobDefinitionToSpawn);
-                spawnEntity(getWorld(), mobDefinitionToSpawn);
             }
-
         }
-
     }
 
     @Override
@@ -76,17 +128,6 @@ public class TileEntityMKSpawner extends TileEntity implements ITickable {
     @Override
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
         this.readFromNBT(packet.getNbtCompound());
-    }
-
-    protected final void sync() {
-        this.markDirty();
-        Packet<?> packet = this.getUpdatePacket();
-        if (packet == null) return;
-        List<EntityPlayerMP> players = this.getWorld().getPlayers(EntityPlayerMP.class,
-                (EntityPlayerMP p) -> p.getPosition().distanceSq(getPos()) < 256);
-        for (EntityPlayerMP player : players) {
-            player.connection.sendPacket(packet);
-        }
     }
 
     @Override
@@ -113,7 +154,7 @@ public class TileEntityMKSpawner extends TileEntity implements ITickable {
         return null;
     }
 
-    private void spawnEntity(World theWorld, String mobDefinitionName){
+    private void spawnEntity(World theWorld, String mobDefinitionName, int level){
         MobDefinition definition = MKURegistry.getMobDefinition(new ResourceLocation(MKUltra.MODID, mobDefinitionName));
         if (definition != MKURegistry.EMPTY_MOB){
             EntityLivingBase entity = getEntity(theWorld, definition);
@@ -126,8 +167,7 @@ public class TileEntityMKSpawner extends TileEntity implements ITickable {
                 Log.info("Mob data empty");
                 return;
             }
-
-            definition.applyDefinition(entity, 5);
+            definition.applyDefinition(entity, level);
             entity.setLocationAndAngles(
                     getPos().getX() + .5f, getPos().getY() + .5f, getPos().getZ() + .5f,
                     theWorld.rand.nextFloat() * 360.0F, 0.0F);
