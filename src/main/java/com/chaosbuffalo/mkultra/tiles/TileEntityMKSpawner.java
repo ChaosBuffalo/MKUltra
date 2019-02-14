@@ -22,9 +22,9 @@ import java.util.List;
 
 public class TileEntityMKSpawner extends TileEntity implements ITickable {
     public static double RANGE = 200.0;
-    public static int TICK_INTERVAL = GameConstants.TICKS_PER_SECOND;
+    public static int TICK_INTERVAL = 10 * GameConstants.TICKS_PER_SECOND;
     public static int CLEANUP_THRESHOLD = 180 * GameConstants.TICKS_PER_SECOND;
-    public static int SLEEP_TICK_INTERVAL = 10 * GameConstants.TICKS_PER_SECOND;
+    public static int SLEEP_TICK_INTERVAL = 30 * GameConstants.TICKS_PER_SECOND;
     public int ticksBeforeSpawn;
     public String mobDefinitionToSpawn;
     public int currentMob;
@@ -37,6 +37,7 @@ public class TileEntityMKSpawner extends TileEntity implements ITickable {
         ticksBeforeSpawn = 5 * GameConstants.TICKS_PER_SECOND;
         mobDefinitionToSpawn = "test_skeleton";
         currentMob = -1;
+
         tickCount = ticksBeforeSpawn;
         ticksSincePlayer = 0;
         active = false;
@@ -90,7 +91,7 @@ public class TileEntityMKSpawner extends TileEntity implements ITickable {
                         ticksSincePlayer = 0;
                     }
                     float averageLevel = getAverageLevel(players);
-                    Log.info("In mk spawner update, entity id is %d, tick count is: %d", currentMob, tickCount);
+                    Log.info("In mk spawner onTick, entity id is %d, tick count is: %d", currentMob, tickCount);
                     if (currentMob != -1){
                         Entity entity = getWorld().getEntityByID(currentMob);
                         if (entity == null){

@@ -3,8 +3,6 @@ package com.chaosbuffalo.mkultra.event;
 import com.chaosbuffalo.mkultra.MKConfig;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.*;
-import com.chaosbuffalo.mkultra.log.Log;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -88,6 +86,11 @@ public class PlayerDataEventHandler {
             if (playerData != null) {
                 playerData.onTick();
             }
+        } else {
+            IMobData mobData = MKUMobData.get(e.getEntityLiving());
+            if (mobData != null){
+                mobData.onTick();
+            }
         }
     }
 
@@ -101,7 +104,7 @@ public class PlayerDataEventHandler {
         if (newData == null)
             return;
 
-        // Die on the original so we can clone properly and not need an immediate update packet
+        // Die on the original so we can clone properly and not need an immediate onTick packet
         if (e.isWasDeath() && !MKConfig.PEPSI_BLUE_MODE) {
             IPlayerData oldData = MKUPlayerData.get(e.getOriginal());
             if (oldData == null)

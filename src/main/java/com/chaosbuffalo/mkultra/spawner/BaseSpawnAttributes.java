@@ -14,6 +14,10 @@ public class BaseSpawnAttributes {
         setEntityAttributeBaseValueFromRange(entity, SharedMonsterAttributes.MAX_HEALTH, range);
     };
 
+    public static BiConsumer<EntityLivingBase, AttributeRange> FOLLOW_RANGE = (entity, range) -> {
+        setEntityAttributeBaseValueFromRange(entity, SharedMonsterAttributes.FOLLOW_RANGE, range);
+    };
+
     public static BiConsumer<EntityLivingBase, AttributeRange> ARMOR = (entity, range) -> {
         setEntityAttributeBaseValueFromRange(entity, SharedMonsterAttributes.ARMOR, range);
     };

@@ -1,33 +1,21 @@
 package com.chaosbuffalo.mkultra.core;
-
-import com.chaosbuffalo.mkultra.log.Log;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
+
+import java.util.HashSet;
 
 public class MobData implements IMobData {
-
-    private final static DataParameter<Boolean> IS_MK_SPAWNED = EntityDataManager.createKey(
-            EntityLiving.class, DataSerializers.BOOLEAN);
-
-
+    private int level;
     private final EntityLivingBase entity;
-    private final EntityDataManager privateData;
     private  boolean isMKSpawned;
+    private final HashSet<MobAbilityTracker> trackers;
+    private boolean hasAbilities;
+
 
     public MobData(EntityLivingBase entity) {
         this.entity = entity;
-        privateData = entity.getDataManager();
-        setupWatcher();
-    }
-
-    private void setupWatcher() {
-    }
-
-    private void markEntityDataDirty() {
+        this.trackers = new HashSet<>();
+        hasAbilities = false;
     }
 
     @Override
@@ -36,10 +24,23 @@ public class MobData implements IMobData {
     }
 
     @Override
+    public boolean hasAbilities() {
+        return hasAbilities;
+    }
+
+    @Override
+    public void onTick() {
+        if (hasAbilities){
+            for (MobAbilityTracker tracker : trackers){
+                tracker.update();
+            }
+        }
+    }
+
+    @Override
     public void setMKSpawned(boolean isSpawned) {
         isMKSpawned = isSpawned;
     }
-
 
     @Override
     public void serialize(NBTTagCompound tag) {
@@ -51,5 +52,31 @@ public class MobData implements IMobData {
         if (tag.hasKey("isMKSpawned")) {
             setMKSpawned(tag.getBoolean("isMKSpawned"));
         }
+    }
+
+    @Override
+    public int getMobLevel() {
+        return level;
+    }
+
+    @Override
+    public void setMobLevel(int levelIn) {
+        level = levelIn;
+    }
+
+    @Override
+    public HashSet<MobAbilityTracker> getAbilityTrackers() {
+        return trackers;
+    }
+
+    @Override
+    public void addAbility(BaseMobAbility abilityIn) {
+        trackers.add(new MobAbilityTracker(abilityIn, this));
+        hasAbilities = true;
+    }
+
+    @Override
+    public EntityLivingBase getEntity() {
+        return entity;
     }
 }
