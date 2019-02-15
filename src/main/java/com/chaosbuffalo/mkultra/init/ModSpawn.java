@@ -1,11 +1,18 @@
 package com.chaosbuffalo.mkultra.init;
 
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.core.BaseMobAbility;
+import com.chaosbuffalo.mkultra.core.IMobData;
+import com.chaosbuffalo.mkultra.core.MKUMobData;
 import com.chaosbuffalo.mkultra.core.MKURegistry;
+import com.chaosbuffalo.mkultra.core.mob_abilities.TestHealDot;
+import com.chaosbuffalo.mkultra.mob_ai.EntityAIBuffSelf;
+import com.chaosbuffalo.mkultra.mob_ai.EntityAINearestAttackableTargetMK;
 import com.chaosbuffalo.mkultra.spawner.*;
+import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntitySkeleton;
@@ -18,7 +25,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
 
 @Mod.EventBusSubscriber
@@ -44,9 +50,20 @@ public class ModSpawn {
                 BaseSpawnAttributes.MAX_HEALTH, 20.0, 50.0);
         event.getRegistry().register(health_test);
         AttributeRange set_follow = new AttributeRange(
-                new ResourceLocation(MKUltra.MODID, "aggro_range"),
-                BaseSpawnAttributes.FOLLOW_RANGE, 10.0, 10.0);
+                new ResourceLocation(MKUltra.MODID, "follow_range"),
+                BaseSpawnAttributes.FOLLOW_RANGE, 20.0, 20.0);
         event.getRegistry().register(set_follow);
+        AttributeRange set_aggro = new AttributeRange(
+                new ResourceLocation(MKUltra.MODID, "aggro_range"),
+                MKSpawnAttributes.SET_AGGRO_RADIUS, 8.0, 8.0);
+        event.getRegistry().register(set_aggro);
+    }
+
+    @SuppressWarnings("unused")
+    @SubscribeEvent
+    public static void registerMobAbilities(RegistryEvent.Register<BaseMobAbility> event) {
+        BaseMobAbility test_buff = new TestHealDot();
+        event.getRegistry().register(test_buff);
     }
 
     @SuppressWarnings("unused")
@@ -65,13 +82,17 @@ public class ModSpawn {
                 .withItemOptions(
                         MKURegistry.getItemOption(
                                 new ResourceLocation(MKUltra.MODID, "mh_test")))
+                .withAbilities(MKURegistry.getMobAbility(
+                        new ResourceLocation(MKUltra.MODID, "mob_ability.test_heal_dot")))
                 .withAIModifiers(
                         MKURegistry.REGISTRY_MOB_AI_MODS.getValue(
                                 new ResourceLocation(MKUltra.MODID, "remove_wander")),
                         MKURegistry.REGISTRY_MOB_AI_MODS.getValue(
                                 new ResourceLocation(MKUltra.MODID, "remove_watch_closest")),
                         MKURegistry.REGISTRY_MOB_AI_MODS.getValue(
-                                new ResourceLocation(MKUltra.MODID, "long_range_watch_closest")
+                                new ResourceLocation(MKUltra.MODID, "long_range_watch_closest")),
+                        MKURegistry.REGISTRY_MOB_AI_MODS.getValue(
+                                new ResourceLocation(MKUltra.MODID, "add_self_buff")
                         ))
                 .withMobName("Test Skeleton");
         event.getRegistry().register(test_mob);
@@ -83,7 +104,8 @@ public class ModSpawn {
         AIModifier remove_wander = new AIModifier(
                 new ResourceLocation(MKUltra.MODID, "remove_wander"),
                 AIModifiers.REMOVE_AI,
-                new BehaviorChoice(EntityAIWanderAvoidWater.class, 0, BehaviorChoice.TaskType.TASK));
+                new BehaviorChoice(EntityAIWanderAvoidWater.class, 0, BehaviorChoice.TaskType.TASK),
+                new BehaviorChoice(EntityAINearestAttackableTarget.class, 0, BehaviorChoice.TaskType.TARGET_TASK));
         event.getRegistry().register(remove_wander);
         AIModifier remove_all_tasks = new AIModifier(
                 new ResourceLocation(MKUltra.MODID, "remove_all_tasks"),
@@ -101,6 +123,20 @@ public class ModSpawn {
                 new BehaviorChoice(getWatchClosestLongRange, 0, 6, BehaviorChoice.TaskType.TASK)
         );
         event.getRegistry().register(add_watch_closest);
+        BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addSelfBuff = (entity, choice) -> {
+            IMobData mobData = MKUMobData.get(entity);
+            return new EntityAIBuffSelf(entity, mobData, .75f);
+        };
+        BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addAggroTarget = (entity, choice) -> {
+            return new EntityAINearestAttackableTargetMK((EntityCreature) entity, EntityPlayer.class, true);
+        };
+        AIModifier add_self_buff = new AIModifier(
+                new ResourceLocation(MKUltra.MODID, "add_self_buff"),
+                AIModifiers.ADD_TASKS,
+                new BehaviorChoice(addSelfBuff, 0, 3, BehaviorChoice.TaskType.TASK),
+                new BehaviorChoice(addAggroTarget, 0, 2, BehaviorChoice.TaskType.TARGET_TASK)
+        );
+        event.getRegistry().register(add_self_buff);
         AIModifier remove_watch_closest = new AIModifier(
                 new ResourceLocation(MKUltra.MODID, "remove_watch_closest"),
                 AIModifiers.REMOVE_AI,

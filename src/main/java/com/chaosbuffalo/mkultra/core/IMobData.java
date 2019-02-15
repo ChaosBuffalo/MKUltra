@@ -27,5 +27,9 @@ public interface IMobData {
 
     void addAbility(BaseMobAbility abilityIn);
 
+    double getAggroRange();
+
+    void setAggroRange(double value);
+
     EntityLivingBase getEntity();
 }

@@ -23,12 +23,13 @@ public class MKURegistry {
     public static IForgeRegistry<AttributeRange> REGISTRY_MOB_ATTRS = null;
     public static IForgeRegistry<MobDefinition> REGISTRY_MOB_DEF = null;
     public static IForgeRegistry<AIModifier> REGISTRY_MOB_AI_MODS = null;
+    public static IForgeRegistry<BaseMobAbility> REGISTRY_MOB_ABILITIES = null;
 
     public static ResourceLocation INVALID_CLASS = new ResourceLocation(MKUltra.MODID, "class.invalid");
     public static ResourceLocation INVALID_ABILITY = new ResourceLocation(MKUltra.MODID, "ability.invalid");
     public static ResourceLocation INVALID_MOB = new ResourceLocation(MKUltra.MODID, "mob.invalid");
     public static final MobDefinition EMPTY_MOB = new MobDefinition(INVALID_MOB,null, 0);
-
+    public static ResourceLocation INVALID_MOB_ABILITY = new ResourceLocation(MKUltra.MODID, "mob_ability.invalid");
 
     public static BaseClass getClass(ResourceLocation classId) {
         return REGISTRY_CLASSES.getValue(classId);
@@ -40,6 +41,10 @@ public class MKURegistry {
 
     public static AttributeRange getAttributeRange(ResourceLocation name){
         return REGISTRY_MOB_ATTRS.getValue(name);
+    }
+
+    public static BaseMobAbility getMobAbility(ResourceLocation abilityId) {
+        return REGISTRY_MOB_ABILITIES.getValue(abilityId);
     }
 
     public static MobDefinition getMobDefinition(ResourceLocation name){
@@ -109,6 +114,12 @@ public class MKURegistry {
         REGISTRY_MOB_AI_MODS = new RegistryBuilder<AIModifier>()
                 .setName(new ResourceLocation(MKUltra.MODID, "mob_ai_mods"))
                 .setType(AIModifier.class)
+                .setIDRange(0, Integer.MAX_VALUE - 1)
+                .create();
+
+        REGISTRY_MOB_ABILITIES = new RegistryBuilder<BaseMobAbility>()
+                .setName(new ResourceLocation(MKUltra.MODID, "mob_abilities"))
+                .setType(BaseMobAbility.class)
                 .setIDRange(0, Integer.MAX_VALUE - 1)
                 .create();
     }

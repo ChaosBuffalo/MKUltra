@@ -9,13 +9,19 @@ public class MobAbilityTracker {
     private IMobData mobData;
 
     public MobAbilityTracker(BaseMobAbility abilityIn, IMobData mobData){
-        cooldownLeft = abilityIn.getCooldown(mobData.getMobLevel());
+        cooldownLeft = 0;
         this.mobData = mobData;
         ability = abilityIn;
     }
 
     public void update(){
-        cooldownLeft--;
+        if (cooldownLeft > 0){
+            cooldownLeft--;
+        }
+    }
+
+    public BaseMobAbility getAbility(){
+        return ability;
     }
 
     public boolean isAbilityOnCooldown(){

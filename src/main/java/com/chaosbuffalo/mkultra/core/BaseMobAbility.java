@@ -15,18 +15,17 @@ import java.util.List;
 
 public abstract class BaseMobAbility extends IForgeRegistryEntry.Impl<BaseMobAbility> {
 
-    private ResourceLocation abilityId;
 
     public BaseMobAbility(String domain, String id) {
         this(new ResourceLocation(domain, id));
     }
 
     public ResourceLocation getAbilityId() {
-        return abilityId;
+        return getRegistryName();
     }
 
     public BaseMobAbility(ResourceLocation abilityId) {
-        this.abilityId = abilityId;
+        setRegistryName(abilityId);
     }
 
     public float getDistance(int currentLevel) {

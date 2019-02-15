@@ -1,4 +1,8 @@
 package com.chaosbuffalo.mkultra.spawner;
+import com.chaosbuffalo.mkultra.core.BaseMobAbility;
+import com.chaosbuffalo.mkultra.core.IMobData;
+import com.chaosbuffalo.mkultra.core.MKUMobData;
+import com.chaosbuffalo.mkultra.core.MKURegistry;
 import com.chaosbuffalo.mkultra.init.ModSpawn;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
@@ -16,6 +20,7 @@ public class MobDefinition extends IForgeRegistryEntry.Impl<MobDefinition> {
     private final HashSet<AttributeRange> attributeRanges;
     private final HashSet<ItemOption> itemOptions;
     private final ArrayList<AIModifier> aiModifiers;
+    private final HashSet<BaseMobAbility> mobAbilities;
     private String mobName;
 
     public MobDefinition(ResourceLocation name, Class<? extends EntityLivingBase> entityClass, int spawnWeight){
@@ -25,6 +30,7 @@ public class MobDefinition extends IForgeRegistryEntry.Impl<MobDefinition> {
         attributeRanges = new HashSet<>();
         itemOptions = new HashSet<>();
         aiModifiers = new ArrayList<>();
+        mobAbilities = new HashSet<>();
     }
 
     public MobDefinition withAttributeRanges(AttributeRange... ranges){
@@ -34,6 +40,11 @@ public class MobDefinition extends IForgeRegistryEntry.Impl<MobDefinition> {
 
     public MobDefinition withMobName(String name){
         mobName = name;
+        return this;
+    }
+
+    public MobDefinition withAbilities(BaseMobAbility... abilities){
+        mobAbilities.addAll(Arrays.asList(abilities));
         return this;
     }
 
@@ -51,12 +62,22 @@ public class MobDefinition extends IForgeRegistryEntry.Impl<MobDefinition> {
         if (mobName != null){
             entity.setCustomNameTag(mobName);
         }
+
         for (AttributeRange range : attributeRanges){
             range.apply(entity, level, ModSpawn.MAX_LEVEL);
         }
         for (ItemOption option : itemOptions){
             option.apply(entity, level, ModSpawn.MAX_LEVEL);
         }
+        IMobData mobData = MKUMobData.get(entity);
+        if (mobData != null){
+            for (BaseMobAbility ability : mobAbilities){
+                if (ability != null) {
+                    mobData.addAbility(ability);
+                }
+            }
+        }
+
         for (AIModifier mod : aiModifiers){
             mod.apply(entity, level, ModSpawn.MAX_LEVEL);
         }

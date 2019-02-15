@@ -10,12 +10,14 @@ public class MobData implements IMobData {
     private  boolean isMKSpawned;
     private final HashSet<MobAbilityTracker> trackers;
     private boolean hasAbilities;
+    private double aggroRange;
 
 
     public MobData(EntityLivingBase entity) {
         this.entity = entity;
         this.trackers = new HashSet<>();
         hasAbilities = false;
+        aggroRange = 10.0;
     }
 
     @Override
@@ -73,6 +75,16 @@ public class MobData implements IMobData {
     public void addAbility(BaseMobAbility abilityIn) {
         trackers.add(new MobAbilityTracker(abilityIn, this));
         hasAbilities = true;
+    }
+
+    @Override
+    public double getAggroRange() {
+        return aggroRange;
+    }
+
+    @Override
+    public void setAggroRange(double value) {
+        aggroRange = value;
     }
 
     @Override
