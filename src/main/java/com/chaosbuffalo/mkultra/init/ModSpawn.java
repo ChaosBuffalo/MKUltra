@@ -1,13 +1,16 @@
 package com.chaosbuffalo.mkultra.init;
 
+import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.BaseMobAbility;
 import com.chaosbuffalo.mkultra.core.IMobData;
 import com.chaosbuffalo.mkultra.core.MKUMobData;
 import com.chaosbuffalo.mkultra.core.MKURegistry;
+import com.chaosbuffalo.mkultra.core.mob_abilities.ShadowDash;
 import com.chaosbuffalo.mkultra.core.mob_abilities.TestHealDot;
 import com.chaosbuffalo.mkultra.mob_ai.EntityAIBuffSelf;
 import com.chaosbuffalo.mkultra.mob_ai.EntityAINearestAttackableTargetMK;
+import com.chaosbuffalo.mkultra.mob_ai.EntityAIRangedSpellAttack;
 import com.chaosbuffalo.mkultra.spawner.*;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
@@ -57,6 +60,10 @@ public class ModSpawn {
                 new ResourceLocation(MKUltra.MODID, "aggro_range"),
                 MKSpawnAttributes.SET_AGGRO_RADIUS, 8.0, 8.0);
         event.getRegistry().register(set_aggro);
+//        AttributeRange size_range = new AttributeRange(
+//                new ResourceLocation(MKUltra.MODID, "test_size"),
+//                BaseSpawnAttributes.SCALE_SIZE, 2.0, 2.0);
+//        event.getRegistry().register(size_range);
     }
 
     @SuppressWarnings("unused")
@@ -64,6 +71,8 @@ public class ModSpawn {
     public static void registerMobAbilities(RegistryEvent.Register<BaseMobAbility> event) {
         BaseMobAbility test_buff = new TestHealDot();
         event.getRegistry().register(test_buff);
+        BaseMobAbility shadow_dash = new ShadowDash();
+        event.getRegistry().register(shadow_dash);
     }
 
     @SuppressWarnings("unused")
@@ -82,8 +91,11 @@ public class ModSpawn {
                 .withItemOptions(
                         MKURegistry.getItemOption(
                                 new ResourceLocation(MKUltra.MODID, "mh_test")))
-                .withAbilities(MKURegistry.getMobAbility(
-                        new ResourceLocation(MKUltra.MODID, "mob_ability.test_heal_dot")))
+                .withAbilities(
+                        MKURegistry.getMobAbility(
+                            new ResourceLocation(MKUltra.MODID, "mob_ability.test_heal_dot")),
+                        MKURegistry.getMobAbility(
+                            new ResourceLocation(MKUltra.MODID, "mob_ability.shadow_dash")))
                 .withAIModifiers(
                         MKURegistry.REGISTRY_MOB_AI_MODS.getValue(
                                 new ResourceLocation(MKUltra.MODID, "remove_wander")),
@@ -127,14 +139,17 @@ public class ModSpawn {
             IMobData mobData = MKUMobData.get(entity);
             return new EntityAIBuffSelf(entity, mobData, .75f);
         };
-        BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addAggroTarget = (entity, choice) -> {
-            return new EntityAINearestAttackableTargetMK((EntityCreature) entity, EntityPlayer.class, true);
+        BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addAggroTarget = (entity, choice) -> new EntityAINearestAttackableTargetMK((EntityCreature) entity, EntityPlayer.class, true);
+        BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addShadowDash = (entity, choice) -> {
+            IMobData mobData = MKUMobData.get(entity);
+            return new EntityAIRangedSpellAttack(entity, 10 * GameConstants.TICKS_PER_SECOND, mobData);
         };
         AIModifier add_self_buff = new AIModifier(
                 new ResourceLocation(MKUltra.MODID, "add_self_buff"),
                 AIModifiers.ADD_TASKS,
                 new BehaviorChoice(addSelfBuff, 0, 3, BehaviorChoice.TaskType.TASK),
-                new BehaviorChoice(addAggroTarget, 0, 2, BehaviorChoice.TaskType.TARGET_TASK)
+                new BehaviorChoice(addAggroTarget, 0, 2, BehaviorChoice.TaskType.TARGET_TASK),
+                new BehaviorChoice(addShadowDash, 0, 2, BehaviorChoice.TaskType.TASK)
         );
         event.getRegistry().register(add_self_buff);
         AIModifier remove_watch_closest = new AIModifier(
