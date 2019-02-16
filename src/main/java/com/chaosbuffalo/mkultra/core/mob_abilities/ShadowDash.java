@@ -27,7 +27,7 @@ public class ShadowDash extends BaseMobAbility {
     }
 
     @Override
-    public int getCooldown(int currentLevel) {
+    public int getCooldown() {
         return 45 * GameConstants.TICKS_PER_SECOND;
     }
 
@@ -37,7 +37,7 @@ public class ShadowDash extends BaseMobAbility {
     }
 
     @Override
-    public float getDistance(int currentLevel) {
+    public float getDistance() {
         return 8.0f;
     }
 

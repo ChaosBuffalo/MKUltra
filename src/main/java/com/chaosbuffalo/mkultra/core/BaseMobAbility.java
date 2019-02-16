@@ -28,11 +28,11 @@ public abstract class BaseMobAbility extends IForgeRegistryEntry.Impl<BaseMobAbi
         setRegistryName(abilityId);
     }
 
-    public float getDistance(int currentLevel) {
+    public float getDistance() {
         return 1.0f;
     }
 
-    public abstract int getCooldown(int currentLevel);
+    public abstract int getCooldown();
 
     public enum AbilityType{
         ATTACK,

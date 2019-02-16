@@ -43,6 +43,11 @@ public class ModSpawn {
                 ItemAssigners.MAINHAND,
                 new ItemChoice(new ItemStack(Items.IRON_SWORD, 1), 5, 0));
         event.getRegistry().register(mh_test);
+        ItemOption helmet = new ItemOption(
+                new ResourceLocation(MKUltra.MODID, "helmet_test"),
+                ItemAssigners.HEAD,
+                new ItemChoice(new ItemStack(Items.IRON_HELMET, 1), 5, 0));
+        event.getRegistry().register(helmet);
     }
 
     @SuppressWarnings("unused")
@@ -90,7 +95,9 @@ public class ModSpawn {
                         )
                 .withItemOptions(
                         MKURegistry.getItemOption(
-                                new ResourceLocation(MKUltra.MODID, "mh_test")))
+                                new ResourceLocation(MKUltra.MODID, "mh_test")),
+                        MKURegistry.getItemOption(
+                                new ResourceLocation(MKUltra.MODID, "helmet_test")))
                 .withAbilities(
                         MKURegistry.getMobAbility(
                             new ResourceLocation(MKUltra.MODID, "mob_ability.test_heal_dot")),

@@ -28,8 +28,12 @@ public class MobAbilityTracker {
         return cooldownLeft > 0;
     }
 
+    public boolean isCooldownGreaterThanAttackTime(int attackTime){
+        return cooldownLeft > attackTime;
+    }
+
     public void useAbility(EntityLivingBase target){
         ability.execute(mobData.getEntity(), mobData, target, mobData.getEntity().getEntityWorld());
-        cooldownLeft = ability.getCooldown(mobData.getMobLevel());
+        cooldownLeft = ability.getCooldown();
     }
 }

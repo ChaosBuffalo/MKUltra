@@ -21,7 +21,7 @@ public class TestHealDot extends BaseMobAbility {
     }
 
     @Override
-    public int getCooldown(int currentLevel) {
+    public int getCooldown() {
         return 30 * GameConstants.TICKS_PER_SECOND;
     }
 

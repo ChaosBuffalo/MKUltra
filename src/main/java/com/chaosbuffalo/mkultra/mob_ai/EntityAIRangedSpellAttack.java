@@ -4,6 +4,7 @@ import com.chaosbuffalo.mkultra.core.BaseMobAbility;
 import com.chaosbuffalo.mkultra.core.IMobData;
 import com.chaosbuffalo.mkultra.core.MobAbilityTracker;
 import com.chaosbuffalo.mkultra.log.Log;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
@@ -21,12 +22,14 @@ public class EntityAIRangedSpellAttack extends EntityAIBase {
     private int strafingTime = -1;
     private MobAbilityTracker currentAbility;
     protected IMobData mobData;
+    private boolean canAttack;
 
     public EntityAIRangedSpellAttack(EntityLivingBase entity, int attackCooldown, IMobData mobData) {
         this.entity = entity;
         this.attackCooldown = attackCooldown;
         this.mobData = mobData;
         this.setMutexBits(3);
+        canAttack = false;
     }
 
     public void setAttackCooldown(int cooldownIn) {
@@ -38,15 +41,19 @@ public class EntityAIRangedSpellAttack extends EntityAIBase {
      */
     public boolean shouldExecute() {
         if (mobData.hasAbilities() && entity instanceof EntityLiving) {
-            for (MobAbilityTracker tracker : mobData.getAbilityTrackers()) {
-                if (!tracker.isAbilityOnCooldown()) {
-                    if (tracker.getAbility().getAbilityType() == BaseMobAbility.AbilityType.ATTACK &&
-                            ((EntityLiving) entity).getAttackTarget() != null) {
-                        currentAbility = tracker;
-                        return true;
+            EntityLivingBase target = ((EntityLiving) entity).getAttackTarget();
+            if (target != null){
+                for (MobAbilityTracker tracker : mobData.getAbilityTrackers()) {
+                    if (!tracker.isAbilityOnCooldown()) {
+                        if (tracker.getAbility().getAbilityType() == BaseMobAbility.AbilityType.ATTACK &&
+                                isInRange(target, tracker)) {
+                            currentAbility = tracker;
+                            return true;
+                        }
                     }
                 }
             }
+
         }
         return false;
     }
@@ -59,7 +66,7 @@ public class EntityAIRangedSpellAttack extends EntityAIBase {
         if (!(entity instanceof EntityLiving)){
             return false;
         }
-        return (currentAbility != null && !currentAbility.isAbilityOnCooldown() || !((EntityLiving)entity).getNavigator().noPath());
+        return (currentAbility != null && !currentAbility.isCooldownGreaterThanAttackTime(attackTime) || !((EntityLiving)entity).getNavigator().noPath());
     }
 
     /**
@@ -67,7 +74,6 @@ public class EntityAIRangedSpellAttack extends EntityAIBase {
      */
     public void startExecuting() {
         super.startExecuting();
-        Log.info("Start executing shadow dash");
         if (entity instanceof IRangedAttackMob){
             ((IRangedAttackMob)this.entity).setSwingingArms(true);
         }
@@ -84,16 +90,22 @@ public class EntityAIRangedSpellAttack extends EntityAIBase {
         }
         this.seeTime = 0;
         this.attackTime = -1;
-        this.entity.resetActiveHand();
         this.currentAbility = null;
+        canAttack = false;
     }
 
     /**
      * Keep ticking a continuous task that has already been started
      */
     public double getMaxDistance(int level) {
-        double d = this.currentAbility.getAbility().getDistance(level);
+        double d = this.currentAbility.getAbility().getDistance();
         return d * d;
+    }
+
+    public boolean isInRange(Entity entity, MobAbilityTracker tracker){
+        double d0 = this.entity.getDistanceSq(entity.posX, entity.getEntityBoundingBox().minY, entity.posZ);
+        double d1 = tracker.getAbility().getDistance();
+        return d0 <= d1 * d1;
     }
 
     @Override
@@ -149,21 +161,16 @@ public class EntityAIRangedSpellAttack extends EntityAIBase {
                     entLiv.getLookHelper().setLookPositionWithEntity(entitylivingbase, 30.0F, 30.0F);
                 }
 
-                if (this.entity.isHandActive()) {
+                if (canAttack) {
                     if (!canSee && this.seeTime < -60) {
-                        Log.info("Cant see");
-                        this.entity.resetActiveHand();
+                        canAttack = false;
                     } else if (canSee) {
-                        Log.info("Casting ability");
-                        this.entity.resetActiveHand();
                         currentAbility.useAbility(entitylivingbase);
                         this.attackTime = this.attackCooldown;
+                        canAttack = false;
                     }
                 } else if (--this.attackTime <= 0 && this.seeTime >= -60) {
-                    Log.info("setting main hand");
-                    this.entity.setActiveHand(EnumHand.MAIN_HAND);
-                } else {
-                    Log.info("Over here");
+                    this.canAttack = true;
                 }
             }
         }
