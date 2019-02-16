@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.core;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 
 import java.util.HashSet;
 
@@ -32,4 +33,12 @@ public interface IMobData {
     void setAggroRange(double value);
 
     EntityLivingBase getEntity();
+
+    ResourceLocation getMobFaction();
+
+    void setMobFaction(ResourceLocation factionName);
+
+    boolean hasFaction();
+
+    boolean isSameFaction(EntityLivingBase other);
 }

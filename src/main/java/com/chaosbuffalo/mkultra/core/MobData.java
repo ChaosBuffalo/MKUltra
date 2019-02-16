@@ -1,6 +1,7 @@
 package com.chaosbuffalo.mkultra.core;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 
 import java.util.HashSet;
 
@@ -11,6 +12,7 @@ public class MobData implements IMobData {
     private final HashSet<MobAbilityTracker> trackers;
     private boolean hasAbilities;
     private double aggroRange;
+    private ResourceLocation factionName;
 
 
     public MobData(EntityLivingBase entity) {
@@ -18,6 +20,7 @@ public class MobData implements IMobData {
         this.trackers = new HashSet<>();
         hasAbilities = false;
         aggroRange = 10.0;
+        factionName = MKURegistry.INVALID_FACTION;
     }
 
     @Override
@@ -29,6 +32,8 @@ public class MobData implements IMobData {
     public boolean hasAbilities() {
         return hasAbilities;
     }
+
+
 
     @Override
     public void onTick() {
@@ -90,5 +95,29 @@ public class MobData implements IMobData {
     @Override
     public EntityLivingBase getEntity() {
         return entity;
+    }
+
+    @Override
+    public ResourceLocation getMobFaction() {
+        return factionName;
+    }
+
+    @Override
+    public void setMobFaction(ResourceLocation factionName) {
+        this.factionName = factionName;
+    }
+
+    @Override
+    public boolean hasFaction() {
+        return !factionName.equals(MKURegistry.INVALID_FACTION);
+    }
+
+    @Override
+    public boolean isSameFaction(EntityLivingBase other) {
+        IMobData otherData = MKUMobData.get(other);
+        if (otherData == null || factionName.equals(MKURegistry.INVALID_FACTION)){
+            return false;
+        }
+        return factionName.equals(otherData.getMobFaction());
     }
 }
