@@ -34,6 +34,10 @@ public abstract class BaseMobAbility extends IForgeRegistryEntry.Impl<BaseMobAbi
 
     public abstract int getCooldown();
 
+    public int getCastTime(){
+        return 0;
+    }
+
     public enum AbilityType{
         ATTACK,
         HEAL,

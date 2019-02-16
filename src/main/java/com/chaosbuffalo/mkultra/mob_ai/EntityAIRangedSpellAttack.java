@@ -1,9 +1,12 @@
 package com.chaosbuffalo.mkultra.mob_ai;
 
+import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.BaseMobAbility;
 import com.chaosbuffalo.mkultra.core.IMobData;
 import com.chaosbuffalo.mkultra.core.MobAbilityTracker;
+import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.log.Log;
+import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -11,6 +14,8 @@ import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.Vec3d;
 
 public class EntityAIRangedSpellAttack extends EntityAIBase {
     private final EntityLivingBase entity;
@@ -58,6 +63,12 @@ public class EntityAIRangedSpellAttack extends EntityAIBase {
         return false;
     }
 
+    @Override
+    public boolean isInterruptible()
+    {
+        return false;
+    }
+
 
     /**
      * Returns whether an in-progress EntityAIBase should continue executing
@@ -97,7 +108,7 @@ public class EntityAIRangedSpellAttack extends EntityAIBase {
     /**
      * Keep ticking a continuous task that has already been started
      */
-    public double getMaxDistance(int level) {
+    public double getMaxDistance() {
         double d = this.currentAbility.getAbility().getDistance();
         return d * d;
     }
@@ -118,7 +129,7 @@ public class EntityAIRangedSpellAttack extends EntityAIBase {
                 double d0 = this.entity.getDistanceSq(entitylivingbase.posX, entitylivingbase.getEntityBoundingBox().minY, entitylivingbase.posZ);
                 boolean canSee = entLiv.getEntitySenses().canSee(entitylivingbase);
                 boolean hasSeen = this.seeTime > 0;
-                double maxAttackDistance = getMaxDistance(mobData.getMobLevel());
+                double maxAttackDistance = getMaxDistance();
                 if (canSee != hasSeen) {
                     this.seeTime = 0;
                 }
@@ -170,7 +181,27 @@ public class EntityAIRangedSpellAttack extends EntityAIBase {
                         canAttack = false;
                     }
                 } else if (--this.attackTime <= 0 && this.seeTime >= -60) {
-                    this.canAttack = true;
+                    if (currentAbility.isEngageTimeGreaterThanCastTime(-1*this.attackTime)){
+                        this.canAttack = true;
+                    } else {
+                        if (entity instanceof IRangedAttackMob){
+                            ((IRangedAttackMob)this.entity).setSwingingArms(true);
+                        }
+                        Vec3d lookVec = entLiv.getLookVec();
+                        if (this.attackTime % 2 == 0){
+                            MKUltra.packetHandler.sendToAllAround(
+                                    new ParticleEffectSpawnPacket(
+                                            EnumParticleTypes.SPELL_WITCH.getParticleID(),
+                                            ParticleEffects.CIRCLE_MOTION, 6, 3,
+                                            entLiv.posX, entLiv.posY + 1.0,
+                                            entLiv.posZ, 1.0, 1.0, 1.0, .5,
+                                            lookVec),
+                                    entity.dimension, entity.posX,
+                                    entity.posY, entity.posZ, 25.0f);
+                        }
+
+                }
+
                 }
             }
         }

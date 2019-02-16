@@ -213,5 +213,5 @@ effect.hellfire_smoke=Hellfire Smoke
 effect.mana_regen_smoke=Mana Regen Smoke
 effect.mana_smoke=Mana Smoke
 effect.health_regen_smoke=Health Regen Smoke
-death.attack.mkUltraAbility=%1$s got magicked up by %2$s
+death.attack.mkUltraAbility=%1$s got magicked up by %2$s.
 

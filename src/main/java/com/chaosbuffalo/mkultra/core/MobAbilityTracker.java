@@ -29,7 +29,15 @@ public class MobAbilityTracker {
     }
 
     public boolean isCooldownGreaterThanAttackTime(int attackTime){
+        if (attackTime < 0){
+            return false;
+        }
+
         return cooldownLeft > attackTime;
+    }
+
+    public boolean isEngageTimeGreaterThanCastTime(int engageTime){
+        return engageTime >= ability.getCastTime();
     }
 
     public void useAbility(EntityLivingBase target){
