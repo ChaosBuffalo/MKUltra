@@ -1,10 +1,9 @@
-package com.chaosbuffalo.mkultra.spawner;
+package com.chaosbuffalo.mkultra.spawn;
 
 
 import com.chaosbuffalo.mkultra.log.Log;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.MoverType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.util.math.AxisAlignedBB;

@@ -1,4 +1,4 @@
-package com.chaosbuffalo.mkultra.spawner;
+package com.chaosbuffalo.mkultra.spawn;
 
 import com.chaosbuffalo.mkultra.core.IMobData;
 import com.chaosbuffalo.mkultra.core.MKUMobData;

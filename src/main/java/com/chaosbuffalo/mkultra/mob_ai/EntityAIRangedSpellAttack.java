@@ -77,7 +77,7 @@ public class EntityAIRangedSpellAttack extends EntityAIBase {
         if (!(entity instanceof EntityLiving)){
             return false;
         }
-        return (currentAbility != null && !currentAbility.isCooldownGreaterThanAttackTime(attackTime) || !((EntityLiving)entity).getNavigator().noPath());
+        return (currentAbility != null && !currentAbility.isAbilityOnCooldown() || !((EntityLiving)entity).getNavigator().noPath());
     }
 
     /**
@@ -99,8 +99,7 @@ public class EntityAIRangedSpellAttack extends EntityAIBase {
         if (entity instanceof IRangedAttackMob){
             ((IRangedAttackMob)this.entity).setSwingingArms(true);
         }
-        this.seeTime = 0;
-        this.attackTime = -1;
+        this.attackTime = attackCooldown;
         this.currentAbility = null;
         canAttack = false;
     }
@@ -189,9 +188,23 @@ public class EntityAIRangedSpellAttack extends EntityAIBase {
                         }
                         Vec3d lookVec = entLiv.getLookVec();
                         if (this.attackTime % 2 == 0){
+                            int particleId;
+                            switch (currentAbility.getAbility().getAbilityType()){
+                                case ATTACK:
+                                    particleId = EnumParticleTypes.SPELL_WITCH.getParticleID();
+                                    break;
+                                case BUFF:
+                                    particleId = EnumParticleTypes.SPELL_MOB_AMBIENT.getParticleID();
+                                    break;
+                                case HEAL:
+                                    particleId = EnumParticleTypes.SPELL_INSTANT.getParticleID();
+                                    break;
+                                default:
+                                    particleId = EnumParticleTypes.SPELL_WITCH.getParticleID();
+                            }
                             MKUltra.packetHandler.sendToAllAround(
                                     new ParticleEffectSpawnPacket(
-                                            EnumParticleTypes.SPELL_WITCH.getParticleID(),
+                                            particleId,
                                             ParticleEffects.CIRCLE_MOTION, 6, 3,
                                             entLiv.posX, entLiv.posY + 1.0,
                                             entLiv.posZ, 1.0, 1.0, 1.0, .5,

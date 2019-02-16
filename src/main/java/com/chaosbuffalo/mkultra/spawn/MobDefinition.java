@@ -1,8 +1,7 @@
-package com.chaosbuffalo.mkultra.spawner;
+package com.chaosbuffalo.mkultra.spawn;
 import com.chaosbuffalo.mkultra.core.BaseMobAbility;
 import com.chaosbuffalo.mkultra.core.IMobData;
 import com.chaosbuffalo.mkultra.core.MKUMobData;
-import com.chaosbuffalo.mkultra.core.MKURegistry;
 import com.chaosbuffalo.mkultra.init.ModSpawn;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;

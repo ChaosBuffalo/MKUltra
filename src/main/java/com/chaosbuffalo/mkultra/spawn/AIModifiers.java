@@ -1,4 +1,4 @@
-package com.chaosbuffalo.mkultra.spawner;
+package com.chaosbuffalo.mkultra.spawn;
 
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -7,7 +7,6 @@ import net.minecraft.entity.ai.EntityAITasks;
 
 import java.util.HashSet;
 import java.util.function.BiConsumer;
-import java.util.function.Function;
 
 public class AIModifiers {
 

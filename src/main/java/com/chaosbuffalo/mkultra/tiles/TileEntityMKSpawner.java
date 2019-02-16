@@ -3,7 +3,7 @@ import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.log.Log;
-import com.chaosbuffalo.mkultra.spawner.MobDefinition;
+import com.chaosbuffalo.mkultra.spawn.MobDefinition;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -37,7 +37,6 @@ public class TileEntityMKSpawner extends TileEntity implements ITickable {
         ticksBeforeSpawn = 5 * GameConstants.TICKS_PER_SECOND;
         mobDefinitionToSpawn = "test_skeleton";
         currentMob = -1;
-
         tickCount = ticksBeforeSpawn;
         ticksSincePlayer = 0;
         active = false;
@@ -53,7 +52,7 @@ public class TileEntityMKSpawner extends TileEntity implements ITickable {
         double y2 = (double)this.pos.getY() + halfRange;
         double z2 = (double)this.pos.getZ() + halfRange;
         AxisAlignedBB scanBox = new AxisAlignedBB(x1, y1, z1, x2, y2, z2);
-        return getWorld().getEntitiesWithinAABB(EntityPlayer.class, scanBox);
+        return getWorld().getEntitiesWithinAABB(EntityPlayer.class, scanBox, x -> !x.isCreative());
     }
 
     public float getAverageLevel(List<EntityPlayer> players){
@@ -91,18 +90,15 @@ public class TileEntityMKSpawner extends TileEntity implements ITickable {
                         ticksSincePlayer = 0;
                     }
                     float averageLevel = getAverageLevel(players);
-                    Log.info("In mk spawner onTick, entity id is %d, tick count is: %d", currentMob, tickCount);
                     if (currentMob != -1){
                         Entity entity = getWorld().getEntityByID(currentMob);
                         if (entity == null){
-                            Log.info("No entity found with id %d", currentMob);
                             currentMob = -1;
                             // we reset to 1 instead of 0 because otherwise we would trigger 2 ticks in a row
                             // everytime we reset
                             tickCount = 1;
                         }
                     } else if (tickCount >= ticksBeforeSpawn){
-                        Log.info("Trying to spawn new entity %s", mobDefinitionToSpawn);
                         spawnEntity(getWorld(), mobDefinitionToSpawn, Math.round(averageLevel));
                     }
                 } else {

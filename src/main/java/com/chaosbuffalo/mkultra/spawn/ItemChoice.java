@@ -1,4 +1,4 @@
-package com.chaosbuffalo.mkultra.spawner;
+package com.chaosbuffalo.mkultra.spawn;
 
 import net.minecraft.item.ItemStack;
 

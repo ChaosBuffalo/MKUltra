@@ -11,7 +11,7 @@ import com.chaosbuffalo.mkultra.core.mob_abilities.TestHealDot;
 import com.chaosbuffalo.mkultra.mob_ai.EntityAIBuffSelf;
 import com.chaosbuffalo.mkultra.mob_ai.EntityAINearestAttackableTargetMK;
 import com.chaosbuffalo.mkultra.mob_ai.EntityAIRangedSpellAttack;
-import com.chaosbuffalo.mkultra.spawner.*;
+import com.chaosbuffalo.mkultra.spawn.*;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIBase;

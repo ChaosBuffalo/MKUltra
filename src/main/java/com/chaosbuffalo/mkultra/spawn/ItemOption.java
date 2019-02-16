@@ -1,4 +1,4 @@
-package com.chaosbuffalo.mkultra.spawner;
+package com.chaosbuffalo.mkultra.spawn;
 
 import com.chaosbuffalo.mkultra.choice.RandomCollection;
 import net.minecraft.entity.EntityLivingBase;
