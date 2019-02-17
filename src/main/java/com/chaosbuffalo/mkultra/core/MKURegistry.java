@@ -60,6 +60,14 @@ public class MKURegistry {
         return EMPTY_MOB;
     }
 
+    public static MobFaction getFaction(ResourceLocation name){
+        return REGISTRY_MOB_FACTIONS.getValue(name);
+    }
+
+    public static SpawnList getSpawnList(ResourceLocation name){
+        return REGISTRY_SPAWN_LISTS.getValue(name);
+    }
+
     public static List<ResourceLocation> getClassesProvidedByItem(Item held) {
         return REGISTRY_CLASSES.getEntries().stream()
                 .filter(kv -> kv.getValue().getUnlockItem() == held)

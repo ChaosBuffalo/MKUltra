@@ -69,6 +69,7 @@ public class MobDefinition extends IForgeRegistryEntry.Impl<MobDefinition> {
             option.apply(entity, level, ModSpawn.MAX_LEVEL);
         }
         IMobData mobData = MKUMobData.get(entity);
+        mobData.setMobLevel(level);
         if (mobData != null){
             for (BaseMobAbility ability : mobAbilities){
                 if (ability != null) {

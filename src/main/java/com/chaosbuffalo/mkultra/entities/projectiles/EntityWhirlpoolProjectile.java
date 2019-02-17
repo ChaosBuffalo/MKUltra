@@ -45,7 +45,7 @@ public class EntityWhirlpoolProjectile extends EntityBaseProjectile {
             AreaEffectBuilder.Create(caster, this)
                     .spellCast(yank, amplifier - 1, Targeting.TargetType.ENEMY)
                     .spellCast(whirlpool, GameConstants.TICKS_PER_SECOND * 2 * amplifier, amplifier, Targeting.TargetType.ENEMY)
-//                    .spellCast(damagePotion, amplifier, Targeting.TargetType.ENEMY)
+//                    .spellCast(damagePotion, amplifier, TargetingExtensions.TargetType.ENEMY)
                     .duration(80).waitTime(0)
                     .period(20)
                     .color(39935).radius(3.0f, true)

@@ -33,8 +33,6 @@ public class MobData implements IMobData {
         return hasAbilities;
     }
 
-
-
     @Override
     public void onTick() {
         if (hasAbilities){

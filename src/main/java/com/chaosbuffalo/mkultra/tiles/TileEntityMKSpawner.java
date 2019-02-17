@@ -4,6 +4,9 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.spawn.MobDefinition;
+import com.chaosbuffalo.mkultra.spawn.MobFaction;
+import com.chaosbuffalo.mkultra.spawn.SpawnList;
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,29 +24,33 @@ import java.util.List;
 
 
 public class TileEntityMKSpawner extends TileEntity implements ITickable {
-    public static double RANGE = 200.0;
-    public static int TICK_INTERVAL = 10 * GameConstants.TICKS_PER_SECOND;
-    public static int CLEANUP_THRESHOLD = 180 * GameConstants.TICKS_PER_SECOND;
-    public static int SLEEP_TICK_INTERVAL = 30 * GameConstants.TICKS_PER_SECOND;
-    public int ticksBeforeSpawn;
-    public String mobDefinitionToSpawn;
-    public int currentMob;
-    public int tickCount;
-    public boolean active;
+    private static double RANGE = 100.0;
+    private static int TICK_INTERVAL = 10 * GameConstants.TICKS_PER_SECOND;
+    private static int CLEANUP_THRESHOLD = 180 * GameConstants.TICKS_PER_SECOND;
+    private static int SLEEP_TICK_INTERVAL = 30 * GameConstants.TICKS_PER_SECOND;
+    private int ticksBeforeSpawn;
+    private int currentMob;
+    private int tickCount;
+    private boolean active;
     private int ticksSincePlayer;
     private int internalTickInterval;
+    private MobFaction faction;
+    private MobFaction.MobGroups spawnerType;
+    private SpawnList spawnList;
 
     public TileEntityMKSpawner(){
         ticksBeforeSpawn = 5 * GameConstants.TICKS_PER_SECOND;
-        mobDefinitionToSpawn = "test_skeleton";
         currentMob = -1;
         tickCount = ticksBeforeSpawn;
         ticksSincePlayer = 0;
         active = false;
         internalTickInterval = TICK_INTERVAL;
+        faction = null;
+        spawnerType = MobFaction.MobGroups.INVALID;
+        spawnList = null;
     }
 
-    public List<EntityPlayer> getPlayersAround(){
+    private List<EntityPlayer> getPlayersAround(){
         double halfRange = RANGE / 2.0;
         double x1 = (double)this.pos.getX() - halfRange;
         double y1 = (double)this.pos.getY() - halfRange;
@@ -55,7 +62,7 @@ public class TileEntityMKSpawner extends TileEntity implements ITickable {
         return getWorld().getEntitiesWithinAABB(EntityPlayer.class, scanBox, x -> !x.isCreative());
     }
 
-    public float getAverageLevel(List<EntityPlayer> players){
+    private float getAverageLevel(List<EntityPlayer> players){
         float levelTotal = 0;
         int count = 0;
         for (EntityPlayer player : players){
@@ -68,11 +75,23 @@ public class TileEntityMKSpawner extends TileEntity implements ITickable {
         return levelTotal / count;
     }
 
-    public void cleanupMob(){
+    private void cleanupMob(){
         Entity mob = getWorld().getEntityByID(currentMob);
         if (mob != null){
             mob.setDead();
         }
+    }
+
+    private boolean checkSpawnListAndInit(){
+        if (spawnList == null){
+            if (faction != null && spawnerType != MobFaction.MobGroups.INVALID){
+                spawnList = faction.getSpawnListForGroup(spawnerType);
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
@@ -83,23 +102,25 @@ public class TileEntityMKSpawner extends TileEntity implements ITickable {
             if (tickCount % internalTickInterval == 0){
                 List<EntityPlayer> players = getPlayersAround();
                 if (players.size() > 0){
-                    if (!active){
-                        active = true;
-                        tickCount = ticksBeforeSpawn;
-                        internalTickInterval = TICK_INTERVAL;
-                        ticksSincePlayer = 0;
-                    }
-                    float averageLevel = getAverageLevel(players);
-                    if (currentMob != -1){
-                        Entity entity = getWorld().getEntityByID(currentMob);
-                        if (entity == null){
-                            currentMob = -1;
-                            // we reset to 1 instead of 0 because otherwise we would trigger 2 ticks in a row
-                            // everytime we reset
-                            tickCount = 1;
+                    if (checkSpawnListAndInit()){
+                        if (!active){
+                            active = true;
+                            tickCount = ticksBeforeSpawn;
+                            internalTickInterval = TICK_INTERVAL;
+                            ticksSincePlayer = 0;
                         }
-                    } else if (tickCount >= ticksBeforeSpawn){
-                        spawnEntity(getWorld(), mobDefinitionToSpawn, Math.round(averageLevel));
+                        float averageLevel = getAverageLevel(players);
+                        if (currentMob != -1){
+                            Entity entity = getWorld().getEntityByID(currentMob);
+                            if (entity == null){
+                                currentMob = -1;
+                                // we reset to 1 instead of 0 because otherwise we would trigger 2 ticks in a row
+                                // everytime we reset
+                                tickCount = 1;
+                            }
+                        } else if (tickCount >= ticksBeforeSpawn){
+                            spawnEntity(getWorld(), spawnList.getNextDefinition(), Math.round(averageLevel));
+                        }
                     }
                 } else {
                     ticksSincePlayer++;
@@ -130,13 +151,37 @@ public class TileEntityMKSpawner extends TileEntity implements ITickable {
         this.readFromNBT(packet.getNbtCompound());
     }
 
+
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound tagRoot) {
+        if (faction != null){
+            tagRoot.setString("faction", faction.getRegistryName().toString());
+        }
+        if (spawnerType != MobFaction.MobGroups.INVALID){
+            tagRoot.setInteger("spawnerType", spawnerType.ordinal());
+        }
+        if (spawnList != null){
+            tagRoot.setString("spawnList", spawnList.getRegistryName().toString());
+        }
+        tagRoot.setInteger("ticksBeforeSpawn", ticksBeforeSpawn);
         return super.writeToNBT(tagRoot);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound tagRoot) {
+        if (tagRoot.hasKey("faction")){
+            faction = MKURegistry.getFaction(new ResourceLocation(tagRoot.getString("faction")));
+        }
+        if (tagRoot.hasKey("spawnerType")){
+            spawnerType = MobFaction.MobGroups.values()[tagRoot.getInteger("spawnerType")];
+        }
+        if (tagRoot.hasKey("spawnList")){
+            spawnList = MKURegistry.getSpawnList(new ResourceLocation(tagRoot.getString("spawnList")));
+        }
+        if (tagRoot.hasKey("ticksBeforeSpawn")){
+            ticksBeforeSpawn = tagRoot.getInteger("ticksBeforeSpawn");
+            tickCount = ticksBeforeSpawn;
+        }
 
         super.readFromNBT(tagRoot);
     }
@@ -154,8 +199,7 @@ public class TileEntityMKSpawner extends TileEntity implements ITickable {
         return null;
     }
 
-    private void spawnEntity(World theWorld, String mobDefinitionName, int level){
-        MobDefinition definition = MKURegistry.getMobDefinition(new ResourceLocation(MKUltra.MODID, mobDefinitionName));
+    private void spawnEntity(World theWorld, MobDefinition definition, int level){
         if (definition != MKURegistry.EMPTY_MOB){
             EntityLivingBase entity = getEntity(theWorld, definition);
             if (entity == null){
@@ -174,6 +218,7 @@ public class TileEntityMKSpawner extends TileEntity implements ITickable {
             currentMob = entity.getEntityId();
             Log.info("Spawning entity at %s", getPos().toString());
             theWorld.spawnEntity(entity);
+            mobData.setMobFaction(faction.getRegistryName());
             mobData.setMKSpawned(true);
         }
     }

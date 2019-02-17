@@ -4,11 +4,13 @@ import com.chaosbuffalo.mkultra.choice.RandomCollection;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
 
 public class MobFaction extends IForgeRegistryEntry.Impl<MobFaction> {
 
     public enum MobGroups {
+        INVALID,
         MELEE_GRUNT,
         RANGE_GRUNT,
         SUPPORT_GRUNT,
@@ -37,7 +39,20 @@ public class MobFaction extends IForgeRegistryEntry.Impl<MobFaction> {
     }
 
     public void addSpawnList(MobGroups group, SpawnList list, double weight){
+        if (group == MobGroups.INVALID){
+            return;
+        }
         spawnLists.get(group).add(weight, list);
+    }
+
+    @Nullable
+    public SpawnList getSpawnListForGroup(MobGroups group){
+        if (group == MobGroups.INVALID){
+            return null;
+        } else {
+            return spawnLists.get(group).next();
+        }
+
     }
 
     public MobFaction withSpawnList(MobGroups group, SpawnList list, double weight){
