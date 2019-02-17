@@ -62,7 +62,7 @@ public class ModSpawn {
                 BaseSpawnAttributes.MAX_HEALTH, 40.0, 120.0);
         event.getRegistry().register(captain_health);
         AttributeRange boss_health = new AttributeRange(
-                new ResourceLocation(MKUltra.MODID, "captain_health"),
+                new ResourceLocation(MKUltra.MODID, "boss_health"),
                 BaseSpawnAttributes.MAX_HEALTH, 200.00, 500.0);
         event.getRegistry().register(boss_health);
         AttributeRange set_follow = new AttributeRange(
@@ -72,6 +72,10 @@ public class ModSpawn {
         AttributeRange melee_aggro = new AttributeRange(
                 new ResourceLocation(MKUltra.MODID, "melee_aggro"),
                 MKSpawnAttributes.SET_AGGRO_RADIUS, 8.0, 8.0);
+        event.getRegistry().register(melee_aggro);
+        AttributeRange range_aggro = new AttributeRange(
+                new ResourceLocation(MKUltra.MODID, "melee_aggro"),
+                MKSpawnAttributes.SET_AGGRO_RADIUS, 15.0, 15.0);
         event.getRegistry().register(melee_aggro);
 //        AttributeRange size_range = new AttributeRange(
 //                new ResourceLocation(MKUltra.MODID, "test_size"),
@@ -150,7 +154,7 @@ public class ModSpawn {
                 AIModifiers.REMOVE_ALL_TARGET_TASKS);
         event.getRegistry().register(remove_all_target_tasks);
         BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> getWatchClosestLongRange =
-                (entity, choice) -> new EntityAIWatchClosest(entity, EntityPlayer.class, 16.0F);
+                (entity, choice) -> new EntityAIWatchClosest(entity, EntityPlayer.class, 20.0F);
         AIModifier add_watch_closest = new AIModifier(
                 new ResourceLocation(MKUltra.MODID, "long_range_watch_closest"),
                 AIModifiers.ADD_TASKS,
