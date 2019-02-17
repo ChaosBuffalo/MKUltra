@@ -308,7 +308,7 @@ public class PlayerData implements IPlayerData {
     }
 
     @Override
-    public int getAbilityCooldown(BaseAbility ability) {
+    public int getAbilityCooldown(PlayerAbility ability) {
         return PlayerFormulas.applyCooldownReduction(this, ability.getCooldownTicks(getLevelForAbility(ability.getAbilityId())));
     }
 
@@ -345,7 +345,7 @@ public class PlayerData implements IPlayerData {
         classInfo.addToSpendOrder(abilityId);
 
         if (abilityTracker.hasCooldown(info)) {
-            BaseAbility ability = MKURegistry.getAbility(abilityId);
+            PlayerAbility ability = MKURegistry.getAbility(abilityId);
             int newMaxCooldown = getAbilityCooldown(ability);
             int current = abilityTracker.getCooldownTicks(info);
             setCooldown(info.getId(), Math.min(current, newMaxCooldown));
@@ -407,7 +407,7 @@ public class PlayerData implements IPlayerData {
     }
 
     private void updateToggleAbility(PlayerAbilityInfo info) {
-        BaseAbility ability = MKURegistry.getAbility(info.getId());
+        PlayerAbility ability = MKURegistry.getAbility(info.getId());
         if (ability instanceof BaseToggleAbility && player != null) {
             BaseToggleAbility toggle = (BaseToggleAbility) ability;
 
@@ -432,7 +432,7 @@ public class PlayerData implements IPlayerData {
 
         if (getCurrentAbilityCooldown(abilityId) == 0) {
 
-            BaseAbility ability = MKURegistry.getAbility(abilityId);
+            PlayerAbility ability = MKURegistry.getAbility(abilityId);
             if (ability != null && ability.meetsRequirements(this)) {
                 ability.execute(player, this, player.getEntityWorld());
                 return true;
@@ -443,7 +443,7 @@ public class PlayerData implements IPlayerData {
     }
 
     @Override
-    public void startAbility(BaseAbility ability) {
+    public void startAbility(PlayerAbility ability) {
         PlayerAbilityInfo info = getAbilityInfo(ability.getAbilityId());
         if (info == null || !info.isCurrentlyKnown())
             return;
@@ -874,7 +874,7 @@ public class PlayerData implements IPlayerData {
     private void deactivateCurrentToggleAbilities() {
         for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
             ResourceLocation abilityId = getAbilityInSlot(i);
-            BaseAbility ability = MKURegistry.getAbility(abilityId);
+            PlayerAbility ability = MKURegistry.getAbility(abilityId);
             if (ability instanceof BaseToggleAbility && player != null) {
                 BaseToggleAbility toggle = (BaseToggleAbility) ability;
                 toggle.removeEffect(player, this, player.getEntityWorld());
@@ -946,7 +946,7 @@ public class PlayerData implements IPlayerData {
     }
 
     @Override
-    public float getCooldownPercent(BaseAbility ability, float partialTicks) {
+    public float getCooldownPercent(PlayerAbility ability, float partialTicks) {
         PlayerAbilityInfo info = getAbilityInfo(ability.getAbilityId());
         return info != null ? abilityTracker.getCooldown(info, partialTicks) : 0.0f;
     }
@@ -964,7 +964,7 @@ public class PlayerData implements IPlayerData {
         String msg = "All Abilities:";
         sender.sendMessage(new TextComponentString(msg));
         for (PlayerAbilityInfo info : abilityInfoMap.values()) {
-            BaseAbility ability = MKURegistry.getAbility(info.getId());
+            PlayerAbility ability = MKURegistry.getAbility(info.getId());
 
             msg = String.format("%s: %d / %d", ability.getAbilityName(), abilityTracker.getCooldownTicks(info), getAbilityCooldown(ability));
             sender.sendMessage(new TextComponentString(msg));

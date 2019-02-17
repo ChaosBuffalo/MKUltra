@@ -6,18 +6,17 @@ import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.CurePotion;
 import com.chaosbuffalo.mkultra.effects.spells.EsunaPotion;
-import com.chaosbuffalo.mkultra.core.BaseAbility;
+import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class Esuna extends BaseAbility {
+public class Esuna extends PlayerAbility {
 
     public Esuna() {
         super(MKUltra.MODID, "ability.esuna");

@@ -6,7 +6,7 @@ import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.NocturnalCommunionPotion;
 import com.chaosbuffalo.mkultra.effects.spells.ParticlePotion;
-import com.chaosbuffalo.mkultra.core.BaseAbility;
+import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
@@ -19,7 +19,7 @@ import net.minecraft.world.World;
 /**
  * Created by Jacob on 3/24/2018.
  */
-public class NocturnalCommunion extends BaseAbility {
+public class NocturnalCommunion extends PlayerAbility {
 
     public static int BASE_DURATION = 15;
     public static int DURATION_SCALE = 15;

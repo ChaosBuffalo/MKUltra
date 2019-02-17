@@ -6,7 +6,7 @@ import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.CriticalChancePotion;
 import com.chaosbuffalo.mkultra.effects.spells.ParticlePotion;
-import com.chaosbuffalo.mkultra.core.BaseAbility;
+import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
@@ -18,7 +18,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class Yaup extends BaseAbility {
+public class Yaup extends PlayerAbility {
 
     public Yaup() {
         super(MKUltra.MODID, "ability.yaup");

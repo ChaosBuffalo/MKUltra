@@ -16,18 +16,18 @@ import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public abstract class BaseAbility extends IForgeRegistryEntry.Impl<BaseAbility> {
+public abstract class PlayerAbility extends IForgeRegistryEntry.Impl<PlayerAbility> {
 
     public static final int ACTIVE_ABILITY = 0;
     public static final int TOGGLE_ABILITY = 1;
 
     private ResourceLocation abilityId;
 
-    public BaseAbility(String domain, String id) {
+    public PlayerAbility(String domain, String id) {
         this(new ResourceLocation(domain, id));
     }
 
-    public BaseAbility(ResourceLocation abilityId) {
+    public PlayerAbility(ResourceLocation abilityId) {
         this.abilityId = abilityId;
     }
 

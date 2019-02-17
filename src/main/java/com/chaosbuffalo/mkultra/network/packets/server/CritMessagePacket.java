@@ -1,7 +1,7 @@
 package com.chaosbuffalo.mkultra.network.packets.server;
 
 import com.chaosbuffalo.mkultra.MKConfig;
-import com.chaosbuffalo.mkultra.core.BaseAbility;
+import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.MKURegistry;
 import com.chaosbuffalo.mkultra.network.MessageHandler;
 import com.chaosbuffalo.mkultra.utils.ClientUtils;
@@ -161,7 +161,7 @@ public class CritMessagePacket implements IMessage {
                         break;
                     case SPELL_CRIT:
                         messageStyle.setColor(TextFormatting.AQUA);
-                        BaseAbility ability = MKURegistry.getAbility(msg.abilityName);
+                        PlayerAbility ability = MKURegistry.getAbility(msg.abilityName);
                         if (isSelf) {
                             player.sendMessage(new TextComponentString(
                                     String.format("Your %s spell just crit %s for %s",

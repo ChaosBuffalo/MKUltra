@@ -1,9 +1,8 @@
 package com.chaosbuffalo.mkultra.core.abilities;
 
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.BaseAbility;
+import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
-import com.chaosbuffalo.mkultra.entities.projectiles.EntityBallLightningProjectile;
 import com.chaosbuffalo.mkultra.entities.projectiles.EntitySpiritBombProjectile;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,7 +11,7 @@ import net.minecraft.world.World;
 /**
  * Created by Jacob on 7/28/2018.
  */
-public class SpiritBomb extends BaseAbility {
+public class SpiritBomb extends PlayerAbility {
 
     public final static float BASE = 6.0f;
     public final static float SCALE = 4.0f;

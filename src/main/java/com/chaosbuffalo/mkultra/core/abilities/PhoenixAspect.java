@@ -7,7 +7,7 @@ import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.FeatherFallPotion;
 import com.chaosbuffalo.mkultra.effects.spells.PhoenixAspectPotion;
 import com.chaosbuffalo.mkultra.effects.spells.ParticlePotion;
-import com.chaosbuffalo.mkultra.core.BaseAbility;
+import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
@@ -17,7 +17,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class PhoenixAspect extends BaseAbility {
+public class PhoenixAspect extends PlayerAbility {
 
     public static int BASE_DURATION = 30;
     public static int DURATION_SCALE = 30;

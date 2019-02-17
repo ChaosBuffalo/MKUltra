@@ -1,7 +1,7 @@
 package com.chaosbuffalo.mkultra.core.abilities;
 
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.BaseAbility;
+import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.entities.projectiles.EntityWhirlpoolProjectile;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 /**
  * Created by Jacob on 3/25/2018.
  */
-public class Whirlpool extends BaseAbility {
+public class Whirlpool extends PlayerAbility {
 
     public static float PROJECTILE_SPEED = 1.25f;
     public static float PROJECTILE_INACCURACY = 0.2f;

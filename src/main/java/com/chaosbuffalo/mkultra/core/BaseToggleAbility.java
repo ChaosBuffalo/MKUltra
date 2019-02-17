@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * Created by Jacob on 3/24/2018.
  */
-public abstract class BaseToggleAbility extends BaseAbility {
+public abstract class BaseToggleAbility extends PlayerAbility {
 
     private static final Map<Potion, ResourceLocation> toggleAbilityMap = Maps.newHashMap();
 
