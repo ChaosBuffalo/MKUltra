@@ -53,18 +53,26 @@ public class ModSpawn {
     @SuppressWarnings("unused")
     @SubscribeEvent
     public static void registerAttributeRanges(RegistryEvent.Register<AttributeRange> event) {
-        AttributeRange health_test = new AttributeRange(
-                new ResourceLocation(MKUltra.MODID, "health_test"),
+        AttributeRange grunt_health = new AttributeRange(
+                new ResourceLocation(MKUltra.MODID, "grunt_health"),
                 BaseSpawnAttributes.MAX_HEALTH, 20.0, 50.0);
-        event.getRegistry().register(health_test);
+        event.getRegistry().register(grunt_health);
+        AttributeRange captain_health = new AttributeRange(
+                new ResourceLocation(MKUltra.MODID, "captain_health"),
+                BaseSpawnAttributes.MAX_HEALTH, 40.0, 120.0);
+        event.getRegistry().register(captain_health);
+        AttributeRange boss_health = new AttributeRange(
+                new ResourceLocation(MKUltra.MODID, "captain_health"),
+                BaseSpawnAttributes.MAX_HEALTH, 200.00, 500.0);
+        event.getRegistry().register(boss_health);
         AttributeRange set_follow = new AttributeRange(
                 new ResourceLocation(MKUltra.MODID, "follow_range"),
                 BaseSpawnAttributes.FOLLOW_RANGE, 20.0, 20.0);
         event.getRegistry().register(set_follow);
-        AttributeRange set_aggro = new AttributeRange(
-                new ResourceLocation(MKUltra.MODID, "aggro_range"),
+        AttributeRange melee_aggro = new AttributeRange(
+                new ResourceLocation(MKUltra.MODID, "melee_aggro"),
                 MKSpawnAttributes.SET_AGGRO_RADIUS, 8.0, 8.0);
-        event.getRegistry().register(set_aggro);
+        event.getRegistry().register(melee_aggro);
 //        AttributeRange size_range = new AttributeRange(
 //                new ResourceLocation(MKUltra.MODID, "test_size"),
 //                BaseSpawnAttributes.SCALE_SIZE, 2.0, 2.0);
@@ -85,7 +93,7 @@ public class ModSpawn {
     public static void registerMobDefinitions(RegistryEvent.Register<MobDefinition> event) {
 
         MobDefinition test_mob =  new MobDefinition(
-                new ResourceLocation(MKUltra.MODID, "test_skeleton"),
+                new ResourceLocation(MKUltra.MODID, "skeletal_grunt"),
                 EntitySkeleton.class, 10)
                 .withAttributeRanges(
                         MKURegistry.getAttributeRange(
@@ -113,7 +121,7 @@ public class ModSpawn {
                         MKURegistry.REGISTRY_MOB_AI_MODS.getValue(
                                 new ResourceLocation(MKUltra.MODID, "add_self_buff")
                         ))
-                .withMobName("Test Skeleton");
+                .withMobName("Skeletal Grunt");
         event.getRegistry().register(test_mob);
     }
 

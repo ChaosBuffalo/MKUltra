@@ -49,10 +49,11 @@ public class MobFaction extends IForgeRegistryEntry.Impl<MobFaction> {
     public SpawnList getSpawnListForGroup(MobGroups group){
         if (group == MobGroups.INVALID){
             return null;
-        } else {
+        } else if (spawnLists.get(group).size() > 0){
             return spawnLists.get(group).next();
+        } else {
+            return null;
         }
-
     }
 
     public MobFaction withSpawnList(MobGroups group, SpawnList list, double weight){
