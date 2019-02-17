@@ -63,12 +63,6 @@ public class EntityAIRangedSpellAttack extends EntityAIBase {
         return false;
     }
 
-    @Override
-    public boolean isInterruptible()
-    {
-        return false;
-    }
-
 
     /**
      * Returns whether an in-progress EntityAIBase should continue executing

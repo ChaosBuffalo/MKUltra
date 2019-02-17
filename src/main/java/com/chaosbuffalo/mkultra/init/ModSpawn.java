@@ -34,20 +34,41 @@ import java.util.function.BiFunction;
 public class ModSpawn {
 
     public static final int MAX_LEVEL = 10;
+    public static AIModifier ADD_STANDARD_AI;
+    public static AIModifier REMOVE_SKELETON_AI;
 
     @SuppressWarnings("unused")
     @SubscribeEvent
     public static void registerItemOptions(RegistryEvent.Register<ItemOption> event) {
-        ItemOption mh_test = new ItemOption(
-                new ResourceLocation(MKUltra.MODID, "mh_test"),
+        ItemOption iron_weapons = new ItemOption(
+                new ResourceLocation(MKUltra.MODID, "iron_weapons"),
                 ItemAssigners.MAINHAND,
-                new ItemChoice(new ItemStack(Items.IRON_SWORD, 1), 5, 0));
-        event.getRegistry().register(mh_test);
-        ItemOption helmet = new ItemOption(
-                new ResourceLocation(MKUltra.MODID, "helmet_test"),
+                new ItemChoice(new ItemStack(Items.IRON_SWORD, 1), 5, 0),
+                new ItemChoice(new ItemStack(Items.IRON_AXE, 1), 5, 0));
+        event.getRegistry().register(iron_weapons);
+        ItemOption grunt_helm = new ItemOption(
+                new ResourceLocation(MKUltra.MODID, "grunt_helm"),
                 ItemAssigners.HEAD,
-                new ItemChoice(new ItemStack(Items.IRON_HELMET, 1), 5, 0));
-        event.getRegistry().register(helmet);
+                new ItemChoice(new ItemStack(Items.LEATHER_HELMET, 1), 10, 0),
+                new ItemChoice(new ItemStack(Items.IRON_HELMET, 1), 1, 0));
+        event.getRegistry().register(grunt_helm);
+        ItemOption grunt_chest = new ItemOption(
+                new ResourceLocation(MKUltra.MODID, "grunt_chest"),
+                ItemAssigners.CHEST,
+                new ItemChoice(new ItemStack(Items.LEATHER_CHESTPLATE, 1), 5, 0),
+                new ItemChoice(ItemStack.EMPTY, 10, 0));
+        event.getRegistry().register(grunt_chest);
+        ItemOption captain_helm = new ItemOption(
+                new ResourceLocation(MKUltra.MODID, "captain_helm"),
+                ItemAssigners.HEAD,
+                new ItemChoice(new ItemStack(Items.LEATHER_HELMET, 1), 1, 0),
+                new ItemChoice(new ItemStack(Items.IRON_HELMET, 1), 7, 0));
+        event.getRegistry().register(captain_helm);
+        ItemOption captain_chest = new ItemOption(
+                new ResourceLocation(MKUltra.MODID, "captain_chest"),
+                ItemAssigners.CHEST,
+                new ItemChoice(new ItemStack(Items.LEATHER_CHESTPLATE, 1), 5, 0));
+        event.getRegistry().register(captain_chest);
     }
 
     @SuppressWarnings("unused")
@@ -74,7 +95,7 @@ public class ModSpawn {
                 MKSpawnAttributes.SET_AGGRO_RADIUS, 8.0, 8.0);
         event.getRegistry().register(melee_aggro);
         AttributeRange range_aggro = new AttributeRange(
-                new ResourceLocation(MKUltra.MODID, "melee_aggro"),
+                new ResourceLocation(MKUltra.MODID, "ranged_aggro"),
                 MKSpawnAttributes.SET_AGGRO_RADIUS, 15.0, 15.0);
         event.getRegistry().register(melee_aggro);
 //        AttributeRange size_range = new AttributeRange(
@@ -96,55 +117,85 @@ public class ModSpawn {
     @SubscribeEvent
     public static void registerMobDefinitions(RegistryEvent.Register<MobDefinition> event) {
 
-        MobDefinition test_mob =  new MobDefinition(
+        MobDefinition skeletal_grunt =  new MobDefinition(
                 new ResourceLocation(MKUltra.MODID, "skeletal_grunt"),
                 EntitySkeleton.class, 10)
                 .withAttributeRanges(
                         MKURegistry.getAttributeRange(
-                                new ResourceLocation(MKUltra.MODID, "health_test")),
+                                new ResourceLocation(MKUltra.MODID, "grunt_health")),
                         MKURegistry.getAttributeRange(
-                                new ResourceLocation(MKUltra.MODID, "aggro_range"))
-                        )
+                                new ResourceLocation(MKUltra.MODID, "melee_aggro"))
+                )
                 .withItemOptions(
                         MKURegistry.getItemOption(
-                                new ResourceLocation(MKUltra.MODID, "mh_test")),
+                                new ResourceLocation(MKUltra.MODID, "iron_weapons")),
                         MKURegistry.getItemOption(
-                                new ResourceLocation(MKUltra.MODID, "helmet_test")))
+                                new ResourceLocation(MKUltra.MODID, "grunt_helm")),
+                        MKURegistry.getItemOption(
+                                new ResourceLocation(MKUltra.MODID, "grunt_chest")))
                 .withAbilities(
                         MKURegistry.getMobAbility(
-                            new ResourceLocation(MKUltra.MODID, "mob_ability.test_heal_dot")),
-                        MKURegistry.getMobAbility(
-                            new ResourceLocation(MKUltra.MODID, "mob_ability.shadow_dash")))
+                                new ResourceLocation(MKUltra.MODID, "mob_ability.test_heal_dot")))
                 .withAIModifiers(
-                        MKURegistry.REGISTRY_MOB_AI_MODS.getValue(
-                                new ResourceLocation(MKUltra.MODID, "remove_wander")),
-                        MKURegistry.REGISTRY_MOB_AI_MODS.getValue(
-                                new ResourceLocation(MKUltra.MODID, "remove_watch_closest")),
-                        MKURegistry.REGISTRY_MOB_AI_MODS.getValue(
-                                new ResourceLocation(MKUltra.MODID, "long_range_watch_closest")),
-                        MKURegistry.REGISTRY_MOB_AI_MODS.getValue(
-                                new ResourceLocation(MKUltra.MODID, "add_self_buff")
-                        ))
+                        REMOVE_SKELETON_AI,
+                        ADD_STANDARD_AI
+                )
                 .withMobName("Skeletal Grunt");
-        event.getRegistry().register(test_mob);
+        event.getRegistry().register(skeletal_grunt);
+        MobDefinition skeletal_skulker =  new MobDefinition(
+                new ResourceLocation(MKUltra.MODID, "skeletal_skulker"),
+                EntitySkeleton.class, 10)
+                .withAttributeRanges(
+                        MKURegistry.getAttributeRange(
+                                new ResourceLocation(MKUltra.MODID, "captain_health")),
+                        MKURegistry.getAttributeRange(
+                                new ResourceLocation(MKUltra.MODID, "melee_aggro"))
+                )
+                .withItemOptions(
+                        MKURegistry.getItemOption(
+                                new ResourceLocation(MKUltra.MODID, "iron_weapons")),
+                        MKURegistry.getItemOption(
+                                new ResourceLocation(MKUltra.MODID, "captain_helm")),
+                        MKURegistry.getItemOption(
+                                new ResourceLocation(MKUltra.MODID, "captain_chest")))
+                .withAbilities(
+                        MKURegistry.getMobAbility(
+                                new ResourceLocation(MKUltra.MODID, "mob_ability.shadow_dash")))
+                .withAIModifiers(
+                        REMOVE_SKELETON_AI,
+                        ADD_STANDARD_AI
+                )
+                .withMobName("Skeletal Skulker");
+        event.getRegistry().register(skeletal_skulker);
     }
 
     @SuppressWarnings("unused")
     @SubscribeEvent
     public static void registerMobFactions(RegistryEvent.Register<MobFaction> event) {
-        MobFaction test_faction = new MobFaction(MKUltra.MODID, "test_faction");
-        event.getRegistry().register(test_faction);
+        MobFaction skeleton_faction = new MobFaction(MKUltra.MODID, "skeletons");
+        skeleton_faction.addSpawnList(MobFaction.MobGroups.MELEE_GRUNT, MKURegistry.getSpawnList(
+                new ResourceLocation(MKUltra.MODID, "skeletal_grunts")), 1);
+        skeleton_faction.addSpawnList(MobFaction.MobGroups.MELEE_CAPTAIN, MKURegistry.getSpawnList(
+                new ResourceLocation(MKUltra.MODID, "skeletal_skulkers")), 1);
+        event.getRegistry().register(skeleton_faction);
+    }
+
+    @SuppressWarnings("unused")
+    @SubscribeEvent
+    public static void registerSpawnLists(RegistryEvent.Register<SpawnList> event) {
+        SpawnList skeletal_grunts = new SpawnList(new ResourceLocation(MKUltra.MODID, "skeletal_grunts"));
+        skeletal_grunts.addOption(MKURegistry.getMobDefinition(
+                new ResourceLocation(MKUltra.MODID, "skeletal_grunt")));
+        event.getRegistry().register(skeletal_grunts);
+        SpawnList skeletal_skulkers = new SpawnList(new ResourceLocation(MKUltra.MODID, "skeletal_skulkers"));
+        skeletal_skulkers.addOption(MKURegistry.getMobDefinition(
+                new ResourceLocation(MKUltra.MODID, "skeletal_skulker")));
+        event.getRegistry().register(skeletal_skulkers);
     }
 
     @SuppressWarnings("unused")
     @SubscribeEvent
     public static void registerAIModifiers(RegistryEvent.Register<AIModifier> event) {
-        AIModifier remove_wander = new AIModifier(
-                new ResourceLocation(MKUltra.MODID, "remove_wander"),
-                AIModifiers.REMOVE_AI,
-                new BehaviorChoice(EntityAIWanderAvoidWater.class, 0, BehaviorChoice.TaskType.TASK),
-                new BehaviorChoice(EntityAINearestAttackableTarget.class, 0, BehaviorChoice.TaskType.TARGET_TASK));
-        event.getRegistry().register(remove_wander);
         AIModifier remove_all_tasks = new AIModifier(
                 new ResourceLocation(MKUltra.MODID, "remove_all_tasks"),
                 AIModifiers.REMOVE_ALL_TASKS);
@@ -155,34 +206,33 @@ public class ModSpawn {
         event.getRegistry().register(remove_all_target_tasks);
         BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> getWatchClosestLongRange =
                 (entity, choice) -> new EntityAIWatchClosest(entity, EntityPlayer.class, 20.0F);
-        AIModifier add_watch_closest = new AIModifier(
-                new ResourceLocation(MKUltra.MODID, "long_range_watch_closest"),
-                AIModifiers.ADD_TASKS,
-                new BehaviorChoice(getWatchClosestLongRange, 0, 6, BehaviorChoice.TaskType.TASK)
-        );
-        event.getRegistry().register(add_watch_closest);
         BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addSelfBuff = (entity, choice) -> {
             IMobData mobData = MKUMobData.get(entity);
             return new EntityAIBuffSelf(entity, mobData, .75f);
         };
         BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addAggroTarget = (entity, choice) -> new EntityAINearestAttackableTargetMK((EntityCreature) entity, EntityPlayer.class, true);
-        BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addShadowDash = (entity, choice) -> {
+        BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addOffensiveSpells = (entity, choice) -> {
             IMobData mobData = MKUMobData.get(entity);
-            return new EntityAIRangedSpellAttack(entity, 10 * GameConstants.TICKS_PER_SECOND, mobData);
+            return new EntityAIRangedSpellAttack(entity, 6 * GameConstants.TICKS_PER_SECOND, mobData);
         };
-        AIModifier add_self_buff = new AIModifier(
-                new ResourceLocation(MKUltra.MODID, "add_self_buff"),
+        ADD_STANDARD_AI = new AIModifier(
+                new ResourceLocation(MKUltra.MODID, "add_standard_ai"),
                 AIModifiers.ADD_TASKS,
                 new BehaviorChoice(addSelfBuff, 0, 3, BehaviorChoice.TaskType.TASK),
                 new BehaviorChoice(addAggroTarget, 0, 2, BehaviorChoice.TaskType.TARGET_TASK),
-                new BehaviorChoice(addShadowDash, 0, 2, BehaviorChoice.TaskType.TASK)
+                new BehaviorChoice(addOffensiveSpells, 0, 4, BehaviorChoice.TaskType.TASK),
+                new BehaviorChoice(getWatchClosestLongRange, 0, 6, BehaviorChoice.TaskType.TASK)
         );
-        event.getRegistry().register(add_self_buff);
-        AIModifier remove_watch_closest = new AIModifier(
-                new ResourceLocation(MKUltra.MODID, "remove_watch_closest"),
+        event.getRegistry().register(ADD_STANDARD_AI);
+
+        REMOVE_SKELETON_AI = new AIModifier(
+                new ResourceLocation(MKUltra.MODID, "remove_wander"),
                 AIModifiers.REMOVE_AI,
+                new BehaviorChoice(EntityAIWanderAvoidWater.class, 0, BehaviorChoice.TaskType.TASK),
+                new BehaviorChoice(EntityAINearestAttackableTarget.class, 0, BehaviorChoice.TaskType.TARGET_TASK),
                 new BehaviorChoice(EntityAIWatchClosest.class, 0, BehaviorChoice.TaskType.TASK));
-        event.getRegistry().register(remove_watch_closest);
+        event.getRegistry().register(REMOVE_SKELETON_AI);
+
     }
 
 }

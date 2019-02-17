@@ -152,7 +152,8 @@ public class TileEntityMKSpawner extends TileEntity implements ITickable {
                                 tickCount = 1;
                             }
                         } else if (tickCount >= ticksBeforeSpawn){
-                            spawnEntity(getWorld(), spawnList.getNextDefinition(), Math.round(averageLevel));
+                            int actualLevel = Math.min(world.rand.nextInt(Math.max(1, Math.round(averageLevel) + 2)), 10);
+                            spawnEntity(getWorld(), spawnList.getNextDefinition(), actualLevel);
                         }
                     }
                 } else {
