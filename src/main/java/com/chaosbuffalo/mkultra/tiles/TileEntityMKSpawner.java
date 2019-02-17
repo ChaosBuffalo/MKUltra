@@ -114,7 +114,12 @@ public class TileEntityMKSpawner extends TileEntity implements ITickable {
             if (faction != null && spawnerType != MobFaction.MobGroups.INVALID){
                 spawnList = faction.getSpawnListForGroup(spawnerType);
                 this.sync();
-                return true;
+                if (spawnList.isEmpty()){
+                    return false;
+                } else {
+                    return true;
+                }
+
             } else {
                 return false;
             }

@@ -19,4 +19,8 @@ public class RandomCollection<E> {
         double value = ThreadLocalRandom.current().nextDouble() * total;
         return map.ceilingEntry(value).getValue();
     }
+
+    public int size(){
+        return map.size();
+    }
 }

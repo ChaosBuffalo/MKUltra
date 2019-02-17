@@ -27,4 +27,8 @@ public class SpawnList extends IForgeRegistryEntry.Impl<SpawnList> {
     public MobDefinition getNextDefinition(){
         return options.next();
     }
+
+    public boolean isEmpty(){
+        return options.size() <= 0;
+    }
 }
