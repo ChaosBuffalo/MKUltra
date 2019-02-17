@@ -116,8 +116,7 @@ public class MKSpawnerGui extends GuiScreen implements IListButtonHandler<Resour
                     factions.addAll(MKURegistry.REGISTRY_MOB_FACTIONS.getKeys());
                     factionList = new ButtonList<>(
                             factions, this, FACTION_LIST, getResourceName, mc, 200,
-                            140, yPos + 4 + (titleHeight * 6), panelHeight,
-                            xPos + 28, 22, width, height);
+                            140, yPos + 4 + (titleHeight * 6), panelHeight, 22, xPos + 28);
                 } else {
                     factionList.drawScreen(mouseX, mouseY, partialTicks);
                 }
@@ -133,7 +132,7 @@ public class MKSpawnerGui extends GuiScreen implements IListButtonHandler<Resour
                     mobGroupList = new ButtonList<>(
                             groups, secondHandler, MOB_GROUP_LIST, getMobGroupName, mc, 200,
                             140, yPos + 4 + (titleHeight * 6), panelHeight,
-                            xPos + 28, 22, width, height);
+                            22, xPos + 28);
                 } else {
                     mobGroupList.drawScreen(mouseX, mouseY, partialTicks);
                 }
@@ -182,12 +181,37 @@ public class MKSpawnerGui extends GuiScreen implements IListButtonHandler<Resour
 
         super.handleMouseInput();
         if (screenMode == Modes.SET_FACTION && this.factionList != null){
-            this.factionList.handleMouseInput(mouseX, mouseY);
+            this.factionList.handleMouseInput();
         }
         if (screenMode == Modes.SET_MOB_GROUP && this.mobGroupList != null){
-            this.mobGroupList.handleMouseInput(mouseX, mouseY);
+            this.mobGroupList.handleMouseInput();
         }
 
+    }
+
+    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException
+    {
+        super.mouseClicked(mouseX, mouseY, mouseButton);
+        if (screenMode == Modes.SET_FACTION && this.factionList != null){
+            this.factionList.mouseClicked(mouseX, mouseY, mouseButton);
+        }
+        if (screenMode == Modes.SET_MOB_GROUP && this.mobGroupList != null){
+            this.mobGroupList.mouseClicked(mouseX, mouseY, mouseButton);
+        }
+    }
+
+    /**
+     * Called when a mouse button is released.
+     */
+    protected void mouseReleased(int mouseX, int mouseY, int state)
+    {
+        super.mouseReleased(mouseX, mouseY, state);
+        if (screenMode == Modes.SET_FACTION && this.factionList != null){
+            this.factionList.mouseReleased(mouseX, mouseY, state);
+        }
+        if (screenMode == Modes.SET_MOB_GROUP && this.mobGroupList != null){
+            this.mobGroupList.mouseReleased(mouseX, mouseY, state);
+        }
     }
 
     @Override

@@ -1,21 +1,15 @@
 package com.chaosbuffalo.mkultra.client.gui;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiListExtended;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraftforge.fml.client.GuiScrollingList;
 
 import java.util.ArrayList;
 import java.util.function.Function;
 
-public class ButtonList<E> extends GuiScrollingList {
+public class ButtonList<E> extends GuiListExtended {
 
-    private ArrayList<E> list;
-    private Minecraft mc;
-    private float partialTicks;
-    private IListButtonHandler<E> handler;
-    private int listId;
-    private Function<E, String> getHumanReadable;
+    private ArrayList<ButtonListEntry<E>> list;
 
     public ButtonList(ArrayList<E> list,
                       IListButtonHandler<E> handler,
@@ -24,24 +18,32 @@ public class ButtonList<E> extends GuiScrollingList {
                       Minecraft client,
                       int width, int height,
                       int top, int bottom,
-                      int left, int entryHeight,
-                      int screenWidth, int screenHeight){
-        super(client, width, height, top, bottom, left, entryHeight, screenWidth, screenHeight);
-        this.list = list;
-        mc = client;
-        this.handler = handler;
-        this.listId = listId;
-        this.getHumanReadable = getHumanReadable;
+                      int entryHeight, int left){
+        super(client, width, height, top, bottom, entryHeight);
+        this.list = new ArrayList<>();
+        for (E item : list){
+            this.list.add(new ButtonListEntry<>(item, handler, listId, getHumanReadable, client));
+        }
+        this.left = left;
+        this.right = left + width;
+    }
+    @Override
+    protected void elementClicked(int slotIndex, boolean isDoubleClick, int mouseX, int mouseY){
+    }
+
+    protected int getScrollBarX()
+    {
+        return this.left + this.width - 6;
+    }
+
+    @Override
+    protected void drawContainerBackground(Tessellator tessellator){
+
     }
 
     @Override
     protected int getSize() {
         return list.size();
-    }
-
-    @Override
-    protected void elementClicked(int index, boolean doubleClick) {
-        handler.handleListButtonClicked(list.get(index), listId);
     }
 
     @Override
@@ -55,16 +57,7 @@ public class ButtonList<E> extends GuiScrollingList {
     }
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        this.partialTicks = partialTicks;
-        super.drawScreen(mouseX, mouseY, partialTicks);
-
-    }
-
-    @Override
-    protected void drawSlot(int slotIdx, int entryRight, int slotTop, int slotBuffer, Tessellator tess) {
-        GuiButton syncButton = new GuiButton(slotIdx, left + 15, slotTop,
-                listWidth - 30, 20, getHumanReadable.apply(list.get(slotIdx)));
-        syncButton.drawButton(mc, mouseX, mouseY, partialTicks);
+    public IGuiListEntry getListEntry(int index) {
+        return list.get(index);
     }
 }
