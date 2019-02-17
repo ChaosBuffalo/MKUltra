@@ -1,7 +1,6 @@
-< en_US.lang - English localization file for the mod MK-Ultra >
-language.name=English
-language.region=US
-language.code=en_US
+language.name=German
+language.region=DE
+language.code=de
 
 
 itemGroup.mkultra.general=MK Ultra
