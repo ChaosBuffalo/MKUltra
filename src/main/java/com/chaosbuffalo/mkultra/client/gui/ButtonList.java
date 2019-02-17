@@ -42,6 +42,11 @@ public class ButtonList<E> extends GuiListExtended {
     }
 
     @Override
+    protected void overlayBackground(int startY, int endY, int startAlpha, int endAlpha) {
+
+    }
+
+    @Override
     protected int getSize() {
         return list.size();
     }
