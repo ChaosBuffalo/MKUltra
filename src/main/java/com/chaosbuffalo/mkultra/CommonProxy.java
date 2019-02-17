@@ -42,6 +42,7 @@ public class CommonProxy {
         packetHandler.registerPacket(ExecuteActivePacket.class, new ExecuteActivePacket.Handler(), Side.SERVER);
         packetHandler.registerPacket(LevelUpRequestPacket.class, new LevelUpRequestPacket.Handler(), Side.SERVER);
         packetHandler.registerPacket(PartyInviteResponsePacket.class, new PartyInviteResponsePacket.Handler(), Side.SERVER);
+        packetHandler.registerPacket(MKSpawnerSetPacket.class, new MKSpawnerSetPacket.Handler(), Side.SERVER);
 
         packetHandler.registerPacket(ParticleEffectSpawnPacket.class, new ParticleEffectSpawnPacket.Handler(), Side.CLIENT);
         packetHandler.registerPacket(AbilityUpdatePacket.class, new AbilityUpdatePacket.Handler(), Side.CLIENT);
@@ -50,11 +51,12 @@ public class CommonProxy {
         packetHandler.registerPacket(ForceOpenClientGUIPacket.class, new ForceOpenClientGUIPacket.Handler(), Side.CLIENT);
         packetHandler.registerPacket(AbilityCooldownPacket.class, new AbilityCooldownPacket.Handler(), Side.CLIENT);
         packetHandler.registerPacket(CritMessagePacket.class, new CritMessagePacket.Handler(), Side.CLIENT);
+
     }
 
     public void postInit(FMLPostInitializationEvent e) {
         GameRegistry.findRegistry(Block.class).getKeys().forEach( key -> {
-            if (key.getResourcePath().toString().toLowerCase().contains("fire")){
+            if (key.getResourcePath().toLowerCase().contains("fire")){
                 EnvironmentUtils.addFireBlock(
                         GameRegistry.findRegistry(Block.class).getValue(key)
                 );

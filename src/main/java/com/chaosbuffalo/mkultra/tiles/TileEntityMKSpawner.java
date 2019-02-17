@@ -3,6 +3,7 @@ import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.log.Log;
+import com.chaosbuffalo.mkultra.network.packets.client.MKSpawnerSetPacket;
 import com.chaosbuffalo.mkultra.spawn.MobDefinition;
 import com.chaosbuffalo.mkultra.spawn.MobFaction;
 import com.chaosbuffalo.mkultra.spawn.SpawnList;
@@ -10,8 +11,10 @@ import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
@@ -39,12 +42,16 @@ public class TileEntityMKSpawner extends TileEntity implements ITickable {
     private SpawnList spawnList;
 
     public TileEntityMKSpawner(){
+        internalTickInterval = TICK_INTERVAL;
+        reset();
+    }
+
+    private void reset(){
         ticksBeforeSpawn = 5 * GameConstants.TICKS_PER_SECOND;
         currentMob = -1;
         tickCount = ticksBeforeSpawn;
         ticksSincePlayer = 0;
         active = false;
-        internalTickInterval = TICK_INTERVAL;
         faction = null;
         spawnerType = MobFaction.MobGroups.INVALID;
         spawnList = null;
@@ -60,6 +67,26 @@ public class TileEntityMKSpawner extends TileEntity implements ITickable {
         double z2 = (double)this.pos.getZ() + halfRange;
         AxisAlignedBB scanBox = new AxisAlignedBB(x1, y1, z1, x2, y2, z2);
         return getWorld().getEntitiesWithinAABB(EntityPlayer.class, scanBox, x -> !x.isCreative());
+    }
+
+    public ResourceLocation getFactionName(){
+        if (faction == null){
+            return MKURegistry.INVALID_FACTION;
+        } else {
+            return faction.getRegistryName();
+        }
+    }
+
+    public int getSpawnTimeSeconds(){
+        return ticksBeforeSpawn / GameConstants.TICKS_PER_SECOND;
+    }
+
+    public String getMobGroupName(){
+        return spawnerType.name();
+    }
+
+    public MobFaction.MobGroups getMobGroup(){
+        return spawnerType;
     }
 
     private float getAverageLevel(List<EntityPlayer> players){
@@ -86,6 +113,7 @@ public class TileEntityMKSpawner extends TileEntity implements ITickable {
         if (spawnList == null){
             if (faction != null && spawnerType != MobFaction.MobGroups.INVALID){
                 spawnList = faction.getSpawnListForGroup(spawnerType);
+                this.sync();
                 return true;
             } else {
                 return false;
@@ -151,6 +179,16 @@ public class TileEntityMKSpawner extends TileEntity implements ITickable {
         this.readFromNBT(packet.getNbtCompound());
     }
 
+    public final void sync() {
+        this.markDirty();
+        Packet<?> packet = this.getUpdatePacket();
+        if (packet == null) return;
+        List<EntityPlayerMP> players = this.getWorld().getPlayers(EntityPlayerMP.class, (EntityPlayerMP p) -> p.getPosition().distanceSq(getPos()) < 256);
+        for (EntityPlayerMP player : players) {
+            player.connection.sendPacket(packet);
+        }
+    }
+
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound tagRoot) {
@@ -182,7 +220,6 @@ public class TileEntityMKSpawner extends TileEntity implements ITickable {
             ticksBeforeSpawn = tagRoot.getInteger("ticksBeforeSpawn");
             tickCount = ticksBeforeSpawn;
         }
-
         super.readFromNBT(tagRoot);
     }
 
@@ -197,6 +234,14 @@ public class TileEntityMKSpawner extends TileEntity implements ITickable {
             }
         }
         return null;
+    }
+
+    public void setSpawnerWithPacket(MKSpawnerSetPacket packet){
+        reset();
+        faction = MKURegistry.getFaction(packet.factionId);
+        spawnerType = MobFaction.MobGroups.values()[packet.spawnerType];
+        ticksBeforeSpawn = packet.spawnTime * GameConstants.TICKS_PER_SECOND;
+        sync();
     }
 
     private void spawnEntity(World theWorld, MobDefinition definition, int level){

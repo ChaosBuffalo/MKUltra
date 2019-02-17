@@ -1,14 +1,21 @@
 package com.chaosbuffalo.mkultra.blocks;
 
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.core.IPlayerData;
+import com.chaosbuffalo.mkultra.core.MKUPlayerData;
+import com.chaosbuffalo.mkultra.core.MKURegistry;
+import com.chaosbuffalo.mkultra.network.ModGuiHandler;
 import com.chaosbuffalo.mkultra.tiles.TileEntityMKSpawner;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRedstoneWire;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -61,6 +68,24 @@ public class MKSpawnerBlock extends Block implements ITileEntityProvider {
         return BlockRenderLayer.CUTOUT;
     }
 
+    @Override
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state,
+                                    EntityPlayer player, EnumHand hand,
+                                    EnumFacing side,
+                                    float hitX, float hitY, float hitZ) {
+
+        if (player.isCreative()) {
+            TileEntity entity = world.getTileEntity(pos);
+            if (entity instanceof TileEntityMKSpawner) {
+                TileEntityMKSpawner mkSpawner = (TileEntityMKSpawner)entity;
+                mkSpawner.sync();
+                player.openGui(MKUltra.INSTANCE, ModGuiHandler.MK_SPAWNER_SCREEN, player.world,
+                        pos.getX(), pos.getY(), pos.getZ());
+                return true;
+            }
+        }
+        return false;
+    }
 
     @Nullable
     @Override
