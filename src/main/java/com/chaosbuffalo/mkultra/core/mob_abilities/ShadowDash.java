@@ -55,16 +55,19 @@ public class ShadowDash extends BaseMobAbility {
     public void execute(EntityLivingBase entity, IMobData data, EntityLivingBase target, World theWorld) {
         if (target != null) {
             int level = data.getMobLevel() / 2;
-            target.addPotionEffect(new PotionEffect(MobEffects.WITHER, GameConstants.TICKS_PER_SECOND * 3, level));
+            target.addPotionEffect(new PotionEffect(MobEffects.WITHER,
+                    GameConstants.TICKS_PER_SECOND * (level + 1), level));
             target.attackEntityFrom(MKDamageSource.fromMeleeSkill(getAbilityId(), entity, entity),
                     BASE_DAMAGE + DAMAGE_SCALE * level);
+            target.addPotionEffect(new PotionEffect(MobEffects.INVISIBILITY,
+                    GameConstants.TICKS_PER_SECOND * (level+1)));
             Vec3d lookVec = entity.getLookVec();
             MKUltra.packetHandler.sendToAllAround(
                     new ParticleEffectSpawnPacket(
                             EnumParticleTypes.SMOKE_LARGE.getParticleID(),
                             ParticleEffects.SPHERE_MOTION, 12, 3,
                             target.posX, target.posY + 1.0,
-                            target.posZ, 1.0, 1.0, 1.0, 2.0,
+                            target.posZ, 1.0, 1.0, 1.0, .25,
                             lookVec),
                     entity.dimension, target.posX,
                     target.posY, target.posZ, 50.0f);

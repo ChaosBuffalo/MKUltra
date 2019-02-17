@@ -43,7 +43,7 @@ public class PlayerDataEventHandler {
             MobData mobD = (MobData) MKUMobData.get((EntityLivingBase) event.getEntity());
             if (mobD != null){
                 if (mobD.isMKSpawned()) {
-                    event.setCanceled(true);
+                    event.getEntity().setDead();
                 }
             }
         }
@@ -73,7 +73,7 @@ public class PlayerDataEventHandler {
             MobData mobD = (MobData) MKUMobData.get((EntityLivingBase) event.getEntity());
             if (mobD != null){
                 if (mobD.isMKSpawned()) {
-                    event.setCanceled(true);
+                    event.getEntity().setDead();
                 }
             }
         }

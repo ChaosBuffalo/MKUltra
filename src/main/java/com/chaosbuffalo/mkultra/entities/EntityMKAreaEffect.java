@@ -23,6 +23,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -313,6 +314,7 @@ public class EntityMKAreaEffect extends Entity {
         this.reapplicationDelay = reapplicationDelay;
     }
 
+    @Nullable
     public EntityLivingBase getOwner() {
         if (this.owner == null && this.ownerUniqueId != null && this.world instanceof WorldServer) {
             Entity entity = ((WorldServer) this.world).getEntityFromUuid(this.ownerUniqueId);

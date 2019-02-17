@@ -86,7 +86,7 @@ public class EntityFlameBladeProjectile extends EntityBaseProjectile{
     @Override
     protected boolean isValidEntityTarget(Entity entity) {
         if (entity instanceof EntityLivingBase && getThrower() != null) {
-            return Targeting.isValidTarget(Targeting.TargetType.ENEMY, getThrower(), entity, false);
+            return Targeting.isValidTarget(Targeting.TargetType.ENEMY, getThrower(), entity, true);
         }
         return super.isValidEntityTarget(entity);
     }
