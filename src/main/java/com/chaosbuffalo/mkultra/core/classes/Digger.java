@@ -1,7 +1,7 @@
 package com.chaosbuffalo.mkultra.core.classes;
 
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.BaseAbility;
+import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.BaseClass;
 import com.chaosbuffalo.mkultra.core.abilities.*;
 import com.chaosbuffalo.mkultra.core.ArmorClass;
@@ -15,7 +15,7 @@ import java.util.List;
 
 public class Digger extends BaseClass {
 
-    public static final List<BaseAbility> abilities = new ArrayList<>(5);
+    public static final List<PlayerAbility> abilities = new ArrayList<>(5);
     private static final ArmorClass ARMORCLASS = new DiggerArmorClass(new ResourceLocation(MKUltra.MODID, "armor_class.digger"));
 
     static {
@@ -31,7 +31,7 @@ public class Digger extends BaseClass {
     }
 
     @Override
-    public List<BaseAbility> getAbilities() {
+    public List<PlayerAbility> getAbilities() {
         return abilities;
     }
 

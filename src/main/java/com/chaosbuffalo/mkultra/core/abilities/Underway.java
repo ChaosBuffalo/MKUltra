@@ -2,7 +2,7 @@ package com.chaosbuffalo.mkultra.core.abilities;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.BaseAbility;
+import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
@@ -19,7 +19,7 @@ import net.minecraft.world.World;
 /**
  * Created by Jacob on 3/25/2018.
  */
-public class Underway extends BaseAbility {
+public class Underway extends PlayerAbility {
 
     public static int BASE_DURATION = 60;
     public static int DURATION_SCALE = 30;

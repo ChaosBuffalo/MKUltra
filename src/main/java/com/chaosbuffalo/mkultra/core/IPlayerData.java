@@ -30,13 +30,13 @@ public interface IPlayerData {
 
     int getCurrentAbilityCooldown(ResourceLocation abilityId);
 
-    int getAbilityCooldown(BaseAbility ability);
+    int getAbilityCooldown(PlayerAbility ability);
 
     boolean setCooldown(ResourceLocation abilityId, int cooldownTicks);
 
-    float getCooldownPercent(BaseAbility ability, float partialTicks);
+    float getCooldownPercent(PlayerAbility ability, float partialTicks);
 
-    void startAbility(BaseAbility ability);
+    void startAbility(PlayerAbility ability);
 
     void setManaRegen(float manaRegenRate);
 

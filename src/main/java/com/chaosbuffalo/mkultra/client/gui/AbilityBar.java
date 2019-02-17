@@ -102,7 +102,7 @@ public class AbilityBar extends Gui {
             if (abilityId.compareTo(MKURegistry.INVALID_ABILITY) == 0)
                 continue;
 
-            BaseAbility ability = MKURegistry.getAbility(abilityId);
+            PlayerAbility ability = MKURegistry.getAbility(abilityId);
             if (ability == null)
                 continue;
 

@@ -60,7 +60,7 @@ public class PlayerClassScreen extends GuiScreen {
         this.mc.renderEngine.bindTexture(iconLoc1);
         Gui.drawModalRectWithCustomSizedTexture(xPos + 6, iconHeight, 0, 0, 16, 16, 16, 16);
         for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
-            BaseAbility ability = playerClass.getOfferedAbilityBySlot(i);
+            PlayerAbility ability = playerClass.getOfferedAbilityBySlot(i);
             if (ability == null)
                 continue;
 
@@ -76,7 +76,7 @@ public class PlayerClassScreen extends GuiScreen {
         int scaleFactor = 2;
         int unspent = pData.getUnspentPoints();
         for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
-            BaseAbility ability = playerClass.getOfferedAbilityBySlot(i);
+            PlayerAbility ability = playerClass.getOfferedAbilityBySlot(i);
             if (ability == null)
                 continue;
 
@@ -158,7 +158,7 @@ public class PlayerClassScreen extends GuiScreen {
         BaseClass playerClass = MKURegistry.getClass(pData.getClassId());
         if (playerClass == null)
             return;
-        BaseAbility ability = playerClass.getOfferedAbilityBySlot(button.id % GameConstants.ACTION_BAR_SIZE);
+        PlayerAbility ability = playerClass.getOfferedAbilityBySlot(button.id % GameConstants.ACTION_BAR_SIZE);
         if (ability == null)
             return;
 

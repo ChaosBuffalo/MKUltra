@@ -3,7 +3,7 @@ package com.chaosbuffalo.mkultra.core.abilities;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.spells.FireArrowPotion;
 import com.chaosbuffalo.mkultra.entities.projectiles.SpellCastArrow;
-import com.chaosbuffalo.mkultra.core.BaseAbility;
+import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.item.ItemHelper;
@@ -14,11 +14,10 @@ import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class FireArrow extends BaseAbility {
+public class FireArrow extends PlayerAbility {
 
     public static float BASE_ARROW_DAMAGE = 4.0f;
     public static float SCALE_ARROW_DAMAGE = 2.0f;

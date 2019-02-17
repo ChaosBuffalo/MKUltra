@@ -4,7 +4,7 @@ import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.spells.PoisonArrowPotion;
 import com.chaosbuffalo.mkultra.entities.projectiles.SpellCastArrow;
-import com.chaosbuffalo.mkultra.core.BaseAbility;
+import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.item.ItemHelper;
@@ -20,7 +20,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class PoisonArrow extends BaseAbility {
+public class PoisonArrow extends PlayerAbility {
     public static float BASE_ARROW_DAMAGE = 6.0f;
     public static float SCALE_ARROW_DAMAGE = 2.0f;
     public static float BASE_DAMAGE = 2.0f;

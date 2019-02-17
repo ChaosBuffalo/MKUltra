@@ -2,10 +2,9 @@ package com.chaosbuffalo.mkultra.core.abilities;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.BaseAbility;
+import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
-import com.chaosbuffalo.mkultra.effects.spells.ClericHealPotion;
 import com.chaosbuffalo.mkultra.effects.spells.NaturesRemedyPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.log.Log;
@@ -20,7 +19,7 @@ import net.minecraft.world.World;
 /**
  * Created by Jacob on 7/28/2018.
  */
-public class NaturesRemedy extends BaseAbility {
+public class NaturesRemedy extends PlayerAbility {
 
     public static float BASE_VALUE = 2.0f;
     public static float VALUE_SCALE = 0.0f;

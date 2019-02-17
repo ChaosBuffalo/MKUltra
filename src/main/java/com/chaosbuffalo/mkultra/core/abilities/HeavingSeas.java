@@ -1,7 +1,7 @@
 package com.chaosbuffalo.mkultra.core.abilities;
 
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.BaseAbility;
+import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
@@ -21,7 +21,7 @@ import net.minecraft.world.World;
 /**
  * Created by Jacob on 3/25/2018.
  */
-public class HeavingSeas extends BaseAbility {
+public class HeavingSeas extends PlayerAbility {
     public static float BASE_DAMAGE = 2.0f;
     public static float DAMAGE_SCALE = 2.0f;
     public static int DURATION_BASE = 2;

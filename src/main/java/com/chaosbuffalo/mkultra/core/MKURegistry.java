@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @Mod.EventBusSubscriber
 public class MKURegistry {
     public static IForgeRegistry<BaseClass> REGISTRY_CLASSES = null;
-    public static IForgeRegistry<BaseAbility> REGISTRY_ABILITIES = null;
+    public static IForgeRegistry<PlayerAbility> REGISTRY_ABILITIES = null;
     public static IForgeRegistry<ItemOption> REGISTRY_MOB_ITEMS = null;
     public static IForgeRegistry<AttributeRange> REGISTRY_MOB_ATTRS = null;
     public static IForgeRegistry<MobDefinition> REGISTRY_MOB_DEF = null;
@@ -86,7 +86,7 @@ public class MKURegistry {
         return cls != null ? cls.getClassName() : "<NULL CLASS>";
     }
 
-    public static BaseAbility getAbility(ResourceLocation abilityId) {
+    public static PlayerAbility getAbility(ResourceLocation abilityId) {
         return REGISTRY_ABILITIES.getValue(abilityId);
     }
 
@@ -99,9 +99,9 @@ public class MKURegistry {
                 .setIDRange(0, Integer.MAX_VALUE - 1)
                 .create();
 
-        REGISTRY_ABILITIES = new RegistryBuilder<BaseAbility>()
+        REGISTRY_ABILITIES = new RegistryBuilder<PlayerAbility>()
                 .setName(new ResourceLocation(MKUltra.MODID, "abilities"))
-                .setType(BaseAbility.class)
+                .setType(PlayerAbility.class)
                 .setIDRange(0, Integer.MAX_VALUE - 1)
                 .create();
 

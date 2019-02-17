@@ -42,7 +42,7 @@ public class CorePlugin {
 
     @SuppressWarnings("unused")
     @SubscribeEvent
-    public static void registerAbilities(RegistryEvent.Register<BaseAbility> event) {
+    public static void registerAbilities(RegistryEvent.Register<PlayerAbility> event) {
         BUILTIN_CLASSES.forEach(bc -> {
             if (MKConfig.isClassEnabled(bc.getClassId())) {
                 bc.getAbilities().forEach(a -> {

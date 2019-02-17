@@ -79,7 +79,7 @@ public class ClientKeyHandler {
                 }
 
                 ResourceLocation abilityId = pData.getAbilityInSlot(i);
-                BaseAbility ability = MKURegistry.getAbility(abilityId);
+                PlayerAbility ability = MKURegistry.getAbility(abilityId);
                 if (ability == null)
                     continue;
 

@@ -44,13 +44,13 @@ public abstract class BaseClass extends IForgeRegistryEntry.Impl<BaseClass> {
 
     public abstract ArmorClass getArmorClass();
 
-    public BaseAbility getOfferedAbilityBySlot(int slotIndex) {
-        List<BaseAbility> abilities = getAbilities();
+    public PlayerAbility getOfferedAbilityBySlot(int slotIndex) {
+        List<PlayerAbility> abilities = getAbilities();
         if (slotIndex < abilities.size()) {
             return abilities.get(slotIndex);
         }
         return null;
     }
 
-    protected abstract List<BaseAbility> getAbilities();
+    protected abstract List<PlayerAbility> getAbilities();
 }
