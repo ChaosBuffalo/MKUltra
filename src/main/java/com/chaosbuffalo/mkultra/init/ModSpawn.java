@@ -6,6 +6,7 @@ import com.chaosbuffalo.mkultra.core.BaseMobAbility;
 import com.chaosbuffalo.mkultra.core.IMobData;
 import com.chaosbuffalo.mkultra.core.MKUMobData;
 import com.chaosbuffalo.mkultra.core.MKURegistry;
+import com.chaosbuffalo.mkultra.core.mob_abilities.MobFireball;
 import com.chaosbuffalo.mkultra.core.mob_abilities.ShadowDash;
 import com.chaosbuffalo.mkultra.core.mob_abilities.TestHealDot;
 import com.chaosbuffalo.mkultra.mob_ai.EntityAIBuffSelf;
@@ -69,6 +70,7 @@ public class ModSpawn {
                 ItemAssigners.CHEST,
                 new ItemChoice(new ItemStack(Items.LEATHER_CHESTPLATE, 1), 5, 0));
         event.getRegistry().register(captain_chest);
+
     }
 
     @SuppressWarnings("unused")
@@ -111,6 +113,8 @@ public class ModSpawn {
         event.getRegistry().register(test_buff);
         BaseMobAbility shadow_dash = new ShadowDash();
         event.getRegistry().register(shadow_dash);
+        BaseMobAbility fireball = new MobFireball();
+        event.getRegistry().register(fireball);
     }
 
     @SuppressWarnings("unused")
@@ -167,6 +171,32 @@ public class ModSpawn {
                 )
                 .withMobName("Skeletal Skulker");
         event.getRegistry().register(skeletal_skulker);
+        MobDefinition skeletal_mage =  new MobDefinition(
+                new ResourceLocation(MKUltra.MODID, "skeletal_mage"),
+                EntitySkeleton.class, 10)
+                .withAttributeRanges(
+                        MKURegistry.getAttributeRange(
+                                new ResourceLocation(MKUltra.MODID, "grunt_health")),
+                        MKURegistry.getAttributeRange(
+                                new ResourceLocation(MKUltra.MODID, "ranged_aggro"))
+                )
+                .withItemOptions(
+                        MKURegistry.getItemOption(
+                                new ResourceLocation(MKUltra.MODID, "grunt_helm")),
+                        MKURegistry.getItemOption(
+                                new ResourceLocation(MKUltra.MODID, "grunt_chest")))
+                .withAbilities(
+                        MKURegistry.getMobAbility(
+                                new ResourceLocation(MKUltra.MODID, "mob_ability.test_heal_dot")),
+                        MKURegistry.getMobAbility(
+                                new ResourceLocation(MKUltra.MODID, "mob_ability.fireball")
+                        ))
+                .withAIModifiers(
+                        REMOVE_SKELETON_AI,
+                        ADD_STANDARD_AI
+                )
+                .withMobName("Skeletal Mage");
+        event.getRegistry().register(skeletal_mage);
     }
 
     @SuppressWarnings("unused")
@@ -177,7 +207,10 @@ public class ModSpawn {
                 new ResourceLocation(MKUltra.MODID, "skeletal_grunts")), 1);
         skeleton_faction.addSpawnList(MobFaction.MobGroups.MELEE_CAPTAIN, MKURegistry.getSpawnList(
                 new ResourceLocation(MKUltra.MODID, "skeletal_skulkers")), 1);
+        skeleton_faction.addSpawnList(MobFaction.MobGroups.RANGE_GRUNT, MKURegistry.getSpawnList(
+                new ResourceLocation(MKUltra.MODID, "skeletal_mages")), 1);
         event.getRegistry().register(skeleton_faction);
+
     }
 
     @SuppressWarnings("unused")
@@ -191,6 +224,10 @@ public class ModSpawn {
         skeletal_skulkers.addOption(MKURegistry.getMobDefinition(
                 new ResourceLocation(MKUltra.MODID, "skeletal_skulker")));
         event.getRegistry().register(skeletal_skulkers);
+        SpawnList skeletal_mages = new SpawnList(new ResourceLocation(MKUltra.MODID, "skeletal_mages"));
+        skeletal_mages.addOption(MKURegistry.getMobDefinition(
+                new ResourceLocation(MKUltra.MODID, "skeletal_mage")));
+        event.getRegistry().register(skeletal_mages);
     }
 
     @SuppressWarnings("unused")
@@ -213,14 +250,14 @@ public class ModSpawn {
         BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addAggroTarget = (entity, choice) -> new EntityAINearestAttackableTargetMK((EntityCreature) entity, EntityPlayer.class, true);
         BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addOffensiveSpells = (entity, choice) -> {
             IMobData mobData = MKUMobData.get(entity);
-            return new EntityAIRangedSpellAttack(entity, 6 * GameConstants.TICKS_PER_SECOND, mobData);
+            return new EntityAIRangedSpellAttack(entity, 3 * GameConstants.TICKS_PER_SECOND, mobData);
         };
         ADD_STANDARD_AI = new AIModifier(
                 new ResourceLocation(MKUltra.MODID, "add_standard_ai"),
                 AIModifiers.ADD_TASKS,
                 new BehaviorChoice(addSelfBuff, 0, 3, BehaviorChoice.TaskType.TASK),
                 new BehaviorChoice(addAggroTarget, 0, 2, BehaviorChoice.TaskType.TARGET_TASK),
-                new BehaviorChoice(addOffensiveSpells, 0, 4, BehaviorChoice.TaskType.TASK),
+                new BehaviorChoice(addOffensiveSpells, 0, 3, BehaviorChoice.TaskType.TASK),
                 new BehaviorChoice(getWatchClosestLongRange, 0, 6, BehaviorChoice.TaskType.TASK)
         );
         event.getRegistry().register(ADD_STANDARD_AI);

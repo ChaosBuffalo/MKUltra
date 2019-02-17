@@ -31,5 +31,7 @@ public class EntityRenderRegister {
                 new RenderProjectile(ModItems.cleansing_seed_projectile, 1.0f));
         RenderingRegistry.registerEntityRenderingHandler(EntitySpiritBombProjectile.class,
                 new RenderProjectile(ModItems.spirit_bomb_projectile, 1.0f));
+        RenderingRegistry.registerEntityRenderingHandler(EntityMobFireballProjectile.class,
+                new RenderProjectile(ModItems.mob_fireball_projectile, 1.0f));
     }
 }

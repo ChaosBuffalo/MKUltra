@@ -42,5 +42,8 @@ public class ModEntities {
         EntityRegistry.registerModEntity(new ResourceLocation(MKUltra.MODID, "SpiritBombProjectile"),
                 EntitySpiritBombProjectile.class, "EntitySpiritBombProjectile", 10,
                 MKUltra.INSTANCE, 64, 1, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(MKUltra.MODID, "MobFireballProjectile"),
+                EntityMobFireballProjectile.class, "EntityMobFireballProjectile", 11,
+                MKUltra.INSTANCE, 64, 1, true);
     }
 }

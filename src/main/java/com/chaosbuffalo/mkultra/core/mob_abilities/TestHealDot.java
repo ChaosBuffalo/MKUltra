@@ -47,8 +47,8 @@ public class TestHealDot extends BaseMobAbility {
     @Override
     public void execute(EntityLivingBase entity, IMobData data, EntityLivingBase target, World theWorld) {
         entity.addPotionEffect(NaturesRemedyPotion
-                .Create(entity, entity, 4.0f, 4.0f)
-                .toPotionEffect(getDuration(), 1));
+                .Create(entity, entity, 4.0f, 2.0f)
+                .toPotionEffect(getDuration(), data.getMobLevel()));
         Vec3d lookVec = entity.getLookVec();
         MKUltra.packetHandler.sendToAllAround(
                 new ParticleEffectSpawnPacket(
