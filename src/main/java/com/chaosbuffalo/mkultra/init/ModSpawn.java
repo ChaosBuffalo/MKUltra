@@ -97,7 +97,7 @@ public class ModSpawn {
         AttributeRange range_aggro = new AttributeRange(
                 new ResourceLocation(MKUltra.MODID, "ranged_aggro"),
                 MKSpawnAttributes.SET_AGGRO_RADIUS, 15.0, 15.0);
-        event.getRegistry().register(melee_aggro);
+        event.getRegistry().register(range_aggro);
 //        AttributeRange size_range = new AttributeRange(
 //                new ResourceLocation(MKUltra.MODID, "test_size"),
 //                BaseSpawnAttributes.SCALE_SIZE, 2.0, 2.0);
