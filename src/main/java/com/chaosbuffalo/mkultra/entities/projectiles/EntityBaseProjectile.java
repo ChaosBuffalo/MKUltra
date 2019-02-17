@@ -1,7 +1,9 @@
 package com.chaosbuffalo.mkultra.entities.projectiles;
 
+import com.chaosbuffalo.mkultra.log.Log;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
+import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockReed;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -52,7 +54,7 @@ public abstract class EntityBaseProjectile extends Entity implements IProjectile
         this.setDeathTime(100);
         this.setDoGroundProc(false);
         this.setGroundProcTime(20);
-        this.setSize(.25f, .25f);
+        this.setSize(.20f, .20f);
         this.setAirProcTime(20);
         this.setDoAirProc(false);
         this.setAmplifier(0);
@@ -69,6 +71,13 @@ public abstract class EntityBaseProjectile extends Entity implements IProjectile
                 throwerIn.posZ);
         this.thrower = throwerIn;
     }
+
+    public EntityBaseProjectile(World worldIn, EntityLivingBase throwerIn, double verticalOffset) {
+        this(worldIn, throwerIn.posX, throwerIn.posY + verticalOffset,
+                throwerIn.posZ);
+        this.thrower = throwerIn;
+    }
+
 
     protected void entityInit() {
     }
@@ -371,6 +380,9 @@ public abstract class EntityBaseProjectile extends Entity implements IProjectile
 
         if (entity != null) {
             blockTrace = new RayTraceResult(entity);
+        } else if (blockTrace != null && blockTrace.typeOfHit == RayTraceResult.Type.ENTITY){
+            // handle the case where we hit an entity but all returned invalid
+            return null;
         }
         return blockTrace;
     }
@@ -406,8 +418,7 @@ public abstract class EntityBaseProjectile extends Entity implements IProjectile
     }
 
     protected boolean isValidEntityTarget(Entity entity) {
-        return entity != this &&
-                EntitySelectors.NOT_SPECTATING.apply(entity) &&
+        return entity != this && EntitySelectors.NOT_SPECTATING.apply(entity) &&
                 EntitySelectors.IS_ALIVE.apply(entity);
     }
 
@@ -419,7 +430,7 @@ public abstract class EntityBaseProjectile extends Entity implements IProjectile
 
     protected boolean canPassThroughBlock(Block block) {
         return block instanceof BlockBush ||
-                block instanceof BlockReed;
+                block instanceof BlockReed || block instanceof BlockLeaves;
     }
 
 

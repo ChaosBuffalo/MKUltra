@@ -7,11 +7,12 @@ import com.chaosbuffalo.mkultra.core.IMobData;
 import com.chaosbuffalo.mkultra.entities.projectiles.EntityMobFireballProjectile;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 public class MobFireball extends BaseMobAbility {
     private static float PROJECTILE_SPEED = 1.0f;
-    private static float PROJECTILE_INACCURACY = .05f;
+    private static float PROJECTILE_INACCURACY = 5.0f;
 
     public MobFireball() {
         super(MKUltra.MODID, "mob_ability.fireball");
@@ -45,10 +46,13 @@ public class MobFireball extends BaseMobAbility {
     @Override
     public void execute(EntityLivingBase entity, IMobData data, EntityLivingBase target, World theWorld) {
         World world = entity.getEntityWorld();
-        EntityMobFireballProjectile flamep = new EntityMobFireballProjectile(world, entity);
+        EntityMobFireballProjectile flamep = new EntityMobFireballProjectile(world, entity,
+                entity.getEyeHeight() / 2.0);
         flamep.setAmplifier(data.getMobLevel());
-        flamep.shoot(entity, entity.rotationPitch, entity.rotationYaw, 0.0f, PROJECTILE_SPEED,
-                PROJECTILE_INACCURACY);
+        double d1 = target.posX - entity.posX;
+        double d2 =  target.posY - entity.posY;
+        double d3 = target.posZ - entity.posZ;
+        flamep.shoot(d1, d2, d3, PROJECTILE_SPEED, PROJECTILE_INACCURACY);
         world.spawnEntity(flamep);
     }
 }
