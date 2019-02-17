@@ -1,10 +1,7 @@
 package com.chaosbuffalo.mkultra;
 
+import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.init.ModEntities;
-import com.chaosbuffalo.mkultra.core.IPlayerData;
-import com.chaosbuffalo.mkultra.core.PlayerData;
-import com.chaosbuffalo.mkultra.core.PlayerDataStorage;
-import com.chaosbuffalo.mkultra.core.ArmorClass;
 import com.chaosbuffalo.mkultra.init.ModItems;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.network.ModGuiHandler;
@@ -30,6 +27,7 @@ public class CommonProxy {
         ModEntities.registerEntities();
         ModItems.initItems();
         CapabilityManager.INSTANCE.register(IPlayerData.class, new PlayerDataStorage(), PlayerData.class);
+        CapabilityManager.INSTANCE.register(IMobData.class, new MobDataStorage(), MobData.class);
     }
 
     public void init(FMLInitializationEvent e) {
@@ -44,6 +42,7 @@ public class CommonProxy {
         packetHandler.registerPacket(ExecuteActivePacket.class, new ExecuteActivePacket.Handler(), Side.SERVER);
         packetHandler.registerPacket(LevelUpRequestPacket.class, new LevelUpRequestPacket.Handler(), Side.SERVER);
         packetHandler.registerPacket(PartyInviteResponsePacket.class, new PartyInviteResponsePacket.Handler(), Side.SERVER);
+        packetHandler.registerPacket(MKSpawnerSetPacket.class, new MKSpawnerSetPacket.Handler(), Side.SERVER);
 
         packetHandler.registerPacket(ParticleEffectSpawnPacket.class, new ParticleEffectSpawnPacket.Handler(), Side.CLIENT);
         packetHandler.registerPacket(AbilityUpdatePacket.class, new AbilityUpdatePacket.Handler(), Side.CLIENT);
@@ -52,11 +51,12 @@ public class CommonProxy {
         packetHandler.registerPacket(ForceOpenClientGUIPacket.class, new ForceOpenClientGUIPacket.Handler(), Side.CLIENT);
         packetHandler.registerPacket(AbilityCooldownPacket.class, new AbilityCooldownPacket.Handler(), Side.CLIENT);
         packetHandler.registerPacket(CritMessagePacket.class, new CritMessagePacket.Handler(), Side.CLIENT);
+
     }
 
     public void postInit(FMLPostInitializationEvent e) {
         GameRegistry.findRegistry(Block.class).getKeys().forEach( key -> {
-            if (key.getResourcePath().toString().toLowerCase().contains("fire")){
+            if (key.getResourcePath().toLowerCase().contains("fire")){
                 EnvironmentUtils.addFireBlock(
                         GameRegistry.findRegistry(Block.class).getValue(key)
                 );

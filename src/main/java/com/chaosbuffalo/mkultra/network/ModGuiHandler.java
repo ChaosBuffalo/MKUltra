@@ -2,8 +2,11 @@ package com.chaosbuffalo.mkultra.network;
 
 import com.chaosbuffalo.mkultra.client.gui.*;
 import com.chaosbuffalo.mkultra.init.ModItems;
+import com.chaosbuffalo.mkultra.tiles.TileEntityMKSpawner;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.network.IGuiHandler;
@@ -21,6 +24,7 @@ public class ModGuiHandler implements IGuiHandler {
     public static final int CHANGE_CLASS_SCREEN = 3;
     public static final int PARTY_INVITE_SCREEN = 4;
     public static final int PIPE_CONTAINER_SCREEN = 5;
+    public static final int MK_SPAWNER_SCREEN = 6;
 
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
@@ -69,6 +73,12 @@ public class ModGuiHandler implements IGuiHandler {
                 if (itemHandler != null){
                     return new PipeGui(itemHandler, player);
                 }
+            }
+        }  else if (ID == MK_SPAWNER_SCREEN){
+            TileEntity entity = world.getTileEntity(new BlockPos(x, y, z));
+            if (entity instanceof TileEntityMKSpawner){
+                TileEntityMKSpawner mkSpawner = (TileEntityMKSpawner)entity;
+                return new MKSpawnerGui(mkSpawner);
             }
         }
 

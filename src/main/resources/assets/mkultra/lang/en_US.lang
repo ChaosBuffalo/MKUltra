@@ -20,7 +20,7 @@ item.sun_icon.name=Sun Icon
 item.moon_icon.name=Moon Icon
 item.desperate_icon.name=Desperate Icon
 tile.xpTable.name=XP Table
-tile.portalblock.name=Portal Block
+tile.mk_spawner.name=MK Spawner
 tile.steamPoweredOrbBlock.name=Steam Powered Orb
 item.forgetfulnessBread.name=Forgetfulness Bread
 item.hemp_pipe.name=Pipe
@@ -213,4 +213,5 @@ effect.hellfire_smoke=Hellfire Smoke
 effect.mana_regen_smoke=Mana Regen Smoke
 effect.mana_smoke=Mana Smoke
 effect.health_regen_smoke=Health Regen Smoke
+death.attack.mkUltraAbility=%1$s got magicked up by %2$s.
 

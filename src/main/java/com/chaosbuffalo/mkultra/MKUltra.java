@@ -1,16 +1,25 @@
 package com.chaosbuffalo.mkultra;
 
 import com.chaosbuffalo.mkultra.command.MKCommand;
+import com.chaosbuffalo.mkultra.core.IMobData;
+import com.chaosbuffalo.mkultra.core.MKUMobData;
+import com.chaosbuffalo.mkultra.core.TargetingExtensions;
 import com.chaosbuffalo.mkultra.item.MKUltraTab;
 import com.chaosbuffalo.mkultra.network.PacketHandler;
 import com.chaosbuffalo.mkultra.party.PartyCommand;
+import com.chaosbuffalo.mkultra.init.ModSpawn;
+import com.chaosbuffalo.targeting_api.Targeting;
+import com.chaosbuffalo.targeting_api.TargetingAPI;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.ItemArmor;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.*;
 import org.apache.logging.log4j.Logger;
+
+import java.util.function.BiFunction;
 
 
 @Mod(modid = MKUltra.MODID, name= MKUltra.MODNAME, version = MKUltra.VERSION,
@@ -41,6 +50,7 @@ public class MKUltra {
 
     @EventHandler
     public void init(FMLInitializationEvent e) {
+        TargetingExtensions.init();
         proxy.init(e);
     }
 

@@ -209,7 +209,7 @@ public abstract class EntityBaseProjectile extends Entity implements IProjectile
     }
 
     /**
-     * Called to update the entity's position/logic.
+     * Called to onTick the entity's position/logic.
      */
     public void onUpdate() {
         this.lastTickPosX = this.posX;

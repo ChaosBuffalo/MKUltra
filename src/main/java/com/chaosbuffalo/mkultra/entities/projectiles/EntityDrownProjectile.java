@@ -7,7 +7,6 @@ import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.mkultra.utils.EnvironmentUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,8 +15,6 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
-
-import static net.minecraft.util.math.RayTraceResult.*;
 
 /**
  * Created by Jacob on 7/14/2016.

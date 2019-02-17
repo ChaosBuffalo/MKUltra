@@ -2,12 +2,10 @@ package com.chaosbuffalo.mkultra.event;
 
 import com.chaosbuffalo.mkultra.MKConfig;
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.IPlayerData;
-import com.chaosbuffalo.mkultra.core.MKUPlayerData;
-import com.chaosbuffalo.mkultra.core.PlayerData;
-import com.chaosbuffalo.mkultra.core.PlayerDataProvider;
+import com.chaosbuffalo.mkultra.core.*;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ResourceLocation;
@@ -41,6 +39,13 @@ public class PlayerDataEventHandler {
 //                    }
 //                }
 //            }
+        } else if (event.getEntity() instanceof EntityLivingBase){
+            MobData mobD = (MobData) MKUMobData.get((EntityLivingBase) event.getEntity());
+            if (mobD != null){
+                if (mobD.isMKSpawned()) {
+                    event.setCanceled(true);
+                }
+            }
         }
     }
 
@@ -63,6 +68,14 @@ public class PlayerDataEventHandler {
 //                    }
 //                }
 //            }
+        // Run this on the server if we are single player.
+        } else if (event.getEntity() instanceof EntityLivingBase && !event.getWorld().isRemote){
+            MobData mobD = (MobData) MKUMobData.get((EntityLivingBase) event.getEntity());
+            if (mobD != null){
+                if (mobD.isMKSpawned()) {
+                    event.setCanceled(true);
+                }
+            }
         }
     }
 
@@ -72,6 +85,11 @@ public class PlayerDataEventHandler {
             PlayerData playerData = (PlayerData) MKUPlayerData.get((EntityPlayer) e.getEntityLiving());
             if (playerData != null) {
                 playerData.onTick();
+            }
+        } else {
+            IMobData mobData = MKUMobData.get(e.getEntityLiving());
+            if (mobData != null){
+                mobData.onTick();
             }
         }
     }
@@ -86,7 +104,7 @@ public class PlayerDataEventHandler {
         if (newData == null)
             return;
 
-        // Die on the original so we can clone properly and not need an immediate update packet
+        // Die on the original so we can clone properly and not need an immediate onTick packet
         if (e.isWasDeath() && !MKConfig.PEPSI_BLUE_MODE) {
             IPlayerData oldData = MKUPlayerData.get(e.getOriginal());
             if (oldData == null)
@@ -100,9 +118,15 @@ public class PlayerDataEventHandler {
 
     @SubscribeEvent
     public static void onAttachCapability(AttachCapabilitiesEvent<Entity> event) {
-        if (!(event.getObject() instanceof EntityPlayer))
-            return;
+        if (event.getObject() instanceof EntityPlayer){
+            event.addCapability(new ResourceLocation(MKUltra.MODID, "player_data"),
+                    new PlayerDataProvider((EntityPlayer) event.getObject()));
+        } else if (event.getObject() instanceof EntityLivingBase){
+            event.addCapability(new ResourceLocation(MKUltra.MODID, "mob_data"),
+                    new MobDataProvider((EntityLivingBase) event.getObject()));
+        }
 
-        event.addCapability(new ResourceLocation(MKUltra.MODID, "player_data"), new PlayerDataProvider((EntityPlayer) event.getObject()));
+
+
     }
 }

@@ -1,9 +1,7 @@
 package com.chaosbuffalo.mkultra.core;
 
-import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.utils.RayTraceUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -14,83 +12,51 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import javax.annotation.Nonnull;
 import java.util.List;
-import java.util.regex.Pattern;
 
-public abstract class BaseAbility extends IForgeRegistryEntry.Impl<BaseAbility> {
+public abstract class BaseMobAbility extends IForgeRegistryEntry.Impl<BaseMobAbility> {
 
-    public static final int ACTIVE_ABILITY = 0;
-    public static final int TOGGLE_ABILITY = 1;
 
-    private ResourceLocation abilityId;
-
-    public BaseAbility(String domain, String id) {
+    public BaseMobAbility(String domain, String id) {
         this(new ResourceLocation(domain, id));
     }
 
-    public BaseAbility(ResourceLocation abilityId) {
-        this.abilityId = abilityId;
-    }
-
-
     public ResourceLocation getAbilityId() {
-        return abilityId;
+        return getRegistryName();
     }
 
-    public String getAbilityName()
-    {
-        return I18n.format(String.format("%s.%s.name", abilityId.getResourceDomain(), abilityId.getResourcePath()));
+    public BaseMobAbility(ResourceLocation abilityId) {
+        setRegistryName(abilityId);
     }
 
-    public String getAbilityDescription()
-    {
-        return I18n.format(String.format("%s.%s.description", abilityId.getResourceDomain(), abilityId.getResourcePath()));
-    }
-
-
-    public ResourceLocation getAbilityIcon()
-    {
-        return new ResourceLocation(abilityId.getResourceDomain(), String.format("textures/class/abilities/%s.png", abilityId.getResourcePath().split(Pattern.quote("."))[1]));
-    }
-
-
-    public float getDistance(int currentLevel) {
+    public float getDistance() {
         return 1.0f;
     }
 
-    public abstract int getCooldown(int currentLevel);
+    public abstract int getCooldown();
 
-    public int getCooldownTicks(int currentLevel) {
-        return getCooldown(currentLevel) * GameConstants.TICKS_PER_SECOND;
+    public int getCastTime(){
+        return 0;
     }
 
-    public int getType() {
-        return ACTIVE_ABILITY;
+    public enum AbilityType{
+        ATTACK,
+        HEAL,
+        BUFF
     }
 
-    public abstract Targeting.TargetType getTargetType();
+    public abstract AbilityType getAbilityType();
 
     public boolean canSelfCast() {
         return false;
     }
 
+    public abstract Targeting.TargetType getTargetType();
+
     protected boolean isValidTarget(EntityLivingBase caster, EntityLivingBase target) {
         return Targeting.isValidTarget(getTargetType(), caster, target, !canSelfCast());
     }
 
-    public abstract int getManaCost(int currentLevel);
-
-    public abstract int getRequiredLevel(int currentLevel);
-
-    public int getMaxLevel() {
-        return GameConstants.MAX_ABILITY_LEVEL;
-    }
-
-    public boolean meetsRequirements(IPlayerData player) {
-        return player.getMana() >= getManaCost(player.getLevelForAbility(abilityId)) &&
-                player.getCurrentAbilityCooldown(abilityId) == 0;
-    }
-
-    public abstract void execute(EntityPlayer entity, IPlayerData data, World theWorld);
+    public abstract void execute(EntityLivingBase entity, IMobData data, EntityLivingBase target, World theWorld);
 
     protected EntityLivingBase getSingleLivingTarget(EntityLivingBase caster, float distance) {
         return getSingleLivingTarget(caster, distance, true);
@@ -105,8 +71,9 @@ public abstract class BaseAbility extends IForgeRegistryEntry.Impl<BaseAbility> 
         return getSingleLivingTarget(EntityLivingBase.class, caster, distance, checkValid);
     }
 
+
     protected <E extends EntityLivingBase> E getSingleLivingTarget(Class<E> clazz, EntityLivingBase caster,
-                                                                    float distance, boolean checkValid) {
+                                                                   float distance, boolean checkValid) {
         RayTraceResult lookingAt = RayTraceUtils.getLookingAt(clazz, caster, distance,
                 e -> !checkValid || (e != null && isValidTarget(caster, e)));
 
