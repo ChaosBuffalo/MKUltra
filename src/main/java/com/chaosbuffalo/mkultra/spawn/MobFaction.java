@@ -56,6 +56,14 @@ public class MobFaction extends IForgeRegistryEntry.Impl<MobFaction> {
         }
     }
 
+    public boolean isSpawnListEmpty(MobGroups group){
+        SpawnList list = getSpawnListForGroup(group);
+        if (list == null){
+            return true;
+        }
+        return list.isEmpty();
+    }
+
     public MobFaction withSpawnList(MobGroups group, SpawnList list, double weight){
         spawnLists.get(group).add(weight, list);
         return this;

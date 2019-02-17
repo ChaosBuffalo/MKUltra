@@ -122,10 +122,11 @@ public class MKSpawnerGui extends GuiScreen implements IListButtonHandler<Resour
                 }
                 break;
             case SET_MOB_GROUP:
+                MobFaction currentFaction = MKURegistry.getFaction(factionName);
                 if (mobGroupList == null){
                     ArrayList<MobFaction.MobGroups> groups = new ArrayList<>();
                     for (MobFaction.MobGroups group : MobFaction.MobGroups.values()){
-                        if (group != MobFaction.MobGroups.INVALID){
+                        if (group != MobFaction.MobGroups.INVALID && currentFaction != null && !currentFaction.isSpawnListEmpty(group)){
                             groups.add(group);
                         }
                     }
@@ -168,6 +169,7 @@ public class MKSpawnerGui extends GuiScreen implements IListButtonHandler<Resour
             case FACTION_LIST:
                 factionName = result;
                 screenMode = Modes.DEFAULT;
+                mobGroupList = null;
             default:
                 break;
         }
