@@ -119,6 +119,13 @@ public class ModSpawn {
 
     @SuppressWarnings("unused")
     @SubscribeEvent
+    public static void registerMobFactions(RegistryEvent.Register<MobFaction> event) {
+        MobFaction test_faction = new MobFaction(MKUltra.MODID, "test_faction");
+        event.getRegistry().register(test_faction);
+    }
+
+    @SuppressWarnings("unused")
+    @SubscribeEvent
     public static void registerAIModifiers(RegistryEvent.Register<AIModifier> event) {
         AIModifier remove_wander = new AIModifier(
                 new ResourceLocation(MKUltra.MODID, "remove_wander"),
