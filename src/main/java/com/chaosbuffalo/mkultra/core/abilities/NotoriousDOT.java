@@ -1,7 +1,7 @@
 package com.chaosbuffalo.mkultra.core.abilities;
 
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.BaseToggleSetAbility;
+import com.chaosbuffalo.mkultra.core.PlayerToggleGroupAbility;
 import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
 import com.chaosbuffalo.mkultra.effects.spells.*;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
@@ -18,7 +18,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-public class NotoriousDOT extends BaseToggleSetAbility {
+public class NotoriousDOT extends PlayerToggleGroupAbility {
     public static float BASE_DAMAGE = 1.0f;
     public static float DAMAGE_SCALE = 2.0f;
     public static int BASE_DURATION = 32767;
