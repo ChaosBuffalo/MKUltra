@@ -15,23 +15,10 @@ import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-public class MKSpawnerGui extends GuiScreen implements IListButtonHandler<ResourceLocation>{
+public class MKSpawnerGui extends GuiScreen {
 
-    private class SecondHandler implements IListButtonHandler<MobFaction.MobGroups>{
-        private BiConsumer<MobFaction.MobGroups, Integer> consumer;
-
-        public SecondHandler(BiConsumer<MobFaction.MobGroups, Integer> consumer){
-            this.consumer = consumer;
-        }
-
-        @Override
-        public void handleListButtonClicked(MobFaction.MobGroups result, int list) {
-            consumer.accept(result, list);
-        }
-    }
     enum Modes {
         DEFAULT,
         SET_FACTION,
@@ -51,14 +38,13 @@ public class MKSpawnerGui extends GuiScreen implements IListButtonHandler<Resour
     private static final int CHOOSE_FACTION = 3;
     private static final int CHOOSE_MOB_GROUP = 4;
     private Modes screenMode;
-    private final SecondHandler secondHandler;
 
     private ResourceLocation factionName;
     private int spawnTime;
     private MobFaction.MobGroups mobGroup;
-    TileEntityMKSpawner spawner;
-    ButtonList<ResourceLocation> factionList;
-    ButtonList<MobFaction.MobGroups> mobGroupList;
+    private TileEntityMKSpawner spawner;
+    private ButtonList<ResourceLocation> factionList;
+    private ButtonList<MobFaction.MobGroups> mobGroupList;
 
     public MKSpawnerGui(TileEntityMKSpawner spawner){
         this.spawner = spawner;
@@ -68,7 +54,6 @@ public class MKSpawnerGui extends GuiScreen implements IListButtonHandler<Resour
         screenMode = Modes.DEFAULT;
         factionList = null;
         mobGroupList = null;
-        secondHandler = new SecondHandler(this::handleMobGroupButton);
     }
 
     @Override
@@ -112,10 +97,9 @@ public class MKSpawnerGui extends GuiScreen implements IListButtonHandler<Resour
         switch (screenMode){
             case SET_FACTION:
                 if (factionList == null){
-                    ArrayList<ResourceLocation> factions = new ArrayList<>();
-                    factions.addAll(MKURegistry.REGISTRY_MOB_FACTIONS.getKeys());
+                    ArrayList<ResourceLocation> factions = new ArrayList<>(MKURegistry.REGISTRY_MOB_FACTIONS.getKeys());
                     factionList = new ButtonList<>(
-                            factions, this, FACTION_LIST, getResourceName, mc, 200,
+                            factions, this::handleFactionListButtonClicked, FACTION_LIST, getResourceName, mc, 200,
                             140, yPos + 4 + (titleHeight * 6), panelHeight, 22, xPos + 28);
                 } else {
                     factionList.drawScreen(mouseX, mouseY, partialTicks);
@@ -131,7 +115,7 @@ public class MKSpawnerGui extends GuiScreen implements IListButtonHandler<Resour
                         }
                     }
                     mobGroupList = new ButtonList<>(
-                            groups, secondHandler, MOB_GROUP_LIST, getMobGroupName, mc, 200,
+                            groups, this::handleMobGroupButton, MOB_GROUP_LIST, getMobGroupName, mc, 200,
                             140, yPos + 4 + (titleHeight * 6), panelHeight,
                             22, xPos + 28);
                 } else {
@@ -163,8 +147,7 @@ public class MKSpawnerGui extends GuiScreen implements IListButtonHandler<Resour
         }
     }
 
-    @Override
-    public void handleListButtonClicked(ResourceLocation result, int list) {
+    public void handleFactionListButtonClicked(ResourceLocation result, int list) {
         switch (list){
             case FACTION_LIST:
                 factionName = result;

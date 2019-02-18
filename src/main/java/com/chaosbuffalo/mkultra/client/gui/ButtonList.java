@@ -5,6 +5,7 @@ import net.minecraft.client.gui.GuiListExtended;
 import net.minecraft.client.renderer.Tessellator;
 
 import java.util.ArrayList;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 public class ButtonList<E> extends GuiListExtended {
@@ -12,7 +13,7 @@ public class ButtonList<E> extends GuiListExtended {
     private ArrayList<ButtonListEntry<E>> list;
 
     public ButtonList(ArrayList<E> list,
-                      IListButtonHandler<E> handler,
+                      BiConsumer<E, Integer> handler,
                       int listId,
                       Function<E, String> getHumanReadable,
                       Minecraft client,
