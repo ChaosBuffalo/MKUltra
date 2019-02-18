@@ -2,7 +2,7 @@ package com.chaosbuffalo.mkultra.core.abilities;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.spells.VampiricReverePotion;
-import com.chaosbuffalo.mkultra.core.BaseToggleAbility;
+import com.chaosbuffalo.mkultra.core.PlayerToggleAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 /**
  * Created by Jacob on 3/24/2018.
  */
-public class VampiricRevere extends BaseToggleAbility {
+public class VampiricRevere extends PlayerToggleAbility {
 
     public static int BASE_DURATION = 32767;
     public static int DURATION_SCALE = 0;

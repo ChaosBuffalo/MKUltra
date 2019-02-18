@@ -30,7 +30,7 @@ public abstract class SongApplicator extends SongPotionBase {
             IPlayerData pData = MKUPlayerData.get(player);
             if (pData == null)
                 return;
-            PlayerAbility ability = MKURegistry.getAbility(BaseToggleAbility.getToggleAbilityIdForPotion(this));
+            PlayerAbility ability = MKURegistry.getAbility(PlayerToggleAbility.getToggleAbilityIdForPotion(this));
 
             if (pData.getMana() >= ability.getManaCost(amplifier)) {
                 pData.setMana(pData.getMana() - ability.getManaCost(amplifier));
