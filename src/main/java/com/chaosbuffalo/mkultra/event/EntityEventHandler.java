@@ -20,7 +20,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber
-public class PlayerDataEventHandler {
+public class EntityEventHandler {
 
     @SubscribeEvent
     @SideOnly(Side.SERVER)
