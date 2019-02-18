@@ -11,15 +11,15 @@ import java.util.Set;
 /**
  * Created by Jacob on 4/21/2018.
  */
-public abstract class BaseToggleSetAbility extends PlayerToggleAbility {
+public abstract class PlayerToggleGroupAbility extends PlayerToggleAbility {
 
     public abstract Set<SpellPotionBase> getToggleGroup();
 
-    public BaseToggleSetAbility(String domain, String id) {
+    public PlayerToggleGroupAbility(String domain, String id) {
         this(new ResourceLocation(domain, id));
     }
 
-    public BaseToggleSetAbility(ResourceLocation abilityId) {
+    public PlayerToggleGroupAbility(ResourceLocation abilityId) {
         super(abilityId);
     }
 

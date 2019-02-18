@@ -1,7 +1,7 @@
 package com.chaosbuffalo.mkultra.core.abilities;
 
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.BaseToggleSetAbility;
+import com.chaosbuffalo.mkultra.core.PlayerToggleGroupAbility;
 import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
 import com.chaosbuffalo.mkultra.effects.spells.MileysInspiringBangerzSongPotion;
 import com.chaosbuffalo.mkultra.effects.spells.NotoriousDOTSongPotion;
@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-public class SwiftsRodeoHeartbreak extends BaseToggleSetAbility {
+public class SwiftsRodeoHeartbreak extends PlayerToggleGroupAbility {
     public static int BASE_DURATION = 32767;
     public static final Set<SpellPotionBase> TOGGLE_GROUP = new HashSet<>(
             Arrays.asList(NotoriousDOTSongPotion.INSTANCE,
