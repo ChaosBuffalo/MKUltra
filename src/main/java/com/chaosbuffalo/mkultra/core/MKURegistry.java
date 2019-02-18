@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 @Mod.EventBusSubscriber
 public class MKURegistry {
-    public static IForgeRegistry<BaseClass> REGISTRY_CLASSES = null;
+    public static IForgeRegistry<PlayerClass> REGISTRY_CLASSES = null;
     public static IForgeRegistry<PlayerAbility> REGISTRY_ABILITIES = null;
     public static IForgeRegistry<ItemOption> REGISTRY_MOB_ITEMS = null;
     public static IForgeRegistry<AttributeRange> REGISTRY_MOB_ATTRS = null;
@@ -36,7 +36,7 @@ public class MKURegistry {
     public static ResourceLocation INVALID_SPAWN_LIST = new ResourceLocation(MKUltra.MODID, "spawn_list.invalid");
     public static ResourceLocation INVALID_FACTION = new ResourceLocation(MKUltra.MODID, "mob_faction.invalid");
 
-    public static BaseClass getClass(ResourceLocation classId) {
+    public static PlayerClass getClass(ResourceLocation classId) {
         return REGISTRY_CLASSES.getValue(classId);
     }
 
@@ -82,7 +82,7 @@ public class MKURegistry {
     }
 
     public static String getClassName(ResourceLocation classId) {
-        BaseClass cls = getClass(classId);
+        PlayerClass cls = getClass(classId);
         return cls != null ? cls.getClassName() : "<NULL CLASS>";
     }
 
@@ -93,9 +93,9 @@ public class MKURegistry {
     @SuppressWarnings("unused")
     @SubscribeEvent
     public static void createRegistries(RegistryEvent.NewRegistry event) {
-        REGISTRY_CLASSES = new RegistryBuilder<BaseClass>()
+        REGISTRY_CLASSES = new RegistryBuilder<PlayerClass>()
                 .setName(new ResourceLocation(MKUltra.MODID, "classes"))
-                .setType(BaseClass.class)
+                .setType(PlayerClass.class)
                 .setIDRange(0, Integer.MAX_VALUE - 1)
                 .create();
 

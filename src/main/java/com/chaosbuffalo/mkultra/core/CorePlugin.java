@@ -11,7 +11,7 @@ import java.util.List;
 
 @Mod.EventBusSubscriber
 public class CorePlugin {
-    private static List<BaseClass> BUILTIN_CLASSES = Lists.newArrayList();
+    private static List<PlayerClass> BUILTIN_CLASSES = Lists.newArrayList();
 
     static {
         BUILTIN_CLASSES.add(new Archer());
@@ -30,7 +30,7 @@ public class CorePlugin {
 
     @SuppressWarnings("unused")
     @SubscribeEvent
-    public static void registerClasses(RegistryEvent.Register<BaseClass> event) {
+    public static void registerClasses(RegistryEvent.Register<PlayerClass> event) {
         BUILTIN_CLASSES.forEach(c -> {
             if (MKConfig.isClassEnabled(c.getClassId())) {
                 c.setRegistryName(c.getClassId());

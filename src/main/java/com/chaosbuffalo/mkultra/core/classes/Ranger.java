@@ -3,7 +3,7 @@ package com.chaosbuffalo.mkultra.core.classes;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.ArmorClass;
 import com.chaosbuffalo.mkultra.core.PlayerAbility;
-import com.chaosbuffalo.mkultra.core.BaseClass;
+import com.chaosbuffalo.mkultra.core.PlayerClass;
 import com.chaosbuffalo.mkultra.core.abilities.*;
 import com.chaosbuffalo.mkultra.init.ModItems;
 import net.minecraft.item.Item;
@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by Jacob on 6/23/2018.
  */
-public class Ranger extends BaseClass {
+public class Ranger extends PlayerClass {
 
     public static final List<PlayerAbility> abilities = new ArrayList<>(5);
     static {
