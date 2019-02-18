@@ -3,6 +3,8 @@ package com.chaosbuffalo.mkultra.core;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 
 import java.util.HashSet;
 
@@ -29,6 +31,12 @@ public interface IMobData {
     void addAbility(MobAbility abilityIn);
 
     double getAggroRange();
+
+    void setSpawnPoint(BlockPos value);
+
+    BlockPos getSpawnPoint();
+
+    boolean hasSpawnPoint();
 
     void setAggroRange(double value);
 

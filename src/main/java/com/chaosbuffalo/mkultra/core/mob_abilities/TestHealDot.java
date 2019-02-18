@@ -9,6 +9,7 @@ import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -43,6 +44,12 @@ public class TestHealDot extends MobAbility {
     public int getDuration(){
         return 10 * GameConstants.TICKS_PER_SECOND;
     }
+
+    @Override
+    public Potion getEffectPotion(){
+        return NaturesRemedyPotion.INSTANCE;
+    }
+
 
     @Override
     public void execute(EntityLivingBase entity, IMobData data, EntityLivingBase target, World theWorld) {
