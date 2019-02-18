@@ -1,6 +1,6 @@
 package com.chaosbuffalo.mkultra.mob_ai;
 
-import com.chaosbuffalo.mkultra.core.BaseMobAbility;
+import com.chaosbuffalo.mkultra.core.MobAbility;
 import com.chaosbuffalo.mkultra.core.IMobData;
 import com.chaosbuffalo.mkultra.core.MobAbilityTracker;
 import net.minecraft.entity.EntityLivingBase;
@@ -22,12 +22,12 @@ public class EntityAIBuffSelf extends EntityAIBase {
 
     private boolean isSelfBuff(MobAbilityTracker tracker){
         return tracker.getAbility().canSelfCast() &&
-                tracker.getAbility().getAbilityType() == BaseMobAbility.AbilityType.BUFF;
+                tracker.getAbility().getAbilityType() == MobAbility.AbilityType.BUFF;
     }
 
     private boolean isSelfHeal(MobAbilityTracker tracker){
         return tracker.getAbility().canSelfCast() &&
-                tracker.getAbility().getAbilityType() == BaseMobAbility.AbilityType.HEAL;
+                tracker.getAbility().getAbilityType() == MobAbility.AbilityType.HEAL;
 
     }
 

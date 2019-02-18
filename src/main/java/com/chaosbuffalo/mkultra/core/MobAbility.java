@@ -3,7 +3,6 @@ package com.chaosbuffalo.mkultra.core;
 import com.chaosbuffalo.mkultra.utils.RayTraceUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -13,10 +12,10 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 import javax.annotation.Nonnull;
 import java.util.List;
 
-public abstract class BaseMobAbility extends IForgeRegistryEntry.Impl<BaseMobAbility> {
+public abstract class MobAbility extends IForgeRegistryEntry.Impl<MobAbility> {
 
 
-    public BaseMobAbility(String domain, String id) {
+    public MobAbility(String domain, String id) {
         this(new ResourceLocation(domain, id));
     }
 
@@ -24,7 +23,7 @@ public abstract class BaseMobAbility extends IForgeRegistryEntry.Impl<BaseMobAbi
         return getRegistryName();
     }
 
-    public BaseMobAbility(ResourceLocation abilityId) {
+    public MobAbility(ResourceLocation abilityId) {
         setRegistryName(abilityId);
     }
 

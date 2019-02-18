@@ -4,11 +4,11 @@ import net.minecraft.entity.EntityLivingBase;
 
 public class MobAbilityTracker {
 
-    private BaseMobAbility ability;
+    private MobAbility ability;
     private int cooldownLeft;
     private IMobData mobData;
 
-    public MobAbilityTracker(BaseMobAbility abilityIn, IMobData mobData){
+    public MobAbilityTracker(MobAbility abilityIn, IMobData mobData){
         cooldownLeft = 0;
         this.mobData = mobData;
         ability = abilityIn;
@@ -20,7 +20,7 @@ public class MobAbilityTracker {
         }
     }
 
-    public BaseMobAbility getAbility(){
+    public MobAbility getAbility(){
         return ability;
     }
 

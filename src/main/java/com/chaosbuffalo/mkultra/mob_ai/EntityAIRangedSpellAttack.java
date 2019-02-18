@@ -1,19 +1,16 @@
 package com.chaosbuffalo.mkultra.mob_ai;
 
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.BaseMobAbility;
+import com.chaosbuffalo.mkultra.core.MobAbility;
 import com.chaosbuffalo.mkultra.core.IMobData;
 import com.chaosbuffalo.mkultra.core.MobAbilityTracker;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
-import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.Vec3d;
 
@@ -50,7 +47,7 @@ public class EntityAIRangedSpellAttack extends EntityAIBase {
             if (target != null){
                 for (MobAbilityTracker tracker : mobData.getAbilityTrackers()) {
                     if (!tracker.isAbilityOnCooldown()) {
-                        if (tracker.getAbility().getAbilityType() == BaseMobAbility.AbilityType.ATTACK &&
+                        if (tracker.getAbility().getAbilityType() == MobAbility.AbilityType.ATTACK &&
                                 isInRange(target, tracker)) {
                             currentAbility = tracker;
                             return true;

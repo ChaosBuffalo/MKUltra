@@ -75,7 +75,7 @@ public class MobData implements IMobData {
     }
 
     @Override
-    public void addAbility(BaseMobAbility abilityIn) {
+    public void addAbility(MobAbility abilityIn) {
         trackers.add(new MobAbilityTracker(abilityIn, this));
         hasAbilities = true;
     }

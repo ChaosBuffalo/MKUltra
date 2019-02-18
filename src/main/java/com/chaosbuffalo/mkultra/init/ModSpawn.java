@@ -2,7 +2,7 @@ package com.chaosbuffalo.mkultra.init;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.BaseMobAbility;
+import com.chaosbuffalo.mkultra.core.MobAbility;
 import com.chaosbuffalo.mkultra.core.IMobData;
 import com.chaosbuffalo.mkultra.core.MKUMobData;
 import com.chaosbuffalo.mkultra.core.MKURegistry;
@@ -108,12 +108,12 @@ public class ModSpawn {
 
     @SuppressWarnings("unused")
     @SubscribeEvent
-    public static void registerMobAbilities(RegistryEvent.Register<BaseMobAbility> event) {
-        BaseMobAbility test_buff = new TestHealDot();
+    public static void registerMobAbilities(RegistryEvent.Register<MobAbility> event) {
+        MobAbility test_buff = new TestHealDot();
         event.getRegistry().register(test_buff);
-        BaseMobAbility shadow_dash = new ShadowDash();
+        MobAbility shadow_dash = new ShadowDash();
         event.getRegistry().register(shadow_dash);
-        BaseMobAbility fireball = new MobFireball();
+        MobAbility fireball = new MobFireball();
         event.getRegistry().register(fireball);
     }
 
