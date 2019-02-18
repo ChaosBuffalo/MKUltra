@@ -15,18 +15,16 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 public class MKSpawnerSetPacket implements IMessage {
     public ResourceLocation factionId;
     public int spawnerType;
-    private int x, y, z;
     public int spawnTime;
+    private BlockPos pos;
 
     public MKSpawnerSetPacket() {
     }
 
-    public MKSpawnerSetPacket(ResourceLocation faction, int spawnerType, int spawnTime, int x, int y, int z) {
+    public MKSpawnerSetPacket(ResourceLocation faction, int spawnerType, int spawnTime, BlockPos pos) {
         this.factionId = faction;
         this.spawnerType = spawnerType;
-        this.x = x;
-        this.y = y;
-        this.z = z;
+        this.pos = pos;
         this.spawnTime = spawnTime;
     }
 
@@ -35,9 +33,7 @@ public class MKSpawnerSetPacket implements IMessage {
         PacketBuffer pb = new PacketBuffer(buf);
         factionId = pb.readResourceLocation();
         spawnerType = pb.readInt();
-        x = pb.readInt();
-        y = pb.readInt();
-        z = pb.readInt();
+        pos = pb.readBlockPos();
         spawnTime = pb.readInt();
     }
 
@@ -46,9 +42,7 @@ public class MKSpawnerSetPacket implements IMessage {
         PacketBuffer pb = new PacketBuffer(buf);
         pb.writeResourceLocation(factionId);
         pb.writeInt(spawnerType);
-        pb.writeInt(x);
-        pb.writeInt(y);
-        pb.writeInt(z);
+        pb.writeBlockPos(pos);
         pb.writeInt(spawnTime);
     }
 
@@ -61,7 +55,7 @@ public class MKSpawnerSetPacket implements IMessage {
                                             final MKSpawnerSetPacket msg,
                                             MessageContext ctx) {
             ServerUtils.addScheduledTask(() -> {
-                TileEntity entity = player.getEntityWorld().getTileEntity(new BlockPos(msg.x, msg.y, msg.z));
+                TileEntity entity = player.getEntityWorld().getTileEntity(msg.pos);
                 if (entity instanceof TileEntityMKSpawner){
                     TileEntityMKSpawner mkSpawner = (TileEntityMKSpawner)entity;
                     mkSpawner.setSpawnerWithPacket(msg);

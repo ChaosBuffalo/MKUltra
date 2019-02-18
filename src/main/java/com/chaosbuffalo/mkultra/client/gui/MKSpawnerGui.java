@@ -219,7 +219,7 @@ public class MKSpawnerGui extends GuiScreen {
                 break;
             case SYNC:
                 MKUltra.packetHandler.sendToServer(new MKSpawnerSetPacket(factionName, mobGroup.ordinal(),
-                        spawnTime, spawner.getPos().getX(), spawner.getPos().getY(), spawner.getPos().getZ()));
+                        spawnTime, spawner.getPos()));
                 this.mc.displayGuiScreen(null);
                 if (this.mc.currentScreen == null)
                     this.mc.setIngameFocus();
