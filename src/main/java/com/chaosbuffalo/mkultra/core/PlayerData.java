@@ -408,8 +408,8 @@ public class PlayerData implements IPlayerData {
 
     private void updateToggleAbility(PlayerAbilityInfo info) {
         PlayerAbility ability = MKURegistry.getAbility(info.getId());
-        if (ability instanceof BaseToggleAbility && player != null) {
-            BaseToggleAbility toggle = (BaseToggleAbility) ability;
+        if (ability instanceof PlayerToggleAbility && player != null) {
+            PlayerToggleAbility toggle = (PlayerToggleAbility) ability;
 
             if (info.isCurrentlyKnown()) {
                 // If this is a toggle ability we must re-apply the effect to make sure it's working at the proper level
@@ -875,8 +875,8 @@ public class PlayerData implements IPlayerData {
         for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
             ResourceLocation abilityId = getAbilityInSlot(i);
             PlayerAbility ability = MKURegistry.getAbility(abilityId);
-            if (ability instanceof BaseToggleAbility && player != null) {
-                BaseToggleAbility toggle = (BaseToggleAbility) ability;
+            if (ability instanceof PlayerToggleAbility && player != null) {
+                PlayerToggleAbility toggle = (PlayerToggleAbility) ability;
                 toggle.removeEffect(player, this, player.getEntityWorld());
             }
         }

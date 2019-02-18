@@ -1,10 +1,9 @@
 package com.chaosbuffalo.mkultra.core.abilities;
 
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.BaseToggleAbility;
+import com.chaosbuffalo.mkultra.core.PlayerToggleAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.effects.spells.SkinLikeWoodPotion;
-import com.chaosbuffalo.mkultra.effects.spells.WaveBreakPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
@@ -17,7 +16,7 @@ import net.minecraft.world.World;
 /**
  * Created by Jacob on 7/28/2018.
  */
-public class SkinLikeWood extends BaseToggleAbility {
+public class SkinLikeWood extends PlayerToggleAbility {
 
     public static int BASE_DURATION = 32767;
     public static int DURATION_SCALE = 0;

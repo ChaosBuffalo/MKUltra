@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * Created by Jacob on 3/24/2018.
  */
-public abstract class BaseToggleAbility extends PlayerAbility {
+public abstract class PlayerToggleAbility extends PlayerAbility {
 
     private static final Map<Potion, ResourceLocation> toggleAbilityMap = Maps.newHashMap();
 
@@ -19,11 +19,11 @@ public abstract class BaseToggleAbility extends PlayerAbility {
         return toggleAbilityMap.get(potion);
     }
 
-    public BaseToggleAbility(String domain, String id) {
+    public PlayerToggleAbility(String domain, String id) {
         this(new ResourceLocation(domain, id));
     }
 
-    public BaseToggleAbility(ResourceLocation abilityId) {
+    public PlayerToggleAbility(ResourceLocation abilityId) {
         super(abilityId);
         toggleAbilityMap.put(getToggleEffect(), abilityId);
     }

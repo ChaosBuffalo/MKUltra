@@ -129,8 +129,8 @@ public class AbilityBar extends Gui {
                         0, 0, ABILITY_ICON_SIZE, coolDownHeight, ABILITY_ICON_SIZE, coolDownHeight);
             }
 
-            if (ability instanceof BaseToggleAbility) {
-                if (mc.player.isPotionActive(((BaseToggleAbility) ability).getToggleEffect())) {
+            if (ability instanceof PlayerToggleAbility) {
+                if (mc.player.isPotionActive(((PlayerToggleAbility) ability).getToggleEffect())) {
                     mc.getTextureManager().bindTexture(TOGGLE_EFFECT);
                     Gui.drawModalRectWithCustomSizedTexture(slotAbilityOffsetX,
                             barStartY + slotAbilityOffsetY + (i * SLOT_HEIGHT),

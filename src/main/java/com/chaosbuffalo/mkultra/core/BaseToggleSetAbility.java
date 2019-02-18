@@ -11,7 +11,7 @@ import java.util.Set;
 /**
  * Created by Jacob on 4/21/2018.
  */
-public abstract class BaseToggleSetAbility extends BaseToggleAbility {
+public abstract class BaseToggleSetAbility extends PlayerToggleAbility {
 
     public abstract Set<SpellPotionBase> getToggleGroup();
 
@@ -33,7 +33,7 @@ public abstract class BaseToggleSetAbility extends BaseToggleAbility {
                 if (entity.isPotionActive(spellPotion)) {
                     entity.removePotionEffect(spellPotion);
                     if (spellPotion instanceof SongApplicator) {
-                        ResourceLocation abilityId = BaseToggleAbility.getToggleAbilityIdForPotion(spellPotion);
+                        ResourceLocation abilityId = PlayerToggleAbility.getToggleAbilityIdForPotion(spellPotion);
                         if (abilityId != null) {
                             pData.setCooldown(abilityId, pData.getAbilityCooldown(MKURegistry.getAbility(abilityId)));
                         }

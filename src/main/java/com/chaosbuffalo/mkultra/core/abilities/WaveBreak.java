@@ -1,7 +1,7 @@
 package com.chaosbuffalo.mkultra.core.abilities;
 
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.BaseToggleAbility;
+import com.chaosbuffalo.mkultra.core.PlayerToggleAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.effects.spells.WaveBreakPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 /**
  * Created by Jacob on 3/25/2018.
  */
-public class WaveBreak extends BaseToggleAbility {
+public class WaveBreak extends PlayerToggleAbility {
 
     public static int BASE_DURATION = 32767;
     public static int DURATION_SCALE = 0;
