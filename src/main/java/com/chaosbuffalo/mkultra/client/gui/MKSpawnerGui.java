@@ -215,6 +215,7 @@ public class MKSpawnerGui extends GuiScreen {
                 } else {
                     spawnTime--;
                 }
+                spawnTime = Math.max(0, spawnTime);
                 break;
             case SYNC:
                 MKUltra.packetHandler.sendToServer(new MKSpawnerSetPacket(factionName, mobGroup.ordinal(),
