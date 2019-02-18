@@ -12,6 +12,7 @@ import com.chaosbuffalo.mkultra.core.mob_abilities.TestHealDot;
 import com.chaosbuffalo.mkultra.mob_ai.EntityAIBuffSelf;
 import com.chaosbuffalo.mkultra.mob_ai.EntityAINearestAttackableTargetMK;
 import com.chaosbuffalo.mkultra.mob_ai.EntityAIRangedSpellAttack;
+import com.chaosbuffalo.mkultra.mob_ai.EntityAIReturnToSpawn;
 import com.chaosbuffalo.mkultra.spawn.*;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
@@ -247,10 +248,16 @@ public class ModSpawn {
             IMobData mobData = MKUMobData.get(entity);
             return new EntityAIBuffSelf(entity, mobData, .75f);
         };
-        BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addAggroTarget = (entity, choice) -> new EntityAINearestAttackableTargetMK((EntityCreature) entity, EntityPlayer.class, true);
+        BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addAggroTarget =
+                (entity, choice) -> new EntityAINearestAttackableTargetMK((EntityCreature) entity,true);
+
         BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addOffensiveSpells = (entity, choice) -> {
             IMobData mobData = MKUMobData.get(entity);
             return new EntityAIRangedSpellAttack(entity, 3 * GameConstants.TICKS_PER_SECOND, mobData);
+        };
+        BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addLeashRange = (entity, choice) -> {
+            IMobData mobData = MKUMobData.get(entity);
+            return new EntityAIReturnToSpawn((EntityCreature)entity, mobData, 1.0);
         };
         ADD_STANDARD_AI = new AIModifier(
                 new ResourceLocation(MKUltra.MODID, "add_standard_ai"),
@@ -258,7 +265,8 @@ public class ModSpawn {
                 new BehaviorChoice(addSelfBuff, 0, 3, BehaviorChoice.TaskType.TASK),
                 new BehaviorChoice(addAggroTarget, 0, 2, BehaviorChoice.TaskType.TARGET_TASK),
                 new BehaviorChoice(addOffensiveSpells, 0, 3, BehaviorChoice.TaskType.TASK),
-                new BehaviorChoice(getWatchClosestLongRange, 0, 6, BehaviorChoice.TaskType.TASK)
+                new BehaviorChoice(getWatchClosestLongRange, 0, 6, BehaviorChoice.TaskType.TASK),
+                new BehaviorChoice(addLeashRange, 0, 2, BehaviorChoice.TaskType.TASK)
         );
         event.getRegistry().register(ADD_STANDARD_AI);
 

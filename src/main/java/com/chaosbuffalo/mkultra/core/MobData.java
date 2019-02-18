@@ -2,6 +2,8 @@ package com.chaosbuffalo.mkultra.core;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 
 import java.util.HashSet;
 
@@ -13,6 +15,7 @@ public class MobData implements IMobData {
     private boolean hasAbilities;
     private double aggroRange;
     private ResourceLocation factionName;
+    private BlockPos spawnPoint;
 
 
     public MobData(EntityLivingBase entity) {
@@ -83,6 +86,21 @@ public class MobData implements IMobData {
     @Override
     public double getAggroRange() {
         return aggroRange;
+    }
+
+    @Override
+    public void setSpawnPoint(BlockPos value) {
+        spawnPoint = value;
+    }
+
+    @Override
+    public BlockPos getSpawnPoint() {
+        return spawnPoint;
+    }
+
+    @Override
+    public boolean hasSpawnPoint() {
+        return spawnPoint != null;
     }
 
     @Override

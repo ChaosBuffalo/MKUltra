@@ -20,6 +20,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -271,6 +272,7 @@ public class TileEntityMKSpawner extends TileEntity implements ITickable {
             theWorld.spawnEntity(entity);
             mobData.setMobFaction(faction.getRegistryName());
             mobData.setMKSpawned(true);
+            mobData.setSpawnPoint(getPos());
         }
     }
 }
