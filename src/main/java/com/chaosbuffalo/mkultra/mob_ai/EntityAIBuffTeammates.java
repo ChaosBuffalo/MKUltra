@@ -125,7 +125,6 @@ public class EntityAIBuffTeammates extends EntityAIBase {
                                 if (minLiv.getHealth() <= minLiv.getMaxHealth() * healThreshold){
                                     currentAbility = tracker;
                                     targetEntity = minLiv;
-                                    Log.info("Trying to heal %s", minLiv.getName());
                                     return true;
                                 }
                             }
