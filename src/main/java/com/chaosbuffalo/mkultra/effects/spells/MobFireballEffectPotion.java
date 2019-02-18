@@ -45,7 +45,7 @@ public class MobFireballEffectPotion extends SpellPotionBase {
         if (target.isBurning()) {
             damage = damage * 2.0f;
         }
-        target.setFire(4);
+        target.setFire(1);
         target.attackEntityFrom(MKDamageSource.causeIndirectMagicDamage(
                 new ResourceLocation(MKUltra.MODID, "mob_fireball"), applier, caster), damage);
     }

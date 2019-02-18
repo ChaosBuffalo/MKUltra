@@ -1,6 +1,7 @@
 package com.chaosbuffalo.mkultra.spawn;
 
 import com.chaosbuffalo.mkultra.choice.RandomCollection;
+import com.chaosbuffalo.mkultra.log.Log;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
@@ -34,7 +35,7 @@ public class ItemOption extends IForgeRegistryEntry.Impl<ItemOption> {
                 current_choices.add(choice.weight, choice);
             }
         }
-        this.applyFunc.accept(entity, current_choices.next());
+        this.applyFunc.accept(entity,  current_choices.next());
     }
 
 

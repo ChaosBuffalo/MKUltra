@@ -14,16 +14,16 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class TestHealDot extends MobAbility {
+public class MobNaturesRemedy extends MobAbility {
 
 
-    public TestHealDot(){
-        super(MKUltra.MODID, "mob_ability.test_heal_dot");
+    public MobNaturesRemedy(){
+        super(MKUltra.MODID, "mob_ability.natures_remedy");
     }
 
     @Override
     public int getCooldown() {
-        return 30 * GameConstants.TICKS_PER_SECOND;
+        return 20 * GameConstants.TICKS_PER_SECOND;
     }
 
     @Override
@@ -37,8 +37,13 @@ public class TestHealDot extends MobAbility {
     }
 
     @Override
+    public float getDistance() {
+        return 10.0f;
+    }
+
+    @Override
     public Targeting.TargetType getTargetType() {
-        return Targeting.TargetType.SELF;
+        return Targeting.TargetType.FRIENDLY;
     }
 
     public int getDuration(){

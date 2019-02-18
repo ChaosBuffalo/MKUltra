@@ -12,6 +12,11 @@ public class EntityAIRangedSpellAttack extends EntityAISpellCastingBase {
         super(entity, mobData, cooldown);
     }
 
+    public EntityAIRangedSpellAttack(EntityLivingBase entity, IMobData mobData, int cooldown,
+                                     float strafeStart, float strafeEnd) {
+        super(entity, mobData, cooldown, strafeStart, strafeEnd);
+    }
+
     /**
      * Returns whether the EntityAIBase should begin execution.
      */
@@ -38,12 +43,6 @@ public class EntityAIRangedSpellAttack extends EntityAISpellCastingBase {
     /**
      * Returns whether an in-progress EntityAIBase should continue executing
      */
-    public boolean shouldContinueExecuting() {
-        if (!(entity instanceof EntityLiving)){
-            return false;
-        }
-        return (currentAbility != null && !currentAbility.isAbilityOnCooldown() || !((EntityLiving)entity).getNavigator().noPath());
-    }
 
     /**
      * Execute a one shot task or start executing a continuous task

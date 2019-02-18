@@ -86,7 +86,7 @@ public class EntityAISpellCastingBase extends EntityAIBase {
     List<Entity> getEntitiesInRange(double distance, boolean excludeCaster, Targeting.TargetType type){
         List<Entity> list = entity.world.getEntitiesWithinAABB(EntityLivingBase.class,
                 getTargetableArea(distance),
-                e -> Targeting.isValidTarget(type, e, entity, excludeCaster));
+                e -> Targeting.isValidTarget(type, entity, e, excludeCaster));
         return list;
     }
 

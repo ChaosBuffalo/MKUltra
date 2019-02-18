@@ -6,20 +6,15 @@ import com.chaosbuffalo.mkultra.core.MobAbility;
 import com.chaosbuffalo.mkultra.core.IMobData;
 import com.chaosbuffalo.mkultra.core.MKUMobData;
 import com.chaosbuffalo.mkultra.core.MKURegistry;
+import com.chaosbuffalo.mkultra.core.mob_abilities.MobFireArrow;
 import com.chaosbuffalo.mkultra.core.mob_abilities.MobFireball;
 import com.chaosbuffalo.mkultra.core.mob_abilities.ShadowDash;
-import com.chaosbuffalo.mkultra.core.mob_abilities.TestHealDot;
-import com.chaosbuffalo.mkultra.mob_ai.EntityAIBuffTeammates;
-import com.chaosbuffalo.mkultra.mob_ai.EntityAINearestAttackableTargetMK;
-import com.chaosbuffalo.mkultra.mob_ai.EntityAIRangedSpellAttack;
-import com.chaosbuffalo.mkultra.mob_ai.EntityAIReturnToSpawn;
+import com.chaosbuffalo.mkultra.core.mob_abilities.MobNaturesRemedy;
+import com.chaosbuffalo.mkultra.mob_ai.*;
 import com.chaosbuffalo.mkultra.spawn.*;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -48,11 +43,15 @@ public class ModSpawn {
                 new ItemChoice(new ItemStack(Items.IRON_SWORD, 1), 5, 0),
                 new ItemChoice(new ItemStack(Items.IRON_AXE, 1), 5, 0));
         event.getRegistry().register(iron_weapons);
+        ItemOption bow = new ItemOption(
+                new ResourceLocation(MKUltra.MODID, "bow"),
+                ItemAssigners.MAINHAND,
+                new ItemChoice(new ItemStack(Items.BOW, 1), 5, 0));
+        event.getRegistry().register(bow);
         ItemOption grunt_helm = new ItemOption(
                 new ResourceLocation(MKUltra.MODID, "grunt_helm"),
                 ItemAssigners.HEAD,
-                new ItemChoice(new ItemStack(Items.LEATHER_HELMET, 1), 10, 0),
-                new ItemChoice(new ItemStack(Items.IRON_HELMET, 1), 1, 0));
+                new ItemChoice(new ItemStack(Items.IRON_HELMET, 1), 5, 0));
         event.getRegistry().register(grunt_helm);
         ItemOption grunt_chest = new ItemOption(
                 new ResourceLocation(MKUltra.MODID, "grunt_chest"),
@@ -63,7 +62,6 @@ public class ModSpawn {
         ItemOption captain_helm = new ItemOption(
                 new ResourceLocation(MKUltra.MODID, "captain_helm"),
                 ItemAssigners.HEAD,
-                new ItemChoice(new ItemStack(Items.LEATHER_HELMET, 1), 1, 0),
                 new ItemChoice(new ItemStack(Items.IRON_HELMET, 1), 7, 0));
         event.getRegistry().register(captain_helm);
         ItemOption captain_chest = new ItemOption(
@@ -79,11 +77,11 @@ public class ModSpawn {
     public static void registerAttributeRanges(RegistryEvent.Register<AttributeRange> event) {
         AttributeRange grunt_health = new AttributeRange(
                 new ResourceLocation(MKUltra.MODID, "grunt_health"),
-                BaseSpawnAttributes.MAX_HEALTH, 20.0, 50.0);
+                BaseSpawnAttributes.MAX_HEALTH, 30.0, 60.0);
         event.getRegistry().register(grunt_health);
         AttributeRange captain_health = new AttributeRange(
                 new ResourceLocation(MKUltra.MODID, "captain_health"),
-                BaseSpawnAttributes.MAX_HEALTH, 40.0, 120.0);
+                BaseSpawnAttributes.MAX_HEALTH, 50.0, 120.0);
         event.getRegistry().register(captain_health);
         AttributeRange boss_health = new AttributeRange(
                 new ResourceLocation(MKUltra.MODID, "boss_health"),
@@ -95,11 +93,11 @@ public class ModSpawn {
         event.getRegistry().register(set_follow);
         AttributeRange melee_aggro = new AttributeRange(
                 new ResourceLocation(MKUltra.MODID, "melee_aggro"),
-                MKSpawnAttributes.SET_AGGRO_RADIUS, 8.0, 8.0);
+                MKSpawnAttributes.SET_AGGRO_RADIUS, 10.0, 10.0);
         event.getRegistry().register(melee_aggro);
         AttributeRange range_aggro = new AttributeRange(
                 new ResourceLocation(MKUltra.MODID, "ranged_aggro"),
-                MKSpawnAttributes.SET_AGGRO_RADIUS, 15.0, 15.0);
+                MKSpawnAttributes.SET_AGGRO_RADIUS, 16.0, 16.0);
         event.getRegistry().register(range_aggro);
 //        AttributeRange size_range = new AttributeRange(
 //                new ResourceLocation(MKUltra.MODID, "test_size"),
@@ -110,12 +108,14 @@ public class ModSpawn {
     @SuppressWarnings("unused")
     @SubscribeEvent
     public static void registerMobAbilities(RegistryEvent.Register<MobAbility> event) {
-        MobAbility test_buff = new TestHealDot();
+        MobAbility test_buff = new MobNaturesRemedy();
         event.getRegistry().register(test_buff);
         MobAbility shadow_dash = new ShadowDash();
         event.getRegistry().register(shadow_dash);
         MobAbility fireball = new MobFireball();
         event.getRegistry().register(fireball);
+        MobAbility fire_arrow = new MobFireArrow();
+        event.getRegistry().register(fire_arrow);
     }
 
     @SuppressWarnings("unused")
@@ -140,13 +140,38 @@ public class ModSpawn {
                                 new ResourceLocation(MKUltra.MODID, "grunt_chest")))
                 .withAbilities(
                         MKURegistry.getMobAbility(
-                                new ResourceLocation(MKUltra.MODID, "mob_ability.test_heal_dot")))
+                                new ResourceLocation(MKUltra.MODID, "mob_ability.natures_remedy")))
                 .withAIModifiers(
                         REMOVE_SKELETON_AI,
                         ADD_STANDARD_AI
                 )
                 .withMobName("Skeletal Grunt");
         event.getRegistry().register(skeletal_grunt);
+        MobDefinition skeletal_archer =  new MobDefinition(
+                new ResourceLocation(MKUltra.MODID, "skeletal_archer"),
+                EntitySkeleton.class, 10)
+                .withAttributeRanges(
+                        MKURegistry.getAttributeRange(
+                                new ResourceLocation(MKUltra.MODID, "grunt_health")),
+                        MKURegistry.getAttributeRange(
+                                new ResourceLocation(MKUltra.MODID, "ranged_aggro"))
+                )
+                .withItemOptions(
+                        MKURegistry.getItemOption(
+                                new ResourceLocation(MKUltra.MODID, "bow")),
+                        MKURegistry.getItemOption(
+                                new ResourceLocation(MKUltra.MODID, "grunt_helm")),
+                        MKURegistry.getItemOption(
+                                new ResourceLocation(MKUltra.MODID, "grunt_chest")))
+                .withAbilities(
+                        MKURegistry.getMobAbility(
+                                new ResourceLocation(MKUltra.MODID, "mob_ability.fire_arrow")))
+                .withAIModifiers(
+                        REMOVE_SKELETON_AI,
+                        ADD_STANDARD_AI
+                )
+                .withMobName("Skeletal Archer");
+        event.getRegistry().register(skeletal_archer);
         MobDefinition skeletal_skulker =  new MobDefinition(
                 new ResourceLocation(MKUltra.MODID, "skeletal_skulker"),
                 EntitySkeleton.class, 10)
@@ -165,7 +190,9 @@ public class ModSpawn {
                                 new ResourceLocation(MKUltra.MODID, "captain_chest")))
                 .withAbilities(
                         MKURegistry.getMobAbility(
-                                new ResourceLocation(MKUltra.MODID, "mob_ability.shadow_dash")))
+                                new ResourceLocation(MKUltra.MODID, "mob_ability.shadow_dash")),
+                        MKURegistry.getMobAbility(
+                                new ResourceLocation(MKUltra.MODID, "mob_ability.natures_remedy")))
                 .withAIModifiers(
                         REMOVE_SKELETON_AI,
                         ADD_STANDARD_AI
@@ -188,7 +215,7 @@ public class ModSpawn {
                                 new ResourceLocation(MKUltra.MODID, "grunt_chest")))
                 .withAbilities(
                         MKURegistry.getMobAbility(
-                                new ResourceLocation(MKUltra.MODID, "mob_ability.test_heal_dot")),
+                                new ResourceLocation(MKUltra.MODID, "mob_ability.natures_remedy")),
                         MKURegistry.getMobAbility(
                                 new ResourceLocation(MKUltra.MODID, "mob_ability.fireball")
                         ))
@@ -210,6 +237,8 @@ public class ModSpawn {
                 new ResourceLocation(MKUltra.MODID, "skeletal_skulkers")), 1);
         skeleton_faction.addSpawnList(MobFaction.MobGroups.RANGE_GRUNT, MKURegistry.getSpawnList(
                 new ResourceLocation(MKUltra.MODID, "skeletal_mages")), 1);
+        skeleton_faction.addSpawnList(MobFaction.MobGroups.RANGE_GRUNT, MKURegistry.getSpawnList(
+                new ResourceLocation(MKUltra.MODID, "skeletal_archers")), 1);
         event.getRegistry().register(skeleton_faction);
 
     }
@@ -229,6 +258,10 @@ public class ModSpawn {
         skeletal_mages.addOption(MKURegistry.getMobDefinition(
                 new ResourceLocation(MKUltra.MODID, "skeletal_mage")));
         event.getRegistry().register(skeletal_mages);
+        SpawnList skeletal_archers = new SpawnList(new ResourceLocation(MKUltra.MODID, "skeletal_archers"));
+        skeletal_archers.addOption(MKURegistry.getMobDefinition(
+                new ResourceLocation(MKUltra.MODID, "skeletal_archer")));
+        event.getRegistry().register(skeletal_archers);
     }
 
     @SuppressWarnings("unused")
@@ -254,12 +287,16 @@ public class ModSpawn {
 
         BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addOffensiveSpells = (entity, choice) -> {
             IMobData mobData = MKUMobData.get(entity);
-            return new EntityAIRangedSpellAttack(entity, 3 * GameConstants.TICKS_PER_SECOND, mobData);
+            return new EntityAIRangedSpellAttack(entity, mobData, 3 * GameConstants.TICKS_PER_SECOND,
+                    .25f, .75f);
         };
         BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addLeashRange = (entity, choice) -> {
             IMobData mobData = MKUMobData.get(entity);
             return new EntityAIReturnToSpawn((EntityCreature)entity, mobData, 1.0);
         };
+        BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addHurtTarget = (entity, choice) ->
+                new EntityAIHurtByTargetMK((EntityCreature)entity, true);
+
         ADD_STANDARD_AI = new AIModifier(
                 new ResourceLocation(MKUltra.MODID, "add_standard_ai"),
                 AIModifiers.ADD_TASKS,
@@ -267,7 +304,8 @@ public class ModSpawn {
                 new BehaviorChoice(addAggroTarget, 0, 2, BehaviorChoice.TaskType.TARGET_TASK),
                 new BehaviorChoice(addOffensiveSpells, 0, 3, BehaviorChoice.TaskType.TASK),
                 new BehaviorChoice(getWatchClosestLongRange, 0, 6, BehaviorChoice.TaskType.TASK),
-                new BehaviorChoice(addLeashRange, 0, 1, BehaviorChoice.TaskType.TASK)
+                new BehaviorChoice(addLeashRange, 0, 1, BehaviorChoice.TaskType.TASK),
+                new BehaviorChoice(addHurtTarget, 0, 1, BehaviorChoice.TaskType.TARGET_TASK)
         );
         event.getRegistry().register(ADD_STANDARD_AI);
 
@@ -276,7 +314,8 @@ public class ModSpawn {
                 AIModifiers.REMOVE_AI,
                 new BehaviorChoice(EntityAIWanderAvoidWater.class, 0, BehaviorChoice.TaskType.TASK),
                 new BehaviorChoice(EntityAINearestAttackableTarget.class, 0, BehaviorChoice.TaskType.TARGET_TASK),
-                new BehaviorChoice(EntityAIWatchClosest.class, 0, BehaviorChoice.TaskType.TASK));
+                new BehaviorChoice(EntityAIWatchClosest.class, 0, BehaviorChoice.TaskType.TASK),
+                new BehaviorChoice(EntityAIHurtByTarget.class, 0, BehaviorChoice.TaskType.TARGET_TASK));
         event.getRegistry().register(REMOVE_SKELETON_AI);
 
     }

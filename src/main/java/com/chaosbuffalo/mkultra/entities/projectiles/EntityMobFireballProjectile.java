@@ -51,7 +51,7 @@ public class EntityMobFireballProjectile extends EntityBaseProjectile{
 
         if (entity != null && result.entityHit != null && result.entityHit instanceof EntityLivingBase) {
             EntityLivingBase targetEntity = (EntityLivingBase) result.entityHit;
-            SpellCast projectileEffect = MobFireballEffectPotion.Create(entity, 4.0f, 1.0f);
+            SpellCast projectileEffect = MobFireballEffectPotion.Create(entity, 4.0f, .75f);
 
 
             AreaEffectBuilder.Create(entity, this)

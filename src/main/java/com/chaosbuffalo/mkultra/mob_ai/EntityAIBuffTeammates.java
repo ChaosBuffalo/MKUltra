@@ -34,11 +34,21 @@ public class EntityAIBuffTeammates extends EntityAISpellCastingBase {
                             Entity min = Collections.min(entities, this::compareHealth);
                             if (min instanceof EntityLivingBase){
                                 EntityLivingBase minLiv = (EntityLivingBase) min;
-                                if (minLiv.getHealth() <= minLiv.getMaxHealth() * healThreshold){
-                                    currentAbility = tracker;
-                                    targetEntity = minLiv;
-                                    return true;
+                                if (tracker.getAbility().getEffectPotion() != null){
+                                    if (minLiv.getHealth() <= (minLiv.getMaxHealth() * healThreshold) &&
+                                            !minLiv.isPotionActive(tracker.getAbility().getEffectPotion())){
+                                        currentAbility = tracker;
+                                        targetEntity = minLiv;
+                                        return true;
+                                    }
+                                } else {
+                                    if (minLiv.getHealth() <= (minLiv.getMaxHealth() * healThreshold)){
+                                        currentAbility = tracker;
+                                        targetEntity = minLiv;
+                                        return true;
+                                    }
                                 }
+
                             }
                             break;
                         case BUFF:
