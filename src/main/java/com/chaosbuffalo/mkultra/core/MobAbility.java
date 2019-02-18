@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.core;
 
+import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.utils.RayTraceUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
@@ -36,7 +37,7 @@ public abstract class MobAbility extends IForgeRegistryEntry.Impl<MobAbility> {
     public abstract int getCooldown();
 
     public int getCastTime(){
-        return 0;
+        return GameConstants.TICKS_PER_SECOND;
     }
 
     @Nullable

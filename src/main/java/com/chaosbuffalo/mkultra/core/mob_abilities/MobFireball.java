@@ -37,10 +37,6 @@ public class MobFireball extends MobAbility {
         return 20.0f;
     }
 
-    @Override
-    public int getCastTime(){
-        return GameConstants.TICKS_PER_SECOND;
-    }
 
     @Override
     public void execute(EntityLivingBase entity, IMobData data, EntityLivingBase target, World theWorld) {

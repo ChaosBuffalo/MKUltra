@@ -50,10 +50,6 @@ public class TestHealDot extends MobAbility {
         return NaturesRemedyPotion.INSTANCE;
     }
 
-    @Override
-    public int getCastTime(){
-        return GameConstants.TICKS_PER_SECOND;
-    }
 
     @Override
     public void execute(EntityLivingBase entity, IMobData data, EntityLivingBase target, World theWorld) {
