@@ -26,7 +26,7 @@ public interface IMobData {
 
     HashSet<MobAbilityTracker> getAbilityTrackers();
 
-    void addAbility(BaseMobAbility abilityIn);
+    void addAbility(MobAbility abilityIn);
 
     double getAggroRange();
 

@@ -2,7 +2,7 @@ package com.chaosbuffalo.mkultra.core.mob_abilities;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.BaseMobAbility;
+import com.chaosbuffalo.mkultra.core.MobAbility;
 import com.chaosbuffalo.mkultra.core.IMobData;
 import com.chaosbuffalo.mkultra.core.MKDamageSource;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
@@ -17,7 +17,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class ShadowDash extends BaseMobAbility {
+public class ShadowDash extends MobAbility {
 
     float BASE_DAMAGE = 2;
     float DAMAGE_SCALE = 2;

@@ -23,7 +23,7 @@ public class MKURegistry {
     public static IForgeRegistry<AttributeRange> REGISTRY_MOB_ATTRS = null;
     public static IForgeRegistry<MobDefinition> REGISTRY_MOB_DEF = null;
     public static IForgeRegistry<AIModifier> REGISTRY_MOB_AI_MODS = null;
-    public static IForgeRegistry<BaseMobAbility> REGISTRY_MOB_ABILITIES = null;
+    public static IForgeRegistry<MobAbility> REGISTRY_MOB_ABILITIES = null;
     public static IForgeRegistry<SpawnList> REGISTRY_SPAWN_LISTS = null;
     public static IForgeRegistry<MobFaction> REGISTRY_MOB_FACTIONS = null;
 
@@ -48,7 +48,7 @@ public class MKURegistry {
         return REGISTRY_MOB_ATTRS.getValue(name);
     }
 
-    public static BaseMobAbility getMobAbility(ResourceLocation abilityId) {
+    public static MobAbility getMobAbility(ResourceLocation abilityId) {
         return REGISTRY_MOB_ABILITIES.getValue(abilityId);
     }
 
@@ -123,9 +123,9 @@ public class MKURegistry {
                 .setIDRange(0, Integer.MAX_VALUE - 1)
                 .create();
 
-        REGISTRY_MOB_ABILITIES = new RegistryBuilder<BaseMobAbility>()
+        REGISTRY_MOB_ABILITIES = new RegistryBuilder<MobAbility>()
                 .setName(new ResourceLocation(MKUltra.MODID, "mob_abilities"))
-                .setType(BaseMobAbility.class)
+                .setType(MobAbility.class)
                 .setIDRange(0, Integer.MAX_VALUE - 1)
                 .create();
 

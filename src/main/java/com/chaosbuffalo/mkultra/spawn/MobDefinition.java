@@ -1,5 +1,5 @@
 package com.chaosbuffalo.mkultra.spawn;
-import com.chaosbuffalo.mkultra.core.BaseMobAbility;
+import com.chaosbuffalo.mkultra.core.MobAbility;
 import com.chaosbuffalo.mkultra.core.IMobData;
 import com.chaosbuffalo.mkultra.core.MKUMobData;
 import com.chaosbuffalo.mkultra.init.ModSpawn;
@@ -19,7 +19,7 @@ public class MobDefinition extends IForgeRegistryEntry.Impl<MobDefinition> {
     private final HashSet<AttributeRange> attributeRanges;
     private final HashSet<ItemOption> itemOptions;
     private final ArrayList<AIModifier> aiModifiers;
-    private final HashSet<BaseMobAbility> mobAbilities;
+    private final HashSet<MobAbility> mobAbilities;
     private String mobName;
 
     public MobDefinition(ResourceLocation name, Class<? extends EntityLivingBase> entityClass, int spawnWeight){
@@ -42,7 +42,7 @@ public class MobDefinition extends IForgeRegistryEntry.Impl<MobDefinition> {
         return this;
     }
 
-    public MobDefinition withAbilities(BaseMobAbility... abilities){
+    public MobDefinition withAbilities(MobAbility... abilities){
         mobAbilities.addAll(Arrays.asList(abilities));
         return this;
     }
@@ -71,7 +71,7 @@ public class MobDefinition extends IForgeRegistryEntry.Impl<MobDefinition> {
         IMobData mobData = MKUMobData.get(entity);
         mobData.setMobLevel(level);
         if (mobData != null){
-            for (BaseMobAbility ability : mobAbilities){
+            for (MobAbility ability : mobAbilities){
                 if (ability != null) {
                     mobData.addAbility(ability);
                 }
