@@ -9,7 +9,7 @@ import com.chaosbuffalo.mkultra.core.MKURegistry;
 import com.chaosbuffalo.mkultra.core.mob_abilities.MobFireball;
 import com.chaosbuffalo.mkultra.core.mob_abilities.ShadowDash;
 import com.chaosbuffalo.mkultra.core.mob_abilities.TestHealDot;
-import com.chaosbuffalo.mkultra.mob_ai.EntityAIBuffSelf;
+import com.chaosbuffalo.mkultra.mob_ai.EntityAIBuffTeammates;
 import com.chaosbuffalo.mkultra.mob_ai.EntityAINearestAttackableTargetMK;
 import com.chaosbuffalo.mkultra.mob_ai.EntityAIRangedSpellAttack;
 import com.chaosbuffalo.mkultra.mob_ai.EntityAIReturnToSpawn;
@@ -246,7 +246,8 @@ public class ModSpawn {
                 (entity, choice) -> new EntityAIWatchClosest(entity, EntityPlayer.class, 20.0F);
         BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addSelfBuff = (entity, choice) -> {
             IMobData mobData = MKUMobData.get(entity);
-            return new EntityAIBuffSelf(entity, mobData, .75f);
+            return new EntityAIBuffTeammates(entity, mobData, .75f,
+                    3 * GameConstants.TICKS_PER_SECOND);
         };
         BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addAggroTarget =
                 (entity, choice) -> new EntityAINearestAttackableTargetMK((EntityCreature) entity,true);
@@ -262,16 +263,16 @@ public class ModSpawn {
         ADD_STANDARD_AI = new AIModifier(
                 new ResourceLocation(MKUltra.MODID, "add_standard_ai"),
                 AIModifiers.ADD_TASKS,
-                new BehaviorChoice(addSelfBuff, 0, 3, BehaviorChoice.TaskType.TASK),
+                new BehaviorChoice(addSelfBuff, 0, 2, BehaviorChoice.TaskType.TASK),
                 new BehaviorChoice(addAggroTarget, 0, 2, BehaviorChoice.TaskType.TARGET_TASK),
                 new BehaviorChoice(addOffensiveSpells, 0, 3, BehaviorChoice.TaskType.TASK),
                 new BehaviorChoice(getWatchClosestLongRange, 0, 6, BehaviorChoice.TaskType.TASK),
-                new BehaviorChoice(addLeashRange, 0, 2, BehaviorChoice.TaskType.TASK)
+                new BehaviorChoice(addLeashRange, 0, 1, BehaviorChoice.TaskType.TASK)
         );
         event.getRegistry().register(ADD_STANDARD_AI);
 
         REMOVE_SKELETON_AI = new AIModifier(
-                new ResourceLocation(MKUltra.MODID, "remove_wander"),
+                new ResourceLocation(MKUltra.MODID, "remove_skeleton_ai"),
                 AIModifiers.REMOVE_AI,
                 new BehaviorChoice(EntityAIWanderAvoidWater.class, 0, BehaviorChoice.TaskType.TASK),
                 new BehaviorChoice(EntityAINearestAttackableTarget.class, 0, BehaviorChoice.TaskType.TARGET_TASK),

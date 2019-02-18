@@ -3,6 +3,7 @@ package com.chaosbuffalo.mkultra.core;
 import com.chaosbuffalo.mkultra.utils.RayTraceUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -10,6 +11,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 
 public abstract class MobAbility extends IForgeRegistryEntry.Impl<MobAbility> {
@@ -35,6 +37,11 @@ public abstract class MobAbility extends IForgeRegistryEntry.Impl<MobAbility> {
 
     public int getCastTime(){
         return 0;
+    }
+
+    @Nullable
+    public Potion getEffectPotion(){
+        return null;
     }
 
     public enum AbilityType{
