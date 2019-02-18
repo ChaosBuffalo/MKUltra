@@ -2,7 +2,7 @@ package com.chaosbuffalo.mkultra.command.subcommands;
 
 
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.BaseClass;
+import com.chaosbuffalo.mkultra.core.PlayerClass;
 import com.chaosbuffalo.mkultra.core.MKURegistry;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerData;
@@ -60,7 +60,7 @@ public class ClassCommand extends CommandBase {
                 if (data.hasChosenClass()) {
                     ResourceLocation currentClass = data.getClassId();
                     data.unlearnClass(currentClass);
-                    BaseClass bc = MKURegistry.getClass(currentClass);
+                    PlayerClass bc = MKURegistry.getClass(currentClass);
                     sender.sendMessage(new TextComponentString(String.format("Class '%s' unlearned", bc.getClassName())));
                 }
                 else {

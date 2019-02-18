@@ -23,7 +23,7 @@ public class XpTableScreen extends GuiScreen {
         if (pData == null)
             return;
 
-        BaseClass playerClass = MKURegistry.getClass(pData.getClassId());
+        PlayerClass playerClass = MKURegistry.getClass(pData.getClassId());
         if (playerClass == null)
             return;
 

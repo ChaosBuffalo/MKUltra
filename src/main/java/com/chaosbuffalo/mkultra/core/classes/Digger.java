@@ -2,7 +2,7 @@ package com.chaosbuffalo.mkultra.core.classes;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.PlayerAbility;
-import com.chaosbuffalo.mkultra.core.BaseClass;
+import com.chaosbuffalo.mkultra.core.PlayerClass;
 import com.chaosbuffalo.mkultra.core.abilities.*;
 import com.chaosbuffalo.mkultra.core.ArmorClass;
 import com.chaosbuffalo.mkultra.init.ModItems;
@@ -13,7 +13,7 @@ import net.minecraft.util.ResourceLocation;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Digger extends BaseClass {
+public class Digger extends PlayerClass {
 
     public static final List<PlayerAbility> abilities = new ArrayList<>(5);
     private static final ArmorClass ARMORCLASS = new DiggerArmorClass(new ResourceLocation(MKUltra.MODID, "armor_class.digger"));

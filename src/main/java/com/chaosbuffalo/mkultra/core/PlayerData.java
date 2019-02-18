@@ -124,7 +124,7 @@ public class PlayerData implements IPlayerData {
             setHealth(Math.min(20, this.player.getHealth()));
             setTotalHealth(20);
         } else {
-            BaseClass playerClass = MKURegistry.getClass(getClassId());
+            PlayerClass playerClass = MKURegistry.getClass(getClassId());
             if (playerClass == null)
                 return;
 
@@ -810,7 +810,7 @@ public class PlayerData implements IPlayerData {
         if (mainHandStack.isEmpty())
             return false;
 
-        BaseClass baseClass = MKURegistry.getClass(classId);
+        PlayerClass baseClass = MKURegistry.getClass(classId);
         if (baseClass == null)
             return false;
 
@@ -842,7 +842,7 @@ public class PlayerData implements IPlayerData {
             knownClasses.remove(classId);
 
             // Unlearn all abilities offered by this class
-            BaseClass bc = MKURegistry.getClass(classId);
+            PlayerClass bc = MKURegistry.getClass(classId);
             if (bc != null) {
                 bc.getAbilities().forEach(a -> unlearnAbility(a.getAbilityId(), false, true));
             }
@@ -921,7 +921,7 @@ public class PlayerData implements IPlayerData {
 
     public boolean canWearArmorMaterial(ItemArmor.ArmorMaterial material) {
 
-        BaseClass currentClass = MKURegistry.getClass(getClassId());
+        PlayerClass currentClass = MKURegistry.getClass(getClassId());
         // If no class, default to vanilla behaviour of wearing anything
         // Then check the current class if it's allowed
         // Then check for special exceptions granted by other means

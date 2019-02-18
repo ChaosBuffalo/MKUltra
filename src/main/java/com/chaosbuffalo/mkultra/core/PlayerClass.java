@@ -6,16 +6,16 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import java.util.List;
 
-public abstract class BaseClass extends IForgeRegistryEntry.Impl<BaseClass> {
+public abstract class PlayerClass extends IForgeRegistryEntry.Impl<PlayerClass> {
 
     private String className;
     private ResourceLocation classId;
 
-    protected BaseClass(String modId, String pathName, String className) {
+    protected PlayerClass(String modId, String pathName, String className) {
         this(new ResourceLocation(modId, pathName), className);
     }
 
-    public BaseClass(ResourceLocation classId, String className) {
+    public PlayerClass(ResourceLocation classId, String className) {
         this.classId = classId;
         this.className = className;
     }

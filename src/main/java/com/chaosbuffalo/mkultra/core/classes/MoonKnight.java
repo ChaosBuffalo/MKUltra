@@ -3,7 +3,7 @@ package com.chaosbuffalo.mkultra.core.classes;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.ArmorClass;
 import com.chaosbuffalo.mkultra.core.PlayerAbility;
-import com.chaosbuffalo.mkultra.core.BaseClass;
+import com.chaosbuffalo.mkultra.core.PlayerClass;
 import com.chaosbuffalo.mkultra.core.abilities.*;
 import com.chaosbuffalo.mkultra.init.ModItems;
 import net.minecraft.item.Item;
@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by Jacob on 3/24/2018.
  */
-public class MoonKnight extends BaseClass {
+public class MoonKnight extends PlayerClass {
 
     private static final List<PlayerAbility> abilities = new ArrayList<>(5);
 
