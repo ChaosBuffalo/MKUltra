@@ -5,12 +5,13 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.spawn.*;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
+
 
 import java.util.List;
 import java.util.Map;
@@ -28,6 +29,7 @@ public class MKURegistry {
     public static IForgeRegistry<SpawnList> REGISTRY_SPAWN_LISTS = null;
     public static IForgeRegistry<MobFaction> REGISTRY_MOB_FACTIONS = null;
     public static IForgeRegistry<AIGenerator> REGISTRY_AI_GENERATORS = null;
+    public static IForgeRegistry<AttributeSetter> REGISTRY_ATTRIBUTE_SETTERS = null;
 
 
     public static ResourceLocation INVALID_CLASS = new ResourceLocation(MKUltra.MODID, "class.invalid");
@@ -64,6 +66,10 @@ public class MKURegistry {
         return EMPTY_MOB;
     }
 
+    public static AIModifier getAIModifier(ResourceLocation name){
+        return REGISTRY_MOB_AI_MODS.getValue(name);
+    }
+
     public static MobFaction getFaction(ResourceLocation name){
         return REGISTRY_MOB_FACTIONS.getValue(name);
     }
@@ -92,6 +98,10 @@ public class MKURegistry {
 
     public static PlayerAbility getAbility(ResourceLocation abilityId) {
         return REGISTRY_ABILITIES.getValue(abilityId);
+    }
+
+    public static AttributeSetter getAttributeSetter(ResourceLocation name){
+        return REGISTRY_ATTRIBUTE_SETTERS.getValue(name);
     }
 
 
@@ -156,6 +166,12 @@ public class MKURegistry {
         REGISTRY_AI_GENERATORS = new RegistryBuilder<AIGenerator>()
                 .setName(new ResourceLocation(MKUltra.MODID, "mob_ai_generators"))
                 .setType(AIGenerator.class)
+                .setIDRange(0, Integer.MAX_VALUE - 1)
+                .create();
+
+        REGISTRY_ATTRIBUTE_SETTERS = new RegistryBuilder<AttributeSetter>()
+                .setName(new ResourceLocation(MKUltra.MODID, "mob_aattr_setters"))
+                .setType(AttributeSetter.class)
                 .setIDRange(0, Integer.MAX_VALUE - 1)
                 .create();
     }

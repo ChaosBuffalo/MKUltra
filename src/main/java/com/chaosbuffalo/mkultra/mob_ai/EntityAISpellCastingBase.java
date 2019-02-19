@@ -28,6 +28,7 @@ public class EntityAISpellCastingBase extends EntityAIBase {
     MobAbilityTracker currentAbility;
     public float strafeRangeStart;
     public float strafeRangeEnd;
+    public Targeting.TargetType desiredTargetType;
 
     public EntityAISpellCastingBase(EntityLivingBase entity, IMobData mobData, int cooldown) {
         this(entity, mobData, cooldown, .25f, .75f);
@@ -143,9 +144,6 @@ public class EntityAISpellCastingBase extends EntityAIBase {
     @Override
     public void resetTask() {
         super.resetTask();
-        if (entity instanceof IRangedAttackMob){
-            ((IRangedAttackMob)this.entity).setSwingingArms(true);
-        }
         this.castTime = cooldown;
         this.currentAbility = null;
         canCast = false;
@@ -153,7 +151,8 @@ public class EntityAISpellCastingBase extends EntityAIBase {
 
     @Override
     public boolean shouldContinueExecuting() {
-        if (!(entity instanceof EntityLiving) || targetEntity == null){
+        if (!(entity instanceof EntityLiving) || targetEntity == null ||
+                !Targeting.isValidTarget(desiredTargetType, entity, targetEntity, true)){
             return false;
         }
         return (currentAbility != null && !currentAbility.isAbilityOnCooldown() || !((EntityLiving)entity).getNavigator().noPath());
@@ -164,7 +163,7 @@ public class EntityAISpellCastingBase extends EntityAIBase {
     public void updateTask() {
         if (entity instanceof EntityLiving){
             EntityLiving entLiv = (EntityLiving)entity;
-            if (targetEntity != null) {
+            if (targetEntity != null && currentAbility != null) {
                 double d0 = this.entity.getDistanceSq(targetEntity.posX,
                         targetEntity.getEntityBoundingBox().minY, targetEntity.posZ);
                 boolean canSee = entLiv.getEntitySenses().canSee(targetEntity);
@@ -181,14 +180,18 @@ public class EntityAISpellCastingBase extends EntityAIBase {
                         currentAbility.useAbility(targetEntity);
                         castTime = cooldown;
                         canCast = false;
+                        if (entity instanceof IRangedAttackMob){
+                            ((IRangedAttackMob)this.entity).setSwingingArms(true);
+                        }
+                        currentAbility = null;
                     }
                 } else if (--this.castTime <= 0 && this.seeTime >= -60) {
                     if (currentAbility.isEngageTimeGreaterThanCastTime(-1*castTime)){
                         canCast = true;
-                    } else {
                         if (entity instanceof IRangedAttackMob){
                             ((IRangedAttackMob)this.entity).setSwingingArms(true);
                         }
+                    } else {
                         Vec3d lookVec = entLiv.getLookVec();
                         if (this.castTime % 2 == 0){
                             int particleId;

@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.spawn;
 
+import com.chaosbuffalo.mkultra.log.Log;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -86,6 +87,7 @@ public class AIModifiers {
                 if (modifier.level >= choice.minLevel){
                     EntityAIBase toAdd = choice.getTask(entLiv);
                     if (toAdd != null){
+                        Log.info("Adding %s to entity %s", choice.getTaskType().name(), entity.toString());
                         switch (choice.getTaskType()){
                             case TARGET_TASK:
                                 entLiv.targetTasks.addTask(choice.getTaskPriority(), toAdd);

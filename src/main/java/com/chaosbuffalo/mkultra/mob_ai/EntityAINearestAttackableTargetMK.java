@@ -55,7 +55,7 @@ public class EntityAINearestAttackableTargetMK extends EntityAITarget {
 
     @Override
     public boolean shouldExecute() {
-        if (this.targetChance > 0 && this.taskOwner.getRNG().nextInt(this.targetChance) != 0) {
+        if (this.taskOwner.getAttackTarget() != null || (this.targetChance > 0 && this.taskOwner.getRNG().nextInt(this.targetChance) != 0)) {
             return false;
         } else {
             List<Entity> list = taskOwner.world.getEntitiesInAABBexcluding(taskOwner,

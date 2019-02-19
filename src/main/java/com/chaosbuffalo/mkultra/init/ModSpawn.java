@@ -10,6 +10,8 @@ import com.chaosbuffalo.mkultra.core.mob_abilities.MobFireArrow;
 import com.chaosbuffalo.mkultra.core.mob_abilities.MobFireball;
 import com.chaosbuffalo.mkultra.core.mob_abilities.ShadowDash;
 import com.chaosbuffalo.mkultra.core.mob_abilities.MobNaturesRemedy;
+import com.chaosbuffalo.mkultra.json_utils.LoadingHelper;
+import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.mob_ai.*;
 import com.chaosbuffalo.mkultra.spawn.*;
 import net.minecraft.entity.EntityCreature;
@@ -37,12 +39,8 @@ public class ModSpawn {
     @SuppressWarnings("unused")
     @SubscribeEvent
     public static void registerItemOptions(RegistryEvent.Register<ItemOption> event) {
-        ItemOption iron_weapons = new ItemOption(
-                new ResourceLocation(MKUltra.MODID, "iron_weapons"),
-                ItemAssigners.MAINHAND,
-                new ItemChoice(new ItemStack(Items.IRON_SWORD, 1), 5, 0),
-                new ItemChoice(new ItemStack(Items.IRON_AXE, 1), 5, 0));
-        event.getRegistry().register(iron_weapons);
+        Log.info("Registering Item Options");
+        LoadingHelper.loadModsForType("/spawn/item_options", LoadingHelper::loadItemOption, event);
         ItemOption bow = new ItemOption(
                 new ResourceLocation(MKUltra.MODID, "bow"),
                 ItemAssigners.MAINHAND,
@@ -74,40 +72,69 @@ public class ModSpawn {
 
     @SuppressWarnings("unused")
     @SubscribeEvent
+    public static void registerAttributeSetters(RegistryEvent.Register<AttributeSetter> event) {
+        Log.info("Registering Attribute Setters");
+        AttributeSetter max_health = new AttributeSetter(MKUltra.MODID,
+                "max_health", BaseSpawnAttributes.MAX_HEALTH);
+        event.getRegistry().register(max_health);
+        AttributeSetter follow_range = new AttributeSetter(MKUltra.MODID,
+                "follow_range", BaseSpawnAttributes.FOLLOW_RANGE);
+        event.getRegistry().register(follow_range);
+        AttributeSetter attack_speed = new AttributeSetter(MKUltra.MODID,
+                "attack_speed", BaseSpawnAttributes.ATTACK_SPEED);
+        event.getRegistry().register(attack_speed);
+        AttributeSetter armor = new AttributeSetter(MKUltra.MODID,
+                "armor", BaseSpawnAttributes.ARMOR);
+        event.getRegistry().register(armor);
+        AttributeSetter armor_toughness = new AttributeSetter(MKUltra.MODID,
+                "armor_toughness", BaseSpawnAttributes.ARMOR_TOUGHNESS);
+        event.getRegistry().register(armor_toughness);
+        AttributeSetter attack_damage = new AttributeSetter(MKUltra.MODID,
+                "attack_damage", BaseSpawnAttributes.ATTACK_DAMAGE);
+        event.getRegistry().register(attack_damage);
+        AttributeSetter knockback_resistance = new AttributeSetter(MKUltra.MODID,
+                "knockback_resistance", BaseSpawnAttributes.KNOCKBACK_RESISTANCE);
+        event.getRegistry().register(knockback_resistance);
+        AttributeSetter movement_speed = new AttributeSetter(MKUltra.MODID,
+                "movement_speed", BaseSpawnAttributes.MOVEMENT_SPEED);
+        event.getRegistry().register(movement_speed);
+        AttributeSetter aggro_range = new AttributeSetter(MKUltra.MODID,
+                "aggro_range", MKSpawnAttributes.SET_AGGRO_RADIUS);
+        event.getRegistry().register(aggro_range);
+    }
+
+
+    @SuppressWarnings("unused")
+    @SubscribeEvent
     public static void registerAttributeRanges(RegistryEvent.Register<AttributeRange> event) {
-        AttributeRange grunt_health = new AttributeRange(
-                new ResourceLocation(MKUltra.MODID, "grunt_health"),
-                BaseSpawnAttributes.MAX_HEALTH, 30.0, 60.0);
-        event.getRegistry().register(grunt_health);
-        AttributeRange captain_health = new AttributeRange(
-                new ResourceLocation(MKUltra.MODID, "captain_health"),
-                BaseSpawnAttributes.MAX_HEALTH, 50.0, 120.0);
-        event.getRegistry().register(captain_health);
+        Log.info("Registering Attribute Ranges");
+        LoadingHelper.loadModsForType("/spawn/attributes", LoadingHelper::loadAttribute, event);
         AttributeRange boss_health = new AttributeRange(
                 new ResourceLocation(MKUltra.MODID, "boss_health"),
-                BaseSpawnAttributes.MAX_HEALTH, 200.00, 500.0);
+                MKURegistry.getAttributeSetter(new ResourceLocation(MKUltra.MODID, "max_health")),
+                200.00, 500.0);
         event.getRegistry().register(boss_health);
         AttributeRange set_follow = new AttributeRange(
                 new ResourceLocation(MKUltra.MODID, "follow_range"),
-                BaseSpawnAttributes.FOLLOW_RANGE, 20.0, 20.0);
+                MKURegistry.getAttributeSetter(new ResourceLocation(MKUltra.MODID, "follow_range")),
+                20.0, 20.0);
         event.getRegistry().register(set_follow);
         AttributeRange melee_aggro = new AttributeRange(
                 new ResourceLocation(MKUltra.MODID, "melee_aggro"),
-                MKSpawnAttributes.SET_AGGRO_RADIUS, 10.0, 10.0);
+                MKURegistry.getAttributeSetter(new ResourceLocation(MKUltra.MODID, "aggro_range")),
+                10.0, 10.0);
         event.getRegistry().register(melee_aggro);
         AttributeRange range_aggro = new AttributeRange(
                 new ResourceLocation(MKUltra.MODID, "ranged_aggro"),
-                MKSpawnAttributes.SET_AGGRO_RADIUS, 16.0, 16.0);
+                MKURegistry.getAttributeSetter(new ResourceLocation(MKUltra.MODID, "aggro_range")),
+                16.0, 16.0);
         event.getRegistry().register(range_aggro);
-//        AttributeRange size_range = new AttributeRange(
-//                new ResourceLocation(MKUltra.MODID, "test_size"),
-//                BaseSpawnAttributes.SCALE_SIZE, 2.0, 2.0);
-//        event.getRegistry().register(size_range);
     }
 
     @SuppressWarnings("unused")
     @SubscribeEvent
     public static void registerMobAbilities(RegistryEvent.Register<MobAbility> event) {
+        Log.info("Registering Mob Abilities");
         MobAbility test_buff = new MobNaturesRemedy();
         event.getRegistry().register(test_buff);
         MobAbility shadow_dash = new ShadowDash();
@@ -121,7 +148,7 @@ public class ModSpawn {
     @SuppressWarnings("unused")
     @SubscribeEvent
     public static void registerMobDefinitions(RegistryEvent.Register<MobDefinition> event) {
-
+        Log.info("Registering Mob Definitions");
         MobDefinition skeletal_grunt =  new MobDefinition(
                 new ResourceLocation(MKUltra.MODID, "skeletal_grunt"),
                 EntitySkeleton.class, 10)
@@ -142,8 +169,8 @@ public class ModSpawn {
                         MKURegistry.getMobAbility(
                                 new ResourceLocation(MKUltra.MODID, "mob_ability.natures_remedy")))
                 .withAIModifiers(
-                        REMOVE_SKELETON_AI,
-                        ADD_STANDARD_AI
+                        MKURegistry.getAIModifier(new ResourceLocation(MKUltra.MODID, "remove_skeleton_ai")),
+                        MKURegistry.getAIModifier(new ResourceLocation(MKUltra.MODID, "add_standard_ai"))
                 )
                 .withMobName("Skeletal Grunt");
         event.getRegistry().register(skeletal_grunt);
@@ -167,8 +194,8 @@ public class ModSpawn {
                         MKURegistry.getMobAbility(
                                 new ResourceLocation(MKUltra.MODID, "mob_ability.fire_arrow")))
                 .withAIModifiers(
-                        REMOVE_SKELETON_AI,
-                        ADD_STANDARD_AI
+                        MKURegistry.getAIModifier(new ResourceLocation(MKUltra.MODID, "remove_skeleton_ai")),
+                        MKURegistry.getAIModifier(new ResourceLocation(MKUltra.MODID, "add_standard_ai"))
                 )
                 .withMobName("Skeletal Archer");
         event.getRegistry().register(skeletal_archer);
@@ -194,8 +221,8 @@ public class ModSpawn {
                         MKURegistry.getMobAbility(
                                 new ResourceLocation(MKUltra.MODID, "mob_ability.natures_remedy")))
                 .withAIModifiers(
-                        REMOVE_SKELETON_AI,
-                        ADD_STANDARD_AI
+                        MKURegistry.getAIModifier(new ResourceLocation(MKUltra.MODID, "remove_skeleton_ai")),
+                        MKURegistry.getAIModifier(new ResourceLocation(MKUltra.MODID, "add_standard_ai"))
                 )
                 .withMobName("Skeletal Skulker");
         event.getRegistry().register(skeletal_skulker);
@@ -220,8 +247,8 @@ public class ModSpawn {
                                 new ResourceLocation(MKUltra.MODID, "mob_ability.fireball")
                         ))
                 .withAIModifiers(
-                        REMOVE_SKELETON_AI,
-                        ADD_STANDARD_AI
+                        MKURegistry.getAIModifier(new ResourceLocation(MKUltra.MODID, "remove_skeleton_ai")),
+                        MKURegistry.getAIModifier(new ResourceLocation(MKUltra.MODID, "add_standard_ai"))
                 )
                 .withMobName("Skeletal Mage");
         event.getRegistry().register(skeletal_mage);
@@ -230,6 +257,7 @@ public class ModSpawn {
     @SuppressWarnings("unused")
     @SubscribeEvent
     public static void registerMobFactions(RegistryEvent.Register<MobFaction> event) {
+        Log.info("Registering Mob Factions");
         MobFaction skeleton_faction = new MobFaction(MKUltra.MODID, "skeletons");
         skeleton_faction.addSpawnList(MobFaction.MobGroups.MELEE_GRUNT, MKURegistry.getSpawnList(
                 new ResourceLocation(MKUltra.MODID, "skeletal_grunts")), 1);
@@ -246,6 +274,7 @@ public class ModSpawn {
     @SuppressWarnings("unused")
     @SubscribeEvent
     public static void registerSpawnLists(RegistryEvent.Register<SpawnList> event) {
+        Log.info("Registering Spawn Lists");
         SpawnList skeletal_grunts = new SpawnList(new ResourceLocation(MKUltra.MODID, "skeletal_grunts"));
         skeletal_grunts.addOption(MKURegistry.getMobDefinition(
                 new ResourceLocation(MKUltra.MODID, "skeletal_grunt")));
@@ -267,6 +296,7 @@ public class ModSpawn {
     @SuppressWarnings("unused")
     @SubscribeEvent
     public static void registerAIGenerators(RegistryEvent.Register<AIGenerator> event){
+        Log.info("Registering AI Generators");
         BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> getWatchClosestLongRange =
                 (entity, choice) -> new EntityAIWatchClosest(entity, EntityPlayer.class, 20.0F);
         AIGenerator watchClosest = new AIGenerator(MKUltra.MODID, "long_range_watch_closest",
@@ -294,7 +324,7 @@ public class ModSpawn {
             IMobData mobData = MKUMobData.get(entity);
             return new EntityAIReturnToSpawn((EntityCreature)entity, mobData, 1.0);
         };
-        AIGenerator leashRange = new AIGenerator(MKUltra.MODID, "leash_range", addOffensiveSpells);
+        AIGenerator leashRange = new AIGenerator(MKUltra.MODID, "leash_range", addLeashRange);
         event.getRegistry().register(leashRange);
         BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addHurtTarget = (entity, choice) ->
                 new EntityAIHurtByTargetMK((EntityCreature)entity, true);
@@ -306,6 +336,8 @@ public class ModSpawn {
     @SuppressWarnings("unused")
     @SubscribeEvent
     public static void registerAIModifiers(RegistryEvent.Register<AIModifier> event) {
+        Log.info("Registering AI Modifiers");
+        LoadingHelper.loadModsForType("/spawn/ai_modifiers", LoadingHelper::loadAIModifier, event);
         AIModifier remove_all_tasks = new AIModifier(
                 new ResourceLocation(MKUltra.MODID, "remove_all_tasks"),
                 AIModifiers.REMOVE_ALL_TASKS);
@@ -314,37 +346,6 @@ public class ModSpawn {
                 new ResourceLocation(MKUltra.MODID, "remove_all_target_tasks"),
                 AIModifiers.REMOVE_ALL_TARGET_TASKS);
         event.getRegistry().register(remove_all_target_tasks);
-
-        ADD_STANDARD_AI = new AIModifier(
-                new ResourceLocation(MKUltra.MODID, "add_standard_ai"),
-                AIModifiers.ADD_TASKS,
-                new BehaviorChoice(MKURegistry.getAIGenerator(
-                        new ResourceLocation(MKUltra.MODID, "beneficial_spells")),
-                        0, 2, BehaviorChoice.TaskType.TASK),
-                new BehaviorChoice(MKURegistry.getAIGenerator(
-                        new ResourceLocation(MKUltra.MODID, "aggro_target")),
-                        0, 2, BehaviorChoice.TaskType.TARGET_TASK),
-                new BehaviorChoice(
-                        MKURegistry.getAIGenerator(new ResourceLocation(MKUltra.MODID, "offensive_spells")),
-                        0, 3, BehaviorChoice.TaskType.TASK),
-                new BehaviorChoice(
-                        MKURegistry.getAIGenerator(new ResourceLocation(MKUltra.MODID, "long_range_watch_closest")),
-                        0, 6, BehaviorChoice.TaskType.TASK),
-                new BehaviorChoice(MKURegistry.getAIGenerator(new ResourceLocation(MKUltra.MODID, "leash_range")),
-                        0, 1, BehaviorChoice.TaskType.TASK),
-                new BehaviorChoice(MKURegistry.getAIGenerator(new ResourceLocation(MKUltra.MODID, "hurt_target")),
-                        0, 1, BehaviorChoice.TaskType.TARGET_TASK)
-        );
-        event.getRegistry().register(ADD_STANDARD_AI);
-
-        REMOVE_SKELETON_AI = new AIModifier(
-                new ResourceLocation(MKUltra.MODID, "remove_skeleton_ai"),
-                AIModifiers.REMOVE_AI,
-                new BehaviorChoice(EntityAIWanderAvoidWater.class, 0, BehaviorChoice.TaskType.TASK),
-                new BehaviorChoice(EntityAINearestAttackableTarget.class, 0, BehaviorChoice.TaskType.TARGET_TASK),
-                new BehaviorChoice(EntityAIWatchClosest.class, 0, BehaviorChoice.TaskType.TASK),
-                new BehaviorChoice(EntityAIHurtByTarget.class, 0, BehaviorChoice.TaskType.TARGET_TASK));
-        event.getRegistry().register(REMOVE_SKELETON_AI);
 
     }
 

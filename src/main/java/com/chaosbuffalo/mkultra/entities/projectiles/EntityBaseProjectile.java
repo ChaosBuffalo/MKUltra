@@ -1,10 +1,7 @@
 package com.chaosbuffalo.mkultra.entities.projectiles;
 
 import com.chaosbuffalo.mkultra.log.Log;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockBush;
-import net.minecraft.block.BlockLeaves;
-import net.minecraft.block.BlockReed;
+import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -430,7 +427,9 @@ public abstract class EntityBaseProjectile extends Entity implements IProjectile
 
     protected boolean canPassThroughBlock(Block block) {
         return block instanceof BlockBush ||
-                block instanceof BlockReed || block instanceof BlockLeaves;
+                block instanceof BlockReed ||
+                block instanceof BlockLeaves ||
+                block instanceof BlockGrass;
     }
 
 

@@ -3,6 +3,7 @@ package com.chaosbuffalo.mkultra.mob_ai;
 import com.chaosbuffalo.mkultra.core.MobAbility;
 import com.chaosbuffalo.mkultra.core.IMobData;
 import com.chaosbuffalo.mkultra.core.MobAbilityTracker;
+import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 
@@ -10,11 +11,13 @@ public class EntityAIRangedSpellAttack extends EntityAISpellCastingBase {
 
     public EntityAIRangedSpellAttack(EntityLivingBase entity, IMobData mobData, int cooldown) {
         super(entity, mobData, cooldown);
+        desiredTargetType = Targeting.TargetType.ENEMY;
     }
 
     public EntityAIRangedSpellAttack(EntityLivingBase entity, IMobData mobData, int cooldown,
                                      float strafeStart, float strafeEnd) {
         super(entity, mobData, cooldown, strafeStart, strafeEnd);
+        desiredTargetType = Targeting.TargetType.ENEMY;
     }
 
     /**
