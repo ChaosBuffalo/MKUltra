@@ -47,7 +47,7 @@ public class ClericHealPotion extends SpellPotionBase {
     @Override
     public boolean isValidTarget(Targeting.TargetType targetType, Entity caster, EntityLivingBase target, boolean excludeCaster) {
         return super.isValidTarget(targetType, caster, target, excludeCaster) ||
-                (target.isEntityUndead() && MKConfig.HEALS_DAMAGE_UNDEAD);
+                (target.isEntityUndead() && MKConfig.gameplay.HEALS_DAMAGE_UNDEAD);
     }
 
     @Override
@@ -61,9 +61,9 @@ public class ClericHealPotion extends SpellPotionBase {
         float value = cast.getScaledValue(amplifier);
 
         if (target.isEntityUndead()) {
-            if (MKConfig.HEALS_DAMAGE_UNDEAD){
+            if (MKConfig.gameplay.HEALS_DAMAGE_UNDEAD){
                 target.attackEntityFrom(MKDamageSource.causeIndirectMagicDamage(
-                        new Heal().getAbilityId(), applier, caster), MKConfig.HEAL_DAMAGE_MULTIPLIER * value);
+                        new Heal().getAbilityId(), applier, caster), MKConfig.gameplay.HEAL_DAMAGE_MULTIPLIER * value);
             }
         } else {
             target.heal(value);
