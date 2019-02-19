@@ -1,8 +1,8 @@
 
 package com.chaosbuffalo.mkultra.network.packets.client;
 
-import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
+import com.chaosbuffalo.mkultra.core.PlayerData;
 import com.chaosbuffalo.mkultra.item.DiamondDust;
 import com.chaosbuffalo.mkultra.item.ItemHelper;
 import com.chaosbuffalo.mkultra.network.MessageHandler;
@@ -20,13 +20,15 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 public class ClassLearnPacket implements IMessage {
     private ResourceLocation classId;
     private boolean learn;
+    private boolean enforceChecks;
 
     public ClassLearnPacket() {
     }
 
-    public ClassLearnPacket(ResourceLocation classId, boolean learn) {
+    public ClassLearnPacket(ResourceLocation classId, boolean learn, boolean enforceChecks) {
         this.classId = classId;
         this.learn = learn;
+        this.enforceChecks = enforceChecks;
     }
 
     @Override
@@ -34,6 +36,7 @@ public class ClassLearnPacket implements IMessage {
         PacketBuffer pb = new PacketBuffer(buf);
         classId = pb.readResourceLocation();
         learn = pb.readBoolean();
+        enforceChecks = pb.readBoolean();
     }
 
     @Override
@@ -41,6 +44,7 @@ public class ClassLearnPacket implements IMessage {
         PacketBuffer pb = new PacketBuffer(buf);
         pb.writeResourceLocation(classId);
         pb.writeBoolean(learn);
+        pb.writeBoolean(enforceChecks);
     }
 
     // ========================================================================
@@ -52,22 +56,31 @@ public class ClassLearnPacket implements IMessage {
                                             final ClassLearnPacket msg,
                                             MessageContext ctx) {
             ServerUtils.addScheduledTask(() -> {
-                IPlayerData data = MKUPlayerData.get(player);
+                PlayerData data = (PlayerData) MKUPlayerData.get(player);
                 if (data != null) {
                     boolean canSwitch;
+                    // Make sure the player is an OP if they want to bypass checks
+                    if (!player.canUseCommand(2, "")) {
+                        msg.enforceChecks = true;
+                    }
                     if (msg.learn) {
-                        canSwitch = data.learnClass(msg.classId);
-                        if (canSwitch) {
+                        canSwitch = data.learnClass(msg.classId, msg.enforceChecks);
+                        if (canSwitch && msg.enforceChecks) {
                             ItemStack heldItem = player.getHeldItem(EnumHand.MAIN_HAND);
                             ItemHelper.damageStack(player, heldItem, 1);
                         }
                     } else {
-                        // switching. need to consume item
-                        ItemStack dust = player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND);
-                        if (!(dust.getItem() instanceof DiamondDust)) {
-                            return;
-                        } else {
-                            canSwitch = ItemHelper.shrinkStack(player, dust, 1);
+                        if (msg.enforceChecks) {
+                            // switching. need to consume item
+                            ItemStack dust = player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND);
+                            if (!(dust.getItem() instanceof DiamondDust)) {
+                                return;
+                            } else {
+                                canSwitch = ItemHelper.shrinkStack(player, dust, 1);
+                            }
+                        }
+                        else {
+                            canSwitch = true;
                         }
                     }
 
