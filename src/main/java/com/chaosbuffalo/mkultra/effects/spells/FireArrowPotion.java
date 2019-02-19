@@ -59,7 +59,7 @@ public class FireArrowPotion extends SpellPotionBase {
                     .spawn();
 
         } else {
-            target.setFire(6 * GameConstants.TICKS_PER_SECOND);
+            target.setFire(6);
         }
 
     }

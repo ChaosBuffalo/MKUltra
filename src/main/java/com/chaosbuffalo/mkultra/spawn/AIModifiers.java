@@ -41,7 +41,7 @@ public class AIModifiers {
             if (targetActions.size() > 0){
                 HashSet<EntityAITasks.EntityAITaskEntry> toRemove = new HashSet<>();
                 for (EntityAITasks.EntityAITaskEntry task : entLiv.targetTasks.taskEntries){
-                    if (actions.contains(task.action.getClass())){
+                    if (targetActions.contains(task.action.getClass())){
                         toRemove.add(task);
                     }
                 }

@@ -19,8 +19,8 @@ import net.minecraft.world.World;
 
 public class ShadowDash extends MobAbility {
 
-    float BASE_DAMAGE = 2;
-    float DAMAGE_SCALE = 2;
+    float BASE_DAMAGE = 2f;
+    float DAMAGE_SCALE = 1f;
 
     public ShadowDash(){
         super(MKUltra.MODID, "mob_ability.shadow_dash");
@@ -28,7 +28,7 @@ public class ShadowDash extends MobAbility {
 
     @Override
     public int getCooldown() {
-        return 45 * GameConstants.TICKS_PER_SECOND;
+        return 30 * GameConstants.TICKS_PER_SECOND;
     }
 
     @Override
@@ -43,7 +43,7 @@ public class ShadowDash extends MobAbility {
 
     @Override
     public int getCastTime(){
-        return GameConstants.TICKS_PER_SECOND * 2;
+        return GameConstants.TICKS_PER_SECOND / 2;
     }
 
     @Override
@@ -59,13 +59,13 @@ public class ShadowDash extends MobAbility {
                     GameConstants.TICKS_PER_SECOND * (level + 1), level));
             target.attackEntityFrom(MKDamageSource.fromMeleeSkill(getAbilityId(), entity, entity),
                     BASE_DAMAGE + DAMAGE_SCALE * level);
-            target.addPotionEffect(new PotionEffect(MobEffects.INVISIBILITY,
+            entity.addPotionEffect(new PotionEffect(MobEffects.INVISIBILITY,
                     GameConstants.TICKS_PER_SECOND * (level+1)));
             Vec3d lookVec = entity.getLookVec();
             MKUltra.packetHandler.sendToAllAround(
                     new ParticleEffectSpawnPacket(
                             EnumParticleTypes.SMOKE_LARGE.getParticleID(),
-                            ParticleEffects.SPHERE_MOTION, 12, 3,
+                            ParticleEffects.SPHERE_MOTION, 20, 3,
                             target.posX, target.posY + 1.0,
                             target.posZ, 1.0, 1.0, 1.0, .25,
                             lookVec),

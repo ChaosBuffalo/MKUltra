@@ -8,7 +8,7 @@ import java.util.function.BiFunction;
 public class BehaviorChoice {
     public final int minLevel;
     private Class<? extends EntityAIBase> aiClass;
-    private BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> aiProvider;
+    private AIGenerator aiProvider;
     private int taskPriority;
     public enum TaskType {
         TARGET_TASK,
@@ -22,10 +22,10 @@ public class BehaviorChoice {
         this.taskType = type;
     }
 
-    public BehaviorChoice(BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> provider, int minLevel,
+    public BehaviorChoice(AIGenerator generator, int minLevel,
                           int taskPriority, TaskType type){
         this.minLevel = minLevel;
-        this.aiProvider = provider;
+        this.aiProvider = generator;
         this.taskPriority = taskPriority;
         this.taskType = type;
     }
@@ -48,7 +48,7 @@ public class BehaviorChoice {
         if (aiProvider == null) {
             return null;
         } else {
-            return aiProvider.apply(entity, this);
+            return aiProvider.getAI(entity, this);
         }
     }
 }
