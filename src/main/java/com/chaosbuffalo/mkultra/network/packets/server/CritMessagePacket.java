@@ -111,11 +111,11 @@ public class CritMessagePacket implements IMessage {
                 }
                 boolean isSelfTarget = player.getEntityId() == msg.targetId;
                 if (isSelf || isSelfTarget){
-                    if (!MKConfig.SHOW_MY_CRITS) {
+                    if (!MKConfig.display.SHOW_MY_CRITS) {
                         return;
                     }
                 } else {
-                    if (!MKConfig.SHOW_OTHER_CRITS){
+                    if (!MKConfig.display.SHOW_OTHER_CRITS){
                         return;
                     }
                 }

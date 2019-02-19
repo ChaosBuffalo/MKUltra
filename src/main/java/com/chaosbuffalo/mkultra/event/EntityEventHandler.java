@@ -105,7 +105,7 @@ public class EntityEventHandler {
             return;
 
         // Die on the original so we can clone properly and not need an immediate onTick packet
-        if (e.isWasDeath() && !MKConfig.PEPSI_BLUE_MODE) {
+        if (e.isWasDeath() && !MKConfig.cheats.PEPSI_BLUE_MODE) {
             IPlayerData oldData = MKUPlayerData.get(e.getOriginal());
             if (oldData == null)
                 return;
