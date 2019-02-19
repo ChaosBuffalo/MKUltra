@@ -8,19 +8,21 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class StatCommand extends CommandBase {
-    private static List<String> stats = Arrays.asList("mana", "manaregen", "cdr");
+    private static List<String> stats = Arrays.asList("mana", "manaregen", "cdr", "mcrit", "scrit", "armor");
 
     /**
      * Callback for when the command is executed
@@ -55,31 +57,41 @@ public class StatCommand extends CommandBase {
                 break;
             }
             case "manaregen": {
-                if (args.length == 1) {
-                    float rate = data.getManaRegenRate();
-                    message = String.format("Mana regen rate: %f", rate);
-                } else {
-                    float mana = (float) parseDouble(args[1]);
-                    data.setManaRegen(mana);
-                    message = String.format("Mana regen rate set to %f", mana);
-                }
-                sender.sendMessage(new TextComponentString(message));
+                handleAttr(sender, player, PlayerAttributes.MANA_REGEN, args);
+                break;
+            }
+            case "mcrit": {
+                handleAttr(sender, player, PlayerAttributes.MELEE_CRIT, args);
+                break;
+            }
+            case "scrit": {
+                handleAttr(sender, player, PlayerAttributes.SPELL_CRIT, args);
                 break;
             }
             case "cdr": {
-                float attrVal = (float) player.getEntityAttribute(PlayerAttributes.COOLDOWN).getAttributeValue();
-                float baseVal = (float) player.getEntityAttribute(PlayerAttributes.COOLDOWN).getBaseValue();
-                message = String.format("Cooldown rate %f base %f", attrVal, baseVal);
-                sender.sendMessage(new TextComponentString(message));
+                handleAttr(sender, player, PlayerAttributes.COOLDOWN, args);
                 break;
             }
             case "armor": {
-                float attrVal = (float) player.getEntityAttribute(SharedMonsterAttributes.ARMOR).getAttributeValue();
-                float baseVal = (float) player.getEntityAttribute(SharedMonsterAttributes.ARMOR).getBaseValue();
-                message = String.format("Armor value %f base %f", attrVal, baseVal);
-                sender.sendMessage(new TextComponentString(message));
+                handleAttr(sender, player, SharedMonsterAttributes.ARMOR, args);
                 break;
             }
+        }
+    }
+
+    private void handleAttr(@Nonnull ICommandSender sender, EntityPlayerMP player, IAttribute attr, String[] args) throws CommandException {
+        if (args.length == 1) {
+            float attrVal = (float) player.getEntityAttribute(attr).getAttributeValue();
+            float baseVal = (float) player.getEntityAttribute(attr).getBaseValue();
+            ITextComponent message = new TextComponentTranslation("attribute.name." + attr.getName())
+                    .appendText(String.format(": %f base %f", attrVal, baseVal));
+            sender.sendMessage(message);
+        } else if (args.length > 1) {
+            float newBase = (float) parseDouble(args[1]);
+            player.getEntityAttribute(attr).setBaseValue(newBase);
+            ITextComponent message = new TextComponentTranslation("attribute.name." + attr.getName())
+                    .appendText(String.format(": set to %f", newBase));
+            sender.sendMessage(message);
         }
     }
 
@@ -115,6 +127,6 @@ public class StatCommand extends CommandBase {
     @Nonnull
     @Override
     public String getUsage(@Nonnull ICommandSender sender) {
-        return String.format("/mk %s <%s>", getName(), stats.stream().collect(Collectors.joining("|")));
+        return String.format("/mk %s <%s>", getName(), String.join(" | ", stats));
     }
 }
