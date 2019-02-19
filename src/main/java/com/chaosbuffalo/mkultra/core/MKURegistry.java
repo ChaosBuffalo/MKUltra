@@ -5,6 +5,7 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.spawn.*;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -26,6 +27,7 @@ public class MKURegistry {
     public static IForgeRegistry<MobAbility> REGISTRY_MOB_ABILITIES = null;
     public static IForgeRegistry<SpawnList> REGISTRY_SPAWN_LISTS = null;
     public static IForgeRegistry<MobFaction> REGISTRY_MOB_FACTIONS = null;
+    public static IForgeRegistry<AIGenerator> REGISTRY_AI_GENERATORS = null;
 
 
     public static ResourceLocation INVALID_CLASS = new ResourceLocation(MKUltra.MODID, "class.invalid");
@@ -47,6 +49,8 @@ public class MKURegistry {
     public static AttributeRange getAttributeRange(ResourceLocation name){
         return REGISTRY_MOB_ATTRS.getValue(name);
     }
+
+    public static AIGenerator getAIGenerator(ResourceLocation name){ return REGISTRY_AI_GENERATORS.getValue(name); }
 
     public static MobAbility getMobAbility(ResourceLocation abilityId) {
         return REGISTRY_MOB_ABILITIES.getValue(abilityId);
@@ -89,6 +93,7 @@ public class MKURegistry {
     public static PlayerAbility getAbility(ResourceLocation abilityId) {
         return REGISTRY_ABILITIES.getValue(abilityId);
     }
+
 
     @SuppressWarnings("unused")
     @SubscribeEvent
@@ -145,6 +150,12 @@ public class MKURegistry {
         REGISTRY_MOB_FACTIONS = new RegistryBuilder<MobFaction>()
                 .setName(new ResourceLocation(MKUltra.MODID, "y_mob_factions"))
                 .setType(MobFaction.class)
+                .setIDRange(0, Integer.MAX_VALUE - 1)
+                .create();
+
+        REGISTRY_AI_GENERATORS = new RegistryBuilder<AIGenerator>()
+                .setName(new ResourceLocation(MKUltra.MODID, "mob_ai_generators"))
+                .setType(AIGenerator.class)
                 .setIDRange(0, Integer.MAX_VALUE - 1)
                 .create();
     }

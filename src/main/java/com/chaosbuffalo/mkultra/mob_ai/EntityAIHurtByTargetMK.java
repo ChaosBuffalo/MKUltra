@@ -5,16 +5,14 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAITarget;
-import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.util.math.AxisAlignedBB;
 
-import java.util.Iterator;
 import java.util.List;
 
 public class EntityAIHurtByTargetMK extends EntityAITarget {
     private final boolean entityCallsForHelp;
     private int revengeTimerOld;
-    private static final double CALL_FOR_HELP_RANGE = 10;
+    private static final double CALL_FOR_HELP_RANGE = 3;
 
     public EntityAIHurtByTargetMK(EntityCreature entityIn, boolean callsForHelp) {
         super(entityIn, true);

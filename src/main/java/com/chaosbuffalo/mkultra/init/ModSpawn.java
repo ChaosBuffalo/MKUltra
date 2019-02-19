@@ -266,6 +266,45 @@ public class ModSpawn {
 
     @SuppressWarnings("unused")
     @SubscribeEvent
+    public static void registerAIGenerators(RegistryEvent.Register<AIGenerator> event){
+        BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> getWatchClosestLongRange =
+                (entity, choice) -> new EntityAIWatchClosest(entity, EntityPlayer.class, 20.0F);
+        AIGenerator watchClosest = new AIGenerator(MKUltra.MODID, "long_range_watch_closest",
+                getWatchClosestLongRange);
+        event.getRegistry().register(watchClosest);
+        BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addBeneficialSpells = (entity, choice) -> {
+            IMobData mobData = MKUMobData.get(entity);
+            return new EntityAIBuffTeammates(entity, mobData, .75f,
+                    3 * GameConstants.TICKS_PER_SECOND);
+        };
+        AIGenerator beneficialSpells = new AIGenerator(MKUltra.MODID, "beneficial_spells", addBeneficialSpells);
+        event.getRegistry().register(beneficialSpells);
+        BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addAggroTarget =
+                (entity, choice) -> new EntityAINearestAttackableTargetMK((EntityCreature) entity,true);
+        AIGenerator aggroTarget = new AIGenerator(MKUltra.MODID, "aggro_target", addAggroTarget);
+        event.getRegistry().register(aggroTarget);
+        BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addOffensiveSpells = (entity, choice) -> {
+            IMobData mobData = MKUMobData.get(entity);
+            return new EntityAIRangedSpellAttack(entity, mobData, 3 * GameConstants.TICKS_PER_SECOND,
+                    .25f, .75f);
+        };
+        AIGenerator offensiveSpells = new AIGenerator(MKUltra.MODID, "offensive_spells", addOffensiveSpells);
+        event.getRegistry().register(offensiveSpells);
+        BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addLeashRange = (entity, choice) -> {
+            IMobData mobData = MKUMobData.get(entity);
+            return new EntityAIReturnToSpawn((EntityCreature)entity, mobData, 1.0);
+        };
+        AIGenerator leashRange = new AIGenerator(MKUltra.MODID, "leash_range", addOffensiveSpells);
+        event.getRegistry().register(leashRange);
+        BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addHurtTarget = (entity, choice) ->
+                new EntityAIHurtByTargetMK((EntityCreature)entity, true);
+        AIGenerator hurtTarget = new AIGenerator(MKUltra.MODID, "hurt_target", addHurtTarget);
+        event.getRegistry().register(hurtTarget);
+    }
+
+
+    @SuppressWarnings("unused")
+    @SubscribeEvent
     public static void registerAIModifiers(RegistryEvent.Register<AIModifier> event) {
         AIModifier remove_all_tasks = new AIModifier(
                 new ResourceLocation(MKUltra.MODID, "remove_all_tasks"),
@@ -275,37 +314,26 @@ public class ModSpawn {
                 new ResourceLocation(MKUltra.MODID, "remove_all_target_tasks"),
                 AIModifiers.REMOVE_ALL_TARGET_TASKS);
         event.getRegistry().register(remove_all_target_tasks);
-        BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> getWatchClosestLongRange =
-                (entity, choice) -> new EntityAIWatchClosest(entity, EntityPlayer.class, 20.0F);
-        BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addSelfBuff = (entity, choice) -> {
-            IMobData mobData = MKUMobData.get(entity);
-            return new EntityAIBuffTeammates(entity, mobData, .75f,
-                    3 * GameConstants.TICKS_PER_SECOND);
-        };
-        BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addAggroTarget =
-                (entity, choice) -> new EntityAINearestAttackableTargetMK((EntityCreature) entity,true);
-
-        BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addOffensiveSpells = (entity, choice) -> {
-            IMobData mobData = MKUMobData.get(entity);
-            return new EntityAIRangedSpellAttack(entity, mobData, 3 * GameConstants.TICKS_PER_SECOND,
-                    .25f, .75f);
-        };
-        BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addLeashRange = (entity, choice) -> {
-            IMobData mobData = MKUMobData.get(entity);
-            return new EntityAIReturnToSpawn((EntityCreature)entity, mobData, 1.0);
-        };
-        BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addHurtTarget = (entity, choice) ->
-                new EntityAIHurtByTargetMK((EntityCreature)entity, true);
 
         ADD_STANDARD_AI = new AIModifier(
                 new ResourceLocation(MKUltra.MODID, "add_standard_ai"),
                 AIModifiers.ADD_TASKS,
-                new BehaviorChoice(addSelfBuff, 0, 2, BehaviorChoice.TaskType.TASK),
-                new BehaviorChoice(addAggroTarget, 0, 2, BehaviorChoice.TaskType.TARGET_TASK),
-                new BehaviorChoice(addOffensiveSpells, 0, 3, BehaviorChoice.TaskType.TASK),
-                new BehaviorChoice(getWatchClosestLongRange, 0, 6, BehaviorChoice.TaskType.TASK),
-                new BehaviorChoice(addLeashRange, 0, 1, BehaviorChoice.TaskType.TASK),
-                new BehaviorChoice(addHurtTarget, 0, 1, BehaviorChoice.TaskType.TARGET_TASK)
+                new BehaviorChoice(MKURegistry.getAIGenerator(
+                        new ResourceLocation(MKUltra.MODID, "beneficial_spells")),
+                        0, 2, BehaviorChoice.TaskType.TASK),
+                new BehaviorChoice(MKURegistry.getAIGenerator(
+                        new ResourceLocation(MKUltra.MODID, "aggro_target")),
+                        0, 2, BehaviorChoice.TaskType.TARGET_TASK),
+                new BehaviorChoice(
+                        MKURegistry.getAIGenerator(new ResourceLocation(MKUltra.MODID, "offensive_spells")),
+                        0, 3, BehaviorChoice.TaskType.TASK),
+                new BehaviorChoice(
+                        MKURegistry.getAIGenerator(new ResourceLocation(MKUltra.MODID, "long_range_watch_closest")),
+                        0, 6, BehaviorChoice.TaskType.TASK),
+                new BehaviorChoice(MKURegistry.getAIGenerator(new ResourceLocation(MKUltra.MODID, "leash_range")),
+                        0, 1, BehaviorChoice.TaskType.TASK),
+                new BehaviorChoice(MKURegistry.getAIGenerator(new ResourceLocation(MKUltra.MODID, "hurt_target")),
+                        0, 1, BehaviorChoice.TaskType.TARGET_TASK)
         );
         event.getRegistry().register(ADD_STANDARD_AI);
 
