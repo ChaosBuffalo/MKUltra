@@ -15,16 +15,19 @@ import java.util.Arrays;
 @Config(modid = MKUltra.MODID, category = "gameplay")
 public class MKConfig {
 
-    @Config.Name("Armor Configuration")
+    @Config.Name("Armor")
+    @Config.Comment("Armor Configuration")
     public static Armor armor = new Armor();
 
     @Config.Name("Cheats")
     public static Cheats cheats = new Cheats();
 
-    @Config.Name("Display Options")
+    @Config.Name("Display")
+    @Config.Comment("Display Options")
     public static Display display = new Display();
 
-    @Config.Name("Gameplay Options")
+    @Config.Name("Gameplay")
+    @Config.Comment("Gameplay Options")
     public static Gameplay gameplay = new Gameplay();
 
     public static class Armor {
