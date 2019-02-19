@@ -109,7 +109,7 @@ public class CritMessagePacket implements IMessage {
                 if (target == null || playerSource == null){
                     return;
                 }
-                boolean isSelfTarget = player.getUniqueID().equals(msg.targetId);
+                boolean isSelfTarget = player.getEntityId() == msg.targetId;
                 if (isSelf || isSelfTarget){
                     if (!MKConfig.SHOW_MY_CRITS) {
                         return;

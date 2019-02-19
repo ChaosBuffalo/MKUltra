@@ -1,14 +1,14 @@
 package com.chaosbuffalo.mkultra.core.abilities;
 
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
+import com.chaosbuffalo.mkultra.core.MKDamageSource;
+import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -63,7 +63,7 @@ public class Ember extends PlayerAbility {
             pData.startAbility(this);
 
             targetEntity.setFire(BASE_DURATION + level * DURATION_SCALE);
-            targetEntity.attackEntityFrom(DamageSource.causeIndirectMagicDamage(entity, entity), BASE_DAMAGE + level * DAMAGE_SCALE);
+            targetEntity.attackEntityFrom(MKDamageSource.causeIndirectMagicDamage(getAbilityId(), entity, entity), BASE_DAMAGE + level * DAMAGE_SCALE);
 
             Vec3d lookVec = entity.getLookVec();
             MKUltra.packetHandler.sendToAllAround(
