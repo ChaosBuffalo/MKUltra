@@ -38,16 +38,16 @@ public class PlayerData implements IPlayerData {
     private final static DataParameter<Integer> UNSPENT_POINTS = EntityDataManager.createKey(EntityPlayer.class, DataSerializers.VARINT);
     private final static DataParameter<String> CLASS_ID = EntityDataManager.createKey(EntityPlayer.class, DataSerializers.STRING);
     private final static DataParameter<String>[] ACTION_BAR_ABILITY_ID;
-    private final static DataParameter<Integer>[] ACTION_BAR_ABILITY_LEVEL;
+    private final static DataParameter<Integer>[] ACTION_BAR_ABILITY_RANK;
 
     static {
         ACTION_BAR_ABILITY_ID = new DataParameter[GameConstants.ACTION_BAR_SIZE];
         for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
             ACTION_BAR_ABILITY_ID[i] = EntityDataManager.createKey(EntityPlayer.class, DataSerializers.STRING);
         }
-        ACTION_BAR_ABILITY_LEVEL = new DataParameter[GameConstants.ACTION_BAR_SIZE];
+        ACTION_BAR_ABILITY_RANK = new DataParameter[GameConstants.ACTION_BAR_SIZE];
         for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
-            ACTION_BAR_ABILITY_LEVEL[i] = EntityDataManager.createKey(EntityPlayer.class, DataSerializers.VARINT);
+            ACTION_BAR_ABILITY_RANK[i] = EntityDataManager.createKey(EntityPlayer.class, DataSerializers.VARINT);
         }
     }
 
@@ -88,7 +88,7 @@ public class PlayerData implements IPlayerData {
         privateData.register(LEVEL, 0);
         for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
             privateData.register(ACTION_BAR_ABILITY_ID[i], MKURegistry.INVALID_ABILITY.toString());
-            privateData.register(ACTION_BAR_ABILITY_LEVEL[i], GameConstants.ACTION_BAR_INVALID_LEVEL);
+            privateData.register(ACTION_BAR_ABILITY_RANK[i], GameConstants.ABILITY_INVALID_RANK);
         }
     }
 
@@ -99,7 +99,7 @@ public class PlayerData implements IPlayerData {
         privateData.setDirty(LEVEL);
         for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
             privateData.setDirty(ACTION_BAR_ABILITY_ID[i]);
-            privateData.setDirty(ACTION_BAR_ABILITY_LEVEL[i]);
+            privateData.setDirty(ACTION_BAR_ABILITY_RANK[i]);
         }
     }
 
@@ -107,10 +107,10 @@ public class PlayerData implements IPlayerData {
         return knownClasses.get(getClassId());
     }
 
-    private ResourceLocation getLastLeveledAbility() {
+    private ResourceLocation getLastUpgradedAbility() {
         PlayerClassInfo cinfo = getActiveClass();
         if (cinfo != null) {
-            return cinfo.getLastLeveledAbility();
+            return cinfo.getLastUpgradedAbility();
         }
         return MKURegistry.INVALID_ABILITY;
     }
@@ -309,13 +309,13 @@ public class PlayerData implements IPlayerData {
 
     @Override
     public int getAbilityCooldown(PlayerAbility ability) {
-        return PlayerFormulas.applyCooldownReduction(this, ability.getCooldownTicks(getLevelForAbility(ability.getAbilityId())));
+        return PlayerFormulas.applyCooldownReduction(this, ability.getCooldownTicks(getAbilityRank(ability.getAbilityId())));
     }
 
     @Override
-    public int getLevelForAbility(ResourceLocation abilityId) {
+    public int getAbilityRank(ResourceLocation abilityId) {
         PlayerAbilityInfo abilityInfo = getAbilityInfo(abilityId);
-        return abilityInfo != null ? abilityInfo.getLevel() : GameConstants.ACTION_BAR_INVALID_LEVEL;
+        return abilityInfo != null ? abilityInfo.getRank() : GameConstants.ABILITY_INVALID_RANK;
     }
 
     @Override
@@ -412,7 +412,7 @@ public class PlayerData implements IPlayerData {
             PlayerToggleAbility toggle = (PlayerToggleAbility) ability;
 
             if (info.isCurrentlyKnown()) {
-                // If this is a toggle ability we must re-apply the effect to make sure it's working at the proper level
+                // If this is a toggle ability we must re-apply the effect to make sure it's working at the proper rank
                 if (player.isPotionActive(toggle.getToggleEffect())) {
                     toggle.removeEffect(player, this, player.getEntityWorld());
                     toggle.applyEffect(player, this, player.getEntityWorld());
@@ -455,11 +455,11 @@ public class PlayerData implements IPlayerData {
         if (mainHandItem.getItem() instanceof ManaRegenIdol) {
             ItemHelper.damageStack(player, mainHandItem, 1);
         }
-        int manaCost = ability.getManaCost(info.getLevel());
+        int manaCost = ability.getManaCost(info.getRank());
         manaCost = PlayerFormulas.applyManaCostReduction(this, manaCost);
         setMana(getMana() - manaCost);
 
-        int cooldown = ability.getCooldownTicks(info.getLevel());
+        int cooldown = ability.getCooldownTicks(info.getRank());
         cooldown = PlayerFormulas.applyCooldownReduction(this, cooldown);
         setCooldown(info.getId(), cooldown);
     }
@@ -474,10 +474,10 @@ public class PlayerData implements IPlayerData {
 
         boolean valid = abilityInfo != null && abilityInfo.isCurrentlyKnown();
         ResourceLocation id = valid ? abilityInfo.getId() : MKURegistry.INVALID_ABILITY;
-        int level = valid ? abilityInfo.getLevel() : GameConstants.ACTION_BAR_INVALID_LEVEL;
+        int rank = valid ? abilityInfo.getRank() : GameConstants.ABILITY_INVALID_RANK;
 
         setAbilityInSlot(index, id);
-        privateData.set(ACTION_BAR_ABILITY_LEVEL[index], level);
+        privateData.set(ACTION_BAR_ABILITY_RANK[index], rank);
 
         if (abilityTracker.hasCooldown(abilityInfo)) {
             int cd = abilityTracker.getCooldownTicks(abilityInfo);
@@ -765,7 +765,7 @@ public class PlayerData implements IPlayerData {
                 continue;
 
             if (info.isCurrentlyKnown()) {
-                totalPoints += info.getLevel();
+                totalPoints += info.getRank();
             }
         }
 
@@ -779,7 +779,7 @@ public class PlayerData implements IPlayerData {
             if (curUnspent > 0) {
                 setUnspentPoints(curUnspent - 1);
             } else {
-                ResourceLocation lastAbility = getLastLeveledAbility();
+                ResourceLocation lastAbility = getLastUpgradedAbility();
                 if (lastAbility.compareTo(MKURegistry.INVALID_ABILITY) != 0) {
                     unlearnAbility(lastAbility, false, false);
                 }
@@ -794,8 +794,8 @@ public class PlayerData implements IPlayerData {
                     .filter(a -> {
                         // Subtract 1 because getRequiredLevel is a little weird. It actually tells you the required
                         // level to go up a rank, not the required level for the current rank
-                        int newAbilityLevel = getLevelForAbility(a.getAbilityId()) - 1;
-                        int reqLevel = a.getRequiredLevel(newAbilityLevel);
+                        int newRank = getAbilityRank(a.getAbilityId()) - 1;
+                        int reqLevel = a.getRequiredLevel(newRank);
                         reqLevel = Math.max(1, reqLevel);
                         return reqLevel > newLevel;
                     })

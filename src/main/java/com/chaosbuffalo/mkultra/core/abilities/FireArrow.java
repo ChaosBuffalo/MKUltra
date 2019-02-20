@@ -44,14 +44,14 @@ public class FireArrow extends PlayerAbility {
     }
 
     @Override
-    public int getManaCost(int currentLevel) {
-        return 5 - currentLevel;
+    public int getManaCost(int currentRank) {
+        return 5 - currentRank;
     }
 
 
     @Override
-    public int getRequiredLevel(int currentLevel) {
-        return currentLevel * 2;
+    public int getRequiredLevel(int currentRank) {
+        return currentRank * 2;
     }
 
     @Override
@@ -61,7 +61,7 @@ public class FireArrow extends PlayerAbility {
         if (ammo.isEmpty() || !(entity.getHeldItemMainhand().getItem() instanceof ItemBow)) {
             return;
         }
-        int level = pData.getLevelForAbility(getAbilityId());
+        int level = pData.getAbilityRank(getAbilityId());
         pData.startAbility(this);
 
         SpellCastArrow arrow = new SpellCastArrow(theWorld, entity);

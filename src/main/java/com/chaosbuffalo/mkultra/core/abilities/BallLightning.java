@@ -33,20 +33,20 @@ public class BallLightning extends PlayerAbility {
     }
 
     @Override
-    public int getManaCost(int currentLevel) {
-        return 1 + 2 * currentLevel;
+    public int getManaCost(int currentRank) {
+        return 1 + 2 * currentRank;
     }
 
 
     @Override
-    public int getRequiredLevel(int currentLevel) {
-        return currentLevel * 2;
+    public int getRequiredLevel(int currentRank) {
+        return currentRank * 2;
     }
 
     @Override
     public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
 
-        int level = pData.getLevelForAbility(getAbilityId());
+        int level = pData.getAbilityRank(getAbilityId());
         pData.startAbility(this);
         EntityBallLightningProjectile ballP = new EntityBallLightningProjectile(theWorld, entity);
         ballP.setAmplifier(level);

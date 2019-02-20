@@ -51,8 +51,8 @@ public class WaveDash extends PlayerAbility {
     }
 
     @Override
-    public int getManaCost(int currentLevel) {
-        return 2 + currentLevel * 2;
+    public int getManaCost(int currentRank) {
+        return 2 + currentRank * 2;
     }
 
     @Override
@@ -61,13 +61,13 @@ public class WaveDash extends PlayerAbility {
     }
 
     @Override
-    public int getRequiredLevel(int currentLevel) {
-        return currentLevel * 2;
+    public int getRequiredLevel(int currentRank) {
+        return currentRank * 2;
     }
 
     @Override
     public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
-        int level = pData.getLevelForAbility(getAbilityId());
+        int level = pData.getAbilityRank(getAbilityId());
         pData.startAbility(this);
         Vec3d look = entity.getLookVec().scale(DASH_DISTANCE);
         Vec3d from = entity.getPositionVector().add(0, entity.getEyeHeight(), 0);

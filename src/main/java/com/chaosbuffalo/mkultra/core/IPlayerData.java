@@ -26,7 +26,7 @@ public interface IPlayerData {
 
     ResourceLocation getAbilityInSlot(int index);
 
-    int getLevelForAbility(ResourceLocation abilityId);
+    int getAbilityRank(ResourceLocation abilityId);
 
     int getCurrentAbilityCooldown(ResourceLocation abilityId);
 

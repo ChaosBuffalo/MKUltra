@@ -36,8 +36,8 @@ public class Inspire extends PlayerAbility {
     }
 
     @Override
-    public int getManaCost(int currentLevel) {
-        return 4 + currentLevel * 2;
+    public int getManaCost(int currentRank) {
+        return 4 + currentRank * 2;
     }
 
     @Override
@@ -46,8 +46,8 @@ public class Inspire extends PlayerAbility {
     }
 
     @Override
-    public int getRequiredLevel(int currentLevel) {
-        return 6 + currentLevel * 2;
+    public int getRequiredLevel(int currentRank) {
+        return 6 + currentRank * 2;
     }
 
     @Override
@@ -55,7 +55,7 @@ public class Inspire extends PlayerAbility {
 
         pData.startAbility(this);
 
-        int level = pData.getLevelForAbility(getAbilityId());
+        int level = pData.getAbilityRank(getAbilityId());
 
         PotionEffect hasteEffect = new PotionEffect(MobEffects.HASTE, 900, level, false, true);
         PotionEffect regenEffect = new PotionEffect(MobEffects.REGENERATION, 900, level + 1, false, true);
