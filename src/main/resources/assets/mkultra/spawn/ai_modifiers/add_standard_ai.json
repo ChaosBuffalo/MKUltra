@@ -36,6 +36,12 @@
       "priority": 1,
       "task_type": "TARGET_TASK",
       "generator": "mkultra:hurt_target"
+    },
+    {
+      "min_level": 0,
+      "priority": 5,
+      "task_type": "TASK",
+      "generator": "mkultra:attack_target"
     }
   ]
 }

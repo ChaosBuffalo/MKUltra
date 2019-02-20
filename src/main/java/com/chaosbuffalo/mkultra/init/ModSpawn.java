@@ -33,8 +33,6 @@ import java.util.function.BiFunction;
 public class ModSpawn {
 
     public static final int MAX_LEVEL = 10;
-    public static AIModifier ADD_STANDARD_AI;
-    public static AIModifier REMOVE_SKELETON_AI;
 
     @SuppressWarnings("unused")
     @SubscribeEvent
@@ -330,6 +328,10 @@ public class ModSpawn {
                 new EntityAIHurtByTargetMK((EntityCreature)entity, true);
         AIGenerator hurtTarget = new AIGenerator(MKUltra.MODID, "hurt_target", addHurtTarget);
         event.getRegistry().register(hurtTarget);
+        BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addAttackTarget = (entity, choice) ->
+                new EntityAIAttackMeleeMK((EntityCreature)entity, 1.0, false);
+        AIGenerator attackTarget = new AIGenerator(MKUltra.MODID, "attack_target", addAttackTarget);
+        event.getRegistry().register(attackTarget);
     }
 
 

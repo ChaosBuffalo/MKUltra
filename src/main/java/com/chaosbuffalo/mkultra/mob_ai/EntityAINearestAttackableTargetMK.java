@@ -22,6 +22,7 @@ public class EntityAINearestAttackableTargetMK extends EntityAITarget {
     public EntityAINearestAttackableTargetMK(EntityCreature creature, boolean checkSight, int targetChance) {
         super(creature, checkSight);
         this.targetChance = targetChance;
+        this.setMutexBits(2);
     }
 
     public EntityAINearestAttackableTargetMK(EntityCreature creature, boolean checkSight) {

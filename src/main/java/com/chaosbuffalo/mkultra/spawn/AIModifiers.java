@@ -31,19 +31,26 @@ public class AIModifiers {
             if (actions.size() > 0){
                 HashSet<EntityAITasks.EntityAITaskEntry> toRemove = new HashSet<>();
                 for (EntityAITasks.EntityAITaskEntry task : entLiv.tasks.taskEntries){
-                    if (actions.contains(task.action.getClass())){
-                        toRemove.add(task);
+                    Log.info("Checking for AI task %s", task.action.getClass().toString());
+                    for (Class<? extends EntityAIBase> action : actions){
+                        if (action.isAssignableFrom(task.action.getClass())){
+                            Log.info("task found in actions to remove");
+                            toRemove.add(task);
+                        }
                     }
                 }
                 for (EntityAITasks.EntityAITaskEntry entry : toRemove){
+                    Log.info("Remove AI task %s", entry.getClass().toString());
                     entLiv.tasks.removeTask(entry.action);
                 }
             }
             if (targetActions.size() > 0){
                 HashSet<EntityAITasks.EntityAITaskEntry> toRemove = new HashSet<>();
                 for (EntityAITasks.EntityAITaskEntry task : entLiv.targetTasks.taskEntries){
-                    if (targetActions.contains(task.action.getClass())){
-                        toRemove.add(task);
+                    for (Class<? extends EntityAIBase> action : targetActions){
+                        if (action.isAssignableFrom(task.action.getClass())){
+                            toRemove.add(task);
+                        }
                     }
                 }
                 for (EntityAITasks.EntityAITaskEntry entry : toRemove){

@@ -4,6 +4,7 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IMobData;
 import com.chaosbuffalo.mkultra.core.MobAbilityTracker;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.*;
@@ -41,7 +42,7 @@ public class EntityAISpellCastingBase extends EntityAIBase {
         this.cooldown = cooldown;
         this.strafeRangeStart = strafeRangeStart;
         this.strafeRangeEnd = strafeRangeEnd;
-        setMutexBits(4);
+        setMutexBits(1);
     }
 
     public void setStrafeRange(float rangeStart, float rangeEnd){
