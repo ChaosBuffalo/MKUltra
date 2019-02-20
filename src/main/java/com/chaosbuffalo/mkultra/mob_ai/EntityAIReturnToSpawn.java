@@ -14,7 +14,7 @@ public class EntityAIReturnToSpawn extends EntityAIBase {
     private final EntityCreature creature;
     private final double movementSpeed;
     private final IMobData mobData;
-    private static final double LEASH_RANGE = 50.0;
+    private static final double LEASH_RANGE = 40.0;
     private boolean doReturn;
     private int ticks_returning;
 
@@ -29,6 +29,9 @@ public class EntityAIReturnToSpawn extends EntityAIBase {
     public boolean shouldExecute() {
         if (mobData.hasSpawnPoint()){
             double distFromSpawn = creature.getDistanceSq(mobData.getSpawnPoint());
+            if (distFromSpawn <= 4.0){
+                return false;
+            }
             if (distFromSpawn > LEASH_RANGE * LEASH_RANGE || creature.getAttackTarget() == null){
                 return true;
             }
@@ -38,6 +41,12 @@ public class EntityAIReturnToSpawn extends EntityAIBase {
 
     public boolean shouldContinueExecuting() {
         Log.info("Should Continue: Return to Spawn %b", !this.creature.getNavigator().noPath());
+        if (this.creature.getNavigator().getPath() == null){
+            Log.info("navigator path null");
+        } else {
+            Log.info("is finished: %b",this.creature.getNavigator().getPath().isFinished());
+        }
+
         return !this.creature.getNavigator().noPath() ;
     }
 
@@ -47,6 +56,7 @@ public class EntityAIReturnToSpawn extends EntityAIBase {
         this.creature.getNavigator().tryMoveToXYZ(spawnPoint.getX(), spawnPoint.getY(),
                 spawnPoint.getZ(), this.movementSpeed);
         this.creature.setAttackTarget(null);
+        this.creature.setRevengeTarget(null);
     }
 
 }

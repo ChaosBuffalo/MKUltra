@@ -2,7 +2,7 @@
   "type": "net.minecraft.entity.monster.EntitySkeleton",
   "name": "Skeletal Skulker",
   "attributes": [
-    "mkultra:captain_health", "mkultra:melee_aggro"
+    "mkultra:captain_health", "mkultra:melee_aggro", "mkultra:follow_range"
   ],
   "item_options": [
     "mkultra:captain_helm", "mkultra:captain_chest", "mkultra:iron_weapons"

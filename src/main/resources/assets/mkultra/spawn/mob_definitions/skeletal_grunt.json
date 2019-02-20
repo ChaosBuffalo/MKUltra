@@ -2,7 +2,7 @@
   "type": "net.minecraft.entity.monster.EntitySkeleton",
   "name": "Skeletal Grunt",
   "attributes": [
-    "mkultra:grunt_health", "mkultra:melee_aggro"
+    "mkultra:grunt_health", "mkultra:melee_aggro", "mkultra:follow_range"
   ],
   "item_options": [
     "mkultra:grunt_helm", "mkultra:grunt_chest", "mkultra:iron_weapons"
