@@ -14,7 +14,7 @@ public class EntityAIReturnToSpawn extends EntityAIBase {
     private final EntityCreature creature;
     private final double movementSpeed;
     private final IMobData mobData;
-    private static final double LEASH_RANGE = 30.0;
+    private static final double LEASH_RANGE = 50.0;
     private boolean doReturn;
 
     public EntityAIReturnToSpawn(EntityCreature entity, IMobData mobData, double movementSpeed) {

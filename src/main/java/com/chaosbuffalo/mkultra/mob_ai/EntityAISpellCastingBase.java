@@ -153,7 +153,7 @@ public class EntityAISpellCastingBase extends EntityAIBase {
     @Override
     public boolean shouldContinueExecuting() {
         if (!(entity instanceof EntityLiving) || targetEntity == null ||
-                !Targeting.isValidTarget(desiredTargetType, entity, targetEntity, true)){
+                !Targeting.isValidTarget(desiredTargetType, entity, targetEntity, false)){
             return false;
         }
         return (currentAbility != null && !currentAbility.isAbilityOnCooldown() || !((EntityLiving)entity).getNavigator().noPath());
