@@ -450,6 +450,10 @@ public class ModSpawn {
                     }
                     definition.withAIModifiers(options.toArray(new AIModifier[0]));
                 }
+                if (obj.has("name")){
+                    String mobName = obj.get("name").getAsString();
+                    definition.withMobName(mobName);
+                }
                 event.getRegistry().register(definition);
             } else {
                 Log.info("%s Class not an EntityLivingBase skipping mob definition %s",

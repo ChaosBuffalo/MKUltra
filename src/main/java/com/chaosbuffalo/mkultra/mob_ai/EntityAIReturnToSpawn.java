@@ -4,8 +4,11 @@ import com.chaosbuffalo.mkultra.core.IMobData;
 import com.chaosbuffalo.mkultra.log.Log;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAITasks;
+import net.minecraft.entity.ai.attributes.IAttribute;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.util.math.BlockPos;
@@ -29,7 +32,7 @@ public class EntityAIReturnToSpawn extends EntityAIBase {
     public boolean shouldExecute() {
         if (mobData.hasSpawnPoint()){
             double distFromSpawn = creature.getDistanceSq(mobData.getSpawnPoint());
-            if (distFromSpawn <= 4.0){
+            if (distFromSpawn <= 3.0){
                 return false;
             }
             if (distFromSpawn > LEASH_RANGE * LEASH_RANGE || creature.getAttackTarget() == null){
@@ -53,10 +56,16 @@ public class EntityAIReturnToSpawn extends EntityAIBase {
     public void startExecuting() {
         Log.info("Start Execute: Return to Spawn %s", creature.toString());
         BlockPos spawnPoint = mobData.getSpawnPoint();
+        double distFromSpawn = creature.getDistanceSq(spawnPoint);
+        IAttributeInstance followRange = creature.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE);
+        if (distFromSpawn >= followRange.getAttributeValue() * followRange.getAttributeValue()){
+            creature.attemptTeleport(spawnPoint.getX(), spawnPoint.getY(), spawnPoint.getZ());
+        }
         this.creature.getNavigator().tryMoveToXYZ(spawnPoint.getX(), spawnPoint.getY(),
                 spawnPoint.getZ(), this.movementSpeed);
         this.creature.setAttackTarget(null);
         this.creature.setRevengeTarget(null);
+
     }
 
 }
