@@ -32,20 +32,20 @@ public class PierceTheHeavens extends PlayerAbility {
     }
 
     @Override
-    public int getManaCost(int currentLevel){
-        return 4 + 3 * currentLevel;
+    public int getManaCost(int currentRank){
+        return 4 + 3 * currentRank;
     }
 
     @Override
-    public int getRequiredLevel(int currentLevel) {
-        return 4 + currentLevel * 2;
+    public int getRequiredLevel(int currentRank) {
+        return 4 + currentRank * 2;
     }
 
     @Override
     public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
         pData.startAbility(this);
 
-        int level = pData.getLevelForAbility(getAbilityId());
+        int level = pData.getAbilityRank(getAbilityId());
         int count = level * COUNT_PER_LEVEL;
 
         ItemStack stack = new ItemStack(Blocks.LADDER, count);

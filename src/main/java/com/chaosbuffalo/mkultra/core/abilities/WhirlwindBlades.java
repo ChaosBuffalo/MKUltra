@@ -41,8 +41,8 @@ public class WhirlwindBlades extends PlayerAbility {
     }
 
     @Override
-    public int getManaCost(int currentLevel) {
-        return 3 + 2 * currentLevel;
+    public int getManaCost(int currentRank) {
+        return 3 + 2 * currentRank;
     }
 
     @Override
@@ -51,15 +51,15 @@ public class WhirlwindBlades extends PlayerAbility {
     }
 
     @Override
-    public int getRequiredLevel(int currentLevel) {
-        return 6 + currentLevel * 2;
+    public int getRequiredLevel(int currentRank) {
+        return 6 + currentRank * 2;
     }
 
     @Override
     public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
         pData.startAbility(this);
 
-        int level = pData.getLevelForAbility(getAbilityId());
+        int level = pData.getAbilityRank(getAbilityId());
 
         // What to do for each target hit
         SpellCast damage = AbilityMeleeDamage.Create(entity, BASE_DAMAGE, DAMAGE_SCALE);

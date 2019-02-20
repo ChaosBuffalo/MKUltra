@@ -46,14 +46,14 @@ public class PoisonArrow extends PlayerAbility {
     }
 
     @Override
-    public int getManaCost(int currentLevel) {
-        return 8 - currentLevel * 2;
+    public int getManaCost(int currentRank) {
+        return 8 - currentRank * 2;
     }
 
 
     @Override
-    public int getRequiredLevel(int currentLevel) {
-        return  4 + currentLevel * 2;
+    public int getRequiredLevel(int currentRank) {
+        return  4 + currentRank * 2;
     }
 
     @Override
@@ -62,7 +62,7 @@ public class PoisonArrow extends PlayerAbility {
         if (ammo.isEmpty() || !(entity.getHeldItemMainhand().getItem() instanceof ItemBow)) {
             return;
         }
-        int level = pData.getLevelForAbility(getAbilityId());
+        int level = pData.getAbilityRank(getAbilityId());
         pData.startAbility(this);
 
         SpellCastArrow arrow = new SpellCastArrow(theWorld, entity);

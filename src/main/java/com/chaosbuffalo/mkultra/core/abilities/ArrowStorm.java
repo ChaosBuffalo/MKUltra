@@ -43,14 +43,14 @@ public class ArrowStorm extends PlayerAbility {
     }
 
     @Override
-    public int getManaCost(int currentLevel) {
-        return 14 - currentLevel * 2;
+    public int getManaCost(int currentRank) {
+        return 14 - currentRank * 2;
     }
 
 
     @Override
-    public int getRequiredLevel(int currentLevel) {
-        return 6 + currentLevel * 2;
+    public int getRequiredLevel(int currentRank) {
+        return 6 + currentRank * 2;
     }
 
     @Override
@@ -60,7 +60,7 @@ public class ArrowStorm extends PlayerAbility {
         if (ammo.isEmpty() || !(entity.getHeldItemMainhand().getItem() instanceof ItemBow)) {
             return;
         }
-        int level = pData.getLevelForAbility(getAbilityId());
+        int level = pData.getAbilityRank(getAbilityId());
         int shootCount = ARROW_PER_LEVEL * level;
         pData.startAbility(this);
         for (int i = 0; i < shootCount; i++) {

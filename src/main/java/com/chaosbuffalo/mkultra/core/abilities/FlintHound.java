@@ -33,12 +33,12 @@ public class FlintHound extends PlayerAbility {
     }
 
     @Override
-    public int getManaCost(int currentLevel) {
+    public int getManaCost(int currentRank) {
         return 10;
     }
 
     @Override
-    public int getRequiredLevel(int currentLevel) {
+    public int getRequiredLevel(int currentRank) {
         return 1;
     }
 
@@ -46,7 +46,7 @@ public class FlintHound extends PlayerAbility {
     public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
         pData.startAbility(this);
 
-        int level = pData.getLevelForAbility(getAbilityId());
+        int level = pData.getAbilityRank(getAbilityId());
         int count = level * COUNT_PER_LEVEL;
 
         ItemStack stack = new ItemStack(Items.FLINT, count);

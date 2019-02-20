@@ -6,18 +6,18 @@ import net.minecraft.util.ResourceLocation;
 
 public class PlayerAbilityInfo {
     private ResourceLocation id;
-    private int level;
+    private int rank;
     private int cooldown;
 
     public PlayerAbilityInfo(ResourceLocation abilityId) {
         id = abilityId;
-        level = GameConstants.ACTION_BAR_INVALID_LEVEL;
+        rank = GameConstants.ABILITY_INVALID_RANK;
         cooldown = 0;
     }
 
-    public PlayerAbilityInfo(ResourceLocation abilityId, int level) {
+    public PlayerAbilityInfo(ResourceLocation abilityId, int rank) {
         id = abilityId;
-        this.level = level;
+        this.rank = rank;
         cooldown = 0;
     }
 
@@ -25,23 +25,23 @@ public class PlayerAbilityInfo {
         return id;
     }
 
-    public int getLevel() {
-        return level;
+    public int getRank() {
+        return rank;
     }
 
     public boolean isCurrentlyKnown() {
-        return level > GameConstants.ACTION_BAR_INVALID_LEVEL;
+        return rank > GameConstants.ABILITY_INVALID_RANK;
     }
 
     public void upgrade() {
-        if (level < GameConstants.MAX_ABILITY_LEVEL) {
-            level += 1;
+        if (rank < GameConstants.MAX_ABILITY_RANK) {
+            rank += 1;
         }
     }
 
     public boolean downgrade() {
         if (isCurrentlyKnown()) {
-            level -= 1;
+            rank -= 1;
             return true;
         }
         return false;
@@ -57,13 +57,14 @@ public class PlayerAbilityInfo {
 
     public void serialize(NBTTagCompound tag) {
         tag.setString("id", id.toString());
-        tag.setInteger("level", level);
+        // Leaving this as "level" to avoid breaking existing saves
+        tag.setInteger("level", rank);
         tag.setInteger("cooldown", cooldown);
     }
 
     public void deserialize(NBTTagCompound tag) {
         id = new ResourceLocation(tag.getString("id"));
-        level = tag.getInteger("level");
+        rank = tag.getInteger("level");
         cooldown = tag.getInteger("cooldown");
     }
 }

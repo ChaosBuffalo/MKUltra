@@ -52,8 +52,8 @@ public class SwiftsRodeoHeartbreak extends PlayerToggleGroupAbility {
     }
 
     @Override
-    public int getManaCost(int currentLevel) {
-        return currentLevel;
+    public int getManaCost(int currentRank) {
+        return currentRank;
     }
 
     @Override
@@ -62,8 +62,8 @@ public class SwiftsRodeoHeartbreak extends PlayerToggleGroupAbility {
     }
 
     @Override
-    public int getRequiredLevel(int currentLevel) {
-        return 4 + currentLevel * 2;
+    public int getRequiredLevel(int currentRank) {
+        return 4 + currentRank * 2;
     }
 
     @Override
@@ -73,7 +73,7 @@ public class SwiftsRodeoHeartbreak extends PlayerToggleGroupAbility {
 
     @Override
     public void applyEffect(EntityPlayer entity, IPlayerData pData, World theWorld) {
-        int level = pData.getLevelForAbility(getAbilityId());
+        int level = pData.getAbilityRank(getAbilityId());
         entity.addPotionEffect(SwiftsRodeoHBSongPotion.Create(entity).setTarget(entity)
                 .toPotionEffect(BASE_DURATION, level));
         Vec3d lookVec = entity.getLookVec();

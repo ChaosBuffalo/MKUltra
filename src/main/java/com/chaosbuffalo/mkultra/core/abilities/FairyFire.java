@@ -40,20 +40,20 @@ public class FairyFire extends PlayerAbility {
     }
 
     @Override
-    public int getManaCost(int currentLevel) {
-        return 3 + currentLevel;
+    public int getManaCost(int currentRank) {
+        return 3 + currentRank;
     }
 
 
     @Override
-    public int getRequiredLevel(int currentLevel) {
-        return currentLevel * 2;
+    public int getRequiredLevel(int currentRank) {
+        return currentRank * 2;
     }
 
     @Override
     public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
 
-        int level = pData.getLevelForAbility(getAbilityId());
+        int level = pData.getAbilityRank(getAbilityId());
         pData.startAbility(this);
         EntityFairyFireProjectile projectile = new EntityFairyFireProjectile(theWorld, entity);
         projectile.setAmplifier(level);

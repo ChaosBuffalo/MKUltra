@@ -74,7 +74,7 @@ public class PlayerClassInfo {
         spendOrder.addFirst(abilityId);
     }
 
-    public ResourceLocation getLastLeveledAbility() {
+    public ResourceLocation getLastUpgradedAbility() {
         if (spendOrder.size() != 0) {
             return spendOrder.removeFirst();
         }

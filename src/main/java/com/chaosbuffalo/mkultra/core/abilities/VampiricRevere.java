@@ -41,8 +41,8 @@ public class VampiricRevere extends PlayerToggleAbility {
     }
 
     @Override
-    public int getManaCost(int currentLevel) {
-        return 3 - currentLevel;
+    public int getManaCost(int currentRank) {
+        return 3 - currentRank;
     }
 
     @Override
@@ -54,14 +54,14 @@ public class VampiricRevere extends PlayerToggleAbility {
     public Potion getToggleEffect() { return VampiricReverePotion.INSTANCE; }
 
     @Override
-    public int getRequiredLevel(int currentLevel) {
-        return currentLevel * 2;
+    public int getRequiredLevel(int currentRank) {
+        return currentRank * 2;
     }
 
     @Override
     public void applyEffect(EntityPlayer entity, IPlayerData pData, World theWorld) {
 
-        int level = pData.getLevelForAbility(getAbilityId());
+        int level = pData.getAbilityRank(getAbilityId());
 
         // What to do for each target hit
         entity.addPotionEffect(VampiricReverePotion.Create(entity).setTarget(entity).toPotionEffect(BASE_DURATION, level));
