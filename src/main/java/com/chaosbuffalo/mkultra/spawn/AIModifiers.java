@@ -31,16 +31,16 @@ public class AIModifiers {
             if (actions.size() > 0){
                 HashSet<EntityAITasks.EntityAITaskEntry> toRemove = new HashSet<>();
                 for (EntityAITasks.EntityAITaskEntry task : entLiv.tasks.taskEntries){
-                    Log.info("Checking for AI task %s", task.action.getClass().toString());
+//                    Log.info("Checking for AI task %s", task.action.getClass().toString());
                     for (Class<? extends EntityAIBase> action : actions){
                         if (action.isAssignableFrom(task.action.getClass())){
-                            Log.info("task found in actions to remove");
+//                            Log.info("task found in actions to remove");
                             toRemove.add(task);
                         }
                     }
                 }
                 for (EntityAITasks.EntityAITaskEntry entry : toRemove){
-                    Log.info("Remove AI task %s", entry.getClass().toString());
+//                    Log.info("Remove AI task %s", entry.getClass().toString());
                     entLiv.tasks.removeTask(entry.action);
                 }
             }
@@ -94,7 +94,7 @@ public class AIModifiers {
                 if (modifier.level >= choice.minLevel){
                     EntityAIBase toAdd = choice.getTask(entLiv);
                     if (toAdd != null){
-                        Log.info("Adding %s to entity %s", choice.getTaskType().name(), entity.toString());
+//                        Log.info("Adding %s to entity %s", choice.getTaskType().name(), entity.toString());
                         switch (choice.getTaskType()){
                             case TARGET_TASK:
                                 entLiv.targetTasks.addTask(choice.getTaskPriority(), toAdd);

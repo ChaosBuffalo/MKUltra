@@ -35,7 +35,7 @@ public class MKURegistry {
     public static ResourceLocation INVALID_CLASS = new ResourceLocation(MKUltra.MODID, "class.invalid");
     public static ResourceLocation INVALID_ABILITY = new ResourceLocation(MKUltra.MODID, "ability.invalid");
     public static ResourceLocation INVALID_MOB = new ResourceLocation(MKUltra.MODID, "mob.invalid");
-    public static final MobDefinition EMPTY_MOB = new MobDefinition(INVALID_MOB,null, 0);
+    public static final MobDefinition EMPTY_MOB = new MobDefinition(INVALID_MOB,null);
     public static ResourceLocation INVALID_MOB_ABILITY = new ResourceLocation(MKUltra.MODID, "mob_ability.invalid");
     public static ResourceLocation INVALID_SPAWN_LIST = new ResourceLocation(MKUltra.MODID, "spawn_list.invalid");
     public static ResourceLocation INVALID_FACTION = new ResourceLocation(MKUltra.MODID, "mob_faction.invalid");

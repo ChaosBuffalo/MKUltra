@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.json_utils;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.MKURegistry;
+import com.chaosbuffalo.mkultra.core.MobAbility;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.spawn.*;
 import com.google.common.collect.Maps;
@@ -24,6 +25,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.util.TriConsumer;
 
 
+import javax.annotation.Nullable;
 import java.io.*;
 import java.nio.file.*;
 import java.util.ArrayList;
@@ -211,18 +213,192 @@ public class LoadingHelper {
             if (jsonObject.has("drop_chance")){
                 dropChance = jsonObject.get("drop_chance").getAsFloat();
             }
-            Item item = Item.REGISTRY.getObject(new ResourceLocation(jsonObject.get("item").getAsString()));
-            if (item == null){
-                Log.info("Failed to load item for %s", jsonObject.get("item").getAsString());
-                return;
+            String itemName = jsonObject.get("item").getAsString();
+            Item item;
+            if (itemName.equals("EMPTY")){
+                item = null;
+            } else {
+                item = Item.REGISTRY.getObject(new ResourceLocation(itemName));
             }
-            ItemChoice choice = new ItemChoice(new ItemStack(item, 1),
-                    jsonObject.get("weight").getAsDouble(), jsonObject.get("min_level").getAsInt(),
-                    dropChance);
-            choices.add(choice);
+            if (item == null && !itemName.equals("EMPTY")){
+                Log.info("Failed to load item for %s", jsonObject.get("item").getAsString());
+                continue;
+            } else {
+                ItemStack itemStack;
+                if (item == null){
+                    itemStack = ItemStack.EMPTY;
+                } else {
+                    itemStack = new ItemStack(item, 1);
+                }
+                ItemChoice choice = new ItemChoice(itemStack,
+                        jsonObject.get("weight").getAsDouble(),
+                        jsonObject.get("min_level").getAsInt(),
+                        dropChance);
+                choices.add(choice);
+            }
         }
         ItemOption option = new ItemOption(name, assigner, choices.toArray(new ItemChoice[0]));
         event.getRegistry().register(option);
+    }
+
+
+    public static MobFaction.MobGroups getMobGroupFromString(String mobGroupIn){
+        switch (mobGroupIn){
+            case "RANGE_GRUNT":
+                return MobFaction.MobGroups.RANGE_GRUNT;
+            case "MELEE_GRUNT":
+                return MobFaction.MobGroups.MELEE_GRUNT;
+            case "SUPPORT_GRUNT":
+                return MobFaction.MobGroups.SUPPORT_GRUNT;
+            case "MELEE_CAPTAIN":
+                return MobFaction.MobGroups.MELEE_CAPTAIN;
+            case "RANGE_CAPTAIN":
+                return MobFaction.MobGroups.RANGE_CAPTAIN;
+            case "SUPPORT_CAPTAIN":
+                return MobFaction.MobGroups.SUPPORT_CAPTAIN;
+            case "BOSS":
+                return MobFaction.MobGroups.BOSS;
+            default:
+                return null;
+        }
+    }
+
+    public static void loadMobFactions(ResourceLocation name, JsonObject obj,
+                                      RegistryEvent.Register<MobFaction> event){
+        String[] groups = {"RANGE_GRUNT", "MELEE_GRUNT", "SUPPORT_GRUNT", "RANGE_CAPTAIN",
+                "MELEE_CAPTAIN", "SUPPORT_CAPTAIN", "BOSS"};
+        MobFaction faction = new MobFaction(name);
+        for (String key : groups){
+            if (obj.has(key)){
+                JsonArray options = obj.get(key).getAsJsonArray();
+                for (JsonElement ele : options){
+                    JsonObject jsonObject = ele.getAsJsonObject();
+                    String[] keys = {"spawn_list", "weight"};
+                    if (!checkKeysExist(keys, jsonObject)){
+                        continue;
+                    }
+                    SpawnList spawnList = MKURegistry.getSpawnList(new ResourceLocation(jsonObject.get("spawn_list")
+                            .getAsString()));
+                    if (spawnList == null){
+                        Log.info("Error loading Spawn List: %s for Faction: %s", jsonObject.get("spawn_list")
+                                .getAsString(), name);
+                        continue;
+                    }
+                    MobFaction.MobGroups group = getMobGroupFromString(key);
+                    if (group == null){
+                        Log.info("Incorrect group name for faction %s", key);
+                        continue;
+                    }
+                    faction.addSpawnList(group, spawnList, jsonObject.get("weight").getAsDouble());
+                }
+            }
+        }
+        event.getRegistry().register(faction);
+    }
+
+    public static void loadSpawnList(ResourceLocation name, JsonObject obj,
+                                     RegistryEvent.Register<SpawnList> event){
+        String[] keys = {"options"};
+        if (!checkKeysExist(keys, obj)){
+            return;
+        }
+        JsonArray options = obj.get("options").getAsJsonArray();
+        ArrayList<MobChoice> choices = new ArrayList<>();
+        for (JsonElement ele : options){
+            JsonObject jsonObject = ele.getAsJsonObject();
+            String[] optionkeys = {"definition", "weight"};
+            if (!checkKeysExist(optionkeys, jsonObject)){
+                continue;
+            }
+            MobDefinition definition = MKURegistry.getMobDefinition(
+                    new ResourceLocation(jsonObject.get("definition").getAsString()));
+            if (definition == null){
+                Log.info("Could not load mob definition for %s", jsonObject.get("definition").getAsString());
+                continue;
+            }
+            MobChoice mobChoice = new MobChoice(definition, jsonObject.get("weight").getAsDouble());
+            choices.add(mobChoice);
+        }
+        SpawnList spawnList = new SpawnList(name).withOptions(choices.toArray(new MobChoice[0]));
+        event.getRegistry().register(spawnList);
+
+    }
+    public static void loadMobDefinition(ResourceLocation name, JsonObject obj,
+                                         RegistryEvent.Register<MobDefinition> event){
+        String[] keys = {"type"};
+        if (!checkKeysExist(keys, obj)){
+            return;
+        }
+        try {
+            Class mobClass = Class.forName(obj.get("type").getAsString());
+            if (EntityLivingBase.class.isAssignableFrom(mobClass)){
+                MobDefinition definition = new MobDefinition(name, mobClass);
+                if (obj.has("attributes")){
+                    JsonArray attributeList = obj.get("attributes").getAsJsonArray();
+                    ArrayList<AttributeRange> ranges = new ArrayList<>();
+                    for (JsonElement ele : attributeList){
+                        String attributeName = ele.getAsString();
+                        AttributeRange range = MKURegistry.getAttributeRange(new ResourceLocation(attributeName));
+                        if (range != null){
+                            ranges.add(range);
+                        } else {
+                            Log.info("Error finding attribute range for: %s", attributeName);
+                        }
+                    }
+                    definition.withAttributeRanges(ranges.toArray(new AttributeRange[0]));
+                }
+                if (obj.has("item_options")){
+                    JsonArray item_options = obj.get("item_options").getAsJsonArray();
+                    ArrayList<ItemOption> options = new ArrayList<>();
+                    for (JsonElement ele : item_options){
+                        String option_name = ele.getAsString();
+                        ItemOption option = MKURegistry.getItemOption(new ResourceLocation(option_name));
+                        if (option != null){
+                            options.add(option);
+                        } else {
+                            Log.info("Error finding ItemOption for: %s", option_name);
+                        }
+                    }
+                    definition.withItemOptions(options.toArray(new ItemOption[0]));
+                }
+                if (obj.has("abilities")){
+                    JsonArray json_options = obj.get("abilities").getAsJsonArray();
+                    ArrayList<MobAbility> options = new ArrayList<>();
+                    for (JsonElement ele : json_options){
+                        String option_name = ele.getAsString();
+                        MobAbility option = MKURegistry.getMobAbility(new ResourceLocation(option_name));
+                        if (option != null){
+                            options.add(option);
+                        } else {
+                            Log.info("Error finding MobAbility for: %s", option_name);
+                        }
+                    }
+                    definition.withAbilities(options.toArray(new MobAbility[0]));
+                }
+                if (obj.has("ai_modifiers")){
+                    JsonArray json_options = obj.get("ai_modifiers").getAsJsonArray();
+                    ArrayList<AIModifier> options = new ArrayList<>();
+                    for (JsonElement ele : json_options){
+                        String option_name = ele.getAsString();
+                        AIModifier option = MKURegistry.getAIModifier(new ResourceLocation(option_name));
+                        if (option != null){
+                            options.add(option);
+                        } else {
+                            Log.info("Error finding AI Modifier for: %s", option_name);
+                        }
+                    }
+                    definition.withAIModifiers(options.toArray(new AIModifier[0]));
+                }
+                event.getRegistry().register(definition);
+            } else {
+                Log.info("%s Class not an EntityLivingBase skipping mob definition %s",
+                        mobClass.toString(), obj.toString());
+            }
+        } catch (ClassNotFoundException e) {
+            Log.info("Type not found for entity: %s, skipping mob definition: %s",
+                    obj.get("type").getAsString(),
+                    obj.toString());
+        }
     }
 
     public static void loadAIModifier(ResourceLocation name, JsonObject obj,

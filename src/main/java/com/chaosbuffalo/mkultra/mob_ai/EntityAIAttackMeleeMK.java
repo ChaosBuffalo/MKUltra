@@ -31,7 +31,7 @@ public class EntityAIAttackMeleeMK extends EntityAIBase {
         this.world = entityIn.world;
         this.speedTowardsTarget = moveSpeed;
         this.longMemory = longMemory;
-        this.setMutexBits(1);
+        this.setMutexBits(3);
     }
 
     public boolean shouldExecute() {

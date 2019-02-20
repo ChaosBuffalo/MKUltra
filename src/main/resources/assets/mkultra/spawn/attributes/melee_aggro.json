@@ -1,0 +1,5 @@
+{
+  "setter": "mkultra:aggro_range",
+  "min_value": 12.0,
+  "max_value": 12.0
+}

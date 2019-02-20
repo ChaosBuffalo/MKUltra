@@ -31,7 +31,6 @@ import java.util.function.BiFunction;
 
 @Mod.EventBusSubscriber
 public class ModSpawn {
-
     public static final int MAX_LEVEL = 10;
 
     @SuppressWarnings("unused")
@@ -39,33 +38,6 @@ public class ModSpawn {
     public static void registerItemOptions(RegistryEvent.Register<ItemOption> event) {
         Log.info("Registering Item Options");
         LoadingHelper.loadModsForType("/spawn/item_options", LoadingHelper::loadItemOption, event);
-        ItemOption bow = new ItemOption(
-                new ResourceLocation(MKUltra.MODID, "bow"),
-                ItemAssigners.MAINHAND,
-                new ItemChoice(new ItemStack(Items.BOW, 1), 5, 0));
-        event.getRegistry().register(bow);
-        ItemOption grunt_helm = new ItemOption(
-                new ResourceLocation(MKUltra.MODID, "grunt_helm"),
-                ItemAssigners.HEAD,
-                new ItemChoice(new ItemStack(Items.IRON_HELMET, 1), 5, 0));
-        event.getRegistry().register(grunt_helm);
-        ItemOption grunt_chest = new ItemOption(
-                new ResourceLocation(MKUltra.MODID, "grunt_chest"),
-                ItemAssigners.CHEST,
-                new ItemChoice(new ItemStack(Items.LEATHER_CHESTPLATE, 1), 5, 0),
-                new ItemChoice(ItemStack.EMPTY, 10, 0));
-        event.getRegistry().register(grunt_chest);
-        ItemOption captain_helm = new ItemOption(
-                new ResourceLocation(MKUltra.MODID, "captain_helm"),
-                ItemAssigners.HEAD,
-                new ItemChoice(new ItemStack(Items.IRON_HELMET, 1), 7, 0));
-        event.getRegistry().register(captain_helm);
-        ItemOption captain_chest = new ItemOption(
-                new ResourceLocation(MKUltra.MODID, "captain_chest"),
-                ItemAssigners.CHEST,
-                new ItemChoice(new ItemStack(Items.LEATHER_CHESTPLATE, 1), 5, 0));
-        event.getRegistry().register(captain_chest);
-
     }
 
     @SuppressWarnings("unused")
@@ -107,26 +79,6 @@ public class ModSpawn {
     public static void registerAttributeRanges(RegistryEvent.Register<AttributeRange> event) {
         Log.info("Registering Attribute Ranges");
         LoadingHelper.loadModsForType("/spawn/attributes", LoadingHelper::loadAttribute, event);
-        AttributeRange boss_health = new AttributeRange(
-                new ResourceLocation(MKUltra.MODID, "boss_health"),
-                MKURegistry.getAttributeSetter(new ResourceLocation(MKUltra.MODID, "max_health")),
-                200.00, 500.0);
-        event.getRegistry().register(boss_health);
-        AttributeRange set_follow = new AttributeRange(
-                new ResourceLocation(MKUltra.MODID, "follow_range"),
-                MKURegistry.getAttributeSetter(new ResourceLocation(MKUltra.MODID, "follow_range")),
-                20.0, 20.0);
-        event.getRegistry().register(set_follow);
-        AttributeRange melee_aggro = new AttributeRange(
-                new ResourceLocation(MKUltra.MODID, "melee_aggro"),
-                MKURegistry.getAttributeSetter(new ResourceLocation(MKUltra.MODID, "aggro_range")),
-                10.0, 10.0);
-        event.getRegistry().register(melee_aggro);
-        AttributeRange range_aggro = new AttributeRange(
-                new ResourceLocation(MKUltra.MODID, "ranged_aggro"),
-                MKURegistry.getAttributeSetter(new ResourceLocation(MKUltra.MODID, "aggro_range")),
-                16.0, 16.0);
-        event.getRegistry().register(range_aggro);
     }
 
     @SuppressWarnings("unused")
@@ -147,148 +99,21 @@ public class ModSpawn {
     @SubscribeEvent
     public static void registerMobDefinitions(RegistryEvent.Register<MobDefinition> event) {
         Log.info("Registering Mob Definitions");
-        MobDefinition skeletal_grunt =  new MobDefinition(
-                new ResourceLocation(MKUltra.MODID, "skeletal_grunt"),
-                EntitySkeleton.class, 10)
-                .withAttributeRanges(
-                        MKURegistry.getAttributeRange(
-                                new ResourceLocation(MKUltra.MODID, "grunt_health")),
-                        MKURegistry.getAttributeRange(
-                                new ResourceLocation(MKUltra.MODID, "melee_aggro"))
-                )
-                .withItemOptions(
-                        MKURegistry.getItemOption(
-                                new ResourceLocation(MKUltra.MODID, "iron_weapons")),
-                        MKURegistry.getItemOption(
-                                new ResourceLocation(MKUltra.MODID, "grunt_helm")),
-                        MKURegistry.getItemOption(
-                                new ResourceLocation(MKUltra.MODID, "grunt_chest")))
-                .withAbilities(
-                        MKURegistry.getMobAbility(
-                                new ResourceLocation(MKUltra.MODID, "mob_ability.natures_remedy")))
-                .withAIModifiers(
-                        MKURegistry.getAIModifier(new ResourceLocation(MKUltra.MODID, "remove_skeleton_ai")),
-                        MKURegistry.getAIModifier(new ResourceLocation(MKUltra.MODID, "add_standard_ai"))
-                )
-                .withMobName("Skeletal Grunt");
-        event.getRegistry().register(skeletal_grunt);
-        MobDefinition skeletal_archer =  new MobDefinition(
-                new ResourceLocation(MKUltra.MODID, "skeletal_archer"),
-                EntitySkeleton.class, 10)
-                .withAttributeRanges(
-                        MKURegistry.getAttributeRange(
-                                new ResourceLocation(MKUltra.MODID, "grunt_health")),
-                        MKURegistry.getAttributeRange(
-                                new ResourceLocation(MKUltra.MODID, "ranged_aggro"))
-                )
-                .withItemOptions(
-                        MKURegistry.getItemOption(
-                                new ResourceLocation(MKUltra.MODID, "bow")),
-                        MKURegistry.getItemOption(
-                                new ResourceLocation(MKUltra.MODID, "grunt_helm")),
-                        MKURegistry.getItemOption(
-                                new ResourceLocation(MKUltra.MODID, "grunt_chest")))
-                .withAbilities(
-                        MKURegistry.getMobAbility(
-                                new ResourceLocation(MKUltra.MODID, "mob_ability.fire_arrow")))
-                .withAIModifiers(
-                        MKURegistry.getAIModifier(new ResourceLocation(MKUltra.MODID, "remove_skeleton_ai")),
-                        MKURegistry.getAIModifier(new ResourceLocation(MKUltra.MODID, "add_standard_ai"))
-                )
-                .withMobName("Skeletal Archer");
-        event.getRegistry().register(skeletal_archer);
-        MobDefinition skeletal_skulker =  new MobDefinition(
-                new ResourceLocation(MKUltra.MODID, "skeletal_skulker"),
-                EntitySkeleton.class, 10)
-                .withAttributeRanges(
-                        MKURegistry.getAttributeRange(
-                                new ResourceLocation(MKUltra.MODID, "captain_health")),
-                        MKURegistry.getAttributeRange(
-                                new ResourceLocation(MKUltra.MODID, "melee_aggro"))
-                )
-                .withItemOptions(
-                        MKURegistry.getItemOption(
-                                new ResourceLocation(MKUltra.MODID, "iron_weapons")),
-                        MKURegistry.getItemOption(
-                                new ResourceLocation(MKUltra.MODID, "captain_helm")),
-                        MKURegistry.getItemOption(
-                                new ResourceLocation(MKUltra.MODID, "captain_chest")))
-                .withAbilities(
-                        MKURegistry.getMobAbility(
-                                new ResourceLocation(MKUltra.MODID, "mob_ability.shadow_dash")),
-                        MKURegistry.getMobAbility(
-                                new ResourceLocation(MKUltra.MODID, "mob_ability.natures_remedy")))
-                .withAIModifiers(
-                        MKURegistry.getAIModifier(new ResourceLocation(MKUltra.MODID, "remove_skeleton_ai")),
-                        MKURegistry.getAIModifier(new ResourceLocation(MKUltra.MODID, "add_standard_ai"))
-                )
-                .withMobName("Skeletal Skulker");
-        event.getRegistry().register(skeletal_skulker);
-        MobDefinition skeletal_mage =  new MobDefinition(
-                new ResourceLocation(MKUltra.MODID, "skeletal_mage"),
-                EntitySkeleton.class, 10)
-                .withAttributeRanges(
-                        MKURegistry.getAttributeRange(
-                                new ResourceLocation(MKUltra.MODID, "grunt_health")),
-                        MKURegistry.getAttributeRange(
-                                new ResourceLocation(MKUltra.MODID, "ranged_aggro"))
-                )
-                .withItemOptions(
-                        MKURegistry.getItemOption(
-                                new ResourceLocation(MKUltra.MODID, "grunt_helm")),
-                        MKURegistry.getItemOption(
-                                new ResourceLocation(MKUltra.MODID, "grunt_chest")))
-                .withAbilities(
-                        MKURegistry.getMobAbility(
-                                new ResourceLocation(MKUltra.MODID, "mob_ability.natures_remedy")),
-                        MKURegistry.getMobAbility(
-                                new ResourceLocation(MKUltra.MODID, "mob_ability.fireball")
-                        ))
-                .withAIModifiers(
-                        MKURegistry.getAIModifier(new ResourceLocation(MKUltra.MODID, "remove_skeleton_ai")),
-                        MKURegistry.getAIModifier(new ResourceLocation(MKUltra.MODID, "add_standard_ai"))
-                )
-                .withMobName("Skeletal Mage");
-        event.getRegistry().register(skeletal_mage);
+        LoadingHelper.loadModsForType("/spawn/mob_definitions", LoadingHelper::loadMobDefinition, event);
     }
 
     @SuppressWarnings("unused")
     @SubscribeEvent
     public static void registerMobFactions(RegistryEvent.Register<MobFaction> event) {
         Log.info("Registering Mob Factions");
-        MobFaction skeleton_faction = new MobFaction(MKUltra.MODID, "skeletons");
-        skeleton_faction.addSpawnList(MobFaction.MobGroups.MELEE_GRUNT, MKURegistry.getSpawnList(
-                new ResourceLocation(MKUltra.MODID, "skeletal_grunts")), 1);
-        skeleton_faction.addSpawnList(MobFaction.MobGroups.MELEE_CAPTAIN, MKURegistry.getSpawnList(
-                new ResourceLocation(MKUltra.MODID, "skeletal_skulkers")), 1);
-        skeleton_faction.addSpawnList(MobFaction.MobGroups.RANGE_GRUNT, MKURegistry.getSpawnList(
-                new ResourceLocation(MKUltra.MODID, "skeletal_mages")), 1);
-        skeleton_faction.addSpawnList(MobFaction.MobGroups.RANGE_GRUNT, MKURegistry.getSpawnList(
-                new ResourceLocation(MKUltra.MODID, "skeletal_archers")), 1);
-        event.getRegistry().register(skeleton_faction);
-
+        LoadingHelper.loadModsForType("/spawn/mob_factions", LoadingHelper::loadMobFactions, event);
     }
 
     @SuppressWarnings("unused")
     @SubscribeEvent
     public static void registerSpawnLists(RegistryEvent.Register<SpawnList> event) {
         Log.info("Registering Spawn Lists");
-        SpawnList skeletal_grunts = new SpawnList(new ResourceLocation(MKUltra.MODID, "skeletal_grunts"));
-        skeletal_grunts.addOption(MKURegistry.getMobDefinition(
-                new ResourceLocation(MKUltra.MODID, "skeletal_grunt")));
-        event.getRegistry().register(skeletal_grunts);
-        SpawnList skeletal_skulkers = new SpawnList(new ResourceLocation(MKUltra.MODID, "skeletal_skulkers"));
-        skeletal_skulkers.addOption(MKURegistry.getMobDefinition(
-                new ResourceLocation(MKUltra.MODID, "skeletal_skulker")));
-        event.getRegistry().register(skeletal_skulkers);
-        SpawnList skeletal_mages = new SpawnList(new ResourceLocation(MKUltra.MODID, "skeletal_mages"));
-        skeletal_mages.addOption(MKURegistry.getMobDefinition(
-                new ResourceLocation(MKUltra.MODID, "skeletal_mage")));
-        event.getRegistry().register(skeletal_mages);
-        SpawnList skeletal_archers = new SpawnList(new ResourceLocation(MKUltra.MODID, "skeletal_archers"));
-        skeletal_archers.addOption(MKURegistry.getMobDefinition(
-                new ResourceLocation(MKUltra.MODID, "skeletal_archer")));
-        event.getRegistry().register(skeletal_archers);
+        LoadingHelper.loadModsForType("/spawn/spawn_lists", LoadingHelper::loadSpawnList, event);
     }
 
     @SuppressWarnings("unused")

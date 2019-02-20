@@ -42,7 +42,7 @@ public class EntityAISpellCastingBase extends EntityAIBase {
         this.cooldown = cooldown;
         this.strafeRangeStart = strafeRangeStart;
         this.strafeRangeEnd = strafeRangeEnd;
-        setMutexBits(1);
+        setMutexBits(3);
     }
 
     public void setStrafeRange(float rangeStart, float rangeEnd){

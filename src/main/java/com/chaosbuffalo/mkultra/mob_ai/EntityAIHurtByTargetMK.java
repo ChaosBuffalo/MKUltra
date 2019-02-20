@@ -17,7 +17,7 @@ public class EntityAIHurtByTargetMK extends EntityAITarget {
     public EntityAIHurtByTargetMK(EntityCreature entityIn, boolean callsForHelp) {
         super(entityIn, true);
         this.entityCallsForHelp = callsForHelp;
-        this.setMutexBits(2);
+        this.setMutexBits(1);
     }
 
     public boolean shouldExecute() {
