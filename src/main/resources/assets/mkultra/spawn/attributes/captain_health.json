@@ -1,0 +1,5 @@
+{
+  "setter": "mkultra:max_health",
+  "min_value": 75.0,
+  "max_value": 150.0
+}

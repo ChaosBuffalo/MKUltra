@@ -17,6 +17,7 @@ public class EntityAIBuffTeammates extends EntityAISpellCastingBase {
         super(entity, mobData, cooldown);
         this.healThreshold = healThreshold;
         setStrafeRange(.1f, .5f);
+        desiredTargetType = Targeting.TargetType.FRIENDLY;
     }
 
     @Override

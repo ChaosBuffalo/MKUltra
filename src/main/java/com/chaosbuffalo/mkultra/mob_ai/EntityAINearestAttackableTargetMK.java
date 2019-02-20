@@ -22,6 +22,7 @@ public class EntityAINearestAttackableTargetMK extends EntityAITarget {
     public EntityAINearestAttackableTargetMK(EntityCreature creature, boolean checkSight, int targetChance) {
         super(creature, checkSight);
         this.targetChance = targetChance;
+        this.setMutexBits(1);
     }
 
     public EntityAINearestAttackableTargetMK(EntityCreature creature, boolean checkSight) {
@@ -55,7 +56,7 @@ public class EntityAINearestAttackableTargetMK extends EntityAITarget {
 
     @Override
     public boolean shouldExecute() {
-        if (this.targetChance > 0 && this.taskOwner.getRNG().nextInt(this.targetChance) != 0) {
+        if (this.taskOwner.getAttackTarget() != null || (this.targetChance > 0 && this.taskOwner.getRNG().nextInt(this.targetChance) != 0)) {
             return false;
         } else {
             List<Entity> list = taskOwner.world.getEntitiesInAABBexcluding(taskOwner,

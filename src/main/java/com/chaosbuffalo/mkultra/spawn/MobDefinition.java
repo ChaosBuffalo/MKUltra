@@ -15,17 +15,15 @@ import java.util.HashSet;
 public class MobDefinition extends IForgeRegistryEntry.Impl<MobDefinition> {
 
     public final Class<? extends EntityLivingBase> entityClass;
-    public final int spawnWeight;
     private final HashSet<AttributeRange> attributeRanges;
     private final HashSet<ItemOption> itemOptions;
     private final ArrayList<AIModifier> aiModifiers;
     private final HashSet<MobAbility> mobAbilities;
     private String mobName;
 
-    public MobDefinition(ResourceLocation name, Class<? extends EntityLivingBase> entityClass, int spawnWeight){
+    public MobDefinition(ResourceLocation name, Class<? extends EntityLivingBase> entityClass){
         setRegistryName(name);
         this.entityClass = entityClass;
-        this.spawnWeight = spawnWeight;
         attributeRanges = new HashSet<>();
         itemOptions = new HashSet<>();
         aiModifiers = new ArrayList<>();

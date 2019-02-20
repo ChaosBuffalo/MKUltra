@@ -1,0 +1,45 @@
+{
+  "type": "REMOVE_AI",
+  "choices": [
+    {
+      "min_level": 0,
+      "task_type": "TASK",
+      "task_class": "net.minecraft.entity.ai.EntityAIWanderAvoidWater"
+    },
+    {
+      "min_level": 0,
+      "task_type": "TASK",
+      "task_class": "net.minecraft.entity.ai.EntityAIWatchClosest"
+    },
+    {
+      "min_level": 0,
+      "task_type": "TARGET_TASK",
+      "task_class": "net.minecraft.entity.ai.EntityAIHurtByTarget"
+    },
+    {
+      "min_level": 0,
+      "task_type": "TARGET_TASK",
+      "task_class": "net.minecraft.entity.ai.EntityAINearestAttackableTarget"
+    },
+    {
+      "min_level": 0,
+      "task_type": "TASK",
+      "task_class": "net.minecraft.entity.ai.EntityAIAttackMelee"
+    },
+    {
+      "min_level": 0,
+      "task_type": "TASK",
+      "task_class": "net.minecraft.entity.ai.EntityAIRestrictSun"
+    },
+    {
+      "min_level": 0,
+      "task_type": "TASK",
+      "task_class": "net.minecraft.entity.ai.EntityAIFleeSun"
+    },
+    {
+      "min_level": 0,
+      "task_type": "TASK",
+      "task_class": "net.minecraft.entity.ai.EntityAIAvoidEntity"
+    }
+  ]
+}

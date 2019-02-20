@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.spawn;
 
+import com.chaosbuffalo.mkultra.log.Log;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -30,19 +31,26 @@ public class AIModifiers {
             if (actions.size() > 0){
                 HashSet<EntityAITasks.EntityAITaskEntry> toRemove = new HashSet<>();
                 for (EntityAITasks.EntityAITaskEntry task : entLiv.tasks.taskEntries){
-                    if (actions.contains(task.action.getClass())){
-                        toRemove.add(task);
+//                    Log.info("Checking for AI task %s", task.action.getClass().toString());
+                    for (Class<? extends EntityAIBase> action : actions){
+                        if (action.isAssignableFrom(task.action.getClass())){
+//                            Log.info("task found in actions to remove");
+                            toRemove.add(task);
+                        }
                     }
                 }
                 for (EntityAITasks.EntityAITaskEntry entry : toRemove){
+//                    Log.info("Remove AI task %s", entry.getClass().toString());
                     entLiv.tasks.removeTask(entry.action);
                 }
             }
             if (targetActions.size() > 0){
                 HashSet<EntityAITasks.EntityAITaskEntry> toRemove = new HashSet<>();
                 for (EntityAITasks.EntityAITaskEntry task : entLiv.targetTasks.taskEntries){
-                    if (targetActions.contains(task.action.getClass())){
-                        toRemove.add(task);
+                    for (Class<? extends EntityAIBase> action : targetActions){
+                        if (action.isAssignableFrom(task.action.getClass())){
+                            toRemove.add(task);
+                        }
                     }
                 }
                 for (EntityAITasks.EntityAITaskEntry entry : toRemove){
@@ -86,6 +94,7 @@ public class AIModifiers {
                 if (modifier.level >= choice.minLevel){
                     EntityAIBase toAdd = choice.getTask(entLiv);
                     if (toAdd != null){
+//                        Log.info("Adding %s to entity %s", choice.getTaskType().name(), entity.toString());
                         switch (choice.getTaskType()){
                             case TARGET_TASK:
                                 entLiv.targetTasks.addTask(choice.getTaskPriority(), toAdd);

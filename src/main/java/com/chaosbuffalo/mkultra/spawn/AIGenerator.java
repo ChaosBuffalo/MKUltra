@@ -8,7 +8,7 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 import java.util.function.BiFunction;
 
 public class AIGenerator extends IForgeRegistryEntry.Impl<AIGenerator>{
-    private static BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> generator;
+    private final BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> generator;
 
     public AIGenerator(ResourceLocation name, BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> func){
         setRegistryName(name);

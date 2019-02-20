@@ -1,0 +1,47 @@
+{
+  "type": "ADD_TASKS",
+  "choices": [
+    {
+      "min_level": 0,
+      "priority": 3,
+      "task_type": "TASK",
+      "generator": "mkultra:beneficial_spells"
+    },
+    {
+      "min_level": 0,
+      "priority": 2,
+      "task_type": "TARGET_TASK",
+      "generator": "mkultra:aggro_target"
+    },
+    {
+      "min_level": 0,
+      "priority": 4,
+      "task_type": "TASK",
+      "generator": "mkultra:offensive_spells"
+    },
+    {
+      "min_level": 0,
+      "priority": 6,
+      "task_type": "TASK",
+      "generator": "mkultra:long_range_watch_closest"
+    },
+    {
+      "min_level": 0,
+      "priority": 1,
+      "task_type": "TASK",
+      "generator": "mkultra:leash_range"
+    },
+    {
+      "min_level": 0,
+      "priority": 1,
+      "task_type": "TARGET_TASK",
+      "generator": "mkultra:hurt_target"
+    },
+    {
+      "min_level": 0,
+      "priority": 5,
+      "task_type": "TASK",
+      "generator": "mkultra:attack_target"
+    }
+  ]
+}
