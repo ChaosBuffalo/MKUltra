@@ -16,12 +16,14 @@ public class EntityAIReturnToSpawn extends EntityAIBase {
     private final IMobData mobData;
     private static final double LEASH_RANGE = 50.0;
     private boolean doReturn;
+    private int ticks_returning;
 
     public EntityAIReturnToSpawn(EntityCreature entity, IMobData mobData, double movementSpeed) {
         this.creature = entity;
         this.movementSpeed = movementSpeed;
         this.setMutexBits(1);
         this.mobData = mobData;
+        this.ticks_returning = 0;
     }
 
     public boolean shouldExecute() {
@@ -35,13 +37,16 @@ public class EntityAIReturnToSpawn extends EntityAIBase {
     }
 
     public boolean shouldContinueExecuting() {
-        return !this.creature.getNavigator().noPath();
+        Log.debug("Should Continue: Return to Spawn %b", !this.creature.getNavigator().noPath());
+        return !this.creature.getNavigator().noPath() ;
     }
 
     public void startExecuting() {
+        Log.debug("Start Execute: Return to Spawn");
         BlockPos spawnPoint = mobData.getSpawnPoint();
         this.creature.getNavigator().tryMoveToXYZ(spawnPoint.getX(), spawnPoint.getY(),
                 spawnPoint.getZ(), this.movementSpeed);
+        this.creature.setAttackTarget(null);
     }
 
 }

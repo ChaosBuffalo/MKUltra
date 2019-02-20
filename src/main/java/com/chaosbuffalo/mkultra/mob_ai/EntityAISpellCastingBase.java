@@ -136,6 +136,7 @@ public class EntityAISpellCastingBase extends EntityAIBase {
 
     @Override
     public void startExecuting(){
+        Log.debug("Start Executing Spell Cast");
         super.startExecuting();
         if (entity instanceof IRangedAttackMob){
             ((IRangedAttackMob)this.entity).setSwingingArms(true);
@@ -144,6 +145,7 @@ public class EntityAISpellCastingBase extends EntityAIBase {
 
     @Override
     public void resetTask() {
+        Log.debug("Resetting Spell Cast");
         super.resetTask();
         this.castTime = cooldown;
         this.currentAbility = null;
@@ -162,6 +164,7 @@ public class EntityAISpellCastingBase extends EntityAIBase {
 
     @Override
     public void updateTask() {
+        Log.debug("Updating Spell Cast");
         if (entity instanceof EntityLiving){
             EntityLiving entLiv = (EntityLiving)entity;
             if (targetEntity != null && currentAbility != null) {
