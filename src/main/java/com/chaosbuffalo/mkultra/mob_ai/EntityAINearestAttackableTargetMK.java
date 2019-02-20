@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.mob_ai;
 
 import com.chaosbuffalo.mkultra.core.IMobData;
 import com.chaosbuffalo.mkultra.core.MKUMobData;
+import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
@@ -77,6 +78,7 @@ public class EntityAINearestAttackableTargetMK extends EntityAITarget {
     }
 
     public void startExecuting() {
+        Log.debug("Start Executing Attack Nearest");
         this.taskOwner.setAttackTarget(this.target);
         super.startExecuting();
     }

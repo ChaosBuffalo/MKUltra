@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.mob_ai;
 
+import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
@@ -28,6 +29,7 @@ public class EntityAIHurtByTargetMK extends EntityAITarget {
     }
 
     public void startExecuting() {
+        Log.debug("Start Executing Revenge Target");
         this.taskOwner.setAttackTarget(this.taskOwner.getRevengeTarget());
         this.target = this.taskOwner.getAttackTarget();
         this.revengeTimerOld = this.taskOwner.getRevengeTimer();
