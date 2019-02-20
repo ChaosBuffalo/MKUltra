@@ -45,8 +45,8 @@ public class SpiritOfWolf extends PlayerAbility {
     }
 
     @Override
-    public int getManaCost(int currentLevel) {
-        return 4 + currentLevel * 4;
+    public int getManaCost(int currentRank) {
+        return 4 + currentRank * 4;
     }
 
     @Override
@@ -55,14 +55,14 @@ public class SpiritOfWolf extends PlayerAbility {
     }
 
     @Override
-    public int getRequiredLevel(int currentLevel) {
-        return 4 + currentLevel * 2;
+    public int getRequiredLevel(int currentRank) {
+        return 4 + currentRank * 2;
     }
 
     @Override
     public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
 
-        int level = pData.getLevelForAbility(getAbilityId());
+        int level = pData.getAbilityRank(getAbilityId());
         EntityLivingBase targetEntity = getSingleLivingTargetOrSelf(entity, getDistance(level), true);
         
         pData.startAbility(this);

@@ -4,6 +4,7 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.MKURegistry;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
+import com.chaosbuffalo.mkultra.core.PlayerClass;
 import com.chaosbuffalo.mkultra.item.interfaces.IClassProvider;
 import com.chaosbuffalo.mkultra.network.packets.client.ClassLearnPacket;
 import net.minecraft.client.gui.GuiButton;
@@ -16,22 +17,25 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class ChooseClassScreen extends GuiScreen {
 
+    private static final int PER_PAGE = 8;
     private boolean learning;
+    private boolean enforceChecks;
     private List<ResourceLocation> classes;
-    private static int PER_PAGE = 8;
     private int currentPage;
 
     private static int CHOOSE_BUTTON = 0;
     private static int NEXT_BUTTON = 1;
     private static int PREV_BUTTON = 2;
 
-    public ChooseClassScreen(boolean showAll) {
+    public ChooseClassScreen(boolean showAll, boolean enforceChecks) {
         currentPage = 0;
         this.learning = showAll;
+        this.enforceChecks = enforceChecks;
     }
 
     @Override
@@ -60,15 +64,17 @@ public class ChooseClassScreen extends GuiScreen {
         if (data == null)
             return;
 
-        String text;
-        if (player.getHeldItemMainhand().getItem() instanceof IClassProvider) {
-            IClassProvider icon = (IClassProvider) player.getHeldItemMainhand().getItem();
-            text = icon.getClassSelectionText();
-        } else {
-            text = "You shouldn't see this.";
-        }
+        if (enforceChecks) {
+            String text;
+            if (player.getHeldItemMainhand().getItem() instanceof IClassProvider) {
+                IClassProvider icon = (IClassProvider) player.getHeldItemMainhand().getItem();
+                text = icon.getClassSelectionText();
+            } else {
+                text = "You shouldn't see this.";
+            }
 
-        this.fontRenderer.drawSplitString(text, xPos + 15, yPos + titleHeight + 2 + 4, 220, 0);
+            this.fontRenderer.drawSplitString(text, xPos + 15, yPos + titleHeight + 2 + 4, 220, 0);
+        }
         int contentHeight = 20;
         int buttonStartY = contentHeight + yPos + titleHeight + 2 + 4 + 2;
         int buttonStartX = xPos + 15;
@@ -78,8 +84,14 @@ public class ChooseClassScreen extends GuiScreen {
         List<ResourceLocation> knownClasses = data.getKnownClasses();
 
         if (learning) {
-            ItemStack main = player.getHeldItemMainhand();
-            classes = MKURegistry.getClassesProvidedByItem(main.getItem());
+            if (enforceChecks) {
+                ItemStack main = player.getHeldItemMainhand();
+                classes = MKURegistry.getClassesProvidedByItem(main.getItem());
+            }
+            else {
+                classes = MKURegistry.REGISTRY_CLASSES.getValuesCollection()
+                        .stream().map(PlayerClass::getClassId).collect(Collectors.toList());
+            }
         } else {
             classes = MKURegistry.getValidClasses(knownClasses);
         }
@@ -123,11 +135,6 @@ public class ChooseClassScreen extends GuiScreen {
             button.drawButton(this.mc, mouseX, mouseY, partialTicks);
             this.buttonList.add(button);
         }
-
-
-
-
-
     }
 
     @Override
@@ -135,7 +142,7 @@ public class ChooseClassScreen extends GuiScreen {
         if (button.id == CHOOSE_BUTTON){
             ClassButton chooseButton = (ClassButton) button;
             MKUltra.packetHandler.sendToServer(new ClassLearnPacket(
-                    classes.get(chooseButton.classInteger), learning));
+                    classes.get(chooseButton.classInteger), learning, enforceChecks));
             this.mc.displayGuiScreen(null);
             if (this.mc.currentScreen == null)
                 this.mc.setIngameFocus();

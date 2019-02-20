@@ -48,7 +48,7 @@ public class MileysInspiringBangerz extends PlayerToggleGroupAbility {
 
     @Override
     public void applyEffect(EntityPlayer entity, IPlayerData pData, World theWorld) {
-        int level = pData.getLevelForAbility(getAbilityId());
+        int level = pData.getAbilityRank(getAbilityId());
         entity.addPotionEffect(MileysInspiringBangerzSongPotion.Create(entity).setTarget(entity)
                 .toPotionEffect(BASE_DURATION, level));
         Vec3d lookVec = entity.getLookVec();
@@ -68,8 +68,8 @@ public class MileysInspiringBangerz extends PlayerToggleGroupAbility {
     }
 
     @Override
-    public int getManaCost(int currentLevel) {
-        return 1 + currentLevel;
+    public int getManaCost(int currentRank) {
+        return 1 + currentRank;
     }
 
     @Override
@@ -78,8 +78,8 @@ public class MileysInspiringBangerz extends PlayerToggleGroupAbility {
     }
 
     @Override
-    public int getRequiredLevel(int currentLevel) {
-        return 6 + currentLevel * 2;
+    public int getRequiredLevel(int currentRank) {
+        return 6 + currentRank * 2;
     }
 
     @Override

@@ -37,8 +37,8 @@ public class MassDrown extends PlayerAbility {
     }
 
     @Override
-    public int getManaCost(int currentLevel) {
-        return 8 + currentLevel * 4;
+    public int getManaCost(int currentRank) {
+        return 8 + currentRank * 4;
     }
 
     @Override
@@ -47,13 +47,13 @@ public class MassDrown extends PlayerAbility {
     }
 
     @Override
-    public int getRequiredLevel(int currentLevel) {
-        return 6 + currentLevel * 2;
+    public int getRequiredLevel(int currentRank) {
+        return 6 + currentRank * 2;
     }
 
     @Override
     public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
-        int level = pData.getLevelForAbility(getAbilityId());
+        int level = pData.getAbilityRank(getAbilityId());
 
         EntityLivingBase targetEntity = getSingleLivingTarget(entity, getDistance(level));
         if (targetEntity != null) {

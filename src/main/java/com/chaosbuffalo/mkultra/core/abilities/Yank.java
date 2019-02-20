@@ -38,8 +38,8 @@ public class Yank extends PlayerAbility {
     }
 
     @Override
-    public int getManaCost(int currentLevel) {
-        return 4 - currentLevel;
+    public int getManaCost(int currentRank) {
+        return 4 - currentRank;
     }
 
     @Override
@@ -48,13 +48,13 @@ public class Yank extends PlayerAbility {
     }
 
     @Override
-    public int getRequiredLevel(int currentLevel) {
-        return currentLevel * 2;
+    public int getRequiredLevel(int currentRank) {
+        return currentRank * 2;
     }
 
     @Override
     public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
-        int level = pData.getLevelForAbility(getAbilityId());
+        int level = pData.getAbilityRank(getAbilityId());
 
         EntityLivingBase targetEntity = getSingleLivingTarget(entity, getDistance(level));
         if (targetEntity != null) {

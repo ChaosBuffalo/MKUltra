@@ -40,8 +40,8 @@ public class FlameWave extends PlayerAbility {
     }
 
     @Override
-    public int getManaCost(int currentLevel) {
-        return 8 + currentLevel * 2;
+    public int getManaCost(int currentRank) {
+        return 8 + currentRank * 2;
     }
 
     @Override
@@ -50,15 +50,15 @@ public class FlameWave extends PlayerAbility {
     }
 
     @Override
-    public int getRequiredLevel(int currentLevel) {
-        return 4 + currentLevel * 2;
+    public int getRequiredLevel(int currentRank) {
+        return 4 + currentRank * 2;
     }
 
     @Override
     public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
         pData.startAbility(this);
 
-        int level = pData.getLevelForAbility(getAbilityId());
+        int level = pData.getAbilityRank(getAbilityId());
 
         // What to do for each target hit
         SpellCast flames = FlameWavePotion.Create(entity, BASE_DAMAGE, DAMAGE_SCALE);

@@ -38,8 +38,8 @@ public class PowerWordSummon extends PlayerAbility {
     }
 
     @Override
-    public int getManaCost(int currentLevel) {
-        return 4 + currentLevel * 2;
+    public int getManaCost(int currentRank) {
+        return 4 + currentRank * 2;
     }
 
     @Override
@@ -48,13 +48,13 @@ public class PowerWordSummon extends PlayerAbility {
     }
 
     @Override
-    public int getRequiredLevel(int currentLevel) {
-        return 4 + currentLevel * 2;
+    public int getRequiredLevel(int currentRank) {
+        return 4 + currentRank * 2;
     }
 
     @Override
     public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
-        int level = pData.getLevelForAbility(getAbilityId());
+        int level = pData.getAbilityRank(getAbilityId());
 
         EntityLivingBase targetEntity = getSingleLivingTarget(entity, getDistance(level));
         if (targetEntity != null) {

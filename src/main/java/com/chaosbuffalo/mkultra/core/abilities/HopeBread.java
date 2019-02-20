@@ -32,13 +32,13 @@ public class HopeBread extends PlayerAbility {
     }
 
     @Override
-    public int getManaCost(int currentLevel){
-        return 4 + currentLevel * 4;
+    public int getManaCost(int currentRank){
+        return 4 + currentRank * 4;
     }
 
     @Override
-    public int getRequiredLevel(int currentLevel) {
-        return currentLevel * 2;
+    public int getRequiredLevel(int currentRank) {
+        return currentRank * 2;
     }
 
     @Override
@@ -46,7 +46,7 @@ public class HopeBread extends PlayerAbility {
 
         pData.startAbility(this);
 
-        int level = pData.getLevelForAbility(getAbilityId());
+        int level = pData.getAbilityRank(getAbilityId());
         int count = level * COUNT_PER_LEVEL;
 
         ItemStack stack = new ItemStack(Items.BREAD, count);

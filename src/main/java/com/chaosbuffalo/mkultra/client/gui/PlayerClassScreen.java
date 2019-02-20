@@ -80,7 +80,7 @@ public class PlayerClassScreen extends GuiScreen {
             if (ability == null)
                 continue;
 
-            int level = pData.getLevelForAbility(ability.getAbilityId());
+            int level = pData.getAbilityRank(ability.getAbilityId());
 
             // Show req. level 1 at the minimum
             int reqLevel = ability.getRequiredLevel(level);
@@ -90,7 +90,7 @@ public class PlayerClassScreen extends GuiScreen {
             int panelY = abilityPanelYs[i];
 
             GuiButton upButton = new GuiButton(i, xPos + panelX + 22 + 40 + 4, yPos + panelY + 10 + 3, 16, 19, "+");
-            upButton.enabled = unspent > 0 && pData.getLevel() >= reqLevel && level < ability.getMaxLevel();
+            upButton.enabled = unspent > 0 && pData.getLevel() >= reqLevel && level < ability.getMaxRank();
             upButton.drawButton(this.mc, mouseX, mouseY, partialTicks);
             this.buttonList.add(upButton);
 

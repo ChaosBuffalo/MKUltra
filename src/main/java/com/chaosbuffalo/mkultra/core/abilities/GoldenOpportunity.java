@@ -33,20 +33,20 @@ public class GoldenOpportunity extends PlayerAbility {
     }
 
     @Override
-    public int getManaCost(int currentLevel){
+    public int getManaCost(int currentRank){
         return 10;
     }
 
     @Override
-    public int getRequiredLevel(int currentLevel) {
-        return currentLevel * 2;
+    public int getRequiredLevel(int currentRank) {
+        return currentRank * 2;
     }
 
     @Override
     public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
         pData.startAbility(this);
 
-        int level = pData.getLevelForAbility(getAbilityId());
+        int level = pData.getAbilityRank(getAbilityId());
         Item pick;
         if (level < MIN_LEVEL_FOR_IRON) {
             pick = Items.GOLDEN_PICKAXE;

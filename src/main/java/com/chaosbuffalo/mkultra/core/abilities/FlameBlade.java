@@ -46,8 +46,8 @@ public class FlameBlade  extends PlayerAbility {
     }
 
     @Override
-    public int getManaCost(int currentLevel) {
-        return 2 + currentLevel * 4;
+    public int getManaCost(int currentRank) {
+        return 2 + currentRank * 4;
     }
 
     @Override
@@ -56,15 +56,15 @@ public class FlameBlade  extends PlayerAbility {
     }
 
     @Override
-    public int getRequiredLevel(int currentLevel) {
-        return currentLevel * 2;
+    public int getRequiredLevel(int currentRank) {
+        return currentRank * 2;
     }
 
     @Override
     public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
         pData.startAbility(this);
 
-        int level = pData.getLevelForAbility(getAbilityId());
+        int level = pData.getAbilityRank(getAbilityId());
 
         // What to do for each target hit
         int duration = (BASE_DURATION + DURATION_SCALE * level) * GameConstants.TICKS_PER_SECOND;

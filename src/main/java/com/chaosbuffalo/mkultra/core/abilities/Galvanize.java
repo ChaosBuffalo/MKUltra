@@ -38,8 +38,8 @@ public class Galvanize extends PlayerAbility {
     }
 
     @Override
-    public int getManaCost(int currentLevel) {
-        return 10 - 2 * currentLevel;
+    public int getManaCost(int currentRank) {
+        return 10 - 2 * currentRank;
     }
 
     @Override
@@ -48,8 +48,8 @@ public class Galvanize extends PlayerAbility {
     }
 
     @Override
-    public int getRequiredLevel(int currentLevel) {
-        return 4 + currentLevel * 2;
+    public int getRequiredLevel(int currentRank) {
+        return 4 + currentRank * 2;
     }
 
     @Override
@@ -57,7 +57,7 @@ public class Galvanize extends PlayerAbility {
 
         pData.startAbility(this);
 
-        int level = pData.getLevelForAbility(getAbilityId());
+        int level = pData.getAbilityRank(getAbilityId());
 
         PotionEffect jump = new PotionEffect(MobEffects.JUMP_BOOST, 100 + (50 * level), level - 1, false, true);
         SpellCast cure = CurePotion.Create(entity);

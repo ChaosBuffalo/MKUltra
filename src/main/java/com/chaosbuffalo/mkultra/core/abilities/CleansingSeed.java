@@ -40,20 +40,20 @@ public class CleansingSeed extends PlayerAbility {
     }
 
     @Override
-    public int getManaCost(int currentLevel) {
-        return 1 + 2 * currentLevel;
+    public int getManaCost(int currentRank) {
+        return 1 + 2 * currentRank;
     }
 
 
     @Override
-    public int getRequiredLevel(int currentLevel) {
-        return 4 + currentLevel * 2;
+    public int getRequiredLevel(int currentRank) {
+        return 4 + currentRank * 2;
     }
 
     @Override
     public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
 
-        int level = pData.getLevelForAbility(getAbilityId());
+        int level = pData.getAbilityRank(getAbilityId());
         pData.startAbility(this);
         EntityCleansingSeedProjectile ballP = new EntityCleansingSeedProjectile(theWorld, entity);
         ballP.setAmplifier(level);

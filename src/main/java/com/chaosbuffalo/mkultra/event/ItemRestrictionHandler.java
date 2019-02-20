@@ -89,7 +89,7 @@ public class ItemRestrictionHandler {
 
         EntityPlayerMP player = (EntityPlayerMP) event.getEntityLiving();
 
-        if (!MKConfig.BIG_HANDS_MODE){
+        if (!MKConfig.cheats.BIG_HANDS_MODE){
             checkShieldRestriction(player);
         }
 
@@ -98,7 +98,7 @@ public class ItemRestrictionHandler {
         if (playerData == null)
             return;
 
-        if (!MKConfig.TOUGH_GUY_MODE && event.getSlot().getSlotType() == EntityEquipmentSlot.Type.ARMOR) {
+        if (!MKConfig.cheats.TOUGH_GUY_MODE && event.getSlot().getSlotType() == EntityEquipmentSlot.Type.ARMOR) {
             checkBlockedArmor(player, event.getTo(), playerData, event.getSlot());
         }
     }

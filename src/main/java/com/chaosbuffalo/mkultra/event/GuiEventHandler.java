@@ -24,7 +24,7 @@ public class GuiEventHandler {
         ArmorClass armorClass = ArmorClass.getArmorClassForArmorMat(
                 ((ItemArmor) event.getItemStack().getItem()).getArmorMaterial());
         event.getToolTip().add(armorClass.getName());
-        if (MKConfig.SHOW_ARMOR_MAT) {
+        if (MKConfig.display.SHOW_ARMOR_MAT) {
             event.getToolTip().add(String.format("Armor Material: %s",
                     ((ItemArmor) event.getItemStack().getItem()).getArmorMaterial().getName()));
         }
@@ -56,13 +56,13 @@ public class GuiEventHandler {
     @SuppressWarnings("unused")
     @SubscribeEvent
     public static void onItemTooltipEvent(ItemTooltipEvent event){
-        if (!MKConfig.TOUGH_GUY_MODE && event.getItemStack().getItem() instanceof ItemArmor) {
+        if (!MKConfig.cheats.TOUGH_GUY_MODE && event.getItemStack().getItem() instanceof ItemArmor) {
             doArmorClassTooltip(event);
         }
         if (ItemUtils.CRIT.hasChance(event.getItemStack().getItem())){
             doCritTooltip(event);
         }
-        if (!MKConfig.BIG_HANDS_MODE && ItemRestrictionHandler.isNoShieldItem(event.getItemStack().getItem())){
+        if (!MKConfig.cheats.BIG_HANDS_MODE && ItemRestrictionHandler.isNoShieldItem(event.getItemStack().getItem())){
             doNoShieldTooltip(event);
         }
         if (SmokeUtils.isSmokeable(event.getItemStack())){

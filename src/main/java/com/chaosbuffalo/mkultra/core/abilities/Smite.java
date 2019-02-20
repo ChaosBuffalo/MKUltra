@@ -41,8 +41,8 @@ public class Smite extends PlayerAbility {
     }
 
     @Override
-    public int getManaCost(int currentLevel) {
-        return 3 + currentLevel * 2;
+    public int getManaCost(int currentRank) {
+        return 3 + currentRank * 2;
     }
 
     @Override
@@ -51,13 +51,13 @@ public class Smite extends PlayerAbility {
     }
 
     @Override
-    public int getRequiredLevel(int currentLevel) {
-        return currentLevel * 2;
+    public int getRequiredLevel(int currentRank) {
+        return currentRank * 2;
     }
 
     @Override
     public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
-        int level = pData.getLevelForAbility(getAbilityId());
+        int level = pData.getAbilityRank(getAbilityId());
 
         EntityLivingBase targetEntity = getSingleLivingTarget(entity, getDistance(level));
         if (targetEntity != null) {

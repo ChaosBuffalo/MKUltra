@@ -35,8 +35,8 @@ public class LavaWanderer extends PlayerAbility {
     }
 
     @Override
-    public int getManaCost(int currentLevel){
-        return 5 + 5 * currentLevel;
+    public int getManaCost(int currentRank){
+        return 5 + 5 * currentRank;
     }
 
     @Override
@@ -45,15 +45,15 @@ public class LavaWanderer extends PlayerAbility {
     }
 
     @Override
-    public int getRequiredLevel(int currentLevel) {
-        return 6 + currentLevel * 2;
+    public int getRequiredLevel(int currentRank) {
+        return 6 + currentRank * 2;
     }
 
     @Override
     public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
         pData.startAbility(this);
 
-        int level = pData.getLevelForAbility(getAbilityId());
+        int level = pData.getAbilityRank(getAbilityId());
 
         PotionEffect fireResist = new PotionEffect(MobEffects.FIRE_RESISTANCE,
                 GameConstants.TICKS_PER_SECOND * DURATION_PER_LEVEL * level,

@@ -47,8 +47,8 @@ public class DesperateSurge extends PlayerAbility {
     }
 
     @Override
-    public int getManaCost(int currentLevel) {
-        return 4 + 2 * currentLevel;
+    public int getManaCost(int currentRank) {
+        return 4 + 2 * currentRank;
     }
 
     @Override
@@ -57,13 +57,13 @@ public class DesperateSurge extends PlayerAbility {
     }
 
     @Override
-    public int getRequiredLevel(int currentLevel) {
-        return 2 + currentLevel * 2;
+    public int getRequiredLevel(int currentRank) {
+        return 2 + currentRank * 2;
     }
 
     @Override
     public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
-        int level = pData.getLevelForAbility(getAbilityId());
+        int level = pData.getAbilityRank(getAbilityId());
         if (entity.getFoodStats().getFoodLevel() >= FOOD_COST + level * FOOD_SCALE){
             pData.startAbility(this);
             entity.getFoodStats().setFoodLevel(entity.getFoodStats().getFoodLevel() - (FOOD_COST + level * FOOD_SCALE));

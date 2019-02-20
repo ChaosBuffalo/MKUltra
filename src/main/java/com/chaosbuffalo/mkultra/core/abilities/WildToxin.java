@@ -41,8 +41,8 @@ public class WildToxin extends PlayerToggleAbility {
     }
 
     @Override
-    public int getManaCost(int currentLevel) {
-        return 3 - currentLevel;
+    public int getManaCost(int currentRank) {
+        return 3 - currentRank;
     }
 
     @Override
@@ -56,14 +56,14 @@ public class WildToxin extends PlayerToggleAbility {
     }
 
     @Override
-    public int getRequiredLevel(int currentLevel) {
-        return 4 + currentLevel * 2;
+    public int getRequiredLevel(int currentRank) {
+        return 4 + currentRank * 2;
     }
 
     @Override
     public void applyEffect(EntityPlayer entity, IPlayerData pData, World theWorld) {
 
-        int level = pData.getLevelForAbility(getAbilityId());
+        int level = pData.getAbilityRank(getAbilityId());
 
         // What to do for each target hit
         entity.addPotionEffect(WildToxinPotion.Create(entity).setTarget(entity).toPotionEffect(BASE_DURATION, level));

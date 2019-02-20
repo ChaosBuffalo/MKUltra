@@ -51,7 +51,7 @@ public class AbilityUpdatePacket implements IMessage {
 
         for (PlayerAbilityInfo info : skills) {
             pb.writeResourceLocation(info.getId());
-            pb.writeVarInt(info.getLevel());
+            pb.writeVarInt(info.getRank());
         }
     }
 

@@ -50,11 +50,11 @@ public class ClassCommand extends CommandBase {
                 break;
             case "switch":
                 sender.sendMessage(new TextComponentString("Opening class switch GUI"));
-                MKUltra.packetHandler.sendTo(new ForceOpenClientGUIPacket(ModGuiHandler.CHANGE_CLASS_SCREEN), playerIn);
+                MKUltra.packetHandler.sendTo(new ForceOpenClientGUIPacket(ModGuiHandler.CHANGE_CLASS_SCREEN_ADMIN), playerIn);
                 break;
             case "learn":
                 sender.sendMessage(new TextComponentString("Opening class learn GUI"));
-                MKUltra.packetHandler.sendTo(new ForceOpenClientGUIPacket(ModGuiHandler.LEARN_CLASS_SCREEN), playerIn);
+                MKUltra.packetHandler.sendTo(new ForceOpenClientGUIPacket(ModGuiHandler.LEARN_CLASS_SCREEN_ADMIN), playerIn);
                 break;
             case "unlearn":
                 if (data.hasChosenClass()) {

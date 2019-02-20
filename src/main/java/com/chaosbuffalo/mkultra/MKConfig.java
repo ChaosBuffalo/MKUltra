@@ -15,121 +15,153 @@ import java.util.Arrays;
 @Config(modid = MKUltra.MODID, category = "gameplay")
 public class MKConfig {
 
-    @Config.Comment("If enabled you won't lose levels on death.")
-    public static boolean PEPSI_BLUE_MODE = false;
+    @Config.Name("Armor")
+    @Config.Comment("Armor Configuration")
+    public static Armor armor = new Armor();
 
-    @Config.Comment("If enabled armor restrictions won't take effect.")
-    public static boolean TOUGH_GUY_MODE = false;
+    @Config.Name("Cheats")
+    public static Cheats cheats = new Cheats();
 
-    @Config.Comment("If enabled, shield restrictions won't take effect.")
-    public static boolean BIG_HANDS_MODE = false;
+    @Config.Name("Display")
+    @Config.Comment("Display Options")
+    public static Display display = new Display();
 
-    @Config.Comment("These classes are not allowed to be used")
-    public static String[] BANNED_CLASSES = new String[0];
+    @Config.Name("Gameplay")
+    @Config.Comment("Gameplay Options")
+    public static Gameplay gameplay = new Gameplay();
 
-    @Config.Comment("Show armor material names in tooltip")
-    public static boolean SHOW_ARMOR_MAT = false;
+    public static class Armor {
 
-    @Config.Comment("Show my crit messages")
-    public static boolean SHOW_MY_CRITS = true;
+        @Config.Comment("Armor Materials for Robes Armor Class")
+        public String[] ROBES_ARMOR = {
+                "mkultra:iron_threaded",
+                "mkultra:gold_threaded",
+                "mkultrax:copper_threaded",
+                "iceandfire:earplugs",
+                "iceandfire:sheep_disguise",
+                "iceandfire:blindfold",
+                "betterwithmods:wool",
+                "starsteel",
+                "as.imbuedleather",
+                "rubber",
+                "bl_cloth",
+                "lurker_skin",
+                "VOIDROBE",
+                "SPECIAL",
 
-    @Config.Comment("Show other's crit messages")
-    public static boolean SHOW_OTHER_CRITS = true;
+        };
 
-    @Config.Comment("Set to true if you want heals to damage undead")
-    public static boolean HEALS_DAMAGE_UNDEAD = true;
-
-    @Config.Comment("Multiplier to scale healing damage to undead by if HEALS_DAMAGE_UNDEAD is true")
-    public static float HEAL_DAMAGE_MULTIPLIER = 2.0f;
-
-
-    @Config.Comment("Armor Materials for Robes Armor Class")
-    public static String[] ROBES_ARMOR = {
-            "mkultra:iron_threaded",
-            "mkultra:gold_threaded",
-            "mkultrax:copper_threaded",
-            "iceandfire:earplugs",
-            "iceandfire:sheep_disguise",
-            "iceandfire:blindfold",
-            "betterwithmods:wool",
-            "starsteel",
-            "as.imbuedleather",
-            "rubber",
-            "bl_cloth",
-            "lurker_skin",
-            "VOIDROBE",
-            "SPECIAL",
-
-    };
-
-    @Config.Comment("Armor Materials for Light Armor Class")
-    public static String[] LIGHT_ARMOR = {
-            "leather",
-            "mkultra:boned_leather",
-            "iceandfire:troll_frost",
-            "iceandfire:troll_forest",
-            "iceandfire:troll_mountain",
-            "betterwithmods:leather_tanned",
-            "tin",
-            "mithril",
-            "pewter",
-            "aquarium",
-            "bismuth",
-            "mkultrax:steel_infused_bone",
-            "slimy_bone",
-            "THAUMIUM"
-    };
+        @Config.Comment("Armor Materials for Light Armor Class")
+        public String[] LIGHT_ARMOR = {
+                "leather",
+                "mkultra:boned_leather",
+                "iceandfire:troll_frost",
+                "iceandfire:troll_forest",
+                "iceandfire:troll_mountain",
+                "betterwithmods:leather_tanned",
+                "tin",
+                "mithril",
+                "pewter",
+                "aquarium",
+                "bismuth",
+                "mkultrax:steel_infused_bone",
+                "slimy_bone",
+                "THAUMIUM"
+        };
 
 
-    @Config.Comment("Armor Materials for Medium Armor Class")
-    public static String[] MEDIUM_ARMOR = {
-            "chainmail",
-            "gold",
-            "mkultra:chainmail",
-            "iceandfire:red_deathworm",
-            "iceandfire:white_deathworm",
-            "iceandfire:yellow_deathworm",
-            "iceandfire:armor_silver_metal",
-            "copper",
-            "brass",
-            "silver",
-            "nickel",
-            "quartz",
-            "cupronickel",
-            "antimony",
-            "electrum",
-            "mkultrax:obsidian_chain",
-            "syrmorite",
-            "VOID"
-    };
+        @Config.Comment("Armor Materials for Medium Armor Class")
+        public String[] MEDIUM_ARMOR = {
+                "chainmail",
+                "gold",
+                "mkultra:chainmail",
+                "iceandfire:red_deathworm",
+                "iceandfire:white_deathworm",
+                "iceandfire:yellow_deathworm",
+                "iceandfire:armor_silver_metal",
+                "copper",
+                "brass",
+                "silver",
+                "nickel",
+                "quartz",
+                "cupronickel",
+                "antimony",
+                "electrum",
+                "mkultrax:obsidian_chain",
+                "syrmorite",
+                "VOID"
+        };
 
-    @Config.Comment("Armor Materials for Heavy Armor Class")
-    public static String[] HEAVY_ARMOR = {
-            "iron",
-            "iceandfire:armor_dragon_scales1",
-            "iceandfire:armor_dragon_scales2",
-            "iceandfire:armor_dragon_scales3",
-            "iceandfire:armor_dragon_scales4",
-            "iceandfire:armor_dragon_scales5",
-            "iceandfire:armor_dragon_scales6",
-            "iceandfire:armor_dragon_scales7",
-            "iceandfire:armor_dragon_scales8",
-            "betterwithmods:steel",
-            "steel",
-            "invar",
-            "coldiron",
-            "adamantine",
-            "zinc",
-            "emerald",
-            "platinum",
-            "bronze",
-            "lead",
-            "mkultrax:diamond_dusted_invar",
-            "valonite",
-            "legend",
-            "FORTRESS",
+        @Config.Comment("Armor Materials for Heavy Armor Class")
+        public String[] HEAVY_ARMOR = {
+                "iron",
+                "iceandfire:armor_dragon_scales1",
+                "iceandfire:armor_dragon_scales2",
+                "iceandfire:armor_dragon_scales3",
+                "iceandfire:armor_dragon_scales4",
+                "iceandfire:armor_dragon_scales5",
+                "iceandfire:armor_dragon_scales6",
+                "iceandfire:armor_dragon_scales7",
+                "iceandfire:armor_dragon_scales8",
+                "betterwithmods:steel",
+                "steel",
+                "invar",
+                "coldiron",
+                "adamantine",
+                "zinc",
+                "emerald",
+                "platinum",
+                "bronze",
+                "lead",
+                "mkultrax:diamond_dusted_invar",
+                "valonite",
+                "legend",
+                "FORTRESS",
 
-    };
+        };
+    }
+
+    public static class Cheats {
+        @Config.Name("Pepsi Blue Mode")
+        @Config.Comment("If enabled you won't lose levels on death.")
+        public boolean PEPSI_BLUE_MODE = false;
+
+        @Config.Name("Bypass armor restrictions")
+        @Config.Comment("If enabled armor restrictions won't take effect.")
+        public boolean TOUGH_GUY_MODE = false;
+
+        @Config.Name("Bypass shield restrictions")
+        @Config.Comment("If enabled, shield restrictions won't take effect.")
+        public boolean BIG_HANDS_MODE = false;
+    }
+
+    public static class Display {
+        @Config.Name("Show Armor Materials")
+        @Config.Comment("Show armor material names in tooltip")
+        public boolean SHOW_ARMOR_MAT = false;
+
+        @Config.Name("Show my crits")
+        @Config.Comment("Show my crit messages")
+        public boolean SHOW_MY_CRITS = true;
+
+        @Config.Name("Show others crits")
+        @Config.Comment("Show other's crit messages")
+        public boolean SHOW_OTHER_CRITS = true;
+    }
+
+    public static class Gameplay {
+        @Config.Name("Banned Classes")
+        @Config.Comment("These classes are not allowed to be used")
+        public String[] BANNED_CLASSES = new String[0];
+
+        @Config.Name("Healing hurts Undead")
+        @Config.Comment("Set to true if you want heals to damage undead")
+        public boolean HEALS_DAMAGE_UNDEAD = true;
+
+        @Config.Name("Undead healing damage multiplier")
+        @Config.Comment("Multiplier to scale healing damage to undead by if HEALS_DAMAGE_UNDEAD is true")
+        public float HEAL_DAMAGE_MULTIPLIER = 2.0f;
+    }
 
     public static void init(File configFile) {
         Configuration config = new Configuration(configFile);
@@ -139,10 +171,10 @@ public class MKConfig {
         } catch (Exception e) {
             Log.info("Error loading config, returning to default variables.");
         } finally {
-            Log.info("Big hands mode is: %b", BIG_HANDS_MODE);
-            Log.info("Pepsi blue mode is: %b", PEPSI_BLUE_MODE);
-            Log.info("Tough guy mode is: %b", TOUGH_GUY_MODE);
-            Log.info("Show Armor Mat is: %b", SHOW_ARMOR_MAT);
+            Log.info("Big hands mode is: %b", cheats.BIG_HANDS_MODE);
+            Log.info("Pepsi blue mode is: %b", cheats.PEPSI_BLUE_MODE);
+            Log.info("Tough guy mode is: %b", cheats.TOUGH_GUY_MODE);
+            Log.info("Show Armor Mat is: %b", display.SHOW_ARMOR_MAT);
             if (config.hasChanged())
                 config.save();
         }
@@ -152,7 +184,7 @@ public class MKConfig {
 
 
     public static boolean isClassEnabled(ResourceLocation classId) {
-        return Arrays.stream(BANNED_CLASSES).noneMatch(s -> s.equalsIgnoreCase(classId.toString()));
+        return Arrays.stream(gameplay.BANNED_CLASSES).noneMatch(s -> s.equalsIgnoreCase(classId.toString()));
     }
 
     public static ItemArmor.ArmorMaterial findArmorMat(String armorMat){
@@ -180,10 +212,10 @@ public class MKConfig {
     }
 
     public static void registerArmors(){
-        Arrays.stream(ROBES_ARMOR).forEach((x) -> registerArmorFromName(x, ArmorClass.ROBES));
-        Arrays.stream(LIGHT_ARMOR).forEach((x) -> registerArmorFromName(x, ArmorClass.LIGHT));
-        Arrays.stream(MEDIUM_ARMOR).forEach((x) -> registerArmorFromName(x, ArmorClass.MEDIUM));
-        Arrays.stream(HEAVY_ARMOR).forEach((x) -> registerArmorFromName(x, ArmorClass.HEAVY));
+        Arrays.stream(armor.ROBES_ARMOR).forEach((x) -> registerArmorFromName(x, ArmorClass.ROBES));
+        Arrays.stream(armor.LIGHT_ARMOR).forEach((x) -> registerArmorFromName(x, ArmorClass.LIGHT));
+        Arrays.stream(armor.MEDIUM_ARMOR).forEach((x) -> registerArmorFromName(x, ArmorClass.MEDIUM));
+        Arrays.stream(armor.HEAVY_ARMOR).forEach((x) -> registerArmorFromName(x, ArmorClass.HEAVY));
     }
 
 }
