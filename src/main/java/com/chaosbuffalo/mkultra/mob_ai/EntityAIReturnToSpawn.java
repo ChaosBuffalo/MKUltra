@@ -59,7 +59,8 @@ public class EntityAIReturnToSpawn extends EntityAIBase {
         double distFromSpawn = creature.getDistanceSq(spawnPoint);
         IAttributeInstance followRange = creature.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE);
         if (distFromSpawn >= followRange.getAttributeValue() * followRange.getAttributeValue()){
-            creature.attemptTeleport(spawnPoint.getX(), spawnPoint.getY(), spawnPoint.getZ());
+            Log.info("Should teleport home.");
+            creature.setPositionAndUpdate(spawnPoint.getX(), spawnPoint.getY(), spawnPoint.getZ());
         }
         this.creature.getNavigator().tryMoveToXYZ(spawnPoint.getX(), spawnPoint.getY(),
                 spawnPoint.getZ(), this.movementSpeed);
