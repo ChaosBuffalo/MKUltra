@@ -29,7 +29,7 @@ public class EntityAIHurtByTargetMK extends EntityAITarget {
     }
 
     public void startExecuting() {
-        Log.debug("Start Executing Revenge Target");
+        Log.info("Start Executing Revenge Target: %s", taskOwner.toString());
         this.taskOwner.setAttackTarget(this.taskOwner.getRevengeTarget());
         this.target = this.taskOwner.getAttackTarget();
         this.revengeTimerOld = this.taskOwner.getRevengeTimer();

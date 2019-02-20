@@ -37,12 +37,12 @@ public class EntityAIReturnToSpawn extends EntityAIBase {
     }
 
     public boolean shouldContinueExecuting() {
-        Log.debug("Should Continue: Return to Spawn %b", !this.creature.getNavigator().noPath());
+        Log.info("Should Continue: Return to Spawn %b", !this.creature.getNavigator().noPath());
         return !this.creature.getNavigator().noPath() ;
     }
 
     public void startExecuting() {
-        Log.debug("Start Execute: Return to Spawn");
+        Log.info("Start Execute: Return to Spawn %s", creature.toString());
         BlockPos spawnPoint = mobData.getSpawnPoint();
         this.creature.getNavigator().tryMoveToXYZ(spawnPoint.getX(), spawnPoint.getY(),
                 spawnPoint.getZ(), this.movementSpeed);

@@ -74,13 +74,13 @@ public class EntityAIAttackMeleeMK extends EntityAIBase {
     }
 
     public void startExecuting() {
-        Log.debug("Start Executing Attack Melee");
+        Log.info("Start Executing Attack Melee: %s", attacker.toString());
         this.attacker.getNavigator().setPath(this.path, this.speedTowardsTarget);
         this.delayCounter = 0;
     }
 
     public void resetTask() {
-        Log.debug("Resetting Attack Melee");
+        Log.info("Resetting Attack Melee: %s", attacker.toString());
         EntityLivingBase entitylivingbase = this.attacker.getAttackTarget();
         if (entitylivingbase instanceof EntityPlayer && (((EntityPlayer)entitylivingbase).isSpectator() ||
                 ((EntityPlayer)entitylivingbase).isCreative())) {
@@ -91,7 +91,7 @@ public class EntityAIAttackMeleeMK extends EntityAIBase {
     }
 
     public void updateTask() {
-        Log.debug("Updating Attack Melee");
+        Log.info("Updating Attack Melee: %s", attacker.toString());
         EntityLivingBase entitylivingbase = this.attacker.getAttackTarget();
         if (entitylivingbase == null){
             return;
