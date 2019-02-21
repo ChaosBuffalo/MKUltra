@@ -301,7 +301,6 @@ public class ModSpawn {
         event.getRegistry().register(option);
     }
 
-
     public static MobFaction.MobGroups getMobGroupFromString(String mobGroupIn) {
         switch (mobGroupIn) {
             case "RANGE_GRUNT":
@@ -454,7 +453,32 @@ public class ModSpawn {
                     String mobName = obj.get("name").getAsString();
                     definition.withMobName(mobName);
                 }
+                if (obj.has("custom_modifiers")){
+                    JsonArray json_modifiers = obj.get("custom_modifiers").getAsJsonArray();
+                    ArrayList<CustomModifier> modifiers = new ArrayList<>();
+                    for (JsonElement ele : json_modifiers){
+                        JsonObject jsonObject = ele.getAsJsonObject();
+                        String[] customKeys = {"setter"};
+                        if (!checkKeysExist(customKeys, jsonObject)) {
+                            continue;
+                        }
+                        CustomSetter setter = MKURegistry.getCustomSetter(
+                                new ResourceLocation(jsonObject.get("setter").getAsString()));
+                        if (setter == null){
+                            Log.info("Could not find custom setter with name %s, skipping load.",
+                                    jsonObject.get("setter").getAsString());
+                            continue;
+                        }
+                        CustomModifier mod = setter.loadFromJson(jsonObject);
+                        if (mod == null){
+                            continue;
+                        }
+                        modifiers.add(mod);
+                    }
+                    definition.withCustomModifiers(modifiers.toArray(new CustomModifier[0]));
+                }
                 event.getRegistry().register(definition);
+
             } else {
                 Log.info("%s Class not an EntityLivingBase skipping mob definition %s",
                         mobClass.toString(), obj.toString());
