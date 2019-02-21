@@ -22,8 +22,8 @@ public class Geyser extends PlayerAbility {
     }
 
     @Override
-    public int getCooldown(int currentLevel) {
-        return 14 - 3 * currentLevel;
+    public int getCooldown(int currentRank) {
+        return 14 - 3 * currentRank;
     }
 
     @Override

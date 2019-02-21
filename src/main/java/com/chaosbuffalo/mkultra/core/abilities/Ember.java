@@ -25,8 +25,8 @@ public class Ember extends PlayerAbility {
     }
 
     @Override
-    public int getCooldown(int currentLevel) {
-        return 6 - 2 * currentLevel;
+    public int getCooldown(int currentRank) {
+        return 6 - 2 * currentRank;
     }
 
     @Override
@@ -45,7 +45,7 @@ public class Ember extends PlayerAbility {
     }
 
     @Override
-    public float getDistance(int currentLevel) {
+    public float getDistance(int currentRank) {
         return 25.0f;
     }
 

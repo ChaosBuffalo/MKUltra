@@ -24,8 +24,8 @@ public class Heal extends PlayerAbility {
     }
 
     @Override
-    public int getCooldown(int currentLevel) {
-        return 6 - currentLevel;
+    public int getCooldown(int currentRank) {
+        return 6 - currentRank;
     }
 
     @Override
@@ -49,8 +49,8 @@ public class Heal extends PlayerAbility {
     }
 
     @Override
-    public float getDistance(int currentLevel) {
-        return 10.0f + 5.0f * currentLevel;
+    public float getDistance(int currentRank) {
+        return 10.0f + 5.0f * currentRank;
     }
 
     @Override

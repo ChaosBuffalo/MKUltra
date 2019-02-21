@@ -31,8 +31,8 @@ public class PoisonArrow extends PlayerAbility {
     }
 
     @Override
-    public int getCooldown(int currentLevel) {
-        return 10 - currentLevel * 2;
+    public int getCooldown(int currentRank) {
+        return 10 - currentRank * 2;
     }
 
     @Override

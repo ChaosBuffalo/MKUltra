@@ -31,8 +31,8 @@ public class NaturesRemedy extends PlayerAbility {
     }
 
     @Override
-    public int getCooldown(int currentLevel) {
-        return 10 - 2 * currentLevel;
+    public int getCooldown(int currentRank) {
+        return 10 - 2 * currentRank;
     }
 
     @Override
@@ -56,8 +56,8 @@ public class NaturesRemedy extends PlayerAbility {
     }
 
     @Override
-    public float getDistance(int currentLevel) {
-        return 10.0f + 5.0f * currentLevel;
+    public float getDistance(int currentRank) {
+        return 10.0f + 5.0f * currentRank;
     }
 
     @Override

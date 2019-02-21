@@ -31,8 +31,8 @@ public class FlameBlade  extends PlayerAbility {
     }
 
     @Override
-    public int getCooldown(int currentLevel) {
-        return 18 + currentLevel * 5;
+    public int getCooldown(int currentRank) {
+        return 18 + currentRank * 5;
     }
 
     @Override
@@ -51,8 +51,8 @@ public class FlameBlade  extends PlayerAbility {
     }
 
     @Override
-    public float getDistance(int currentLevel) {
-        return 10.0f + 2.0f * currentLevel;
+    public float getDistance(int currentRank) {
+        return 10.0f + 2.0f * currentRank;
     }
 
     @Override

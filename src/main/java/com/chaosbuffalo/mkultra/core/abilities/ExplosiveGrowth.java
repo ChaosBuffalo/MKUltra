@@ -35,8 +35,8 @@ public class ExplosiveGrowth extends PlayerAbility {
     }
 
     @Override
-    public int getCooldown(int currentLevel) {
-        return 35 - 5 * currentLevel;
+    public int getCooldown(int currentRank) {
+        return 35 - 5 * currentRank;
     }
 
     @Override
@@ -55,8 +55,8 @@ public class ExplosiveGrowth extends PlayerAbility {
     }
 
     @Override
-    public float getDistance(int currentLevel) {
-        return DASH_BASE + currentLevel * DASH_SCALE;
+    public float getDistance(int currentRank) {
+        return DASH_BASE + currentRank * DASH_SCALE;
     }
 
     @Override

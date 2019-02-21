@@ -25,8 +25,8 @@ public class CleansingSeed extends PlayerAbility {
     }
 
     @Override
-    public int getCooldown(int currentLevel) {
-        return 8 - 2 * currentLevel;
+    public int getCooldown(int currentRank) {
+        return 8 - 2 * currentRank;
     }
 
     @Override

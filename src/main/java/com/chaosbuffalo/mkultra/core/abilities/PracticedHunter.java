@@ -30,8 +30,8 @@ public class PracticedHunter extends PlayerAbility {
     }
 
     @Override
-    public int getCooldown(int currentLevel) {
-        return 60 - currentLevel * DURATION_SCALE;
+    public int getCooldown(int currentRank) {
+        return 60 - currentRank * DURATION_SCALE;
     }
 
     @Override
@@ -50,7 +50,7 @@ public class PracticedHunter extends PlayerAbility {
     }
 
     @Override
-    public float getDistance(int currentLevel) {
+    public float getDistance(int currentRank) {
         return 1.0f;
     }
 

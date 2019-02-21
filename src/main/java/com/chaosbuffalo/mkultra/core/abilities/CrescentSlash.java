@@ -29,8 +29,8 @@ public class CrescentSlash extends PlayerAbility {
     }
 
     @Override
-    public int getCooldown(int currentLevel) {
-        return 7 -  currentLevel;
+    public int getCooldown(int currentRank) {
+        return 7 - currentRank;
     }
 
     @Override
@@ -49,8 +49,8 @@ public class CrescentSlash extends PlayerAbility {
     }
 
     @Override
-    public float getDistance(int currentLevel) {
-        return 7.0f + currentLevel * 2.0f;
+    public float getDistance(int currentRank) {
+        return 7.0f + currentRank * 2.0f;
     }
 
     @Override

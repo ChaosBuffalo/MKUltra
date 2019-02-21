@@ -21,7 +21,7 @@ public class Inspire extends PlayerAbility {
     }
 
     @Override
-    public int getCooldown(int currentLevel) {
+    public int getCooldown(int currentRank) {
         return 35;
     }
 
@@ -41,7 +41,7 @@ public class Inspire extends PlayerAbility {
     }
 
     @Override
-    public float getDistance(int currentLevel) {
+    public float getDistance(int currentRank) {
         return 20.0f;
     }
 

@@ -29,8 +29,8 @@ public class FireArrow extends PlayerAbility {
     }
 
     @Override
-    public int getCooldown(int currentLevel) {
-        return 5 - currentLevel;
+    public int getCooldown(int currentRank) {
+        return 5 - currentRank;
     }
 
     @Override

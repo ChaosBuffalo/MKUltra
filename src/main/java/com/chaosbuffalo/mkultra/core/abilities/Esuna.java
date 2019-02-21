@@ -23,8 +23,8 @@ public class Esuna extends PlayerAbility {
     }
 
     @Override
-    public int getCooldown(int currentLevel) {
-        return 25 - currentLevel * 5;
+    public int getCooldown(int currentRank) {
+        return 25 - currentRank * 5;
     }
 
     @Override
@@ -44,7 +44,7 @@ public class Esuna extends PlayerAbility {
 
 
     @Override
-    public float getDistance(int currentLevel) {
+    public float getDistance(int currentRank) {
         return 10.0f;
     }
 

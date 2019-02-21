@@ -23,7 +23,7 @@ public class Yank extends PlayerAbility {
     }
 
     @Override
-    public int getCooldown(int currentLevel) {
+    public int getCooldown(int currentRank) {
         return 5;
     }
 
@@ -43,7 +43,7 @@ public class Yank extends PlayerAbility {
     }
 
     @Override
-    public float getDistance(int currentLevel) {
+    public float getDistance(int currentRank) {
         return 5.0f + 2 * 5.0f;
     }
 

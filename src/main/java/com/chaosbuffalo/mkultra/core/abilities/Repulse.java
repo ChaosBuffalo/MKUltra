@@ -24,7 +24,7 @@ public class Repulse extends PlayerAbility {
     }
 
     @Override
-    public int getCooldown(int currentLevel) {
+    public int getCooldown(int currentRank) {
         return 15;
     }
 
@@ -44,7 +44,7 @@ public class Repulse extends PlayerAbility {
     }
 
     @Override
-    public float getDistance(int currentLevel) {
+    public float getDistance(int currentRank) {
         return 10.0f;
     }
 

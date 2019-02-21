@@ -32,8 +32,8 @@ public class HeavingSeas extends PlayerAbility {
     }
 
     @Override
-    public int getCooldown(int currentLevel) {
-        return 12 - 2 * currentLevel;
+    public int getCooldown(int currentRank) {
+        return 12 - 2 * currentRank;
     }
 
     @Override
@@ -52,8 +52,8 @@ public class HeavingSeas extends PlayerAbility {
     }
 
     @Override
-    public float getDistance(int currentLevel) {
-        return 2.0f + currentLevel * 2.0f;
+    public float getDistance(int currentRank) {
+        return 2.0f + currentRank * 2.0f;
     }
 
     @Override

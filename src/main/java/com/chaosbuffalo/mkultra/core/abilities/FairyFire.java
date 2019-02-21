@@ -25,8 +25,8 @@ public class FairyFire extends PlayerAbility {
     }
 
     @Override
-    public int getCooldown(int currentLevel) {
-        return 12 - currentLevel * 2;
+    public int getCooldown(int currentRank) {
+        return 12 - currentRank * 2;
     }
 
     @Override

@@ -23,8 +23,8 @@ public class PowerWordSummon extends PlayerAbility {
     }
 
     @Override
-    public int getCooldown(int currentLevel) {
-        return 16 - 4 * currentLevel;
+    public int getCooldown(int currentRank) {
+        return 16 - 4 * currentRank;
     }
 
     @Override
@@ -43,7 +43,7 @@ public class PowerWordSummon extends PlayerAbility {
     }
 
     @Override
-    public float getDistance(int currentLevel) {
+    public float getDistance(int currentRank) {
         return 45.0f;
     }
 

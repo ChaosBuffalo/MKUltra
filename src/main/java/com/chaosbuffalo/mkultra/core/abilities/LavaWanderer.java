@@ -25,7 +25,7 @@ public class LavaWanderer extends PlayerAbility {
     }
 
     @Override
-    public int getCooldown(int currentLevel){
+    public int getCooldown(int currentRank){
         return 30;
     }
 
@@ -40,8 +40,8 @@ public class LavaWanderer extends PlayerAbility {
     }
 
     @Override
-    public float getDistance(int currentLevel) {
-        return 5.0f + 5.0f * currentLevel;
+    public float getDistance(int currentRank) {
+        return 5.0f + 5.0f * currentRank;
     }
 
     @Override

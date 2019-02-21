@@ -23,7 +23,7 @@ public class Galvanize extends PlayerAbility {
     }
 
     @Override
-    public int getCooldown(int currentLevel) {
+    public int getCooldown(int currentRank) {
         return 25;
     }
 
@@ -43,7 +43,7 @@ public class Galvanize extends PlayerAbility {
     }
 
     @Override
-    public float getDistance(int currentLevel) {
+    public float getDistance(int currentRank) {
         return 10.0f;
     }
 

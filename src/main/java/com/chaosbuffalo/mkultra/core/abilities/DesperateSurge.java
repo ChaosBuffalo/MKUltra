@@ -32,8 +32,8 @@ public class DesperateSurge extends PlayerAbility {
     }
 
     @Override
-    public int getCooldown(int currentLevel) {
-        return 16 - 2 * currentLevel;
+    public int getCooldown(int currentRank) {
+        return 16 - 2 * currentRank;
     }
 
     @Override
@@ -52,7 +52,7 @@ public class DesperateSurge extends PlayerAbility {
     }
 
     @Override
-    public float getDistance(int currentLevel) {
+    public float getDistance(int currentRank) {
         return 1.0f;
     }
 

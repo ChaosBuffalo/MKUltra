@@ -25,8 +25,8 @@ public class DualityRune extends PlayerAbility {
     }
 
     @Override
-    public int getCooldown(int currentLevel) {
-        return 20 - 4 * currentLevel;
+    public int getCooldown(int currentRank) {
+        return 20 - 4 * currentRank;
     }
 
     @Override

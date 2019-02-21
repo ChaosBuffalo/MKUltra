@@ -26,8 +26,8 @@ public class WhirlwindBlades extends PlayerAbility {
     }
 
     @Override
-    public int getCooldown(int currentLevel) {
-        return 25 - 5 * currentLevel;
+    public int getCooldown(int currentRank) {
+        return 25 - 5 * currentRank;
     }
 
     @Override
@@ -46,8 +46,8 @@ public class WhirlwindBlades extends PlayerAbility {
     }
 
     @Override
-    public float getDistance(int currentLevel) {
-        return 3.0f + currentLevel * 1.0f;
+    public float getDistance(int currentRank) {
+        return 3.0f + currentRank * 1.0f;
     }
 
     @Override

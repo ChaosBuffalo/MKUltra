@@ -23,7 +23,7 @@ public class FlintHound extends PlayerAbility {
     }
 
     @Override
-    public int getCooldown(int currentLevel) {
+    public int getCooldown(int currentRank) {
         return 600;
     }
 

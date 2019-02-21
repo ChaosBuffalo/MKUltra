@@ -25,8 +25,8 @@ public class SpiritOfWolf extends PlayerAbility {
     }
 
     @Override
-    public int getCooldown(int currentLevel) {
-        return 40 - 10 * currentLevel;
+    public int getCooldown(int currentRank) {
+        return 40 - 10 * currentRank;
     }
 
     @Override
@@ -50,7 +50,7 @@ public class SpiritOfWolf extends PlayerAbility {
     }
 
     @Override
-    public float getDistance(int currentLevel) {
+    public float getDistance(int currentRank) {
         return 10.0f;
     }
 

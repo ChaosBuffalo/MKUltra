@@ -53,14 +53,14 @@ public abstract class PlayerAbility extends IForgeRegistryEntry.Impl<PlayerAbili
     }
 
 
-    public float getDistance(int currentLevel) {
+    public float getDistance(int currentRank) {
         return 1.0f;
     }
 
-    public abstract int getCooldown(int currentLevel);
+    public abstract int getCooldown(int currentRank);
 
-    public int getCooldownTicks(int currentLevel) {
-        return getCooldown(currentLevel) * GameConstants.TICKS_PER_SECOND;
+    public int getCooldownTicks(int currentRank) {
+        return getCooldown(currentRank) * GameConstants.TICKS_PER_SECOND;
     }
 
     public int getType() {

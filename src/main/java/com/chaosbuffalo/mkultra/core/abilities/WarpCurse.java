@@ -26,8 +26,8 @@ public class WarpCurse extends PlayerAbility {
     }
 
     @Override
-    public int getCooldown(int currentLevel) {
-        return 16 - currentLevel * 4;
+    public int getCooldown(int currentRank) {
+        return 16 - currentRank * 4;
     }
 
     @Override
@@ -46,7 +46,7 @@ public class WarpCurse extends PlayerAbility {
     }
 
     @Override
-    public float getDistance(int currentLevel) {
+    public float getDistance(int currentRank) {
         return 25.0f;
     }
 

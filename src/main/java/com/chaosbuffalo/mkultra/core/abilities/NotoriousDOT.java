@@ -30,7 +30,7 @@ public class NotoriousDOT extends PlayerToggleGroupAbility {
     }
 
     @Override
-    public int getCooldown(int currentLevel) {
+    public int getCooldown(int currentRank) {
         return 5;
     }
 
@@ -55,8 +55,8 @@ public class NotoriousDOT extends PlayerToggleGroupAbility {
     }
 
     @Override
-    public float getDistance(int currentLevel) {
-        return 3.0f + currentLevel * 3.0f;
+    public float getDistance(int currentRank) {
+        return 3.0f + currentRank * 3.0f;
     }
 
     @Override

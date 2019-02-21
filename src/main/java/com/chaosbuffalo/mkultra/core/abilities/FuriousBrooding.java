@@ -21,7 +21,7 @@ public class FuriousBrooding extends PlayerAbility {
     }
 
     @Override
-    public int getCooldown(int currentLevel) {
+    public int getCooldown(int currentRank) {
         return 18;
     }
 
@@ -41,7 +41,7 @@ public class FuriousBrooding extends PlayerAbility {
     }
 
     @Override
-    public float getDistance(int currentLevel) {
+    public float getDistance(int currentRank) {
         return 1.0f;
     }
 

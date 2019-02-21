@@ -25,7 +25,7 @@ public class Yaup extends PlayerAbility {
     }
 
     @Override
-    public int getCooldown(int currentLevel) {
+    public int getCooldown(int currentRank) {
         return 45;
     }
 
@@ -45,8 +45,8 @@ public class Yaup extends PlayerAbility {
     }
 
     @Override
-    public float getDistance(int currentLevel) {
-        return 10.0f + (currentLevel * 5.0f);
+    public float getDistance(int currentRank) {
+        return 10.0f + (currentRank * 5.0f);
     }
 
     @Override

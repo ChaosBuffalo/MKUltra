@@ -27,8 +27,8 @@ public class PhoenixAspect extends PlayerAbility {
     }
 
     @Override
-    public int getCooldown(int currentLevel) {
-        return 500 - currentLevel * 100;
+    public int getCooldown(int currentRank) {
+        return 500 - currentRank * 100;
     }
 
     @Override
@@ -47,8 +47,8 @@ public class PhoenixAspect extends PlayerAbility {
     }
 
     @Override
-    public float getDistance(int currentLevel) {
-        return 10.0f + 2.0f * currentLevel;
+    public float getDistance(int currentRank) {
+        return 10.0f + 2.0f * currentRank;
     }
 
     @Override

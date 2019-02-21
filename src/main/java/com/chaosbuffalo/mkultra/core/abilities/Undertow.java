@@ -26,8 +26,8 @@ public class Undertow extends PlayerAbility {
     }
 
     @Override
-    public int getCooldown(int currentLevel) {
-        return 90 - currentLevel * 15;
+    public int getCooldown(int currentRank) {
+        return 90 - currentRank * 15;
     }
 
     @Override
@@ -46,8 +46,8 @@ public class Undertow extends PlayerAbility {
     }
 
     @Override
-    public float getDistance(int currentLevel) {
-        return 10.0f + 2.0f * currentLevel;
+    public float getDistance(int currentRank) {
+        return 10.0f + 2.0f * currentRank;
     }
 
     @Override

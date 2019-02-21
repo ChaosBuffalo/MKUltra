@@ -26,8 +26,8 @@ public class WildToxin extends PlayerToggleAbility {
     }
 
     @Override
-    public int getCooldown(int currentLevel) {
-        return 4 - currentLevel;
+    public int getCooldown(int currentRank) {
+        return 4 - currentRank;
     }
 
     @Override
@@ -46,7 +46,7 @@ public class WildToxin extends PlayerToggleAbility {
     }
 
     @Override
-    public float getDistance(int currentLevel) {
+    public float getDistance(int currentRank) {
         return 1.0f;
     }
 

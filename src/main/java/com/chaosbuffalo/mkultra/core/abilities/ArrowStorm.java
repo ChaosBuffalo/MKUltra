@@ -28,8 +28,8 @@ public class ArrowStorm extends PlayerAbility {
     }
 
     @Override
-    public int getCooldown(int currentLevel) {
-        return 40 - 10 * currentLevel;
+    public int getCooldown(int currentRank) {
+        return 40 - 10 * currentRank;
     }
 
     @Override

@@ -27,8 +27,8 @@ public class StunningShout extends PlayerAbility {
     }
 
     @Override
-    public int getCooldown(int currentLevel) {
-        return 14 - currentLevel * 2;
+    public int getCooldown(int currentRank) {
+        return 14 - currentRank * 2;
     }
 
     @Override
@@ -47,7 +47,7 @@ public class StunningShout extends PlayerAbility {
     }
 
     @Override
-    public float getDistance(int currentLevel) {
+    public float getDistance(int currentRank) {
         return 10.0f;
     }
 
