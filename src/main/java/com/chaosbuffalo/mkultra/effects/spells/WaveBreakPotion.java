@@ -58,11 +58,6 @@ public class WaveBreakPotion extends PassiveEffect {
         return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/wave_break.png");
     }
 
-    @Override
-    public double getAttributeModifierAmount(int amplifier, AttributeModifier modifier) {
-        return modifier.getAmount() * (double) (amplifier);
-    }
-
     private void playerHurtPreScale(LivingHurtEvent event, DamageSource source, EntityPlayer livingTarget, IPlayerData targetData) {
         ArrayList<EntityPlayer> teammates = PartyManager.getPlayersOnTeam(livingTarget);
         ArrayList<EntityPlayer> damageAbsorbers = new ArrayList<>();

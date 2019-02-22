@@ -50,12 +50,6 @@ public class WildToxinEffectPotion extends PassiveEffect {
     }
 
     @Override
-    public double getAttributeModifierAmount(int amplifier, AttributeModifier modifier)
-    {
-        return modifier.getAmount() * (double)(amplifier);
-    }
-
-    @Override
     public Targeting.TargetType getTargetType() {
         return Targeting.TargetType.ENEMY;
     }

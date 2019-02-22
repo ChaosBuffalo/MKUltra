@@ -45,9 +45,4 @@ public class CriticalChancePotion extends PassiveEffect {
     public ResourceLocation getIconTexture() {
         return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/crit_chance.png");
     }
-
-    @Override
-    public double getAttributeModifierAmount(int amplifier, AttributeModifier modifier) {
-        return modifier.getAmount() * (double) (amplifier);
-    }
 }

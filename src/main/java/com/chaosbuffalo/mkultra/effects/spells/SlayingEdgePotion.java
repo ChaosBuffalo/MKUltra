@@ -47,9 +47,4 @@ public class SlayingEdgePotion extends PassiveEffect {
     public ResourceLocation getIconTexture() {
         return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/slaying_edge.png");
     }
-
-    @Override
-    public double getAttributeModifierAmount(int amplifier, AttributeModifier modifier) {
-        return modifier.getAmount() * (double) (amplifier);
-    }
 }

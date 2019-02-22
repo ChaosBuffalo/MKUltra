@@ -47,12 +47,6 @@ public class PhoenixAspectPotion extends PassiveEffect {
     }
 
     @Override
-    public double getAttributeModifierAmount(int amplifier, AttributeModifier modifier)
-    {
-        return modifier.getAmount() * (double)(amplifier);
-    }
-
-    @Override
     public ResourceLocation getIconTexture() {
         return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/phoenix_aspect.png");
     }

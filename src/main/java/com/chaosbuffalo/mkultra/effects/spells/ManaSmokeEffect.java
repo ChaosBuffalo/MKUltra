@@ -44,10 +44,4 @@ public class ManaSmokeEffect extends PassiveEffect {
     public ResourceLocation getIconTexture() {
         return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/mana_smoke.png");
     }
-
-    @Override
-    public double getAttributeModifierAmount(int amplifier, AttributeModifier modifier) {
-        return modifier.getAmount() * (double) (amplifier);
-    }
-
 }

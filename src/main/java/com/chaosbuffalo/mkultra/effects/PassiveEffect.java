@@ -3,6 +3,7 @@ package com.chaosbuffalo.mkultra.effects;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 
 public abstract class PassiveEffect extends SpellPotionBase {
     protected PassiveEffect(boolean isBadEffectIn, int liquidColorIn) {
@@ -32,5 +33,10 @@ public abstract class PassiveEffect extends SpellPotionBase {
     @Override
     public boolean isInstant() {
         return false;
+    }
+
+    @Override
+    public double getAttributeModifierAmount(int amplifier, AttributeModifier modifier) {
+        return modifier.getAmount() * (double) (amplifier);
     }
 }

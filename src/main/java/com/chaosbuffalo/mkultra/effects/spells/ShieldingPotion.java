@@ -44,12 +44,6 @@ public class ShieldingPotion extends PassiveEffect {
     }
 
     @Override
-    public double getAttributeModifierAmount(int amplifier, AttributeModifier modifier)
-    {
-        return modifier.getAmount() * (double)(amplifier);
-    }
-
-    @Override
     public void onPotionAdd(SpellCast cast, EntityLivingBase target, AbstractAttributeMap attributes, int amplifier) {
         target.setAbsorptionAmount(target.getAbsorptionAmount() + (float)(amplifier));
 
