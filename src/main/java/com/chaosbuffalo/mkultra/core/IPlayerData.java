@@ -80,6 +80,8 @@ public interface IPlayerData {
 
     float getMagicArmor();
 
+    float getHealBonus();
+
     boolean learnClass(ResourceLocation classId);
 
     void activateClass(ResourceLocation classId);

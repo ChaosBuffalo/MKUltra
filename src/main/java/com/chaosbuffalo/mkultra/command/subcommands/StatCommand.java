@@ -76,6 +76,10 @@ public class StatCommand extends CommandBase {
                 handleAttr(sender, player, SharedMonsterAttributes.ARMOR, args);
                 break;
             }
+            case "healbonus": {
+                handleAttr(sender, player, PlayerAttributes.HEAL_BONUS, args);
+                break;
+            }
         }
     }
 

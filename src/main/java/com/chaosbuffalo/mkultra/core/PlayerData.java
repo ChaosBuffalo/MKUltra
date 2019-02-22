@@ -78,6 +78,7 @@ public class PlayerData implements IPlayerData {
         player.getAttributeMap().registerAttribute(PlayerAttributes.SPELL_CRIT);
         player.getAttributeMap().registerAttribute(PlayerAttributes.SPELL_CRITICAL_DAMAGE);
         player.getAttributeMap().registerAttribute(PlayerAttributes.HEALTH_REGEN);
+        player.getAttributeMap().registerAttribute(PlayerAttributes.HEAL_BONUS);
     }
 
     private void setupWatcher() {
@@ -206,6 +207,10 @@ public class PlayerData implements IPlayerData {
         return (float) player.getEntityAttribute(PlayerAttributes.MAGIC_ARMOR).getAttributeValue();
     }
 
+    @Override
+    public float getHealBonus() {
+        return (float) player.getEntityAttribute(PlayerAttributes.HEAL_BONUS).getAttributeValue();
+    }
 
     @Override
     public boolean hasChosenClass() {
