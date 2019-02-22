@@ -56,8 +56,8 @@ public class MKSpawnerSetPacket implements IMessage {
                                             MessageContext ctx) {
             ServerUtils.addScheduledTask(() -> {
                 TileEntity entity = player.getEntityWorld().getTileEntity(msg.pos);
-                if (entity instanceof TileEntityMKSpawner){
-                    TileEntityMKSpawner mkSpawner = (TileEntityMKSpawner)entity;
+                if (entity instanceof TileEntityMKSpawner && player.canUseCommandBlock()) {
+                    TileEntityMKSpawner mkSpawner = (TileEntityMKSpawner) entity;
                     mkSpawner.setSpawnerWithPacket(msg);
                 }
             });
