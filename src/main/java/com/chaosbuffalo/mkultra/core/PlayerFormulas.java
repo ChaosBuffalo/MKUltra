@@ -28,6 +28,11 @@ public class PlayerFormulas {
         return originalCost;
     }
 
+    public static float applyHealBonus(IPlayerData playerData, float amount) {
+        float mod = playerData.getHealBonus();
+        return amount * mod;
+    }
+
     public static float getMeleeCritChanceForItem(IPlayerData data, EntityPlayerMP player, ItemStack item) {
         return data.getMeleeCritChance() + ItemUtils.getCritChanceForItem(item);
     }

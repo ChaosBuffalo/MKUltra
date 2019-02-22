@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.effects.spells;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
+import com.chaosbuffalo.mkultra.core.PlayerFormulas;
 import com.chaosbuffalo.mkultra.effects.PassiveEffect;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
@@ -51,7 +52,9 @@ public class VampiricReverePotion extends PassiveEffect {
         PotionEffect potion = playerSource.getActivePotionEffect(INSTANCE);
         if (potion != null && sourceData.getMana() > 0) {
             sourceData.setMana(sourceData.getMana() - 1);
-            playerSource.heal(event.getAmount() * .25f * potion.getAmplifier());
+            float healAmount = event.getAmount() * .25f * potion.getAmplifier();
+            healAmount = PlayerFormulas.applyHealBonus(sourceData, healAmount);
+            playerSource.heal(healAmount);
         }
     }
 }

@@ -4,6 +4,7 @@ import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
+import com.chaosbuffalo.mkultra.core.PlayerFormulas;
 import com.chaosbuffalo.mkultra.effects.spells.ShieldingPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
@@ -71,7 +72,8 @@ public class DesperateSurge extends PlayerAbility {
             entity.addPotionEffect(ShieldingPotion.Create(entity).setTarget(entity).toPotionEffect(
                             duration, BASE_SHIELDING + level * SHIELDING_SCALE));
             entity.addPotionEffect(new PotionEffect(MobEffects.SPEED, duration * 2, 2 + level));
-            entity.heal(2.0f * level);
+            float healAmount = PlayerFormulas.applyHealBonus(pData, 2.0f * level);
+            entity.heal(healAmount);
             Vec3d lookVec = entity.getLookVec();
             MKUltra.packetHandler.sendToAllAround(
                     new ParticleEffectSpawnPacket(
