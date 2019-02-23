@@ -30,7 +30,7 @@ public class EntityAIRangedSpellAttack extends EntityAISpellCastingBase {
                 for (MobAbilityTracker tracker : mobData.getAbilityTrackers()) {
                     if (!tracker.isAbilityOnCooldown()) {
                         if (tracker.getAbility().getAbilityType() == MobAbility.AbilityType.ATTACK &&
-                                isInRange(target, tracker)) {
+                                tracker.getAbility().shouldCast(entity, target)) {
                             currentAbility = tracker;
                             targetEntity = target;
                             return true;

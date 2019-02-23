@@ -3,6 +3,7 @@ package com.chaosbuffalo.mkultra.core;
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.utils.RayTraceUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
@@ -43,6 +44,24 @@ public abstract class MobAbility extends IForgeRegistryEntry.Impl<MobAbility> {
     @Nullable
     public Potion getEffectPotion(){
         return null;
+    }
+
+    public boolean shouldCast(EntityLivingBase caster, EntityLivingBase target){
+        if (!isInRange(caster, target)){
+            return false;
+        }
+        Potion effect = getEffectPotion();
+        if (effect != null){
+            if (target.isPotionActive(effect)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean isInRange(EntityLivingBase caster, EntityLivingBase target){
+        double dist = getDistance();
+        return caster.getDistanceSq(target.posX, target.getEntityBoundingBox().minY, target.posZ) <= dist * dist;
     }
 
     public enum AbilityType{

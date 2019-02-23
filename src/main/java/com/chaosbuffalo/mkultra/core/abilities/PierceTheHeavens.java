@@ -54,7 +54,7 @@ public class PierceTheHeavens extends PlayerAbility {
         Vec3d lookVec = entity.getLookVec();
         MKUltra.packetHandler.sendToAllAround(
                 new ParticleEffectSpawnPacket(
-                        EnumParticleTypes.BLOCK_DUST.getParticleID(),
+                        EnumParticleTypes.FALLING_DUST.getParticleID(),
                         ParticleEffects.CIRCLE_MOTION, 40, 10,
                         entity.posX, entity.posY + 1.0,
                         entity.posZ, 1.0, 1.0, 1.0, 1.0,

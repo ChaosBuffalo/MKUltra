@@ -66,6 +66,7 @@ public final class ModItems {
     public static Item cleansing_seed_projectile;
     public static Item spirit_bomb_projectile;
     public static Item mob_fireball_projectile;
+    public static Item grasping_roots_projectile;
 
     public static Item fire_extinguisher_flask;
 
@@ -157,6 +158,8 @@ public final class ModItems {
                 "spirit_bomb_projectile");
         regInternal(mob_fireball_projectile = new Item().setCreativeTab(MKUltra.MKULTRA_TAB),
                 "mob_fireball_projectile");
+        regInternal(grasping_roots_projectile = new Item().setCreativeTab(MKUltra.MKULTRA_TAB),
+                "grasping_roots_projectile");
 
 
         regInternal(manaRegenIdolIron = new ManaRegenIdol(
