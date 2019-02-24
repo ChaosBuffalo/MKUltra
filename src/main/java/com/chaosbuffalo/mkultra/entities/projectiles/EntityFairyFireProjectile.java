@@ -36,13 +36,14 @@ public class EntityFairyFireProjectile extends EntityBaseProjectile {
     }
 
     @Override
-    protected boolean isValidEntityTarget(Entity entity) {
-        if (entity instanceof EntityLivingBase && getThrower() != null) {
-            return Targeting.isValidTarget(Targeting.TargetType.ENEMY, getThrower(), entity, false);
-        }
-        return super.isValidEntityTarget(entity);
+    protected Targeting.TargetType getTargetType() {
+        return Targeting.TargetType.ENEMY;
     }
 
+    @Override
+    protected boolean shouldExcludeCaster() {
+        return false;
+    }
 
     @Override
     protected boolean onImpact(EntityLivingBase entity, RayTraceResult result, int level) {

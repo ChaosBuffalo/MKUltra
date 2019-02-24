@@ -1,6 +1,6 @@
 package com.chaosbuffalo.mkultra.entities.projectiles;
 
-import com.chaosbuffalo.mkultra.log.Log;
+import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -73,6 +73,12 @@ public abstract class EntityBaseProjectile extends Entity implements IProjectile
         this(worldIn, throwerIn.posX, throwerIn.posY + verticalOffset,
                 throwerIn.posZ);
         this.thrower = throwerIn;
+    }
+
+    protected abstract Targeting.TargetType getTargetType();
+
+    protected boolean shouldExcludeCaster() {
+        return false;
     }
 
 
@@ -414,9 +420,16 @@ public abstract class EntityBaseProjectile extends Entity implements IProjectile
         return false;
     }
 
-    protected boolean isValidEntityTarget(Entity entity) {
+    private boolean isValidEntityTargetGeneric(Entity entity) {
         return entity != this && EntitySelectors.NOT_SPECTATING.apply(entity) &&
                 EntitySelectors.IS_ALIVE.apply(entity);
+    }
+
+    protected boolean isValidEntityTarget(Entity entity) {
+        if (entity instanceof EntityLivingBase && getThrower() != null) {
+            return Targeting.isValidTarget(getTargetType(), getThrower(), entity, shouldExcludeCaster());
+        }
+        return isValidEntityTargetGeneric(entity);
     }
 
     protected boolean isValidBlockCollision(BlockPos pos) {

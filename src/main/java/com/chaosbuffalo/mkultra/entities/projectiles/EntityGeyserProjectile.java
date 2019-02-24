@@ -38,6 +38,16 @@ public class EntityGeyserProjectile extends EntityBaseProjectile {
         super(worldIn, x, y, z);
     }
 
+    @Override
+    protected Targeting.TargetType getTargetType() {
+        return Targeting.TargetType.ALL;
+    }
+
+    @Override
+    protected boolean shouldExcludeCaster() {
+        return true;
+    }
+
     private boolean doEffect(EntityLivingBase caster, int amplifier, float baseDamage, float damageScale){
         if (!this.world.isRemote && caster != null) {
             SpellCast geyser = GeyserPotion.Create(caster, baseDamage, damageScale);

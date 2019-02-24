@@ -34,13 +34,14 @@ public class EntityCleansingSeedProjectile extends EntityBaseProjectile {
     }
 
     @Override
-    protected boolean isValidEntityTarget(Entity entity) {
-        if (entity instanceof EntityLivingBase && getThrower() != null) {
-            return Targeting.isValidTarget(Targeting.TargetType.ALL, getThrower(), entity, true);
-        }
-        return super.isValidEntityTarget(entity);
+    protected Targeting.TargetType getTargetType() {
+        return Targeting.TargetType.ALL;
     }
 
+    @Override
+    protected boolean shouldExcludeCaster() {
+        return true;
+    }
 
     @Override
     protected boolean onImpact(EntityLivingBase entity, RayTraceResult result, int level) {
