@@ -139,9 +139,9 @@ public final class ModItems {
 
         //Projectile items
         regInternal(drownProjectile = new Item().setCreativeTab(MKUltra.MKULTRA_TAB),
-                "drownProjectile");
+                "drown_projectile");
         regInternal(geyserProjectile = new Item().setCreativeTab(MKUltra.MKULTRA_TAB),
-                "geyserProjectile");
+                "geyser_projectile");
         regInternal(duality_rune_projectile = new Item().setCreativeTab(MKUltra.MKULTRA_TAB),
                 "duality_rune_projectile");
         regInternal(ballLightning = new Item().setCreativeTab(MKUltra.MKULTRA_TAB),

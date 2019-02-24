@@ -36,6 +36,8 @@ public class Remapper {
         internalItemReplacement("bonedleatherleggings", "boned_leather_leggings");
         internalItemReplacement("bonedleatherboots", "boned_leather_boots");
         internalItemReplacement("xptable", "xp_table");
+        internalItemReplacement("drownProjectile", "drown_projectile");
+        internalItemReplacement("geyserProjectile", "geyser_projectile");
         internalBlockReplacement("xptable", "xp_table");
 
         internalEntityReplacement("EntityMKAreaEffect", "mk_area_effect");
