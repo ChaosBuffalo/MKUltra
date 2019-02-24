@@ -6,7 +6,7 @@
   ],
   "type": "minecraft:crafting_shaped",
   "result": {
-    "item": "mkultra:xptable"
+    "item": "mkultra:xp_table"
   },
   "key": {
     "w": {

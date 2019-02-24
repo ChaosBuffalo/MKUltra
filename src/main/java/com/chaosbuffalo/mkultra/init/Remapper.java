@@ -22,16 +22,19 @@ public class Remapper {
 
     private static final String MKX_MOD_ID = "mkultrax";
 
-    private static Map<ResourceLocation, ResourceLocation> replacements = Maps.newHashMap();
+    private static Map<ResourceLocation, ResourceLocation> itemReplacements = Maps.newHashMap();
+    private static Map<ResourceLocation, ResourceLocation> blockReplacements = Maps.newHashMap();
     private static ArrayList<ResourceLocation> drops = Lists.newArrayList();
 
     static {
-        internalReplacement("sunicon", "sun_icon");
-        internalReplacement("bonedleather", "boned_leather");
-        internalReplacement("bonedleatherchestplate", "boned_leather_chestplate");
-        internalReplacement("bonedleatherhelmet", "boned_leather_helmet");
-        internalReplacement("bonedleatherleggings", "boned_leather_leggings");
-        internalReplacement("bonedleatherboots", "boned_leather_boots");
+        internalItemReplacement("sunicon", "sun_icon");
+        internalItemReplacement("bonedleather", "boned_leather");
+        internalItemReplacement("bonedleatherchestplate", "boned_leather_chestplate");
+        internalItemReplacement("bonedleatherhelmet", "boned_leather_helmet");
+        internalItemReplacement("bonedleatherleggings", "boned_leather_leggings");
+        internalItemReplacement("bonedleatherboots", "boned_leather_boots");
+        internalItemReplacement("xptable", "xp_table");
+        internalBlockReplacement("xptable", "xp_table");
 
         drops.add(new ResourceLocation(MKUltra.MODID, "steampoweredorbblock"));
         drops.add(new ResourceLocation(MKUltra.MODID, "portalblock"));
@@ -41,12 +44,16 @@ public class Remapper {
         drops.add(new ResourceLocation(MKUltra.MODID, "hempblock"));
     }
 
-    private static void internalReplacement(String oldName, String newName) {
-        replacements.put(new ResourceLocation(MKUltra.MODID, oldName), new ResourceLocation(MKUltra.MODID, newName));
+    private static void internalItemReplacement(String oldName, String newName) {
+        itemReplacements.put(new ResourceLocation(MKUltra.MODID, oldName), new ResourceLocation(MKUltra.MODID, newName));
+    }
+
+    private static void internalBlockReplacement(String oldName, String newName) {
+        blockReplacements.put(new ResourceLocation(MKUltra.MODID, oldName), new ResourceLocation(MKUltra.MODID, newName));
     }
 
     public static void replace(ResourceLocation oldName, ResourceLocation newName) {
-        replacements.put(oldName, newName);
+        itemReplacements.put(oldName, newName);
     }
 
     private static boolean tryRemapToMKX(RegistryEvent.MissingMappings.Mapping<Item> entry) {
@@ -58,7 +65,7 @@ public class Remapper {
 
         ResourceLocation mkxPath = new ResourceLocation(MKX_MOD_ID, entry.key.getPath());
 
-        if (tryRemap(entry, mkxPath)) {
+        if (tryRemapItem(entry, mkxPath)) {
             return true;
         }
         else if (!Loader.isModLoaded(MKX_MOD_ID)) {
@@ -74,11 +81,21 @@ public class Remapper {
         return false;
     }
 
-    static boolean tryRemap(RegistryEvent.MissingMappings.Mapping<Item> entry, ResourceLocation newKey) {
-        Item replItem = ForgeRegistries.ITEMS.getValue(newKey);
-        Log.info("Remapping %s to %s: %b", entry.key.toString(), newKey.toString(), replItem != null);
-        if (replItem != null) {
-            entry.remap(replItem);
+    private static boolean tryRemapItem(RegistryEvent.MissingMappings.Mapping<Item> entry, ResourceLocation newKey) {
+        Item item = ForgeRegistries.ITEMS.getValue(newKey);
+        Log.info("Remapping Item %s to %s: %b", entry.key.toString(), newKey.toString(), item != null);
+        if (item != null) {
+            entry.remap(item);
+            return true;
+        }
+        return false;
+    }
+
+    private static boolean tryRemapBlock(RegistryEvent.MissingMappings.Mapping<Block> entry, ResourceLocation newKey) {
+        Block block = ForgeRegistries.BLOCKS.getValue(newKey);
+        Log.info("Remapping Block %s to %s: %b", entry.key.toString(), newKey.toString(), block != null);
+        if (block != null) {
+            entry.remap(block);
             return true;
         }
         return false;
@@ -112,9 +129,9 @@ public class Remapper {
                 continue;
             }
 
-            if (replacements.containsKey(entry.key)) {
-                ResourceLocation newKey = replacements.get(entry.key);
-                if (tryRemap(entry, newKey)) {
+            if (itemReplacements.containsKey(entry.key)) {
+                ResourceLocation newKey = itemReplacements.get(entry.key);
+                if (tryRemapItem(entry, newKey)) {
                     continue;
                 }
             }
@@ -132,6 +149,13 @@ public class Remapper {
                 Log.info("Removing old MK Block %s", entry.key.toString());
                 entry.ignore();
                 continue;
+            }
+
+            if (blockReplacements.containsKey(entry.key)) {
+                ResourceLocation newKey = blockReplacements.get(entry.key);
+                if (tryRemapBlock(entry, newKey)) {
+                    continue;
+                }
             }
 
             if (drops.contains(entry.key)) {
