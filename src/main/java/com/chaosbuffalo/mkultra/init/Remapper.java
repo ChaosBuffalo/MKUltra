@@ -12,6 +12,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ public class Remapper {
 
     private static Map<ResourceLocation, ResourceLocation> itemReplacements = Maps.newHashMap();
     private static Map<ResourceLocation, ResourceLocation> blockReplacements = Maps.newHashMap();
+    private static Map<ResourceLocation, ResourceLocation> entityReplacements = Maps.newHashMap();
     private static ArrayList<ResourceLocation> drops = Lists.newArrayList();
 
     static {
@@ -35,6 +37,18 @@ public class Remapper {
         internalItemReplacement("bonedleatherboots", "boned_leather_boots");
         internalItemReplacement("xptable", "xp_table");
         internalBlockReplacement("xptable", "xp_table");
+
+        internalEntityReplacement("EntityMKAreaEffect", "mk_area_effect");
+        internalEntityReplacement("EntityDrownProjectile", "drown_projectile");
+        internalEntityReplacement("EntityGeyserProjectile", "geyser_projectile");
+        internalEntityReplacement("EntityBallLightningProjectile", "ball_lightning_projectile");
+        internalEntityReplacement("DualityRuneProjectile", "duality_rune_projectile");
+        internalEntityReplacement("WhirlpoolProjectile", "whirlpool_projectile");
+        internalEntityReplacement("FlameBladeProjectile", "flame_blade_projectile");
+        internalEntityReplacement("FairyFireProjectile", "fairy_fire_projectile");
+        internalEntityReplacement("CleansingSeedProjectile", "cleansing_seed_projectile");
+        internalEntityReplacement("SpiritBombProjectile", "spirit_bomb_projectile");
+        internalEntityReplacement("MobFireballProjectile", "mob_fireball_projectile");
 
         drops.add(new ResourceLocation(MKUltra.MODID, "steampoweredorbblock"));
         drops.add(new ResourceLocation(MKUltra.MODID, "portalblock"));
@@ -50,6 +64,10 @@ public class Remapper {
 
     private static void internalBlockReplacement(String oldName, String newName) {
         blockReplacements.put(new ResourceLocation(MKUltra.MODID, oldName), new ResourceLocation(MKUltra.MODID, newName));
+    }
+
+    private static void internalEntityReplacement(String oldName, String newName) {
+        entityReplacements.put(new ResourceLocation(MKUltra.MODID, oldName), new ResourceLocation(MKUltra.MODID, newName));
     }
 
     public static void replace(ResourceLocation oldName, ResourceLocation newName) {
@@ -96,6 +114,16 @@ public class Remapper {
         Log.info("Remapping Block %s to %s: %b", entry.key.toString(), newKey.toString(), block != null);
         if (block != null) {
             entry.remap(block);
+            return true;
+        }
+        return false;
+    }
+
+    private static boolean tryRemapEntity(RegistryEvent.MissingMappings.Mapping<EntityEntry> entry, ResourceLocation newKey) {
+        EntityEntry entity = ForgeRegistries.ENTITIES.getValue(newKey);
+        Log.info("Remapping Entity %s to %s: %b", entry.key.toString(), newKey.toString(), entity != null);
+        if (entity != null) {
+            entry.remap(entity);
             return true;
         }
         return false;
@@ -162,6 +190,18 @@ public class Remapper {
                 Log.info("Removing old MK Block %s", entry.key.toString());
                 entry.ignore();
                 continue;
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void missingEntityMapping(RegistryEvent.MissingMappings<EntityEntry> event) {
+        for (RegistryEvent.MissingMappings.Mapping<EntityEntry> entry : event.getAllMappings()) {
+            if (entityReplacements.containsKey(entry.key)) {
+                ResourceLocation newKey = entityReplacements.get(entry.key);
+                if (tryRemapEntity(entry, newKey)) {
+                    continue;
+                }
             }
         }
     }

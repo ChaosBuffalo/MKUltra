@@ -28,34 +28,34 @@ public class ModEntities {
     @SuppressWarnings("unused")
     @SubscribeEvent
     public static void registerEntities(RegistryEvent.Register<EntityEntry> evt) {
-        register(evt, new ResourceLocation(MKUltra.MODID, "EntityMKAreaEffect"),
+        register(evt, new ResourceLocation(MKUltra.MODID, "mk_area_effect"),
                 EntityMKAreaEffect.class, "EntityMKAreaEffect", 1,
                 64, 1, true);
-        register(evt, new ResourceLocation(MKUltra.MODID, "EntityDrownProjectile"),
+        register(evt, new ResourceLocation(MKUltra.MODID, "drown_projectile"),
                 EntityDrownProjectile.class, "EntityDrownProjectile", 2,
                 64, 1, true);
-        register(evt, new ResourceLocation(MKUltra.MODID, "EntityGeyserProjectile"),
+        register(evt, new ResourceLocation(MKUltra.MODID, "geyser_projectile"),
                 EntityGeyserProjectile.class, "EntityGeyserProjectile", 3,
                 64, 1, true);
-        register(evt, new ResourceLocation(MKUltra.MODID, "EntityBallLightningProjectile"),
+        register(evt, new ResourceLocation(MKUltra.MODID, "ball_lightning_projectile"),
                 EntityBallLightningProjectile.class, "EntityBallLightningProjectile", 4,
                 64, 1, true);
-        register(evt, new ResourceLocation(MKUltra.MODID, "DualityRuneProjectile"),
+        register(evt, new ResourceLocation(MKUltra.MODID, "duality_rune_projectile"),
                 EntityDualityRuneProjectile.class, "EntityDualityRuneProjectile", 5,
                 64, 1, true);
-        register(evt, new ResourceLocation(MKUltra.MODID, "WhirlpoolProjectile"),
+        register(evt, new ResourceLocation(MKUltra.MODID, "whirlpool_projectile"),
                 EntityWhirlpoolProjectile.class, "EntityWhirlpoolProjectile", 6,
                 64, 1, true);
-        register(evt, new ResourceLocation(MKUltra.MODID, "FlameBladeProjectile"),
+        register(evt, new ResourceLocation(MKUltra.MODID, "flame_blade_projectile"),
                 EntityFlameBladeProjectile.class, "EntityFlameBladeProjectile", 7,
                 64, 1, true);
-        register(evt, new ResourceLocation(MKUltra.MODID, "FairyFireProjectile"),
+        register(evt, new ResourceLocation(MKUltra.MODID, "fairy_fire_projectile"),
                 EntityFairyFireProjectile.class, "EntityFairyFireProjectile", 8,
                 64, 1, true);
-        register(evt, new ResourceLocation(MKUltra.MODID, "CleansingSeedProjectile"),
+        register(evt, new ResourceLocation(MKUltra.MODID, "cleansing_seed_projectile"),
                 EntityCleansingSeedProjectile.class, "EntityCleansingSeedProjectile", 9,
                 64, 1, true);
-        register(evt, new ResourceLocation(MKUltra.MODID, "SpiritBombProjectile"),
+        register(evt, new ResourceLocation(MKUltra.MODID, "spirit_bomb_projectile"),
                 EntitySpiritBombProjectile.class, "EntitySpiritBombProjectile", 10,
                 64, 1, true);
         register(evt, new ResourceLocation(MKUltra.MODID, "MobFireballProjectile"),
