@@ -49,4 +49,15 @@ public interface IMobData {
     boolean hasFaction();
 
     boolean isSameFaction(EntityLivingBase other);
+
+    void setTimeBetweenCasts(int value);
+
+    int getTimeBetweenCasts();
+
+    boolean isOnCastCooldown();
+
+    int getMaxTimeBetweenCasts();
+
+    void setMaxTimeBetweenCasts(int value);
+
 }

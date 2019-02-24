@@ -35,7 +35,10 @@ public class ItemOption extends IForgeRegistryEntry.Impl<ItemOption> {
                 current_choices.add(choice.weight, choice);
             }
         }
-        this.applyFunc.accept(entity,  current_choices.next());
+        if (current_choices.size() > 0){
+            this.applyFunc.accept(entity,  current_choices.next());
+        }
+
     }
 
 

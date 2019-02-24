@@ -144,12 +144,28 @@ public class ModSpawn {
         event.getRegistry().register(aggroTarget);
         BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addOffensiveSpells = (entity, choice) -> {
             IMobData mobData = MKUMobData.get(entity);
-            return new EntityAIRangedSpellAttack(entity, mobData,
-                    (11 - mobData.getMobLevel()) * GameConstants.TICKS_PER_SECOND,
+            if (mobData == null){
+                return null;
+            }
+            return new EntityAISpellAttack(entity, mobData,
+                    (6 - mobData.getMobLevel() / 2) * GameConstants.TICKS_PER_SECOND,
                     .25f, .75f);
         };
         AIGenerator offensiveSpells = new AIGenerator(MKUltra.MODID, "offensive_spells", addOffensiveSpells);
         event.getRegistry().register(offensiveSpells);
+        BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addNoStrafeSpells = (entity, choice) -> {
+            IMobData mobData = MKUMobData.get(entity);
+            if (mobData == null){
+                return null;
+            }
+            EntityAISpellAttack ai = new EntityAISpellAttack(entity, mobData,
+                    (6 - mobData.getMobLevel() / 2) * GameConstants.TICKS_PER_SECOND,
+                    .25f, .75f);
+            ai.setStrafe(false);
+            return ai;
+        };
+        AIGenerator noStrafespells = new AIGenerator(MKUltra.MODID, "no_strafe_spells", addNoStrafeSpells);
+        event.getRegistry().register(noStrafespells);
         BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addLeashRange = (entity, choice) -> {
             IMobData mobData = MKUMobData.get(entity);
             return new EntityAIReturnToSpawn((EntityCreature)entity, mobData, 1.0);

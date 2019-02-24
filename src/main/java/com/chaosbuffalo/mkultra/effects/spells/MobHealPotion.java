@@ -33,7 +33,7 @@ public class MobHealPotion extends SpellPotionBase {
     private MobHealPotion() {
         // boolean isBadEffectIn, int liquidColorIn
         super(false, 4393481);
-        setPotionName("effect.cleric_heal");
+        setPotionName("effect.mob_heal");
     }
 
     @Override

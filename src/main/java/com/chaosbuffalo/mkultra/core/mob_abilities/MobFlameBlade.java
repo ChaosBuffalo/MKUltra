@@ -45,6 +45,11 @@ public class MobFlameBlade extends MobAbility {
     }
 
     @Override
+    public int getCastTime(){
+        return GameConstants.TICKS_PER_SECOND / 2;
+    }
+
+    @Override
     public Targeting.TargetType getTargetType() {
         return Targeting.TargetType.FRIENDLY;
     }

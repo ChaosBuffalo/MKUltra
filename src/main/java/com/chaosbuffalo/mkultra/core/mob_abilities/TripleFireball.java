@@ -11,7 +11,7 @@ import net.minecraft.world.World;
 
 public class TripleFireball extends MobAbility {
     private static float PROJECTILE_SPEED = 1.0f;
-    private static float PROJECTILE_INACCURACY = 100.0f;
+    private static float PROJECTILE_INACCURACY = 15.0f;
     private static int PROJECTILE_COUNT = 3;
 
     public TripleFireball() {

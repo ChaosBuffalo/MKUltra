@@ -10,6 +10,7 @@ import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -42,6 +43,11 @@ public class ManaBurn extends MobAbility {
     @Override
     public float getDistance(){
         return 15.0f;
+    }
+
+    @Override
+    public Potion getEffectPotion() {
+        return ManaBurnPotion.INSTANCE;
     }
 
     @Override

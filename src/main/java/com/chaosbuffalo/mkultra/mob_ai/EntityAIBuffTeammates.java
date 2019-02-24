@@ -21,7 +21,7 @@ public class EntityAIBuffTeammates extends EntityAISpellCastingBase {
     @Override
     public boolean shouldExecute() {
 
-        if (mobData.hasAbilities()){
+        if (mobData.hasAbilities() && !mobData.isOnCastCooldown() && entity.getEntityWorld().rand.nextInt(10) > 3){
             List<Entity> entities = getEntitiesInRange(MAX_BUFF_RANGE, false,
                     Targeting.TargetType.FRIENDLY);
             if (entities.size() <= 0){

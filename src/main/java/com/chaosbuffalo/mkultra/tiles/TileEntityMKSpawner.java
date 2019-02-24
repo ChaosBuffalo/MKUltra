@@ -263,7 +263,7 @@ public class TileEntityMKSpawner extends TileEntity implements ITickable {
                 Log.info("Mob data empty");
                 return;
             }
-            definition.applyDefinition(entity, level);
+            definition.applyDefinition(theWorld, entity, level);
             entity.setLocationAndAngles(
                     getPos().getX() + .5f, getPos().getY() + .5f, getPos().getZ() + .5f,
                     theWorld.rand.nextFloat() * 360.0F, 0.0F);

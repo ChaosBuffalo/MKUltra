@@ -234,7 +234,7 @@ public class SpellTriggers {
 
         @FunctionalInterface
         public interface AttackEntityTrigger {
-            void apply(EntityPlayer player, Entity target, PotionEffect effect);
+            void apply(EntityLivingBase player, Entity target, PotionEffect effect);
         }
 
         private static Map<SpellPotionBase, AttackEntityTrigger> attackEntityTriggers = Maps.newLinkedHashMap();
@@ -243,11 +243,11 @@ public class SpellTriggers {
             attackEntityTriggers.put(potion, trigger);
         }
 
-        public static void onAttackEntity(EntityPlayer player, Entity target) {
+        public static void onAttackEntity(EntityLivingBase attacker, Entity target) {
             attackEntityTriggers.forEach((spellPotionBase, attackEntityTrigger) -> {
-                PotionEffect effect = player.getActivePotionEffect(spellPotionBase);
+                PotionEffect effect = attacker.getActivePotionEffect(spellPotionBase);
                 if (effect != null) {
-                    attackEntityTrigger.apply(player, target, effect);
+                    attackEntityTrigger.apply(attacker, target, effect);
                 }
             });
         }

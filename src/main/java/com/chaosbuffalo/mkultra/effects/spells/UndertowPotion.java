@@ -10,6 +10,7 @@ import com.chaosbuffalo.mkultra.effects.SpellTriggers;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntityVex;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -44,7 +45,7 @@ public class UndertowPotion extends PassiveEffect {
         return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/undertow.png");
     }
 
-    private void onAttackEntity(EntityPlayer player, Entity target, PotionEffect effect) {
+    private void onAttackEntity(EntityLivingBase player, Entity target, PotionEffect effect) {
         if (target instanceof EntityLivingBase) {
             EntityLivingBase livingEnt = (EntityLivingBase) target;
             if (livingEnt.isPotionActive(DrownPotion.INSTANCE)) {

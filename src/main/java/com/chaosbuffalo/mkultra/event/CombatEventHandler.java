@@ -8,6 +8,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.DamageSource;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -52,6 +53,15 @@ public class CombatEventHandler {
 
             SpellTriggers.ENTITY_HURT_PLAYER.onEntityHurtPlayer(event, source, (EntityPlayer) livingTarget, targetData);
         }
+    }
+
+    @SubscribeEvent
+    public static void onLivingAttackEvent(LivingAttackEvent event){
+        Entity target = event.getEntity();
+        Entity source = event.getSource().getTrueSource();
+        if (source == null || source.world.isRemote)
+            return;
+        SpellTriggers.ATTACK_ENTITY.onAttackEntity(source, target);
     }
 
 

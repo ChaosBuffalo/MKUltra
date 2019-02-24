@@ -2,9 +2,11 @@ package com.chaosbuffalo.mkultra.spawn;
 import com.chaosbuffalo.mkultra.core.MobAbility;
 import com.chaosbuffalo.mkultra.core.IMobData;
 import com.chaosbuffalo.mkultra.core.MKUMobData;
+import com.chaosbuffalo.mkultra.core.MobAbilityTracker;
 import com.chaosbuffalo.mkultra.init.ModSpawn;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import java.util.ArrayList;
@@ -62,7 +64,7 @@ public class MobDefinition extends IForgeRegistryEntry.Impl<MobDefinition> {
         return this;
     }
 
-    public void applyDefinition(EntityLivingBase entity, int level){
+    public void applyDefinition(World world, EntityLivingBase entity, int level){
         if (mobName != null){
             entity.setCustomNameTag(mobName);
         }
@@ -82,6 +84,9 @@ public class MobDefinition extends IForgeRegistryEntry.Impl<MobDefinition> {
                 if (ability != null) {
                     mobData.addAbility(ability);
                 }
+            }
+            for (MobAbilityTracker tracker : mobData.getAbilityTrackers()){
+                tracker.setCooldown(world.rand.nextInt(tracker.getAbility().getCooldown()));
             }
         }
 

@@ -50,10 +50,10 @@ public class WildToxinPotion extends PassiveEffect {
         return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/wild_toxin.png");
     }
 
-    private void onAttackEntity(EntityPlayer player, Entity target, PotionEffect potion) {
+    private void onAttackEntity(EntityLivingBase player, Entity target, PotionEffect potion) {
 
-        if (target instanceof EntityLivingBase) {
-            IPlayerData pData = MKUPlayerData.get(player);
+        if (target instanceof EntityLivingBase && player instanceof EntityPlayer) {
+            IPlayerData pData = MKUPlayerData.get((EntityPlayer) player);
             if (pData == null)
                 return;
 
