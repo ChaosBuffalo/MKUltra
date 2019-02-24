@@ -20,21 +20,13 @@ import net.minecraft.world.World;
  */
 public class XpTableBlock extends Block {
 
-    public XpTableBlock(String unlocalizedName, Material material, float hardness, float resistance) {
+    public XpTableBlock(String translationKey, Material material, float hardness, float resistance) {
         super(material);
-        this.setTranslationKey(unlocalizedName);
-        this.setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
+        this.setTranslationKey(translationKey);
+        this.setCreativeTab(MKUltra.MKULTRA_TAB);
         this.setHardness(hardness);
         this.setResistance(resistance);
-        setRegistryName(MKUltra.MODID, "xpTable");
-    }
-
-    public XpTableBlock(String unlocalizedName, float hardness, float resistance) {
-        this(unlocalizedName, Material.ROCK, hardness, resistance);
-    }
-
-    public XpTableBlock(String unlocalizedName) {
-        this(unlocalizedName, 2.0f, 10.0f);
+        setRegistryName(MKUltra.MODID, "xp_table");
     }
 
     @Override
