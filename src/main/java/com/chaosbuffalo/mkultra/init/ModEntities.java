@@ -58,8 +58,11 @@ public class ModEntities {
         register(evt, new ResourceLocation(MKUltra.MODID, "spirit_bomb_projectile"),
                 EntitySpiritBombProjectile.class, "EntitySpiritBombProjectile", 10,
                 64, 1, true);
-        register(evt, new ResourceLocation(MKUltra.MODID, "MobFireballProjectile"),
+        register(evt, new ResourceLocation(MKUltra.MODID, "mob_fireball_projectile"),
                 EntityMobFireballProjectile.class, "EntityMobFireballProjectile", 11,
+                64, 1, true);
+        register(evt, new ResourceLocation(MKUltra.MODID, "grasping_roots_projectile"),
+                EntityGraspingRootsProjectile.class, "EntityGraspingRootsProjectile", 12,
                 64, 1, true);
     }
 }
