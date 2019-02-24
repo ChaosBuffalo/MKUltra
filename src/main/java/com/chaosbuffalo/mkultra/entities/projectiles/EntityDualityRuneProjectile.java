@@ -37,6 +37,15 @@ public class EntityDualityRuneProjectile extends EntityBaseProjectile {
         super(worldIn, x, y, z);
     }
 
+    @Override
+    protected Targeting.TargetType getTargetType() {
+        return Targeting.TargetType.ALL;
+    }
+
+    @Override
+    protected boolean shouldExcludeCaster() {
+        return false;
+    }
 
     @Override
     protected boolean onGroundProc(EntityLivingBase caster, int amplifier) {

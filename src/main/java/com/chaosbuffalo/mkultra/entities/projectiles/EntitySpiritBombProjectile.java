@@ -36,6 +36,16 @@ public class EntitySpiritBombProjectile extends EntityBaseProjectile {
     }
 
     @Override
+    protected Targeting.TargetType getTargetType() {
+        return Targeting.TargetType.ENEMY;
+    }
+
+    @Override
+    protected boolean shouldExcludeCaster() {
+        return true;
+    }
+
+    @Override
     protected boolean onImpact(EntityLivingBase entity, RayTraceResult result, int amplifier){
         if (!this.world.isRemote && entity != null) {
             MKUltra.packetHandler.sendToAllAround(
@@ -51,7 +61,7 @@ public class EntitySpiritBombProjectile extends EntityBaseProjectile {
                 case BLOCK:
                     break;
                 case ENTITY:
-                    if (Targeting.isValidTarget(Targeting.TargetType.ENEMY, entity, result.entityHit, true)){
+                    if (Targeting.isValidTarget(getTargetType(), entity, result.entityHit, shouldExcludeCaster())){
                         this.motionX = 0.0;
                         this.motionY = 0.0;
                         this.motionZ = 0.0;

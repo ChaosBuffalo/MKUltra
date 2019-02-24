@@ -35,6 +35,15 @@ public class EntityWhirlpoolProjectile extends EntityBaseProjectile {
         super(worldIn, x, y, z);
     }
 
+    @Override
+    protected Targeting.TargetType getTargetType() {
+        return Targeting.TargetType.ENEMY;
+    }
+
+    @Override
+    protected boolean shouldExcludeCaster() {
+        return true;
+    }
 
     @Override
     protected boolean onImpact(EntityLivingBase caster, RayTraceResult result, int amplifier) {
