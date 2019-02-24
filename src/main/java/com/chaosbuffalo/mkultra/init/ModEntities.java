@@ -3,47 +3,63 @@ package com.chaosbuffalo.mkultra.init;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.entities.EntityMKAreaEffect;
 import com.chaosbuffalo.mkultra.entities.projectiles.*;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.EntityEntry;
+import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 
-/**
- * Created by Jacob on 7/15/2016.
- */
+
+@Mod.EventBusSubscriber
 public class ModEntities {
 
-    public static void registerEntities() {
-        EntityRegistry.registerModEntity(new ResourceLocation(MKUltra.MODID, "EntityMKAreaEffect"),
+    private static void register(RegistryEvent.Register<EntityEntry> evt, ResourceLocation registryName,
+                                 Class<? extends Entity> entityClass, String entityName, int id,
+                                 int trackingRange, int updateFrequency, boolean sendsVelocityUpdates) {
+        evt.getRegistry().register(EntityEntryBuilder.create()
+                .entity(entityClass)
+                .id(registryName, id)
+                .name(entityName)
+                .tracker(trackingRange, updateFrequency, sendsVelocityUpdates).build());
+    }
+
+    @SuppressWarnings("unused")
+    @SubscribeEvent
+    public static void registerEntities(RegistryEvent.Register<EntityEntry> evt) {
+        register(evt, new ResourceLocation(MKUltra.MODID, "EntityMKAreaEffect"),
                 EntityMKAreaEffect.class, "EntityMKAreaEffect", 1,
-                MKUltra.INSTANCE, 64, 1, true);
-        EntityRegistry.registerModEntity(new ResourceLocation(MKUltra.MODID, "EntityDrownProjectile"),
+                64, 1, true);
+        register(evt, new ResourceLocation(MKUltra.MODID, "EntityDrownProjectile"),
                 EntityDrownProjectile.class, "EntityDrownProjectile", 2,
-                MKUltra.INSTANCE, 64, 1, true);
-        EntityRegistry.registerModEntity(new ResourceLocation(MKUltra.MODID, "EntityGeyserProjectile"),
+                64, 1, true);
+        register(evt, new ResourceLocation(MKUltra.MODID, "EntityGeyserProjectile"),
                 EntityGeyserProjectile.class, "EntityGeyserProjectile", 3,
-                MKUltra.INSTANCE, 64, 1, true);
-        EntityRegistry.registerModEntity(new ResourceLocation(MKUltra.MODID, "EntityBallLightningProjectile"),
+                64, 1, true);
+        register(evt, new ResourceLocation(MKUltra.MODID, "EntityBallLightningProjectile"),
                 EntityBallLightningProjectile.class, "EntityBallLightningProjectile", 4,
-                MKUltra.INSTANCE, 64, 1, true);
-        EntityRegistry.registerModEntity(new ResourceLocation(MKUltra.MODID, "DualityRuneProjectile"),
+                64, 1, true);
+        register(evt, new ResourceLocation(MKUltra.MODID, "DualityRuneProjectile"),
                 EntityDualityRuneProjectile.class, "EntityDualityRuneProjectile", 5,
-                MKUltra.INSTANCE, 64, 1, true);
-        EntityRegistry.registerModEntity(new ResourceLocation(MKUltra.MODID, "WhirlpoolProjectile"),
+                64, 1, true);
+        register(evt, new ResourceLocation(MKUltra.MODID, "WhirlpoolProjectile"),
                 EntityWhirlpoolProjectile.class, "EntityWhirlpoolProjectile", 6,
-                MKUltra.INSTANCE, 64, 1, true);
-        EntityRegistry.registerModEntity(new ResourceLocation(MKUltra.MODID, "FlameBladeProjectile"),
+                64, 1, true);
+        register(evt, new ResourceLocation(MKUltra.MODID, "FlameBladeProjectile"),
                 EntityFlameBladeProjectile.class, "EntityFlameBladeProjectile", 7,
-                MKUltra.INSTANCE, 64, 1, true);
-        EntityRegistry.registerModEntity(new ResourceLocation(MKUltra.MODID, "FairyFireProjectile"),
+                64, 1, true);
+        register(evt, new ResourceLocation(MKUltra.MODID, "FairyFireProjectile"),
                 EntityFairyFireProjectile.class, "EntityFairyFireProjectile", 8,
-                MKUltra.INSTANCE, 64, 1, true);
-        EntityRegistry.registerModEntity(new ResourceLocation(MKUltra.MODID, "CleansingSeedProjectile"),
+                64, 1, true);
+        register(evt, new ResourceLocation(MKUltra.MODID, "CleansingSeedProjectile"),
                 EntityCleansingSeedProjectile.class, "EntityCleansingSeedProjectile", 9,
-                MKUltra.INSTANCE, 64, 1, true);
-        EntityRegistry.registerModEntity(new ResourceLocation(MKUltra.MODID, "SpiritBombProjectile"),
+                64, 1, true);
+        register(evt, new ResourceLocation(MKUltra.MODID, "SpiritBombProjectile"),
                 EntitySpiritBombProjectile.class, "EntitySpiritBombProjectile", 10,
-                MKUltra.INSTANCE, 64, 1, true);
-        EntityRegistry.registerModEntity(new ResourceLocation(MKUltra.MODID, "MobFireballProjectile"),
+                64, 1, true);
+        register(evt, new ResourceLocation(MKUltra.MODID, "MobFireballProjectile"),
                 EntityMobFireballProjectile.class, "EntityMobFireballProjectile", 11,
-                MKUltra.INSTANCE, 64, 1, true);
+                64, 1, true);
     }
 }

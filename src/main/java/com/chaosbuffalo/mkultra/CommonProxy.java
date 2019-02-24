@@ -24,7 +24,6 @@ public class CommonProxy {
 
     public void preInit(FMLPreInitializationEvent e) {
         ModTileEntities.registerTileEntities();
-        ModEntities.registerEntities();
         ModItems.initItems();
         CapabilityManager.INSTANCE.register(IPlayerData.class, new PlayerDataStorage(), PlayerData.class);
         CapabilityManager.INSTANCE.register(IMobData.class, new MobDataStorage(), MobData.class);
