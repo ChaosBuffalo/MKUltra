@@ -5,7 +5,7 @@
   "type": "minecraft:crafting_shaped",
   "result": {
     "count": 4,
-    "item": "mkultra:forgetfulnessbread"
+    "item": "mkultra:forgetfulness_bread"
   },
   "key": {
     "b": {

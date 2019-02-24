@@ -38,6 +38,7 @@ public class Remapper {
         internalItemReplacement("xptable", "xp_table");
         internalItemReplacement("drownProjectile", "drown_projectile");
         internalItemReplacement("geyserProjectile", "geyser_projectile");
+        internalItemReplacement("forgetfulnessBread", "forgetfulness_bread");
         internalBlockReplacement("xptable", "xp_table");
 
         internalEntityReplacement("EntityMKAreaEffect", "mk_area_effect");

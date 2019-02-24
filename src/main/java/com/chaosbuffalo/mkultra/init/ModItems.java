@@ -134,7 +134,7 @@ public final class ModItems {
                 new ResourceLocation(MKUltra.MODID, "textures/gui/xp_table_background_desperate.png"),
                 32025).setCreativeTab(MKUltra.MKULTRA_TAB), "desperate_icon");
         regInternal(forgetfulnessBread = new ForgetfulnessBread(8, 1.0f, false)
-                .setCreativeTab(MKUltra.MKULTRA_TAB), "forgetfulnessBread");
+                .setCreativeTab(MKUltra.MKULTRA_TAB), "forgetfulness_bread");
 
 
         //Projectile items
