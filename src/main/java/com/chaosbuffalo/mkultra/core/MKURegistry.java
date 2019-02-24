@@ -6,13 +6,13 @@ import com.chaosbuffalo.mkultra.spawn.*;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
 
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -30,6 +30,7 @@ public class MKURegistry {
     public static IForgeRegistry<MobFaction> REGISTRY_MOB_FACTIONS = null;
     public static IForgeRegistry<AIGenerator> REGISTRY_AI_GENERATORS = null;
     public static IForgeRegistry<AttributeSetter> REGISTRY_ATTRIBUTE_SETTERS = null;
+    public static IForgeRegistry<CustomSetter> REGISTRY_CUSTOM_SETTERS = null;
 
 
     public static ResourceLocation INVALID_CLASS = new ResourceLocation(MKUltra.MODID, "class.invalid");
@@ -40,20 +41,28 @@ public class MKURegistry {
     public static ResourceLocation INVALID_SPAWN_LIST = new ResourceLocation(MKUltra.MODID, "spawn_list.invalid");
     public static ResourceLocation INVALID_FACTION = new ResourceLocation(MKUltra.MODID, "mob_faction.invalid");
 
+    @Nullable
     public static PlayerClass getClass(ResourceLocation classId) {
         return REGISTRY_CLASSES.getValue(classId);
     }
 
+    @Nullable
     public static ItemOption getItemOption(ResourceLocation name){
         return REGISTRY_MOB_ITEMS.getValue(name);
     }
 
+    @Nullable
     public static AttributeRange getAttributeRange(ResourceLocation name){
         return REGISTRY_MOB_ATTRS.getValue(name);
     }
 
+    @Nullable
     public static AIGenerator getAIGenerator(ResourceLocation name){ return REGISTRY_AI_GENERATORS.getValue(name); }
 
+    @Nullable
+    public static CustomSetter getCustomSetter(ResourceLocation name) { return REGISTRY_CUSTOM_SETTERS.getValue(name); }
+
+    @Nullable
     public static MobAbility getMobAbility(ResourceLocation abilityId) {
         return REGISTRY_MOB_ABILITIES.getValue(abilityId);
     }
@@ -66,14 +75,17 @@ public class MKURegistry {
         return EMPTY_MOB;
     }
 
+    @Nullable
     public static AIModifier getAIModifier(ResourceLocation name){
         return REGISTRY_MOB_AI_MODS.getValue(name);
     }
 
+    @Nullable
     public static MobFaction getFaction(ResourceLocation name){
         return REGISTRY_MOB_FACTIONS.getValue(name);
     }
 
+    @Nullable
     public static SpawnList getSpawnList(ResourceLocation name){
         return REGISTRY_SPAWN_LISTS.getValue(name);
     }
@@ -96,10 +108,12 @@ public class MKURegistry {
         return cls != null ? cls.getClassName() : "<NULL CLASS>";
     }
 
+    @Nullable
     public static PlayerAbility getAbility(ResourceLocation abilityId) {
         return REGISTRY_ABILITIES.getValue(abilityId);
     }
 
+    @Nullable
     public static AttributeSetter getAttributeSetter(ResourceLocation name){
         return REGISTRY_ATTRIBUTE_SETTERS.getValue(name);
     }
@@ -172,6 +186,12 @@ public class MKURegistry {
         REGISTRY_ATTRIBUTE_SETTERS = new RegistryBuilder<AttributeSetter>()
                 .setName(new ResourceLocation(MKUltra.MODID, "mob_aattr_setters"))
                 .setType(AttributeSetter.class)
+                .setIDRange(0, Integer.MAX_VALUE - 1)
+                .create();
+
+        REGISTRY_CUSTOM_SETTERS = new RegistryBuilder<CustomSetter>()
+                .setName(new ResourceLocation(MKUltra.MODID, "mob_custom_setters"))
+                .setType(CustomSetter.class)
                 .setIDRange(0, Integer.MAX_VALUE - 1)
                 .create();
     }

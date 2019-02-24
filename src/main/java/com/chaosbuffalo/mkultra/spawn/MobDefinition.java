@@ -19,6 +19,7 @@ public class MobDefinition extends IForgeRegistryEntry.Impl<MobDefinition> {
     private final HashSet<ItemOption> itemOptions;
     private final ArrayList<AIModifier> aiModifiers;
     private final HashSet<MobAbility> mobAbilities;
+    private final ArrayList<CustomModifier> customModifiers;
     private String mobName;
 
     public MobDefinition(ResourceLocation name, Class<? extends EntityLivingBase> entityClass){
@@ -28,10 +29,16 @@ public class MobDefinition extends IForgeRegistryEntry.Impl<MobDefinition> {
         itemOptions = new HashSet<>();
         aiModifiers = new ArrayList<>();
         mobAbilities = new HashSet<>();
+        customModifiers = new ArrayList<>();
     }
 
     public MobDefinition withAttributeRanges(AttributeRange... ranges){
         attributeRanges.addAll(Arrays.asList(ranges));
+        return this;
+    }
+
+    public MobDefinition withCustomModifiers(CustomModifier... modifiers){
+        customModifiers.addAll(Arrays.asList(modifiers));
         return this;
     }
 
@@ -63,12 +70,14 @@ public class MobDefinition extends IForgeRegistryEntry.Impl<MobDefinition> {
         for (AttributeRange range : attributeRanges){
             range.apply(entity, level, ModSpawn.MAX_LEVEL);
         }
+
         for (ItemOption option : itemOptions){
             option.apply(entity, level, ModSpawn.MAX_LEVEL);
         }
+
         IMobData mobData = MKUMobData.get(entity);
-        mobData.setMobLevel(level);
         if (mobData != null){
+            mobData.setMobLevel(level);
             for (MobAbility ability : mobAbilities){
                 if (ability != null) {
                     mobData.addAbility(ability);
@@ -78,6 +87,10 @@ public class MobDefinition extends IForgeRegistryEntry.Impl<MobDefinition> {
 
         for (AIModifier mod : aiModifiers){
             mod.apply(entity, level, ModSpawn.MAX_LEVEL);
+        }
+
+        for (CustomModifier cMod : customModifiers){
+            cMod.apply(entity, level, ModSpawn.MAX_LEVEL);
         }
     }
 }

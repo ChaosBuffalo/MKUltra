@@ -7,7 +7,7 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 import java.util.function.BiConsumer;
 
 public class AttributeSetter extends IForgeRegistryEntry.Impl<AttributeSetter>{
-    public final BiConsumer<EntityLivingBase, AttributeRange> setter;
+    private final BiConsumer<EntityLivingBase, AttributeRange> setter;
 
     public AttributeSetter(ResourceLocation name, BiConsumer<EntityLivingBase, AttributeRange> setterIn){
         this.setRegistryName(name);
