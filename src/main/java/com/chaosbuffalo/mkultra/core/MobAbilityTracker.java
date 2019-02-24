@@ -43,5 +43,10 @@ public class MobAbilityTracker {
     public void useAbility(EntityLivingBase target){
         ability.execute(mobData.getEntity(), mobData, target, mobData.getEntity().getEntityWorld());
         cooldownLeft = ability.getCooldown();
+        mobData.setTimeBetweenCasts(mobData.getEntity().getEntityWorld().rand.nextInt(mobData.getMaxTimeBetweenCasts()));
+    }
+
+    public void setCooldown(int cooldown){
+        cooldownLeft = cooldown;
     }
 }

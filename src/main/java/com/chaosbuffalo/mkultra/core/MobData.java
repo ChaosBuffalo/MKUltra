@@ -1,4 +1,5 @@
 package com.chaosbuffalo.mkultra.core;
+import com.chaosbuffalo.mkultra.GameConstants;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
@@ -16,6 +17,8 @@ public class MobData implements IMobData {
     private double aggroRange;
     private ResourceLocation factionName;
     private BlockPos spawnPoint;
+    private int timeBetweenCasts;
+    private int maxTimeBetweenCasts;
 
 
     public MobData(EntityLivingBase entity) {
@@ -23,7 +26,10 @@ public class MobData implements IMobData {
         this.trackers = new HashSet<>();
         hasAbilities = false;
         aggroRange = 10.0;
+        timeBetweenCasts = 0;
         factionName = MKURegistry.INVALID_FACTION;
+        maxTimeBetweenCasts = 10 * GameConstants.TICKS_PER_SECOND;
+
     }
 
     @Override
@@ -41,6 +47,9 @@ public class MobData implements IMobData {
         if (hasAbilities){
             for (MobAbilityTracker tracker : trackers){
                 tracker.update();
+            }
+            if (timeBetweenCasts > 0){
+                timeBetweenCasts--;
             }
         }
     }
@@ -135,5 +144,30 @@ public class MobData implements IMobData {
             return false;
         }
         return factionName.equals(otherData.getMobFaction());
+    }
+
+    @Override
+    public void setTimeBetweenCasts(int value) {
+        timeBetweenCasts = value;
+    }
+
+    @Override
+    public int getTimeBetweenCasts() {
+        return timeBetweenCasts;
+    }
+
+    @Override
+    public boolean isOnCastCooldown() {
+        return timeBetweenCasts > 0;
+    }
+
+    @Override
+    public int getMaxTimeBetweenCasts() {
+        return maxTimeBetweenCasts;
+    }
+
+    @Override
+    public void setMaxTimeBetweenCasts(int value) {
+        maxTimeBetweenCasts = value;
     }
 }

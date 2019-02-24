@@ -81,7 +81,7 @@ public class StunningShout extends PlayerAbility {
                         DAMAGE_BASE + (level * DAMAGE_SCALE));
                 MKUltra.packetHandler.sendToAllAround(
                         new ParticleEffectSpawnPacket(
-                                EnumParticleTypes.BLOCK_DUST.getParticleID(),
+                                EnumParticleTypes.FALLING_DUST.getParticleID(),
                                 ParticleEffects.SPHERE_MOTION, 60, 10,
                                 targetEntity.posX, targetEntity.posY + 1.0,
                                 targetEntity.posZ, 1.0, 1.0, 1.0, 2.0,

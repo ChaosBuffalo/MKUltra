@@ -6,10 +6,7 @@ import com.chaosbuffalo.mkultra.core.IMobData;
 import com.chaosbuffalo.mkultra.core.MKUMobData;
 import com.chaosbuffalo.mkultra.core.MKURegistry;
 import com.chaosbuffalo.mkultra.core.MobAbility;
-import com.chaosbuffalo.mkultra.core.mob_abilities.MobFireArrow;
-import com.chaosbuffalo.mkultra.core.mob_abilities.MobFireball;
-import com.chaosbuffalo.mkultra.core.mob_abilities.MobNaturesRemedy;
-import com.chaosbuffalo.mkultra.core.mob_abilities.ShadowDash;
+import com.chaosbuffalo.mkultra.core.mob_abilities.*;
 import com.chaosbuffalo.mkultra.json_utils.LoadingHelper;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.mob_ai.*;
@@ -91,14 +88,17 @@ public class ModSpawn {
     @SubscribeEvent
     public static void registerMobAbilities(RegistryEvent.Register<MobAbility> event) {
         Log.info("Registering Mob Abilities");
-        MobAbility test_buff = new MobNaturesRemedy();
-        event.getRegistry().register(test_buff);
-        MobAbility shadow_dash = new ShadowDash();
-        event.getRegistry().register(shadow_dash);
-        MobAbility fireball = new MobFireball();
-        event.getRegistry().register(fireball);
-        MobAbility fire_arrow = new MobFireArrow();
-        event.getRegistry().register(fire_arrow);
+        event.getRegistry().register(new MobNaturesRemedy());
+        event.getRegistry().register(new ShadowDash());
+        event.getRegistry().register(new MobFireball());
+        event.getRegistry().register(new MobFireArrow());
+        event.getRegistry().register(new MobFlameBlade());
+        event.getRegistry().register(new MobHeal());
+        event.getRegistry().register(new GraspingRoots());
+        event.getRegistry().register(new ManaBurn());
+        event.getRegistry().register(new TripleFireball());
+        event.getRegistry().register(new MobFlameWave());
+        event.getRegistry().register(new FullHeal());
     }
 
     @SuppressWarnings("unused")
@@ -133,8 +133,8 @@ public class ModSpawn {
         event.getRegistry().register(watchClosest);
         BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addBeneficialSpells = (entity, choice) -> {
             IMobData mobData = MKUMobData.get(entity);
-            return new EntityAIBuffTeammates(entity, mobData, .75f,
-                    3 * GameConstants.TICKS_PER_SECOND);
+            return new EntityAIBuffTeammates(entity, mobData,
+                    (11 - mobData.getMobLevel()) * GameConstants.TICKS_PER_SECOND);
         };
         AIGenerator beneficialSpells = new AIGenerator(MKUltra.MODID, "beneficial_spells", addBeneficialSpells);
         event.getRegistry().register(beneficialSpells);
@@ -144,11 +144,28 @@ public class ModSpawn {
         event.getRegistry().register(aggroTarget);
         BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addOffensiveSpells = (entity, choice) -> {
             IMobData mobData = MKUMobData.get(entity);
-            return new EntityAIRangedSpellAttack(entity, mobData, 3 * GameConstants.TICKS_PER_SECOND,
+            if (mobData == null){
+                return null;
+            }
+            return new EntityAISpellAttack(entity, mobData,
+                    (6 - mobData.getMobLevel() / 2) * GameConstants.TICKS_PER_SECOND,
                     .25f, .75f);
         };
         AIGenerator offensiveSpells = new AIGenerator(MKUltra.MODID, "offensive_spells", addOffensiveSpells);
         event.getRegistry().register(offensiveSpells);
+        BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addNoStrafeSpells = (entity, choice) -> {
+            IMobData mobData = MKUMobData.get(entity);
+            if (mobData == null){
+                return null;
+            }
+            EntityAISpellAttack ai = new EntityAISpellAttack(entity, mobData,
+                    (6 - mobData.getMobLevel() / 2) * GameConstants.TICKS_PER_SECOND,
+                    .25f, .75f);
+            ai.setStrafe(false);
+            return ai;
+        };
+        AIGenerator noStrafespells = new AIGenerator(MKUltra.MODID, "no_strafe_spells", addNoStrafeSpells);
+        event.getRegistry().register(noStrafespells);
         BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addLeashRange = (entity, choice) -> {
             IMobData mobData = MKUMobData.get(entity);
             return new EntityAIReturnToSpawn((EntityCreature)entity, mobData, 1.0);

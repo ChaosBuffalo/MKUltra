@@ -30,6 +30,7 @@ public class EntityAISpellCastingBase extends EntityAIBase {
     public float strafeRangeStart;
     public float strafeRangeEnd;
     public Targeting.TargetType desiredTargetType;
+    boolean doStrafe;
 
     public EntityAISpellCastingBase(EntityLivingBase entity, IMobData mobData, int cooldown) {
         this(entity, mobData, cooldown, .25f, .75f);
@@ -42,12 +43,17 @@ public class EntityAISpellCastingBase extends EntityAIBase {
         this.cooldown = cooldown;
         this.strafeRangeStart = strafeRangeStart;
         this.strafeRangeEnd = strafeRangeEnd;
+        this.doStrafe = true;
         setMutexBits(3);
     }
 
     public void setStrafeRange(float rangeStart, float rangeEnd){
         strafeRangeStart = rangeStart;
         strafeRangeEnd = rangeEnd;
+    }
+
+    public void setStrafe(boolean doStrafe){
+        this.doStrafe = doStrafe;
     }
 
     public boolean isInRange(Entity entity, MobAbilityTracker tracker){
@@ -176,7 +182,9 @@ public class EntityAISpellCastingBase extends EntityAIBase {
                 if (canSee != hasSeen) {
                     this.seeTime = 0;
                 }
-                doStrafeBehavior(entLiv, canSee, d0, maxDistance);
+                if (doStrafe){
+                    doStrafeBehavior(entLiv, canSee, d0, maxDistance);
+                }
                 if (canCast) {
                     if (!canSee && this.seeTime < -60) {
                         canCast = false;

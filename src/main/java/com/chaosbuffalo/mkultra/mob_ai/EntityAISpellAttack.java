@@ -7,15 +7,15 @@ import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 
-public class EntityAIRangedSpellAttack extends EntityAISpellCastingBase {
+public class EntityAISpellAttack extends EntityAISpellCastingBase {
 
-    public EntityAIRangedSpellAttack(EntityLivingBase entity, IMobData mobData, int cooldown) {
+    public EntityAISpellAttack(EntityLivingBase entity, IMobData mobData, int cooldown) {
         super(entity, mobData, cooldown);
         desiredTargetType = Targeting.TargetType.ENEMY;
     }
 
-    public EntityAIRangedSpellAttack(EntityLivingBase entity, IMobData mobData, int cooldown,
-                                     float strafeStart, float strafeEnd) {
+    public EntityAISpellAttack(EntityLivingBase entity, IMobData mobData, int cooldown,
+                               float strafeStart, float strafeEnd) {
         super(entity, mobData, cooldown, strafeStart, strafeEnd);
         desiredTargetType = Targeting.TargetType.ENEMY;
     }
@@ -26,11 +26,11 @@ public class EntityAIRangedSpellAttack extends EntityAISpellCastingBase {
     public boolean shouldExecute() {
         if (mobData.hasAbilities() && entity instanceof EntityLiving) {
             EntityLivingBase target = ((EntityLiving) entity).getAttackTarget();
-            if (target != null){
+            if (target != null && !mobData.isOnCastCooldown()){
                 for (MobAbilityTracker tracker : mobData.getAbilityTrackers()) {
                     if (!tracker.isAbilityOnCooldown()) {
                         if (tracker.getAbility().getAbilityType() == MobAbility.AbilityType.ATTACK &&
-                                isInRange(target, tracker)) {
+                                tracker.getAbility().shouldCast(entity, target)) {
                             currentAbility = tracker;
                             targetEntity = target;
                             return true;

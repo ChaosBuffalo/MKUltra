@@ -1,15 +1,26 @@
 package com.chaosbuffalo.mkultra.mob_ai;
 
+import com.chaosbuffalo.mkultra.GameConstants;
+import com.chaosbuffalo.mkultra.core.PlayerAttributes;
+import com.chaosbuffalo.mkultra.event.ItemRestrictionHandler;
 import com.chaosbuffalo.mkultra.log.Log;
+import com.google.common.collect.Multimap;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.event.world.NoteBlockEvent;
 
 public class EntityAIAttackMeleeMK extends EntityAIBase {
     World world;
@@ -143,7 +154,29 @@ public class EntityAIAttackMeleeMK extends EntityAIBase {
     protected void checkAndPerformAttack(EntityLivingBase attackTarget, double distance) {
         double d0 = this.getAttackReachSqr(attackTarget);
         if (distance <= d0 && this.attackTick <= 0) {
-            this.attackTick = 20;
+            double attackSpeed = 4.0;
+            ItemStack inMainhand = attacker.getHeldItemMainhand();
+            if (inMainhand != ItemStack.EMPTY) {
+                Multimap<String, AttributeModifier> attrs = inMainhand.getAttributeModifiers(
+                        EntityEquipmentSlot.MAINHAND);
+                if (attrs.containsKey(SharedMonsterAttributes.ATTACK_SPEED.getName())){
+                    for (AttributeModifier mod : attrs.get(SharedMonsterAttributes.ATTACK_SPEED.getName())){
+                        switch (mod.getOperation()){
+                            case (PlayerAttributes.OP_INCREMENT):
+                                attackSpeed += mod.getAmount();
+                                break;
+                            case (PlayerAttributes.OP_SCALE_ADDITIVE):
+                                attackSpeed += attackSpeed * mod.getAmount();
+                                break;
+                            case (PlayerAttributes.OP_SCALE_MULTIPLICATIVE):
+                                attackSpeed *= (1 + mod.getAmount());
+                                break;
+                        }
+                    }
+                }
+            }
+            int attackTicks = (int)(GameConstants.TICKS_PER_SECOND / attackSpeed);
+            this.attackTick = attackTicks;
             this.attacker.swingArm(EnumHand.MAIN_HAND);
             this.attacker.attackEntityAsMob(attackTarget);
         }
@@ -151,6 +184,14 @@ public class EntityAIAttackMeleeMK extends EntityAIBase {
     }
 
     protected double getAttackReachSqr(EntityLivingBase attackTarget) {
-        return (double)(this.attacker.width * 2.0F * this.attacker.width * 2.0F + attackTarget.width);
+        ItemStack inMainhand = attacker.getHeldItemMainhand();
+        double attackRange = this.attacker.width * 2.0;
+        if (inMainhand != ItemStack.EMPTY){
+            Item item = inMainhand.getItem();
+            if (ItemRestrictionHandler.isNoShieldItem(item)){
+                attackRange *= 2.0;
+            }
+        }
+        return (double)(attackRange + attackTarget.width);
     }
 }

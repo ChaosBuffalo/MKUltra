@@ -28,7 +28,12 @@ public class MobFireArrow extends MobAbility{
 
     @Override
     public int getCooldown() {
-        return 10 * GameConstants.TICKS_PER_SECOND;
+        return 7 * GameConstants.TICKS_PER_SECOND;
+    }
+
+    @Override
+    public int getCastTime(){
+        return GameConstants.TICKS_PER_SECOND / 2;
     }
 
     @Override

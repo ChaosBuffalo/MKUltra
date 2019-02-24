@@ -65,9 +65,9 @@ public class ShadowDash extends MobAbility {
             MKUltra.packetHandler.sendToAllAround(
                     new ParticleEffectSpawnPacket(
                             EnumParticleTypes.SMOKE_LARGE.getParticleID(),
-                            ParticleEffects.SPHERE_MOTION, 20, 3,
+                            ParticleEffects.SPHERE_MOTION, 40, 4,
                             target.posX, target.posY + 1.0,
-                            target.posZ, 1.0, 1.0, 1.0, .25,
+                            target.posZ, 1.0, 1.0, 1.0, 1.0,
                             lookVec),
                     entity.dimension, target.posX,
                     target.posY, target.posZ, 50.0f);
