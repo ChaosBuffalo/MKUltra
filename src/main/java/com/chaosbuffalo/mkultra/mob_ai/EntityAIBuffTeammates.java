@@ -16,6 +16,7 @@ public class EntityAIBuffTeammates extends EntityAISpellCastingBase {
         super(entity, mobData, cooldown);
         setStrafeRange(.1f, .5f);
         desiredTargetType = Targeting.TargetType.FRIENDLY;
+        setMutexBits(4);
     }
 
     @Override

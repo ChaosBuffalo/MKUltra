@@ -138,6 +138,18 @@ public class ModSpawn {
         };
         AIGenerator beneficialSpells = new AIGenerator(MKUltra.MODID, "beneficial_spells", addBeneficialSpells);
         event.getRegistry().register(beneficialSpells);
+        BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addNoStrafeBuffs = (entity, choice) -> {
+            IMobData mobData = MKUMobData.get(entity);
+            if (mobData == null){
+                return null;
+            }
+            EntityAIBuffTeammates ai = new EntityAIBuffTeammates(entity, mobData,
+                    (6 - mobData.getMobLevel() / 2) * GameConstants.TICKS_PER_SECOND);
+            ai.setStrafe(false);
+            return ai;
+        };
+        AIGenerator noStrafeBuffs = new AIGenerator(MKUltra.MODID, "no_strafe_buffs", addNoStrafeBuffs);
+        event.getRegistry().register(noStrafeBuffs);
         BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addAggroTarget =
                 (entity, choice) -> new EntityAINearestAttackableTargetMK((EntityCreature) entity,true);
         AIGenerator aggroTarget = new AIGenerator(MKUltra.MODID, "aggro_target", addAggroTarget);

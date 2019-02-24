@@ -244,6 +244,7 @@ public class TileEntityMKSpawner extends TileEntity implements ITickable {
     }
 
     public void setSpawnerWithPacket(MKSpawnerSetPacket packet){
+        cleanupMob();
         reset();
         faction = MKURegistry.getFaction(packet.factionId);
         spawnerType = MobFaction.MobGroups.values()[packet.spawnerType];

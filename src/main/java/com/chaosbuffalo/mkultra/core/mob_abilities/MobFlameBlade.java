@@ -11,6 +11,7 @@ import com.chaosbuffalo.mkultra.effects.spells.ParticlePotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
+import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumParticleTypes;
@@ -61,6 +62,17 @@ public class MobFlameBlade extends MobAbility {
     @Override
     public Potion getEffectPotion() {
         return FlameBladePotion.INSTANCE;
+    }
+
+    @Override
+    public boolean shouldCast(EntityLivingBase caster, EntityLivingBase target){
+        if (caster instanceof EntityCreature){
+            EntityCreature creature = (EntityCreature) caster;
+            if (creature.getAttackTarget() == null){
+                return false;
+            }
+        }
+        return super.shouldCast(caster, target);
     }
 
     @Override

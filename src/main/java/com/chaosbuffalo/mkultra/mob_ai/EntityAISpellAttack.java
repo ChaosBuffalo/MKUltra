@@ -12,6 +12,7 @@ public class EntityAISpellAttack extends EntityAISpellCastingBase {
     public EntityAISpellAttack(EntityLivingBase entity, IMobData mobData, int cooldown) {
         super(entity, mobData, cooldown);
         desiredTargetType = Targeting.TargetType.ENEMY;
+        setMutexBits(6);
     }
 
     public EntityAISpellAttack(EntityLivingBase entity, IMobData mobData, int cooldown,

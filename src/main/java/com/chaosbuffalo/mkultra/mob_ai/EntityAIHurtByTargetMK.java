@@ -13,7 +13,7 @@ import java.util.List;
 public class EntityAIHurtByTargetMK extends EntityAITarget {
     private final boolean entityCallsForHelp;
     private int revengeTimerOld;
-    private static final double CALL_FOR_HELP_RANGE = 3;
+    private static final double CALL_FOR_HELP_RANGE = 6;
 
     public EntityAIHurtByTargetMK(EntityCreature entityIn, boolean callsForHelp) {
         super(entityIn, true);
