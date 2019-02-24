@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.effects.spells;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
+import com.chaosbuffalo.mkultra.core.PlayerFormulas;
 import com.chaosbuffalo.mkultra.effects.PassiveEffect;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
@@ -50,7 +51,9 @@ public class NocturnalCommunionPotion extends PassiveEffect {
     private void onPlayerHurtEntity(LivingHurtEvent event, DamageSource source, EntityLivingBase livingTarget, EntityPlayerMP playerSource, IPlayerData sourceData) {
         PotionEffect potion = playerSource.getActivePotionEffect(NocturnalCommunionPotion.INSTANCE);
         if (potion != null) {
-            playerSource.heal(event.getAmount() * .20f * potion.getAmplifier());
+            float healAmount = event.getAmount() * .20f * potion.getAmplifier();
+            healAmount = PlayerFormulas.applyHealBonus(sourceData, healAmount);
+            playerSource.heal(healAmount);
         }
     }
 }

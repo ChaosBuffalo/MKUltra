@@ -2,13 +2,17 @@ package com.chaosbuffalo.mkultra.effects.spells;
 
 import com.chaosbuffalo.mkultra.MKConfig;
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKDamageSource;
+import com.chaosbuffalo.mkultra.core.MKUPlayerData;
+import com.chaosbuffalo.mkultra.core.PlayerFormulas;
 import com.chaosbuffalo.mkultra.core.abilities.Heal;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.potion.Potion;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -59,6 +63,13 @@ public class ClericHealPotion extends SpellPotionBase {
     public void doEffect(Entity applier, Entity caster, EntityLivingBase target, int amplifier, SpellCast cast) {
 
         float value = cast.getScaledValue(amplifier);
+
+        if (caster instanceof EntityPlayerMP) {
+            IPlayerData data = MKUPlayerData.get((EntityPlayerMP)caster);
+            if (data != null) {
+                value = PlayerFormulas.applyHealBonus(data, value);
+            }
+        }
 
         if (target.isEntityUndead()) {
             if (MKConfig.gameplay.HEALS_DAMAGE_UNDEAD){

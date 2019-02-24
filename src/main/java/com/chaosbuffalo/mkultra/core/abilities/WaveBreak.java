@@ -1,6 +1,7 @@
 package com.chaosbuffalo.mkultra.core.abilities;
 
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.core.PlayerFormulas;
 import com.chaosbuffalo.mkultra.core.PlayerToggleAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.effects.spells.WaveBreakPotion;
@@ -65,7 +66,8 @@ public class WaveBreak extends PlayerToggleAbility {
 
         // What to do for each target hit
         entity.addPotionEffect(WaveBreakPotion.Create(entity).setTarget(entity).toPotionEffect(BASE_DURATION, level));
-        entity.heal(level * 5);
+        float healAmount = PlayerFormulas.applyHealBonus(pData, level * 5);
+        entity.heal(healAmount);
         Vec3d lookVec = entity.getLookVec();
         MKUltra.packetHandler.sendToAllAround(
                 new ParticleEffectSpawnPacket(

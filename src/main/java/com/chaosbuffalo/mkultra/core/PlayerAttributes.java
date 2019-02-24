@@ -40,6 +40,10 @@ public class PlayerAttributes {
             .setDescription("Spell Critical Damage")
             .setShouldWatch(true);
 
+    public static final IAttribute HEAL_BONUS = new RangedAttribute(null, "mkultra.heal_bonus", 1.0, 0.0, 2.0)
+            .setDescription("Heal Bonus Amount")
+            .setShouldWatch(true);
+
     /**
      * Operation 0: Increment X by Amount
      * The game first sets X = Base, then executes all Operation 0 modifiers, then sets Y = X, then executes all Operation 1 modifiers, and finally executes all Operation 2 modifiers.

@@ -1,6 +1,9 @@
 package com.chaosbuffalo.mkultra.effects.spells;
 
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.core.IPlayerData;
+import com.chaosbuffalo.mkultra.core.MKUPlayerData;
+import com.chaosbuffalo.mkultra.core.PlayerFormulas;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellPeriodicPotionBase;
 import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
@@ -9,6 +12,7 @@ import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
@@ -65,6 +69,12 @@ public class NaturesRemedyPotion extends SpellPeriodicPotionBase {
     public void doEffect(Entity applier, Entity caster, EntityLivingBase target, int amplifier, SpellCast cast) {
 
         float value = cast.getScaledValue(amplifier);
+        if (caster instanceof EntityPlayerMP) {
+            IPlayerData data = MKUPlayerData.get((EntityPlayerMP)caster);
+            if (data != null) {
+                value = PlayerFormulas.applyHealBonus(data, value);
+            }
+        }
         target.heal(value);
         MKUltra.packetHandler.sendToAllAround(
                 new ParticleEffectSpawnPacket(
