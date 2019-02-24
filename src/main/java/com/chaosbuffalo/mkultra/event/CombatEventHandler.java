@@ -56,12 +56,15 @@ public class CombatEventHandler {
     }
 
     @SubscribeEvent
-    public static void onLivingAttackEvent(LivingAttackEvent event){
+    public static void onLivingAttackEvent(LivingAttackEvent event) {
         Entity target = event.getEntity();
-        Entity source = event.getSource().getTrueSource();
-        if (source == null || source.world.isRemote)
+        if (target.world.isRemote)
             return;
-        SpellTriggers.ATTACK_ENTITY.onAttackEntity(source, target);
+
+        Entity source = event.getSource().getTrueSource();
+        if (source instanceof EntityLivingBase) {
+            SpellTriggers.ATTACK_ENTITY.onAttackEntity((EntityLivingBase) source, target);
+        }
     }
 
 

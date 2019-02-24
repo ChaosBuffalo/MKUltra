@@ -29,6 +29,11 @@ public class EntityGraspingRootsProjectile extends EntityBaseProjectile {
         this.setGroundProcTime(20);
     }
 
+    @Override
+    protected Targeting.TargetType getTargetType() {
+        return Targeting.TargetType.ENEMY;
+    }
+
     public EntityGraspingRootsProjectile(World worldIn, double x, double y, double z) {
         super(worldIn, x, y, z);
     }
