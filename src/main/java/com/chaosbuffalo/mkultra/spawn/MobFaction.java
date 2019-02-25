@@ -1,6 +1,6 @@
 package com.chaosbuffalo.mkultra.spawn;
 
-import com.chaosbuffalo.mkultra.choice.RandomCollection;
+import com.chaosbuffalo.mkultra.utils.RandomCollection;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 

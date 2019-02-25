@@ -1,4 +1,4 @@
-package com.chaosbuffalo.mkultra.json_utils;
+package com.chaosbuffalo.mkultra.utils;
 
 import com.chaosbuffalo.mkultra.log.Log;
 import com.google.gson.Gson;

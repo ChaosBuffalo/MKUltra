@@ -1,5 +1,6 @@
-package com.chaosbuffalo.mkultra.tiles;
+package com.chaosbuffalo.mkultra.init;
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.tiles.TileEntityMKSpawner;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 

@@ -1,18 +1,16 @@
 package com.chaosbuffalo.mkultra;
 
 import com.chaosbuffalo.mkultra.core.*;
-import com.chaosbuffalo.mkultra.init.ModEntities;
 import com.chaosbuffalo.mkultra.init.ModItems;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.network.ModGuiHandler;
 import com.chaosbuffalo.mkultra.network.PacketHandler;
 import com.chaosbuffalo.mkultra.network.packets.client.*;
 import com.chaosbuffalo.mkultra.network.packets.server.*;
-import com.chaosbuffalo.mkultra.tiles.ModTileEntities;
+import com.chaosbuffalo.mkultra.init.ModTileEntities;
 import com.chaosbuffalo.mkultra.utils.EnvironmentUtils;
 import net.minecraft.block.Block;
 import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;

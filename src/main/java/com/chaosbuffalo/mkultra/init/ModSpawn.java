@@ -7,7 +7,7 @@ import com.chaosbuffalo.mkultra.core.MKUMobData;
 import com.chaosbuffalo.mkultra.core.MKURegistry;
 import com.chaosbuffalo.mkultra.core.MobAbility;
 import com.chaosbuffalo.mkultra.core.mob_abilities.*;
-import com.chaosbuffalo.mkultra.json_utils.LoadingHelper;
+import com.chaosbuffalo.mkultra.utils.LoadingHelper;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.mob_ai.*;
 import com.chaosbuffalo.mkultra.spawn.*;
