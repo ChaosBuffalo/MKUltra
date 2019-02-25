@@ -17,7 +17,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 
-public class LoadingHelper {
+public class JsonLoader {
     private static Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
 
     public static <E> void loadModsForType(String subFolder,
