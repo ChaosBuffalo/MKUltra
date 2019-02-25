@@ -40,7 +40,7 @@ public class ModSpawn {
     @SubscribeEvent
     public static void registerItemOptions(RegistryEvent.Register<ItemOption> event) {
         Log.info("Registering Item Options");
-        JsonLoader.loadModsForType("/spawn/item_options", ModSpawn::loadItemOption, event);
+        JsonLoader.loadModsForType("spawn/item_options", ModSpawn::loadItemOption, event);
     }
 
     @SuppressWarnings("unused")
@@ -81,7 +81,7 @@ public class ModSpawn {
     @SubscribeEvent
     public static void registerAttributeRanges(RegistryEvent.Register<AttributeRange> event) {
         Log.info("Registering Attribute Ranges");
-        JsonLoader.loadModsForType("/spawn/attributes", ModSpawn::loadAttribute, event);
+        JsonLoader.loadModsForType("spawn/attributes", ModSpawn::loadAttribute, event);
     }
 
     @SuppressWarnings("unused")
@@ -105,21 +105,21 @@ public class ModSpawn {
     @SubscribeEvent
     public static void registerMobDefinitions(RegistryEvent.Register<MobDefinition> event) {
         Log.info("Registering Mob Definitions");
-        JsonLoader.loadModsForType("/spawn/mob_definitions", ModSpawn::loadMobDefinition, event);
+        JsonLoader.loadModsForType("spawn/mob_definitions", ModSpawn::loadMobDefinition, event);
     }
 
     @SuppressWarnings("unused")
     @SubscribeEvent
     public static void registerMobFactions(RegistryEvent.Register<MobFaction> event) {
         Log.info("Registering Mob Factions");
-        JsonLoader.loadModsForType("/spawn/mob_factions", ModSpawn::loadMobFactions, event);
+        JsonLoader.loadModsForType("spawn/mob_factions", ModSpawn::loadMobFactions, event);
     }
 
     @SuppressWarnings("unused")
     @SubscribeEvent
     public static void registerSpawnLists(RegistryEvent.Register<SpawnList> event) {
         Log.info("Registering Spawn Lists");
-        JsonLoader.loadModsForType("/spawn/spawn_lists", ModSpawn::loadSpawnList, event);
+        JsonLoader.loadModsForType("spawn/spawn_lists", ModSpawn::loadSpawnList, event);
     }
 
     @SuppressWarnings("unused")
@@ -199,7 +199,7 @@ public class ModSpawn {
     @SubscribeEvent
     public static void registerAIModifiers(RegistryEvent.Register<AIModifier> event) {
         Log.info("Registering AI Modifiers");
-        JsonLoader.loadModsForType("/spawn/ai_modifiers", ModSpawn::loadAIModifier, event);
+        JsonLoader.loadModsForType("spawn/ai_modifiers", ModSpawn::loadAIModifier, event);
         AIModifier remove_all_tasks = new AIModifier(
                 new ResourceLocation(MKUltra.MODID, "remove_all_tasks"),
                 AIModifiers.REMOVE_ALL_TASKS);
