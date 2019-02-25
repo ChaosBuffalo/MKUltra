@@ -31,10 +31,10 @@ public abstract class SongApplicator extends SongPotionBase {
             if (pData == null)
                 return;
             PlayerAbility ability = MKURegistry.getAbility(PlayerToggleAbility.getToggleAbilityIdForPotion(this));
+            if (ability == null)
+                return;
 
-            if (pData.getMana() >= ability.getManaCost(amplifier)) {
-                pData.setMana(pData.getMana() - ability.getManaCost(amplifier));
-            } else {
+            if (!pData.consumeMana(ability.getManaCost(amplifier))) {
                 player.removePotionEffect(this);
             }
 

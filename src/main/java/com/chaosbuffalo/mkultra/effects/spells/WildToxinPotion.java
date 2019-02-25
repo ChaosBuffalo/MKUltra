@@ -57,8 +57,7 @@ public class WildToxinPotion extends PassiveEffect {
             if (pData == null)
                 return;
 
-            if (pData.getMana() >= potion.getAmplifier()) {
-                pData.setMana(pData.getMana() - potion.getAmplifier());
+            if (pData.consumeMana(potion.getAmplifier())) {
                 EntityLivingBase livingTarget = (EntityLivingBase) target;
 
                 SpellCast toxin = WildToxinEffectPotion.Create(player);

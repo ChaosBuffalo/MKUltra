@@ -50,6 +50,14 @@ public interface IPlayerData {
 
     int getMana();
 
+    default boolean consumeMana(int amount) {
+        if (getMana() >= amount) {
+            setMana(getMana() - amount);
+            return true;
+        }
+        return false;
+    }
+
     void setTotalMana(int totalMana);
 
     int getTotalMana();

@@ -50,8 +50,7 @@ public class VampiricReverePotion extends PassiveEffect {
 
     private void onMelee(LivingHurtEvent event, DamageSource source, EntityLivingBase livingTarget, EntityPlayerMP playerSource, IPlayerData sourceData) {
         PotionEffect potion = playerSource.getActivePotionEffect(INSTANCE);
-        if (potion != null && sourceData.getMana() > 0) {
-            sourceData.setMana(sourceData.getMana() - 1);
+        if (potion != null && sourceData.consumeMana(1)) {
             float healAmount = event.getAmount() * .25f * potion.getAmplifier();
             healAmount = PlayerFormulas.applyHealBonus(sourceData, healAmount);
             playerSource.heal(healAmount);
