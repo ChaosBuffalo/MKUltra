@@ -12,6 +12,8 @@ package com.chaosbuffalo.mkultra.network;
 
 
 import com.chaosbuffalo.mkultra.log.Log;
+import com.chaosbuffalo.mkultra.network.packets.client.*;
+import com.chaosbuffalo.mkultra.network.packets.server.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
@@ -63,6 +65,24 @@ public final class PacketHandler {
 	public PacketHandler(String channelid) {
 		this.wrapper = NetworkRegistry.INSTANCE.newSimpleChannel(channelid);
 		this.channelid = channelid;
+	}
+
+	public void registerPackets() {
+		registerPacket(PlayerSyncRequestPacket.class, new PlayerSyncRequestPacket.Handler(), Side.SERVER);
+		registerPacket(ClassLearnPacket.class, new ClassLearnPacket.Handler(), Side.SERVER);
+		registerPacket(LevelAbilityPacket.class, new LevelAbilityPacket.Handler(), Side.SERVER);
+		registerPacket(ExecuteActivePacket.class, new ExecuteActivePacket.Handler(), Side.SERVER);
+		registerPacket(LevelUpRequestPacket.class, new LevelUpRequestPacket.Handler(), Side.SERVER);
+		registerPacket(PartyInviteResponsePacket.class, new PartyInviteResponsePacket.Handler(), Side.SERVER);
+		registerPacket(MKSpawnerSetPacket.class, new MKSpawnerSetPacket.Handler(), Side.SERVER);
+
+		registerPacket(ParticleEffectSpawnPacket.class, new ParticleEffectSpawnPacket.Handler(), Side.CLIENT);
+		registerPacket(AbilityUpdatePacket.class, new AbilityUpdatePacket.Handler(), Side.CLIENT);
+		registerPacket(ClassUpdatePacket.class, new ClassUpdatePacket.Handler(), Side.CLIENT);
+		registerPacket(PartyInvitePacket.class, new PartyInvitePacket.Handler(), Side.CLIENT);
+		registerPacket(ForceOpenClientGUIPacket.class, new ForceOpenClientGUIPacket.Handler(), Side.CLIENT);
+		registerPacket(AbilityCooldownPacket.class, new AbilityCooldownPacket.Handler(), Side.CLIENT);
+		registerPacket(CritMessagePacket.class, new CritMessagePacket.Handler(), Side.CLIENT);
 	}
 
 	/**
