@@ -31,8 +31,7 @@ import net.minecraftforge.fml.relauncher.Side;
  * {@code PacketHandler handler = MinersbasicAPI.createPacketHandler(String channelid)}
  * <p>
  * <strong>Registering a packet:</strong><br>
- * See: {@linkplain #registerPacket(Class, AbstractMessageHandler, Side)}<br>
- * See: {@linkplain #registerBidiPacket(Class, MessageHandler.Bidirectional)}
+ * See: {@linkplain #registerPacket(Class, MessageHandler, Side)}<br>
  * <p>
  * <strong>Sending packets:</strong><br>
  * See: {@linkplain #sendTo(IMessage, EntityPlayerMP)}<br>
@@ -40,7 +39,6 @@ import net.minecraftforge.fml.relauncher.Side;
  * See: {@linkplain #sendToAllAround(IMessage, NetworkRegistry.TargetPoint)}<br>
  * See: {@linkplain #sendToAllAround(IMessage, int, double, double, double, double)}<br>
  * See: {@linkplain #sendToAllAround(IMessage, Entity, double)}<br>
- * See: {@linkplain #sendToDimension(IMessage, int)}<br>
  * See: {@linkplain #sendToServer(IMessage)}<br>
  *
  * @author _Bedrock_Miner_ (minerbedrock@gmail.com)
@@ -97,34 +95,12 @@ public final class PacketHandler {
 	 * @return <code>true</code>, if successful
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public boolean registerPacket(Class<? extends IMessage> packetClass, AbstractMessageHandler messageHandler, Side target) {
+	public boolean registerPacket(Class<? extends IMessage> packetClass, MessageHandler messageHandler, Side target) {
 		if (this.nextPacketID == -1)
 			throw new IllegalStateException("Too many packets registered for channel " + this.channelid);
 
 		this.wrapper.registerMessage(messageHandler, packetClass, this.nextPacketID, target);
 		Log.debug("Registered packet class %s with handler class %s for the channel %s. Send direction: to %s. The discriminator is %s.", packetClass.getSimpleName(), messageHandler.getClass().getSimpleName(), this.channelid, target.name().toLowerCase(), this.nextPacketID);
-		this.nextPacketID++;
-		return true;
-	}
-
-	/**
-	 * Register an IMessage packet with it's corresponding bidirectional message
-	 * handler.
-	 *
-	 * @param packetClass
-	 * the packet's class that should be registered.
-	 * @param messageHandler
-	 * the message handler for this packet type.
-	 * @return <code>true</code>, if successful
-	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public boolean registerBidiPacket(Class<? extends IMessage> packetClass, MessageHandler.Bidirectional messageHandler) {
-		if (this.nextPacketID == -1)
-			throw new IllegalStateException("Too many packets registered for channel " + this.channelid);
-
-		this.wrapper.registerMessage(messageHandler, packetClass, this.nextPacketID, Side.CLIENT);
-		this.wrapper.registerMessage(messageHandler, packetClass, this.nextPacketID, Side.SERVER);
-		Log.debug("Registered bidirectional packet class %s with handler class %s for the channel %s. The discriminator is %s.", packetClass.getSimpleName(), messageHandler.getClass().getSimpleName(), this.channelid, this.nextPacketID);
 		this.nextPacketID++;
 		return true;
 	}
@@ -196,18 +172,6 @@ public final class PacketHandler {
 	 */
 	public void sendToAllAround(IMessage message, Entity entity, double range) {
 		this.sendToAllAround(message, entity.dimension, entity.posX, entity.posY, entity.posZ, range);
-	}
-
-	/**
-	 * Sends the given packet to every player in the given dimension.
-	 *
-	 * @param message
-	 * the packet to send.
-	 * @param dimensionId
-	 * the dimension to send the packet to.
-	 */
-	public void sendToDimension(IMessage message, int dimensionId) {
-		this.wrapper.sendToDimension(message, dimensionId);
 	}
 
 	/**
