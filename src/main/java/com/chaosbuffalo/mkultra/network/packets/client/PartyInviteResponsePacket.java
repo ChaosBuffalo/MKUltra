@@ -45,9 +45,9 @@ public class PartyInviteResponsePacket implements IMessage {
 
 
         @Override
-        public IMessage handleServerMessage(final EntityPlayer player,
-                                            final PartyInviteResponsePacket msg,
-                                            MessageContext ctx) {
+        public void handleServerMessage(final EntityPlayer player,
+                                        final PartyInviteResponsePacket msg,
+                                        MessageContext ctx) {
             ServerUtils.addScheduledTask(() -> {
                 World theWorld = player.getEntityWorld();
                 EntityPlayer invitingPlayer = theWorld.getPlayerEntityByUUID(msg.invitingUUID);
@@ -72,7 +72,6 @@ public class PartyInviteResponsePacket implements IMessage {
                     invitingPlayer.sendMessage(new TextComponentString(rejectionString));
                 }
             });
-            return null;
         }
 
     }

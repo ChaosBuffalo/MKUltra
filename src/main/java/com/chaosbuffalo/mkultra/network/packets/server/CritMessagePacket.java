@@ -98,9 +98,9 @@ public class CritMessagePacket implements IMessage {
 
 
         @Override
-        public IMessage handleClientMessage(final EntityPlayer player,
-                                            final CritMessagePacket msg,
-                                            MessageContext ctx) {
+        public void handleClientMessage(final EntityPlayer player,
+                                        final CritMessagePacket msg,
+                                        MessageContext ctx) {
             ClientUtils.addScheduledTask(() -> {
                 Style messageStyle = new Style();
                 boolean isSelf = player.getUniqueID().equals(msg.sourceUUID);
@@ -206,7 +206,6 @@ public class CritMessagePacket implements IMessage {
                         break;
                 }
             });
-            return null;
         }
 
     }

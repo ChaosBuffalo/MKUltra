@@ -33,9 +33,9 @@ public class ForceOpenClientGUIPacket implements IMessage {
 
         // Client reads the serialized data from the server
         @Override
-        public IMessage handleClientMessage(final EntityPlayer player,
-                                            final ForceOpenClientGUIPacket msg,
-                                            MessageContext ctx) {
+        public void handleClientMessage(final EntityPlayer player,
+                                        final ForceOpenClientGUIPacket msg,
+                                        MessageContext ctx) {
 
             ClientUtils.addScheduledTask(() -> {
                 if (player == null)
@@ -44,7 +44,6 @@ public class ForceOpenClientGUIPacket implements IMessage {
                         (int) player.posX, (int) player.posY, (int) player.posZ);
 
             });
-            return null;
         }
     }
 }

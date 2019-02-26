@@ -26,14 +26,13 @@ public class PlayerSyncRequestPacket implements IMessage {
     public static class Handler extends MessageHandler.Server<PlayerSyncRequestPacket> {
 
         @Override
-        public IMessage handleServerMessage(final EntityPlayer player, PlayerSyncRequestPacket msg, MessageContext ctx) {
+        public void handleServerMessage(final EntityPlayer player, PlayerSyncRequestPacket msg, MessageContext ctx) {
             ServerUtils.addScheduledTask(() -> {
                 PlayerData data = (PlayerData) MKUPlayerData.get(player);
                 if (data != null) {
                     data.forceUpdate();
                 }
             });
-            return null;
         }
     }
 }

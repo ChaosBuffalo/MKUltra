@@ -43,7 +43,7 @@ public class AbilityCooldownPacket implements IMessage {
 
         // Client reads the serialized data from the server
         @Override
-        public IMessage handleClientMessage(final EntityPlayer player, final AbilityCooldownPacket msg, MessageContext ctx) {
+        public void handleClientMessage(final EntityPlayer player, final AbilityCooldownPacket msg, MessageContext ctx) {
             ClientUtils.addScheduledTask(() -> {
                 if (player == null)
                     return;
@@ -53,8 +53,6 @@ public class AbilityCooldownPacket implements IMessage {
 
                 data.setCooldown(msg.skillId, msg.cooldown);
             });
-            return null;
-
         }
     }
 }

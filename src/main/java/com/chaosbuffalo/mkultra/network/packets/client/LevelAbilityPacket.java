@@ -45,9 +45,9 @@ public class LevelAbilityPacket implements IMessage {
 
 
         @Override
-        public IMessage handleServerMessage(final EntityPlayer player,
-                                            final LevelAbilityPacket msg,
-                                            MessageContext ctx) {
+        public void handleServerMessage(final EntityPlayer player,
+                                        final LevelAbilityPacket msg,
+                                        MessageContext ctx) {
             ServerUtils.addScheduledTask(() -> {
                 PlayerData pData = (PlayerData) MKUPlayerData.get(player);
                 if (pData == null)
@@ -61,7 +61,6 @@ public class LevelAbilityPacket implements IMessage {
                     pData.unlearnAbility(msg.abilityId, true, false);
                 }
             });
-            return null;
         }
 
     }

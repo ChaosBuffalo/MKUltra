@@ -57,7 +57,7 @@ public class ClassUpdatePacket implements IMessage {
 
         // Client reads the serialized data from the server
         @Override
-        public IMessage handleClientMessage(final EntityPlayer player, final ClassUpdatePacket msg, MessageContext ctx) {
+        public void handleClientMessage(final EntityPlayer player, final ClassUpdatePacket msg, MessageContext ctx) {
             ClientUtils.addScheduledTask(() -> {
                 if (player == null)
                     return;
@@ -67,7 +67,6 @@ public class ClassUpdatePacket implements IMessage {
 
                 data.clientBulkKnownClassUpdate(msg.classes);
             });
-            return null;
 
         }
     }

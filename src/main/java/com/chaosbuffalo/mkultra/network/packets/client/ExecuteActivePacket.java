@@ -33,7 +33,7 @@ public class ExecuteActivePacket implements IMessage {
 
     public static class Handler extends MessageHandler.Server<ExecuteActivePacket> {
         @Override
-        public IMessage handleServerMessage(final EntityPlayer player,
+        public void handleServerMessage(final EntityPlayer player,
                                             final ExecuteActivePacket message,
                                             MessageContext ctx) {
             ServerUtils.addScheduledTask(() -> {
@@ -43,7 +43,6 @@ public class ExecuteActivePacket implements IMessage {
 
                 pData.executeHotBarAbility(message.slotIndex);
             });
-            return null;
         }
     }
 }

@@ -51,9 +51,9 @@ public class MKSpawnerSetPacket implements IMessage {
     public static class Handler extends MessageHandler.Server<MKSpawnerSetPacket> {
 
         @Override
-        public IMessage handleServerMessage(final EntityPlayer player,
-                                            final MKSpawnerSetPacket msg,
-                                            MessageContext ctx) {
+        public void handleServerMessage(final EntityPlayer player,
+                                        final MKSpawnerSetPacket msg,
+                                        MessageContext ctx) {
             ServerUtils.addScheduledTask(() -> {
                 TileEntity entity = player.getEntityWorld().getTileEntity(msg.pos);
                 if (entity instanceof TileEntityMKSpawner && player.canUseCommandBlock()) {
@@ -61,7 +61,6 @@ public class MKSpawnerSetPacket implements IMessage {
                     mkSpawner.setSpawnerWithPacket(msg);
                 }
             });
-            return null;
         }
 
     }

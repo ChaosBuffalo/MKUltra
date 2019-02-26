@@ -59,7 +59,7 @@ public class AbilityUpdatePacket implements IMessage {
 
         // Client reads the serialized data from the server
         @Override
-        public IMessage handleClientMessage(final EntityPlayer player, final AbilityUpdatePacket msg, MessageContext ctx) {
+        public void handleClientMessage(final EntityPlayer player, final AbilityUpdatePacket msg, MessageContext ctx) {
             ClientUtils.addScheduledTask(() -> {
                 if (player == null)
                     return;
@@ -71,7 +71,6 @@ public class AbilityUpdatePacket implements IMessage {
                     data.clientSkillListUpdate(info);
                 }
             });
-            return null;
 
         }
     }

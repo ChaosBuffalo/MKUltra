@@ -28,7 +28,7 @@ public class LevelUpRequestPacket implements IMessage {
 
         // Client reads the serialized data from the server
         @Override
-        public IMessage handleServerMessage(final EntityPlayer player,
+        public void handleServerMessage(final EntityPlayer player,
                                             LevelUpRequestPacket msg,
                                             MessageContext ctx) {
             ServerUtils.addScheduledTask(() -> {
@@ -37,7 +37,6 @@ public class LevelUpRequestPacket implements IMessage {
                     data.levelUp();
                 }
             });
-            return null;
         }
     }
 }

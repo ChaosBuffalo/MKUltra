@@ -52,9 +52,9 @@ public class ClassLearnPacket implements IMessage {
     public static class Handler extends MessageHandler.Server<ClassLearnPacket> {
 
         @Override
-        public IMessage handleServerMessage(final EntityPlayer player,
-                                            final ClassLearnPacket msg,
-                                            MessageContext ctx) {
+        public void handleServerMessage(final EntityPlayer player,
+                                        final ClassLearnPacket msg,
+                                        MessageContext ctx) {
             ServerUtils.addScheduledTask(() -> {
                 PlayerData data = (PlayerData) MKUPlayerData.get(player);
                 if (data != null) {
@@ -89,7 +89,6 @@ public class ClassLearnPacket implements IMessage {
                     }
                 }
             });
-            return null;
         }
 
     }

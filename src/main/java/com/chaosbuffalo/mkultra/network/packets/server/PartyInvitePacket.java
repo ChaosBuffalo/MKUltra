@@ -44,9 +44,9 @@ public class PartyInvitePacket implements IMessage {
 
         // Client reads the serialized data from the server
         @Override
-        public IMessage handleClientMessage(final EntityPlayer player,
-                                            final PartyInvitePacket msg,
-                                            MessageContext ctx) {
+        public void handleClientMessage(final EntityPlayer player,
+                                        final PartyInvitePacket msg,
+                                        MessageContext ctx) {
 
             ClientUtils.addScheduledTask(() -> {
                 if (player == null)
@@ -57,7 +57,6 @@ public class PartyInvitePacket implements IMessage {
                         (int) player.posX, (int) player.posY, (int) player.posZ);
 
             });
-            return null;
         }
     }
 }
