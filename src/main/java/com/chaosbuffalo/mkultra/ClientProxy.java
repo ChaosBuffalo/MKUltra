@@ -20,23 +20,18 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void preInit(FMLPreInitializationEvent e) {
-        super.preInit(e);
-
         ClientKeyHandler.initKeybinds();
         EntityRenderRegister.registerEntityRenderers();
     }
 
     @Override
     public void init(FMLInitializationEvent e) {
-        super.init(e);
     }
 
     @Override
     public void postInit(FMLPostInitializationEvent e) {
-        super.postInit(e);
         MinecraftForge.EVENT_BUS.register(new AbilityBar(Minecraft.getMinecraft()));
         MinecraftForge.EVENT_BUS.register(new PartyPanel(Minecraft.getMinecraft()));
-
     }
 
 }
