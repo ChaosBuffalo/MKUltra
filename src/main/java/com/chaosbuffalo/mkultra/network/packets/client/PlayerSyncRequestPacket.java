@@ -3,7 +3,6 @@ package com.chaosbuffalo.mkultra.network.packets.client;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerData;
 import com.chaosbuffalo.mkultra.network.MessageHandler;
-import com.chaosbuffalo.mkultra.utils.ServerUtils;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -27,12 +26,10 @@ public class PlayerSyncRequestPacket implements IMessage {
 
         @Override
         public void handleServerMessage(final EntityPlayer player, PlayerSyncRequestPacket msg, MessageContext ctx) {
-            ServerUtils.addScheduledTask(() -> {
-                PlayerData data = (PlayerData) MKUPlayerData.get(player);
-                if (data != null) {
-                    data.forceUpdate();
-                }
-            });
+            PlayerData data = (PlayerData) MKUPlayerData.get(player);
+            if (data != null) {
+                data.forceUpdate();
+            }
         }
     }
 }

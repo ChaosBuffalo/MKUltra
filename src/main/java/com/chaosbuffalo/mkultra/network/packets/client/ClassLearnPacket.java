@@ -6,7 +6,6 @@ import com.chaosbuffalo.mkultra.core.PlayerData;
 import com.chaosbuffalo.mkultra.item.DiamondDust;
 import com.chaosbuffalo.mkultra.item.ItemHelper;
 import com.chaosbuffalo.mkultra.network.MessageHandler;
-import com.chaosbuffalo.mkultra.utils.ServerUtils;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -55,41 +54,37 @@ public class ClassLearnPacket implements IMessage {
         public void handleServerMessage(final EntityPlayer player,
                                         final ClassLearnPacket msg,
                                         MessageContext ctx) {
-            ServerUtils.addScheduledTask(() -> {
-                PlayerData data = (PlayerData) MKUPlayerData.get(player);
-                if (data != null) {
-                    boolean canSwitch;
-                    // Make sure the player is an OP if they want to bypass checks
-                    if (!player.canUseCommand(2, "")) {
-                        msg.enforceChecks = true;
+            PlayerData data = (PlayerData) MKUPlayerData.get(player);
+            if (data != null) {
+                boolean canSwitch;
+                // Make sure the player is an OP if they want to bypass checks
+                if (!player.canUseCommand(2, "")) {
+                    msg.enforceChecks = true;
+                }
+                if (msg.learn) {
+                    canSwitch = data.learnClass(msg.classId, msg.enforceChecks);
+                    if (canSwitch && msg.enforceChecks) {
+                        ItemStack heldItem = player.getHeldItem(EnumHand.MAIN_HAND);
+                        ItemHelper.damageStack(player, heldItem, 1);
                     }
-                    if (msg.learn) {
-                        canSwitch = data.learnClass(msg.classId, msg.enforceChecks);
-                        if (canSwitch && msg.enforceChecks) {
-                            ItemStack heldItem = player.getHeldItem(EnumHand.MAIN_HAND);
-                            ItemHelper.damageStack(player, heldItem, 1);
+                } else {
+                    if (msg.enforceChecks) {
+                        // switching. need to consume item
+                        ItemStack dust = player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND);
+                        if (!(dust.getItem() instanceof DiamondDust)) {
+                            return;
+                        } else {
+                            canSwitch = ItemHelper.shrinkStack(player, dust, 1);
                         }
                     } else {
-                        if (msg.enforceChecks) {
-                            // switching. need to consume item
-                            ItemStack dust = player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND);
-                            if (!(dust.getItem() instanceof DiamondDust)) {
-                                return;
-                            } else {
-                                canSwitch = ItemHelper.shrinkStack(player, dust, 1);
-                            }
-                        }
-                        else {
-                            canSwitch = true;
-                        }
-                    }
-
-                    if (canSwitch) {
-                        data.activateClass(msg.classId);
+                        canSwitch = true;
                     }
                 }
-            });
-        }
 
+                if (canSwitch) {
+                    data.activateClass(msg.classId);
+                }
+            }
+        }
     }
 }

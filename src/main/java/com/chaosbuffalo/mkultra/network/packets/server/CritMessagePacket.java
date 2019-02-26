@@ -1,10 +1,9 @@
 package com.chaosbuffalo.mkultra.network.packets.server;
 
 import com.chaosbuffalo.mkultra.MKConfig;
-import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.MKURegistry;
+import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.network.MessageHandler;
-import com.chaosbuffalo.mkultra.utils.ClientUtils;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -101,35 +100,95 @@ public class CritMessagePacket implements IMessage {
         public void handleClientMessage(final EntityPlayer player,
                                         final CritMessagePacket msg,
                                         MessageContext ctx) {
-            ClientUtils.addScheduledTask(() -> {
-                Style messageStyle = new Style();
-                boolean isSelf = player.getUniqueID().equals(msg.sourceUUID);
-                EntityPlayer playerSource = player.getEntityWorld().getPlayerEntityByUUID(msg.sourceUUID);
-                Entity target = player.getEntityWorld().getEntityByID(msg.targetId);
-                if (target == null || playerSource == null){
+            Style messageStyle = new Style();
+            boolean isSelf = player.getUniqueID().equals(msg.sourceUUID);
+            EntityPlayer playerSource = player.getEntityWorld().getPlayerEntityByUUID(msg.sourceUUID);
+            Entity target = player.getEntityWorld().getEntityByID(msg.targetId);
+            if (target == null || playerSource == null) {
+                return;
+            }
+            boolean isSelfTarget = player.getEntityId() == msg.targetId;
+            if (isSelf || isSelfTarget) {
+                if (!MKConfig.display.SHOW_MY_CRITS) {
                     return;
                 }
-                boolean isSelfTarget = player.getEntityId() == msg.targetId;
-                if (isSelf || isSelfTarget){
-                    if (!MKConfig.display.SHOW_MY_CRITS) {
-                        return;
-                    }
-                } else {
-                    if (!MKConfig.display.SHOW_OTHER_CRITS){
-                        return;
-                    }
+            } else {
+                if (!MKConfig.display.SHOW_OTHER_CRITS) {
+                    return;
                 }
-                switch (msg.type){
-                    case MELEE_CRIT:
-                    case INDIRECT_CRIT:
-                        messageStyle.setColor(
-                                msg.type == CritType.MELEE_CRIT ? TextFormatting.DARK_RED : TextFormatting.GOLD
+            }
+            switch (msg.type) {
+                case MELEE_CRIT:
+                case INDIRECT_CRIT:
+                    messageStyle.setColor(
+                            msg.type == CritType.MELEE_CRIT ? TextFormatting.DARK_RED : TextFormatting.GOLD
+                    );
+                    if (isSelf) {
+                        player.sendMessage(new TextComponentString(
+                                String.format("You just crit %s with %s for %s",
+                                        target.getDisplayName().getUnformattedText(),
+                                        playerSource.getHeldItemMainhand().getDisplayName(),
+                                        Float.toString(msg.critDamage)))
+                                .setStyle(messageStyle));
+                    } else {
+                        player.sendMessage(new TextComponentString(
+                                String.format("%s just crit %s with %s for %s",
+                                        playerSource.getDisplayName().getUnformattedText(),
+                                        target.getDisplayName().getUnformattedText(),
+                                        playerSource.getHeldItemMainhand().getDisplayName(),
+                                        Float.toString(msg.critDamage))
+                        ).setStyle(messageStyle));
+                    }
+                    break;
+                case INDIRECT_MAGIC_CRIT:
+                    messageStyle.setColor(TextFormatting.BLUE);
+                    if (isSelf) {
+                        player.sendMessage(new TextComponentString(
+                                String.format("Your magic spell just crit %s for %s",
+                                        target.getDisplayName().getUnformattedText(),
+                                        Float.toString(msg.critDamage)))
+                                .setStyle(messageStyle));
+                    } else {
+                        player.sendMessage(new TextComponentString(
+                                String.format("%s's magic spell just crit %s for %s",
+                                        playerSource.getDisplayName().getUnformattedText(),
+                                        target.getDisplayName().getUnformattedText(),
+                                        Float.toString(msg.critDamage)))
+                                .setStyle(messageStyle));
+                    }
+                    break;
+                case SPELL_CRIT:
+                    messageStyle.setColor(TextFormatting.AQUA);
+                    PlayerAbility ability = MKURegistry.getAbility(msg.abilityName);
+                    if (isSelf) {
+                        player.sendMessage(new TextComponentString(
+                                String.format("Your %s spell just crit %s for %s",
+                                        ability.getAbilityName(),
+                                        target.getDisplayName().getUnformattedText(),
+                                        Float.toString(msg.critDamage)))
+                                .setStyle(messageStyle)
                         );
-                        if (isSelf){
+
+                    } else {
+                        player.sendMessage(new TextComponentString(
+                                String.format("%s's %s spell just crit %s for %s",
+                                        playerSource.getDisplayName().getUnformattedText(),
+                                        ability.getAbilityName(),
+                                        target.getDisplayName().getUnformattedText(),
+                                        Float.toString(msg.critDamage)))
+                                .setStyle(messageStyle)
+                        );
+                    }
+                    break;
+                case PROJECTILE_CRIT:
+                    Entity projectile = player.getEntityWorld().getEntityByID(msg.projectileId);
+                    if (projectile != null) {
+                        messageStyle.setColor(TextFormatting.LIGHT_PURPLE);
+                        if (isSelf) {
                             player.sendMessage(new TextComponentString(
                                     String.format("You just crit %s with %s for %s",
                                             target.getDisplayName().getUnformattedText(),
-                                            playerSource.getHeldItemMainhand().getDisplayName(),
+                                            projectile.getDisplayName().getUnformattedText(),
                                             Float.toString(msg.critDamage)))
                                     .setStyle(messageStyle));
                         } else {
@@ -137,75 +196,13 @@ public class CritMessagePacket implements IMessage {
                                     String.format("%s just crit %s with %s for %s",
                                             playerSource.getDisplayName().getUnformattedText(),
                                             target.getDisplayName().getUnformattedText(),
-                                            playerSource.getHeldItemMainhand().getDisplayName(),
+                                            projectile.getDisplayName().getUnformattedText(),
                                             Float.toString(msg.critDamage))
                             ).setStyle(messageStyle));
                         }
-                        break;
-                    case INDIRECT_MAGIC_CRIT:
-                        messageStyle.setColor(TextFormatting.BLUE);
-                        if (isSelf){
-                            player.sendMessage(new TextComponentString(
-                                    String.format("Your magic spell just crit %s for %s",
-                                            target.getDisplayName().getUnformattedText(),
-                                            Float.toString(msg.critDamage)))
-                                    .setStyle(messageStyle));
-                        } else {
-                            player.sendMessage(new TextComponentString(
-                                    String.format("%s's magic spell just crit %s for %s",
-                                            playerSource.getDisplayName().getUnformattedText(),
-                                            target.getDisplayName().getUnformattedText(),
-                                            Float.toString(msg.critDamage)))
-                                    .setStyle(messageStyle));
-                        }
-                        break;
-                    case SPELL_CRIT:
-                        messageStyle.setColor(TextFormatting.AQUA);
-                        PlayerAbility ability = MKURegistry.getAbility(msg.abilityName);
-                        if (isSelf) {
-                            player.sendMessage(new TextComponentString(
-                                    String.format("Your %s spell just crit %s for %s",
-                                            ability.getAbilityName(),
-                                            target.getDisplayName().getUnformattedText(),
-                                            Float.toString(msg.critDamage)))
-                                    .setStyle(messageStyle)
-                            );
-
-                        } else {
-                            player.sendMessage(new TextComponentString(
-                                    String.format("%s's %s spell just crit %s for %s",
-                                            playerSource.getDisplayName().getUnformattedText(),
-                                            ability.getAbilityName(),
-                                            target.getDisplayName().getUnformattedText(),
-                                            Float.toString(msg.critDamage)))
-                                    .setStyle(messageStyle)
-                            );
-                        }
-                        break;
-                    case PROJECTILE_CRIT:
-                        Entity projectile = player.getEntityWorld().getEntityByID(msg.projectileId);
-                        if (projectile != null){
-                            messageStyle.setColor(TextFormatting.LIGHT_PURPLE);
-                            if (isSelf){
-                                player.sendMessage(new TextComponentString(
-                                        String.format("You just crit %s with %s for %s",
-                                                target.getDisplayName().getUnformattedText(),
-                                                projectile.getDisplayName().getUnformattedText(),
-                                                Float.toString(msg.critDamage)))
-                                        .setStyle(messageStyle));
-                            } else {
-                                player.sendMessage(new TextComponentString(
-                                        String.format("%s just crit %s with %s for %s",
-                                                playerSource.getDisplayName().getUnformattedText(),
-                                                target.getDisplayName().getUnformattedText(),
-                                                projectile.getDisplayName().getUnformattedText(),
-                                                Float.toString(msg.critDamage))
-                                ).setStyle(messageStyle));
-                            }
-                        }
-                        break;
-                }
-            });
+                    }
+                    break;
+            }
         }
 
     }

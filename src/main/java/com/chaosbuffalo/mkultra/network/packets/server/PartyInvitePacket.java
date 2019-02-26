@@ -4,7 +4,6 @@ import com.chaosbuffalo.mkultra.ClientProxy;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.network.MessageHandler;
 import com.chaosbuffalo.mkultra.network.ModGuiHandler;
-import com.chaosbuffalo.mkultra.utils.ClientUtils;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
@@ -47,16 +46,12 @@ public class PartyInvitePacket implements IMessage {
         public void handleClientMessage(final EntityPlayer player,
                                         final PartyInvitePacket msg,
                                         MessageContext ctx) {
-
-            ClientUtils.addScheduledTask(() -> {
-                if (player == null)
-                    return;
-                ClientProxy.partyData.setInvitingUUID(msg.invitingUUID);
-                ClientProxy.partyData.setInvitingName(msg.invitingName);
-                player.openGui(MKUltra.INSTANCE, ModGuiHandler.PARTY_INVITE_SCREEN, player.world,
-                        (int) player.posX, (int) player.posY, (int) player.posZ);
-
-            });
+            if (player == null)
+                return;
+            ClientProxy.partyData.setInvitingUUID(msg.invitingUUID);
+            ClientProxy.partyData.setInvitingName(msg.invitingName);
+            player.openGui(MKUltra.INSTANCE, ModGuiHandler.PARTY_INVITE_SCREEN, player.world,
+                    (int) player.posX, (int) player.posY, (int) player.posZ);
         }
     }
 }

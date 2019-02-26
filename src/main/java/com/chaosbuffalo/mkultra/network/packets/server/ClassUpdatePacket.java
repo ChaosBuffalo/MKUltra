@@ -4,7 +4,6 @@ import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerClassInfo;
 import com.chaosbuffalo.mkultra.core.PlayerData;
 import com.chaosbuffalo.mkultra.network.MessageHandler;
-import com.chaosbuffalo.mkultra.utils.ClientUtils;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
@@ -58,16 +57,13 @@ public class ClassUpdatePacket implements IMessage {
         // Client reads the serialized data from the server
         @Override
         public void handleClientMessage(final EntityPlayer player, final ClassUpdatePacket msg, MessageContext ctx) {
-            ClientUtils.addScheduledTask(() -> {
-                if (player == null)
-                    return;
-                PlayerData data = (PlayerData) MKUPlayerData.get(player);
-                if (data == null)
-                    return;
+            if (player == null)
+                return;
+            PlayerData data = (PlayerData) MKUPlayerData.get(player);
+            if (data == null)
+                return;
 
-                data.clientBulkKnownClassUpdate(msg.classes);
-            });
-
+            data.clientBulkKnownClassUpdate(msg.classes);
         }
     }
 }

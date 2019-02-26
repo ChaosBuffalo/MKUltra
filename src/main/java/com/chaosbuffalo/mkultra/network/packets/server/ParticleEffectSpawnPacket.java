@@ -2,7 +2,6 @@ package com.chaosbuffalo.mkultra.network.packets.server;
 
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.MessageHandler;
-import com.chaosbuffalo.mkultra.utils.ClientUtils;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.Vec3d;
@@ -113,12 +112,12 @@ public class ParticleEffectSpawnPacket implements IMessage {
         public void handleClientMessage(final EntityPlayer player,
                                         final ParticleEffectSpawnPacket msg,
                                         MessageContext ctx) {
-            ClientUtils.addScheduledTask(() -> ParticleEffects.spawnParticleEffect(
+            ParticleEffects.spawnParticleEffect(
                     msg.particleID, msg.motionType, msg.data, msg.speed, msg.count,
                     new Vec3d(msg.xPos, msg.yPos, msg.zPos),
                     new Vec3d(msg.radiusX, msg.radiusY, msg.radiusZ),
                     new Vec3d(msg.headingX, msg.headingY, msg.headingZ),
-                    player.world));
+                    player.world);
         }
     }
 }

@@ -2,7 +2,6 @@ package com.chaosbuffalo.mkultra.network.packets.server;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.network.MessageHandler;
-import com.chaosbuffalo.mkultra.utils.ClientUtils;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -36,14 +35,10 @@ public class ForceOpenClientGUIPacket implements IMessage {
         public void handleClientMessage(final EntityPlayer player,
                                         final ForceOpenClientGUIPacket msg,
                                         MessageContext ctx) {
-
-            ClientUtils.addScheduledTask(() -> {
-                if (player == null)
-                    return;
-                player.openGui(MKUltra.INSTANCE, msg.guiId, player.world,
-                        (int) player.posX, (int) player.posY, (int) player.posZ);
-
-            });
+            if (player == null)
+                return;
+            player.openGui(MKUltra.INSTANCE, msg.guiId, player.world,
+                    (int) player.posX, (int) player.posY, (int) player.posZ);
         }
     }
 }

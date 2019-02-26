@@ -2,7 +2,6 @@ package com.chaosbuffalo.mkultra.network.packets.client;
 
 import com.chaosbuffalo.mkultra.network.MessageHandler;
 import com.chaosbuffalo.mkultra.tiles.TileEntityMKSpawner;
-import com.chaosbuffalo.mkultra.utils.ServerUtils;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
@@ -54,13 +53,11 @@ public class MKSpawnerSetPacket implements IMessage {
         public void handleServerMessage(final EntityPlayer player,
                                         final MKSpawnerSetPacket msg,
                                         MessageContext ctx) {
-            ServerUtils.addScheduledTask(() -> {
-                TileEntity entity = player.getEntityWorld().getTileEntity(msg.pos);
-                if (entity instanceof TileEntityMKSpawner && player.canUseCommandBlock()) {
-                    TileEntityMKSpawner mkSpawner = (TileEntityMKSpawner) entity;
-                    mkSpawner.setSpawnerWithPacket(msg);
-                }
-            });
+            TileEntity entity = player.getEntityWorld().getTileEntity(msg.pos);
+            if (entity instanceof TileEntityMKSpawner && player.canUseCommandBlock()) {
+                TileEntityMKSpawner mkSpawner = (TileEntityMKSpawner) entity;
+                mkSpawner.setSpawnerWithPacket(msg);
+            }
         }
 
     }
