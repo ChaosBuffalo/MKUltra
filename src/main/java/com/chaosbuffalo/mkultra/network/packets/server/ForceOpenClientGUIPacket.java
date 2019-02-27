@@ -5,7 +5,6 @@ import com.chaosbuffalo.mkultra.network.MessageHandler;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 
 public class ForceOpenClientGUIPacket implements IMessage {
@@ -33,8 +32,7 @@ public class ForceOpenClientGUIPacket implements IMessage {
         // Client reads the serialized data from the server
         @Override
         public void handleClientMessage(final EntityPlayer player,
-                                        final ForceOpenClientGUIPacket msg,
-                                        MessageContext ctx) {
+                                        final ForceOpenClientGUIPacket msg) {
             if (player == null)
                 return;
             player.openGui(MKUltra.INSTANCE, msg.guiId, player.world,

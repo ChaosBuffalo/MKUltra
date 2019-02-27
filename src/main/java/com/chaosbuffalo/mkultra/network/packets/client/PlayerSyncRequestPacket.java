@@ -6,7 +6,6 @@ import com.chaosbuffalo.mkultra.network.MessageHandler;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 
 public class PlayerSyncRequestPacket implements IMessage {
@@ -25,7 +24,7 @@ public class PlayerSyncRequestPacket implements IMessage {
     public static class Handler extends MessageHandler.Server<PlayerSyncRequestPacket> {
 
         @Override
-        public void handleServerMessage(final EntityPlayer player, PlayerSyncRequestPacket msg, MessageContext ctx) {
+        public void handleServerMessage(final EntityPlayer player, PlayerSyncRequestPacket msg) {
             PlayerData data = (PlayerData) MKUPlayerData.get(player);
             if (data != null) {
                 data.forceUpdate();

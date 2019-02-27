@@ -9,7 +9,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 
 public class LevelAbilityPacket implements IMessage {
@@ -45,8 +44,7 @@ public class LevelAbilityPacket implements IMessage {
 
         @Override
         public void handleServerMessage(final EntityPlayer player,
-                                        final LevelAbilityPacket msg,
-                                        MessageContext ctx) {
+                                        final LevelAbilityPacket msg) {
             PlayerData pData = (PlayerData) MKUPlayerData.get(player);
             if (pData == null)
                 return;

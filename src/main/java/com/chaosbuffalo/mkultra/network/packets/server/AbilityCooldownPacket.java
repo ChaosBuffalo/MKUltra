@@ -8,7 +8,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class AbilityCooldownPacket implements IMessage {
 
@@ -42,7 +41,7 @@ public class AbilityCooldownPacket implements IMessage {
 
         // Client reads the serialized data from the server
         @Override
-        public void handleClientMessage(final EntityPlayer player, final AbilityCooldownPacket msg, MessageContext ctx) {
+        public void handleClientMessage(final EntityPlayer player, final AbilityCooldownPacket msg) {
             if (player == null)
                 return;
             IPlayerData data = MKUPlayerData.get(player);

@@ -8,7 +8,6 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import java.util.UUID;
 
@@ -44,8 +43,7 @@ public class PartyInvitePacket implements IMessage {
         // Client reads the serialized data from the server
         @Override
         public void handleClientMessage(final EntityPlayer player,
-                                        final PartyInvitePacket msg,
-                                        MessageContext ctx) {
+                                        final PartyInvitePacket msg) {
             if (player == null)
                 return;
             ClientProxy.partyData.setInvitingUUID(msg.invitingUUID);

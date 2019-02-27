@@ -8,7 +8,6 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -56,7 +55,7 @@ public class ClassUpdatePacket implements IMessage {
 
         // Client reads the serialized data from the server
         @Override
-        public void handleClientMessage(final EntityPlayer player, final ClassUpdatePacket msg, MessageContext ctx) {
+        public void handleClientMessage(final EntityPlayer player, final ClassUpdatePacket msg) {
             if (player == null)
                 return;
             PlayerData data = (PlayerData) MKUPlayerData.get(player);

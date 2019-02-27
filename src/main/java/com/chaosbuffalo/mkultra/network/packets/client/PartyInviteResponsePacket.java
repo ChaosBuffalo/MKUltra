@@ -7,7 +7,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import java.util.UUID;
 
@@ -45,8 +44,7 @@ public class PartyInviteResponsePacket implements IMessage {
 
         @Override
         public void handleServerMessage(final EntityPlayer player,
-                                        final PartyInviteResponsePacket msg,
-                                        MessageContext ctx) {
+                                        final PartyInviteResponsePacket msg) {
             World theWorld = player.getEntityWorld();
             EntityPlayer invitingPlayer = theWorld.getPlayerEntityByUUID(msg.invitingUUID);
 

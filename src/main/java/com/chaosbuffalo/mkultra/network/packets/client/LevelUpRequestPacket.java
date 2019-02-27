@@ -6,7 +6,6 @@ import com.chaosbuffalo.mkultra.network.MessageHandler;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 
 public class LevelUpRequestPacket implements IMessage {
@@ -28,8 +27,7 @@ public class LevelUpRequestPacket implements IMessage {
         // Client reads the serialized data from the server
         @Override
         public void handleServerMessage(final EntityPlayer player,
-                                            LevelUpRequestPacket msg,
-                                            MessageContext ctx) {
+                                        LevelUpRequestPacket msg) {
             IPlayerData data = MKUPlayerData.get(player);
             if (data != null) {
                 data.levelUp();

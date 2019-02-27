@@ -6,7 +6,6 @@ import com.chaosbuffalo.mkultra.network.MessageHandler;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 
 public class ExecuteActivePacket implements IMessage {
@@ -33,8 +32,7 @@ public class ExecuteActivePacket implements IMessage {
     public static class Handler extends MessageHandler.Server<ExecuteActivePacket> {
         @Override
         public void handleServerMessage(final EntityPlayer player,
-                                            final ExecuteActivePacket message,
-                                            MessageContext ctx) {
+                                        final ExecuteActivePacket message) {
             IPlayerData pData = MKUPlayerData.get(player);
             if (pData == null)
                 return;

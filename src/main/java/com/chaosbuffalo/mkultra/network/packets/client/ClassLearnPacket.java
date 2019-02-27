@@ -14,7 +14,6 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class ClassLearnPacket implements IMessage {
     private ResourceLocation classId;
@@ -52,8 +51,7 @@ public class ClassLearnPacket implements IMessage {
 
         @Override
         public void handleServerMessage(final EntityPlayer player,
-                                        final ClassLearnPacket msg,
-                                        MessageContext ctx) {
+                                        final ClassLearnPacket msg) {
             PlayerData data = (PlayerData) MKUPlayerData.get(player);
             if (data != null) {
                 boolean canSwitch;

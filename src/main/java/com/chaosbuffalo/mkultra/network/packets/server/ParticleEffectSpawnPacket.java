@@ -6,7 +6,6 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 
 public class ParticleEffectSpawnPacket implements IMessage {
@@ -110,8 +109,7 @@ public class ParticleEffectSpawnPacket implements IMessage {
         // Client reads the serialized data from the server
         @Override
         public void handleClientMessage(final EntityPlayer player,
-                                        final ParticleEffectSpawnPacket msg,
-                                        MessageContext ctx) {
+                                        final ParticleEffectSpawnPacket msg) {
             ParticleEffects.spawnParticleEffect(
                     msg.particleID, msg.motionType, msg.data, msg.speed, msg.count,
                     new Vec3d(msg.xPos, msg.yPos, msg.zPos),

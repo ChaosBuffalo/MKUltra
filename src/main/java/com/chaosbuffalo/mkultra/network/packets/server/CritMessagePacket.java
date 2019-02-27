@@ -13,7 +13,6 @@ import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import java.util.UUID;
 
@@ -98,8 +97,7 @@ public class CritMessagePacket implements IMessage {
 
         @Override
         public void handleClientMessage(final EntityPlayer player,
-                                        final CritMessagePacket msg,
-                                        MessageContext ctx) {
+                                        final CritMessagePacket msg) {
             Style messageStyle = new Style();
             boolean isSelf = player.getUniqueID().equals(msg.sourceUUID);
             EntityPlayer playerSource = player.getEntityWorld().getPlayerEntityByUUID(msg.sourceUUID);
