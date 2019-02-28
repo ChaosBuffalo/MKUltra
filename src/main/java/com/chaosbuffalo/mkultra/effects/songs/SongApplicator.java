@@ -4,7 +4,7 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
-import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;

@@ -1,5 +1,5 @@
 
-package com.chaosbuffalo.mkultra.network.packets.client;
+package com.chaosbuffalo.mkultra.network.packets;
 
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerData;

@@ -6,7 +6,7 @@ import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerClass;
 import com.chaosbuffalo.mkultra.item.interfaces.IClassProvider;
-import com.chaosbuffalo.mkultra.network.packets.client.ClassLearnPacket;
+import com.chaosbuffalo.mkultra.network.packets.ClassLearnPacket;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;

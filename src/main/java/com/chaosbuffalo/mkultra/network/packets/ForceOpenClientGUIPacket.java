@@ -1,4 +1,4 @@
-package com.chaosbuffalo.mkultra.network.packets.server;
+package com.chaosbuffalo.mkultra.network.packets;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.network.MessageHandler;

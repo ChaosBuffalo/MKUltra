@@ -7,7 +7,7 @@ import com.chaosbuffalo.mkultra.core.MKURegistry;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerData;
 import com.chaosbuffalo.mkultra.network.ModGuiHandler;
-import com.chaosbuffalo.mkultra.network.packets.server.ForceOpenClientGUIPacket;
+import com.chaosbuffalo.mkultra.network.packets.ForceOpenClientGUIPacket;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;

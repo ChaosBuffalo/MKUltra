@@ -12,8 +12,7 @@ package com.chaosbuffalo.mkultra.network;
 
 
 import com.chaosbuffalo.mkultra.log.Log;
-import com.chaosbuffalo.mkultra.network.packets.client.*;
-import com.chaosbuffalo.mkultra.network.packets.server.*;
+import com.chaosbuffalo.mkultra.network.packets.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.network.NetworkRegistry;

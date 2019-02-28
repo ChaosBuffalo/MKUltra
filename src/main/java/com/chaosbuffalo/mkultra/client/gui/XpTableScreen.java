@@ -3,7 +3,7 @@ package com.chaosbuffalo.mkultra.client.gui;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.item.interfaces.IClassProvider;
-import com.chaosbuffalo.mkultra.network.packets.client.LevelUpRequestPacket;
+import com.chaosbuffalo.mkultra.network.packets.LevelUpRequestPacket;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;

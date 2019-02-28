@@ -6,7 +6,7 @@ import com.chaosbuffalo.mkultra.core.abilities.WarpCurse;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellPeriodicPotionBase;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
-import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.mkultra.utils.AbilityUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;

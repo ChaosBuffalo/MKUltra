@@ -1,4 +1,4 @@
-package com.chaosbuffalo.mkultra.network.packets.client;
+package com.chaosbuffalo.mkultra.network.packets;
 
 import com.chaosbuffalo.mkultra.network.MessageHandler;
 import com.chaosbuffalo.mkultra.tiles.TileEntityMKSpawner;

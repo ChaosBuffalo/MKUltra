@@ -6,7 +6,7 @@ import com.chaosbuffalo.mkultra.core.abilities.Drown;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellPeriodicPotionBase;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
-import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

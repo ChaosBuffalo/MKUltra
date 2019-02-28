@@ -2,7 +2,7 @@ package com.chaosbuffalo.mkultra.client.gui;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.MKURegistry;
-import com.chaosbuffalo.mkultra.network.packets.client.MKSpawnerSetPacket;
+import com.chaosbuffalo.mkultra.network.packets.MKSpawnerSetPacket;
 import com.chaosbuffalo.mkultra.spawn.MobFaction;
 import com.chaosbuffalo.mkultra.tiles.TileEntityMKSpawner;
 import net.minecraft.client.gui.GuiButton;
