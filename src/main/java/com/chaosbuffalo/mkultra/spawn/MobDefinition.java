@@ -90,12 +90,12 @@ public class MobDefinition extends IForgeRegistryEntry.Impl<MobDefinition> {
             }
         }
 
-        for (AIModifier mod : aiModifiers){
-            mod.apply(entity, level, ModSpawn.MAX_LEVEL);
-        }
-
         for (CustomModifier cMod : customModifiers){
             cMod.apply(entity, level, ModSpawn.MAX_LEVEL);
+        }
+
+        for (AIModifier mod : aiModifiers){
+            mod.apply(entity, level, ModSpawn.MAX_LEVEL);
         }
     }
 }

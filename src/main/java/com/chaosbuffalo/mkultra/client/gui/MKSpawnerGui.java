@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.client.gui;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.MKURegistry;
+import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.network.packets.client.MKSpawnerSetPacket;
 import com.chaosbuffalo.mkultra.spawn.MobFaction;
 import com.chaosbuffalo.mkultra.tiles.TileEntityMKSpawner;
@@ -15,6 +16,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Set;
 import java.util.function.Function;
 
 public class MKSpawnerGui extends GuiScreen {
@@ -22,11 +24,10 @@ public class MKSpawnerGui extends GuiScreen {
     enum Modes {
         DEFAULT,
         SET_FACTION,
-        SET_MOB_GROUP,
-        SET_TIME
+        SET_MOB_GROUP
     }
     private static final Function<ResourceLocation, String> getResourceName = ResourceLocation::toString;
-    private static final Function<MobFaction.MobGroups, String> getMobGroupName = Enum::name;
+    private static final Function<String, String> getMobGroupName = (x)-> x;
 
     // lists
     private static final int FACTION_LIST = 0;
@@ -41,10 +42,10 @@ public class MKSpawnerGui extends GuiScreen {
 
     private ResourceLocation factionName;
     private int spawnTime;
-    private MobFaction.MobGroups mobGroup;
+    private String mobGroup;
     private TileEntityMKSpawner spawner;
     private ButtonList<ResourceLocation> factionList;
-    private ButtonList<MobFaction.MobGroups> mobGroupList;
+    private ButtonList<String> mobGroupList;
 
     public MKSpawnerGui(TileEntityMKSpawner spawner){
         this.spawner = spawner;
@@ -77,7 +78,7 @@ public class MKSpawnerGui extends GuiScreen {
         this.fontRenderer.drawString("Configure Spawner:", xPos + 15, yPos + 4, 8129636);
         this.fontRenderer.drawString(String.format("Current Faction: %s", factionName),
                 xPos + 15, yPos + 4 + titleHeight, 8129636);
-        this.fontRenderer.drawString(String.format("Mob Group: %s", mobGroup.name()),
+        this.fontRenderer.drawString(String.format("Mob Group: %s", mobGroup),
                 xPos + 15, yPos + 4 + (titleHeight * 2), 8129636);
         this.fontRenderer.drawString(String.format("Spawn Time: %d Seconds", spawnTime),
                 xPos + 15, yPos + 4 + (titleHeight * 3), 8129636);
@@ -107,18 +108,23 @@ public class MKSpawnerGui extends GuiScreen {
                 break;
             case SET_MOB_GROUP:
                 MobFaction currentFaction = MKURegistry.getFaction(factionName);
-                if (mobGroupList == null){
-                    ArrayList<MobFaction.MobGroups> groups = new ArrayList<>();
-                    for (MobFaction.MobGroups group : MobFaction.MobGroups.values()){
-                        if (group != MobFaction.MobGroups.INVALID && currentFaction != null && !currentFaction.isSpawnListEmpty(group)){
-                            groups.add(group);
+                if (mobGroupList == null && currentFaction != null){
+                    ArrayList<String> groups = new ArrayList<>();
+                    Set<String> mobGroups = currentFaction.getMobGroups();
+                    if (mobGroups != null){
+                        for (String group : mobGroups){
+                            if (group != null && !currentFaction.isSpawnListEmpty(group)){
+                                Log.info("Adding group %s", group);
+                                groups.add(group);
+                            }
                         }
                     }
+
                     mobGroupList = new ButtonList<>(
                             groups, this::handleMobGroupButton, MOB_GROUP_LIST, getMobGroupName, mc, 200,
                             140, yPos + 4 + (titleHeight * 6), panelHeight,
                             22, xPos + 28);
-                } else {
+                } else if (mobGroupList != null){
                     mobGroupList.drawScreen(mouseX, mouseY, partialTicks);
                 }
                 break;
@@ -137,7 +143,7 @@ public class MKSpawnerGui extends GuiScreen {
 
     }
 
-    public void handleMobGroupButton(MobFaction.MobGroups group, int list){
+    public void handleMobGroupButton(String group, int list){
         switch (list){
             case MOB_GROUP_LIST:
                 mobGroup = group;
@@ -218,7 +224,7 @@ public class MKSpawnerGui extends GuiScreen {
                 spawnTime = Math.max(0, spawnTime);
                 break;
             case SYNC:
-                MKUltra.packetHandler.sendToServer(new MKSpawnerSetPacket(factionName, mobGroup.ordinal(),
+                MKUltra.packetHandler.sendToServer(new MKSpawnerSetPacket(factionName, mobGroup,
                         spawnTime, spawner.getPos().getX(), spawner.getPos().getY(), spawner.getPos().getZ()));
                 this.mc.displayGuiScreen(null);
                 if (this.mc.currentScreen == null)

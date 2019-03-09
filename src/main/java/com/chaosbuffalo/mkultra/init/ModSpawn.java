@@ -180,6 +180,11 @@ public class ModSpawn {
         event.getRegistry().register(noStrafespells);
         BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addLeashRange = (entity, choice) -> {
             IMobData mobData = MKUMobData.get(entity);
+            if (!(entity instanceof EntityCreature)){
+                Log.info("Failed to add leash range ai, " +
+                        "because it is not an EntityCreature");
+                return null;
+            }
             return new EntityAIReturnToSpawn((EntityCreature)entity, mobData, 1.0);
         };
         AIGenerator leashRange = new AIGenerator(MKUltra.MODID, "leash_range", addLeashRange);
@@ -330,55 +335,32 @@ public class ModSpawn {
         event.getRegistry().register(option);
     }
 
-    public static MobFaction.MobGroups getMobGroupFromString(String mobGroupIn) {
-        switch (mobGroupIn) {
-            case "RANGE_GRUNT":
-                return MobFaction.MobGroups.RANGE_GRUNT;
-            case "MELEE_GRUNT":
-                return MobFaction.MobGroups.MELEE_GRUNT;
-            case "SUPPORT_GRUNT":
-                return MobFaction.MobGroups.SUPPORT_GRUNT;
-            case "MELEE_CAPTAIN":
-                return MobFaction.MobGroups.MELEE_CAPTAIN;
-            case "RANGE_CAPTAIN":
-                return MobFaction.MobGroups.RANGE_CAPTAIN;
-            case "SUPPORT_CAPTAIN":
-                return MobFaction.MobGroups.SUPPORT_CAPTAIN;
-            case "BOSS":
-                return MobFaction.MobGroups.BOSS;
-            default:
-                return null;
-        }
-    }
 
     public static void loadMobFactions(ResourceLocation name, JsonObject obj,
                                        RegistryEvent.Register<MobFaction> event) {
-        String[] groups = {"RANGE_GRUNT", "MELEE_GRUNT", "SUPPORT_GRUNT", "RANGE_CAPTAIN",
-                "MELEE_CAPTAIN", "SUPPORT_CAPTAIN", "BOSS"};
+        String[] keys = {"groups"};
+        if (!checkKeysExist(keys, obj)) {
+            return;
+        }
         MobFaction faction = new MobFaction(name);
-        for (String key : groups) {
-            if (obj.has(key)) {
-                JsonArray options = obj.get(key).getAsJsonArray();
-                for (JsonElement ele : options) {
-                    JsonObject jsonObject = ele.getAsJsonObject();
-                    String[] keys = {"spawn_list", "weight"};
-                    if (!checkKeysExist(keys, jsonObject)) {
-                        continue;
-                    }
-                    SpawnList spawnList = MKURegistry.getSpawnList(new ResourceLocation(jsonObject.get("spawn_list")
-                            .getAsString()));
-                    if (spawnList == null) {
-                        Log.info("Error loading Spawn List: %s for Faction: %s", jsonObject.get("spawn_list")
-                                .getAsString(), name);
-                        continue;
-                    }
-                    MobFaction.MobGroups group = getMobGroupFromString(key);
-                    if (group == null) {
-                        Log.info("Incorrect group name for faction %s", key);
-                        continue;
-                    }
-                    faction.addSpawnList(group, spawnList, jsonObject.get("weight").getAsDouble());
+        JsonObject groups = obj.getAsJsonObject("groups");
+        for (java.util.Map.Entry<String, JsonElement> key : groups.entrySet()) {
+            String groupName = key.getKey();
+            JsonArray options = key.getValue().getAsJsonArray();
+            for (JsonElement ele : options) {
+                JsonObject jsonObject = ele.getAsJsonObject();
+                String[] eleKeys = {"spawn_list", "weight"};
+                if (!checkKeysExist(eleKeys, jsonObject)) {
+                    continue;
                 }
+                SpawnList spawnList = MKURegistry.getSpawnList(new ResourceLocation(jsonObject.get("spawn_list")
+                        .getAsString()));
+                if (spawnList == null) {
+                    Log.info("Error loading Spawn List: %s for Faction: %s", jsonObject.get("spawn_list")
+                            .getAsString(), name);
+                    continue;
+                }
+                faction.addSpawnList(groupName, spawnList, jsonObject.get("weight").getAsDouble());
             }
         }
         event.getRegistry().register(faction);

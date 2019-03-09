@@ -6,21 +6,11 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
+import java.util.Set;
 
 public class MobFaction extends IForgeRegistryEntry.Impl<MobFaction> {
 
-    public enum MobGroups {
-        INVALID,
-        MELEE_GRUNT,
-        RANGE_GRUNT,
-        SUPPORT_GRUNT,
-        MELEE_CAPTAIN,
-        RANGE_CAPTAIN,
-        SUPPORT_CAPTAIN,
-        BOSS
-    }
-
-    private HashMap<MobGroups, RandomCollection<SpawnList>> spawnLists;
+    private HashMap<String, RandomCollection<SpawnList>> spawnLists;
 
     public MobFaction(ResourceLocation name){
         setRegistryName(name);
@@ -29,34 +19,34 @@ public class MobFaction extends IForgeRegistryEntry.Impl<MobFaction> {
     }
 
     private void registerDefaultMobGroups(){
-        spawnLists.put(MobGroups.MELEE_GRUNT, new RandomCollection<>());
-        spawnLists.put(MobGroups.RANGE_GRUNT, new RandomCollection<>());
-        spawnLists.put(MobGroups.SUPPORT_GRUNT, new RandomCollection<>());
-        spawnLists.put(MobGroups.MELEE_CAPTAIN, new RandomCollection<>());
-        spawnLists.put(MobGroups.RANGE_CAPTAIN, new RandomCollection<>());
-        spawnLists.put(MobGroups.SUPPORT_CAPTAIN, new RandomCollection<>());
-        spawnLists.put(MobGroups.BOSS, new RandomCollection<>());
     }
 
-    public void addSpawnList(MobGroups group, SpawnList list, double weight){
-        if (group == MobGroups.INVALID){
-            return;
+
+    public void addSpawnList(String group, SpawnList list, double weight){
+        if (!spawnLists.containsKey(group)){
+            spawnLists.put(group, new RandomCollection<>());
         }
         spawnLists.get(group).add(weight, list);
     }
 
     @Nullable
-    public SpawnList getSpawnListForGroup(MobGroups group){
-        if (group == MobGroups.INVALID){
-            return null;
-        } else if (spawnLists.get(group).size() > 0){
+    public Set<String> getMobGroups(){
+        return spawnLists.keySet();
+    }
+
+    @Nullable
+    public SpawnList getSpawnListForGroup(String group){
+        if (spawnLists.get(group).size() > 0){
             return spawnLists.get(group).next();
         } else {
             return null;
         }
     }
 
-    public boolean isSpawnListEmpty(MobGroups group){
+    public boolean isSpawnListEmpty(String group){
+        if (!spawnLists.containsKey(group)){
+            return true;
+        }
         SpawnList list = getSpawnListForGroup(group);
         if (list == null){
             return true;
@@ -64,8 +54,8 @@ public class MobFaction extends IForgeRegistryEntry.Impl<MobFaction> {
         return list.isEmpty();
     }
 
-    public MobFaction withSpawnList(MobGroups group, SpawnList list, double weight){
-        spawnLists.get(group).add(weight, list);
+    public MobFaction withSpawnList(String group, SpawnList list, double weight){
+        addSpawnList(group, list, weight);
         return this;
     }
 

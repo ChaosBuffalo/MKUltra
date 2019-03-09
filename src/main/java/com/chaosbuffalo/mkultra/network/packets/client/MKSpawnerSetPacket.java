@@ -14,14 +14,14 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class MKSpawnerSetPacket implements IMessage {
     public ResourceLocation factionId;
-    public int spawnerType;
+    public String spawnerType;
     private int x, y, z;
     public int spawnTime;
 
     public MKSpawnerSetPacket() {
     }
 
-    public MKSpawnerSetPacket(ResourceLocation faction, int spawnerType, int spawnTime, int x, int y, int z) {
+    public MKSpawnerSetPacket(ResourceLocation faction, String spawnerType, int spawnTime, int x, int y, int z) {
         this.factionId = faction;
         this.spawnerType = spawnerType;
         this.x = x;
@@ -34,7 +34,7 @@ public class MKSpawnerSetPacket implements IMessage {
     public void fromBytes(ByteBuf buf) {
         PacketBuffer pb = new PacketBuffer(buf);
         factionId = pb.readResourceLocation();
-        spawnerType = pb.readInt();
+        spawnerType = pb.readString(512);
         x = pb.readInt();
         y = pb.readInt();
         z = pb.readInt();
@@ -45,7 +45,7 @@ public class MKSpawnerSetPacket implements IMessage {
     public void toBytes(ByteBuf buf) {
         PacketBuffer pb = new PacketBuffer(buf);
         pb.writeResourceLocation(factionId);
-        pb.writeInt(spawnerType);
+        pb.writeString(spawnerType);
         pb.writeInt(x);
         pb.writeInt(y);
         pb.writeInt(z);

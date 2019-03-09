@@ -39,7 +39,7 @@ public class TileEntityMKSpawner extends TileEntity implements ITickable {
     private int ticksSincePlayer;
     private int internalTickInterval;
     private MobFaction faction;
-    private MobFaction.MobGroups spawnerType;
+    private String spawnerType;
     private SpawnList spawnList;
 
     public TileEntityMKSpawner(){
@@ -54,7 +54,7 @@ public class TileEntityMKSpawner extends TileEntity implements ITickable {
         ticksSincePlayer = 0;
         active = false;
         faction = null;
-        spawnerType = MobFaction.MobGroups.INVALID;
+        spawnerType = "";
         spawnList = null;
     }
 
@@ -82,13 +82,10 @@ public class TileEntityMKSpawner extends TileEntity implements ITickable {
         return ticksBeforeSpawn / GameConstants.TICKS_PER_SECOND;
     }
 
-    public String getMobGroupName(){
-        return spawnerType.name();
-    }
-
-    public MobFaction.MobGroups getMobGroup(){
+    public String getMobGroup(){
         return spawnerType;
     }
+
 
     private float getAverageLevel(List<EntityPlayer> players){
         float levelTotal = 0;
@@ -112,7 +109,7 @@ public class TileEntityMKSpawner extends TileEntity implements ITickable {
 
     private boolean checkSpawnListAndInit(){
         if (spawnList == null){
-            if (faction != null && spawnerType != MobFaction.MobGroups.INVALID){
+            if (faction != null && !spawnerType.equals("")){
                 spawnList = faction.getSpawnListForGroup(spawnerType);
                 this.sync();
                 if (spawnList == null || spawnList.isEmpty()){
@@ -202,8 +199,8 @@ public class TileEntityMKSpawner extends TileEntity implements ITickable {
         if (faction != null){
             tagRoot.setString("faction", faction.getRegistryName().toString());
         }
-        if (spawnerType != MobFaction.MobGroups.INVALID){
-            tagRoot.setInteger("spawnerType", spawnerType.ordinal());
+        if (spawnerType != null){
+            tagRoot.setString("spawnerType", spawnerType);
         }
         if (spawnList != null){
             tagRoot.setString("spawnList", spawnList.getRegistryName().toString());
@@ -218,7 +215,7 @@ public class TileEntityMKSpawner extends TileEntity implements ITickable {
             faction = MKURegistry.getFaction(new ResourceLocation(tagRoot.getString("faction")));
         }
         if (tagRoot.hasKey("spawnerType")){
-            spawnerType = MobFaction.MobGroups.values()[tagRoot.getInteger("spawnerType")];
+            spawnerType = tagRoot.getString("spawnerType");
         }
         if (tagRoot.hasKey("spawnList")){
             spawnList = MKURegistry.getSpawnList(new ResourceLocation(tagRoot.getString("spawnList")));
@@ -247,7 +244,7 @@ public class TileEntityMKSpawner extends TileEntity implements ITickable {
         cleanupMob();
         reset();
         faction = MKURegistry.getFaction(packet.factionId);
-        spawnerType = MobFaction.MobGroups.values()[packet.spawnerType];
+        spawnerType = packet.spawnerType;
         ticksBeforeSpawn = packet.spawnTime * GameConstants.TICKS_PER_SECOND;
         sync();
     }
