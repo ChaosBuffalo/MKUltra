@@ -464,6 +464,10 @@ public class ModSpawn {
                     String mobName = obj.get("name").getAsString();
                     definition.withMobName(mobName);
                 }
+                if (obj.has("additional_loot")){
+                    String lootTable = obj.get("additional_loot").getAsString();
+                    definition.setAdditionalLootTable(new ResourceLocation(lootTable));
+                }
                 if (obj.has("custom_modifiers")){
                     JsonArray json_modifiers = obj.get("custom_modifiers").getAsJsonArray();
                     ArrayList<CustomModifier> modifiers = new ArrayList<>();

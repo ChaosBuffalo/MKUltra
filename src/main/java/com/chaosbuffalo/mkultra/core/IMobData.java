@@ -60,4 +60,10 @@ public interface IMobData {
 
     void setMaxTimeBetweenCasts(int value);
 
+    boolean hasAdditionalLootTable();
+
+    ResourceLocation getAdditionalLootTable();
+
+    void setAdditionalLootTable(ResourceLocation table);
+
 }

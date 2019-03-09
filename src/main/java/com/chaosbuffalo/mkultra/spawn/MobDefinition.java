@@ -4,6 +4,8 @@ import com.chaosbuffalo.mkultra.core.IMobData;
 import com.chaosbuffalo.mkultra.core.MKUMobData;
 import com.chaosbuffalo.mkultra.core.MobAbilityTracker;
 import com.chaosbuffalo.mkultra.init.ModSpawn;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -23,6 +25,7 @@ public class MobDefinition extends IForgeRegistryEntry.Impl<MobDefinition> {
     private final HashSet<MobAbility> mobAbilities;
     private final ArrayList<CustomModifier> customModifiers;
     private String mobName;
+    private ResourceLocation additionalLootTable;
 
     public MobDefinition(ResourceLocation name, Class<? extends EntityLivingBase> entityClass){
         setRegistryName(name);
@@ -37,6 +40,10 @@ public class MobDefinition extends IForgeRegistryEntry.Impl<MobDefinition> {
     public MobDefinition withAttributeRanges(AttributeRange... ranges){
         attributeRanges.addAll(Arrays.asList(ranges));
         return this;
+    }
+
+    public void setAdditionalLootTable(ResourceLocation table){
+        additionalLootTable = table;
     }
 
     public MobDefinition withCustomModifiers(CustomModifier... modifiers){
@@ -68,7 +75,11 @@ public class MobDefinition extends IForgeRegistryEntry.Impl<MobDefinition> {
         if (mobName != null){
             entity.setCustomNameTag(mobName);
         }
-
+        // Lets make it so the mobs cant change their loot
+        // (which would trigger an ai change in some mobs like skeletons).
+        if (entity instanceof EntityLiving){
+            ((EntityLiving) entity).setCanPickUpLoot(false);
+        }
         for (AttributeRange range : attributeRanges){
             range.apply(entity, level, ModSpawn.MAX_LEVEL);
         }
@@ -79,6 +90,9 @@ public class MobDefinition extends IForgeRegistryEntry.Impl<MobDefinition> {
 
         IMobData mobData = MKUMobData.get(entity);
         if (mobData != null){
+            if (additionalLootTable != null){
+                mobData.setAdditionalLootTable(additionalLootTable);
+            }
             mobData.setMobLevel(level);
             for (MobAbility ability : mobAbilities){
                 if (ability != null) {

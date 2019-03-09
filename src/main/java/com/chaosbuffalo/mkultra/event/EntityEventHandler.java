@@ -5,18 +5,30 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.*;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.WorldServer;
+import net.minecraft.world.storage.loot.LootContext;
+import net.minecraft.world.storage.loot.LootTable;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nullable;
+import java.util.Iterator;
+import java.util.Random;
 
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber
@@ -49,6 +61,41 @@ public class EntityEventHandler {
         }
     }
 
+    @Nullable
+    private static EntityItem entityDropItem(ItemStack itemToDrop, float dropOffset, EntityLivingBase entity) {
+        if (itemToDrop.isEmpty()) {
+            return null;
+        } else {
+            EntityItem entityitem = new EntityItem(
+                    entity.world, entity.posX,
+                    entity.posY + (double)dropOffset,
+                    entity.posZ, itemToDrop);
+            entityitem.setDefaultPickupDelay();
+            entity.world.spawnEntity(entityitem);
+            return entityitem;
+        }
+    }
+
+    @SubscribeEvent
+    @SideOnly(Side.SERVER)
+    public static void onLootDropEvent(LivingDropsEvent event){
+        IMobData mobData = MKUMobData.get(event.getEntityLiving());
+        EntityLivingBase entity = event.getEntityLiving();
+        if (mobData != null && mobData.hasAdditionalLootTable()){
+            ResourceLocation lootLoc = mobData.getAdditionalLootTable();
+            LootTable loottable = event.getEntityLiving().getEntityWorld().getLootTableManager()
+                    .getLootTableFromLocation(lootLoc);
+            LootContext.Builder builder = (new LootContext.Builder((WorldServer)entity.world)).withLootedEntity(entity)
+                    .withDamageSource(event.getSource());
+            if (event.getSource().getTrueSource() instanceof  EntityPlayer) {
+                EntityPlayer player = (EntityPlayer) event.getSource().getTrueSource();
+                builder = builder.withPlayer(player).withLuck(player.getLuck());
+            }
+            for (ItemStack itemstack : loottable.generateLootForPools(entity.getRNG(), builder.build())) {
+                entityDropItem(itemstack, 0.0F, entity);
+            }
+        }
+    }
 
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
