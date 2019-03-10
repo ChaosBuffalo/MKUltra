@@ -24,7 +24,7 @@ public class Cleric extends PlayerClass {
     }
 
     public Cleric() {
-        super(MKUltra.MODID, "class.cleric", "Cleric");
+        super(MKUltra.MODID, "class.cleric");
     }
 
     @Override

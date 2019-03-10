@@ -23,7 +23,7 @@ public class WetWizard extends PlayerClass {
     }
 
     public WetWizard() {
-        super(MKUltra.MODID, "class.wet_wizard", "Brine Wizard");
+        super(MKUltra.MODID, "class.wet_wizard");
     }
 
     @Override

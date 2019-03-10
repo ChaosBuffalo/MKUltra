@@ -23,7 +23,7 @@ public class NetherMage extends PlayerClass {
     }
 
     public NetherMage() {
-        super(MKUltra.MODID, "class.nether_mage", "Nether Mage");
+        super(MKUltra.MODID, "class.nether_mage");
     }
 
     @Override

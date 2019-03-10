@@ -27,7 +27,7 @@ public class MoonKnight extends PlayerClass {
     }
 
     public MoonKnight() {
-        super(MKUltra.MODID, "class.moon_knight", "Moon Knight");
+        super(MKUltra.MODID, "class.moon_knight");
     }
 
     @Override

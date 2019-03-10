@@ -27,7 +27,7 @@ public class GreenKnight extends PlayerClass {
     }
 
     public GreenKnight() {
-        super(MKUltra.MODID, "class.green_knight", "Green Knight");
+        super(MKUltra.MODID, "class.green_knight");
     }
 
     @Override

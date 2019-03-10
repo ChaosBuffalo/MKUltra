@@ -60,8 +60,7 @@ public class ClassCommand extends CommandBase {
                 if (data.hasChosenClass()) {
                     ResourceLocation currentClass = data.getClassId();
                     data.unlearnClass(currentClass);
-                    PlayerClass bc = MKURegistry.getClass(currentClass);
-                    sender.sendMessage(new TextComponentString(String.format("Class '%s' unlearned", bc.getClassName())));
+                    sender.sendMessage(new TextComponentString("Class unlearned"));
                 }
                 else {
                     sender.sendMessage(new TextComponentString("You do not have a class. Switch to the class you want to unlearn"));

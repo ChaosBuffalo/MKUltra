@@ -27,7 +27,7 @@ public class Digger extends PlayerClass {
     }
 
     public Digger() {
-        super(MKUltra.MODID, "class.digger", "Digger");
+        super(MKUltra.MODID, "class.digger");
     }
 
     @Override

@@ -24,7 +24,7 @@ public class Brawler extends PlayerClass {
     }
 
     public Brawler() {
-        super(MKUltra.MODID, "class.brawler", "Brawler");
+        super(MKUltra.MODID, "class.brawler");
     }
 
     @Override
