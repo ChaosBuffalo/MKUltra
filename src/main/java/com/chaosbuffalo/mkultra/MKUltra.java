@@ -24,6 +24,8 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.apache.logging.log4j.Logger;
 
+import java.io.File;
+
 
 @Mod(modid = MKUltra.MODID, name= MKUltra.MODNAME, version = MKUltra.VERSION,
         dependencies="required-after:targeting_api;")
@@ -31,6 +33,7 @@ public class MKUltra {
     public static final String MODID = "mkultra";
     public static final String VERSION = "@VERSION@";
     public static final String MODNAME = "MKUltra";
+    public static File config_loc;
 
     public static final CreativeTabs MKULTRA_TAB = new MKUltraTab(CreativeTabs.getNextID(), MODID + ".general");
 
@@ -47,6 +50,7 @@ public class MKUltra {
     @EventHandler
     public void preInit(FMLPreInitializationEvent e) {
         LOG = e.getModLog();
+        config_loc = e.getModConfigurationDirectory();
         MKConfig.init(e.getSuggestedConfigurationFile());
         ModTileEntities.registerTileEntities();
         ModItems.initItems();
