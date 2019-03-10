@@ -363,6 +363,7 @@ public class ModSpawn {
                 faction.addSpawnList(groupName, spawnList, jsonObject.get("weight").getAsDouble());
             }
         }
+        Log.info("Registered Faction %s", faction.getRegistryName().toString());
         event.getRegistry().register(faction);
     }
 
