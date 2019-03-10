@@ -1,31 +1,33 @@
 package com.chaosbuffalo.mkultra.core;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import java.util.List;
 
 public abstract class PlayerClass extends IForgeRegistryEntry.Impl<PlayerClass> {
 
-    private String className;
     private ResourceLocation classId;
 
-    protected PlayerClass(String modId, String pathName, String className) {
-        this(new ResourceLocation(modId, pathName), className);
+    protected PlayerClass(String modId, String pathName) {
+        this(new ResourceLocation(modId, pathName));
     }
 
-    public PlayerClass(ResourceLocation classId, String className) {
+    public PlayerClass(ResourceLocation classId) {
         this.classId = classId;
-        this.className = className;
     }
 
     public ResourceLocation getClassId() {
         return classId;
     }
 
+    @SideOnly(Side.CLIENT)
     public String getClassName() {
-        return className;
+        return I18n.format(String.format("%s.%s.name", classId.getNamespace(), classId.getPath()));
     }
 
     public abstract int getBaseHealth();

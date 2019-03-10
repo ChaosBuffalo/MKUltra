@@ -25,7 +25,7 @@ public class Archer extends PlayerClass {
     }
 
     public Archer() {
-        super(MKUltra.MODID, "class.archer", "Archer");
+        super(MKUltra.MODID, "class.archer");
     }
 
     @Override

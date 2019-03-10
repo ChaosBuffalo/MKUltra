@@ -23,7 +23,7 @@ public class Skald extends PlayerClass {
     }
 
     public Skald() {
-        super(MKUltra.MODID, "class.skald", "Skald");
+        super(MKUltra.MODID, "class.skald");
     }
 
     @Override

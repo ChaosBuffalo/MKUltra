@@ -216,4 +216,16 @@ effect.health_regen_smoke=Health Regen Smoke
 effect.grasping_roots=Grasping Roots
 effect.mana_burn=Mana Burn
 death.attack.mkUltraAbility=%1$s got magicked up by %2$s.
+mkultra.class.archer.name=Archer
+mkultra.class.brawler.name=Brawler
+mkultra.class.digger.name=Digger
+mkultra.class.cleric.name=Cleric
+mkultra.class.skald.name=Skald
+mkultra.class.nether_mage.name=Nether Mage
+mkultra.class.wet_wizard.name=Brine Wizard
+mkultra.class.druid.name=Druid
+mkultra.class.moon_knight.name=Moon Knight
+mkultra.class.wave_knight.name=Wave Knight
+mkultra.class.ranger.name=Ranger
+mkultra.class.green_knight.name=Green Knight
 

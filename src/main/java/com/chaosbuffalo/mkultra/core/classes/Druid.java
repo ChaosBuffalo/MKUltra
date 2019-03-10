@@ -24,7 +24,7 @@ public class Druid extends PlayerClass {
     }
 
     public Druid() {
-        super(MKUltra.MODID, "class.druid", "Druid");
+        super(MKUltra.MODID, "class.druid");
     }
 
     @Override

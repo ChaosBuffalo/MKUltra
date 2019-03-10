@@ -27,7 +27,7 @@ public class WaveKnight extends PlayerClass {
     }
 
     public WaveKnight() {
-        super(MKUltra.MODID, "class.wave_knight", "Wave Knight");
+        super(MKUltra.MODID, "class.wave_knight");
     }
 
     @Override
