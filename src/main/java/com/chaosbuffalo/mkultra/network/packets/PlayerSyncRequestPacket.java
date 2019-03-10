@@ -1,13 +1,11 @@
-package com.chaosbuffalo.mkultra.network.packets.client;
+package com.chaosbuffalo.mkultra.network.packets;
 
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerData;
 import com.chaosbuffalo.mkultra.network.MessageHandler;
-import com.chaosbuffalo.mkultra.utils.ServerUtils;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 
 public class PlayerSyncRequestPacket implements IMessage {
@@ -26,14 +24,11 @@ public class PlayerSyncRequestPacket implements IMessage {
     public static class Handler extends MessageHandler.Server<PlayerSyncRequestPacket> {
 
         @Override
-        public IMessage handleServerMessage(final EntityPlayer player, PlayerSyncRequestPacket msg, MessageContext ctx) {
-            ServerUtils.addScheduledTask(() -> {
-                PlayerData data = (PlayerData) MKUPlayerData.get(player);
-                if (data != null) {
-                    data.forceUpdate();
-                }
-            });
-            return null;
+        public void handleServerMessage(final EntityPlayer player, PlayerSyncRequestPacket msg) {
+            PlayerData data = (PlayerData) MKUPlayerData.get(player);
+            if (data != null) {
+                data.forceUpdate();
+            }
         }
     }
 }

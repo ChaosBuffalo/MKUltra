@@ -4,7 +4,7 @@ import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.network.ModGuiHandler;
-import com.chaosbuffalo.mkultra.network.packets.client.ExecuteActivePacket;
+import com.chaosbuffalo.mkultra.network.packets.ExecuteActivePacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;

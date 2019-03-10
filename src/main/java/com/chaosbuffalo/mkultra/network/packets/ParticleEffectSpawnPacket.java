@@ -1,13 +1,11 @@
-package com.chaosbuffalo.mkultra.network.packets.server;
+package com.chaosbuffalo.mkultra.network.packets;
 
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.MessageHandler;
-import com.chaosbuffalo.mkultra.utils.ClientUtils;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 
 public class ParticleEffectSpawnPacket implements IMessage {
@@ -110,16 +108,14 @@ public class ParticleEffectSpawnPacket implements IMessage {
 
         // Client reads the serialized data from the server
         @Override
-        public IMessage handleClientMessage(final EntityPlayer player,
-                                            final ParticleEffectSpawnPacket msg,
-                                            MessageContext ctx) {
-            ClientUtils.addScheduledTask(() -> ParticleEffects.spawnParticleEffect(
+        public void handleClientMessage(final EntityPlayer player,
+                                        final ParticleEffectSpawnPacket msg) {
+            ParticleEffects.spawnParticleEffect(
                     msg.particleID, msg.motionType, msg.data, msg.speed, msg.count,
                     new Vec3d(msg.xPos, msg.yPos, msg.zPos),
                     new Vec3d(msg.radiusX, msg.radiusY, msg.radiusZ),
                     new Vec3d(msg.headingX, msg.headingY, msg.headingZ),
-                    player.world));
-            return null;
+                    player.world);
         }
     }
 }

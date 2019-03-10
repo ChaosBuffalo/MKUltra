@@ -7,6 +7,8 @@ import com.google.common.collect.Sets;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 import java.util.Set;
@@ -41,6 +43,7 @@ public class ArmorClass {
         this.location = location;
     }
 
+    @SideOnly(Side.CLIENT)
     public String getName()
     {
         return I18n.format(String.format("%s.%s.name", location.getNamespace(), location.getPath()));

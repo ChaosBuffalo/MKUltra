@@ -10,6 +10,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import javax.annotation.Nonnull;
@@ -36,11 +38,13 @@ public abstract class PlayerAbility extends IForgeRegistryEntry.Impl<PlayerAbili
         return abilityId;
     }
 
+    @SideOnly(Side.CLIENT)
     public String getAbilityName()
     {
         return I18n.format(String.format("%s.%s.name", abilityId.getNamespace(), abilityId.getPath()));
     }
 
+    @SideOnly(Side.CLIENT)
     public String getAbilityDescription()
     {
         return I18n.format(String.format("%s.%s.description", abilityId.getNamespace(), abilityId.getPath()));

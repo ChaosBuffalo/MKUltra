@@ -1,8 +1,7 @@
-package com.chaosbuffalo.mkultra.network.packets.client;
+package com.chaosbuffalo.mkultra.network.packets;
 
 import com.chaosbuffalo.mkultra.network.MessageHandler;
 import com.chaosbuffalo.mkultra.tiles.TileEntityMKSpawner;
-import com.chaosbuffalo.mkultra.utils.ServerUtils;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
@@ -10,23 +9,21 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class MKSpawnerSetPacket implements IMessage {
     public ResourceLocation factionId;
     public String spawnerType;
-    private int x, y, z;
     public int spawnTime;
+    private BlockPos pos;
 
     public MKSpawnerSetPacket() {
     }
 
-    public MKSpawnerSetPacket(ResourceLocation faction, String spawnerType, int spawnTime, int x, int y, int z) {
+
+    public MKSpawnerSetPacket(ResourceLocation faction, String spawnerType, int spawnTime, BlockPos pos) {
         this.factionId = faction;
         this.spawnerType = spawnerType;
-        this.x = x;
-        this.y = y;
-        this.z = z;
+        this.pos = pos;
         this.spawnTime = spawnTime;
     }
 
@@ -35,9 +32,7 @@ public class MKSpawnerSetPacket implements IMessage {
         PacketBuffer pb = new PacketBuffer(buf);
         factionId = pb.readResourceLocation();
         spawnerType = pb.readString(512);
-        x = pb.readInt();
-        y = pb.readInt();
-        z = pb.readInt();
+        pos = pb.readBlockPos();
         spawnTime = pb.readInt();
     }
 
@@ -46,9 +41,7 @@ public class MKSpawnerSetPacket implements IMessage {
         PacketBuffer pb = new PacketBuffer(buf);
         pb.writeResourceLocation(factionId);
         pb.writeString(spawnerType);
-        pb.writeInt(x);
-        pb.writeInt(y);
-        pb.writeInt(z);
+        pb.writeBlockPos(pos);
         pb.writeInt(spawnTime);
     }
 
@@ -57,17 +50,13 @@ public class MKSpawnerSetPacket implements IMessage {
     public static class Handler extends MessageHandler.Server<MKSpawnerSetPacket> {
 
         @Override
-        public IMessage handleServerMessage(final EntityPlayer player,
-                                            final MKSpawnerSetPacket msg,
-                                            MessageContext ctx) {
-            ServerUtils.addScheduledTask(() -> {
-                TileEntity entity = player.getEntityWorld().getTileEntity(new BlockPos(msg.x, msg.y, msg.z));
-                if (entity instanceof TileEntityMKSpawner){
-                    TileEntityMKSpawner mkSpawner = (TileEntityMKSpawner)entity;
-                    mkSpawner.setSpawnerWithPacket(msg);
-                }
-            });
-            return null;
+        public void handleServerMessage(final EntityPlayer player,
+                                        final MKSpawnerSetPacket msg) {
+            TileEntity entity = player.getEntityWorld().getTileEntity(msg.pos);
+            if (entity instanceof TileEntityMKSpawner && player.canUseCommandBlock()) {
+                TileEntityMKSpawner mkSpawner = (TileEntityMKSpawner) entity;
+                mkSpawner.setSpawnerWithPacket(msg);
+            }
         }
 
     }

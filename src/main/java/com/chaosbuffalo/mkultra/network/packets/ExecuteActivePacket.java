@@ -1,13 +1,11 @@
-package com.chaosbuffalo.mkultra.network.packets.client;
+package com.chaosbuffalo.mkultra.network.packets;
 
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.network.MessageHandler;
-import com.chaosbuffalo.mkultra.utils.ServerUtils;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 
 public class ExecuteActivePacket implements IMessage {
@@ -33,17 +31,13 @@ public class ExecuteActivePacket implements IMessage {
 
     public static class Handler extends MessageHandler.Server<ExecuteActivePacket> {
         @Override
-        public IMessage handleServerMessage(final EntityPlayer player,
-                                            final ExecuteActivePacket message,
-                                            MessageContext ctx) {
-            ServerUtils.addScheduledTask(() -> {
-                IPlayerData pData = MKUPlayerData.get(player);
-                if (pData == null)
-                    return;
+        public void handleServerMessage(final EntityPlayer player,
+                                        final ExecuteActivePacket message) {
+            IPlayerData pData = MKUPlayerData.get(player);
+            if (pData == null)
+                return;
 
-                pData.executeHotBarAbility(message.slotIndex);
-            });
-            return null;
+            pData.executeHotBarAbility(message.slotIndex);
         }
     }
 }

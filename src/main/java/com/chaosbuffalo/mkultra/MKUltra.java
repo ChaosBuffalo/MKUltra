@@ -1,25 +1,28 @@
 package com.chaosbuffalo.mkultra;
 
 import com.chaosbuffalo.mkultra.command.MKCommand;
-import com.chaosbuffalo.mkultra.core.IMobData;
-import com.chaosbuffalo.mkultra.core.MKUMobData;
-import com.chaosbuffalo.mkultra.core.TargetingExtensions;
+import com.chaosbuffalo.mkultra.core.*;
+import com.chaosbuffalo.mkultra.init.ModItems;
+import com.chaosbuffalo.mkultra.init.ModTileEntities;
 import com.chaosbuffalo.mkultra.item.MKUltraTab;
+import com.chaosbuffalo.mkultra.log.Log;
+import com.chaosbuffalo.mkultra.network.ModGuiHandler;
 import com.chaosbuffalo.mkultra.network.PacketHandler;
 import com.chaosbuffalo.mkultra.party.PartyCommand;
-import com.chaosbuffalo.mkultra.init.ModSpawn;
-import com.chaosbuffalo.targeting_api.Targeting;
-import com.chaosbuffalo.targeting_api.TargetingAPI;
+import com.chaosbuffalo.mkultra.utils.EnvironmentUtils;
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.*;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.apache.logging.log4j.Logger;
-
-import java.util.function.BiFunction;
 
 
 @Mod(modid = MKUltra.MODID, name= MKUltra.MODNAME, version = MKUltra.VERSION,
@@ -45,18 +48,34 @@ public class MKUltra {
     public void preInit(FMLPreInitializationEvent e) {
         LOG = e.getModLog();
         MKConfig.init(e.getSuggestedConfigurationFile());
+        ModTileEntities.registerTileEntities();
+        ModItems.initItems();
+        CapabilityManager.INSTANCE.register(IPlayerData.class, new PlayerDataStorage(), PlayerData.class);
+        CapabilityManager.INSTANCE.register(IMobData.class, new MobDataStorage(), MobData.class);
         proxy.preInit(e);
     }
 
     @EventHandler
     public void init(FMLInitializationEvent e) {
         TargetingExtensions.init();
+        ArmorClass.registerDefaults();
+        NetworkRegistry.INSTANCE.registerGuiHandler(MKUltra.INSTANCE, new ModGuiHandler());
+        MKUltra.packetHandler = new PacketHandler(MKUltra.MODID);
+        MKUltra.packetHandler.registerPackets();
         proxy.init(e);
     }
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent e) {
         MKConfig.registerArmors();
+        GameRegistry.findRegistry(Block.class).getKeys().forEach(key -> {
+            if (key.getPath().toLowerCase().contains("fire")){
+                EnvironmentUtils.addFireBlock(
+                        GameRegistry.findRegistry(Block.class).getValue(key)
+                );
+                Log.info(String.format("Registering fire: %s", key.toString()));
+            }
+        });
         proxy.postInit(e);
     }
 

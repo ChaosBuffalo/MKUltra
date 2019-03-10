@@ -7,7 +7,7 @@ import com.chaosbuffalo.mkultra.core.MKUMobData;
 import com.chaosbuffalo.mkultra.core.MKURegistry;
 import com.chaosbuffalo.mkultra.core.MobAbility;
 import com.chaosbuffalo.mkultra.core.mob_abilities.*;
-import com.chaosbuffalo.mkultra.json_utils.LoadingHelper;
+import com.chaosbuffalo.mkultra.utils.JsonLoader;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.mob_ai.*;
 import com.chaosbuffalo.mkultra.spawn.*;
@@ -40,7 +40,7 @@ public class ModSpawn {
     @SubscribeEvent
     public static void registerItemOptions(RegistryEvent.Register<ItemOption> event) {
         Log.info("Registering Item Options");
-        LoadingHelper.loadModsForType("/spawn/item_options", ModSpawn::loadItemOption, event);
+        JsonLoader.loadModsForType("spawn/item_options", ModSpawn::loadItemOption, event);
     }
 
     @SuppressWarnings("unused")
@@ -81,7 +81,7 @@ public class ModSpawn {
     @SubscribeEvent
     public static void registerAttributeRanges(RegistryEvent.Register<AttributeRange> event) {
         Log.info("Registering Attribute Ranges");
-        LoadingHelper.loadModsForType("/spawn/attributes", ModSpawn::loadAttribute, event);
+        JsonLoader.loadModsForType("spawn/attributes", ModSpawn::loadAttribute, event);
     }
 
     @SuppressWarnings("unused")
@@ -105,21 +105,21 @@ public class ModSpawn {
     @SubscribeEvent
     public static void registerMobDefinitions(RegistryEvent.Register<MobDefinition> event) {
         Log.info("Registering Mob Definitions");
-        LoadingHelper.loadModsForType("/spawn/mob_definitions", ModSpawn::loadMobDefinition, event);
+        JsonLoader.loadModsForType("spawn/mob_definitions", ModSpawn::loadMobDefinition, event);
     }
 
     @SuppressWarnings("unused")
     @SubscribeEvent
     public static void registerMobFactions(RegistryEvent.Register<MobFaction> event) {
         Log.info("Registering Mob Factions");
-        LoadingHelper.loadModsForType("/spawn/mob_factions", ModSpawn::loadMobFactions, event);
+        JsonLoader.loadModsForType("spawn/mob_factions", ModSpawn::loadMobFactions, event);
     }
 
     @SuppressWarnings("unused")
     @SubscribeEvent
     public static void registerSpawnLists(RegistryEvent.Register<SpawnList> event) {
         Log.info("Registering Spawn Lists");
-        LoadingHelper.loadModsForType("/spawn/spawn_lists", ModSpawn::loadSpawnList, event);
+        JsonLoader.loadModsForType("spawn/spawn_lists", ModSpawn::loadSpawnList, event);
     }
 
     @SuppressWarnings("unused")
@@ -204,7 +204,7 @@ public class ModSpawn {
     @SubscribeEvent
     public static void registerAIModifiers(RegistryEvent.Register<AIModifier> event) {
         Log.info("Registering AI Modifiers");
-        LoadingHelper.loadModsForType("/spawn/ai_modifiers", ModSpawn::loadAIModifier, event);
+        JsonLoader.loadModsForType("spawn/ai_modifiers", ModSpawn::loadAIModifier, event);
         AIModifier remove_all_tasks = new AIModifier(
                 new ResourceLocation(MKUltra.MODID, "remove_all_tasks"),
                 AIModifiers.REMOVE_ALL_TASKS);

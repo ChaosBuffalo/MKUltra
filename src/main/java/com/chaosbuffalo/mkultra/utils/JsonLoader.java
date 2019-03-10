@@ -1,4 +1,4 @@
-package com.chaosbuffalo.mkultra.json_utils;
+package com.chaosbuffalo.mkultra.utils;
 
 import com.chaosbuffalo.mkultra.log.Log;
 import com.google.gson.Gson;
@@ -14,10 +14,11 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.util.TriConsumer;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
-public class LoadingHelper {
+public class JsonLoader {
     private static Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
 
     public static <E> void loadModsForType(String subFolder,
@@ -33,7 +34,8 @@ public class LoadingHelper {
                                             TriConsumer<ResourceLocation, JsonObject, E> registerFunc,
                                             E event) {
         Loader.instance().setActiveModContainer(mod);
-        return CraftingHelper.findFiles(mod, "assets/" + mod.getModId() + subFolder,
+        String path = "assets" + File.pathSeparator + mod.getModId() + File.pathSeparator + subFolder;
+        return CraftingHelper.findFiles(mod, path,
                 root -> true,
                 (root, file) -> {
                     String relative = root.relativize(file).toString();

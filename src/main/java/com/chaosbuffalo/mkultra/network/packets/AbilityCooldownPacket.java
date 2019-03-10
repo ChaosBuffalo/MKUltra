@@ -1,15 +1,13 @@
-package com.chaosbuffalo.mkultra.network.packets.server;
+package com.chaosbuffalo.mkultra.network.packets;
 
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.network.MessageHandler;
-import com.chaosbuffalo.mkultra.utils.ClientUtils;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class AbilityCooldownPacket implements IMessage {
 
@@ -43,18 +41,14 @@ public class AbilityCooldownPacket implements IMessage {
 
         // Client reads the serialized data from the server
         @Override
-        public IMessage handleClientMessage(final EntityPlayer player, final AbilityCooldownPacket msg, MessageContext ctx) {
-            ClientUtils.addScheduledTask(() -> {
-                if (player == null)
-                    return;
-                IPlayerData data = MKUPlayerData.get(player);
-                if (data == null)
-                    return;
+        public void handleClientMessage(final EntityPlayer player, final AbilityCooldownPacket msg) {
+            if (player == null)
+                return;
+            IPlayerData data = MKUPlayerData.get(player);
+            if (data == null)
+                return;
 
-                data.setCooldown(msg.skillId, msg.cooldown);
-            });
-            return null;
-
+            data.setCooldown(msg.skillId, msg.cooldown);
         }
     }
 }

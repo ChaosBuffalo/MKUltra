@@ -1,4 +1,4 @@
-package com.chaosbuffalo.mkultra.choice;
+package com.chaosbuffalo.mkultra.utils;
 
 import java.util.NavigableMap;
 import java.util.TreeMap;

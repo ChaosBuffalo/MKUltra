@@ -6,11 +6,9 @@ import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.effects.PassiveEffect;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
-import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
 import com.chaosbuffalo.mkultra.effects.SpellTriggers;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
-import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
-import com.chaosbuffalo.targeting_api.Targeting;
+import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,7 +16,6 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -57,8 +54,7 @@ public class WildToxinPotion extends PassiveEffect {
             if (pData == null)
                 return;
 
-            if (pData.getMana() >= potion.getAmplifier()) {
-                pData.setMana(pData.getMana() - potion.getAmplifier());
+            if (pData.consumeMana(potion.getAmplifier())) {
                 EntityLivingBase livingTarget = (EntityLivingBase) target;
 
                 SpellCast toxin = WildToxinEffectPotion.Create(player);

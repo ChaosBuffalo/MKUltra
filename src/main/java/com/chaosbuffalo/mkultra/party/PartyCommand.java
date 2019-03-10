@@ -1,7 +1,7 @@
 package com.chaosbuffalo.mkultra.party;
 
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.network.packets.server.PartyInvitePacket;
+import com.chaosbuffalo.mkultra.network.packets.PartyInvitePacket;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;

@@ -4,7 +4,7 @@ import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.item.interfaces.IClassProvider;
-import com.chaosbuffalo.mkultra.network.packets.client.LevelAbilityPacket;
+import com.chaosbuffalo.mkultra.network.packets.LevelAbilityPacket;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;

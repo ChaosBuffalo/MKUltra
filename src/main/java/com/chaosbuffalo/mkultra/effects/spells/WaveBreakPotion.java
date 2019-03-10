@@ -70,9 +70,8 @@ public class WaveBreakPotion extends PassiveEffect {
                 if (teammatedata == null) {
                     continue;
                 }
-                if (teammatedata.getMana() > 0) {
+                if (teammatedata.consumeMana(1)) {
                     damageAbsorbers.add(teammate);
-                    teammatedata.setMana(teammatedata.getMana() - 1);
                 } else {
                     teammate.removePotionEffect(WaveBreakPotion.INSTANCE);
                 }

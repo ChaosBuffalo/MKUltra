@@ -4,7 +4,7 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
-import com.chaosbuffalo.mkultra.network.packets.server.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -31,10 +31,10 @@ public abstract class SongApplicator extends SongPotionBase {
             if (pData == null)
                 return;
             PlayerAbility ability = MKURegistry.getAbility(PlayerToggleAbility.getToggleAbilityIdForPotion(this));
+            if (ability == null)
+                return;
 
-            if (pData.getMana() >= ability.getManaCost(amplifier)) {
-                pData.setMana(pData.getMana() - ability.getManaCost(amplifier));
-            } else {
+            if (!pData.consumeMana(ability.getManaCost(amplifier))) {
                 player.removePotionEffect(this);
             }
 

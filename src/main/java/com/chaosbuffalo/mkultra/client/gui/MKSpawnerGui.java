@@ -3,7 +3,7 @@ package com.chaosbuffalo.mkultra.client.gui;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.MKURegistry;
 import com.chaosbuffalo.mkultra.log.Log;
-import com.chaosbuffalo.mkultra.network.packets.client.MKSpawnerSetPacket;
+import com.chaosbuffalo.mkultra.network.packets.MKSpawnerSetPacket;
 import com.chaosbuffalo.mkultra.spawn.MobFaction;
 import com.chaosbuffalo.mkultra.tiles.TileEntityMKSpawner;
 import net.minecraft.client.gui.GuiButton;
@@ -225,7 +225,7 @@ public class MKSpawnerGui extends GuiScreen {
                 break;
             case SYNC:
                 MKUltra.packetHandler.sendToServer(new MKSpawnerSetPacket(factionName, mobGroup,
-                        spawnTime, spawner.getPos().getX(), spawner.getPos().getY(), spawner.getPos().getZ()));
+                        spawnTime, spawner.getPos()));
                 this.mc.displayGuiScreen(null);
                 if (this.mc.currentScreen == null)
                     this.mc.setIngameFocus();

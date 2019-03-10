@@ -2,7 +2,7 @@ package com.chaosbuffalo.mkultra.client.gui;
 
 import com.chaosbuffalo.mkultra.ClientProxy;
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.network.packets.client.PartyInviteResponsePacket;
+import com.chaosbuffalo.mkultra.network.packets.PartyInviteResponsePacket;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
