@@ -19,6 +19,7 @@ public class MobData implements IMobData {
     private BlockPos spawnPoint;
     private int timeBetweenCasts;
     private int maxTimeBetweenCasts;
+    private ResourceLocation additionalLootTable;
 
 
     public MobData(EntityLivingBase entity) {
@@ -62,12 +63,18 @@ public class MobData implements IMobData {
     @Override
     public void serialize(NBTTagCompound tag) {
         tag.setBoolean("isMKSpawned", isMKSpawned());
+        if (hasAdditionalLootTable()){
+            tag.setString("additionalLootTable", additionalLootTable.toString());
+        }
     }
 
     @Override
     public void deserialize(NBTTagCompound tag) {
         if (tag.hasKey("isMKSpawned")) {
             setMKSpawned(tag.getBoolean("isMKSpawned"));
+        }
+        if (tag.hasKey("additionalLootTable")){
+            setAdditionalLootTable(new ResourceLocation(tag.getString("additionalLootTable")));
         }
     }
 
@@ -169,5 +176,20 @@ public class MobData implements IMobData {
     @Override
     public void setMaxTimeBetweenCasts(int value) {
         maxTimeBetweenCasts = value;
+    }
+
+    @Override
+    public boolean hasAdditionalLootTable() {
+        return additionalLootTable != null;
+    }
+
+    @Override
+    public ResourceLocation getAdditionalLootTable() {
+        return additionalLootTable;
+    }
+
+    @Override
+    public void setAdditionalLootTable(ResourceLocation table) {
+        additionalLootTable = table;
     }
 }

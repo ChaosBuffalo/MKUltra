@@ -11,7 +11,6 @@ public class EntityAIBuffTeammates extends EntityAISpellCastingBase {
 
     private double MAX_BUFF_RANGE = 20.0;
 
-
     public EntityAIBuffTeammates(EntityLivingBase entity, IMobData mobData, int cooldown){
         super(entity, mobData, cooldown);
         setStrafeRange(.1f, .5f);
@@ -21,7 +20,6 @@ public class EntityAIBuffTeammates extends EntityAISpellCastingBase {
 
     @Override
     public boolean shouldExecute() {
-
         if (mobData.hasAbilities() && !mobData.isOnCastCooldown() && entity.getEntityWorld().rand.nextInt(10) > 3){
             List<Entity> entities = getEntitiesInRange(MAX_BUFF_RANGE, false,
                     Targeting.TargetType.FRIENDLY);
@@ -59,7 +57,4 @@ public class EntityAIBuffTeammates extends EntityAISpellCastingBase {
         }
         return false;
     }
-
-
-
 }

@@ -32,7 +32,15 @@ minecraft {
     makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 }
 
+repositories {
+    maven {
+        name = 'CurseForge'
+        url = 'https://minecraft.curseforge.com/api/maven/'
+    }
+}
+
 dependencies {
+    deobfCompile group: 'targetingapi', name: 'targeting_api', version: '0.12'
     compile fileTree(dir: 'libs', include: '*.jar')
 }
 

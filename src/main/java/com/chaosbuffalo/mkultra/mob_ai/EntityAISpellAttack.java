@@ -43,13 +43,5 @@ public class EntityAISpellAttack extends EntityAISpellCastingBase {
         }
         return false;
     }
-
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
-
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
 }
 
