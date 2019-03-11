@@ -25,17 +25,17 @@ public class JsonLoader {
 
     public static <E> void loadModsForType(String subFolder,
                                            TriConsumer<ResourceLocation, JsonObject, E> registerFunc,
-                                           E event) {
+                                           E register) {
         ModContainer old = Loader.instance().activeModContainer();
-        Loader.instance().setActiveModContainer(null);
         Loader.instance().getActiveModList().forEach(mod -> loadJsonFiles(mod, subFolder,
-                "assets", registerFunc, event));
+                "assets", registerFunc, register));
         Loader.instance().setActiveModContainer(old);
-        loadJsonConfigs(subFolder, registerFunc, event);
+        loadJsonConfigs(subFolder, registerFunc, register);
     }
 
     public static <E> void loadJsonConfigs(String subFolder, TriConsumer<ResourceLocation, JsonObject, E> registerFunc,
-                                              E event){
+                                              E registry){
+
         String path = MKUltra.config_loc + File.separator + MKUltra.MODID + File.separator + subFolder;
         if (Files.isDirectory(Paths.get(path))) {
             try {
@@ -46,7 +46,7 @@ public class JsonLoader {
                             ResourceLocation key = new ResourceLocation(MKUltra.MODID, name);
                             try (BufferedReader reader = Files.newBufferedReader(f)) {
                                 JsonObject json = JsonUtils.fromJson(GSON, reader, JsonObject.class);
-                                registerFunc.accept(key, json, event);
+                                registerFunc.accept(key, json, registry);
                             } catch (JsonParseException e) {
                                 Log.error("Parsing error loading json {}", key, e);
                             } catch (IOException e) {

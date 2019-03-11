@@ -3,6 +3,7 @@ package com.chaosbuffalo.mkultra;
 import com.chaosbuffalo.mkultra.command.MKCommand;
 import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.init.ModItems;
+import com.chaosbuffalo.mkultra.init.ModSpawn;
 import com.chaosbuffalo.mkultra.init.ModTileEntities;
 import com.chaosbuffalo.mkultra.item.MKUltraTab;
 import com.chaosbuffalo.mkultra.log.Log;
@@ -80,6 +81,7 @@ public class MKUltra {
                 Log.info(String.format("Registering fire: %s", key.toString()));
             }
         });
+        ModSpawn.postInitJsonRegisistation();
         proxy.postInit(e);
     }
 
