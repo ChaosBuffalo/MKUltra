@@ -22,8 +22,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.ModContainer;
+import net.minecraftforge.fml.common.ModContainerFactory;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.registries.IForgeRegistry;
 
 import java.util.ArrayList;
 import java.util.function.BiConsumer;
@@ -38,7 +42,25 @@ public class ModSpawn {
     @SubscribeEvent
     public static void registerItemOptions(RegistryEvent.Register<ItemOption> event) {
         Log.info("Registering Item Options");
-        JsonLoader.loadModsForType("spawn/item_options", ModSpawn::loadItemOption, event);
+
+    }
+
+    public static void postInitJsonRegisistation(){
+        ModContainer old = Loader.instance().activeModContainer();
+        JsonLoader.loadModsForType("spawn/attributes",
+                ModSpawn::loadAttribute, MKURegistry.REGISTRY_MOB_ATTRS);
+        JsonLoader.loadModsForType("spawn/item_options",
+                ModSpawn::loadItemOption, MKURegistry.REGISTRY_MOB_ITEMS);
+        JsonLoader.loadModsForType("spawn/ai_modifiers",
+                ModSpawn::loadAIModifier, MKURegistry.REGISTRY_MOB_AI_MODS);
+        JsonLoader.loadModsForType("spawn/mob_definitions",
+                ModSpawn::loadMobDefinition, MKURegistry.REGISTRY_MOB_DEF);
+        JsonLoader.loadModsForType("spawn/spawn_lists",
+                ModSpawn::loadSpawnList, MKURegistry.REGISTRY_SPAWN_LISTS);
+        JsonLoader.loadModsForType("spawn/mob_factions",
+                ModSpawn::loadMobFactions, MKURegistry.REGISTRY_MOB_FACTIONS);
+        Loader.instance().setActiveModContainer(old);
+
     }
 
     @SuppressWarnings("unused")
@@ -79,7 +101,6 @@ public class ModSpawn {
     @SubscribeEvent
     public static void registerAttributeRanges(RegistryEvent.Register<AttributeRange> event) {
         Log.info("Registering Attribute Ranges");
-        JsonLoader.loadModsForType("spawn/attributes", ModSpawn::loadAttribute, event);
     }
 
     @SuppressWarnings("unused")
@@ -103,21 +124,20 @@ public class ModSpawn {
     @SubscribeEvent
     public static void registerMobDefinitions(RegistryEvent.Register<MobDefinition> event) {
         Log.info("Registering Mob Definitions");
-        JsonLoader.loadModsForType("spawn/mob_definitions", ModSpawn::loadMobDefinition, event);
+
     }
 
     @SuppressWarnings("unused")
     @SubscribeEvent
     public static void registerMobFactions(RegistryEvent.Register<MobFaction> event) {
         Log.info("Registering Mob Factions");
-        JsonLoader.loadModsForType("spawn/mob_factions", ModSpawn::loadMobFactions, event);
+
     }
 
     @SuppressWarnings("unused")
     @SubscribeEvent
     public static void registerSpawnLists(RegistryEvent.Register<SpawnList> event) {
         Log.info("Registering Spawn Lists");
-        JsonLoader.loadModsForType("spawn/spawn_lists", ModSpawn::loadSpawnList, event);
     }
 
     @SuppressWarnings("unused")
@@ -202,7 +222,6 @@ public class ModSpawn {
     @SubscribeEvent
     public static void registerAIModifiers(RegistryEvent.Register<AIModifier> event) {
         Log.info("Registering AI Modifiers");
-        JsonLoader.loadModsForType("spawn/ai_modifiers", ModSpawn::loadAIModifier, event);
         AIModifier remove_all_tasks = new AIModifier(
                 new ResourceLocation(MKUltra.MODID, "remove_all_tasks"),
                 AIModifiers.REMOVE_ALL_TASKS);
@@ -216,7 +235,7 @@ public class ModSpawn {
 
 
     public static void loadAttribute(ResourceLocation name, JsonObject obj,
-                                     RegistryEvent.Register<AttributeRange> event) {
+                                     IForgeRegistry<AttributeRange> registry) {
         String[] keys = {"setter", "min_value", "max_value"};
         if (!checkKeysExist(keys, obj)) {
             return;
@@ -224,7 +243,7 @@ public class ModSpawn {
         AttributeRange range = new AttributeRange(name, MKURegistry.getAttributeSetter(
                 new ResourceLocation(obj.get("setter").getAsString())),
                 obj.get("min_value").getAsDouble(), obj.get("max_value").getAsDouble());
-        event.getRegistry().register(range);
+        registry.register(range);
     }
 
     public static boolean checkKeysExist(String[] keys, JsonObject obj) {
@@ -283,7 +302,7 @@ public class ModSpawn {
     }
 
     public static void loadItemOption(ResourceLocation name, JsonObject obj,
-                                      RegistryEvent.Register<ItemOption> event) {
+                                      IForgeRegistry<ItemOption> registry) {
         String[] keys = {"slot", "choices"};
         if (!checkKeysExist(keys, obj)) {
             return;
@@ -330,12 +349,12 @@ public class ModSpawn {
             }
         }
         ItemOption option = new ItemOption(name, assigner, choices.toArray(new ItemChoice[0]));
-        event.getRegistry().register(option);
+        registry.register(option);
     }
 
 
     public static void loadMobFactions(ResourceLocation name, JsonObject obj,
-                                       RegistryEvent.Register<MobFaction> event) {
+                                       IForgeRegistry<MobFaction> registry) {
         String[] keys = {"groups"};
         if (!checkKeysExist(keys, obj)) {
             return;
@@ -362,11 +381,11 @@ public class ModSpawn {
             }
         }
         Log.info("Registered Faction %s", faction.getRegistryName().toString());
-        event.getRegistry().register(faction);
+        registry.register(faction);
     }
 
     public static void loadSpawnList(ResourceLocation name, JsonObject obj,
-                                     RegistryEvent.Register<SpawnList> event) {
+                                     IForgeRegistry<SpawnList> registry) {
         String[] keys = {"options"};
         if (!checkKeysExist(keys, obj)) {
             return;
@@ -389,12 +408,12 @@ public class ModSpawn {
             choices.add(mobChoice);
         }
         SpawnList spawnList = new SpawnList(name).withOptions(choices.toArray(new MobChoice[0]));
-        event.getRegistry().register(spawnList);
+        registry.register(spawnList);
 
     }
 
     public static void loadMobDefinition(ResourceLocation name, JsonObject obj,
-                                         RegistryEvent.Register<MobDefinition> event) {
+                                         IForgeRegistry<MobDefinition> registry) {
         String[] keys = {"type"};
         if (!checkKeysExist(keys, obj)) {
             return;
@@ -496,7 +515,7 @@ public class ModSpawn {
                 }
                 definition.withCustomModifiers(modifiers.toArray(new CustomModifier[0]));
             }
-            event.getRegistry().register(definition);
+            registry.register(definition);
         } else {
             Log.info("%s  not an EntityLivingBase skipping mob definition %s",
                 loc.toString(), obj.toString());
@@ -504,7 +523,7 @@ public class ModSpawn {
     }
 
     public static void loadAIModifier(ResourceLocation name, JsonObject obj,
-                                      RegistryEvent.Register<AIModifier> event) {
+                                      IForgeRegistry<AIModifier> registry) {
         String[] keys = {"type", "choices"};
         if (!checkKeysExist(keys, obj)) {
             return;
@@ -540,13 +559,13 @@ public class ModSpawn {
                 }
                 Log.info("registering add task %s", name);
                 AIModifier ai_modifier = new AIModifier(name, modifier, choices.toArray(new BehaviorChoice[0]));
-                event.getRegistry().register(ai_modifier);
+                registry.register(ai_modifier);
                 break;
             }
             case "REMOVE_ALL_TARGET_TASKS":
             case "REMOVE_ALL_TASKS": {
                 AIModifier ai_modifier = new AIModifier(name, modifier);
-                event.getRegistry().register(ai_modifier);
+                registry.register(ai_modifier);
                 break;
             }
             case "REMOVE_AI": {
@@ -583,7 +602,7 @@ public class ModSpawn {
                 Log.info("registering remove task %s", name);
                 AIModifier remove_task = new AIModifier(name, AIModifiers.REMOVE_AI,
                         choices.toArray(new BehaviorChoice[0]));
-                event.getRegistry().register(remove_task);
+                registry.register(remove_task);
             }
 
         }
