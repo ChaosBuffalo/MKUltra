@@ -14,9 +14,7 @@ import com.chaosbuffalo.mkultra.spawn.*;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.player.EntityPlayer;
@@ -401,108 +399,107 @@ public class ModSpawn {
         if (!checkKeysExist(keys, obj)) {
             return;
         }
-        try {
-            Class mobClass = Class.forName(obj.get("type").getAsString());
-            if (EntityLivingBase.class.isAssignableFrom(mobClass)) {
-                MobDefinition definition = new MobDefinition(name, mobClass);
-                if (obj.has("attributes")) {
-                    JsonArray attributeList = obj.get("attributes").getAsJsonArray();
-                    ArrayList<AttributeRange> ranges = new ArrayList<>();
-                    for (JsonElement ele : attributeList) {
-                        String attributeName = ele.getAsString();
-                        AttributeRange range = MKURegistry.getAttributeRange(new ResourceLocation(attributeName));
-                        if (range != null) {
-                            ranges.add(range);
-                        } else {
-                            Log.info("Error finding attribute range for: %s", attributeName);
-                        }
+        ResourceLocation loc = new ResourceLocation(obj.get("type").getAsString());
+        Class<? extends Entity> mobClass = EntityList.getClass(loc);
+        if  (mobClass == null){
+            Log.info("Mob not found for: %s", loc.toString());
+            return;
+        }
+        if (EntityLivingBase.class.isAssignableFrom(mobClass)) {
+            MobDefinition definition = new MobDefinition(name,
+                    (Class<? extends EntityLivingBase>) mobClass);
+            if (obj.has("attributes")) {
+                JsonArray attributeList = obj.get("attributes").getAsJsonArray();
+                ArrayList<AttributeRange> ranges = new ArrayList<>();
+                for (JsonElement ele : attributeList) {
+                    String attributeName = ele.getAsString();
+                    AttributeRange range = MKURegistry.getAttributeRange(new ResourceLocation(attributeName));
+                    if (range != null) {
+                        ranges.add(range);
+                    } else {
+                        Log.info("Error finding attribute range for: %s", attributeName);
                     }
-                    definition.withAttributeRanges(ranges.toArray(new AttributeRange[0]));
                 }
-                if (obj.has("item_options")) {
-                    JsonArray item_options = obj.get("item_options").getAsJsonArray();
-                    ArrayList<ItemOption> options = new ArrayList<>();
-                    for (JsonElement ele : item_options) {
-                        String option_name = ele.getAsString();
-                        ItemOption option = MKURegistry.getItemOption(new ResourceLocation(option_name));
-                        if (option != null) {
-                            options.add(option);
-                        } else {
-                            Log.info("Error finding ItemOption for: %s", option_name);
-                        }
-                    }
-                    definition.withItemOptions(options.toArray(new ItemOption[0]));
-                }
-                if (obj.has("abilities")) {
-                    JsonArray json_options = obj.get("abilities").getAsJsonArray();
-                    ArrayList<MobAbility> options = new ArrayList<>();
-                    for (JsonElement ele : json_options) {
-                        String option_name = ele.getAsString();
-                        MobAbility option = MKURegistry.getMobAbility(new ResourceLocation(option_name));
-                        if (option != null) {
-                            options.add(option);
-                        } else {
-                            Log.info("Error finding MobAbility for: %s", option_name);
-                        }
-                    }
-                    definition.withAbilities(options.toArray(new MobAbility[0]));
-                }
-                if (obj.has("ai_modifiers")) {
-                    JsonArray json_options = obj.get("ai_modifiers").getAsJsonArray();
-                    ArrayList<AIModifier> options = new ArrayList<>();
-                    for (JsonElement ele : json_options) {
-                        String option_name = ele.getAsString();
-                        AIModifier option = MKURegistry.getAIModifier(new ResourceLocation(option_name));
-                        if (option != null) {
-                            options.add(option);
-                        } else {
-                            Log.info("Error finding AI Modifier for: %s", option_name);
-                        }
-                    }
-                    definition.withAIModifiers(options.toArray(new AIModifier[0]));
-                }
-                if (obj.has("name")){
-                    String mobName = obj.get("name").getAsString();
-                    definition.withMobName(mobName);
-                }
-                if (obj.has("additional_loot")){
-                    String lootTable = obj.get("additional_loot").getAsString();
-                    definition.setAdditionalLootTable(new ResourceLocation(lootTable));
-                }
-                if (obj.has("custom_modifiers")){
-                    JsonArray json_modifiers = obj.get("custom_modifiers").getAsJsonArray();
-                    ArrayList<CustomModifier> modifiers = new ArrayList<>();
-                    for (JsonElement ele : json_modifiers){
-                        JsonObject jsonObject = ele.getAsJsonObject();
-                        String[] customKeys = {"setter"};
-                        if (!checkKeysExist(customKeys, jsonObject)) {
-                            continue;
-                        }
-                        CustomSetter setter = MKURegistry.getCustomSetter(
-                                new ResourceLocation(jsonObject.get("setter").getAsString()));
-                        if (setter == null){
-                            Log.info("Could not find custom setter with name %s, skipping load.",
-                                    jsonObject.get("setter").getAsString());
-                            continue;
-                        }
-                        CustomModifier mod = setter.loadFromJson(jsonObject);
-                        if (mod == null){
-                            continue;
-                        }
-                        modifiers.add(mod);
-                    }
-                    definition.withCustomModifiers(modifiers.toArray(new CustomModifier[0]));
-                }
-                event.getRegistry().register(definition);
-
-            } else {
-                Log.info("%s Class not an EntityLivingBase skipping mob definition %s",
-                        mobClass.toString(), obj.toString());
+                definition.withAttributeRanges(ranges.toArray(new AttributeRange[0]));
             }
-        } catch (ClassNotFoundException e) {
-            Log.info("Type not found for entity: %s, skipping mob definition: %s",
-                    obj.get("type").getAsString(),
-                    obj.toString());
+            if (obj.has("item_options")) {
+                JsonArray item_options = obj.get("item_options").getAsJsonArray();
+                ArrayList<ItemOption> options = new ArrayList<>();
+                for (JsonElement ele : item_options) {
+                    String option_name = ele.getAsString();
+                    ItemOption option = MKURegistry.getItemOption(new ResourceLocation(option_name));
+                    if (option != null) {
+                        options.add(option);
+                    } else {
+                        Log.info("Error finding ItemOption for: %s", option_name);
+                    }
+                }
+                definition.withItemOptions(options.toArray(new ItemOption[0]));
+            }
+            if (obj.has("abilities")) {
+                JsonArray json_options = obj.get("abilities").getAsJsonArray();
+                ArrayList<MobAbility> options = new ArrayList<>();
+                for (JsonElement ele : json_options) {
+                    String option_name = ele.getAsString();
+                    MobAbility option = MKURegistry.getMobAbility(new ResourceLocation(option_name));
+                    if (option != null) {
+                        options.add(option);
+                    } else {
+                        Log.info("Error finding MobAbility for: %s", option_name);
+                    }
+                }
+                definition.withAbilities(options.toArray(new MobAbility[0]));
+            }
+            if (obj.has("ai_modifiers")) {
+                JsonArray json_options = obj.get("ai_modifiers").getAsJsonArray();
+                ArrayList<AIModifier> options = new ArrayList<>();
+                for (JsonElement ele : json_options) {
+                    String option_name = ele.getAsString();
+                    AIModifier option = MKURegistry.getAIModifier(new ResourceLocation(option_name));
+                    if (option != null) {
+                        options.add(option);
+                    } else {
+                        Log.info("Error finding AI Modifier for: %s", option_name);
+                    }
+                }
+                definition.withAIModifiers(options.toArray(new AIModifier[0]));
+            }
+            if (obj.has("name")) {
+                String mobName = obj.get("name").getAsString();
+                definition.withMobName(mobName);
+            }
+            if (obj.has("additional_loot")) {
+                String lootTable = obj.get("additional_loot").getAsString();
+                definition.setAdditionalLootTable(new ResourceLocation(lootTable));
+            }
+            if (obj.has("custom_modifiers")) {
+                JsonArray json_modifiers = obj.get("custom_modifiers").getAsJsonArray();
+                ArrayList<CustomModifier> modifiers = new ArrayList<>();
+                for (JsonElement ele : json_modifiers) {
+                    JsonObject jsonObject = ele.getAsJsonObject();
+                    String[] customKeys = {"setter"};
+                    if (!checkKeysExist(customKeys, jsonObject)) {
+                        continue;
+                    }
+                    CustomSetter setter = MKURegistry.getCustomSetter(
+                            new ResourceLocation(jsonObject.get("setter").getAsString()));
+                    if (setter == null) {
+                        Log.info("Could not find custom setter with name %s, skipping load.",
+                                jsonObject.get("setter").getAsString());
+                        continue;
+                    }
+                    CustomModifier mod = setter.loadFromJson(jsonObject);
+                    if (mod == null) {
+                        continue;
+                    }
+                    modifiers.add(mod);
+                }
+                definition.withCustomModifiers(modifiers.toArray(new CustomModifier[0]));
+            }
+            event.getRegistry().register(definition);
+        } else {
+            Log.info("%s  not an EntityLivingBase skipping mob definition %s",
+                loc.toString(), obj.toString());
         }
     }
 
