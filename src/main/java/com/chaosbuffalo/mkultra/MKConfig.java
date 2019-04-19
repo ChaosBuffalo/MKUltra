@@ -48,7 +48,6 @@ public class MKConfig {
                 "lurker_skin",
                 "VOIDROBE",
                 "SPECIAL",
-
         };
 
         @Config.Comment("Armor Materials for Light Armor Class")

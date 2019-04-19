@@ -45,7 +45,7 @@ public class TileEntityMKSpawner extends TileEntity implements ITickable {
     }
 
     private void reset(){
-        ticksBeforeSpawn = 5 * GameConstants.TICKS_PER_SECOND;
+        ticksBeforeSpawn = 120 * GameConstants.TICKS_PER_SECOND;
         currentMob = -1;
         tickCount = ticksBeforeSpawn;
         ticksSincePlayer = 0;

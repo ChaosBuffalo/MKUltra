@@ -31,8 +31,9 @@ public class EntityWhirlpoolProjectile extends EntityBaseProjectile {
         this.setDeathTime(80);
     }
 
-    public EntityWhirlpoolProjectile(World worldIn, double x, double y, double z) {
-        super(worldIn, x, y, z);
+    public EntityWhirlpoolProjectile(World worldIn, EntityLivingBase throwerIn, double offset){
+        super(worldIn, throwerIn, offset);
+        this.setDeathTime(80);
     }
 
     @Override

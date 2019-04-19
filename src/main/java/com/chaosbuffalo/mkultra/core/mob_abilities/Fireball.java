@@ -9,11 +9,11 @@ import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.World;
 
-public class MobFireball extends MobAbility {
+public class Fireball extends MobAbility {
     private static float PROJECTILE_SPEED = 1.0f;
     private static float PROJECTILE_INACCURACY = 5.0f;
 
-    public MobFireball() {
+    public Fireball() {
         super(MKUltra.MODID, "mob_ability.fireball");
     }
 

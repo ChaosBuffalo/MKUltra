@@ -33,10 +33,6 @@ public class EntityDualityRuneProjectile extends EntityBaseProjectile {
         this.setGroundProcTime(30);
     }
 
-    public EntityDualityRuneProjectile(World worldIn, double x, double y, double z) {
-        super(worldIn, x, y, z);
-    }
-
     @Override
     protected Targeting.TargetType getTargetType() {
         return Targeting.TargetType.ALL;

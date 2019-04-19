@@ -31,10 +31,6 @@ public class EntityGeyserProjectile extends EntityBaseProjectile {
         this.setGroundProcTime(50);
     }
 
-    public EntityGeyserProjectile(World worldIn, double x, double y, double z) {
-        super(worldIn, x, y, z);
-    }
-
     @Override
     protected Targeting.TargetType getTargetType() {
         return Targeting.TargetType.ALL;

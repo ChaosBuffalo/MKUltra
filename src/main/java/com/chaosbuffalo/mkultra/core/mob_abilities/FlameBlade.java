@@ -18,10 +18,10 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class MobFlameBlade extends MobAbility {
+public class FlameBlade extends MobAbility {
 
 
-    public MobFlameBlade() {
+    public FlameBlade() {
         super(MKUltra.MODID, "mob_ability.flame_blade");
     }
 

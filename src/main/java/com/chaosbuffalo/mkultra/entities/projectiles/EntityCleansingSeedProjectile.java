@@ -28,10 +28,6 @@ public class EntityCleansingSeedProjectile extends EntityBaseProjectile {
         this.setDeathTime(40);
     }
 
-    public EntityCleansingSeedProjectile(World worldIn, double x, double y, double z) {
-        super(worldIn, x, y, z);
-    }
-
     @Override
     protected Targeting.TargetType getTargetType() {
         return Targeting.TargetType.ALL;
