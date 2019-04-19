@@ -30,10 +30,6 @@ public class EntityFairyFireProjectile extends EntityBaseProjectile {
         this.setDeathTime(200);
     }
 
-    public EntityFairyFireProjectile(World worldIn, double x, double y, double z) {
-        super(worldIn, x, y, z);
-    }
-
     @Override
     protected Targeting.TargetType getTargetType() {
         return Targeting.TargetType.ENEMY;

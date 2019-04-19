@@ -29,10 +29,6 @@ public class EntityBallLightningProjectile extends EntityBaseProjectile {
         this.setDeathTime(30);
     }
 
-    public EntityBallLightningProjectile(World worldIn, double x, double y, double z) {
-        super(worldIn, x, y, z);
-    }
-
     @Override
     public float getGravityVelocity() {
         return 0.00F;
@@ -47,7 +43,7 @@ public class EntityBallLightningProjectile extends EntityBaseProjectile {
             return false;
         }
 
-        if (result.entityHit != null && entity instanceof EntityPlayer && result.entityHit instanceof EntityLivingBase) {
+        if (result.entityHit instanceof EntityLivingBase) {
             EntityLivingBase targetEntity = (EntityLivingBase) result.entityHit;
             SpellCast ballLightning = BallLightningPotion.Create(entity, 5.0f, 5.0f);
 

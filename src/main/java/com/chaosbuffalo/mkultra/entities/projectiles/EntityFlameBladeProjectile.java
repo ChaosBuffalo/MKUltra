@@ -28,10 +28,6 @@ public class EntityFlameBladeProjectile extends EntityBaseProjectile{
         this.setDeathTime(10);
     }
 
-    public EntityFlameBladeProjectile(World worldIn, double x, double y, double z) {
-        super(worldIn, x, y, z);
-    }
-
     @Override
     public float getGravityVelocity() {
         return 0.00F;

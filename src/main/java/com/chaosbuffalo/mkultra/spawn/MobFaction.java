@@ -15,12 +15,7 @@ public class MobFaction extends IForgeRegistryEntry.Impl<MobFaction> {
     public MobFaction(ResourceLocation name){
         setRegistryName(name);
         spawnLists = new HashMap<>();
-        registerDefaultMobGroups();
     }
-
-    private void registerDefaultMobGroups(){
-    }
-
 
     public void addSpawnList(String group, SpawnList list, double weight){
         if (!spawnLists.containsKey(group)){

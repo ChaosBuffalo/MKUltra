@@ -16,11 +16,11 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class MobFlameWave extends MobAbility {
+public class FlameWave extends MobAbility {
     public static float BASE_DAMAGE = 2.0f;
     public static float DAMAGE_SCALE = 1.0f;
 
-    public MobFlameWave() {
+    public FlameWave() {
         super(MKUltra.MODID, "mob_ability.flamewave");
     }
 

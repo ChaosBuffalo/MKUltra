@@ -25,7 +25,6 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ModContainer;
-import net.minecraftforge.fml.common.ModContainerFactory;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 
@@ -37,13 +36,6 @@ import java.util.function.BiFunction;
 @Mod.EventBusSubscriber
 public class ModSpawn {
     public static final int MAX_LEVEL = 10;
-
-    @SuppressWarnings("unused")
-    @SubscribeEvent
-    public static void registerItemOptions(RegistryEvent.Register<ItemOption> event) {
-        Log.info("Registering Item Options");
-
-    }
 
     public static void postInitJsonRegisistation(){
         ModContainer old = Loader.instance().activeModContainer();
@@ -60,7 +52,6 @@ public class ModSpawn {
         JsonLoader.loadModsForType("spawn/mob_factions",
                 ModSpawn::loadMobFactions, MKURegistry.REGISTRY_MOB_FACTIONS);
         Loader.instance().setActiveModContainer(old);
-
     }
 
     @SuppressWarnings("unused")
@@ -99,45 +90,25 @@ public class ModSpawn {
 
     @SuppressWarnings("unused")
     @SubscribeEvent
-    public static void registerAttributeRanges(RegistryEvent.Register<AttributeRange> event) {
-        Log.info("Registering Attribute Ranges");
-    }
-
-    @SuppressWarnings("unused")
-    @SubscribeEvent
     public static void registerMobAbilities(RegistryEvent.Register<MobAbility> event) {
         Log.info("Registering Mob Abilities");
-        event.getRegistry().register(new MobNaturesRemedy());
+        event.getRegistry().register(new NaturesRemedy());
         event.getRegistry().register(new ShadowDash());
-        event.getRegistry().register(new MobFireball());
-        event.getRegistry().register(new MobFireArrow());
-        event.getRegistry().register(new MobFlameBlade());
-        event.getRegistry().register(new MobHeal());
+        event.getRegistry().register(new Fireball());
+        event.getRegistry().register(new FireArrow());
+        event.getRegistry().register(new FlameBlade());
+        event.getRegistry().register(new Heal());
         event.getRegistry().register(new GraspingRoots());
         event.getRegistry().register(new ManaBurn());
         event.getRegistry().register(new TripleFireball());
-        event.getRegistry().register(new MobFlameWave());
+        event.getRegistry().register(new FlameWave());
         event.getRegistry().register(new FullHeal());
-    }
-
-    @SuppressWarnings("unused")
-    @SubscribeEvent
-    public static void registerMobDefinitions(RegistryEvent.Register<MobDefinition> event) {
-        Log.info("Registering Mob Definitions");
-
-    }
-
-    @SuppressWarnings("unused")
-    @SubscribeEvent
-    public static void registerMobFactions(RegistryEvent.Register<MobFaction> event) {
-        Log.info("Registering Mob Factions");
-
-    }
-
-    @SuppressWarnings("unused")
-    @SubscribeEvent
-    public static void registerSpawnLists(RegistryEvent.Register<SpawnList> event) {
-        Log.info("Registering Spawn Lists");
+        event.getRegistry().register(new Drown());
+        event.getRegistry().register(new PoisonArrow());
+        event.getRegistry().register(new PowerWordSummon());
+        event.getRegistry().register(new WarpDash());
+        event.getRegistry().register(new Whirlpool());
+        event.getRegistry().register(new Repulse());
     }
 
     @SuppressWarnings("unused")
@@ -320,7 +291,7 @@ public class ModSpawn {
             if (!checkKeysExist(choiceKeys, jsonObject)) {
                 continue;
             }
-            float dropChance = .05f;
+            float dropChance = .00f;
             if (jsonObject.has("drop_chance")) {
                 dropChance = jsonObject.get("drop_chance").getAsFloat();
             }

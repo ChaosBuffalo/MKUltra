@@ -34,11 +34,6 @@ public class EntityGraspingRootsProjectile extends EntityBaseProjectile {
         return Targeting.TargetType.ENEMY;
     }
 
-    public EntityGraspingRootsProjectile(World worldIn, double x, double y, double z) {
-        super(worldIn, x, y, z);
-    }
-
-
     @Override
     protected boolean onGroundProc(EntityLivingBase caster, int amplifier) {
         if (!this.world.isRemote && caster != null) {

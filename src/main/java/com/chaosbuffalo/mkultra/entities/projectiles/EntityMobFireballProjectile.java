@@ -30,10 +30,6 @@ public class EntityMobFireballProjectile extends EntityBaseProjectile{
         this.setDeathTime(GameConstants.TICKS_PER_SECOND * 5);
     }
 
-    public EntityMobFireballProjectile(World worldIn, double x, double y, double z) {
-        super(worldIn, x, y, z);
-    }
-
     @Override
     public float getGravityVelocity() {
         return 0.00F;

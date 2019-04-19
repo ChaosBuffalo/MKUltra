@@ -29,8 +29,9 @@ public class EntityDrownProjectile extends EntityBaseProjectile {
         this.setDeathTime(40);
     }
 
-    public EntityDrownProjectile(World worldIn, double x, double y, double z) {
-        super(worldIn, x, y, z);
+    public EntityDrownProjectile(World worldIn, EntityLivingBase throwerIn, double offset){
+        super(worldIn, throwerIn, offset);
+        this.setDeathTime(40);
     }
 
     @Override
@@ -52,7 +53,7 @@ public class EntityDrownProjectile extends EntityBaseProjectile {
             return false;
         }
 
-        if (entity instanceof EntityPlayer && result.entityHit instanceof EntityLivingBase) {
+        if (entity != null && result.entityHit instanceof EntityLivingBase) {
             EntityLivingBase targetEntity = (EntityLivingBase) result.entityHit;
             targetEntity.addPotionEffect(DrownPotion.Create(entity).setTarget(targetEntity)
                     .toPotionEffect(GameConstants.TICKS_PER_SECOND * 3, level));
