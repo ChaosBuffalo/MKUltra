@@ -40,7 +40,7 @@ public class Repulse extends MobAbility {
 
     @Override
     public float getDistance(){
-        return 3.0f;
+        return 5.0f;
     }
 
 

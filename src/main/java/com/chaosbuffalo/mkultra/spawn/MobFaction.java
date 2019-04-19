@@ -5,6 +5,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import javax.annotation.Nullable;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -22,6 +23,14 @@ public class MobFaction extends IForgeRegistryEntry.Impl<MobFaction> {
             spawnLists.put(group, new RandomCollection<>());
         }
         spawnLists.get(group).add(weight, list);
+    }
+
+    @Nullable
+    public Collection<SpawnList> getSpawnListsForGroup(String group){
+        if (spawnLists.get(group).size() > 0){
+            return spawnLists.get(group).getValues();
+        }
+        return null;
     }
 
     @Nullable
