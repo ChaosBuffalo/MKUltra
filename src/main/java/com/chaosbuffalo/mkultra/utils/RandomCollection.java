@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.utils;
 
+import java.util.Collection;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 import java.util.concurrent.ThreadLocalRandom;
@@ -19,6 +20,12 @@ public class RandomCollection<E> {
         double value = ThreadLocalRandom.current().nextDouble() * total;
         return map.ceilingEntry(value).getValue();
     }
+
+    public Collection<E> getValues(){
+        return map.values();
+    }
+
+
 
     public int size(){
         return map.size();

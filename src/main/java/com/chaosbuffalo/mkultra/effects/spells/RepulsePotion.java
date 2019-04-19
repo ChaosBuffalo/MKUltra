@@ -42,15 +42,14 @@ public class RepulsePotion extends SpellPotionBase {
 
     @Override
     public void doEffect(Entity applier, Entity caster, EntityLivingBase target, int amplifier, SpellCast cast) {
-        EntityPlayer player = (EntityPlayer) caster;
-        Vec3d playerOrigin = player.getPositionVector();
+        Vec3d casterOrigin = caster.getPositionVector();
         Vec3d targetPos = target.getPositionVector();
-        Vec3d awayFrom = targetPos.subtract(playerOrigin).normalize().scale(cast.getScaledValue(amplifier));
+        Vec3d awayFrom = targetPos.subtract(casterOrigin).normalize().scale(cast.getScaledValue(amplifier));
         if (target.equals(caster) || target.isOnSameTeam(caster)) {
             return;
         }
         target.addVelocity(awayFrom.x, awayFrom.y, awayFrom.z);
-        if (target instanceof EntityPlayerMP && !player.world.isRemote) {
+        if (target instanceof EntityPlayerMP && !caster.world.isRemote) {
             ((EntityPlayerMP) target).connection.sendPacket(new SPacketEntityVelocity(target));
         }
     }

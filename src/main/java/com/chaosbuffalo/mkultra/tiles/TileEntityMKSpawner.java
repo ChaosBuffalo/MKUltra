@@ -38,6 +38,7 @@ public class TileEntityMKSpawner extends TileEntity implements ITickable {
     private MobFaction faction;
     private String spawnerType;
     private SpawnList spawnList;
+    public static String GROUP_NOT_SELECTED = "Not Selected";
 
     public TileEntityMKSpawner(){
         internalTickInterval = TICK_INTERVAL;
@@ -51,7 +52,7 @@ public class TileEntityMKSpawner extends TileEntity implements ITickable {
         ticksSincePlayer = 0;
         active = false;
         faction = null;
-        spawnerType = "";
+        spawnerType = GROUP_NOT_SELECTED;
         spawnList = null;
     }
 
@@ -72,6 +73,14 @@ public class TileEntityMKSpawner extends TileEntity implements ITickable {
             return MKURegistry.INVALID_FACTION;
         } else {
             return faction.getRegistryName();
+        }
+    }
+
+    public ResourceLocation getSpawnListName(){
+        if (spawnList == null){
+            return MKURegistry.INVALID_SPAWN_LIST;
+        } else {
+            return spawnList.getRegistryName();
         }
     }
 
@@ -106,7 +115,7 @@ public class TileEntityMKSpawner extends TileEntity implements ITickable {
 
     private boolean checkSpawnListAndInit(){
         if (spawnList == null){
-            if (faction != null && !spawnerType.equals("")){
+            if (faction != null && !spawnerType.equals("") && !spawnerType.equals(GROUP_NOT_SELECTED)){
                 spawnList = faction.getSpawnListForGroup(spawnerType);
                 this.sync();
                 if (spawnList == null || spawnList.isEmpty()){
@@ -243,6 +252,9 @@ public class TileEntityMKSpawner extends TileEntity implements ITickable {
         faction = MKURegistry.getFaction(packet.factionId);
         spawnerType = packet.spawnerType;
         ticksBeforeSpawn = packet.spawnTime * GameConstants.TICKS_PER_SECOND;
+        if (packet.spawnListId != null){
+            spawnList = MKURegistry.getSpawnList(packet.spawnListId);
+        }
         sync();
     }
 

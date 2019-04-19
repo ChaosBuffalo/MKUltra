@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.network.packets;
 
+import com.chaosbuffalo.mkultra.core.MKURegistry;
 import com.chaosbuffalo.mkultra.network.MessageHandler;
 import com.chaosbuffalo.mkultra.tiles.TileEntityMKSpawner;
 import io.netty.buffer.ByteBuf;
@@ -13,6 +14,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 public class MKSpawnerSetPacket implements IMessage {
     public ResourceLocation factionId;
     public String spawnerType;
+    public ResourceLocation spawnListId;
     public int spawnTime;
     private BlockPos pos;
 
@@ -20,11 +22,13 @@ public class MKSpawnerSetPacket implements IMessage {
     }
 
 
-    public MKSpawnerSetPacket(ResourceLocation faction, String spawnerType, int spawnTime, BlockPos pos) {
+    public MKSpawnerSetPacket(ResourceLocation faction, String spawnerType, int spawnTime, BlockPos pos,
+                              ResourceLocation spawnListId) {
         this.factionId = faction;
         this.spawnerType = spawnerType;
         this.pos = pos;
         this.spawnTime = spawnTime;
+        this.spawnListId = spawnListId;
     }
 
     @Override
@@ -34,6 +38,10 @@ public class MKSpawnerSetPacket implements IMessage {
         spawnerType = pb.readString(512);
         pos = pb.readBlockPos();
         spawnTime = pb.readInt();
+        spawnListId = pb.readResourceLocation();
+        if (spawnListId.equals(MKURegistry.INVALID_SPAWN_LIST)){
+            spawnListId = null;
+        }
     }
 
     @Override
@@ -43,6 +51,11 @@ public class MKSpawnerSetPacket implements IMessage {
         pb.writeString(spawnerType);
         pb.writeBlockPos(pos);
         pb.writeInt(spawnTime);
+        if (spawnListId != null){
+            pb.writeResourceLocation(spawnListId);
+        } else {
+            pb.writeResourceLocation(MKURegistry.INVALID_SPAWN_LIST);
+        }
     }
 
     // ========================================================================
