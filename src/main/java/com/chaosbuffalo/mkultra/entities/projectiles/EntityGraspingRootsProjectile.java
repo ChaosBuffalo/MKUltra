@@ -1,15 +1,18 @@
 package com.chaosbuffalo.mkultra.entities.projectiles;
 
+import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.AbilityMagicDamage;
 import com.chaosbuffalo.mkultra.effects.spells.GraspingRootsPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -29,22 +32,30 @@ public class EntityGraspingRootsProjectile extends EntityBaseProjectile {
         this.setGroundProcTime(20);
     }
 
+    public EntityGraspingRootsProjectile(World worldIn, EntityLivingBase throwerIn, double offset){
+        super(worldIn, throwerIn, offset);
+        this.setDeathTime(85);
+        this.setDoGroundProc(true);
+        this.setGroundProcTime(20);
+    }
+
     @Override
     protected Targeting.TargetType getTargetType() {
         return Targeting.TargetType.ENEMY;
     }
 
-    @Override
-    protected boolean onGroundProc(EntityLivingBase caster, int amplifier) {
+
+    private boolean doEffect(EntityLivingBase caster, int amplifier) {
         if (!this.world.isRemote && caster != null) {
             SpellCast grasping_roots = GraspingRootsPotion.Create(caster);
             SpellCast damage = AbilityMagicDamage.Create(caster, BASE, SCALE);
 
             AreaEffectBuilder.Create(caster, this)
-                    .effect(grasping_roots.toPotionEffect(15, amplifier), Targeting.TargetType.ENEMY)
+                    .spellCast(grasping_roots, 4 * GameConstants.TICKS_PER_SECOND,
+                            amplifier, Targeting.TargetType.ENEMY)
                     .spellCast(damage, amplifier, Targeting.TargetType.ENEMY)
                     .instant()
-                    .color(3669880).radius(3.0f, true)
+                    .color(3669880).radius(5.0f, true)
                     .spawn();
             MKUltra.packetHandler.sendToAllAround(
                     new ParticleEffectSpawnPacket(
@@ -56,7 +67,26 @@ public class EntityGraspingRootsProjectile extends EntityBaseProjectile {
                     this.dimension, this.posX, this.posY, this.posZ, 50.0f);
             return true;
         }
+        return false;
+    }
 
+    @Override
+    protected boolean onGroundProc(EntityLivingBase caster, int amplifier) {
+        return doEffect(caster, amplifier);
+    }
+
+    @Override
+    protected boolean onImpact(EntityLivingBase caster, RayTraceResult result, int amplifier) {
+        if (!this.world.isRemote && caster != null) {
+            switch (result.typeOfHit){
+                case BLOCK:
+                    return false;
+                case ENTITY:
+                    return doEffect(caster, amplifier);
+                case MISS:
+                    return false;
+            }
+        }
         return false;
     }
 

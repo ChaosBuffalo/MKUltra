@@ -68,8 +68,9 @@ public class NaturesRemedy extends MobAbility {
 
     @Override
     public void execute(EntityLivingBase entity, IMobData data, EntityLivingBase target, World theWorld) {
-        entity.addPotionEffect(NaturesRemedyPotion
+        target.addPotionEffect(NaturesRemedyPotion
                 .Create(entity, target, 4.0f, 2.0f)
+                .setTarget(target)
                 .toPotionEffect(getDuration(), data.getMobLevel()));
         Vec3d lookVec = entity.getLookVec();
         MKUltra.packetHandler.sendToAllAround(

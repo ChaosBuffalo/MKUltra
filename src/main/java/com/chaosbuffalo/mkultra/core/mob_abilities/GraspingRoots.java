@@ -40,7 +40,8 @@ public class GraspingRoots extends MobAbility {
     @Override
     public void execute(EntityLivingBase entity, IMobData data, EntityLivingBase target, World theWorld) {
         World world = entity.getEntityWorld();
-        EntityGraspingRootsProjectile proj = new EntityGraspingRootsProjectile(world, entity);
+        EntityGraspingRootsProjectile proj = new EntityGraspingRootsProjectile(world, entity,
+                entity.getEyeHeight() / 2.0);
         proj.setAmplifier(data.getMobLevel());
         double d1 = target.posX - entity.posX;
         double d2 =  target.posY - entity.posY;

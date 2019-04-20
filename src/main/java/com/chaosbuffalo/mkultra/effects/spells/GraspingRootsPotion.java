@@ -44,7 +44,7 @@ public class GraspingRootsPotion extends PassiveEffect {
 
     @Override
     public double getAttributeModifierAmount(int amplifier, AttributeModifier modifier) {
-        return modifier.getAmount() * (double) (amplifier);
+        return modifier.getAmount();
     }
 
 }

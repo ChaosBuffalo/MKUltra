@@ -33,5 +33,7 @@ public class EntityRenderRegister {
                 new RenderProjectile(ModItems.spirit_bomb_projectile, 1.0f));
         RenderingRegistry.registerEntityRenderingHandler(EntityMobFireballProjectile.class,
                 new RenderProjectile(ModItems.mob_fireball_projectile, 1.0f));
+        RenderingRegistry.registerEntityRenderingHandler(EntityGraspingRootsProjectile.class,
+                new RenderProjectile(ModItems.grasping_roots_projectile, 1.0f));
     }
 }

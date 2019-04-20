@@ -3,7 +3,6 @@ package com.chaosbuffalo.mkultra.mob_ai;
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.core.PlayerAttributes;
 import com.chaosbuffalo.mkultra.event.ItemRestrictionHandler;
-import com.chaosbuffalo.mkultra.log.Log;
 import com.google.common.collect.Multimap;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
@@ -14,13 +13,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.event.world.NoteBlockEvent;
 
 public class EntityAIAttackMeleeMK extends EntityAIBase {
     World world;
@@ -85,13 +82,13 @@ public class EntityAIAttackMeleeMK extends EntityAIBase {
     }
 
     public void startExecuting() {
-        Log.info("Start Executing Attack Melee: %s", attacker.toString());
+//        Log.info("Start Executing Attack Melee: %s", attacker.toString());
         this.attacker.getNavigator().setPath(this.path, this.speedTowardsTarget);
         this.delayCounter = 0;
     }
 
     public void resetTask() {
-        Log.info("Resetting Attack Melee: %s", attacker.toString());
+//        Log.info("Resetting Attack Melee: %s", attacker.toString());
         EntityLivingBase entitylivingbase = this.attacker.getAttackTarget();
         if (entitylivingbase instanceof EntityPlayer && (((EntityPlayer)entitylivingbase).isSpectator() ||
                 ((EntityPlayer)entitylivingbase).isCreative())) {
@@ -102,7 +99,7 @@ public class EntityAIAttackMeleeMK extends EntityAIBase {
     }
 
     public void updateTask() {
-        Log.info("Updating Attack Melee: %s", attacker.toString());
+//        Log.info("Updating Attack Melee: %s", attacker.toString());
         EntityLivingBase entitylivingbase = this.attacker.getAttackTarget();
         if (entitylivingbase == null){
             return;

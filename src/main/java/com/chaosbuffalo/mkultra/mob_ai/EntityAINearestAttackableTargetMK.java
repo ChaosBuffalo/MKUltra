@@ -78,7 +78,7 @@ public class EntityAINearestAttackableTargetMK extends EntityAITarget {
     }
 
     public void startExecuting() {
-        Log.info("Start Executing Attack Nearest: %s", taskOwner.toString());
+//        Log.info("Start Executing Attack Nearest: %s", taskOwner.toString());
         this.taskOwner.setAttackTarget(this.target);
         super.startExecuting();
     }

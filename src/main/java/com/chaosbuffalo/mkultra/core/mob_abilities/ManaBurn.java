@@ -52,7 +52,7 @@ public class ManaBurn extends MobAbility {
 
     @Override
     public void execute(EntityLivingBase entity, IMobData data, EntityLivingBase target, World theWorld) {
-        SpellCast manaBurn = ManaBurnPotion.Create(entity, 2.0f, 0.0f);
+        SpellCast manaBurn = ManaBurnPotion.Create(entity, 2.0f, 0.0f).setTarget(target);
         target.addPotionEffect(manaBurn.toPotionEffect(
                 GameConstants.TICKS_PER_SECOND * (2 + data.getMobLevel()), 1));
         MKUltra.packetHandler.sendToAllAround(
