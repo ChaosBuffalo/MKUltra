@@ -126,7 +126,7 @@ public class CritMessagePacket implements IMessage {
                                 String.format("You just crit %s with %s for %s",
                                         target.getDisplayName().getUnformattedText(),
                                         playerSource.getHeldItemMainhand().getDisplayName(),
-                                        Float.toString(msg.critDamage)))
+                                        Integer.toString(Math.round(msg.critDamage))))
                                 .setStyle(messageStyle));
                     } else {
                         player.sendMessage(new TextComponentString(
@@ -134,7 +134,7 @@ public class CritMessagePacket implements IMessage {
                                         playerSource.getDisplayName().getUnformattedText(),
                                         target.getDisplayName().getUnformattedText(),
                                         playerSource.getHeldItemMainhand().getDisplayName(),
-                                        Float.toString(msg.critDamage))
+                                        Integer.toString(Math.round(msg.critDamage)))
                         ).setStyle(messageStyle));
                     }
                     break;
@@ -144,26 +144,29 @@ public class CritMessagePacket implements IMessage {
                         player.sendMessage(new TextComponentString(
                                 String.format("Your magic spell just crit %s for %s",
                                         target.getDisplayName().getUnformattedText(),
-                                        Float.toString(msg.critDamage)))
+                                        Integer.toString(Math.round(msg.critDamage))))
                                 .setStyle(messageStyle));
                     } else {
                         player.sendMessage(new TextComponentString(
                                 String.format("%s's magic spell just crit %s for %s",
                                         playerSource.getDisplayName().getUnformattedText(),
                                         target.getDisplayName().getUnformattedText(),
-                                        Float.toString(msg.critDamage)))
+                                        Integer.toString(Math.round(msg.critDamage))))
                                 .setStyle(messageStyle));
                     }
                     break;
                 case SPELL_CRIT:
                     messageStyle.setColor(TextFormatting.AQUA);
                     PlayerAbility ability = MKURegistry.getAbility(msg.abilityName);
+                    if (ability == null){
+                        break;
+                    }
                     if (isSelf) {
                         player.sendMessage(new TextComponentString(
                                 String.format("Your %s spell just crit %s for %s",
                                         ability.getAbilityName(),
                                         target.getDisplayName().getUnformattedText(),
-                                        Float.toString(msg.critDamage)))
+                                        Integer.toString(Math.round(msg.critDamage))))
                                 .setStyle(messageStyle)
                         );
 
@@ -173,7 +176,7 @@ public class CritMessagePacket implements IMessage {
                                         playerSource.getDisplayName().getUnformattedText(),
                                         ability.getAbilityName(),
                                         target.getDisplayName().getUnformattedText(),
-                                        Float.toString(msg.critDamage)))
+                                        Integer.toString(Math.round(msg.critDamage))))
                                 .setStyle(messageStyle)
                         );
                     }
@@ -187,7 +190,7 @@ public class CritMessagePacket implements IMessage {
                                     String.format("You just crit %s with %s for %s",
                                             target.getDisplayName().getUnformattedText(),
                                             projectile.getDisplayName().getUnformattedText(),
-                                            Float.toString(msg.critDamage)))
+                                            Integer.toString(Math.round(msg.critDamage))))
                                     .setStyle(messageStyle));
                         } else {
                             player.sendMessage(new TextComponentString(
@@ -195,7 +198,7 @@ public class CritMessagePacket implements IMessage {
                                             playerSource.getDisplayName().getUnformattedText(),
                                             target.getDisplayName().getUnformattedText(),
                                             projectile.getDisplayName().getUnformattedText(),
-                                            Float.toString(msg.critDamage))
+                                            Integer.toString(Math.round(msg.critDamage)))
                             ).setStyle(messageStyle));
                         }
                     }

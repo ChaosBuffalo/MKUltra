@@ -20,6 +20,7 @@ public class ConfigHandler {
             ConfigManager.sync(MKUltra.MODID, Config.Type.INSTANCE);
             ArmorClass.clearArmorClasses();
             MKConfig.registerArmors();
+            MKConfig.setMaxHealthMax();
         }
     }
 }

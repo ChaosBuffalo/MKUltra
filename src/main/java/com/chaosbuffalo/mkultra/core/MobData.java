@@ -20,6 +20,7 @@ public class MobData implements IMobData {
     private int timeBetweenCasts;
     private int maxTimeBetweenCasts;
     private ResourceLocation additionalLootTable;
+    private boolean isBoss;
 
 
     public MobData(EntityLivingBase entity) {
@@ -28,6 +29,7 @@ public class MobData implements IMobData {
         hasAbilities = false;
         aggroRange = 10.0;
         timeBetweenCasts = 0;
+        isBoss = false;
         factionName = MKURegistry.INVALID_FACTION;
         maxTimeBetweenCasts = 10 * GameConstants.TICKS_PER_SECOND;
 
@@ -63,6 +65,7 @@ public class MobData implements IMobData {
     @Override
     public void serialize(NBTTagCompound tag) {
         tag.setBoolean("isMKSpawned", isMKSpawned());
+        tag.setBoolean("isBoss", isBoss());
         if (hasAdditionalLootTable()){
             tag.setString("additionalLootTable", additionalLootTable.toString());
         }
@@ -76,6 +79,19 @@ public class MobData implements IMobData {
         if (tag.hasKey("additionalLootTable")){
             setAdditionalLootTable(new ResourceLocation(tag.getString("additionalLootTable")));
         }
+        if (tag.hasKey("isBoss")){
+            setIsBoss(tag.getBoolean("isBoss"));
+        }
+    }
+
+    @Override
+    public boolean isBoss() {
+        return isBoss;
+    }
+
+    @Override
+    public void setIsBoss(boolean in) {
+        isBoss = in;
     }
 
     @Override

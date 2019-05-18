@@ -22,6 +22,10 @@ public interface IMobData {
 
     void deserialize(NBTTagCompound tag);
 
+    boolean isBoss();
+
+    void setIsBoss(boolean in);
+
     int getMobLevel();
 
     void setMobLevel(int levelIn);

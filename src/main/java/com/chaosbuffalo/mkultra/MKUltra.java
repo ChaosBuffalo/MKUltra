@@ -13,6 +13,9 @@ import com.chaosbuffalo.mkultra.party.PartyCommand;
 import com.chaosbuffalo.mkultra.utils.EnvironmentUtils;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.IAttribute;
+import net.minecraft.entity.ai.attributes.RangedAttribute;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -26,6 +29,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
+import java.lang.reflect.Field;
 
 
 @Mod(modid = MKUltra.MODID, name= MKUltra.MODNAME, version = MKUltra.VERSION,
@@ -53,11 +57,13 @@ public class MKUltra {
         LOG = e.getModLog();
         config_loc = e.getModConfigurationDirectory();
         MKConfig.init(e.getSuggestedConfigurationFile());
+        MKConfig.setMaxHealthMax();
         ModTileEntities.registerTileEntities();
         ModItems.initItems();
         CapabilityManager.INSTANCE.register(IPlayerData.class, new PlayerDataStorage(), PlayerData.class);
         CapabilityManager.INSTANCE.register(IMobData.class, new MobDataStorage(), MobData.class);
         proxy.preInit(e);
+
     }
 
     @EventHandler

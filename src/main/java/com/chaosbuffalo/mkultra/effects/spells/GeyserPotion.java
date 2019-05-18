@@ -2,6 +2,8 @@ package com.chaosbuffalo.mkultra.effects.spells;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.core.IMobData;
+import com.chaosbuffalo.mkultra.core.MKUMobData;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
 import com.chaosbuffalo.targeting_api.Targeting;
@@ -60,7 +62,15 @@ public class GeyserPotion extends SpellPotionBase {
             target.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, baseDuration * 2, amplifier, false, true));
             target.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, baseDuration, amplifier, false, true));
         }
-        target.addVelocity(0.0, amplifier * 1.5f, 0.0);
+        IMobData mobData = MKUMobData.get(target);
+        if (mobData != null){
+            if (!mobData.isBoss()){
+                target.addVelocity(0.0, amplifier * 1.5f, 0.0);
+            }
+        } else {
+            target.addVelocity(0.0, amplifier * 1.5f, 0.0);
+        }
+
         if (target instanceof EntityPlayerMP && !caster.world.isRemote) {
             ((EntityPlayerMP) target).connection.sendPacket(new SPacketEntityVelocity(target));
         }

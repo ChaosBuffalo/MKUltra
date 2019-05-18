@@ -12,6 +12,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -208,6 +210,12 @@ public class SpellTriggers {
 
                 sendCritPacket(livingTarget, playerSource,
                         new CritMessagePacket(livingTarget.getEntityId(), playerSource.getUniqueID(), newDamage, type));
+            }
+            if (!isDirect){
+                IAttributeInstance atkDmg = playerSource.getAttributeMap().getAttributeInstance(
+                        SharedMonsterAttributes.ATTACK_DAMAGE);
+                event.setAmount((float) (event.getAmount() +
+                        atkDmg.getAttributeValue() * playerSource.world.rand.nextDouble()));
             }
 
             playerHurtEntityMeleeTriggers.forEach(f -> f.apply(event, source, livingTarget, playerSource, sourceData));

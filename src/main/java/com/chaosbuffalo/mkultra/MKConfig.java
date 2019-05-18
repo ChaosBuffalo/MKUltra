@@ -2,6 +2,8 @@ package com.chaosbuffalo.mkultra;
 
 import com.chaosbuffalo.mkultra.core.ArmorClass;
 import com.chaosbuffalo.mkultra.log.Log;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.RangedAttribute;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Config;
@@ -9,6 +11,7 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.util.Arrays;
 
 
@@ -160,6 +163,10 @@ public class MKConfig {
         @Config.Name("Undead healing damage multiplier")
         @Config.Comment("Multiplier to scale healing damage to undead by if HEALS_DAMAGE_UNDEAD is true")
         public float HEAL_DAMAGE_MULTIPLIER = 2.0f;
+
+        @Config.Name("Maximum Entity Health")
+        @Config.Comment("Adjusts the default maximum health in minecraft for entities")
+        public double MAX_ENTITY_HEALTH = 4096.0;
     }
 
     public static void init(File configFile) {
@@ -177,9 +184,7 @@ public class MKConfig {
             if (config.hasChanged())
                 config.save();
         }
-
     }
-
 
 
     public static boolean isClassEnabled(ResourceLocation classId) {
@@ -216,5 +221,26 @@ public class MKConfig {
         Arrays.stream(armor.MEDIUM_ARMOR).forEach((x) -> registerArmorFromName(x, ArmorClass.MEDIUM));
         Arrays.stream(armor.HEAVY_ARMOR).forEach((x) -> registerArmorFromName(x, ArmorClass.HEAVY));
     }
+
+
+    public static void setMaxHealthMax(){
+        RangedAttribute attr = (RangedAttribute) SharedMonsterAttributes.MAX_HEALTH;
+        final Field maxValueMaxHealth;
+        try {
+            // 'maximumValue' of RangedAttribute
+            maxValueMaxHealth = RangedAttribute.class.getDeclaredField("field_111118_b");
+            maxValueMaxHealth.setAccessible(true);
+            try {
+                Log.info("Setting max health");
+                maxValueMaxHealth.setDouble(attr, gameplay.MAX_ENTITY_HEALTH);
+            } catch (IllegalAccessException e1) {
+                e1.printStackTrace();
+            }
+            maxValueMaxHealth.setAccessible(false);
+        } catch (NoSuchFieldException e1) {
+            e1.printStackTrace();
+        }
+    }
+
 
 }
