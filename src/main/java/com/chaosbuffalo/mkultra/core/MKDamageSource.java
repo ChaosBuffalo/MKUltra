@@ -46,16 +46,16 @@ public class MKDamageSource extends EntityDamageSourceIndirect {
                 .setMagicDamage();
     }
 
-    public static DamageSource causeIndirectMagicDamage(ResourceLocation abilityId, Entity source,
-                                                        @Nullable Entity indirectEntityIn, boolean ignoreAttackTriggers) {
+    public static DamageSource causeIndirectMagicDamageIgnoreAttackTriggers(ResourceLocation abilityId, Entity source,
+                                                                            @Nullable Entity indirectEntityIn) {
         return new MKDamageSource(abilityId, ABILITY_DMG_TYPE, source, indirectEntityIn)
-                .setIgnoreAttackTriggers(ignoreAttackTriggers)
+                .setIgnoreAttackTriggers()
                 .setDamageBypassesArmor()
                 .setMagicDamage();
     }
 
-    public DamageSource setIgnoreAttackTriggers(boolean value){
-        this.ignoreTriggerOnAttackEntity = value;
+    public DamageSource setIgnoreAttackTriggers(){
+        this.ignoreTriggerOnAttackEntity = true;
         return this;
     }
 
