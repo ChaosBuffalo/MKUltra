@@ -1,5 +1,7 @@
 package com.chaosbuffalo.mkultra.utils;
 
+import com.chaosbuffalo.mkultra.core.IMobData;
+import com.chaosbuffalo.mkultra.core.MKUMobData;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -9,7 +11,11 @@ public class AbilityUtils {
 
     public static boolean canTeleportEntity(EntityLivingBase entity){
         // TO DO more stuff, entity class blacklist, callback registration for things like lycanites interfaces
-        return !EntityUtils.isLargeEntity(entity);
+        IMobData mobData = MKUMobData.get(entity);
+        if (mobData == null){
+            return !EntityUtils.isLargeEntity(entity);
+        }
+        return !EntityUtils.isLargeEntity(entity) && !mobData.isBoss();
     }
 
     public static void safeTeleportEntity(World theWorld, EntityLivingBase targetEntity, Vec3d teleLoc){

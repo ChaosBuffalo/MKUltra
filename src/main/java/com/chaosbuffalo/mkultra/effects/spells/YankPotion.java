@@ -1,6 +1,8 @@
 package com.chaosbuffalo.mkultra.effects.spells;
 
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.core.IMobData;
+import com.chaosbuffalo.mkultra.core.MKUMobData;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
 import com.chaosbuffalo.mkultra.core.abilities.Yank;
@@ -58,6 +60,12 @@ public class YankPotion extends SpellPotionBase {
                 Yank.BASE_FORCE + Yank.FORCE_SCALE * amplifier);
         if (target.equals(caster)) {
             return;
+        }
+        IMobData mobData = MKUMobData.get(target);
+        if (mobData != null){
+            if (mobData.isBoss()){
+                return;
+            }
         }
         target.addVelocity(awayFrom.x, awayFrom.y, awayFrom.z);
         if (target instanceof EntityPlayerMP && !caster.world.isRemote) {
