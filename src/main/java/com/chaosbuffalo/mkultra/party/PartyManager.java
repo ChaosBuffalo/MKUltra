@@ -15,13 +15,12 @@ import net.minecraftforge.event.entity.player.PlayerPickupXpEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import java.util.ArrayList;
 
 @Mod.EventBusSubscriber
 public class PartyManager {
-
-    private static final String DEFAULT_NAME = "party";
 
     private static MinecraftServer server;
 
@@ -38,13 +37,6 @@ public class PartyManager {
         return getServer().getWorld(0).getScoreboard();
     }
 
-    private static void gainBrouzoufs(EntityPlayer player) {
-
-        if (player instanceof EntityPlayerMP && player.getEntityWorld().rand.nextInt(100) <= 5) {
-            player.sendMessage(new TextComponentString("You gain brouzoufs"));
-        }
-    }
-
     private static ScorePlayerTeam getTeam(Scoreboard scoreboard, String name) {
         ScorePlayerTeam team = scoreboard.getTeam(name);
         if (team == null) {
@@ -56,32 +48,26 @@ public class PartyManager {
     }
 
     private static ScorePlayerTeam getTeamForPlayer(EntityPlayer player) {
-        String name = String.format("%s-party", player.getName());
-        return getTeam(player.getWorldScoreboard(), name);
-    }
-
-    private static void addPlayer(Scoreboard board, EntityPlayer player, Team team) {
-        board.addPlayerToTeam(player.getName(), team.getName());
+        String name = "party" + DigestUtils.sha1Hex(player.getName());
+        name = name.substring(0, 15);
+        return getTeam(getScoreboard(), name);
     }
 
     public static void handleInviteAccept(EntityPlayer invitingPlayer, EntityPlayer acceptingPlayer) {
-        Scoreboard scoreboard = invitingPlayer.getWorldScoreboard();
+        Scoreboard board = getScoreboard();
         Team invitingTeam = invitingPlayer.getTeam();
-        Team acceptingTeam = acceptingPlayer.getTeam();
         if (invitingTeam == null) {
             invitingTeam = getTeamForPlayer(invitingPlayer);
-            addPlayer(scoreboard, invitingPlayer, invitingTeam);
+            board.addPlayerToTeam(invitingPlayer.getName(), invitingTeam.getName());
         }
-        if (acceptingTeam != null) {
-            removePlayerFromParty(acceptingPlayer);
-        }
-        addPlayer(scoreboard, acceptingPlayer, invitingTeam);
+
+        board.addPlayerToTeam(acceptingPlayer.getName(), invitingTeam.getName());
     }
 
     public static void removePlayerFromParty(EntityPlayer player) {
         Scoreboard board = getScoreboard();
-        ScorePlayerTeam leavingTeam = (ScorePlayerTeam) player.getTeam();
         board.removePlayerFromTeams(player.getName());
+        ScorePlayerTeam leavingTeam = (ScorePlayerTeam) player.getTeam();
         // If the team is now empty destroy it
         if (leavingTeam != null && leavingTeam.getMembershipCollection().size() == 0) {
             board.removeTeam(leavingTeam);
@@ -100,6 +86,12 @@ public class PartyManager {
             }
         }
         return members;
+    }
+
+    private static void gainBrouzoufs(EntityPlayer player) {
+        if (player instanceof EntityPlayerMP && player.getEntityWorld().rand.nextInt(100) <= 5) {
+            player.sendMessage(new TextComponentString("You gain brouzoufs"));
+        }
     }
 
     @SuppressWarnings("unused")
