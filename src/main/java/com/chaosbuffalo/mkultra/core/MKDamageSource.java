@@ -16,6 +16,8 @@ public class MKDamageSource extends EntityDamageSourceIndirect {
 
     private static String ABILITY_DMG_TYPE = "mkUltraAbility";
 
+    private boolean ignoreTriggerOnAttackEntity;
+
     private final ResourceLocation abilityId;
 
     public ResourceLocation getAbilityId() {
@@ -26,6 +28,7 @@ public class MKDamageSource extends EntityDamageSourceIndirect {
                           Entity source, @Nullable Entity indirectEntityIn) {
         super(ABILITY_DMG_TYPE, source, indirectEntityIn);
         this.abilityId = abilityId;
+        this.ignoreTriggerOnAttackEntity = false;
     }
 
     public boolean isIndirectMagic() {
@@ -41,6 +44,23 @@ public class MKDamageSource extends EntityDamageSourceIndirect {
         return new MKDamageSource(abilityId, ABILITY_DMG_TYPE, source, indirectEntityIn)
                 .setDamageBypassesArmor()
                 .setMagicDamage();
+    }
+
+    public static DamageSource causeIndirectMagicDamage(ResourceLocation abilityId, Entity source,
+                                                        @Nullable Entity indirectEntityIn, boolean ignoreAttackTriggers) {
+        return new MKDamageSource(abilityId, ABILITY_DMG_TYPE, source, indirectEntityIn)
+                .setIgnoreAttackTriggers(ignoreAttackTriggers)
+                .setDamageBypassesArmor()
+                .setMagicDamage();
+    }
+
+    public DamageSource setIgnoreAttackTriggers(boolean value){
+        this.ignoreTriggerOnAttackEntity = value;
+        return this;
+    }
+
+    public boolean ignoreAttackEntityTrigger(){
+        return ignoreTriggerOnAttackEntity;
     }
 
     public static DamageSource fromMeleeSkill(ResourceLocation abilityId, Entity source,

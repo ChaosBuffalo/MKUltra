@@ -46,6 +46,6 @@ public class FlameBladeEffectPotion extends SpellPotionBase {
         }
 
         target.attackEntityFrom(MKDamageSource.causeIndirectMagicDamage(
-                new FlameBlade().getAbilityId(), applier, caster), damage);
+                new FlameBlade().getAbilityId(), applier, caster, true), damage);
     }
 }
