@@ -1,6 +1,7 @@
 package com.chaosbuffalo.mkultra.event;
 
 import com.chaosbuffalo.mkultra.core.IPlayerData;
+import com.chaosbuffalo.mkultra.core.MKDamageSource;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.effects.SpellTriggers;
 import net.minecraft.entity.Entity;
@@ -61,7 +62,14 @@ public class CombatEventHandler {
         if (target.world.isRemote)
             return;
 
-        Entity source = event.getSource().getTrueSource();
+        DamageSource dmgSource = event.getSource();
+        Entity source = dmgSource.getTrueSource();
+        if (dmgSource instanceof MKDamageSource){
+            MKDamageSource mkSource = (MKDamageSource) dmgSource;
+            if (mkSource.ignoreAttackEntityTrigger()){
+                return;
+            }
+        }
         if (source instanceof EntityLivingBase) {
             SpellTriggers.ATTACK_ENTITY.onAttackEntity((EntityLivingBase) source, target);
         }
