@@ -3,6 +3,7 @@ package com.chaosbuffalo.mkultra.event;
 import com.chaosbuffalo.mkultra.MKConfig;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.*;
+import com.chaosbuffalo.mkultra.spawn.MobDefinition;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -54,10 +55,23 @@ public class EntityEventHandler {
 //                }
 //            }
         } else if (event.getEntity() instanceof EntityLivingBase){
-            MobData mobD = (MobData) MKUMobData.get((EntityLivingBase) event.getEntity());
-            if (mobD != null){
-                if (mobD.isMKSpawned()) {
-                    event.getEntity().setDead();
+            handleMobJoinWorld(event);
+        }
+    }
+
+    private static void handleMobJoinWorld(EntityJoinWorldEvent event) {
+        MobData mobD = (MobData) MKUMobData.get((EntityLivingBase) event.getEntity());
+        if (mobD != null){
+            if (mobD.isMKSpawned()) {
+                event.getEntity().setDead();
+            } else {
+                ResourceLocation mobDefinition = mobD.getMobDefinition();
+                MobDefinition definition = MKURegistry.getMobDefinition(mobDefinition);
+                if (definition != MKURegistry.EMPTY_MOB){
+                    definition.applyDefinition(
+                            event.getWorld(), (EntityLivingBase) event.getEntity(), mobD.getMobLevel());
+                } else {
+                    // here we should randomly choose a mob definition appropriate for the entity type if available.
                 }
             }
         }
@@ -119,12 +133,7 @@ public class EntityEventHandler {
 //            }
         // Run this on the server if we are single player.
         } else if (event.getEntity() instanceof EntityLivingBase && !event.getWorld().isRemote){
-            MobData mobD = (MobData) MKUMobData.get((EntityLivingBase) event.getEntity());
-            if (mobD != null){
-                if (mobD.isMKSpawned()) {
-                    event.getEntity().setDead();
-                }
-            }
+            handleMobJoinWorld(event);
         }
     }
 

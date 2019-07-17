@@ -23,6 +23,7 @@ public class MobDefinition extends IForgeRegistryEntry.Impl<MobDefinition> {
     private final ArrayList<AIModifier> aiModifiers;
     private final HashSet<MobAbility> mobAbilities;
     private final ArrayList<CustomModifier> customModifiers;
+    private boolean canDefaultSpawn;
     private String mobName;
     private ResourceLocation additionalLootTable;
 
@@ -34,12 +35,19 @@ public class MobDefinition extends IForgeRegistryEntry.Impl<MobDefinition> {
         aiModifiers = new ArrayList<>();
         mobAbilities = new HashSet<>();
         customModifiers = new ArrayList<>();
+        canDefaultSpawn = false;
     }
 
     public MobDefinition withAttributeRanges(AttributeRange... ranges){
         attributeRanges.addAll(Arrays.asList(ranges));
         return this;
     }
+
+    public boolean getCanDefaultSpawn(){
+        return canDefaultSpawn;
+    }
+
+    public void setCanDefaultSpawn(boolean canSpawn) {canDefaultSpawn = canSpawn;}
 
     public void setAdditionalLootTable(ResourceLocation table){
         additionalLootTable = table;

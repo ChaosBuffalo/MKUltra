@@ -70,4 +70,8 @@ public interface IMobData {
 
     void setAdditionalLootTable(ResourceLocation table);
 
+    ResourceLocation getMobDefinition();
+
+    void setMobDefinition(ResourceLocation definition);
+
 }

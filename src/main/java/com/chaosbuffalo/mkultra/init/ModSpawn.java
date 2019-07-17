@@ -486,6 +486,10 @@ public class ModSpawn {
                 }
                 definition.withCustomModifiers(modifiers.toArray(new CustomModifier[0]));
             }
+            if (obj.has("can_default_spawn")){
+                boolean canSpawn = obj.get("can_default_spawn").getAsBoolean();
+                definition.setCanDefaultSpawn(canSpawn);
+            }
             registry.register(definition);
         } else {
             Log.info("%s  not an EntityLivingBase skipping mob definition %s",

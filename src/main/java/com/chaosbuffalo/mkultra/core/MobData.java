@@ -11,7 +11,7 @@ import java.util.HashSet;
 public class MobData implements IMobData {
     private int level;
     private final EntityLivingBase entity;
-    private  boolean isMKSpawned;
+    private boolean isMKSpawned;
     private final HashSet<MobAbilityTracker> trackers;
     private boolean hasAbilities;
     private double aggroRange;
@@ -21,6 +21,7 @@ public class MobData implements IMobData {
     private int maxTimeBetweenCasts;
     private ResourceLocation additionalLootTable;
     private boolean isBoss;
+    private ResourceLocation mobDefinition;
 
 
     public MobData(EntityLivingBase entity) {
@@ -32,6 +33,7 @@ public class MobData implements IMobData {
         isBoss = false;
         factionName = MKURegistry.INVALID_FACTION;
         maxTimeBetweenCasts = 10 * GameConstants.TICKS_PER_SECOND;
+        mobDefinition = MKURegistry.INVALID_MOB;
 
     }
 
@@ -66,8 +68,12 @@ public class MobData implements IMobData {
     public void serialize(NBTTagCompound tag) {
         tag.setBoolean("isMKSpawned", isMKSpawned());
         tag.setBoolean("isBoss", isBoss());
+        tag.setInteger("level", level);
         if (hasAdditionalLootTable()){
             tag.setString("additionalLootTable", additionalLootTable.toString());
+        }
+        if (!mobDefinition.equals(MKURegistry.INVALID_MOB)){
+            tag.setString("mobDefinition", mobDefinition.toString());
         }
     }
 
@@ -81,6 +87,12 @@ public class MobData implements IMobData {
         }
         if (tag.hasKey("isBoss")){
             setIsBoss(tag.getBoolean("isBoss"));
+        }
+        if (tag.hasKey("mobDefinition")){
+            setMobDefinition(new ResourceLocation(tag.getString("mobDefinition")));
+        }
+        if (tag.hasKey("level")){
+            setMobLevel(tag.getInteger("level"));
         }
     }
 
@@ -207,5 +219,15 @@ public class MobData implements IMobData {
     @Override
     public void setAdditionalLootTable(ResourceLocation table) {
         additionalLootTable = table;
+    }
+
+    @Override
+    public ResourceLocation getMobDefinition() {
+        return mobDefinition;
+    }
+
+    @Override
+    public void setMobDefinition(ResourceLocation definition) {
+        mobDefinition = definition;
     }
 }

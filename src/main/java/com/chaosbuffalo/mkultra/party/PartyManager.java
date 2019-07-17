@@ -131,12 +131,10 @@ public class PartyManager {
                 // ensure every player gets at least 1 xp
                 int playerExp = Math.max(exp / pCount, 1);
                 p.addExperience(playerExp);
-                gainBrouzoufs(p);
+//                gainBrouzoufs(p);
             }
             e.getOrb().setDead();
             e.setCanceled(true);
-        } else {
-            gainBrouzoufs(original);
         }
     }
 }
