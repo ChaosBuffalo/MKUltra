@@ -29,6 +29,7 @@ public class EntityGeyserProjectile extends EntityBaseProjectile {
         this.setDeathTime(1200);
         this.setDoGroundProc(true);
         this.setGroundProcTime(50);
+        this.setSize(.4f, .4f);
     }
 
     @Override
