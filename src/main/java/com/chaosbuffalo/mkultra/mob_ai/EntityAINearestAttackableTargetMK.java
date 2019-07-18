@@ -62,7 +62,7 @@ public class EntityAINearestAttackableTargetMK extends EntityAITarget {
         } else {
             List<Entity> list = taskOwner.world.getEntitiesInAABBexcluding(taskOwner,
                     getTargetableArea(getTargetDistance()),
-                    e -> Targeting.isValidTarget(Targeting.TargetType.ENEMY, taskOwner, e, true));
+                    e -> Targeting.isValidTarget(Targeting.TargetType.PLAYERS, taskOwner, e, true));
             if (list.size() > 0){
                 Entity min = Collections.min(list, this::compareDistance);
                 if (min instanceof EntityLivingBase){
