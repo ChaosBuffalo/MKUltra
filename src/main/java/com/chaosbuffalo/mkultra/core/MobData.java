@@ -75,6 +75,9 @@ public class MobData implements IMobData {
         if (!mobDefinition.equals(MKURegistry.INVALID_MOB)){
             tag.setString("mobDefinition", mobDefinition.toString());
         }
+        if (!factionName.equals(MKURegistry.INVALID_FACTION)){
+            tag.setString("mobFaction", factionName.toString());
+        }
     }
 
     @Override
@@ -93,6 +96,9 @@ public class MobData implements IMobData {
         }
         if (tag.hasKey("level")){
             setMobLevel(tag.getInteger("level"));
+        }
+        if (tag.hasKey("mobFaction")){
+            setMobFaction(new ResourceLocation(tag.getString("mobFaction")));
         }
     }
 

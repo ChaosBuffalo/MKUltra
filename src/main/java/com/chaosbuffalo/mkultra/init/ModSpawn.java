@@ -11,6 +11,7 @@ import com.chaosbuffalo.mkultra.utils.JsonLoader;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.mob_ai.*;
 import com.chaosbuffalo.mkultra.spawn.*;
+import com.chaosbuffalo.mkultra.utils.RandomCollection;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -36,6 +37,20 @@ import java.util.function.BiFunction;
 @Mod.EventBusSubscriber
 public class ModSpawn {
     public static final int MAX_LEVEL = 10;
+
+    public static final RandomCollection<Integer> levelChances = new RandomCollection<>();
+    static {
+        levelChances.add(10.0, 1);
+        levelChances.add(9.0, 2);
+        levelChances.add(8.0, 3);
+        levelChances.add(7.0, 4);
+        levelChances.add(6.0, 5);
+        levelChances.add(5.0, 6);
+        levelChances.add(4.0, 7);
+        levelChances.add(3.0, 8);
+        levelChances.add(2.0, 9);
+        levelChances.add(1.0, 10);
+    }
 
     public static void postInitJsonRegisistation(){
         ModContainer old = Loader.instance().activeModContainer();
@@ -385,6 +400,7 @@ public class ModSpawn {
 
     public static void loadMobDefinition(ResourceLocation name, JsonObject obj,
                                          IForgeRegistry<MobDefinition> registry) {
+        Log.info("Loading Mob Definition: %s", name.toString());
         String[] keys = {"type"};
         if (!checkKeysExist(keys, obj)) {
             return;
@@ -486,9 +502,15 @@ public class ModSpawn {
                 }
                 definition.withCustomModifiers(modifiers.toArray(new CustomModifier[0]));
             }
+            if (obj.has("default_spawn_weight")){
+                double weight = obj.get("default_spawn_weight").getAsDouble();
+                definition.setDefaultSpawnWeight(weight);
+            }
             if (obj.has("can_default_spawn")){
                 boolean canSpawn = obj.get("can_default_spawn").getAsBoolean();
                 definition.setCanDefaultSpawn(canSpawn);
+                Log.info("Adding spawn for: %s, %s", loc.toString(), definition.getRegistryName().toString());
+                DefaultSpawnIndex.addSpawn(loc, definition, definition.getDefaultSpawnWeight());
             }
             registry.register(definition);
         } else {

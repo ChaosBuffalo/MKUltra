@@ -3,24 +3,24 @@ package com.chaosbuffalo.mkultra.event;
 import com.chaosbuffalo.mkultra.MKConfig;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.*;
+import com.chaosbuffalo.mkultra.init.ModSpawn;
+import com.chaosbuffalo.mkultra.spawn.DefaultSpawnIndex;
 import com.chaosbuffalo.mkultra.spawn.MobDefinition;
+import com.chaosbuffalo.mkultra.spawn.SpawnList;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AbstractAttributeMap;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.LootTable;
-import net.minecraft.world.storage.loot.RandomValueRange;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -30,8 +30,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
-import java.util.Iterator;
-import java.util.Random;
 
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber
@@ -59,19 +57,41 @@ public class EntityEventHandler {
         }
     }
 
+    private static void addAttackSpeed(EntityLivingBase entity){
+        // This doesn't work, causes a default value cant be lower then min value error that doesnt make sense
+        AbstractAttributeMap attrs = entity.getAttributeMap();
+        if (attrs.getAttributeInstance(SharedMonsterAttributes.ATTACK_SPEED) == null){
+            attrs.registerAttribute(SharedMonsterAttributes.ATTACK_SPEED);
+        }
+    }
+
     private static void handleMobJoinWorld(EntityJoinWorldEvent event) {
-        MobData mobD = (MobData) MKUMobData.get((EntityLivingBase) event.getEntity());
+        EntityLivingBase entLiv = (EntityLivingBase) event.getEntity();
+        MobData mobD = (MobData) MKUMobData.get(entLiv);
+        World world = event.getWorld();
         if (mobD != null){
             if (mobD.isMKSpawned()) {
-                event.getEntity().setDead();
+                entLiv.setDead();
             } else {
                 ResourceLocation mobDefinition = mobD.getMobDefinition();
                 MobDefinition definition = MKURegistry.getMobDefinition(mobDefinition);
                 if (definition != MKURegistry.EMPTY_MOB){
-                    definition.applyDefinition(
-                            event.getWorld(), (EntityLivingBase) event.getEntity(), mobD.getMobLevel());
+//                    addAttackSpeed(entLiv);
+                    definition.applyDefinition(world, entLiv, mobD.getMobLevel());
                 } else {
                     // here we should randomly choose a mob definition appropriate for the entity type if available.
+                    ResourceLocation entityId = EntityList.getKey(entLiv);
+                    SpawnList spawnList = DefaultSpawnIndex.getSpawnListForEntity(entityId);
+                    if (spawnList != null){
+//                        addAttackSpeed(entLiv);
+                        MobDefinition def = spawnList.getNextDefinition();
+                        mobD.setMobDefinition(def.getRegistryName());
+                        mobD.setMobFaction(entityId);
+                        mobD.setMobLevel(ModSpawn.levelChances.next());
+                        def.applyDefinition(world, entLiv, mobD.getMobLevel());
+                        entLiv.setHealth(entLiv.getMaxHealth());
+
+                    }
                 }
             }
         }
@@ -183,8 +203,5 @@ public class EntityEventHandler {
             event.addCapability(new ResourceLocation(MKUltra.MODID, "mob_data"),
                     new MobDataProvider((EntityLivingBase) event.getObject()));
         }
-
-
-
     }
 }

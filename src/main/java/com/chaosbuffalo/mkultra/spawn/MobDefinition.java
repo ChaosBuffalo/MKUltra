@@ -26,6 +26,7 @@ public class MobDefinition extends IForgeRegistryEntry.Impl<MobDefinition> {
     private boolean canDefaultSpawn;
     private String mobName;
     private ResourceLocation additionalLootTable;
+    private double defaultSpawnWeight;
 
     public MobDefinition(ResourceLocation name, Class<? extends EntityLivingBase> entityClass){
         setRegistryName(name);
@@ -36,6 +37,7 @@ public class MobDefinition extends IForgeRegistryEntry.Impl<MobDefinition> {
         mobAbilities = new HashSet<>();
         customModifiers = new ArrayList<>();
         canDefaultSpawn = false;
+        defaultSpawnWeight = 1.0;
     }
 
     public MobDefinition withAttributeRanges(AttributeRange... ranges){
@@ -46,6 +48,10 @@ public class MobDefinition extends IForgeRegistryEntry.Impl<MobDefinition> {
     public boolean getCanDefaultSpawn(){
         return canDefaultSpawn;
     }
+
+    public void setDefaultSpawnWeight(double spawnWeight) {defaultSpawnWeight = spawnWeight;}
+
+    public double getDefaultSpawnWeight(){return defaultSpawnWeight;}
 
     public void setCanDefaultSpawn(boolean canSpawn) {canDefaultSpawn = canSpawn;}
 

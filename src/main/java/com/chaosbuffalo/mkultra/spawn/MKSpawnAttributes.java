@@ -13,7 +13,6 @@ public class MKSpawnAttributes {
     public static BiConsumer<EntityLivingBase, AttributeRange> SET_AGGRO_RADIUS = (entity, range) -> {
         IMobData data = MKUMobData.get(entity);
         if (data != null){
-            Log.info("setting aggro radius for %s",entity.toString());
             data.setAggroRange(lerp_double(range.start, range.stop, range.level, range.maxLevel));
         }
     };
