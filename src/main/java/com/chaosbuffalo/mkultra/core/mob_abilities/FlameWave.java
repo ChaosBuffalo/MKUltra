@@ -41,7 +41,7 @@ public class FlameWave extends MobAbility {
 
     @Override
     public float getDistance(){
-        return 6.0f;
+        return 3.0f;
     }
 
 
@@ -60,7 +60,7 @@ public class FlameWave extends MobAbility {
                 .spellCast(flames, level, getTargetType())
                 .spellCast(particles, level, getTargetType())
                 .instant()
-                .color(16737305).radius(getDistance(), true)
+                .color(16737305).radius(getDistance() + 3.0f, true)
                 .particle(EnumParticleTypes.LAVA)
                 .spawn();
         Vec3d lookVec = entity.getLookVec();

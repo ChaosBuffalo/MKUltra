@@ -5,13 +5,14 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IMobData;
 import com.chaosbuffalo.mkultra.core.MobAbility;
 import com.chaosbuffalo.mkultra.entities.projectiles.EntityMobFireballProjectile;
+import com.chaosbuffalo.mkultra.utils.EntityUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.World;
 
 public class TripleFireball extends MobAbility {
     private static float PROJECTILE_SPEED = 1.0f;
-    private static float PROJECTILE_INACCURACY = 15.0f;
+    private static float PROJECTILE_INACCURACY = 5.0f;
     private static int PROJECTILE_COUNT = 3;
 
     public TripleFireball() {
@@ -46,10 +47,7 @@ public class TripleFireball extends MobAbility {
             EntityMobFireballProjectile flamep = new EntityMobFireballProjectile(world, entity,
                     entity.getEyeHeight() / 2.0);
             flamep.setAmplifier(data.getMobLevel());
-            double d1 = target.posX - entity.posX;
-            double d2 =  target.posY - entity.posY;
-            double d3 = target.posZ - entity.posZ;
-            flamep.shoot(d1, d2, d3, PROJECTILE_SPEED, PROJECTILE_INACCURACY);
+            EntityUtils.shootProjectileAtTarget(flamep, target, PROJECTILE_SPEED, PROJECTILE_INACCURACY);
             world.spawnEntity(flamep);
         }
     }

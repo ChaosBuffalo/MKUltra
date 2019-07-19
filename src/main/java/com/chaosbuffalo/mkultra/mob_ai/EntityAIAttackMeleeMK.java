@@ -3,6 +3,7 @@ package com.chaosbuffalo.mkultra.mob_ai;
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.core.PlayerAttributes;
 import com.chaosbuffalo.mkultra.event.ItemRestrictionHandler;
+import com.chaosbuffalo.mkultra.log.Log;
 import com.google.common.collect.Multimap;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
@@ -151,27 +152,8 @@ public class EntityAIAttackMeleeMK extends EntityAIBase {
     protected void checkAndPerformAttack(EntityLivingBase attackTarget, double distance) {
         double d0 = this.getAttackReachSqr(attackTarget);
         if (distance <= d0 && this.attackTick <= 0) {
-            double attackSpeed = 4.0;
-            ItemStack inMainhand = attacker.getHeldItemMainhand();
-            if (inMainhand != ItemStack.EMPTY) {
-                Multimap<String, AttributeModifier> attrs = inMainhand.getAttributeModifiers(
-                        EntityEquipmentSlot.MAINHAND);
-                if (attrs.containsKey(SharedMonsterAttributes.ATTACK_SPEED.getName())){
-                    for (AttributeModifier mod : attrs.get(SharedMonsterAttributes.ATTACK_SPEED.getName())){
-                        switch (mod.getOperation()){
-                            case (PlayerAttributes.OP_INCREMENT):
-                                attackSpeed += mod.getAmount();
-                                break;
-                            case (PlayerAttributes.OP_SCALE_ADDITIVE):
-                                attackSpeed += attackSpeed * mod.getAmount();
-                                break;
-                            case (PlayerAttributes.OP_SCALE_MULTIPLICATIVE):
-                                attackSpeed *= (1 + mod.getAmount());
-                                break;
-                        }
-                    }
-                }
-            }
+            double attackSpeed = attacker.getAttributeMap()
+                    .getAttributeInstance(SharedMonsterAttributes.ATTACK_SPEED).getAttributeValue();
             int attackTicks = (int)(GameConstants.TICKS_PER_SECOND / attackSpeed);
             this.attackTick = attackTicks;
             this.attacker.swingArm(EnumHand.MAIN_HAND);
@@ -189,6 +171,6 @@ public class EntityAIAttackMeleeMK extends EntityAIBase {
                 attackRange *= 2.0;
             }
         }
-        return (double)(attackRange + attackTarget.width);
+        return attackRange + attackTarget.width;
     }
 }

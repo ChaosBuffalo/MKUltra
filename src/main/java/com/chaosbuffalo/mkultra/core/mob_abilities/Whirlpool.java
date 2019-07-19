@@ -7,6 +7,7 @@ import com.chaosbuffalo.mkultra.core.MobAbility;
 import com.chaosbuffalo.mkultra.entities.projectiles.EntityWhirlpoolProjectile;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkultra.utils.EntityUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumParticleTypes;
@@ -15,7 +16,7 @@ import net.minecraft.world.World;
 
 public class Whirlpool extends MobAbility {
     private static float PROJECTILE_SPEED = 1.25f;
-    private static float PROJECTILE_INACCURACY = 2.5f;
+    private static float PROJECTILE_INACCURACY = 1.0f;
 
     public Whirlpool() {
         super(MKUltra.MODID, "mob_ability.whirlpool");
@@ -47,9 +48,6 @@ public class Whirlpool extends MobAbility {
         EntityWhirlpoolProjectile projectile = new EntityWhirlpoolProjectile(theWorld, entity,
                 entity.getEyeHeight() / 2.0);
         projectile.setAmplifier(data.getMobLevel() > 5 ? 2 : 1);
-        projectile.shoot(entity, entity.rotationPitch,
-                entity.rotationYaw, 0.0F, PROJECTILE_SPEED, PROJECTILE_INACCURACY);
-        theWorld.spawnEntity(projectile);
         Vec3d lookVec = entity.getLookVec();
         MKUltra.packetHandler.sendToAllAround(
                 new ParticleEffectSpawnPacket(
@@ -60,10 +58,7 @@ public class Whirlpool extends MobAbility {
                         lookVec),
                 entity.dimension, entity.posX,
                 entity.posY, entity.posZ, 50.0f);
-        double d1 = target.posX - entity.posX;
-        double d2 =  target.posY - entity.posY;
-        double d3 = target.posZ - entity.posZ;
-        projectile.shoot(d1, d2, d3, PROJECTILE_SPEED, PROJECTILE_INACCURACY);
+        EntityUtils.shootProjectileAtTarget(projectile, target, PROJECTILE_SPEED, PROJECTILE_INACCURACY);
         world.spawnEntity(projectile);
     }
 }

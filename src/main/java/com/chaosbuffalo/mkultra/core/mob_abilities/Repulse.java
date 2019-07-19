@@ -40,7 +40,7 @@ public class Repulse extends MobAbility {
 
     @Override
     public float getDistance(){
-        return 5.0f;
+        return 3.0f;
     }
 
     @Override
@@ -56,7 +56,7 @@ public class Repulse extends MobAbility {
         AreaEffectBuilder.Create(entity, entity)
                 .spellCast(repulse, level, getTargetType())
                 .instant()
-                .color(16409620).radius(getDistance(), true)
+                .color(16409620).radius(getDistance() + 2.0f, true)
                 .spawn();
 
         Vec3d lookVec = entity.getLookVec();

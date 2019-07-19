@@ -6,6 +6,8 @@ import com.chaosbuffalo.mkultra.core.MobAbilityTracker;
 import com.chaosbuffalo.mkultra.init.ModSpawn;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AbstractAttributeMap;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.IForgeRegistryEntry;
@@ -84,10 +86,20 @@ public class MobDefinition extends IForgeRegistryEntry.Impl<MobDefinition> {
         return this;
     }
 
+    private static void addAttackSpeed(EntityLivingBase entity){
+        AbstractAttributeMap attrs = entity.getAttributeMap();
+        if (attrs.getAttributeInstance(SharedMonsterAttributes.ATTACK_SPEED) == null){
+            attrs.registerAttribute(SharedMonsterAttributes.ATTACK_SPEED);
+            attrs.getAttributeInstance(SharedMonsterAttributes.ATTACK_SPEED).setBaseValue(4.0);
+        }
+    }
+
     public void applyDefinition(World world, EntityLivingBase entity, int level){
         if (mobName != null){
             entity.setCustomNameTag(mobName);
         }
+
+        addAttackSpeed(entity);
         // Lets make it so the mobs cant change their loot
         // (which would trigger an ai change in some mobs like skeletons).
         if (entity instanceof EntityLiving){
