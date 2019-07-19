@@ -397,11 +397,11 @@ public abstract class EntityBaseProjectile extends Entity implements IProjectile
         return 0.03F;
     }
 
-    protected float getFlightDrag() {
+    public float getFlightDrag() {
         return 0.99f;
     }
 
-    protected float getWaterDrag() {
+    public float getWaterDrag() {
         return 0.8f;
     }
 

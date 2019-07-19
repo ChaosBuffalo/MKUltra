@@ -5,13 +5,14 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IMobData;
 import com.chaosbuffalo.mkultra.core.MobAbility;
 import com.chaosbuffalo.mkultra.entities.projectiles.EntityGraspingRootsProjectile;
+import com.chaosbuffalo.mkultra.utils.EntityUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.World;
 
 public class GraspingRoots extends MobAbility {
     private static float PROJECTILE_SPEED = 1.5f;
-    private static float PROJECTILE_INACCURACY = 10.0f;
+    private static float PROJECTILE_INACCURACY = 1.0f;
 
     public GraspingRoots() {
         super(MKUltra.MODID, "mob_ability.grasping_roots");
@@ -43,10 +44,7 @@ public class GraspingRoots extends MobAbility {
         EntityGraspingRootsProjectile proj = new EntityGraspingRootsProjectile(world, entity,
                 entity.getEyeHeight() / 2.0);
         proj.setAmplifier(data.getMobLevel());
-        double d1 = target.posX - entity.posX;
-        double d2 =  target.posY - entity.posY;
-        double d3 = target.posZ - entity.posZ;
-        proj.shoot(d1, d2, d3, PROJECTILE_SPEED, PROJECTILE_INACCURACY);
+        EntityUtils.shootProjectileAtTarget(proj, target, PROJECTILE_SPEED, PROJECTILE_INACCURACY);
         world.spawnEntity(proj);
     }
 }

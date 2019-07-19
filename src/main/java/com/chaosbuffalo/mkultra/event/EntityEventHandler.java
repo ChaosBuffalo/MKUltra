@@ -57,14 +57,6 @@ public class EntityEventHandler {
         }
     }
 
-    private static void addAttackSpeed(EntityLivingBase entity){
-        // This doesn't work, causes a default value cant be lower then min value error that doesnt make sense
-        AbstractAttributeMap attrs = entity.getAttributeMap();
-        if (attrs.getAttributeInstance(SharedMonsterAttributes.ATTACK_SPEED) == null){
-            attrs.registerAttribute(SharedMonsterAttributes.ATTACK_SPEED);
-        }
-    }
-
     private static void handleMobJoinWorld(EntityJoinWorldEvent event) {
         EntityLivingBase entLiv = (EntityLivingBase) event.getEntity();
         MobData mobD = (MobData) MKUMobData.get(entLiv);

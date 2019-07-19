@@ -31,6 +31,7 @@ public class EntitySpiritBombProjectile extends EntityBaseProjectile {
         this.setDoAirProc(true);
         this.setDoGroundProc(true);
         this.setGroundProcTime(40);
+        this.setSize(.15f, .15f);
     }
 
     @Override
