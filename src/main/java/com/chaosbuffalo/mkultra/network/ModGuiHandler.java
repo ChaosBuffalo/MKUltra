@@ -3,6 +3,7 @@ package com.chaosbuffalo.mkultra.network;
 import com.chaosbuffalo.mkultra.client.gui.*;
 import com.chaosbuffalo.mkultra.init.ModItems;
 import com.chaosbuffalo.mkultra.tiles.TileEntityMKSpawner;
+import com.chaosbuffalo.mkultra.tiles.TileEntityNPCSpawner;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -27,6 +28,7 @@ public class ModGuiHandler implements IGuiHandler {
     public static final int MK_SPAWNER_SCREEN = 6;
     public static final int LEARN_CLASS_SCREEN_ADMIN = 7;
     public static final int CHANGE_CLASS_SCREEN_ADMIN = 8;
+    public static final int NPC_SPAWNER_EQUIPMENT_SCREEN = 9;
 
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
@@ -44,6 +46,12 @@ public class ModGuiHandler implements IGuiHandler {
                 if (itemHandler != null){
                     return new PipeContainer(itemHandler, player);
                 }
+            }
+        } else if (ID == NPC_SPAWNER_EQUIPMENT_SCREEN){
+            BlockPos pos = new BlockPos(x, y, z);
+            TileEntity te = world.getTileEntity(pos);
+            if (te instanceof TileEntityNPCSpawner) {
+                return new NPCEquipmentContainer((TileEntityNPCSpawner) te, player);
             }
         }
         return null;
@@ -85,6 +93,13 @@ public class ModGuiHandler implements IGuiHandler {
             if (entity instanceof TileEntityMKSpawner){
                 TileEntityMKSpawner mkSpawner = (TileEntityMKSpawner)entity;
                 return new MKSpawnerGui(mkSpawner);
+            }
+        } else if (ID == NPC_SPAWNER_EQUIPMENT_SCREEN){
+            BlockPos pos = new BlockPos(x, y, z);
+            TileEntity te = world.getTileEntity(pos);
+            if (te instanceof TileEntityNPCSpawner) {
+                TileEntityNPCSpawner containerTileEntity = (TileEntityNPCSpawner) te;
+                return new NPCSpawnerGUI(containerTileEntity, new NPCEquipmentContainer(containerTileEntity, player));
             }
         }
 

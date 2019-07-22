@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.init;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.entities.EntityMKAreaEffect;
+import com.chaosbuffalo.mkultra.entities.mobs.EntityRanger;
 import com.chaosbuffalo.mkultra.entities.projectiles.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
@@ -64,5 +65,8 @@ public class ModEntities {
         register(evt, new ResourceLocation(MKUltra.MODID, "grasping_roots_projectile"),
                 EntityGraspingRootsProjectile.class, "EntityGraspingRootsProjectile", 12,
                 64, 1, true);
+        register(evt, new ResourceLocation(MKUltra.MODID, "ranger"),
+                EntityRanger.class, "EntityRanger", 13, 64,
+                1, true);
     }
 }

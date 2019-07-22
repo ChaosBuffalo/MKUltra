@@ -40,7 +40,7 @@ repositories {
 }
 
 dependencies {
-    deobfCompile group: 'targetingapi', name: 'targeting_api', version: '0.12'
+//    deobfCompile group: 'targetingapi', name: 'targeting_api', version: '0.14'
     compile fileTree(dir: 'libs', include: '*.jar')
 }
 

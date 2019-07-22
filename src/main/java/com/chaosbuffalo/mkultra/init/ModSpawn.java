@@ -12,6 +12,7 @@ import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.mob_ai.*;
 import com.chaosbuffalo.mkultra.spawn.*;
 import com.chaosbuffalo.mkultra.utils.RandomCollection;
+import com.chaosbuffalo.targeting_api.Targeting;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -37,6 +38,8 @@ import java.util.function.BiFunction;
 @Mod.EventBusSubscriber
 public class ModSpawn {
     public static final int MAX_LEVEL = 10;
+    public static final ResourceLocation NPC_FACTION_NAME = new ResourceLocation(MKUltra.MODID, "npcs");
+    public static final MobFaction NPC_FACTION = new MobFaction(NPC_FACTION_NAME, true);
 
     public static final RandomCollection<Integer> levelChances = new RandomCollection<>();
     static {
@@ -155,9 +158,16 @@ public class ModSpawn {
         AIGenerator noStrafeBuffs = new AIGenerator(MKUltra.MODID, "no_strafe_buffs", addNoStrafeBuffs);
         event.getRegistry().register(noStrafeBuffs);
         BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addAggroTarget =
-                (entity, choice) -> new EntityAINearestAttackableTargetMK((EntityCreature) entity,true);
+                (entity, choice) -> new EntityAINearestAttackableTargetMK((EntityCreature) entity,true,
+                        Targeting.TargetType.PLAYERS);
         AIGenerator aggroTarget = new AIGenerator(MKUltra.MODID, "aggro_target", addAggroTarget);
         event.getRegistry().register(aggroTarget);
+        BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addAggroTargetEnemies =
+                (entity, choice) -> new EntityAINearestAttackableTargetMK((EntityCreature) entity,true,
+                        Targeting.TargetType.ENEMY);
+        AIGenerator aggroTargetEnemy = new AIGenerator(MKUltra.MODID, "aggro_target_enemies",
+                addAggroTargetEnemies);
+        event.getRegistry().register(aggroTargetEnemy);
         BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addOffensiveSpells = (entity, choice) -> {
             IMobData mobData = MKUMobData.get(entity);
             if (mobData == null){
@@ -203,6 +213,11 @@ public class ModSpawn {
         event.getRegistry().register(attackTarget);
     }
 
+
+    @SubscribeEvent
+    public static void registerMobFactions(RegistryEvent.Register<MobFaction> event){
+        event.getRegistry().register(NPC_FACTION);
+    }
 
     @SuppressWarnings("unused")
     @SubscribeEvent
@@ -365,6 +380,10 @@ public class ModSpawn {
                 }
                 faction.addSpawnList(groupName, spawnList, jsonObject.get("weight").getAsDouble());
             }
+        }
+        if (obj.has("is_player_friendly")) {
+            boolean isPlayerFriendly = obj.get("is_player_friendly").getAsBoolean();
+            faction.setPlayerFriendly(isPlayerFriendly);
         }
         Log.info("Registered Faction %s", faction.getRegistryName().toString());
         registry.register(faction);

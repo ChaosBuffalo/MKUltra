@@ -15,14 +15,21 @@ public class TargetingExtensions {
                     !(other instanceof EntityPlayer)){
                 IMobData mobData = MKUMobData.get((EntityLivingBase) entity);
                 if (mobData != null){
-                    return mobData.isSameFaction((EntityLivingBase)other);
+                    return mobData.isSameFaction((EntityLivingBase)other) || (mobData.isFactionPlayerFriendly()
+                            && Targeting.isFriendlyWithPlayers(other));
+                } else {
+                    return false;
+                }
+            } else if (entity instanceof EntityLivingBase && other instanceof EntityPlayer){
+                IMobData mobData = MKUMobData.get((EntityLivingBase) entity);
+                if (mobData != null){
+                    return mobData.isFactionPlayerFriendly();
                 } else {
                     return false;
                 }
             } else {
                 return false;
             }
-
         };
         Targeting.registerFriendlyCallback(isMobSameFaction);
     }

@@ -19,6 +19,7 @@ public class EntityAISpellAttack extends EntityAISpellCastingBase {
                                float strafeStart, float strafeEnd) {
         super(entity, mobData, cooldown, strafeStart, strafeEnd);
         desiredTargetType = Targeting.TargetType.ENEMY;
+        setMutexBits(6);
     }
 
     /**

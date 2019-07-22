@@ -47,13 +47,15 @@ public class EntityAISpellCastingBase extends EntityAIBase {
         setMutexBits(4);
     }
 
-    public void setStrafeRange(float rangeStart, float rangeEnd){
+    public EntityAISpellCastingBase setStrafeRange(float rangeStart, float rangeEnd){
         strafeRangeStart = rangeStart;
         strafeRangeEnd = rangeEnd;
+        return this;
     }
 
-    public void setStrafe(boolean doStrafe){
+    public EntityAISpellCastingBase setStrafe(boolean doStrafe){
         this.doStrafe = doStrafe;
+        return this;
     }
 
     public boolean isInRange(Entity entity, MobAbilityTracker tracker){
@@ -168,9 +170,11 @@ public class EntityAISpellCastingBase extends EntityAIBase {
 
     @Override
     public void updateTask() {
+        Log.info("In update task spell casting");
         if (entity instanceof EntityLiving){
             EntityLiving entLiv = (EntityLiving)entity;
             if (targetEntity != null && currentAbility != null) {
+                Log.info("Target is %s, ability: %s", targetEntity.toString(), currentAbility.getAbility().getAbilityId().toString());
                 double d0 = this.entity.getDistanceSq(targetEntity.posX,
                         targetEntity.getEntityBoundingBox().minY, targetEntity.posZ);
                 boolean canSee = entLiv.getEntitySenses().canSee(targetEntity);
