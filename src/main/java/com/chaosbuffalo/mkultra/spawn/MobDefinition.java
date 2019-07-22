@@ -86,20 +86,11 @@ public class MobDefinition extends IForgeRegistryEntry.Impl<MobDefinition> {
         return this;
     }
 
-    private static void addAttackSpeed(EntityLivingBase entity){
-        AbstractAttributeMap attrs = entity.getAttributeMap();
-        if (attrs.getAttributeInstance(SharedMonsterAttributes.ATTACK_SPEED) == null){
-            attrs.registerAttribute(SharedMonsterAttributes.ATTACK_SPEED);
-            attrs.getAttributeInstance(SharedMonsterAttributes.ATTACK_SPEED).setBaseValue(4.0);
-        }
-    }
 
     public void applyDefinition(World world, EntityLivingBase entity, int level){
         if (mobName != null){
             entity.setCustomNameTag(mobName);
         }
-
-        addAttackSpeed(entity);
         // Lets make it so the mobs cant change their loot
         // (which would trigger an ai change in some mobs like skeletons).
         if (entity instanceof EntityLiving){

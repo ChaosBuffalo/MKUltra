@@ -58,10 +58,19 @@ public class EntityEventHandler {
         }
     }
 
+    public static void addAttackSpeed(EntityLivingBase entity){
+        AbstractAttributeMap attrs = entity.getAttributeMap();
+        if (attrs.getAttributeInstance(SharedMonsterAttributes.ATTACK_SPEED) == null){
+            attrs.registerAttribute(SharedMonsterAttributes.ATTACK_SPEED);
+            attrs.getAttributeInstance(SharedMonsterAttributes.ATTACK_SPEED).setBaseValue(4.0);
+        }
+    }
+
     private static void handleMobJoinWorld(EntityJoinWorldEvent event) {
         EntityLivingBase entLiv = (EntityLivingBase) event.getEntity();
         MobData mobD = (MobData) MKUMobData.get(entLiv);
         World world = event.getWorld();
+        addAttackSpeed(entLiv);
         if (mobD != null){
             if (mobD.isMKSpawned()) {
                 entLiv.setDead();
@@ -147,6 +156,8 @@ public class EntityEventHandler {
         // Run this on the server if we are single player.
         } else if (event.getEntity() instanceof EntityLivingBase && !event.getWorld().isRemote){
             handleMobJoinWorld(event);
+        } else if (event.getEntity() instanceof EntityLivingBase && event.getWorld().isRemote){
+            addAttackSpeed((EntityLivingBase) event.getEntity());
         }
     }
 
@@ -196,5 +207,6 @@ public class EntityEventHandler {
             event.addCapability(new ResourceLocation(MKUltra.MODID, "mob_data"),
                     new MobDataProvider((EntityLivingBase) event.getObject()));
         }
+
     }
 }
