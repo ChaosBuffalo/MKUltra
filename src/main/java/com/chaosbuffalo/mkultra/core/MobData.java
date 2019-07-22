@@ -23,6 +23,7 @@ public class MobData implements IMobData {
     private ResourceLocation additionalLootTable;
     private boolean isBoss;
     private ResourceLocation mobDefinition;
+    private boolean isMKSpawning;
 
 
     public MobData(EntityLivingBase entity) {
@@ -63,6 +64,16 @@ public class MobData implements IMobData {
     @Override
     public void setMKSpawned(boolean isSpawned) {
         isMKSpawned = isSpawned;
+    }
+
+    @Override
+    public void setISMKSpawning(boolean ismkSpawning) {
+        isMKSpawning = ismkSpawning;
+    }
+
+    @Override
+    public boolean getIsMKSpawning() {
+        return isMKSpawning;
     }
 
     @Override

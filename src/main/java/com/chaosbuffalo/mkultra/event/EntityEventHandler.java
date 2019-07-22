@@ -4,6 +4,7 @@ import com.chaosbuffalo.mkultra.MKConfig;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.init.ModSpawn;
+import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.spawn.DefaultSpawnIndex;
 import com.chaosbuffalo.mkultra.spawn.MobDefinition;
 import com.chaosbuffalo.mkultra.spawn.SpawnList;
@@ -64,7 +65,7 @@ public class EntityEventHandler {
         if (mobD != null){
             if (mobD.isMKSpawned()) {
                 entLiv.setDead();
-            } else {
+            } else if (!mobD.getIsMKSpawning()) {
                 ResourceLocation mobDefinition = mobD.getMobDefinition();
                 MobDefinition definition = MKURegistry.getMobDefinition(mobDefinition);
                 if (definition != MKURegistry.EMPTY_MOB){
@@ -105,7 +106,7 @@ public class EntityEventHandler {
     }
 
     @SubscribeEvent
-    @SideOnly(Side.SERVER)
+//    @SideOnly(Side.SERVER)
     public static void onLootDropEvent(LivingDropsEvent event){
         IMobData mobData = MKUMobData.get(event.getEntityLiving());
         EntityLivingBase entity = event.getEntityLiving();
