@@ -33,7 +33,7 @@ public class EntityAIReturnToSpawn extends EntityAIBase {
     public boolean shouldExecute() {
         if (mobData.hasSpawnPoint()){
             double distFromSpawn = creature.getDistanceSq(mobData.getSpawnPoint());
-            if (distFromSpawn <= 3.0){
+            if (distFromSpawn <= 4.0){
                 return false;
             }
             if (distFromSpawn > LEASH_RANGE * LEASH_RANGE || creature.getAttackTarget() == null){
@@ -48,9 +48,9 @@ public class EntityAIReturnToSpawn extends EntityAIBase {
 //        if (this.creature.getNavigator().getPath() == null){
 //            Log.info("navigator path null");
 //        } else {
-//            Log.info("is finished: %b",this.creature.getNavigator().getPath().isFinished());
+////            Log.info("is finished: %b",this.creature.getNavigator().getPath().isFinished());
 //        }
-        return !this.creature.getNavigator().noPath() ;
+        return !this.creature.getNavigator().noPath();
     }
 
     public void startExecuting() {

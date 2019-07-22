@@ -28,6 +28,8 @@ public class MobAbilityTracker {
         return cooldownLeft > 0;
     }
 
+    public int getCooldown(){return cooldownLeft;}
+
     public boolean isCooldownGreaterThanAttackTime(int attackTime){
         if (attackTime < 0){
             return false;

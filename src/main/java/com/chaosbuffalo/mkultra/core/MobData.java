@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.core;
 import com.chaosbuffalo.mkultra.GameConstants;
+import com.chaosbuffalo.mkultra.spawn.MobFaction;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
@@ -185,6 +186,15 @@ public class MobData implements IMobData {
             return false;
         }
         return factionName.equals(otherData.getMobFaction());
+    }
+
+    @Override
+    public boolean isFactionPlayerFriendly() {
+        MobFaction faction = MKURegistry.getFaction(factionName);
+        if (faction != null){
+            return faction.isPlayerFriendly();
+        }
+        return false;
     }
 
     @Override

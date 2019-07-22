@@ -80,6 +80,7 @@ public final class PacketHandler {
 		registerPacket(ForceOpenClientGUIPacket.class, new ForceOpenClientGUIPacket.Handler(), Side.CLIENT);
 		registerPacket(AbilityCooldownPacket.class, new AbilityCooldownPacket.Handler(), Side.CLIENT);
 		registerPacket(CritMessagePacket.class, new CritMessagePacket.Handler(), Side.CLIENT);
+		registerPacket(OpenLearnClassTileEntityPacket.class, new OpenLearnClassTileEntityPacket.Handler(), Side.CLIENT);
 	}
 
 	/**

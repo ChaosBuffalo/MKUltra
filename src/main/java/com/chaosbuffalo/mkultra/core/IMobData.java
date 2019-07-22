@@ -54,6 +54,8 @@ public interface IMobData {
 
     boolean isSameFaction(EntityLivingBase other);
 
+    boolean isFactionPlayerFriendly();
+
     void setTimeBetweenCasts(int value);
 
     int getTimeBetweenCasts();

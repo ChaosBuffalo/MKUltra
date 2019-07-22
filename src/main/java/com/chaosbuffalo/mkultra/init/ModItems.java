@@ -3,6 +3,7 @@ package com.chaosbuffalo.mkultra.init;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.PlayerAttributes;
 import com.chaosbuffalo.mkultra.item.*;
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -69,6 +70,9 @@ public final class ModItems {
     public static Item grasping_roots_projectile;
 
     public static Item fire_extinguisher_flask;
+    @GameRegistry.ObjectHolder("ranger_icon")
+    public static Item rangerIcon;
+
 
 
 
@@ -117,19 +121,19 @@ public final class ModItems {
 
         regInternal(sun_icon = new ClassIcon("sun_icon",
                 "The Sun God will bestow on you great powers. Choose your class: ", 8,
-                new ResourceLocation(MKUltra.MODID, "textures/items/sun_icon.png"),
+                new ResourceLocation(MKUltra.MODID, "textures/class/icons/sun.png"),
                 "Give your Brouzoufs to Solarius. Receive his blessings.",
                 new ResourceLocation(MKUltra.MODID, "textures/gui/xp_table_background.png")
                 , 38600).setCreativeTab(MKUltra.MKULTRA_TAB), "sun_icon");
         regInternal(moon_icon = new ClassIcon("moon_icon",
                 "The Mysterious Moon Goddess offers her arts to you. Choose your class: ", 1,
-                new ResourceLocation(MKUltra.MODID, "textures/items/moon_icon.png"),
+                new ResourceLocation(MKUltra.MODID, "textures/class/icons/moon.png"),
                 "Thalassa, Goddess of the Moon, demands brouzouf in exchange for her powers.",
                 new ResourceLocation(MKUltra.MODID, "textures/gui/xp_table_background_moon.png")
                 , 4404838).setCreativeTab(MKUltra.MKULTRA_TAB), "moon_icon");
         regInternal(desperate_icon = new ClassIcon("desperate_icon",
                 "The Enigmatic Wood Spirit offers her power to you. Choose your class: ",
-                1, new ResourceLocation(MKUltra.MODID, "textures/items/desperate_icon.png"),
+                1, new ResourceLocation(MKUltra.MODID, "textures/class/icons/desperate.png"),
                 "Ydira, Elusive Spirit of the Wood, will increase your powers in exchange for brouzouf.",
                 new ResourceLocation(MKUltra.MODID, "textures/gui/xp_table_background_desperate.png"),
                 32025).setCreativeTab(MKUltra.MKULTRA_TAB), "desperate_icon");
@@ -251,6 +255,7 @@ public final class ModItems {
 
         regInternal(pipe = new Pipe("hemp_pipe").setCreativeTab(MKUltra.MKULTRA_TAB), "hemp_pipe");
         regInternal(fire_extinguisher_flask = new FireExtinguisherFlask(), "fire_extinguisher_flask");
+        regInternal(new NPCSpawnerIcon("ranger_icon"));
     }
 
     @SuppressWarnings("unused")

@@ -55,7 +55,7 @@ public class PlayerClassScreen extends GuiScreen {
         //drawing ability
         //draw icons
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        IClassProvider classProvider = (IClassProvider) playerClass.getUnlockItem();
+        IClassProvider classProvider = playerClass.getClassProvider();
         ResourceLocation iconLoc1 = classProvider.getIconForProvider();
         this.mc.renderEngine.bindTexture(iconLoc1);
         Gui.drawModalRectWithCustomSizedTexture(xPos + 6, iconHeight, 0, 0, 16, 16, 16, 16);

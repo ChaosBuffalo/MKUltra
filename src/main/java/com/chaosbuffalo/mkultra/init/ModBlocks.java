@@ -27,6 +27,8 @@ public final class ModBlocks {
     public static Block xpTableBlock;
     @GameRegistry.ObjectHolder("mk_spawner")
     public static Block mkSpawnerBlock;
+    @GameRegistry.ObjectHolder("npc_spawner")
+    public static Block npcSpawnerBlock;
 
 
     // can't be public because this is an ObjectHolder
@@ -35,6 +37,7 @@ public final class ModBlocks {
     static {
         regInternal(new XpTableBlock("xp_table", Material.ANVIL, 5.0f, 1000.0f).setLightLevel(1.0f).setCreativeTab(MKUltra.MKULTRA_TAB));
         regInternal(new MKSpawnerBlock("mk_spawner"));
+        regInternal(new NPCSpawnerBlock("npc_spawner"));
     }
 
     private static void regInternal(Block block) {

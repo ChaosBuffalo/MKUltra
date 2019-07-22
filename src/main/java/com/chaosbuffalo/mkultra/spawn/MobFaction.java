@@ -13,9 +13,18 @@ public class MobFaction extends IForgeRegistryEntry.Impl<MobFaction> {
 
     private HashMap<String, RandomCollection<SpawnList>> spawnLists;
 
+    private boolean isPlayerFriendly;
+
     public MobFaction(ResourceLocation name){
         setRegistryName(name);
         spawnLists = new HashMap<>();
+        isPlayerFriendly = false;
+    }
+
+    public MobFaction(ResourceLocation name, boolean playerFriendly){
+        setRegistryName(name);
+        spawnLists = new HashMap<>();
+        isPlayerFriendly = playerFriendly;
     }
 
     public void addSpawnList(String group, SpawnList list, double weight){
@@ -61,6 +70,14 @@ public class MobFaction extends IForgeRegistryEntry.Impl<MobFaction> {
     public MobFaction withSpawnList(String group, SpawnList list, double weight){
         addSpawnList(group, list, weight);
         return this;
+    }
+
+    public boolean isPlayerFriendly(){
+        return isPlayerFriendly;
+    }
+
+    public void setPlayerFriendly(boolean isFriendly){
+        isPlayerFriendly = isFriendly;
     }
 
     public MobFaction(String domain, String name){

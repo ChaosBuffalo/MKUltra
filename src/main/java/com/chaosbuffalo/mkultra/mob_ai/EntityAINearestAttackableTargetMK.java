@@ -18,16 +18,19 @@ import java.util.List;
 public class EntityAINearestAttackableTargetMK extends EntityAITarget {
 
     private int targetChance;
+    private Targeting.TargetType targetType;
 
 
-    public EntityAINearestAttackableTargetMK(EntityCreature creature, boolean checkSight, int targetChance) {
+    public EntityAINearestAttackableTargetMK(EntityCreature creature, boolean checkSight, int targetChance,
+                                             Targeting.TargetType targetType) {
         super(creature, checkSight);
         this.targetChance = targetChance;
         this.setMutexBits(1);
+        this.targetType = targetType;
     }
 
-    public EntityAINearestAttackableTargetMK(EntityCreature creature, boolean checkSight) {
-        this(creature, checkSight, 10);
+    public EntityAINearestAttackableTargetMK(EntityCreature creature, boolean checkSight, Targeting.TargetType targetType) {
+        this(creature, checkSight, 10, targetType);
     }
 
     @Override
@@ -62,7 +65,12 @@ public class EntityAINearestAttackableTargetMK extends EntityAITarget {
         } else {
             List<Entity> list = taskOwner.world.getEntitiesInAABBexcluding(taskOwner,
                     getTargetableArea(getTargetDistance()),
-                    e -> Targeting.isValidTarget(Targeting.TargetType.PLAYERS, taskOwner, e, true));
+                    e -> Targeting.isValidTarget(targetType, taskOwner, e, true) && taskOwner.getEntitySenses().canSee(e));
+//            Log.info("Potential targets %s", this.taskOwner.toString());
+//            for (Entity entity : list){
+////                Log.info("Entity ID: %d, Class: %s", entity.getEntityId(), entity.getClass().toString());
+////            }
+//            Log.info("Done with potential targets");
             if (list.size() > 0){
                 Entity min = Collections.min(list, this::compareDistance);
                 if (min instanceof EntityLivingBase){
