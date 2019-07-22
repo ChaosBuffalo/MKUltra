@@ -3,6 +3,7 @@ package com.chaosbuffalo.mkultra;
 import com.chaosbuffalo.mkultra.command.MKCommand;
 import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.init.ModItems;
+import com.chaosbuffalo.mkultra.init.ModLootTables;
 import com.chaosbuffalo.mkultra.init.ModSpawn;
 import com.chaosbuffalo.mkultra.init.ModTileEntities;
 import com.chaosbuffalo.mkultra.item.MKUltraTab;
@@ -70,6 +71,7 @@ public class MKUltra {
     @EventHandler
     public void init(FMLInitializationEvent e) {
         TargetingExtensions.init();
+        ModLootTables.init();
         ArmorClass.registerDefaults();
         NetworkRegistry.INSTANCE.registerGuiHandler(MKUltra.INSTANCE, new ModGuiHandler());
         MKUltra.packetHandler = new PacketHandler(MKUltra.MODID);

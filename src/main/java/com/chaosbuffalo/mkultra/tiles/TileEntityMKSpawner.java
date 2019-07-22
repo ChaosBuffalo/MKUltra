@@ -277,6 +277,7 @@ public class TileEntityMKSpawner extends TileEntity implements ITickable {
             currentMob = entity.getEntityId();
             Log.info("Spawning entity at %s", getPos().toString());
             entity.setHealth(entity.getMaxHealth());
+            mobData.setISMKSpawning(true);
             theWorld.spawnEntity(entity);
             mobData.setMobFaction(faction.getRegistryName());
             mobData.setMKSpawned(true);

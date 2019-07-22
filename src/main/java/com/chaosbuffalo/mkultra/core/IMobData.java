@@ -18,6 +18,10 @@ public interface IMobData {
 
     void setMKSpawned(boolean isSpawned);
 
+    void setISMKSpawning(boolean ismkSpawning);
+
+    boolean getIsMKSpawning();
+
     void serialize(NBTTagCompound tag);
 
     void deserialize(NBTTagCompound tag);
