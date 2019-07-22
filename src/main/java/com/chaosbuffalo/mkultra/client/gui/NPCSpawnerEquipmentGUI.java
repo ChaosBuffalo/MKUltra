@@ -6,14 +6,14 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
 
-public class NPCSpawnerGUI extends GuiContainer {
+public class NPCSpawnerEquipmentGUI extends GuiContainer {
     public static final int WIDTH = 176;
     public static final int HEIGHT = 133;
 
     private static final ResourceLocation background = new ResourceLocation(MKUltra.MODID,
             "textures/gui/npc_equipment.png");
 
-    public NPCSpawnerGUI(TileEntityNPCSpawner tileEntity, Container container) {
+    public NPCSpawnerEquipmentGUI(TileEntityNPCSpawner tileEntity, Container container) {
         super(container);
         xSize = WIDTH;
         ySize = HEIGHT;

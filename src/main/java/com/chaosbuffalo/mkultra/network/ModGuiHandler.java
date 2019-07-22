@@ -2,6 +2,8 @@ package com.chaosbuffalo.mkultra.network;
 
 import com.chaosbuffalo.mkultra.client.gui.*;
 import com.chaosbuffalo.mkultra.init.ModItems;
+import com.chaosbuffalo.mkultra.item.interfaces.IClassProvider;
+import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.tiles.TileEntityMKSpawner;
 import com.chaosbuffalo.mkultra.tiles.TileEntityNPCSpawner;
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,7 +11,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
@@ -29,6 +30,7 @@ public class ModGuiHandler implements IGuiHandler {
     public static final int LEARN_CLASS_SCREEN_ADMIN = 7;
     public static final int CHANGE_CLASS_SCREEN_ADMIN = 8;
     public static final int NPC_SPAWNER_EQUIPMENT_SCREEN = 9;
+    public static final int LEARN_CLASS_FROM_TILE_ENTITY_SCREEN = 10;
 
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
@@ -62,15 +64,15 @@ public class ModGuiHandler implements IGuiHandler {
         if (ID == CLASS_DATA_SCREEN) {
             return new PlayerClassScreen();
         } else if (ID == LEARN_CLASS_SCREEN) {
-            return new ChooseClassScreen(true, true);
+            return new ChooseClassFromItemScreen(true, true);
         } else if (ID == XP_TABLE_SCREEN) {
             return new XpTableScreen();
         } else if (ID == CHANGE_CLASS_SCREEN) {
-            return new ChooseClassScreen(false, true);
+            return new ChooseClassFromItemScreen(false, true);
         } else if (ID == CHANGE_CLASS_SCREEN_ADMIN) {
-            return new ChooseClassScreen(false, false);
+            return new ChooseClassFromItemScreen(false, false);
         } else if (ID == LEARN_CLASS_SCREEN_ADMIN) {
-            return new ChooseClassScreen(true, false);
+            return new ChooseClassFromItemScreen(true, false);
         } else if (ID == PARTY_INVITE_SCREEN) {
             return new PartyInviteScreen();
         } else if (ID == PIPE_CONTAINER_SCREEN){
@@ -99,7 +101,15 @@ public class ModGuiHandler implements IGuiHandler {
             TileEntity te = world.getTileEntity(pos);
             if (te instanceof TileEntityNPCSpawner) {
                 TileEntityNPCSpawner containerTileEntity = (TileEntityNPCSpawner) te;
-                return new NPCSpawnerGUI(containerTileEntity, new NPCEquipmentContainer(containerTileEntity, player));
+                return new NPCSpawnerEquipmentGUI(containerTileEntity, new NPCEquipmentContainer(containerTileEntity, player));
+            }
+        } else if (ID == LEARN_CLASS_FROM_TILE_ENTITY_SCREEN){
+            BlockPos pos = new BlockPos(x, y, z);
+            TileEntity te = world.getTileEntity(pos);
+            Log.info("Trying to open class screen");
+            if (te instanceof IClassProvider){
+                Log.info("tile entity is a class provider");
+                return new ChooseClassFromTileEntityScreen(te, true, false);
             }
         }
 

@@ -27,6 +27,8 @@ public final class ModBlocks {
     public static Block xpTableBlock;
     @GameRegistry.ObjectHolder("mk_spawner")
     public static Block mkSpawnerBlock;
+    @GameRegistry.ObjectHolder("npc_spawner")
+    public static Block npcSpawnerBlock;
 
 
     // can't be public because this is an ObjectHolder

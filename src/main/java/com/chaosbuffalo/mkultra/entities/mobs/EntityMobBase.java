@@ -7,7 +7,10 @@ import com.chaosbuffalo.mkultra.core.MKUMobData;
 import com.chaosbuffalo.mkultra.core.MobData;
 import com.chaosbuffalo.mkultra.mob_ai.*;
 import com.chaosbuffalo.mkultra.network.ModGuiHandler;
+import com.chaosbuffalo.mkultra.network.packets.OpenLearnClassTileEntityPacket;
+import com.chaosbuffalo.mkultra.network.packets.PartyInvitePacket;
 import com.chaosbuffalo.mkultra.tiles.TileEntityNPCSpawner;
+import com.chaosbuffalo.mkultra.utils.ServerUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -15,6 +18,7 @@ import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.entity.projectile.EntitySpectralArrow;
 import net.minecraft.entity.projectile.EntityTippedArrow;
@@ -75,9 +79,9 @@ public class EntityMobBase extends EntityCreature implements IMob, IRangedAttack
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(6, new EntityAILookIdle(this));
         this.tasks.addTask(3, new EntityAIBuffTeammates(this, data,
-                1 * GameConstants.TICKS_PER_SECOND).setStrafe(doStrafeOnSpells));
+                5 * GameConstants.TICKS_PER_SECOND).setStrafe(doStrafeOnSpells));
         this.tasks.addTask(4, new EntityAISpellAttack(this, data,
-                1 * GameConstants.TICKS_PER_SECOND).setStrafe(doStrafeOnSpells));
+                5 * GameConstants.TICKS_PER_SECOND).setStrafe(true));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTargetMK(
                 this, true, Targeting.TargetType.ENEMY));
         this.targetTasks.addTask(1, new EntityAIHurtByTargetMK(this, true));
@@ -175,7 +179,8 @@ public class EntityMobBase extends EntityCreature implements IMob, IRangedAttack
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_SPEED).setBaseValue(4.0);
         this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_SPEED)
                 .setBaseValue(4.0);
-        this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(64.0);
+        this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(50.0);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
     }
 
     @Override
@@ -293,14 +298,17 @@ public class EntityMobBase extends EntityCreature implements IMob, IRangedAttack
             BlockPos spawnPoint = data.getSpawnPoint();
             TileEntity spawner = player.world.getTileEntity(spawnPoint);
             if (spawner != null && spawner instanceof TileEntityNPCSpawner){
-                TileEntityNPCSpawner npcSpawner = (TileEntityNPCSpawner) spawner;
-                if (!world.isRemote){
-                    player.openGui(MKUltra.INSTANCE,
-                            ModGuiHandler.NPC_SPAWNER_EQUIPMENT_SCREEN, world,
-                            spawnPoint.getX(), spawnPoint.getY(), spawnPoint.getZ());
+                if (!world.isRemote && player instanceof EntityPlayerMP){
+                    if (player.isSneaking()){
+                        player.openGui(MKUltra.INSTANCE,
+                                ModGuiHandler.NPC_SPAWNER_EQUIPMENT_SCREEN, world,
+                                spawnPoint.getX(), spawnPoint.getY(), spawnPoint.getZ());
+                    } else {
+                        MKUltra.packetHandler.sendTo(new OpenLearnClassTileEntityPacket(spawnPoint),
+                                (EntityPlayerMP) player);
+                    }
                 }
                 return EnumActionResult.SUCCESS;
-
             }
             return EnumActionResult.PASS;
         }

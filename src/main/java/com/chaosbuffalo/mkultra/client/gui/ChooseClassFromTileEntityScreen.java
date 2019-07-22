@@ -1,10 +1,9 @@
 package com.chaosbuffalo.mkultra.client.gui;
 
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.MKURegistry;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
-import com.chaosbuffalo.mkultra.core.PlayerClass;
+import com.chaosbuffalo.mkultra.core.MKURegistry;
 import com.chaosbuffalo.mkultra.item.interfaces.IClassProvider;
 import com.chaosbuffalo.mkultra.network.packets.ClassLearnPacket;
 import net.minecraft.client.gui.GuiButton;
@@ -12,30 +11,30 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-
-public class ChooseClassScreen extends GuiScreen {
+public class ChooseClassFromTileEntityScreen extends GuiScreen {
 
     private static final int PER_PAGE = 8;
     private boolean learning;
     private boolean enforceChecks;
     private List<ResourceLocation> classes;
     private int currentPage;
+    private TileEntity entity;
 
     private static int CHOOSE_BUTTON = 0;
     private static int NEXT_BUTTON = 1;
     private static int PREV_BUTTON = 2;
 
-    public ChooseClassScreen(boolean showAll, boolean enforceChecks) {
+    public ChooseClassFromTileEntityScreen(TileEntity tileProvider, boolean showAll, boolean enforceChecks) {
         currentPage = 0;
         this.learning = showAll;
         this.enforceChecks = enforceChecks;
+        this.entity = tileProvider;
     }
 
     @Override
@@ -64,16 +63,18 @@ public class ChooseClassScreen extends GuiScreen {
         if (data == null)
             return;
 
-        if (enforceChecks) {
-            String text;
-            if (player.getHeldItemMainhand().getItem() instanceof IClassProvider) {
-                IClassProvider icon = (IClassProvider) player.getHeldItemMainhand().getItem();
-                text = icon.getClassSelectionText();
-            } else {
-                text = "You shouldn't see this.";
-            }
-
-            this.fontRenderer.drawSplitString(text, xPos + 15, yPos + titleHeight + 2 + 4, 220, 0);
+        boolean wasClassProvider = true;
+        String text;
+        if (entity instanceof IClassProvider) {
+            IClassProvider icon = (IClassProvider) entity;
+            text = icon.getClassSelectionText();
+        } else {
+            text = "You shouldn't see this.";
+            wasClassProvider = false;
+        }
+        this.fontRenderer.drawSplitString(text, xPos + 15, yPos + titleHeight + 2 + 4, 220, 0);
+        if (!wasClassProvider){
+            return;
         }
         int contentHeight = 20;
         int buttonStartY = contentHeight + yPos + titleHeight + 2 + 4 + 2;
@@ -84,14 +85,7 @@ public class ChooseClassScreen extends GuiScreen {
         List<ResourceLocation> knownClasses = data.getKnownClasses();
 
         if (learning) {
-            if (enforceChecks) {
-                ItemStack main = player.getHeldItemMainhand();
-                classes = MKURegistry.getClassesProvidedByItem(main.getItem());
-            }
-            else {
-                classes = MKURegistry.REGISTRY_CLASSES.getValuesCollection()
-                        .stream().map(PlayerClass::getClassId).collect(Collectors.toList());
-            }
+            classes = MKURegistry.getClassesForProvider((IClassProvider) entity);
         } else {
             classes = MKURegistry.getValidClasses(knownClasses);
         }
@@ -99,7 +93,7 @@ public class ChooseClassScreen extends GuiScreen {
         boolean wasLarge = class_subset.size() > PER_PAGE;
         if (wasLarge){
             classes = class_subset.subList(PER_PAGE*currentPage,
-                      PER_PAGE*currentPage + Math.min(class_subset.size() - PER_PAGE*currentPage, PER_PAGE));
+                    PER_PAGE*currentPage + Math.min(class_subset.size() - PER_PAGE*currentPage, PER_PAGE));
         }
 
         // draw choose class buttons

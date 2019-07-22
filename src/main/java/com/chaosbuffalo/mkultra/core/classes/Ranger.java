@@ -6,6 +6,9 @@ import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.PlayerClass;
 import com.chaosbuffalo.mkultra.core.abilities.*;
 import com.chaosbuffalo.mkultra.init.ModItems;
+import com.chaosbuffalo.mkultra.item.ClassIcon;
+import com.chaosbuffalo.mkultra.item.interfaces.IClassProvider;
+import com.chaosbuffalo.mkultra.tiles.TileEntityNPCSpawner;
 import net.minecraft.item.Item;
 
 import java.util.ArrayList;
@@ -70,7 +73,7 @@ public class Ranger extends PlayerClass {
     }
 
     @Override
-    public Item getUnlockItem() {
-        return ModItems.moon_icon;
+    public IClassProvider getClassProvider() {
+        return new TileEntityNPCSpawner();
     }
 }

@@ -229,4 +229,5 @@ mkultra.class.wave_knight.name=Wave Knight
 mkultra.class.ranger.name=Ranger
 mkultra.class.green_knight.name=Green Knight
 tile.npc_spawner.name=NPC Spawner
+item.ranger_icon.name=Ranger Soul
 

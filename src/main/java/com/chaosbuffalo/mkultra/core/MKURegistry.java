@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.core;
 
 
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.item.interfaces.IClassProvider;
 import com.chaosbuffalo.mkultra.spawn.*;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -90,9 +91,10 @@ public class MKURegistry {
         return REGISTRY_SPAWN_LISTS.getValue(name);
     }
 
-    public static List<ResourceLocation> getClassesProvidedByItem(Item held) {
+    public static List<ResourceLocation> getClassesForProvider(IClassProvider provider) {
         return REGISTRY_CLASSES.getEntries().stream()
-                .filter(kv -> kv.getValue().getUnlockItem() == held)
+                .filter(kv -> kv.getValue().getClassProvider()
+                        .getIconForProvider().equals(provider.getIconForProvider()))
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
     }

@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.core;
 
+import com.chaosbuffalo.mkultra.item.interfaces.IClassProvider;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -42,7 +43,7 @@ public abstract class PlayerClass extends IForgeRegistryEntry.Impl<PlayerClass> 
 
     public abstract int getManaPerLevel();
 
-    public abstract Item getUnlockItem();
+    public abstract IClassProvider getClassProvider();
 
     public abstract ArmorClass getArmorClass();
 

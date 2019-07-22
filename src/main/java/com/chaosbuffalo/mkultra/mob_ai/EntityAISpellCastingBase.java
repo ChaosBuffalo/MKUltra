@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.mob_ai;
 
+import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IMobData;
 import com.chaosbuffalo.mkultra.core.MobAbilityTracker;
@@ -21,6 +22,7 @@ public class EntityAISpellCastingBase extends EntityAIBase {
     int cooldown;
     int castTime;
     boolean canCast;
+    private final int CAST_TIME_MAX = 15 * GameConstants.TICKS_PER_SECOND;
     EntityLivingBase targetEntity;
     int seeTime;
     boolean strafingClockwise;
@@ -31,6 +33,7 @@ public class EntityAISpellCastingBase extends EntityAIBase {
     public float strafeRangeEnd;
     public Targeting.TargetType desiredTargetType;
     boolean doStrafe;
+    int attemptingCastTicks;
 
     public EntityAISpellCastingBase(EntityLivingBase entity, IMobData mobData, int cooldown) {
         this(entity, mobData, cooldown, .25f, .75f);
@@ -45,6 +48,7 @@ public class EntityAISpellCastingBase extends EntityAIBase {
         this.strafeRangeEnd = strafeRangeEnd;
         this.doStrafe = true;
         setMutexBits(4);
+        this.attemptingCastTicks = 0;
     }
 
     public EntityAISpellCastingBase setStrafeRange(float rangeStart, float rangeEnd){
@@ -155,13 +159,29 @@ public class EntityAISpellCastingBase extends EntityAIBase {
         super.resetTask();
         this.castTime = cooldown;
         this.currentAbility = null;
+        targetEntity = null;
+        attemptingCastTicks = 0;
         canCast = false;
+        if (entity instanceof IRangedAttackMob){
+            ((IRangedAttackMob)this.entity).setSwingingArms(false);
+        }
     }
 
     @Override
     public boolean shouldContinueExecuting() {
-        if (!(entity instanceof EntityLiving) || targetEntity == null ||
-                !Targeting.isValidTarget(desiredTargetType, entity, targetEntity, false)){
+        if (targetEntity == null){
+            return false;
+        }
+        if (!(entity instanceof EntityLiving)){
+            return false;
+        }
+        if (targetEntity.isDead){
+            return false;
+        }
+        if (!Targeting.isValidTarget(desiredTargetType, entity, targetEntity, false)){
+            return false;
+        }
+        if (attemptingCastTicks >= CAST_TIME_MAX){
             return false;
         }
         return (currentAbility != null && !currentAbility.isAbilityOnCooldown() || !((EntityLiving)entity).getNavigator().noPath());
@@ -170,11 +190,11 @@ public class EntityAISpellCastingBase extends EntityAIBase {
 
     @Override
     public void updateTask() {
-        Log.info("In update task spell casting");
+//        Log.info("In update task spell casting %s", entity.toString());
         if (entity instanceof EntityLiving){
             EntityLiving entLiv = (EntityLiving)entity;
             if (targetEntity != null && currentAbility != null) {
-                Log.info("Target is %s, ability: %s", targetEntity.toString(), currentAbility.getAbility().getAbilityId().toString());
+//                Log.info("Target is %s, ability: %s, cooldown is: %d", targetEntity.toString(), currentAbility.getAbility().getAbilityId().toString(), currentAbility.getCooldown());
                 double d0 = this.entity.getDistanceSq(targetEntity.posX,
                         targetEntity.getEntityBoundingBox().minY, targetEntity.posZ);
                 boolean canSee = entLiv.getEntitySenses().canSee(targetEntity);
@@ -187,12 +207,14 @@ public class EntityAISpellCastingBase extends EntityAIBase {
                     doStrafeBehavior(entLiv, canSee, d0, maxDistance);
                 }
                 if (canCast) {
+                    attemptingCastTicks++;
                     if (!canSee && this.seeTime < -60) {
                         canCast = false;
                     } else if (canSee) {
                         currentAbility.useAbility(targetEntity);
                         castTime = cooldown;
                         canCast = false;
+                        attemptingCastTicks = 0;
                         if (entity instanceof IRangedAttackMob){
                             ((IRangedAttackMob)this.entity).setSwingingArms(true);
                         }
@@ -206,34 +228,31 @@ public class EntityAISpellCastingBase extends EntityAIBase {
                         }
                     } else {
                         Vec3d lookVec = entLiv.getLookVec();
-                        if (this.castTime % 2 == 0){
-                            int particleId;
-                            switch (currentAbility.getAbility().getAbilityType()){
-                                case ATTACK:
-                                    particleId = EnumParticleTypes.SPELL_WITCH.getParticleID();
-                                    break;
-                                case BUFF:
-                                    particleId = EnumParticleTypes.SPELL_MOB_AMBIENT.getParticleID();
-                                    break;
-                                case HEAL:
-                                    particleId = EnumParticleTypes.SPELL_INSTANT.getParticleID();
-                                    break;
-                                default:
-                                    particleId = EnumParticleTypes.SPELL_WITCH.getParticleID();
-                            }
-                            MKUltra.packetHandler.sendToAllAround(
-                                    new ParticleEffectSpawnPacket(
-                                            particleId,
-                                            ParticleEffects.CIRCLE_MOTION, 6, 3,
-                                            entLiv.posX, entLiv.posY + 1.0,
-                                            entLiv.posZ, 1.0, 1.0, 1.0, .5,
-                                            lookVec),
-                                    entity.dimension, entity.posX,
-                                    entity.posY, entity.posZ, 25.0f);
+
+                        int particleId;
+                        switch (currentAbility.getAbility().getAbilityType()){
+                            case ATTACK:
+                                particleId = EnumParticleTypes.SPELL_WITCH.getParticleID();
+                                break;
+                            case BUFF:
+                                particleId = EnumParticleTypes.SPELL_MOB_AMBIENT.getParticleID();
+                                break;
+                            case HEAL:
+                                particleId = EnumParticleTypes.SPELL_INSTANT.getParticleID();
+                                break;
+                            default:
+                                particleId = EnumParticleTypes.SPELL_WITCH.getParticleID();
                         }
-
+                        MKUltra.packetHandler.sendToAllAround(
+                                new ParticleEffectSpawnPacket(
+                                        particleId,
+                                        ParticleEffects.CIRCLE_MOTION, 6, 3,
+                                        entLiv.posX, entLiv.posY + 1.0,
+                                        entLiv.posZ, 1.0, 1.0, 1.0, .5,
+                                        lookVec),
+                                entity.dimension, entity.posX,
+                                entity.posY, entity.posZ, 25.0f);
                     }
-
                 }
             }
         }

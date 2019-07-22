@@ -44,17 +44,17 @@ public class EntityAIReturnToSpawn extends EntityAIBase {
     }
 
     public boolean shouldContinueExecuting() {
-        Log.info("Should Continue: Return to Spawn %b", !this.creature.getNavigator().noPath());
-        if (this.creature.getNavigator().getPath() == null){
-            Log.info("navigator path null");
-        } else {
-            Log.info("is finished: %b",this.creature.getNavigator().getPath().isFinished());
-        }
+//        Log.info("Should Continue: Return to Spawn %b", !this.creature.getNavigator().noPath());
+//        if (this.creature.getNavigator().getPath() == null){
+//            Log.info("navigator path null");
+//        } else {
+////            Log.info("is finished: %b",this.creature.getNavigator().getPath().isFinished());
+//        }
         return !this.creature.getNavigator().noPath();
     }
 
     public void startExecuting() {
-        Log.info("Start Execute: Return to Spawn %s", creature.toString());
+//        Log.info("Start Execute: Return to Spawn %s", creature.toString());
         BlockPos spawnPoint = mobData.getSpawnPoint();
         double distFromSpawn = creature.getDistanceSq(spawnPoint);
         IAttributeInstance followRange = creature.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE);

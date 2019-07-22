@@ -820,7 +820,7 @@ public class PlayerData implements IPlayerData {
             return false;
 
         Item mainHand = mainHandStack.getItem();
-        return mainHand == baseClass.getUnlockItem();
+        return mainHand == baseClass.getClassProvider();
     }
 
     @Override

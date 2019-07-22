@@ -65,12 +65,12 @@ public class EntityAINearestAttackableTargetMK extends EntityAITarget {
         } else {
             List<Entity> list = taskOwner.world.getEntitiesInAABBexcluding(taskOwner,
                     getTargetableArea(getTargetDistance()),
-                    e -> Targeting.isValidTarget(targetType, taskOwner, e, true));
-            Log.info("Potential targets %s", this.taskOwner.toString());
-            for (Entity entity : list){
-                Log.info("Entity ID: %d, Class: %s", entity.getEntityId(), entity.getClass().toString());
-            }
-            Log.info("Done with potential targets");
+                    e -> Targeting.isValidTarget(targetType, taskOwner, e, true) && taskOwner.getEntitySenses().canSee(e));
+//            Log.info("Potential targets %s", this.taskOwner.toString());
+//            for (Entity entity : list){
+////                Log.info("Entity ID: %d, Class: %s", entity.getEntityId(), entity.getClass().toString());
+////            }
+//            Log.info("Done with potential targets");
             if (list.size() > 0){
                 Entity min = Collections.min(list, this::compareDistance);
                 if (min instanceof EntityLivingBase){
@@ -86,7 +86,7 @@ public class EntityAINearestAttackableTargetMK extends EntityAITarget {
     }
 
     public void startExecuting() {
-        Log.info("Start Executing Attack Nearest: %s", taskOwner.toString());
+//        Log.info("Start Executing Attack Nearest: %s", taskOwner.toString());
         this.taskOwner.setAttackTarget(this.target);
         super.startExecuting();
     }
