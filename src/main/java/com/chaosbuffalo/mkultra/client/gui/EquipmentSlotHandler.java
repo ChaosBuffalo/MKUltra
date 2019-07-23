@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.client.gui;
 
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.*;
 import net.minecraftforge.items.IItemHandler;
@@ -27,8 +28,7 @@ public class EquipmentSlotHandler extends SlotItemHandler {
             return true;
         } else {
             if (stack.getItem() instanceof ItemArmor){
-                ItemArmor armor = (ItemArmor) stack.getItem();
-                return armor.getEquipmentSlot().equals(slot);
+                return EntityLiving.getSlotForItemStack(stack).equals(slot);
             } else {
                 return false;
             }

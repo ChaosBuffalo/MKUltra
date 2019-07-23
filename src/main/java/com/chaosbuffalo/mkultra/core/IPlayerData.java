@@ -3,6 +3,7 @@ package com.chaosbuffalo.mkultra.core;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 
 import java.util.List;
 
@@ -90,7 +91,9 @@ public interface IPlayerData {
 
     float getHealBonus();
 
-    boolean learnClass(ResourceLocation classId);
+    boolean learnClassItem(ResourceLocation classId);
+
+    boolean learnClassTileEntity(ResourceLocation classId, BlockPos pos);
 
     void activateClass(ResourceLocation classId);
 

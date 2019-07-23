@@ -66,7 +66,8 @@ public final class PacketHandler {
 
 	public void registerPackets() {
 		registerPacket(PlayerSyncRequestPacket.class, new PlayerSyncRequestPacket.Handler(), Side.SERVER);
-		registerPacket(ClassLearnPacket.class, new ClassLearnPacket.Handler(), Side.SERVER);
+		registerPacket(ClassLearnItemPacket.class, new ClassLearnItemPacket.Handler(), Side.SERVER);
+		registerPacket(ClassLearnTileEntityPacket.class, new ClassLearnTileEntityPacket.Handler(), Side.SERVER);
 		registerPacket(LevelAbilityPacket.class, new LevelAbilityPacket.Handler(), Side.SERVER);
 		registerPacket(ExecuteActivePacket.class, new ExecuteActivePacket.Handler(), Side.SERVER);
 		registerPacket(LevelUpRequestPacket.class, new LevelUpRequestPacket.Handler(), Side.SERVER);

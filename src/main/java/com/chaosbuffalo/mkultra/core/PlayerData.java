@@ -5,6 +5,7 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.event.ItemRestrictionHandler;
 import com.chaosbuffalo.mkultra.item.ItemHelper;
 import com.chaosbuffalo.mkultra.item.ManaRegenIdol;
+import com.chaosbuffalo.mkultra.item.interfaces.IClassProvider;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.network.packets.PlayerSyncRequestPacket;
 import com.chaosbuffalo.mkultra.network.packets.AbilityUpdatePacket;
@@ -22,8 +23,10 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
@@ -823,12 +826,52 @@ public class PlayerData implements IPlayerData {
         return mainHand == baseClass.getClassProvider();
     }
 
-    @Override
-    public boolean learnClass(ResourceLocation classId) {
-        return learnClass(classId, true);
+    private boolean checkClassLearnEntity(BlockPos pos, ResourceLocation classId){
+        TileEntity tileEntity = player.world.getTileEntity(pos);
+        if  (tileEntity == null){
+            return false;
+        }
+        PlayerClass baseClass = MKURegistry.getClass(classId);
+        if (baseClass == null){
+            return false;
+        }
+        if (tileEntity instanceof IClassProvider){
+            IClassProvider provider = (IClassProvider) tileEntity;
+            return provider.getIconForProvider().equals(baseClass.getClassProvider().getIconForProvider());
+        } else {
+            return false;
+        }
+
     }
 
-    public boolean learnClass(ResourceLocation classId, boolean enforceChecks) {
+    public boolean learnClassTileEntity(ResourceLocation classId, boolean enforceChecks, BlockPos pos){
+        if (isClassKnown(classId)) {
+            // Class was already known
+            return true;
+        }
+
+        if (enforceChecks && !checkClassLearnEntity(pos, classId))
+            return false;
+
+        PlayerClassInfo info = new PlayerClassInfo(classId);
+        knownClasses.put(classId, info);
+        sendBulkClassUpdate();
+
+        // Learned class
+        return true;
+    }
+
+    @Override
+    public boolean learnClassItem(ResourceLocation classId) {
+        return learnClassItem(classId, true);
+    }
+
+    @Override
+    public boolean learnClassTileEntity(ResourceLocation classId, BlockPos pos) {
+        return learnClassTileEntity(classId, true, pos);
+    }
+
+    public boolean learnClassItem(ResourceLocation classId, boolean enforceChecks) {
         if (isClassKnown(classId)) {
             // Class was already known
             return true;
