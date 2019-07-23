@@ -5,7 +5,7 @@ import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.core.MKURegistry;
 import com.chaosbuffalo.mkultra.item.interfaces.IClassProvider;
-import com.chaosbuffalo.mkultra.network.packets.ClassLearnPacket;
+import com.chaosbuffalo.mkultra.network.packets.ClassLearnTileEntityPacket;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
@@ -135,8 +135,8 @@ public class ChooseClassFromTileEntityScreen extends GuiScreen {
     protected void actionPerformed(GuiButton button) {
         if (button.id == CHOOSE_BUTTON){
             ClassButton chooseButton = (ClassButton) button;
-            MKUltra.packetHandler.sendToServer(new ClassLearnPacket(
-                    classes.get(chooseButton.classInteger), learning, enforceChecks));
+            MKUltra.packetHandler.sendToServer(new ClassLearnTileEntityPacket(
+                    classes.get(chooseButton.classInteger), learning, enforceChecks, entity.getPos()));
             this.mc.displayGuiScreen(null);
             if (this.mc.currentScreen == null)
                 this.mc.setIngameFocus();

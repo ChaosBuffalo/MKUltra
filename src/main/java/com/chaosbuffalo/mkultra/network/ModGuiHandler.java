@@ -109,7 +109,7 @@ public class ModGuiHandler implements IGuiHandler {
             Log.info("Trying to open class screen");
             if (te instanceof IClassProvider){
                 Log.info("tile entity is a class provider");
-                return new ChooseClassFromTileEntityScreen(te, true, false);
+                return new ChooseClassFromTileEntityScreen(te, true, true);
             }
         }
 

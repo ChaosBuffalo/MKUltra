@@ -1,4 +1,3 @@
-
 package com.chaosbuffalo.mkultra.network.packets;
 
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
@@ -13,20 +12,23 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
-public class ClassLearnPacket implements IMessage {
+public class ClassLearnTileEntityPacket implements IMessage {
     private ResourceLocation classId;
     private boolean learn;
     private boolean enforceChecks;
+    private BlockPos pos;
 
-    public ClassLearnPacket() {
+    public ClassLearnTileEntityPacket() {
     }
 
-    public ClassLearnPacket(ResourceLocation classId, boolean learn, boolean enforceChecks) {
+    public ClassLearnTileEntityPacket(ResourceLocation classId, boolean learn, boolean enforceChecks, BlockPos pos) {
         this.classId = classId;
         this.learn = learn;
         this.enforceChecks = enforceChecks;
+        this.pos = pos;
     }
 
     @Override
@@ -35,6 +37,7 @@ public class ClassLearnPacket implements IMessage {
         classId = pb.readResourceLocation();
         learn = pb.readBoolean();
         enforceChecks = pb.readBoolean();
+        pos = pb.readBlockPos();
     }
 
     @Override
@@ -43,15 +46,16 @@ public class ClassLearnPacket implements IMessage {
         pb.writeResourceLocation(classId);
         pb.writeBoolean(learn);
         pb.writeBoolean(enforceChecks);
+        pb.writeBlockPos(pos);
     }
 
     // ========================================================================
 
-    public static class Handler extends MessageHandler.Server<ClassLearnPacket> {
+    public static class Handler extends MessageHandler.Server<ClassLearnTileEntityPacket> {
 
         @Override
         public void handleServerMessage(final EntityPlayer player,
-                                        final ClassLearnPacket msg) {
+                                        final ClassLearnTileEntityPacket msg) {
             PlayerData data = (PlayerData) MKUPlayerData.get(player);
             if (data != null) {
                 boolean canSwitch;
@@ -60,11 +64,7 @@ public class ClassLearnPacket implements IMessage {
                     msg.enforceChecks = true;
                 }
                 if (msg.learn) {
-                    canSwitch = data.learnClass(msg.classId, msg.enforceChecks);
-                    if (canSwitch && msg.enforceChecks) {
-                        ItemStack heldItem = player.getHeldItem(EnumHand.MAIN_HAND);
-                        ItemHelper.damageStack(player, heldItem, 1);
-                    }
+                    canSwitch = data.learnClassTileEntity(msg.classId, msg.enforceChecks, msg.pos);
                 } else {
                     if (msg.enforceChecks) {
                         // switching. need to consume item

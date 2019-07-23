@@ -6,7 +6,7 @@ import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerClass;
 import com.chaosbuffalo.mkultra.item.interfaces.IClassProvider;
-import com.chaosbuffalo.mkultra.network.packets.ClassLearnPacket;
+import com.chaosbuffalo.mkultra.network.packets.ClassLearnItemPacket;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
@@ -146,7 +146,7 @@ public class ChooseClassFromItemScreen extends GuiScreen {
     protected void actionPerformed(GuiButton button) {
         if (button.id == CHOOSE_BUTTON){
             ClassButton chooseButton = (ClassButton) button;
-            MKUltra.packetHandler.sendToServer(new ClassLearnPacket(
+            MKUltra.packetHandler.sendToServer(new ClassLearnItemPacket(
                     classes.get(chooseButton.classInteger), learning, enforceChecks));
             this.mc.displayGuiScreen(null);
             if (this.mc.currentScreen == null)
