@@ -521,6 +521,10 @@ public class ModSpawn {
                 String lootTable = obj.get("additional_loot").getAsString();
                 definition.setAdditionalLootTable(new ResourceLocation(lootTable));
             }
+            if (obj.has("xp")){
+                int bonus = obj.get("xp").getAsInt();
+                definition.setBonusExperience(bonus);
+            }
             if (obj.has("custom_modifiers")) {
                 JsonArray json_modifiers = obj.get("custom_modifiers").getAsJsonArray();
                 ArrayList<CustomModifier> modifiers = new ArrayList<>();

@@ -26,6 +26,7 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -64,6 +65,14 @@ public class EntityEventHandler {
 //            }
         } else if (event.getEntity() instanceof EntityLivingBase){
             handleMobJoinWorld(event);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onLivingExperienceDrop(LivingExperienceDropEvent event){
+        IMobData mobData = MKUMobData.get(event.getEntityLiving());
+        if (mobData != null){
+            event.setDroppedExperience(event.getDroppedExperience() + mobData.getBonusExperience());
         }
     }
 

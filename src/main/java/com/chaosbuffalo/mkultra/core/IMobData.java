@@ -66,6 +66,10 @@ public interface IMobData {
 
     boolean isOnCastCooldown();
 
+    int getBonusExperience();
+
+    void setBonusExperience(int value);
+
     int getMaxTimeBetweenCasts();
 
     void setMaxTimeBetweenCasts(int value);
