@@ -39,7 +39,6 @@ public class TripleFireball extends MobAbility {
         return 20.0f;
     }
 
-
     @Override
     public void execute(EntityLivingBase entity, IMobData data, EntityLivingBase target, World theWorld) {
         World world = entity.getEntityWorld();

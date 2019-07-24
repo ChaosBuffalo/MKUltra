@@ -15,6 +15,7 @@ import javax.annotation.Nullable;
 public class MKDamageSource extends EntityDamageSourceIndirect {
 
     private static String ABILITY_DMG_TYPE = "mkUltraAbility";
+    private static String MOB_ABILITY_DAMAGE_TYPE = "mkUltraMobAbility";
 
     private boolean ignoreTriggerOnAttackEntity;
 
@@ -42,6 +43,13 @@ public class MKDamageSource extends EntityDamageSourceIndirect {
     public static DamageSource causeIndirectMagicDamage(ResourceLocation abilityId, Entity source,
                                                         @Nullable Entity indirectEntityIn) {
         return new MKDamageSource(abilityId, ABILITY_DMG_TYPE, source, indirectEntityIn)
+                .setDamageBypassesArmor()
+                .setMagicDamage();
+    }
+
+    public static DamageSource causeIndirectMobMagicDamage(ResourceLocation abilityId, Entity source,
+                                                        @Nullable Entity indirectEntityIn) {
+        return new MKDamageSource(abilityId, MOB_ABILITY_DAMAGE_TYPE, source, indirectEntityIn)
                 .setDamageBypassesArmor()
                 .setMagicDamage();
     }

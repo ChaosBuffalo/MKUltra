@@ -15,6 +15,8 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -24,6 +26,7 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -31,10 +34,16 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.Collection;
+import java.util.HashSet;
 
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber
 public class EntityEventHandler {
+
+    public static final ResourceLocation MOB_DATA = new ResourceLocation(MKUltra.MODID, "mob_data");
+    public static final ResourceLocation PLAYER_DATA = new ResourceLocation(MKUltra.MODID, "player_data");
+    public static final ResourceLocation WORLD_FACTION = new ResourceLocation(MKUltra.MODID, "world_mobs");
 
     @SubscribeEvent
     @SideOnly(Side.SERVER)
@@ -58,6 +67,33 @@ public class EntityEventHandler {
         }
     }
 
+    @SubscribeEvent
+    public static void onSpecialSpawn(LivingSpawnEvent.SpecialSpawn event){
+        EntityLivingBase entity = event.getEntityLiving();
+        MobData mobD = (MobData) MKUMobData.get(entity);
+//        Log.info("In on special spawn %s", EntityList.getKey(entity).toString());
+        if (mobD != null){
+            if (mobD.isMKSpawning()){
+                event.setCanceled(true);
+            } else {
+                ResourceLocation mobDefinition = mobD.getMobDefinition();
+//                Log.info("Mob definition is %s", mobDefinition.toString());
+                MobDefinition definition = MKURegistry.getMobDefinition(mobDefinition);
+                if (definition != MKURegistry.EMPTY_MOB){
+                    event.setCanceled(true);
+                } else {
+                    ResourceLocation entityId = EntityList.getKey(entity);
+//                    Log.info("Checking spawn list for %s", entity.toString());
+                    SpawnList spawnList = DefaultSpawnIndex.getSpawnListForEntity(entityId);
+                    if (spawnList != null){
+//                        Log.info("mob has spawn list");
+                        event.setCanceled(true);
+                    }
+                }
+            }
+        }
+    }
+
     public static void addAttackSpeed(EntityLivingBase entity){
         AbstractAttributeMap attrs = entity.getAttributeMap();
         if (attrs.getAttributeInstance(SharedMonsterAttributes.ATTACK_SPEED) == null){
@@ -74,7 +110,7 @@ public class EntityEventHandler {
         if (mobD != null){
             if (mobD.isMKSpawned()) {
                 entLiv.setDead();
-            } else if (!mobD.getIsMKSpawning()) {
+            } else if (!mobD.isMKSpawning()) {
                 ResourceLocation mobDefinition = mobD.getMobDefinition();
                 MobDefinition definition = MKURegistry.getMobDefinition(mobDefinition);
                 if (definition != MKURegistry.EMPTY_MOB){
@@ -88,10 +124,23 @@ public class EntityEventHandler {
 //                        addAttackSpeed(entLiv);
                         MobDefinition def = spawnList.getNextDefinition();
                         mobD.setMobDefinition(def.getRegistryName());
-                        mobD.setMobFaction(entityId);
+                        mobD.setMobFaction(WORLD_FACTION);
                         mobD.setMobLevel(ModSpawn.levelChances.next());
                         def.applyDefinition(world, entLiv, mobD.getMobLevel());
                         entLiv.setHealth(entLiv.getMaxHealth());
+                        Collection<PotionEffect> effects = entLiv.getActivePotionEffects();
+                        // RoguelikeDungeons uses a potion effect to track when it should set its
+                        // own mob data and override ours, lets avoid that.
+                        if (effects.size() >0){
+                            HashSet<Potion> toRemove = new HashSet<>();
+                            for (PotionEffect effect : effects){
+//                                Log.info("Removing potion effect: %s", effect.getEffectName());
+                                toRemove.add(effect.getPotion());
+                            }
+                            for (Potion potion : toRemove){
+                                entLiv.removePotionEffect(potion);
+                            }
+                        }
 
                     }
                 }
@@ -201,12 +250,9 @@ public class EntityEventHandler {
     @SubscribeEvent
     public static void onAttachCapability(AttachCapabilitiesEvent<Entity> event) {
         if (event.getObject() instanceof EntityPlayer){
-            event.addCapability(new ResourceLocation(MKUltra.MODID, "player_data"),
-                    new PlayerDataProvider((EntityPlayer) event.getObject()));
+            event.addCapability(PLAYER_DATA, new PlayerDataProvider((EntityPlayer) event.getObject()));
         } else if (event.getObject() instanceof EntityLivingBase){
-            event.addCapability(new ResourceLocation(MKUltra.MODID, "mob_data"),
-                    new MobDataProvider((EntityLivingBase) event.getObject()));
+            event.addCapability(MOB_DATA, new MobDataProvider((EntityLivingBase) event.getObject()));
         }
-
     }
 }

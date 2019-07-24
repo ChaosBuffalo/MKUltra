@@ -72,7 +72,7 @@ public class MobData implements IMobData {
     }
 
     @Override
-    public boolean getIsMKSpawning() {
+    public boolean isMKSpawning() {
         return isMKSpawning;
     }
 
