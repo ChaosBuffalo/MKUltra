@@ -58,7 +58,7 @@ public class PoisonArrow  extends MobAbility {
         int level = data.getMobLevel();
         SpellCastArrow arrow = new SpellCastArrow(theWorld, entity);
         arrow.shoot(entity, entity.rotationPitch, entity.rotationYaw, 0.0F, 3.0F, 1.0F);
-        arrow.setDamage(BASE_ARROW_DAMAGE + level * SCALE_ARROW_DAMAGE);
+        arrow.setDamage(arrow.getDamage() + BASE_ARROW_DAMAGE + level * SCALE_ARROW_DAMAGE);
         int plevel = level > 5 ? 2 : 1;
         arrow.addEffect(new PotionEffect(MobEffects.POISON, 5 * GameConstants.TICKS_PER_SECOND, plevel, false, true));
         arrow.addEffect(new PotionEffect(MobEffects.SLOWNESS, 5 * GameConstants.TICKS_PER_SECOND, plevel + 2, false, true));

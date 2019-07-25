@@ -11,6 +11,8 @@ import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumParticleTypes;
@@ -19,7 +21,7 @@ import net.minecraft.world.World;
 
 public class FireArrow extends PlayerAbility {
 
-    public static float BASE_ARROW_DAMAGE = 4.0f;
+    public static float BASE_ARROW_DAMAGE = 2.0f;
     public static float SCALE_ARROW_DAMAGE = 2.0f;
     public static float BASE_DAMAGE = 1.0f;
     public static float DAMAGE_SCALE = 1.0f;
@@ -63,10 +65,11 @@ public class FireArrow extends PlayerAbility {
         }
         int level = pData.getAbilityRank(getAbilityId());
         pData.startAbility(this);
-
+        ItemArrow itemarrow = (ItemArrow) (ammo.getItem() instanceof ItemArrow ? ammo.getItem() : Items.ARROW);
+        EntityArrow entityarrow = itemarrow.createArrow(theWorld, ammo, entity);
         SpellCastArrow arrow = new SpellCastArrow(theWorld, entity);
         arrow.shoot(entity, entity.rotationPitch, entity.rotationYaw, 0.0F, 3.0F, 1.0F);
-        arrow.setDamage(BASE_ARROW_DAMAGE + level * SCALE_ARROW_DAMAGE);
+        arrow.setDamage(entityarrow.getDamage() + BASE_ARROW_DAMAGE + level * SCALE_ARROW_DAMAGE);
         arrow.addSpellCast(FireArrowPotion.Create(entity, BASE_DAMAGE, DAMAGE_SCALE, 10.0f), 1);
         arrow.pickupStatus = EntityArrow.PickupStatus.DISALLOWED;
         theWorld.spawnEntity(arrow);
