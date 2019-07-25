@@ -19,7 +19,7 @@ import net.minecraft.world.World;
 
 public class ArrowStorm extends PlayerAbility {
 
-    public static float BASE_DAMAGE = 6.0f;
+    public static float BASE_DAMAGE = 4.0f;
     public static float DAMAGE_SCALE = 2.0f;
     public static int ARROW_PER_LEVEL = 4;
 
@@ -67,7 +67,7 @@ public class ArrowStorm extends PlayerAbility {
             ItemArrow itemarrow = (ItemArrow) (ammo.getItem() instanceof ItemArrow ? ammo.getItem() : Items.ARROW);
             EntityArrow entityarrow = itemarrow.createArrow(theWorld, ammo, entity);
             entityarrow.shoot(entity, entity.rotationPitch, entity.rotationYaw, 0.0F, 4.0F, 10.0F);
-            entityarrow.setDamage(BASE_DAMAGE + level * DAMAGE_SCALE);
+            entityarrow.setDamage(entityarrow.getDamage() + BASE_DAMAGE + level * DAMAGE_SCALE);
             entityarrow.pickupStatus = EntityArrow.PickupStatus.DISALLOWED;
             theWorld.spawnEntity(entityarrow);
         }

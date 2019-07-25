@@ -19,6 +19,7 @@ import com.google.gson.JsonObject;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -43,11 +44,11 @@ public class ModSpawn {
 
     public static final RandomCollection<Integer> levelChances = new RandomCollection<>();
     static {
-        levelChances.add(10.0, 1);
-        levelChances.add(9.0, 2);
-        levelChances.add(8.0, 3);
-        levelChances.add(7.0, 4);
-        levelChances.add(6.0, 5);
+        levelChances.add(8.0, 1);
+        levelChances.add(6.0, 2);
+        levelChances.add(10.0, 3);
+        levelChances.add(9.0, 4);
+        levelChances.add(7.0, 5);
         levelChances.add(5.0, 6);
         levelChances.add(4.0, 7);
         levelChances.add(3.0, 8);
@@ -127,6 +128,16 @@ public class ModSpawn {
         event.getRegistry().register(new WarpDash());
         event.getRegistry().register(new Whirlpool());
         event.getRegistry().register(new Repulse());
+        event.getRegistry().register(new FireImmunity());
+        event.getRegistry().register(new GraspingTouch());
+        event.getRegistry().register(new HungerLeech());
+        event.getRegistry().register(new ManaLeech());
+        event.getRegistry().register(new MobFuriousBrooding());
+        event.getRegistry().register(new MobHaste());
+        event.getRegistry().register(new MobSprint());
+        event.getRegistry().register(new MobYank());
+        event.getRegistry().register(new WildToxinTouch());
+        event.getRegistry().register(new WitherTouch());
     }
 
     @SuppressWarnings("unused")
@@ -201,16 +212,29 @@ public class ModSpawn {
             }
             return new EntityAIReturnToSpawn((EntityCreature)entity, mobData, 1.0);
         };
-        AIGenerator leashRange = new AIGenerator(MKUltra.MODID, "leash_range", addLeashRange);
+        AIGenerator leashRange = new AIGenerator(
+                MKUltra.MODID, "leash_range", addLeashRange);
         event.getRegistry().register(leashRange);
         BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addHurtTarget = (entity, choice) ->
                 new EntityAIHurtByTargetMK((EntityCreature)entity, true);
-        AIGenerator hurtTarget = new AIGenerator(MKUltra.MODID, "hurt_target", addHurtTarget);
+        AIGenerator hurtTarget = new AIGenerator(
+                MKUltra.MODID, "hurt_target", addHurtTarget);
         event.getRegistry().register(hurtTarget);
         BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addAttackTarget = (entity, choice) ->
                 new EntityAIAttackMeleeMK((EntityCreature)entity, 1.0, false);
-        AIGenerator attackTarget = new AIGenerator(MKUltra.MODID, "attack_target", addAttackTarget);
+        AIGenerator attackTarget = new AIGenerator(
+                MKUltra.MODID, "attack_target", addAttackTarget);
         event.getRegistry().register(attackTarget);
+        BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addZombieAttackTarget = (entity, choice) -> {
+            if (entity instanceof EntityZombie) {
+                return new EntityAIZombieAttackMK((EntityZombie) entity, 1.0, false);
+            } else {
+                return null;
+            }
+        };
+        AIGenerator zombieAttackTarget = new AIGenerator(
+                MKUltra.MODID, "zombie_attack_target", addZombieAttackTarget);
+        event.getRegistry().register(zombieAttackTarget);
     }
 
 
@@ -496,6 +520,10 @@ public class ModSpawn {
             if (obj.has("additional_loot")) {
                 String lootTable = obj.get("additional_loot").getAsString();
                 definition.setAdditionalLootTable(new ResourceLocation(lootTable));
+            }
+            if (obj.has("xp")){
+                int bonus = obj.get("xp").getAsInt();
+                definition.setBonusExperience(bonus);
             }
             if (obj.has("custom_modifiers")) {
                 JsonArray json_modifiers = obj.get("custom_modifiers").getAsJsonArray();

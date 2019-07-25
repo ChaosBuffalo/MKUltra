@@ -19,6 +19,7 @@ import java.util.HashSet;
 
 public class MobDefinition extends IForgeRegistryEntry.Impl<MobDefinition> {
 
+    private static final int BONUS_XP_PER_LEVEL = 10;
     public final Class<? extends EntityLivingBase> entityClass;
     private final HashSet<AttributeRange> attributeRanges;
     private final HashSet<ItemOption> itemOptions;
@@ -29,6 +30,8 @@ public class MobDefinition extends IForgeRegistryEntry.Impl<MobDefinition> {
     private String mobName;
     private ResourceLocation additionalLootTable;
     private double defaultSpawnWeight;
+    private int bonusExperience;
+
 
     public MobDefinition(ResourceLocation name, Class<? extends EntityLivingBase> entityClass){
         setRegistryName(name);
@@ -40,6 +43,7 @@ public class MobDefinition extends IForgeRegistryEntry.Impl<MobDefinition> {
         customModifiers = new ArrayList<>();
         canDefaultSpawn = false;
         defaultSpawnWeight = 1.0;
+        bonusExperience = 0;
     }
 
     public MobDefinition withAttributeRanges(AttributeRange... ranges){
@@ -54,6 +58,10 @@ public class MobDefinition extends IForgeRegistryEntry.Impl<MobDefinition> {
     public void setDefaultSpawnWeight(double spawnWeight) {defaultSpawnWeight = spawnWeight;}
 
     public double getDefaultSpawnWeight(){return defaultSpawnWeight;}
+
+    public void setBonusExperience(int value){
+        bonusExperience = value;
+    }
 
     public void setCanDefaultSpawn(boolean canSpawn) {canDefaultSpawn = canSpawn;}
 
@@ -89,7 +97,7 @@ public class MobDefinition extends IForgeRegistryEntry.Impl<MobDefinition> {
 
     public void applyDefinition(World world, EntityLivingBase entity, int level){
         if (mobName != null){
-            entity.setCustomNameTag(mobName);
+            entity.setCustomNameTag(String.format(mobName + " Level %d", level));
         }
         // Lets make it so the mobs cant change their loot
         // (which would trigger an ai change in some mobs like skeletons).
@@ -109,6 +117,7 @@ public class MobDefinition extends IForgeRegistryEntry.Impl<MobDefinition> {
             if (additionalLootTable != null){
                 mobData.setAdditionalLootTable(additionalLootTable);
             }
+            mobData.setBonusExperience(bonusExperience + level * BONUS_XP_PER_LEVEL);
             mobData.setMobLevel(level);
             for (MobAbility ability : mobAbilities){
                 if (ability != null) {

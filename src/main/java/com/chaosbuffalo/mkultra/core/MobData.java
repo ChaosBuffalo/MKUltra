@@ -24,6 +24,7 @@ public class MobData implements IMobData {
     private boolean isBoss;
     private ResourceLocation mobDefinition;
     private boolean isMKSpawning;
+    private int bonusExperience;
 
 
     public MobData(EntityLivingBase entity) {
@@ -33,6 +34,7 @@ public class MobData implements IMobData {
         aggroRange = 10.0;
         timeBetweenCasts = 0;
         isBoss = false;
+        bonusExperience = 0;
         factionName = MKURegistry.INVALID_FACTION;
         maxTimeBetweenCasts = 10 * GameConstants.TICKS_PER_SECOND;
         mobDefinition = MKURegistry.INVALID_MOB;
@@ -72,7 +74,7 @@ public class MobData implements IMobData {
     }
 
     @Override
-    public boolean getIsMKSpawning() {
+    public boolean isMKSpawning() {
         return isMKSpawning;
     }
 
@@ -221,6 +223,16 @@ public class MobData implements IMobData {
     @Override
     public boolean isOnCastCooldown() {
         return timeBetweenCasts > 0;
+    }
+
+    @Override
+    public int getBonusExperience() {
+        return bonusExperience;
+    }
+
+    @Override
+    public void setBonusExperience(int value) {
+        bonusExperience = value;
     }
 
     @Override

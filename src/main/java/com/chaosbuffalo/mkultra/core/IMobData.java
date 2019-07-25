@@ -20,7 +20,7 @@ public interface IMobData {
 
     void setISMKSpawning(boolean ismkSpawning);
 
-    boolean getIsMKSpawning();
+    boolean isMKSpawning();
 
     void serialize(NBTTagCompound tag);
 
@@ -65,6 +65,10 @@ public interface IMobData {
     int getTimeBetweenCasts();
 
     boolean isOnCastCooldown();
+
+    int getBonusExperience();
+
+    void setBonusExperience(int value);
 
     int getMaxTimeBetweenCasts();
 
