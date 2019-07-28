@@ -20,31 +20,31 @@ public class PlayerAttributes {
             .setDescription("Magic Attack Damage")
             .setShouldWatch(true);
 
-    public static final IAttribute MAGIC_ARMOR = new RangedAttribute(null, "mkultra.magicArmor", 0, 0, 64)
+    public static final RangedAttribute MAGIC_ARMOR = (RangedAttribute) new RangedAttribute(null, "mkultra.magicArmor", 0, 0, 64)
             .setDescription("Magic Armor")
             .setShouldWatch(true);
 
-    public static final IAttribute COOLDOWN = new RangedAttribute(null, "mkultra.cooldown_rate", 1, 1, 1.5)
+    public static final RangedAttribute COOLDOWN = (RangedAttribute) new RangedAttribute(null, "mkultra.cooldown_rate", 1, 1, 1.5)
             .setDescription("Cooldown Rate")
             .setShouldWatch(true);
 
-    public static final IAttribute MELEE_CRIT = new RangedAttribute(null, "mkultra.melee_crit_chance", 0.05, 0.0, 1.0)
+    public static final RangedAttribute MELEE_CRIT = (RangedAttribute) new RangedAttribute(null, "mkultra.melee_crit_chance", 0.05, 0.0, 1.0)
             .setDescription("Melee Critical Chance")
             .setShouldWatch(true);
 
-    public static final IAttribute SPELL_CRIT = new RangedAttribute(null, "mkultra.spell_crit_chance", 0.1, 0.0, 1.0)
+    public static final RangedAttribute SPELL_CRIT = (RangedAttribute) new RangedAttribute(null, "mkultra.spell_crit_chance", 0.1, 0.0, 1.0)
             .setDescription("Spell Critical Chance")
             .setShouldWatch(true);
 
-    public static final IAttribute SPELL_CRITICAL_DAMAGE = new RangedAttribute(null, "mkultra.spell_crit_damage", 1.5, 0.0, 10.0)
+    public static final RangedAttribute SPELL_CRITICAL_DAMAGE = (RangedAttribute) new RangedAttribute(null, "mkultra.spell_crit_damage", 1.5, 0.0, 10.0)
             .setDescription("Spell Critical Damage")
             .setShouldWatch(true);
 
-    public static final IAttribute HEAL_BONUS = new RangedAttribute(null, "mkultra.heal_bonus", 1.0, 0.0, 2.0)
+    public static final RangedAttribute HEAL_BONUS = (RangedAttribute) new RangedAttribute(null, "mkultra.heal_bonus", 1.0, 0.0, 2.0)
             .setDescription("Heal Bonus Amount")
             .setShouldWatch(true);
 
-    public static final IAttribute MELEE_CRITICAL_DAMAGE = new RangedAttribute(null, "mkultra.meleeCritDamage", 0.0, 0.0, 10.0)
+    public static final RangedAttribute MELEE_CRITICAL_DAMAGE = (RangedAttribute) new RangedAttribute(null, "mkultra.meleeCritDamage", 0.0, 0.0, 10.0)
             .setDescription("Melee Critical Damage")
             .setShouldWatch(true);
 

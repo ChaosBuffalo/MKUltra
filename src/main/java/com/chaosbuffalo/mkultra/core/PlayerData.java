@@ -82,6 +82,7 @@ public class PlayerData implements IPlayerData {
         player.getAttributeMap().registerAttribute(PlayerAttributes.SPELL_CRITICAL_DAMAGE);
         player.getAttributeMap().registerAttribute(PlayerAttributes.HEALTH_REGEN);
         player.getAttributeMap().registerAttribute(PlayerAttributes.HEAL_BONUS);
+        player.getAttributeMap().registerAttribute(PlayerAttributes.MELEE_CRITICAL_DAMAGE);
     }
 
     private void setupWatcher() {

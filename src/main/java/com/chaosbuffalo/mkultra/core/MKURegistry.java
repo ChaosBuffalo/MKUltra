@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.core;
 
 
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.core.talents.BaseTalent;
 import com.chaosbuffalo.mkultra.item.interfaces.IClassProvider;
 import com.chaosbuffalo.mkultra.spawn.*;
 import net.minecraft.item.Item;
@@ -32,6 +33,7 @@ public class MKURegistry {
     public static IForgeRegistry<AIGenerator> REGISTRY_AI_GENERATORS = null;
     public static IForgeRegistry<AttributeSetter> REGISTRY_ATTRIBUTE_SETTERS = null;
     public static IForgeRegistry<CustomSetter> REGISTRY_CUSTOM_SETTERS = null;
+    public static IForgeRegistry<BaseTalent> REGISTRY_TALENTS = null;
 
 
     public static ResourceLocation INVALID_CLASS = new ResourceLocation(MKUltra.MODID, "class.invalid");
@@ -89,6 +91,11 @@ public class MKURegistry {
     @Nullable
     public static SpawnList getSpawnList(ResourceLocation name){
         return REGISTRY_SPAWN_LISTS.getValue(name);
+    }
+
+    @Nullable
+    public static BaseTalent getTalent(ResourceLocation name) {
+        return REGISTRY_TALENTS.getValue(name);
     }
 
     public static List<ResourceLocation> getClassesForProvider(IClassProvider provider) {
@@ -194,6 +201,12 @@ public class MKURegistry {
         REGISTRY_CUSTOM_SETTERS = new RegistryBuilder<CustomSetter>()
                 .setName(new ResourceLocation(MKUltra.MODID, "mob_custom_setters"))
                 .setType(CustomSetter.class)
+                .setIDRange(0, Integer.MAX_VALUE - 1)
+                .create();
+
+        REGISTRY_TALENTS = new RegistryBuilder<BaseTalent>()
+                .setName(new ResourceLocation(MKUltra.MODID, "talents"))
+                .setType(BaseTalent.class)
                 .setIDRange(0, Integer.MAX_VALUE - 1)
                 .create();
     }
