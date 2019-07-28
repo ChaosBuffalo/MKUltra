@@ -20,7 +20,7 @@ public class PlayerAttributes {
             .setDescription("Magic Attack Damage")
             .setShouldWatch(true);
 
-    public static final IAttribute MAGIC_ARMOR = new RangedAttribute(null, "mkultra.magic_armor", 0, 0, 64)
+    public static final IAttribute MAGIC_ARMOR = new RangedAttribute(null, "mkultra.magicArmor", 0, 0, 64)
             .setDescription("Magic Armor")
             .setShouldWatch(true);
 
