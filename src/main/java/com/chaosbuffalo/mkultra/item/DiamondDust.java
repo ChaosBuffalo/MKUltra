@@ -36,7 +36,7 @@ public class DiamondDust extends Item implements IClassProvider {
     }
 
     @Override
-    public ResourceLocation getIconForProvider() {
+    public ResourceLocation getIdentity() {
         return new ResourceLocation(MKUltra.MODID, "textures/items/sun_icon.png");
     }
 

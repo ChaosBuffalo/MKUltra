@@ -1,8 +1,18 @@
 package com.chaosbuffalo.mkultra.item.interfaces;
 
+import com.chaosbuffalo.mkultra.core.PlayerClass;
 import net.minecraft.util.ResourceLocation;
 
 public interface IClassProvider {
-    ResourceLocation getIconForProvider();
+    ResourceLocation getIdentity();
     String getClassSelectionText();
+
+    default boolean isSameAs(IClassProvider other) {
+        return getIdentity().compareTo(other.getIdentity()) == 0;
+    }
+
+    default boolean teachesClass(PlayerClass playerClass) {
+        // Temporary. Will be refactored when classes no longer declare their providers
+        return playerClass.getClassProvider().isSameAs(this);
+    }
 }

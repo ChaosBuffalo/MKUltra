@@ -823,7 +823,10 @@ public class PlayerData implements IPlayerData {
             return false;
 
         Item mainHand = mainHandStack.getItem();
-        return mainHand == baseClass.getClassProvider();
+        if (mainHand instanceof IClassProvider) {
+            return ((IClassProvider)mainHand).teachesClass(baseClass);
+        }
+        return false;
     }
 
     private boolean checkClassLearnEntity(BlockPos pos, ResourceLocation classId){
@@ -837,7 +840,7 @@ public class PlayerData implements IPlayerData {
         }
         if (tileEntity instanceof IClassProvider){
             IClassProvider provider = (IClassProvider) tileEntity;
-            return provider.getIconForProvider().equals(baseClass.getClassProvider().getIconForProvider());
+            return provider.teachesClass(baseClass);
         } else {
             return false;
         }
