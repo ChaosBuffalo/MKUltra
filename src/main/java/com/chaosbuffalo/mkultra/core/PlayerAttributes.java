@@ -20,7 +20,7 @@ public class PlayerAttributes {
             .setDescription("Magic Attack Damage")
             .setShouldWatch(true);
 
-    public static final IAttribute MAGIC_ARMOR = new RangedAttribute(null, "mkultra.magicArmor", 0, 0, 64)
+    public static final IAttribute MAGIC_ARMOR = new RangedAttribute(null, "mkultra.magic_armor", 0, 0, 64)
             .setDescription("Magic Armor")
             .setShouldWatch(true);
 
@@ -42,6 +42,10 @@ public class PlayerAttributes {
 
     public static final IAttribute HEAL_BONUS = new RangedAttribute(null, "mkultra.heal_bonus", 1.0, 0.0, 2.0)
             .setDescription("Heal Bonus Amount")
+            .setShouldWatch(true);
+
+    public static final IAttribute MELEE_CRITICAL_DAMAGE = new RangedAttribute(null, "mkultra.meleeCritDamage", 0.0, 0.0, 10.0)
+            .setDescription("Melee Critical Damage")
             .setShouldWatch(true);
 
     /**

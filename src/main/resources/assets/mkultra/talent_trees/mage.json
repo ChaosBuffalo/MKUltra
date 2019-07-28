@@ -1,0 +1,154 @@
+{
+  "lines": [
+    {
+      "name": "mkultra:mage_1",
+      "talents": [
+        {
+          "type": "ATTRIBUTE",
+          "attribute": "mkultra:spell_crit_chance",
+          "max_points": 2,
+          "value": 0.01
+        },
+        {
+          "type": "ATTRIBUTE",
+          "attribute": "mkultra:manaRegen",
+          "max_points": 2,
+          "value": 0.25
+        },
+        {
+          "type": "ATTRIBUTE",
+          "attribute": "mkultra:magicAttackDamage",
+          "max_points": 2,
+          "value": 1
+        },
+        {
+          "type": "ATTRIBUTE",
+          "attribute": "mkultra:maxMana",
+          "max_points": 2,
+          "value": 1
+        },
+        {
+          "type": "ATTRIBUTE",
+          "attribute": "generic.movementSpeed",
+          "max_points": 2,
+          "value": 0.01
+        },
+        {
+          "type": "ATTRIBUTE",
+          "attribute": "mkultra.spell_crit_damage",
+          "max_points": 2,
+          "value": 0.2
+        },
+        {
+          "type": "PASSIVE",
+          "ability": "mkultra:passive.burning_soul",
+          "max_points": 1
+        }
+      ]
+    },
+    {
+      "name": "mkultra:mage_2",
+      "talents": [
+        {
+          "type": "ATTRIBUTE",
+          "attribute": "mkultra:magicAttackDamage",
+          "max_points": 2,
+          "value": 1
+        },
+        {
+          "type": "ATTRIBUTE",
+          "attribute": "mkultra:manaRegen",
+          "max_points": 2,
+          "value": 0.25
+        },
+        {
+          "type": "ATTRIBUTE",
+          "attribute": "mkultra:magicAttackDamage",
+          "max_points": 1,
+          "value": 1
+        },
+        {
+          "type": "ATTRIBUTE",
+          "attribute": "mkultra.spell_crit_damage",
+          "max_points": 2,
+          "value": 0.2
+        },
+        {
+          "type": "ATTRIBUTE",
+          "attribute": "mkultra:spell_crit_chance",
+          "max_points": 2,
+          "value": 0.01
+        },
+        {
+          "type": "ATTRIBUTE",
+          "attribute": "mkultra.spell_crit_damage",
+          "max_points": 2,
+          "value": 0.2
+        },
+        {
+          "type": "ATTRIBUTE",
+          "attribute": "mkultra.magic_armor",
+          "max_points": 3,
+          "value": 1
+        },
+        {
+          "type": "ATTRIBUTE",
+          "attribute": "mkultra.spell_crit_damage",
+          "max_points": 2,
+          "value": 0.2
+        },
+        {
+          "type": "TALENT_ULTIMATE",
+          "ability": "mkultra:ability.meteor",
+          "max_points": 1
+        }
+      ]
+    },
+    {
+      "name": "mkultra:mage_3",
+      "talents": [
+        {
+          "type": "ATTRIBUTE",
+          "attribute": "mkultra:maxMana",
+          "max_points": 2,
+          "value": 1
+        },
+        {
+          "type": "ATTRIBUTE",
+          "attribute": "mkultra:manaRegen",
+          "max_points": 4,
+          "value": 0.25
+        },
+        {
+          "type": "ATTRIBUTE",
+          "attribute": "mkultra:magicAttackDamage",
+          "max_points": 1,
+          "value": 1
+        },
+        {
+          "type": "ATTRIBUTE",
+          "attribute": "mkultra:maxMana",
+          "max_points": 2,
+          "value": 1
+        },
+        {
+          "type": "ATTRIBUTE",
+          "attribute": "mkultra:spell_crit_chance",
+          "max_points": 2,
+          "value": 0.01
+        },
+        {
+          "type": "ATTRIBUTE",
+          "attribute": "mkultra.spell_crit_damage",
+          "max_points": 2,
+          "value": 0.2
+        },
+        {
+          "type": "PASSIVE",
+          "ability": "mkultra:passive.soul_drain",
+          "max_points": 1
+        }
+      ]
+    }
+  ]
+}
