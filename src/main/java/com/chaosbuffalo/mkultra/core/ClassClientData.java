@@ -9,7 +9,7 @@ public class ClassClientData {
         public static SunIcon INSTANCE = new SunIcon();
 
         @Override
-        public ResourceLocation getIconForProvider() {
+        public ResourceLocation getIcon() {
             return new ResourceLocation(MKUltra.MODID, "textures/class/icons/sun.png");
         }
 
@@ -33,7 +33,7 @@ public class ClassClientData {
         public static MoonIcon INSTANCE = new MoonIcon();
 
         @Override
-        public ResourceLocation getIconForProvider() {
+        public ResourceLocation getIcon() {
             return new ResourceLocation(MKUltra.MODID, "textures/class/icons/moon.png");
         }
 
@@ -57,7 +57,7 @@ public class ClassClientData {
         public static DesperateIcon INSTANCE = new DesperateIcon();
 
         @Override
-        public ResourceLocation getIconForProvider() {
+        public ResourceLocation getIcon() {
             return new ResourceLocation(MKUltra.MODID, "textures/class/icons/desperate.png");
         }
 

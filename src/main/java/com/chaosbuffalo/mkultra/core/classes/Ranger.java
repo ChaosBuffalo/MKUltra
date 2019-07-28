@@ -88,7 +88,7 @@ public class Ranger extends PlayerClass {
 
     private static class ClientData implements IClassClientData {
         @Override
-        public ResourceLocation getIconForProvider() {
+        public ResourceLocation getIcon() {
             return new ResourceLocation(MKUltra.MODID, "textures/class/icons/ranger.png");
         }
 
