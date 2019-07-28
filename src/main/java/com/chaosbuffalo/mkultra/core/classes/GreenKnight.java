@@ -1,14 +1,11 @@
 package com.chaosbuffalo.mkultra.core.classes;
 
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.ArmorClass;
-import com.chaosbuffalo.mkultra.core.PlayerAbility;
-import com.chaosbuffalo.mkultra.core.PlayerClass;
+import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.core.abilities.*;
 import com.chaosbuffalo.mkultra.init.ModItems;
 import com.chaosbuffalo.mkultra.item.ClassIcon;
 import com.chaosbuffalo.mkultra.item.interfaces.IClassProvider;
-import net.minecraft.item.Item;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,4 +74,8 @@ public class GreenKnight extends PlayerClass {
         return (ClassIcon) ModItems.desperate_icon;
     }
 
+    @Override
+    public IClassClientData getClientData() {
+        return ClassClientData.DesperateIcon.INSTANCE;
+    }
 }
