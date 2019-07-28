@@ -3,6 +3,7 @@ package com.chaosbuffalo.mkultra.core;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.talents.BaseTalent;
+import com.chaosbuffalo.mkultra.core.talents.TalentTree;
 import com.chaosbuffalo.mkultra.item.interfaces.IClassProvider;
 import com.chaosbuffalo.mkultra.spawn.*;
 import net.minecraft.item.Item;
@@ -34,6 +35,7 @@ public class MKURegistry {
     public static IForgeRegistry<AttributeSetter> REGISTRY_ATTRIBUTE_SETTERS = null;
     public static IForgeRegistry<CustomSetter> REGISTRY_CUSTOM_SETTERS = null;
     public static IForgeRegistry<BaseTalent> REGISTRY_TALENTS = null;
+    public static IForgeRegistry<TalentTree> REGISTRY_TALENT_TREES = null;
 
 
     public static ResourceLocation INVALID_CLASS = new ResourceLocation(MKUltra.MODID, "class.invalid");
@@ -207,6 +209,12 @@ public class MKURegistry {
         REGISTRY_TALENTS = new RegistryBuilder<BaseTalent>()
                 .setName(new ResourceLocation(MKUltra.MODID, "talents"))
                 .setType(BaseTalent.class)
+                .setIDRange(0, Integer.MAX_VALUE - 1)
+                .create();
+
+        REGISTRY_TALENT_TREES = new RegistryBuilder<TalentTree>()
+                .setName(new ResourceLocation(MKUltra.MODID, "talent_trees"))
+                .setType(TalentTree.class)
                 .setIDRange(0, Integer.MAX_VALUE - 1)
                 .create();
     }

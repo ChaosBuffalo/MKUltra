@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 
 public class BaseTalent extends IForgeRegistryEntry.Impl<BaseTalent> {
 
-    private TalentType talentType;
+    private final TalentType talentType;
 
     public enum TalentType {
         ATTRIBUTE,
