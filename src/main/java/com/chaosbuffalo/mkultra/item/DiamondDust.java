@@ -44,19 +44,4 @@ public class DiamondDust extends Item implements IClassProvider {
     public String getClassSelectionText() {
         return "Select your next class";
     }
-
-    @Override
-    public String getXpTableText() {
-        return "You shouldn't see this.";
-    }
-
-    @Override
-    public ResourceLocation getXpTableBackground() {
-        return new ResourceLocation(MKUltra.MODID, "textures/gui/xp_table_background_moon.png");
-    }
-
-    @Override
-    public int getXpTableTextColor() {
-        return 38600;
-    }
 }

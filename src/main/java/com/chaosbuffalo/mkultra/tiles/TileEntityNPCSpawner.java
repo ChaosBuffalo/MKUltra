@@ -278,19 +278,4 @@ public class TileEntityNPCSpawner extends TileEntity implements ITickable, IClas
     public String getClassSelectionText() {
         return "The Watchful Ranger offers to teach you his knowledge. Choose your class: ";
     }
-
-    @Override
-    public String getXpTableText() {
-        return "The Watchful Ranger taught you the basics, but you must exchange brouzouf to learn more.";
-    }
-
-    @Override
-    public ResourceLocation getXpTableBackground() {
-        return new ResourceLocation(MKUltra.MODID, "textures/gui/xp_table_background_ranger.png");
-    }
-
-    @Override
-    public int getXpTableTextColor() {
-        return 16707252;
-    }
 }

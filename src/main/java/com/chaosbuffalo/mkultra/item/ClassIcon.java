@@ -21,20 +21,13 @@ public class ClassIcon extends Item implements IClassProvider {
 
     private final String iconText;
     private final ResourceLocation iconLoc;
-    private final String xpTableText;
-    private final ResourceLocation xpTableBackground;
-    private final int xpTableTextColor;
 
-    public ClassIcon(String unlocalizedName, String iconText, int maxDamageIn, ResourceLocation iconLoc,
-                     String xpTableText, ResourceLocation xpTableBackground, int xpTableTextColor) {
+    public ClassIcon(String unlocalizedName, String iconText, int maxDamageIn, ResourceLocation iconLoc) {
         super();
         this.setTranslationKey(unlocalizedName);
         this.setCreativeTab(MKUltra.MKULTRA_TAB);
         this.iconText = iconText;
         this.iconLoc = iconLoc;
-        this.xpTableText = xpTableText;
-        this.xpTableBackground = xpTableBackground;
-        this.xpTableTextColor = xpTableTextColor;
         this.setMaxDamage(maxDamageIn);
         this.setMaxStackSize(1);
     }
@@ -52,11 +45,6 @@ public class ClassIcon extends Item implements IClassProvider {
     }
 
     @Override
-    public String getXpTableText() {
-        return xpTableText;
-    }
-
-    @Override
     public ResourceLocation getIconForProvider() {
         return iconLoc;
     }
@@ -64,16 +52,6 @@ public class ClassIcon extends Item implements IClassProvider {
     @Override
     public String getClassSelectionText() {
         return iconText;
-    }
-
-    @Override
-    public ResourceLocation getXpTableBackground() {
-        return xpTableBackground;
-    }
-
-    @Override
-    public int getXpTableTextColor() {
-        return xpTableTextColor;
     }
 
 }
