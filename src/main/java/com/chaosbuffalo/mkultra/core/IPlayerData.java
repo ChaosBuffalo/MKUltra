@@ -98,6 +98,10 @@ public interface IPlayerData {
 
     List<ResourceLocation> getKnownClasses();
 
+    default boolean knowsClass(ResourceLocation classId) {
+        return getKnownClasses().contains(classId);
+    }
+
     void serialize(NBTTagCompound tag);
 
     void deserialize(NBTTagCompound tag);

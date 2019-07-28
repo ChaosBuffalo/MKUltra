@@ -840,18 +840,23 @@ public class PlayerData implements IPlayerData {
     }
 
     public void unlearnClass(ResourceLocation classId) {
-        if (isClassKnown(classId)) {
-            activateClass(MKURegistry.INVALID_CLASS);
-            knownClasses.remove(classId);
-
-            // Unlearn all abilities offered by this class
-            PlayerClass bc = MKURegistry.getClass(classId);
-            if (bc != null) {
-                bc.getAbilities().forEach(a -> unlearnAbility(a.getAbilityId(), false, true));
-            }
-
-            sendBulkClassUpdate();
+        if (!isClassKnown(classId)) {
+            return;
         }
+
+        // If it's the active class, switch to no class first
+        if (getClassId().compareTo(classId) == 0)
+            activateClass(MKURegistry.INVALID_CLASS);
+
+        knownClasses.remove(classId);
+
+        // Unlearn all abilities offered by this class
+        PlayerClass bc = MKURegistry.getClass(classId);
+        if (bc != null) {
+            bc.getAbilities().forEach(a -> unlearnAbility(a.getAbilityId(), false, true));
+        }
+
+        sendBulkClassUpdate();
     }
 
     private boolean isClassKnown(ResourceLocation classId) {
