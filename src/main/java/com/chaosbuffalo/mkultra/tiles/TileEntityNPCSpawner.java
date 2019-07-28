@@ -270,7 +270,7 @@ public class TileEntityNPCSpawner extends TileEntity implements ITickable, IClas
     }
 
     @Override
-    public ResourceLocation getIconForProvider() {
+    public ResourceLocation getIdentity() {
         return new ResourceLocation(MKUltra.MODID, "textures/class/icons/ranger.png");
     }
 

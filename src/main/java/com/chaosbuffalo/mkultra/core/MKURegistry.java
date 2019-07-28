@@ -93,8 +93,7 @@ public class MKURegistry {
 
     public static List<ResourceLocation> getClassesForProvider(IClassProvider provider) {
         return REGISTRY_CLASSES.getEntries().stream()
-                .filter(kv -> kv.getValue().getClassProvider()
-                        .getIconForProvider().equals(provider.getIconForProvider()))
+                .filter(kv -> provider.teachesClass(kv.getValue()))
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
     }

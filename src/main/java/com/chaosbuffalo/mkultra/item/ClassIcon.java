@@ -45,7 +45,7 @@ public class ClassIcon extends Item implements IClassProvider {
     }
 
     @Override
-    public ResourceLocation getIconForProvider() {
+    public ResourceLocation getIdentity() {
         return iconLoc;
     }
 
