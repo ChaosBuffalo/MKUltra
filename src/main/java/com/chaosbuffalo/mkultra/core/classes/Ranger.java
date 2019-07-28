@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.core.classes;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.ArmorClass;
+import com.chaosbuffalo.mkultra.core.IClassClientData;
 import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.PlayerClass;
 import com.chaosbuffalo.mkultra.core.abilities.*;
@@ -10,6 +11,7 @@ import com.chaosbuffalo.mkultra.item.ClassIcon;
 import com.chaosbuffalo.mkultra.item.interfaces.IClassProvider;
 import com.chaosbuffalo.mkultra.tiles.TileEntityNPCSpawner;
 import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +20,8 @@ import java.util.List;
  * Created by Jacob on 6/23/2018.
  */
 public class Ranger extends PlayerClass {
+    public static ResourceLocation ID = new ResourceLocation(MKUltra.MODID, "class.ranger");
+    private static ClientData clientData = new ClientData();
 
     public static final List<PlayerAbility> abilities = new ArrayList<>(5);
     static {
@@ -29,7 +33,7 @@ public class Ranger extends PlayerClass {
     }
 
     public Ranger() {
-        super(MKUltra.MODID, "class.ranger");
+        super(ID);
     }
 
     @Override
@@ -75,5 +79,32 @@ public class Ranger extends PlayerClass {
     @Override
     public IClassProvider getClassProvider() {
         return new TileEntityNPCSpawner();
+    }
+
+    @Override
+    public IClassClientData getClientData() {
+        return clientData;
+    }
+
+    private static class ClientData implements IClassClientData {
+        @Override
+        public ResourceLocation getIconForProvider() {
+            return new ResourceLocation(MKUltra.MODID, "textures/class/icons/ranger.png");
+        }
+
+        @Override
+        public String getXpTableText() {
+            return "The Watchful Ranger taught you the basics, but you must exchange brouzouf to learn more.";
+        }
+
+        @Override
+        public ResourceLocation getXpTableBackground() {
+            return new ResourceLocation(MKUltra.MODID, "textures/gui/xp_table_background_ranger.png");
+        }
+
+        @Override
+        public int getXpTableTextColor() {
+            return 16707252;
+        }
     }
 }

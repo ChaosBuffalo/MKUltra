@@ -45,9 +45,7 @@ public abstract class PlayerClass extends IForgeRegistryEntry.Impl<PlayerClass> 
 
     public abstract IClassProvider getClassProvider();
 
-    public IClassClientData getClientData() {
-        return getClassProvider();
-    }
+    public abstract IClassClientData getClientData();
 
     public abstract ArmorClass getArmorClass();
 

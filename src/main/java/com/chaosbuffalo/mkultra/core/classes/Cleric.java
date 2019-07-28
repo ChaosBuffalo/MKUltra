@@ -1,9 +1,7 @@
 package com.chaosbuffalo.mkultra.core.classes;
 
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.ArmorClass;
-import com.chaosbuffalo.mkultra.core.PlayerAbility;
-import com.chaosbuffalo.mkultra.core.PlayerClass;
+import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.core.abilities.*;
 import com.chaosbuffalo.mkultra.init.ModItems;
 import com.chaosbuffalo.mkultra.item.ClassIcon;
@@ -72,5 +70,10 @@ public class Cleric extends PlayerClass {
     @Override
     public IClassProvider getClassProvider() {
         return (ClassIcon) ModItems.sun_icon;
+    }
+
+    @Override
+    public IClassClientData getClientData() {
+        return ClassClientData.SunIcon.INSTANCE;
     }
 }
