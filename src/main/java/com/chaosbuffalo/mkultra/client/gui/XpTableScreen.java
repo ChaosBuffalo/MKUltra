@@ -35,7 +35,7 @@ public class XpTableScreen extends GuiScreen {
         int panelHeight = 165;
         int xPos = width / 2 - panelWidth / 2;
         int yPos = height / 2 - panelHeight / 2;
-        IClassProvider classProvider = (IClassProvider) playerClass.getClassProvider();
+        IClassClientData classProvider = playerClass.getClientData();
         ResourceLocation loc = classProvider.getXpTableBackground();
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.renderEngine.bindTexture(loc);
