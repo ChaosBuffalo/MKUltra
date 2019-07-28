@@ -21,4 +21,8 @@ public class TalentNode {
     public BaseTalent getTalent(){
         return talent;
     }
+
+    public int getMaxRanks(){
+        return maxRanks;
+    }
 }

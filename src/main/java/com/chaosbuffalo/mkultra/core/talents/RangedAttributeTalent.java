@@ -25,4 +25,6 @@ public class RangedAttributeTalent extends BaseTalent {
     public UUID getUUID(){
         return id;
     }
+
+    public int getOp() { return op; }
 }

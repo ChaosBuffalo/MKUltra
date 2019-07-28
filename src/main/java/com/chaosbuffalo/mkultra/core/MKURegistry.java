@@ -3,6 +3,7 @@ package com.chaosbuffalo.mkultra.core;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.talents.BaseTalent;
+import com.chaosbuffalo.mkultra.core.talents.RangedAttributeTalent;
 import com.chaosbuffalo.mkultra.core.talents.TalentTree;
 import com.chaosbuffalo.mkultra.item.interfaces.IClassProvider;
 import com.chaosbuffalo.mkultra.spawn.*;
@@ -16,6 +17,7 @@ import net.minecraftforge.registries.RegistryBuilder;
 
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -98,6 +100,16 @@ public class MKURegistry {
     @Nullable
     public static BaseTalent getTalent(ResourceLocation name) {
         return REGISTRY_TALENTS.getValue(name);
+    }
+
+    public static ArrayList<RangedAttributeTalent> getAllAttributeTalents(){
+        ArrayList<RangedAttributeTalent> talents = new ArrayList<>();
+        for (BaseTalent talent : REGISTRY_TALENTS.getValuesCollection()){
+            if (talent.getTalentType() == BaseTalent.TalentType.ATTRIBUTE){
+                talents.add((RangedAttributeTalent) talent);
+            }
+        }
+        return talents;
     }
 
     public static List<ResourceLocation> getClassesForProvider(IClassProvider provider) {

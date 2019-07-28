@@ -1,8 +1,17 @@
 package com.chaosbuffalo.mkultra.core;
 
 import com.chaosbuffalo.mkultra.GameConstants;
+import com.chaosbuffalo.mkultra.core.talents.BaseTalent;
+import com.chaosbuffalo.mkultra.core.talents.RangedAttributeTalent;
 import com.chaosbuffalo.mkultra.core.talents.TalentTree;
 import com.chaosbuffalo.mkultra.core.talents.TalentTreeRecord;
+import com.google.common.collect.Maps;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.ai.attributes.AbstractAttributeMap;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.IAttribute;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
@@ -44,6 +53,93 @@ public class PlayerClassInfo {
             arr[i] = new ResourceLocation(list.getStringTagAt(i));
         }
         return arr;
+    }
+
+    public HashSet<RangedAttributeTalent> getAttributeTalentSet(){
+        HashSet<RangedAttributeTalent> attributeTalents = new HashSet<>();
+        for (ResourceLocation loc : talentTrees.keySet()){
+            TalentTreeRecord rec = talentTrees.get(loc);
+            if (rec.hasPointsInTree()){
+                attributeTalents.addAll(rec.getAttributeTalentsWithPoints());
+            }
+        }
+        return attributeTalents;
+    }
+
+    public Map<IAttribute, AttributeModifier> getAttributeModifiersForRemoval() {
+        HashSet<RangedAttributeTalent> presentTalents = getAttributeTalentSet();
+        Map<IAttribute, AttributeModifier> attributeModifierMap = Maps.newHashMap();
+        for (RangedAttributeTalent talent : presentTalents) {
+            AttributeModifier mod = new AttributeModifier(talent.getUUID(),
+                    talent.getRegistryName().toString(), 1.0, talent.getOp());
+            attributeModifierMap.put(talent.getAttribute(), mod);
+        }
+        return attributeModifierMap;
+    }
+
+    public Map<IAttribute, AttributeModifier> getAttributeModifiers(){
+        HashSet<RangedAttributeTalent> presentTalents = getAttributeTalentSet();
+        Map<IAttribute, AttributeModifier> attributeModifierMap = Maps.newHashMap();
+        for (RangedAttributeTalent talent : presentTalents){
+            double value = 0.0;
+            for (ResourceLocation loc : talentTrees.keySet()){
+                TalentTreeRecord rec = talentTrees.get(loc);
+                if (rec.hasPointsInTree()){
+                    value += rec.getTotalForAttributeTalent(talent);
+                }
+            }
+            AttributeModifier mod = new AttributeModifier(talent.getUUID(),
+                    talent.getRegistryName().toString(), value, talent.getOp());
+            attributeModifierMap.put(talent.getAttribute(), mod);
+        }
+        return attributeModifierMap;
+    }
+
+    public void applyAttributesModifiersToPlayer(EntityPlayer player) {
+        Iterator modIterator = getAttributeModifiers().entrySet().iterator();
+        AbstractAttributeMap abstractAttributeMap = player.getAttributeMap();
+
+        while(modIterator.hasNext()) {
+            Map.Entry<IAttribute, AttributeModifier> entry = (Map.Entry)modIterator.next();
+            IAttributeInstance iattributeinstance = abstractAttributeMap.getAttributeInstance(entry.getKey());
+            if (iattributeinstance != null) {
+                AttributeModifier attributemodifier = entry.getValue();
+                iattributeinstance.removeModifier(attributemodifier);
+                iattributeinstance.applyModifier(attributemodifier);
+            }
+        }
+    }
+
+    public void removeAttributesModifiersFromPlayer(EntityPlayer player) {
+        Iterator modIterator = getAttributeModifiersForRemoval().entrySet().iterator();
+        AbstractAttributeMap abstractAttributeMap = player.getAttributeMap();
+
+        while(modIterator.hasNext()) {
+            Map.Entry<IAttribute, AttributeModifier> entry = (Map.Entry)modIterator.next();
+            IAttributeInstance iattributeinstance = abstractAttributeMap.getAttributeInstance(entry.getKey());
+            if (iattributeinstance != null) {
+                iattributeinstance.removeModifier(entry.getValue());
+            }
+        }
+    }
+
+    public void removeAllAttributeTalents(EntityPlayer player){
+        ArrayList<RangedAttributeTalent> talents = MKURegistry.getAllAttributeTalents();
+        Map<IAttribute, AttributeModifier> attributeModifierMap = Maps.newHashMap();
+        for (RangedAttributeTalent talent : talents){
+            AttributeModifier mod = new AttributeModifier(talent.getUUID(),
+                    talent.getRegistryName().toString(), 1.0, talent.getOp());
+            attributeModifierMap.put(talent.getAttribute(), mod);
+        }
+        AbstractAttributeMap abstractAttributeMap = player.getAttributeMap();
+        Iterator modIterator = getAttributeModifiersForRemoval().entrySet().iterator();
+        while(modIterator.hasNext()) {
+            Map.Entry<IAttribute, AttributeModifier> entry = (Map.Entry)modIterator.next();
+            IAttributeInstance iattributeinstance = abstractAttributeMap.getAttributeInstance(entry.getKey());
+            if (iattributeinstance != null) {
+                iattributeinstance.removeModifier(entry.getValue());
+            }
+        }
     }
 
     private void writeNBTAbilityArray(NBTTagCompound tag, String name, Collection<ResourceLocation> array, int size) {
@@ -105,6 +201,55 @@ public class PlayerClassInfo {
 
     public ResourceLocation[] getActiveAbilities() {
         return hotbar;
+    }
+
+    public void addTalentPoints(int pointCount) {
+        totalTalentPoints += pointCount;
+        unspentTalentPoints += pointCount;
+    }
+
+    public boolean canIncrementPointInTree(ResourceLocation tree, String line, int index){
+        TalentTreeRecord talentTree = talentTrees.get(tree);
+        return talentTree.containsIndex(line, index) && talentTree.canIncrementPoint(line, index);
+    }
+
+    public boolean canDecrementPointInTree(ResourceLocation tree, String line, int index){
+        TalentTreeRecord talentTree = talentTrees.get(tree);
+        return talentTree.containsIndex(line, index) && talentTree.canDecrementPoint(line, index);
+    }
+
+    public boolean spendTalentPoint(EntityPlayer player, ResourceLocation tree, String line, int index){
+        if (canIncrementPointInTree(tree, line, index)){
+            TalentTreeRecord talentTree = talentTrees.get(tree);
+            BaseTalent.TalentType type = talentTree.getTypeForPoint(line, index);
+            if (type == BaseTalent.TalentType.ATTRIBUTE){
+                removeAttributesModifiersFromPlayer(player);
+                talentTree.incrementPoint(line, index);
+                applyAttributesModifiersToPlayer(player);
+            } else {
+                talentTree.incrementPoint(line, index);
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean refundTalentPoint(EntityPlayer player, ResourceLocation tree, String line, int index){
+        if (canDecrementPointInTree(tree, line, index)){
+            TalentTreeRecord talentTree = talentTrees.get(tree);
+            BaseTalent.TalentType type = talentTree.getTypeForPoint(line, index);
+            if (type == BaseTalent.TalentType.ATTRIBUTE){
+                removeAttributesModifiersFromPlayer(player);
+                talentTree.decrementPoint(line, index);
+                applyAttributesModifiersToPlayer(player);
+            } else {
+                talentTree.decrementPoint(line, index);
+            }
+            return true;
+        } else {
+            return false;
+        }
     }
 
     void setActiveAbilities(ResourceLocation[] hotbar) {
