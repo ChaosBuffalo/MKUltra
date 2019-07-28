@@ -97,7 +97,7 @@ public class MobDefinition extends IForgeRegistryEntry.Impl<MobDefinition> {
 
     public void applyDefinition(World world, EntityLivingBase entity, int level){
         if (mobName != null){
-            entity.setCustomNameTag(String.format(mobName + " Level %d", level));
+            entity.setCustomNameTag(String.format(mobName + " [%d]", level));
         }
         // Lets make it so the mobs cant change their loot
         // (which would trigger an ai change in some mobs like skeletons).
