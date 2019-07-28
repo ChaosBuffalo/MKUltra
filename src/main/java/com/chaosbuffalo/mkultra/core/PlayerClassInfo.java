@@ -6,7 +6,6 @@ import com.chaosbuffalo.mkultra.core.talents.RangedAttributeTalent;
 import com.chaosbuffalo.mkultra.core.talents.TalentTree;
 import com.chaosbuffalo.mkultra.core.talents.TalentTreeRecord;
 import com.google.common.collect.Maps;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.attributes.AbstractAttributeMap;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttribute;
@@ -29,6 +28,7 @@ public class PlayerClassInfo {
     public HashMap<ResourceLocation, TalentTreeRecord> talentTrees;
     private ResourceLocation[] hotbar;
     private Deque<ResourceLocation> spendOrder;
+
 
     public PlayerClassInfo(ResourceLocation classId) {
         this.classId = classId;
@@ -104,7 +104,6 @@ public class PlayerClassInfo {
             IAttributeInstance iattributeinstance = abstractAttributeMap.getAttributeInstance(entry.getKey());
             if (iattributeinstance != null) {
                 AttributeModifier attributemodifier = entry.getValue();
-                iattributeinstance.removeModifier(attributemodifier);
                 iattributeinstance.applyModifier(attributemodifier);
             }
         }
@@ -123,24 +122,7 @@ public class PlayerClassInfo {
         }
     }
 
-    public void removeAllAttributeTalents(EntityPlayer player){
-        ArrayList<RangedAttributeTalent> talents = MKURegistry.getAllAttributeTalents();
-        Map<IAttribute, AttributeModifier> attributeModifierMap = Maps.newHashMap();
-        for (RangedAttributeTalent talent : talents){
-            AttributeModifier mod = new AttributeModifier(talent.getUUID(),
-                    talent.getRegistryName().toString(), 1.0, talent.getOp());
-            attributeModifierMap.put(talent.getAttribute(), mod);
-        }
-        AbstractAttributeMap abstractAttributeMap = player.getAttributeMap();
-        Iterator modIterator = getAttributeModifiersForRemoval().entrySet().iterator();
-        while(modIterator.hasNext()) {
-            Map.Entry<IAttribute, AttributeModifier> entry = (Map.Entry)modIterator.next();
-            IAttributeInstance iattributeinstance = abstractAttributeMap.getAttributeInstance(entry.getKey());
-            if (iattributeinstance != null) {
-                iattributeinstance.removeModifier(entry.getValue());
-            }
-        }
-    }
+
 
     private void writeNBTAbilityArray(NBTTagCompound tag, String name, Collection<ResourceLocation> array, int size) {
         NBTTagList list = new NBTTagList();
@@ -183,9 +165,7 @@ public class PlayerClassInfo {
         tag.setInteger("unspentPoints", unspentPoints);
         writeNBTAbilityArray(tag, "spendOrder", spendOrder, GameConstants.MAX_CLASS_LEVEL);
         writeNBTAbilityArray(tag, "hotbar", Arrays.asList(hotbar), GameConstants.ACTION_BAR_SIZE);
-        tag.setInteger("unspentTalentPoints", unspentTalentPoints);
-        tag.setInteger("totalTalentPoints", totalTalentPoints);
-        writeTalentTrees(tag);
+        serializeTalentInfo(tag);
     }
 
     public void deserialize(NBTTagCompound tag) {
@@ -194,6 +174,16 @@ public class PlayerClassInfo {
         unspentPoints = tag.getInteger("unspentPoints");
         spendOrder = new ArrayDeque<>(Arrays.asList(parseNBTAbilityArray(tag, "spendOrder", GameConstants.MAX_CLASS_LEVEL)));
         setActiveAbilities(parseNBTAbilityArray(tag, "hotbar", GameConstants.ACTION_BAR_SIZE));
+        deserializeTalentInfo(tag);
+    }
+
+    public void serializeTalentInfo(NBTTagCompound tag){
+        tag.setInteger("unspentTalentPoints", unspentTalentPoints);
+        tag.setInteger("totalTalentPoints", totalTalentPoints);
+        writeTalentTrees(tag);
+    }
+
+    public void deserializeTalentInfo(NBTTagCompound tag){
         unspentTalentPoints = tag.getInteger("unspentTalentPoints");
         totalTalentPoints = tag.getInteger("totalTalentPoints");
         parseTalentTrees(tag);
@@ -233,6 +223,14 @@ public class PlayerClassInfo {
         } else {
             return false;
         }
+    }
+
+    public int getTotalSpentPoints(){
+        int tot = 0;
+        for (TalentTreeRecord talentTree : talentTrees.values()){
+            tot += talentTree.getPointsInTree();
+        }
+        return tot;
     }
 
     public boolean refundTalentPoint(EntityPlayer player, ResourceLocation tree, String line, int index){

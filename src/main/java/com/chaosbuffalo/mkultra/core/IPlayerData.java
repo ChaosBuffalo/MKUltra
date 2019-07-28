@@ -104,4 +104,14 @@ public interface IPlayerData {
     void deserialize(NBTTagCompound tag);
 
     boolean canWearArmorMaterial(ItemArmor.ArmorMaterial material);
+
+    boolean spendTalentPoint(ResourceLocation talentTree, String line, int index);
+
+    boolean refundTalentPoint(ResourceLocation talentTree, String line, int index);
+
+    void gainTalentPoint();
+
+    int getTotalTalentPoints();
+
+    int getUnspentTalentPoints();
 }

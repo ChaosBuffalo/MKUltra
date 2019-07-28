@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra;
 
 import com.chaosbuffalo.mkultra.command.MKCommand;
 import com.chaosbuffalo.mkultra.core.*;
+import com.chaosbuffalo.mkultra.core.talents.TalentUtils;
 import com.chaosbuffalo.mkultra.init.ModItems;
 import com.chaosbuffalo.mkultra.init.ModLootTables;
 import com.chaosbuffalo.mkultra.init.ModSpawn;
@@ -14,10 +15,6 @@ import com.chaosbuffalo.mkultra.party.PartyCommand;
 import com.chaosbuffalo.mkultra.utils.EnvironmentUtils;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.IAttribute;
-import net.minecraft.entity.ai.attributes.RangedAttribute;
-import net.minecraft.entity.passive.EntityVillager;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -31,7 +28,6 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
-import java.lang.reflect.Field;
 
 
 @Mod(modid = MKUltra.MODID, name= MKUltra.MODNAME, version = MKUltra.VERSION,
@@ -92,6 +88,7 @@ public class MKUltra {
         });
         ModSpawn.postInitJsonRegisistation();
         proxy.postInit(e);
+        TalentUtils.loadAllAttributes();
     }
 
     @EventHandler
