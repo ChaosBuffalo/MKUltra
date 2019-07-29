@@ -2,7 +2,7 @@ package com.chaosbuffalo.mkultra.network;
 
 import com.chaosbuffalo.mkultra.client.gui.*;
 import com.chaosbuffalo.mkultra.init.ModItems;
-import com.chaosbuffalo.mkultra.item.interfaces.IClassProvider;
+import com.chaosbuffalo.mkultra.core.IClassProvider;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.tiles.TileEntityMKSpawner;
 import com.chaosbuffalo.mkultra.tiles.TileEntityNPCSpawner;

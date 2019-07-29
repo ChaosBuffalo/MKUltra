@@ -5,7 +5,7 @@ import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.core.abilities.*;
 import com.chaosbuffalo.mkultra.init.ModItems;
 import com.chaosbuffalo.mkultra.item.ClassIcon;
-import com.chaosbuffalo.mkultra.item.interfaces.IClassProvider;
+import com.chaosbuffalo.mkultra.core.IClassProvider;
 
 import java.util.ArrayList;
 import java.util.List;

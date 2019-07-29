@@ -1,6 +1,5 @@
-package com.chaosbuffalo.mkultra.item.interfaces;
+package com.chaosbuffalo.mkultra.core;
 
-import com.chaosbuffalo.mkultra.core.PlayerClass;
 import net.minecraft.util.ResourceLocation;
 
 public interface IClassProvider {

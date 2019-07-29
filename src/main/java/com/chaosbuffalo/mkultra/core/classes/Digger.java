@@ -5,8 +5,7 @@ import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.core.abilities.*;
 import com.chaosbuffalo.mkultra.init.ModItems;
 import com.chaosbuffalo.mkultra.item.ClassIcon;
-import com.chaosbuffalo.mkultra.item.interfaces.IClassProvider;
-import net.minecraft.item.Item;
+import com.chaosbuffalo.mkultra.core.IClassProvider;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.util.ResourceLocation;
 

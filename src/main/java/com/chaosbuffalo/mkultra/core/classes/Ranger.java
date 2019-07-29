@@ -6,11 +6,8 @@ import com.chaosbuffalo.mkultra.core.IClassClientData;
 import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.PlayerClass;
 import com.chaosbuffalo.mkultra.core.abilities.*;
-import com.chaosbuffalo.mkultra.init.ModItems;
-import com.chaosbuffalo.mkultra.item.ClassIcon;
-import com.chaosbuffalo.mkultra.item.interfaces.IClassProvider;
+import com.chaosbuffalo.mkultra.core.IClassProvider;
 import com.chaosbuffalo.mkultra.tiles.TileEntityNPCSpawner;
-import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.ArrayList;
