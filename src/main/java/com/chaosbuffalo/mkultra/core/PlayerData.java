@@ -813,74 +813,22 @@ public class PlayerData implements IPlayerData {
         }
     }
 
-    private boolean checkClassLearnItem(ResourceLocation classId) {
-        ItemStack mainHandStack = player.getHeldItemMainhand();
-        if (mainHandStack.isEmpty())
-            return false;
-
-        PlayerClass baseClass = MKURegistry.getClass(classId);
-        if (baseClass == null)
-            return false;
-
-        Item mainHand = mainHandStack.getItem();
-        if (mainHand instanceof IClassProvider) {
-            return ((IClassProvider)mainHand).teachesClass(baseClass);
-        }
-        return false;
+    @Override
+    public boolean learnClass(IClassProvider provider, ResourceLocation classId) {
+        return learnClass(provider, classId, true);
     }
 
-    private boolean checkClassLearnEntity(BlockPos pos, ResourceLocation classId){
-        TileEntity tileEntity = player.world.getTileEntity(pos);
-        if  (tileEntity == null){
-            return false;
-        }
-        PlayerClass baseClass = MKURegistry.getClass(classId);
-        if (baseClass == null){
-            return false;
-        }
-        if (tileEntity instanceof IClassProvider){
-            IClassProvider provider = (IClassProvider) tileEntity;
-            return provider.teachesClass(baseClass);
-        } else {
-            return false;
-        }
-
-    }
-
-    public boolean learnClassTileEntity(ResourceLocation classId, boolean enforceChecks, BlockPos pos){
+    public boolean learnClass(IClassProvider provider, ResourceLocation classId, boolean enforceChecks) {
         if (isClassKnown(classId)) {
             // Class was already known
             return true;
         }
 
-        if (enforceChecks && !checkClassLearnEntity(pos, classId))
+        PlayerClass playerClass = MKURegistry.getClass(classId);
+        if (playerClass == null)
             return false;
 
-        PlayerClassInfo info = new PlayerClassInfo(classId);
-        knownClasses.put(classId, info);
-        sendBulkClassUpdate();
-
-        // Learned class
-        return true;
-    }
-
-    @Override
-    public boolean learnClassItem(ResourceLocation classId) {
-        return learnClassItem(classId, true);
-    }
-
-    @Override
-    public boolean learnClassTileEntity(ResourceLocation classId, BlockPos pos) {
-        return learnClassTileEntity(classId, true, pos);
-    }
-
-    public boolean learnClassItem(ResourceLocation classId, boolean enforceChecks) {
-        if (isClassKnown(classId)) {
-            // Class was already known
-            return true;
-        }
-
-        if (enforceChecks && !checkClassLearnItem(classId))
+        if (enforceChecks && !provider.teachesClass(playerClass))
             return false;
 
         PlayerClassInfo info = new PlayerClassInfo(classId);
