@@ -64,15 +64,15 @@ public class ModGuiHandler implements IGuiHandler {
         if (ID == CLASS_DATA_SCREEN) {
             return new PlayerClassScreen();
         } else if (ID == LEARN_CLASS_SCREEN) {
-            return new ChooseClassFromItemScreen(true, true);
+            return new ChooseClassScreen.FromItem(true, true);
         } else if (ID == XP_TABLE_SCREEN) {
             return new XpTableScreen();
         } else if (ID == CHANGE_CLASS_SCREEN) {
-            return new ChooseClassFromItemScreen(false, true);
+            return new ChooseClassScreen.FromItem(false, true);
         } else if (ID == CHANGE_CLASS_SCREEN_ADMIN) {
-            return new ChooseClassFromItemScreen(false, false);
+            return new ChooseClassScreen.FromItem(false, false);
         } else if (ID == LEARN_CLASS_SCREEN_ADMIN) {
-            return new ChooseClassFromItemScreen(true, false);
+            return new ChooseClassScreen.FromItem(true, false);
         } else if (ID == PARTY_INVITE_SCREEN) {
             return new PartyInviteScreen();
         } else if (ID == PIPE_CONTAINER_SCREEN){
@@ -109,7 +109,7 @@ public class ModGuiHandler implements IGuiHandler {
             Log.info("Trying to open class screen");
             if (te instanceof IClassProvider){
                 Log.info("tile entity is a class provider");
-                return new ChooseClassFromTileEntityScreen(te, true, true);
+                return new ChooseClassScreen.FromTE(te, true, true);
             }
         }
 
