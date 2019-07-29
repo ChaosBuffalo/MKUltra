@@ -6,6 +6,7 @@ import com.chaosbuffalo.mkultra.core.abilities.*;
 import com.chaosbuffalo.mkultra.init.ModItems;
 import com.chaosbuffalo.mkultra.item.ClassIcon;
 import com.chaosbuffalo.mkultra.core.IClassProvider;
+import net.minecraft.util.ResourceLocation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
  * Created by Jacob on 7/28/2018.
  */
 public class GreenKnight extends PlayerClass {
+    public static ResourceLocation ID = new ResourceLocation(MKUltra.MODID, "class.green_knight");
 
     private static final List<PlayerAbility> abilities = new ArrayList<>(5);
 
@@ -26,7 +28,7 @@ public class GreenKnight extends PlayerClass {
     }
 
     public GreenKnight() {
-        super(MKUltra.MODID, "class.green_knight");
+        super(ID);
     }
 
     @Override

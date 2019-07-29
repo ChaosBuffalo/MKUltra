@@ -6,11 +6,13 @@ import com.chaosbuffalo.mkultra.core.abilities.*;
 import com.chaosbuffalo.mkultra.init.ModItems;
 import com.chaosbuffalo.mkultra.item.ClassIcon;
 import com.chaosbuffalo.mkultra.core.IClassProvider;
+import net.minecraft.util.ResourceLocation;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Skald extends PlayerClass {
+    public static ResourceLocation ID = new ResourceLocation(MKUltra.MODID, "class.skald");
 
     public static final List<PlayerAbility> abilities = new ArrayList<>(5);
     static {
@@ -22,7 +24,7 @@ public class Skald extends PlayerClass {
     }
 
     public Skald() {
-        super(MKUltra.MODID, "class.skald");
+        super(ID);
     }
 
     @Override

@@ -6,11 +6,13 @@ import com.chaosbuffalo.mkultra.core.abilities.*;
 import com.chaosbuffalo.mkultra.init.ModItems;
 import com.chaosbuffalo.mkultra.item.ClassIcon;
 import com.chaosbuffalo.mkultra.core.IClassProvider;
+import net.minecraft.util.ResourceLocation;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Cleric extends PlayerClass {
+    public static ResourceLocation ID = new ResourceLocation(MKUltra.MODID, "class.cleric");
 
     private static final List<PlayerAbility> abilities = new ArrayList<>(5);
 
@@ -23,7 +25,7 @@ public class Cleric extends PlayerClass {
     }
 
     public Cleric() {
-        super(MKUltra.MODID, "class.cleric");
+        super(ID);
     }
 
     @Override

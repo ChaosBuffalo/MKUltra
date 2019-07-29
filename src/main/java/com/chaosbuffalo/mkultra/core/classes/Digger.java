@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Digger extends PlayerClass {
+    public static ResourceLocation ID = new ResourceLocation(MKUltra.MODID, "class.digger");
 
     public static final List<PlayerAbility> abilities = new ArrayList<>(5);
     private static final ArmorClass ARMORCLASS = new DiggerArmorClass(new ResourceLocation(MKUltra.MODID, "armor_class.digger"));
@@ -26,7 +27,7 @@ public class Digger extends PlayerClass {
     }
 
     public Digger() {
-        super(MKUltra.MODID, "class.digger");
+        super(ID);
     }
 
     @Override
