@@ -231,3 +231,9 @@ mkultra.class.green_knight.name=Green Knight
 tile.npc_spawner.name=NPC Spawner
 item.ranger_icon.name=Ranger Soul
 
+commands.mk.class=/mk class - Class Switching Commands
+commands.mk.class.unlearn=unlearn [player] [classId]
+commands.mk.class.unlearnall=unlearnall [player]
+commands.mk.class.learn=learn [player] [classId]
+commands.mk.class.switch=switch [player] [classId]
+commands.mk.class.reset=reset [player]

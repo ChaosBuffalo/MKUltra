@@ -13,6 +13,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.server.command.CommandTreeBase;
+import net.minecraftforge.server.command.CommandTreeHelp;
 
 import javax.annotation.Nonnull;
 
@@ -27,6 +28,7 @@ public class StatCommand extends CommandTreeBase {
         addSubcommand(new CooldownReductionStat());
         addSubcommand(new ArmorStat());
         addSubcommand(new HealBonusStat());
+        addSubcommand(new CommandTreeHelp(this)); // MUST be last
     }
 
     /**
