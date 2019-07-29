@@ -9,7 +9,7 @@ import java.util.HashSet;
 
 public class TalentTreeRecord {
     private TalentTree tree;
-    private HashMap<String, ArrayList<TalentRecord>> records;
+    public HashMap<String, ArrayList<TalentRecord>> records;
 
     public TalentTreeRecord(TalentTree tree){
         this.tree = tree;

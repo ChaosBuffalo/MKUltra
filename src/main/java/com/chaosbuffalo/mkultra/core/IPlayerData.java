@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.core;
 
+import com.chaosbuffalo.mkultra.core.talents.TalentTreeRecord;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
@@ -114,4 +115,6 @@ public interface IPlayerData {
     int getTotalTalentPoints();
 
     int getUnspentTalentPoints();
+
+    TalentTreeRecord getTalentTree(ResourceLocation loc);
 }

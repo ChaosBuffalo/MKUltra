@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.core;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.core.talents.TalentTreeRecord;
 import com.chaosbuffalo.mkultra.core.talents.TalentUtils;
 import com.chaosbuffalo.mkultra.event.ItemRestrictionHandler;
 import com.chaosbuffalo.mkultra.item.ItemHelper;
@@ -152,7 +153,12 @@ public class PlayerData implements IPlayerData {
             return;
         }
         PlayerClassInfo classInfo = getActiveClass();
-        classInfo.totalTalentPoints += 1;
+        if (player.experienceLevel >= classInfo.totalTalentPoints + 1){
+            classInfo.totalTalentPoints += 1;
+            classInfo.unspentTalentPoints += 1;
+            player.addExperienceLevel(-classInfo.totalTalentPoints);
+            sendCurrentClassUpdate();
+        }
     }
 
     @Override
@@ -164,15 +170,17 @@ public class PlayerData implements IPlayerData {
         return classInfo.totalTalentPoints;
     }
 
-    private void checkTalentTotals() {
+    private boolean checkTalentTotals() {
         if (!hasChosenClass()){
-            return;
+            return false;
         }
         PlayerClassInfo classInfo = getActiveClass();
         int spent = classInfo.getTotalSpentPoints();
-        if (classInfo.totalTalentPoints - spent != classInfo.unspentPoints){
-            classInfo.unspentPoints = classInfo.totalTalentPoints - spent;
+        if (classInfo.totalTalentPoints - spent != classInfo.unspentTalentPoints){
+            classInfo.unspentTalentPoints = classInfo.totalTalentPoints - spent;
+            return true;
         }
+        return false;
     }
 
     @Override
@@ -182,6 +190,15 @@ public class PlayerData implements IPlayerData {
         }
         PlayerClassInfo classInfo = getActiveClass();
         return classInfo.unspentTalentPoints;
+    }
+
+    @Override
+    public TalentTreeRecord getTalentTree(ResourceLocation loc) {
+        if (!hasChosenClass()){
+            return null;
+        }
+        PlayerClassInfo classInfo = getActiveClass();
+        return classInfo.getTalentTree(loc);
     }
 
     private void updateTalents(){
@@ -330,6 +347,7 @@ public class PlayerData implements IPlayerData {
                 && this.hasChosenClass()
                 && this.getLevel() < GameConstants.MAX_CLASS_LEVEL);
     }
+
 
     @Override
     public void levelUp() {

@@ -31,6 +31,7 @@ public class ModGuiHandler implements IGuiHandler {
     public static final int CHANGE_CLASS_SCREEN_ADMIN = 8;
     public static final int NPC_SPAWNER_EQUIPMENT_SCREEN = 9;
     public static final int LEARN_CLASS_FROM_TILE_ENTITY_SCREEN = 10;
+    public static final int TALENT_SCREEN = 11;
 
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
@@ -110,6 +111,13 @@ public class ModGuiHandler implements IGuiHandler {
             if (te instanceof IClassProvider){
                 Log.info("tile entity is a class provider");
                 return new ChooseClassFromTileEntityScreen(te, true, true);
+            }
+        } else if (ID == TALENT_SCREEN){
+            BlockPos pos = new BlockPos(x, y, z);
+            TileEntity te = world.getTileEntity(pos);
+            if (te instanceof TileEntityNPCSpawner) {
+                TileEntityNPCSpawner containerTileEntity = (TileEntityNPCSpawner) te;
+                return new OrbMotherGui(containerTileEntity, player);
             }
         }
 

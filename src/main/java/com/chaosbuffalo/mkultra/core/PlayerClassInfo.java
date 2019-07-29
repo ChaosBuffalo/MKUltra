@@ -266,4 +266,8 @@ public class PlayerClassInfo {
             return MKURegistry.INVALID_ABILITY;
         }
     }
+
+    public TalentTreeRecord getTalentTree(ResourceLocation loc){
+        return talentTrees.get(loc);
+    }
 }
