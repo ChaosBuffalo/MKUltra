@@ -1,6 +1,8 @@
 package com.chaosbuffalo.mkultra;
 
 import com.chaosbuffalo.mkultra.core.ArmorClass;
+import com.chaosbuffalo.mkultra.core.ClassLists;
+import com.chaosbuffalo.mkultra.core.classes.*;
 import com.chaosbuffalo.mkultra.log.Log;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.RangedAttribute;
@@ -12,7 +14,10 @@ import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 import java.io.File;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Config(modid = MKUltra.MODID, category = "gameplay")
@@ -32,6 +37,10 @@ public class MKConfig {
     @Config.Name("Gameplay")
     @Config.Comment("Gameplay Options")
     public static Gameplay gameplay = new Gameplay();
+
+    @Config.Name("Classes")
+    @Config.Comment("Class Configuration - Format <identity>=<classId1>,<classId2>")
+    public static ClassConfiguration classConfig = new ClassConfiguration();
 
     public static class Armor {
 
@@ -167,6 +176,29 @@ public class MKConfig {
         @Config.Name("Maximum Entity Health")
         @Config.Comment("Adjusts the default maximum health in minecraft for entities")
         public double MAX_ENTITY_HEALTH = 4096.0;
+    }
+
+    public static class ClassConfiguration {
+        @Config.Name("Classes")
+        @Config.Comment("Controls what class providers teach which classes")
+        public String[] CLASS_MAP = {
+                ClassLists.classesToString(new ResourceLocation(MKUltra.MODID, "provider.sun_icon"),
+                        Archer.ID,
+                        Brawler.ID,
+                        Cleric.ID,
+                        Digger.ID,
+                        Druid.ID,
+                        NetherMage.ID,
+                        Skald.ID,
+                        WetWizard.ID),
+                ClassLists.classesToString(new ResourceLocation(MKUltra.MODID, "provider.moon_icon"),
+                        WaveKnight.ID,
+                        MoonKnight.ID),
+                ClassLists.classesToString(new ResourceLocation(MKUltra.MODID, "provider.desperate_icon"),
+                        GreenKnight.ID),
+                ClassLists.classesToString(new ResourceLocation(MKUltra.MODID, "provider.ranger"),
+                        Ranger.ID),
+        };
     }
 
     public static void init(File configFile) {

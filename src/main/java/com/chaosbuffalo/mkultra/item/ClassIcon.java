@@ -4,6 +4,7 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.core.IClassProvider;
+import com.chaosbuffalo.mkultra.core.MKURegistry;
 import com.chaosbuffalo.mkultra.network.ModGuiHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -19,14 +20,14 @@ import net.minecraft.world.World;
 public class ClassIcon extends Item implements IClassProvider {
 
     private final String iconText;
-    private final ResourceLocation iconLoc;
+    private final ResourceLocation classListId;
 
-    public ClassIcon(String unlocalizedName, String iconText, int maxDamageIn, ResourceLocation iconLoc) {
+    public ClassIcon(String unlocalizedName, String iconText, int maxDamageIn, ResourceLocation classListId) {
         super();
         this.setTranslationKey(unlocalizedName);
         this.setCreativeTab(MKUltra.MKULTRA_TAB);
         this.iconText = iconText;
-        this.iconLoc = iconLoc;
+        this.classListId = classListId;
         this.setMaxDamage(maxDamageIn);
         this.setMaxStackSize(1);
     }
@@ -45,7 +46,7 @@ public class ClassIcon extends Item implements IClassProvider {
 
     @Override
     public ResourceLocation getIdentity() {
-        return iconLoc;
+        return classListId;
     }
 
     @Override

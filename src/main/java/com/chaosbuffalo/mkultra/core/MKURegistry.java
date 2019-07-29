@@ -12,8 +12,9 @@ import net.minecraftforge.registries.RegistryBuilder;
 
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Mod.EventBusSubscriber
@@ -89,17 +90,14 @@ public class MKURegistry {
         return REGISTRY_SPAWN_LISTS.getValue(name);
     }
 
-    public static List<ResourceLocation> getClassesForProvider(IClassProvider provider) {
-        return REGISTRY_CLASSES.getEntries().stream()
-                .filter(kv -> provider.teachesClass(kv.getValue()))
-                .map(Map.Entry::getKey)
-                .collect(Collectors.toList());
-    }
-
-    public static List<ResourceLocation> getValidClasses(List<ResourceLocation> classes) {
+    public static List<ResourceLocation> getValidClasses(Collection<ResourceLocation> classes) {
         return REGISTRY_CLASSES.getKeys().stream()
                 .filter(classes::contains)
                 .collect(Collectors.toList());
+    }
+
+    public static List<ResourceLocation> getAllClasses() {
+        return new ArrayList<>(REGISTRY_CLASSES.getKeys());
     }
 
     public static String getClassName(ResourceLocation classId) {

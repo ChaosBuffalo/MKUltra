@@ -3,9 +3,6 @@ package com.chaosbuffalo.mkultra.core.classes;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.core.abilities.*;
-import com.chaosbuffalo.mkultra.init.ModItems;
-import com.chaosbuffalo.mkultra.item.ClassIcon;
-import com.chaosbuffalo.mkultra.core.IClassProvider;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.ArrayList;
@@ -66,11 +63,6 @@ public class Cleric extends PlayerClass {
     @Override
     public ArmorClass getArmorClass() {
         return ArmorClass.HEAVY;
-    }
-
-    @Override
-    public IClassProvider getClassProvider() {
-        return (ClassIcon) ModItems.sun_icon;
     }
 
     @Override

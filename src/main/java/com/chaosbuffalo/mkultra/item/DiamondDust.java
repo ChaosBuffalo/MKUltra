@@ -4,6 +4,7 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.core.IClassProvider;
+import com.chaosbuffalo.mkultra.core.MKURegistry;
 import com.chaosbuffalo.mkultra.network.ModGuiHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -12,6 +13,9 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+
+import javax.annotation.Nonnull;
+import java.util.List;
 
 
 public class DiamondDust extends Item implements IClassProvider {
@@ -36,11 +40,17 @@ public class DiamondDust extends Item implements IClassProvider {
 
     @Override
     public ResourceLocation getIdentity() {
-        return new ResourceLocation(MKUltra.MODID, "textures/items/sun_icon.png");
+        return getRegistryName();
     }
 
     @Override
     public String getClassSelectionText() {
         return "Select your next class";
+    }
+
+    @Nonnull
+    @Override
+    public List<ResourceLocation> getClasses() {
+        return MKURegistry.getAllClasses();
     }
 }

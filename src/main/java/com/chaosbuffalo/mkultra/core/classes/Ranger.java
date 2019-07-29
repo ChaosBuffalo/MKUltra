@@ -6,8 +6,6 @@ import com.chaosbuffalo.mkultra.core.IClassClientData;
 import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.PlayerClass;
 import com.chaosbuffalo.mkultra.core.abilities.*;
-import com.chaosbuffalo.mkultra.core.IClassProvider;
-import com.chaosbuffalo.mkultra.tiles.TileEntityNPCSpawner;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.ArrayList;
@@ -71,11 +69,6 @@ public class Ranger extends PlayerClass {
     @Override
     public int getManaPerLevel(){
         return 2;
-    }
-
-    @Override
-    public IClassProvider getClassProvider() {
-        return new TileEntityNPCSpawner();
     }
 
     @Override

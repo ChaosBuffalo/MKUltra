@@ -1,10 +1,7 @@
 package com.chaosbuffalo.mkultra.client.gui;
 
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.MKURegistry;
-import com.chaosbuffalo.mkultra.core.IPlayerData;
-import com.chaosbuffalo.mkultra.core.MKUPlayerData;
-import com.chaosbuffalo.mkultra.core.IClassProvider;
+import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.network.packets.ClassLearnPacket;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -16,7 +13,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import org.lwjgl.opengl.GL11;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -91,10 +87,10 @@ public abstract class ChooseClassScreen extends GuiScreen {
 
         if (learning) {
             if (enforceChecks) {
-                classes = MKURegistry.getClassesForProvider(provider);
+                classes = provider.getClasses();
             }
             else {
-                classes = new ArrayList<>(MKURegistry.REGISTRY_CLASSES.getKeys());
+                classes = MKURegistry.getAllClasses();
             }
         } else {
             classes = MKURegistry.getValidClasses(knownClasses);
@@ -173,11 +169,7 @@ public abstract class ChooseClassScreen extends GuiScreen {
 
         @Override
         IClassProvider getProvider() {
-            EntityPlayer player = mc.player;
-            if (player.getHeldItemMainhand().getItem() instanceof IClassProvider) {
-                return (IClassProvider) player.getHeldItemMainhand().getItem();
-            }
-            return null;
+            return IClassProvider.getProvider(mc.player.getHeldItemMainhand());
         }
 
         @Override
@@ -195,10 +187,7 @@ public abstract class ChooseClassScreen extends GuiScreen {
 
         @Override
         IClassProvider getProvider() {
-            if (entity instanceof IClassProvider) {
-                return ((IClassProvider)entity);
-            }
-            return null;
+            return IClassProvider.getProvider(entity);
         }
 
         @Override
