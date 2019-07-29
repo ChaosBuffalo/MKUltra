@@ -1,17 +1,26 @@
 package com.chaosbuffalo.mkultra.init;
 
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.core.MKURegistry;
 import com.chaosbuffalo.mkultra.core.PlayerAttributes;
-import com.chaosbuffalo.mkultra.core.talents.BaseTalent;
-import com.chaosbuffalo.mkultra.core.talents.RangedAttributeTalent;
+import com.chaosbuffalo.mkultra.core.talents.*;
+import com.chaosbuffalo.mkultra.log.Log;
+import com.chaosbuffalo.mkultra.utils.JsonLoader;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.RangedAttribute;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.registries.IForgeRegistry;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 @Mod.EventBusSubscriber
@@ -48,6 +57,67 @@ public class ModTalents {
     public static RangedAttributeTalent spellCrit;
     @GameRegistry.ObjectHolder("talent.movement_speed")
     public static RangedAttributeTalent movementSpeed;
+
+    public static void postInitJsonRegisistation(){
+        ModContainer old = Loader.instance().activeModContainer();
+        JsonLoader.loadModsForType("mk_talents/trees",
+                "mk_talent_overrides", "assets",
+                ModTalents::loadTalentTree, MKURegistry.REGISTRY_TALENT_TREES);
+        Loader.instance().setActiveModContainer(old);
+    }
+
+    public static void loadTalentTree(ResourceLocation name, JsonObject obj,
+                                     IForgeRegistry<TalentTree> registry) {
+        String[] keys = {"version", "lines"};
+        if (!JsonLoader.checkKeysExist(keys, obj)) {
+            return;
+        }
+        int version = obj.get("version").getAsInt();
+        TalentTree tree = new TalentTree(name, version);
+        JsonArray lineEles = obj.get("lines").getAsJsonArray();
+        for (JsonElement lineEle : lineEles){
+            String[] lineKeys = {"name", "talents"};
+            JsonObject lineObj = lineEle.getAsJsonObject();
+            if (!JsonLoader.checkKeysExist(lineKeys, lineObj)){
+                continue;
+            }
+            String lineName = lineObj.get("name").getAsString();
+            ArrayList<TalentNode> talentLine = new ArrayList<>();
+            JsonArray talentEles = lineObj.get("talents").getAsJsonArray();
+            for (JsonElement talentEle : talentEles){
+                String[] talentKeys = {"name", "max_points"};
+                JsonObject talentObj = talentEle.getAsJsonObject();
+                if (!JsonLoader.checkKeysExist(talentKeys, talentObj)){
+                    continue;
+                }
+                ResourceLocation talentName = new ResourceLocation(talentObj.get("name").getAsString());
+                int maxPoints = talentObj.get("max_points").getAsInt();
+                BaseTalent talent = MKURegistry.getTalent(talentName);
+                if (talent != null){
+                    switch (talent.getTalentType()){
+                        case ATTRIBUTE:
+                            String[] extraAttrKeys = {"value"};
+                            if (!JsonLoader.checkKeysExist(extraAttrKeys, talentObj)){
+                                Log.info("Skipping attribute missing extra keys.");
+                                break;
+                            }
+                            AttributeTalentNode attrNode = new AttributeTalentNode(
+                                    (RangedAttributeTalent) talent, maxPoints, talentObj.get("value").getAsDouble());
+                            talentLine.add(attrNode);
+                            break;
+                        default:
+                            Log.info("Type %s not implemented, skipping talent parsing",
+                                    talent.getTalentType().toString());
+                            break;
+                    }
+                }
+            }
+            Log.info("Loading Line: %s for Tree: %s with %d talents", lineName, name.toString(), talentLine.size());
+            tree.addLine(lineName, talentLine.toArray(new TalentNode[0]));
+        }
+        Log.info("Registering Talent Tree: %s", name.toString());
+        registry.register(tree);
+    }
 
     @SubscribeEvent
     public static void registerTalents(RegistryEvent.Register<BaseTalent> event){

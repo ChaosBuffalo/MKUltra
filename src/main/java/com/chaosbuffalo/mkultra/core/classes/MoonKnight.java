@@ -39,7 +39,7 @@ public class MoonKnight extends PlayerClass {
 
     @Override
     public int getHealthPerLevel(){
-        return 1;
+        return 2;
     }
 
     @Override

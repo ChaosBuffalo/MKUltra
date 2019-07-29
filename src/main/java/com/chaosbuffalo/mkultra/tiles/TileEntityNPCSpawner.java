@@ -5,7 +5,6 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.client.gui.NPCEquipmentContainer;
 import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.item.interfaces.IClassProvider;
-import com.chaosbuffalo.mkultra.log.Log;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -42,6 +41,7 @@ public class TileEntityNPCSpawner extends TileEntity implements ITickable, IClas
     private boolean active;
     private int ticksSincePlayer;
     private int internalTickInterval;
+    private ResourceLocation itemToDrop;
     private ResourceLocation npcName;
     private ItemStackHandler itemStackHandler = new ItemStackHandler(SIZE) {
         @Override
@@ -56,6 +56,10 @@ public class TileEntityNPCSpawner extends TileEntity implements ITickable, IClas
         internalTickInterval = TICK_INTERVAL;
         npcName = new ResourceLocation(MKUltra.MODID, "ranger");
         reset();
+    }
+
+    public ResourceLocation getItemToDrop(){
+        return itemToDrop;
     }
 
     public void handleContentsChanged(int slot){
@@ -165,6 +169,9 @@ public class TileEntityNPCSpawner extends TileEntity implements ITickable, IClas
     public NBTTagCompound writeToNBT(NBTTagCompound tagRoot) {
         tagRoot.setInteger("ticksBeforeSpawn", ticksBeforeSpawn);
         tagRoot.setString("mobName", npcName.toString());
+        if (itemToDrop != null){
+            tagRoot.setString("itemToDrop", itemToDrop.toString());
+        }
         tagRoot.setTag("items", itemStackHandler.serializeNBT());
         return super.writeToNBT(tagRoot);
     }
@@ -173,6 +180,9 @@ public class TileEntityNPCSpawner extends TileEntity implements ITickable, IClas
         NBTTagCompound tagRoot = new NBTTagCompound();
         tagRoot.setInteger("ticksBeforeSpawn", ticksBeforeSpawn);
         tagRoot.setString("mobName", npcName.toString());
+        if (itemToDrop != null){
+            tagRoot.setString("itemToDrop", itemToDrop.toString());
+        }
         tagRoot.setTag("items", itemStackHandler.serializeNBT());
         return tagRoot;
     }
@@ -189,6 +199,9 @@ public class TileEntityNPCSpawner extends TileEntity implements ITickable, IClas
         if (tagRoot.hasKey("mobName")){
             npcName = new ResourceLocation(tagRoot.getString("mobName"));
         }
+        if (tagRoot.hasKey("itemToDrop")){
+            itemToDrop = new ResourceLocation(tagRoot.getString("itemToDrop"));
+        }
         super.readFromNBT(tagRoot);
     }
 
@@ -202,6 +215,9 @@ public class TileEntityNPCSpawner extends TileEntity implements ITickable, IClas
         }
         if (tagRoot.hasKey("mobName")){
             npcName = new ResourceLocation(tagRoot.getString("mobName"));
+        }
+        if (tagRoot.hasKey("itemToDrop")){
+            itemToDrop = new ResourceLocation(tagRoot.getString("itemToDrop"));
         }
     }
 

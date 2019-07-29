@@ -3,10 +3,7 @@ package com.chaosbuffalo.mkultra;
 import com.chaosbuffalo.mkultra.command.MKCommand;
 import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.core.talents.TalentUtils;
-import com.chaosbuffalo.mkultra.init.ModItems;
-import com.chaosbuffalo.mkultra.init.ModLootTables;
-import com.chaosbuffalo.mkultra.init.ModSpawn;
-import com.chaosbuffalo.mkultra.init.ModTileEntities;
+import com.chaosbuffalo.mkultra.init.*;
 import com.chaosbuffalo.mkultra.item.MKUltraTab;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.network.ModGuiHandler;
@@ -87,6 +84,7 @@ public class MKUltra {
             }
         });
         ModSpawn.postInitJsonRegisistation();
+        ModTalents.postInitJsonRegisistation();
         proxy.postInit(e);
         TalentUtils.loadAllAttributes();
     }

@@ -13,6 +13,7 @@ public class TalentTreeRecord {
 
     public TalentTreeRecord(TalentTree tree){
         this.tree = tree;
+        this.records = new HashMap<>();
         setup();
     }
 

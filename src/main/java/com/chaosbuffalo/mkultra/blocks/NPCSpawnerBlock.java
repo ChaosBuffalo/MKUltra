@@ -1,16 +1,17 @@
 package com.chaosbuffalo.mkultra.blocks;
 
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.init.ModItems;
 import com.chaosbuffalo.mkultra.tiles.TileEntityNPCSpawner;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -67,13 +68,20 @@ public class NPCSpawnerBlock extends Block implements ITileEntityProvider {
     @Override
     public void getDrops(NonNullList<ItemStack> drops, IBlockAccess access, BlockPos pos, IBlockState blockState, int p_getDrops_5_) {
         TileEntity tileEntity =  access.getTileEntity(pos);
-        ItemStack stack = new ItemStack(ModItems.rangerIcon);
+
         if (tileEntity != null && tileEntity instanceof TileEntityNPCSpawner){
             TileEntityNPCSpawner npcSpawner = (TileEntityNPCSpawner) tileEntity;
+            ResourceLocation itemToDrop = npcSpawner.getItemToDrop();
+            if (itemToDrop != null){
+                Item item = Item.REGISTRY.getObject(itemToDrop);
+                if (item != null){
+                    ItemStack stack = new ItemStack(item);
+                    stack.setTagCompound(npcSpawner.serializeForItem());
+                    drops.add(stack);
+                }
+            }
             npcSpawner.cleanupMob();
-            stack.setTagCompound(npcSpawner.serializeForItem());
         }
-        drops.add(stack);
     }
 
     @Override
@@ -86,6 +94,16 @@ public class NPCSpawnerBlock extends Block implements ITileEntityProvider {
     public void harvestBlock(World world, EntityPlayer p_harvestBlock_2_, BlockPos blockPos, IBlockState p_harvestBlock_4_, @Nullable TileEntity p_harvestBlock_5_, ItemStack p_harvestBlock_6_) {
         super.harvestBlock(world, p_harvestBlock_2_, blockPos, p_harvestBlock_4_, p_harvestBlock_5_, p_harvestBlock_6_);
         world.setBlockToAir(blockPos);
+    }
+
+    @Override
+    public void breakBlock(World world, BlockPos pos, IBlockState p_breakBlock_3_) {
+        TileEntity tileEntity =  world.getTileEntity(pos);
+        if (tileEntity != null && tileEntity instanceof TileEntityNPCSpawner){
+            TileEntityNPCSpawner npcSpawner = (TileEntityNPCSpawner) tileEntity;
+            npcSpawner.cleanupMob();
+        }
+        super.breakBlock(world, pos, p_breakBlock_3_);
     }
 
     @Nullable

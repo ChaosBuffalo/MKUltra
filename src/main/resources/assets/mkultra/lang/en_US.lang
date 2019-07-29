@@ -230,4 +230,5 @@ mkultra.class.ranger.name=Ranger
 mkultra.class.green_knight.name=Green Knight
 tile.npc_spawner.name=NPC Spawner
 item.ranger_icon.name=Ranger Soul
+item.orb_mother_icon.name=Orb Mother Soul
 

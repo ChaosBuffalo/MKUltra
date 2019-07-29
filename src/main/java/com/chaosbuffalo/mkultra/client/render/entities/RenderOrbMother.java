@@ -1,8 +1,9 @@
 package com.chaosbuffalo.mkultra.client.render.entities;
 
+
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.client.model.ModelHumanoidBase;
-import com.chaosbuffalo.mkultra.entities.mobs.EntityRanger;
+import com.chaosbuffalo.mkultra.entities.mobs.EntityOrbMother;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -14,19 +15,19 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class RenderRanger implements IRenderFactory<EntityRanger> {
+public class RenderOrbMother implements IRenderFactory<EntityOrbMother> {
 
 
-    RenderRanger() {
+    RenderOrbMother() {
     }
 
     @Override
-    public RenderBiped<EntityRanger> createRenderFor(RenderManager manager) {
+    public RenderBiped<EntityOrbMother> createRenderFor(RenderManager manager) {
         return new Renderer(manager);
     }
 
-    private static class Renderer extends RenderBiped<EntityRanger> {
-        private static final ResourceLocation RANGER_TEXTURES = new ResourceLocation(MKUltra.MODID, "textures/entity/ranger/ranger.png");
+    private static class Renderer extends RenderBiped<EntityOrbMother> {
+        private static final ResourceLocation TEXTURE_LOC = new ResourceLocation(MKUltra.MODID, "textures/entity/orb_mother/orb_mother.png");
 
         public Renderer(RenderManager renderManager) {
             super(renderManager, new ModelHumanoidBase(), 0.5F);
@@ -45,8 +46,8 @@ public class RenderRanger implements IRenderFactory<EntityRanger> {
         }
 
         @Override
-        protected ResourceLocation getEntityTexture(EntityRanger entity) {
-            return RANGER_TEXTURES;
+        protected ResourceLocation getEntityTexture(EntityOrbMother entity) {
+            return TEXTURE_LOC;
         }
     }
 }

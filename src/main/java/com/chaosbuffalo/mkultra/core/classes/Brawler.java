@@ -46,7 +46,7 @@ public class Brawler extends PlayerClass {
 
     @Override
     public int getBaseHealth() {
-        return 26;
+        return 28;
     }
 
     @Override
