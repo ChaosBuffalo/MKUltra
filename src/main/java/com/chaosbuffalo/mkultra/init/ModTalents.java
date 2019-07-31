@@ -35,7 +35,7 @@ public class ModTalents {
     public static RangedAttributeTalent maxHealth;
     @GameRegistry.ObjectHolder("talent.magic_damage")
     public static RangedAttributeTalent magicDamage;
-    @GameRegistry.ObjectHolder("talent.attackDamage")
+    @GameRegistry.ObjectHolder("talent.attack_damage")
     public static RangedAttributeTalent attackDamage;
     @GameRegistry.ObjectHolder("talent.heal_bonus")
     public static RangedAttributeTalent healBonus;
