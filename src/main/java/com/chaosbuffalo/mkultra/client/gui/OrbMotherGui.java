@@ -1,56 +1,37 @@
 package com.chaosbuffalo.mkultra.client.gui;
 
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.client.gui.lib.*;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.core.MKURegistry;
-import com.chaosbuffalo.mkultra.core.events.PlayerDataGUIUpdateEvent;
 import com.chaosbuffalo.mkultra.core.talents.TalentRecord;
 import com.chaosbuffalo.mkultra.core.talents.TalentTreeRecord;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.network.packets.AddTalentRequestPacket;
 import com.chaosbuffalo.mkultra.tiles.TileEntityNPCSpawner;
-import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.function.Function;
 
 @Mod.EventBusSubscriber(Side.CLIENT)
 public class OrbMotherGui extends MKScreen {
 
-    enum Modes {
-        SELECT_TREE,
-        EDIT_TREE
-    }
-
-    private Modes mode;
     private EntityPlayer player;
     private TileEntityNPCSpawner spawner;
-    private ButtonList<ResourceLocation> treeList;
-    private static final Function<ResourceLocation, String> getResourceName = ResourceLocation::toString;
-    private static final int TREE_LIST = 0;
-    // buttons
-    private static final int BUY_POINT = 0;
-    private static final int BACK = 1;
-    private static final int TALENT_BUTTON = 2;
-    private MKStackLayoutVertical layout;
     private ResourceLocation selectedTree;
 
     public OrbMotherGui(TileEntityNPCSpawner spawner, EntityPlayer player) {
         super();
         this.player = player;
-        this.mode = Modes.SELECT_TREE;
         selectedTree = null;
-        treeList = null;
         this.spawner = spawner;
     }
 
@@ -58,7 +39,7 @@ public class OrbMotherGui extends MKScreen {
         IPlayerData data = MKUPlayerData.get(player);
         if (data != null) {
             Log.info("Unsubscribing gui to updates");
-            data.unsubscribeGuiToClassUpdates(this);
+            data.unsubscribeGuiToClassUpdates(this::flagNeedSetup);
         }
     }
 
@@ -69,9 +50,22 @@ public class OrbMotherGui extends MKScreen {
         int panelHeight = 256;
         int xPos = width / 2 - panelWidth / 2;
         int yPos = height / 2 - panelHeight / 2;
-
+        ScaledResolution scaledRes = new ScaledResolution(mc);
+        Log.info("Scale factor : %s", scaledRes.getScaleFactor());
         MKWidget selectRoot = new MKWidget(xPos, yPos, panelWidth, panelHeight);
         addState("select", selectRoot);
+        MKWidget treeRoot = new MKWidget(xPos, yPos, panelWidth, panelHeight);
+        addState("tree", treeRoot);
+
+        MKScrollView scrollView = new MKScrollView(xPos, yPos, panelWidth, panelHeight, width, height,
+                scaledRes.getScaleFactor(), true);
+        treeRoot.addWidget(scrollView);
+        MKButton backButton = new MKButton(xPos + 10, yPos + 10, 30, 20, "Back")
+                .setPressedCallback((MKButton button) -> {
+                    setState("select");
+                    return true;
+                });
+        treeRoot.addWidget(backButton);
         MKWidget title = new MKText(mc.fontRenderer, "Select A Talent Tree to Edit:")
                 .setIsCentered(true)
                 .setColor(8129636)
@@ -88,7 +82,7 @@ public class OrbMotherGui extends MKScreen {
                 .setPaddingBot(4);
         IPlayerData data = MKUPlayerData.get(player);
         if (data != null){
-            data.subscribeGuiToClassUpdates(this);
+            data.subscribeGuiToClassUpdates(this::flagNeedSetup);
             String unspentText = String.format("Unspent Points: %d", data.getUnspentTalentPoints());
             MKWidget unspentPoints = new MKText(mc.fontRenderer, unspentText)
                     .setColor(8129636);
@@ -107,8 +101,9 @@ public class OrbMotherGui extends MKScreen {
                         return true;
                     })
                     .setSizeHintWidth(0.6f)
-                    .setPosHitX(0.2f);
+                    .setPosHintX(0.2f);
             textLayout.addWidget(buyButton);
+            setupTalentTree(scrollView, data, xPos, yPos + 10);
         }
         selectRoot.addWidget(textLayout);
         int ltop = textLayout.getY() + textLayout.getHeight();
@@ -122,8 +117,11 @@ public class OrbMotherGui extends MKScreen {
             locButton.setPressedCallback((MKButton button)-> {
                 Log.info("Tree list clicked %s", loc.toString());
                 selectedTree = loc;
-                setState(NO_STATE);
-                this.mode = Modes.EDIT_TREE;
+                IPlayerData pdata = MKUPlayerData.get(player);
+                if (pdata != null){
+                    setupTalentTree(scrollView, pdata, xPos, yPos + 10);
+                }
+                setState("tree");
                 return true;
             });
             layout.addWidget(locButton);
@@ -132,130 +130,61 @@ public class OrbMotherGui extends MKScreen {
         setState("select");
     }
 
+    private void setupTalentTree(MKScrollView container, IPlayerData data, int xPos, int yPos){
+        container.clearWidgets();
+        TalentTreeRecord record = data.getTalentTree(selectedTree);
+        int treeRenderingMarginX = 10;
+        int treeRenderingPaddingX = 10;
+        int talentButtonHeight = TalentButton.HEIGHT;
+        int talentButtonWidth = TalentButton.WIDTH;
+        int talentButtonYMargin = 6;
+        MKWidget widget = new MKWidget(xPos, yPos);
+        if (record != null){
+
+            int count = record.records.size();
+            int talentWidth = talentButtonWidth * count + treeRenderingMarginX * 2 + (count - 1) * treeRenderingPaddingX;
+            int spacePerColumn = talentWidth / count;
+            int columnOffset = (spacePerColumn - talentButtonWidth) / 2;
+            int i = 0;
+            String[] keys = record.records.keySet().toArray(new String[0]);
+            Arrays.sort(keys);
+            int largestIndex = 0;
+            for (String name : keys){
+                ArrayList<TalentRecord> talents = record.records.get(name);
+                int talentIndex = 0;
+                for (TalentRecord talent : talents){
+                    TalentButton button = new TalentButton(talentIndex, name, talent,
+                            xPos + spacePerColumn * i + columnOffset,
+                            yPos + talentIndex * talentButtonHeight + talentButtonYMargin
+                    );
+                    widget.addWidget(button);
+                    if (talentIndex > largestIndex){
+                        largestIndex = talentIndex;
+                    }
+                    talentIndex++;
+                }
+                i++;
+            }
+            widget.setWidth(talentWidth);
+            widget.setHeight(yPos + largestIndex * talentButtonHeight + talentButtonYMargin);
+        }
+        container.addWidget(widget);
+    }
+
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        ScaledResolution scaledresolution = new ScaledResolution(this.mc);
-        int width = this.width;
-        int height = this.height;
         int panelWidth = 256;
         int panelHeight = 256;
         int xPos = width / 2 - panelWidth / 2;
         int yPos = height / 2 - panelHeight / 2;
-        int buttonHeight = 20;
-        int treeRenderingMarginX = 10;
-        int talentButtonHeight = 30;
-        int talentButtonWidth = 24;
-        int talentButtonYMargin = 6;
-        int talentWidth = 256 - treeRenderingMarginX * 2;
         ResourceLocation loc = new ResourceLocation(MKUltra.MODID, "textures/gui/full_background.png");
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.renderEngine.bindTexture(loc);
         GL11.glDisable(GL11.GL_LIGHTING);
-        drawModalRectWithCustomSizedTexture(xPos, yPos, 0, 0, panelWidth, panelHeight,
+        drawModalRectWithCustomSizedTexture(xPos, yPos,
+                0, 0,
+                panelWidth, panelHeight,
                 256, 256);
-        int titleHeight = 13;
-//        this.fontRenderer.drawString("Select A Talent Tree to Edit:", xPos + 15, yPos + 4, 8129636);
-        IPlayerData data = MKUPlayerData.get(player);
-        if (data == null){
-            return;
-        }
-        buttonList.clear();
-
-        switch(mode){
-            case EDIT_TREE:
-                GuiButton backButton = new GuiButton(BACK, xPos + 15,
-                        yPos + 50, 30, buttonHeight, "Back");
-                buttonList.add(backButton);
-                backButton.drawButton(mc, mouseX, mouseY, partialTicks);
-                TalentTreeRecord record = data.getTalentTree(selectedTree);
-                if (record != null){
-                    int count = record.records.size();
-                    int spacePerColumn = talentWidth / count;
-                    int columnOffset = (spacePerColumn - talentButtonWidth) / 2;
-                    int i = 0;
-                    String[] keys = record.records.keySet().toArray(new String[0]);
-                    Arrays.sort(keys);
-                    for (String name : keys){
-                        ArrayList<TalentRecord> talents = record.records.get(name);
-                        int talentIndex = 0;
-                        for (TalentRecord talent : talents){
-                            TalentButton button = new TalentButton(talentIndex, name, TALENT_BUTTON, talent,
-                                    xPos + spacePerColumn * i + columnOffset,
-                                    yPos + 64 + talentIndex * talentButtonHeight + talentButtonYMargin
-                                    );
-                            buttonList.add(button);
-                            button.drawButton(mc, mouseX, mouseY, partialTicks);
-                            talentIndex++;
-                        }
-                        i++;
-                    }
-
-                }
-                break;
-        }
         super.drawScreen(mouseX, mouseY, partialTicks);
-    }
-
-//    public void handleTreeListButtonClicked(ResourceLocation result, int list) {
-//        switch (list){
-//            case TREE_LIST:
-//                Log.info("Tree list clicked %s", result.toString());
-//                selectedTree = result;
-//                mode = Modes.EDIT_TREE;
-//            default:
-//                break;
-//        }
-//    }
-
-//    @Override
-//    public void handleMouseInput() throws IOException
-//    {
-//        int mouseX = Mouse.getEventX() * this.width / this.mc.displayWidth;
-//        int mouseY = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
-//
-//        super.handleMouseInput();
-//        if (mode == Modes.SELECT_TREE && this.treeList != null){
-//            this.treeList.handleMouseInput();
-//        }
-//    }
-
-//    @Override
-//    protected void mouseClickMove(int mouseX, int mouseY, int mouseButton, long dt) {
-//        super.mouseClickMove(mouseX, mouseY, mouseButton, dt);
-//    }
-//
-//    @Override
-//    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException
-//    {
-//        super.mouseClicked(mouseX, mouseY, mouseButton);
-//        if (mode == Modes.SELECT_TREE && this.treeList != null){
-//            this.treeList.mouseClicked(mouseX, mouseY, mouseButton);
-//        }
-//    }
-
-    /**
-     * Called when a mouse button is released.
-     */
-//    @Override
-//    protected void mouseReleased(int mouseX, int mouseY, int state)
-//    {
-//        super.mouseReleased(mouseX, mouseY, state);
-//        if (mode == Modes.SELECT_TREE && this.treeList != null){
-//            this.treeList.mouseReleased(mouseX, mouseY, state);
-//        }
-//
-//    }
-
-    @Override
-    protected void actionPerformed(GuiButton button) {
-        switch (button.id){
-            case BUY_POINT:
-                MKUltra.packetHandler.sendToServer(new AddTalentRequestPacket());
-                break;
-            case BACK:
-                setState("select");
-                this.mode = Modes.SELECT_TREE;
-                break;
-        }
     }
 }

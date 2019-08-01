@@ -1,4 +1,4 @@
-package com.chaosbuffalo.mkultra.client.gui;
+package com.chaosbuffalo.mkultra.client.gui.lib;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;

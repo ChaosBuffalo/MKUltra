@@ -1,4 +1,4 @@
-package com.chaosbuffalo.mkultra.client.gui;
+package com.chaosbuffalo.mkultra.client.gui.lib;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
@@ -42,7 +42,7 @@ public class MKButton extends MKWidget {
         this.buttonText = buttonText;
     }
 
-    public MKWidget setPressedCallback(Function<MKButton, Boolean> callback){
+    public MKButton setPressedCallback(Function<MKButton, Boolean> callback){
         this.pressedCallback = callback;
         return this;
     }
@@ -58,7 +58,7 @@ public class MKButton extends MKWidget {
         return false;
     }
 
-    protected int getHoverState(boolean isHovering) {
+    public int getHoverState(boolean isHovering) {
         int i = 1;
         if (!this.isEnabled()) {
             i = 0;
@@ -68,13 +68,13 @@ public class MKButton extends MKWidget {
         return i;
     }
 
+    @Override
     public void draw(Minecraft mc, int x, int y, int width, int height, int mouseX, int mouseY, float partialTicks) {
         FontRenderer fontrenderer = mc.fontRenderer;
         mc.getTextureManager().bindTexture(BUTTON_TEXTURES);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        this.hovered = mouseX >= this.getX() && mouseY >= this.getY() && mouseX < this.getX() +
-                this.getWidth() && mouseY < this.getY() + this.getHeight();
-        int i = this.getHoverState(this.hovered);
+        this.hovered = isInBounds(mouseX, mouseY);
+        int i = getHoverState(this.hovered);
         GlStateManager.enableBlend();
         GlStateManager.tryBlendFuncSeparate(
                 GlStateManager.SourceFactor.SRC_ALPHA,

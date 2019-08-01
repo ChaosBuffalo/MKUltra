@@ -1,4 +1,4 @@
-package com.chaosbuffalo.mkultra.client.gui;
+package com.chaosbuffalo.mkultra.client.gui.lib;
 
 import com.google.common.collect.Lists;
 import net.minecraft.client.Minecraft;
@@ -60,7 +60,7 @@ public class MKWidget extends Gui {
         return this;
     }
 
-    public MKWidget setPosHitX(float ratio){
+    public MKWidget setPosHintX(float ratio){
         this.posHintX = ratio;
         return this;
     }
@@ -209,10 +209,11 @@ public class MKWidget extends Gui {
         return this;
     }
 
-    public void addWidget(MKWidget widget){
+    public boolean addWidget(MKWidget widget){
         widget.setParent(this);
         this.children.add(widget);
         this.reverseChildren = new ArrayList<>(Lists.reverse(children));
+        return true;
     }
 
     public void removeWidget(MKWidget widget){
@@ -225,6 +226,10 @@ public class MKWidget extends Gui {
     }
 
     public void draw(Minecraft mc, int x, int y, int width, int height, int mouseX, int mouseY, float partialTicks) {
+
+    }
+
+    public void postDraw(Minecraft mc, int x, int y, int width, int height, int mouseX, int mouseY, float partialTicks){
 
     }
 
@@ -244,6 +249,7 @@ public class MKWidget extends Gui {
                 child.drawWidget(mc, mouseX, mouseY, partialTicks);
             }
         }
+        postDraw(mc, x, y, width, height, mouseX, mouseY, partialTicks);
     }
 
 }

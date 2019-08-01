@@ -1,4 +1,4 @@
-package com.chaosbuffalo.mkultra.client.gui;
+package com.chaosbuffalo.mkultra.client.gui.lib;
 
 public class MKStackLayoutVertical extends MKLayout {
 
@@ -24,9 +24,10 @@ public class MKStackLayoutVertical extends MKLayout {
     }
 
     @Override
-    public void addWidget(MKWidget widget){
+    public boolean addWidget(MKWidget widget){
         super.addWidget(widget);
         setHeight(getHeight() + widget.getHeight() + getPaddingTop() + getPaddingBot());
+        return true;
     }
 
     @Override

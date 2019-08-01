@@ -2,8 +2,6 @@ package com.chaosbuffalo.mkultra.core;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.client.gui.MKScreen;
-import com.chaosbuffalo.mkultra.core.events.PlayerDataGUIUpdateEvent;
 import com.chaosbuffalo.mkultra.core.talents.TalentTreeRecord;
 import com.chaosbuffalo.mkultra.core.talents.TalentUtils;
 import com.chaosbuffalo.mkultra.event.ItemRestrictionHandler;
@@ -32,7 +30,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -68,7 +65,7 @@ public class PlayerData implements IPlayerData {
     private Map<ResourceLocation, PlayerClassInfo> knownClasses = new HashMap<>();
     private Map<ResourceLocation, PlayerAbilityInfo> abilityInfoMap = new HashMap<>(5);
     private Set<ItemArmor.ArmorMaterial> alwaysAllowedArmorMaterials = new HashSet<>();
-    private Set<MKScreen> subscribedScreens = new HashSet<>();
+    private Set<Runnable> guiSubscriptions = new HashSet<>();
 
     public PlayerData(EntityPlayer player) {
         this.player = player;
@@ -206,18 +203,18 @@ public class PlayerData implements IPlayerData {
     }
 
     @Override
-    public void subscribeGuiToClassUpdates(MKScreen screen) {
-        subscribedScreens.add(screen);
+    public void subscribeGuiToClassUpdates(Runnable screen) {
+        guiSubscriptions.add(screen);
     }
 
     @Override
-    public void unsubscribeGuiToClassUpdates(MKScreen screen) {
-        subscribedScreens.remove(screen);
+    public void unsubscribeGuiToClassUpdates(Runnable screen) {
+        guiSubscriptions.remove(screen);
     }
 
     public void notifyScreens(){
-        for (MKScreen screen : subscribedScreens){
-            screen.flagNeedSetup();
+        for (Runnable screen : guiSubscriptions){
+            screen.run();
         }
     }
 
