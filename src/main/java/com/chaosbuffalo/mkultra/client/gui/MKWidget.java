@@ -9,26 +9,23 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 public class MKWidget extends Gui {
-    public int width;
-    public int height;
-    public int x;
-    public int y;
+    private int width;
+    private int height;
+    private int x;
+    private int y;
     public MKWidget parent;
-    public boolean enabled;
-    public boolean visible;
+    private boolean enabled;
+    private boolean visible;
     public boolean skipBoundsCheck;
     protected boolean hovered;
     public UUID id;
     public ArrayList<MKWidget> children;
     public ArrayList<MKWidget> reverseChildren;
-    public float sizeHintWidth;
-    public float sizeHintHeight;
-    public float posHintX;
-    public float posHintY;
-    public boolean doRelativeX;
-    public boolean doRelativeY;
-    public boolean doRelativeWidth;
-    public boolean doRelativeHeight;
+    // These should be used by layouts.
+    private float sizeHintWidth;
+    private float sizeHintHeight;
+    private float posHintX;
+    private float posHintY;
 
     public MKWidget(int x, int y){
         this(x, y, 200, 20);
@@ -47,37 +44,29 @@ public class MKWidget extends Gui {
         this.children = new ArrayList<>();
         this.reverseChildren = new ArrayList<>();
         this.skipBoundsCheck = false;
-        this.doRelativeX = false;
-        this.doRelativeY = false;
-        this.doRelativeHeight = false;
-        this.doRelativeWidth = false;
         this.sizeHintWidth = 1.0f;
         this.sizeHintHeight = 1.0f;
         this.posHintX = 0.0f;
         this.posHintY = 0.0f;
     }
 
-    public MKWidget setDoRelativeWidth(float ratio){
+    public MKWidget setSizeHintWidth(float ratio){
         this.sizeHintWidth = ratio;
-        this.doRelativeWidth = true;
         return this;
     }
 
-    public MKWidget setDoRelativeHeight(float ratio){
+    public MKWidget setSizeHintHeight(float ratio){
         this.sizeHintHeight = ratio;
-        this.doRelativeHeight = true;
         return this;
     }
 
-    public MKWidget setDoRelativeX(float ratio){
+    public MKWidget setPosHitX(float ratio){
         this.posHintX = ratio;
-        this.doRelativeX = true;
         return this;
     }
 
-    public MKWidget setDoRelativeY(float ratio){
+    public MKWidget setPosHintY(float ratio){
         this.posHintY = ratio;
-        this.doRelativeY = true;
         return this;
     }
 
@@ -85,6 +74,58 @@ public class MKWidget extends Gui {
     public MKWidget setParent(MKWidget parent){
         this.parent = parent;
         return this;
+    }
+
+    public MKWidget setHeight(int newHeight){
+        this.height = newHeight;
+        return this;
+    }
+
+    public MKWidget setWidth(int newWidth){
+        this.width = newWidth;
+        return this;
+    }
+
+    public MKWidget setX(int newX){
+        this.x = newX;
+        return this;
+    }
+
+    public MKWidget setY(int newY){
+        this.y = newY;
+        return this;
+    }
+
+    public int getWidth(){
+        return width;
+    }
+
+    public int getHeight(){
+        return height;
+    }
+
+    public int getX(){
+        return x;
+    }
+
+    public int getY(){
+        return y;
+    }
+
+    public float getPosHintX(){
+        return posHintX;
+    }
+
+    public float getPosHintY(){
+        return posHintY;
+    }
+
+    public float getSizeHintWidth(){
+        return sizeHintWidth;
+    }
+
+    public float getSizeHintHeight(){
+        return sizeHintHeight;
     }
 
     @Nullable
@@ -125,7 +166,7 @@ public class MKWidget extends Gui {
     }
 
     public MKWidget mousePressed(Minecraft minecraft, int mouseX, int mouseY, int mouseButton) {
-        if (!this.enabled || !this.visible || !this.isInBounds(mouseX, mouseY)){
+        if (!this.isEnabled() || !this.isVisible() || !this.isInBounds(mouseX, mouseY)){
             return null;
         }
         for (MKWidget child : reverseChildren){
@@ -152,6 +193,20 @@ public class MKWidget extends Gui {
 
     public boolean isMouseOver() {
         return this.hovered;
+    }
+
+    public boolean isVisible() { return this.visible; }
+
+    public MKWidget setVisible(boolean value){
+        this.visible = value;
+        return this;
+    }
+
+    public boolean isEnabled() { return this.enabled; }
+
+    public MKWidget setEnabled(boolean value){
+        this.enabled = value;
+        return this;
     }
 
     public void addWidget(MKWidget widget){
@@ -181,38 +236,11 @@ public class MKWidget extends Gui {
         reverseChildren.clear();
     }
 
-    public int calcX(){
-        if (doRelativeX && parent != null){
-            return parent.x + (int)(parent.width * posHintX);
-        }
-        return x;
-    }
-
-    public int calcY(){
-        if (doRelativeY && parent != null){
-            return parent.y + (int)(parent.height * posHintY);
-        }
-        return y;
-    }
-
-    public int calcWidth(){
-        if (doRelativeWidth && parent != null){
-            return (int)(parent.width * sizeHintWidth);
-        }
-        return width;
-    }
-
-    public int calcHeight(){
-        if (doRelativeHeight && parent != null){
-            return (int)(parent.height * sizeHintHeight);
-        }
-        return height;
-    }
 
     public void drawWidget(Minecraft mc, int mouseX, int mouseY, float partialTicks){
-        draw(mc, calcX(), calcY(), calcWidth(), calcHeight(), mouseX, mouseY, partialTicks);
+        draw(mc, x, y, width, height, mouseX, mouseY, partialTicks);
         for (MKWidget child : children){
-            if (child.visible){
+            if (child.isVisible()){
                 child.drawWidget(mc, mouseX, mouseY, partialTicks);
             }
         }

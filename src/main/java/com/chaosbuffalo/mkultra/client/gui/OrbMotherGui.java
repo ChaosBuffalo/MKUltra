@@ -4,6 +4,7 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.core.MKURegistry;
+import com.chaosbuffalo.mkultra.core.events.PlayerDataGUIUpdateEvent;
 import com.chaosbuffalo.mkultra.core.talents.TalentRecord;
 import com.chaosbuffalo.mkultra.core.talents.TalentTreeRecord;
 import com.chaosbuffalo.mkultra.log.Log;
@@ -14,12 +15,16 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.function.Function;
 
+@Mod.EventBusSubscriber(Side.CLIENT)
 public class OrbMotherGui extends MKScreen {
 
     enum Modes {
@@ -49,6 +54,14 @@ public class OrbMotherGui extends MKScreen {
         this.spawner = spawner;
     }
 
+    public void onGuiClosed() {
+        IPlayerData data = MKUPlayerData.get(player);
+        if (data != null) {
+            Log.info("Unsubscribing gui to updates");
+            data.unsubscribeGuiToClassUpdates(this);
+        }
+    }
+
     @Override
     public void setupScreen() {
         super.setupScreen();
@@ -56,26 +69,67 @@ public class OrbMotherGui extends MKScreen {
         int panelHeight = 256;
         int xPos = width / 2 - panelWidth / 2;
         int yPos = height / 2 - panelHeight / 2;
-        int titleHeight = 13;
-        int ltop = yPos + 4 + (titleHeight + 68);
-        int lwidth = 100;
+
+        MKWidget selectRoot = new MKWidget(xPos, yPos, panelWidth, panelHeight);
+        addState("select", selectRoot);
+        MKWidget title = new MKText(mc.fontRenderer, "Select A Talent Tree to Edit:")
+                .setIsCentered(true)
+                .setColor(8129636)
+                .setWidth(panelWidth)
+                .setX(xPos)
+                .setY(yPos + 4);
+        selectRoot.addWidget(title);
+        MKWidget textLayout = new MKStackLayoutVertical(xPos, title.getY() + title.getHeight(), panelWidth)
+                .setMarginTop(8)
+                .setMarginBot(8)
+                .setPaddingTop(4)
+                .setMarginLeft(25)
+                .setMarginRight(25)
+                .setPaddingBot(4);
+        IPlayerData data = MKUPlayerData.get(player);
+        if (data != null){
+            data.subscribeGuiToClassUpdates(this);
+            String unspentText = String.format("Unspent Points: %d", data.getUnspentTalentPoints());
+            MKWidget unspentPoints = new MKText(mc.fontRenderer, unspentText)
+                    .setColor(8129636);
+            textLayout.addWidget(unspentPoints);
+            String totalText = String.format("Total Points: %d", data.getTotalTalentPoints());
+            MKWidget totalPoints = new MKText(mc.fontRenderer, totalText)
+                    .setColor(8129636);
+            textLayout.addWidget(totalPoints);
+            String nextPointText = String.format("Next Point Will Cost: %d", data.getTotalTalentPoints());
+            MKWidget nextPoint = new MKText(mc.fontRenderer, nextPointText)
+                    .setColor(8129636);
+            textLayout.addWidget(nextPoint);
+            MKWidget buyButton = new MKButton("Buy Talent Point")
+                    .setPressedCallback((MKButton button) -> {
+                        MKUltra.packetHandler.sendToServer(new AddTalentRequestPacket());
+                        return true;
+                    })
+                    .setSizeHintWidth(0.6f)
+                    .setPosHitX(0.2f);
+            textLayout.addWidget(buyButton);
+        }
+        selectRoot.addWidget(textLayout);
+        int ltop = textLayout.getY() + textLayout.getHeight();
+        int lwidth = 120;
         int layoutX = xPos + (panelWidth - lwidth) / 2;
-        MKStackLayoutVertical layout = new MKStackLayoutVertical(layoutX, ltop, lwidth, 4, 4);
+        MKStackLayoutVertical layout = new MKStackLayoutVertical(layoutX, ltop, lwidth);
+        layout.setPaddingBot(4).setPaddingTop(4).setMarginTop(4);
         ArrayList<ResourceLocation> treeLocs = new ArrayList<>(MKURegistry.REGISTRY_TALENT_TREES.getKeys());
         for (ResourceLocation loc : treeLocs){
-            MKButton locButton = new MKButton(loc.toString(), lwidth, 20);
+            MKButton locButton = new MKButton(loc.toString());
             locButton.setPressedCallback((MKButton button)-> {
                 Log.info("Tree list clicked %s", loc.toString());
                 selectedTree = loc;
-                mode = Modes.EDIT_TREE;
-                layout.visible = false;
+                setState(NO_STATE);
+                this.mode = Modes.EDIT_TREE;
                 return true;
             });
             layout.addWidget(locButton);
         }
-        this.layout = layout;
-        addWidget(layout);
-
+        selectRoot.addWidget(layout);
+        setState("select");
     }
 
     @Override
@@ -100,37 +154,14 @@ public class OrbMotherGui extends MKScreen {
         drawModalRectWithCustomSizedTexture(xPos, yPos, 0, 0, panelWidth, panelHeight,
                 256, 256);
         int titleHeight = 13;
-        this.fontRenderer.drawString("Select A Talent Tree to Edit:", xPos + 15, yPos + 4, 8129636);
+//        this.fontRenderer.drawString("Select A Talent Tree to Edit:", xPos + 15, yPos + 4, 8129636);
         IPlayerData data = MKUPlayerData.get(player);
         if (data == null){
             return;
         }
         buttonList.clear();
-        String unspentText = String.format("Unspent Points: %d", data.getUnspentTalentPoints());
-        this.fontRenderer.drawString(unspentText, xPos + 15, yPos + 20, 8129636);
-        String totalText = String.format("Total Points: %d", data.getTotalTalentPoints());
-        this.fontRenderer.drawString(totalText, xPos + 15, yPos + 36, 8129636);
+
         switch(mode){
-            case SELECT_TREE:
-                String nextPoint = String.format("Next Point Will Cost: %d", data.getTotalTalentPoints());
-                int xPosBuy = this.fontRenderer.drawString(nextPoint, xPos + 15, yPos + 52, 8129636);
-                GuiButton buyButton = new GuiButton(BUY_POINT, xPosBuy + 6,
-                        yPos + 50, 24, buttonHeight, "Buy");
-                buttonList.add(buyButton);
-                buyButton.drawButton(mc, mouseX, mouseY, partialTicks);
-//                if (treeList == null){
-//                    ArrayList<ResourceLocation> treeLocs = new ArrayList<>(MKURegistry.REGISTRY_TALENT_TREES.getKeys());
-//                    int ltop = yPos + 4 + (titleHeight + 68);
-//                    int lheight = 140;
-//                    int lbot = ltop + lheight;
-//                    int lwidth = 100;
-//                    treeList = new ButtonList<>(
-//                            treeLocs, this::handleTreeListButtonClicked, TREE_LIST, getResourceName, mc, lwidth,
-//                            ltop, ltop, lbot, 22, xPos + (panelWidth - lwidth) / 2);
-//                } else {
-//                    treeList.drawScreen(mouseX, mouseY, partialTicks);
-//                }
-                break;
             case EDIT_TREE:
                 GuiButton backButton = new GuiButton(BACK, xPos + 15,
                         yPos + 50, 30, buttonHeight, "Back");
@@ -222,8 +253,8 @@ public class OrbMotherGui extends MKScreen {
                 MKUltra.packetHandler.sendToServer(new AddTalentRequestPacket());
                 break;
             case BACK:
+                setState("select");
                 this.mode = Modes.SELECT_TREE;
-                layout.visible = true;
                 break;
         }
     }

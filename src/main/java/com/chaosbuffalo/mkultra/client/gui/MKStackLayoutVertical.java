@@ -3,38 +3,81 @@ package com.chaosbuffalo.mkultra.client.gui;
 public class MKStackLayoutVertical extends MKLayout {
 
     private int currentY;
-    private int verticalPadding;
-    private int horizontalPadding;
 
-    public MKStackLayoutVertical(int x, int y, int width, int verticalPadding, int horizontalPadding) {
+    public MKStackLayoutVertical(int x, int y, int width) {
         super(x, y, width, 0);
         currentY = y;
-        this.verticalPadding = verticalPadding;
-        this.horizontalPadding = horizontalPadding;
     }
 
     @Override
     public void setupLayoutStartState(){
-        currentY = y;
+        currentY = getY();
+        currentY += getMarginTop();
     }
 
     @Override
-    public void doLayout(MKWidget widget){
-        int height = widget.calcHeight();
-        widget.y = currentY;
-        widget.x = x + horizontalPadding;
-        currentY += height + verticalPadding;
+    public void doLayout(MKWidget widget, int index){
+        widget.setY(currentY);
+        widget.setX(getX() + getMarginLeft() + (int) ((getWidth() - getMarginLeft() - getMarginRight()) * widget.getPosHintX()));
+        widget.setWidth((int)((getWidth()  - getMarginRight() - getMarginLeft()) * widget.getSizeHintWidth()));
+        currentY += widget.getHeight() + getPaddingBot() + getPaddingTop();
     }
 
     @Override
     public void addWidget(MKWidget widget){
         super.addWidget(widget);
-        this.height += widget.height;
+        setHeight(getHeight() + widget.getHeight() + getPaddingTop() + getPaddingBot());
     }
 
     @Override
     public void removeWidget(MKWidget widget){
         super.removeWidget(widget);
-        this.height -= widget.height;
+        setHeight(getHeight() - widget.getHeight() - getPaddingTop() - getPaddingBot());
+    }
+
+    @Override
+    public MKLayout setMarginTop(int value) {
+        super.setMarginTop(value);
+        recomputeChildren();
+        return this;
+    }
+
+    @Override
+    public MKLayout setMarginBot(int value) {
+        super.setMarginBot(value);
+        recomputeChildren();
+        return this;
+    }
+
+    @Override
+    public MKLayout setPaddingBot(int value) {
+        super.setPaddingBot(value);
+        recomputeChildren();
+        return this;
+    }
+
+    @Override
+    public MKLayout setPaddingTop(int value) {
+        super.setPaddingTop(value);
+        recomputeChildren();
+        return this;
+    }
+
+    @Override
+    public void recomputeChildren() {
+        int height = getMarginTop();
+        int i = 0;
+        for (MKWidget child : children){
+            height += child.getHeight();
+            if (i != 0){
+                height += getPaddingTop();
+            }
+            if (i != children.size() - 1){
+                height += getPaddingBot();
+            }
+            i++;
+        }
+        height += getMarginBot();
+        setHeight(height);
     }
 }

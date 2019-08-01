@@ -1,16 +1,21 @@
 package com.chaosbuffalo.mkultra.client.gui;
 
+import com.chaosbuffalo.mkultra.log.Log;
 import com.google.common.collect.Lists;
 import net.minecraft.client.gui.GuiScreen;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MKScreen extends GuiScreen {
     public ArrayList<MKWidget> children;
     public ArrayList<MKWidget> reverseChildren;
+    public static String NO_STATE = "NO_STATE";
     private MKWidget selectedWidget;
     public boolean firstRender;
+    private String currentState;
+    public HashMap<String, MKWidget> states;
 
     public MKScreen(){
         super();
@@ -18,10 +23,43 @@ public class MKScreen extends GuiScreen {
         firstRender = true;
         children = new ArrayList<>();
         reverseChildren = new ArrayList<>();
+        states = new HashMap<>();
+        currentState = NO_STATE;
+    }
+
+    public void addState(String name, MKWidget root){
+        this.states.put(name, root);
+    }
+
+    public void removeState(String name){
+        this.states.remove(name);
+    }
+
+    public void setState(String newState){
+        if (newState.equals(NO_STATE) || states.containsKey(newState)){
+            if (!newState.equals(NO_STATE)){
+                this.addWidget(states.get(newState));
+            }
+            if (!currentState.equals(NO_STATE)){
+                this.removeWidget(states.get(currentState));
+            }
+            this.currentState = newState;
+            Log.info("New state is %s", currentState);
+
+        } else {
+            Log.info("Tried to set screen state to: %s, but doesn't exist.", newState);
+        }
     }
 
     public void setupScreen(){
+        this.clearWidgets();
+        this.states.clear();
+        this.currentState = NO_STATE;
+        this.selectedWidget = null;
+    }
 
+    public void flagNeedSetup(){
+        firstRender = true;
     }
 
     public void addWidget(MKWidget widget){
@@ -53,7 +91,7 @@ public class MKScreen extends GuiScreen {
             firstRender = false;
         }
         for (MKWidget child : children){
-            if (child.visible){
+            if (child.isVisible()){
                 child.drawWidget(mc, mouseX, mouseY, partialTicks);
             }
         }
@@ -61,8 +99,8 @@ public class MKScreen extends GuiScreen {
 
     @Override
     protected void mouseClickMove(int mouseX, int mouseY, int mouseButton, long dt) {
-        for (MKWidget child : reverseChildren){
-            if (child.visible && child.mouseDragged(this.mc, mouseX, mouseY, mouseButton)){
+        if (selectedWidget != null){
+            if (selectedWidget.mouseDragged(this.mc, mouseX, mouseY, mouseButton)){
                 return;
             }
         }
@@ -73,7 +111,7 @@ public class MKScreen extends GuiScreen {
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException
     {
         for (MKWidget child : reverseChildren){
-            if (!child.visible){
+            if (!child.isVisible()){
                 continue;
             }
             MKWidget clickHandler = child.mousePressed(this.mc, mouseX, mouseY, mouseButton);
