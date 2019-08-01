@@ -119,22 +119,11 @@ public class MKScrollView extends MKWidget{
         return false;
     }
 
+    @Override
     public boolean addWidget(MKWidget widget){
         if (this.children.size() > 0){
             return false;
         }
-        widget.setParent(this);
-        this.children.add(widget);
-        this.reverseChildren = new ArrayList<>(Lists.reverse(children));
-        return true;
-    }
-
-    public void removeWidget(MKWidget widget){
-        if (widget.getParent() != null && widget.getParent().id.equals(this.id)){
-            if (children.removeIf((x) -> x.id.equals(widget.id))){
-                this.reverseChildren = new ArrayList<>(Lists.reverse(children));
-            }
-            widget.setParent(null);
-        }
+        return super.addWidget(widget);
     }
 }
