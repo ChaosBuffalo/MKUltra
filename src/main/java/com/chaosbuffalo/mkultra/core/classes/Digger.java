@@ -3,10 +3,6 @@ package com.chaosbuffalo.mkultra.core.classes;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.core.abilities.*;
-import com.chaosbuffalo.mkultra.init.ModItems;
-import com.chaosbuffalo.mkultra.item.ClassIcon;
-import com.chaosbuffalo.mkultra.item.interfaces.IClassProvider;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.util.ResourceLocation;
 
@@ -14,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Digger extends PlayerClass {
+    public static ResourceLocation ID = new ResourceLocation(MKUltra.MODID, "class.digger");
 
     public static final List<PlayerAbility> abilities = new ArrayList<>(5);
     private static final ArmorClass ARMORCLASS = new DiggerArmorClass(new ResourceLocation(MKUltra.MODID, "armor_class.digger"));
@@ -27,7 +24,7 @@ public class Digger extends PlayerClass {
     }
 
     public Digger() {
-        super(MKUltra.MODID, "class.digger");
+        super(ID);
     }
 
     @Override
@@ -69,11 +66,6 @@ public class Digger extends PlayerClass {
     @Override
     public ArmorClass getArmorClass() {
         return ARMORCLASS;
-    }
-
-    @Override
-    public IClassProvider getClassProvider() {
-        return (ClassIcon) ModItems.sun_icon;
     }
 
     @Override

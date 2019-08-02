@@ -3,10 +3,7 @@ package com.chaosbuffalo.mkultra.core.classes;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.core.abilities.*;
-import com.chaosbuffalo.mkultra.init.ModItems;
-import com.chaosbuffalo.mkultra.item.ClassIcon;
-import com.chaosbuffalo.mkultra.item.interfaces.IClassProvider;
-import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +12,7 @@ import java.util.List;
  * Created by Jacob on 3/24/2018.
  */
 public class MoonKnight extends PlayerClass {
+    public static ResourceLocation ID = new ResourceLocation(MKUltra.MODID, "class.moon_knight");
 
     private static final List<PlayerAbility> abilities = new ArrayList<>(5);
 
@@ -27,7 +25,7 @@ public class MoonKnight extends PlayerClass {
     }
 
     public MoonKnight() {
-        super(MKUltra.MODID, "class.moon_knight");
+        super(ID);
     }
 
     @Override
@@ -68,11 +66,6 @@ public class MoonKnight extends PlayerClass {
     @Override
     public ArmorClass getArmorClass() {
         return ArmorClass.HEAVY;
-    }
-
-    @Override
-    public IClassProvider getClassProvider() {
-        return (ClassIcon) ModItems.moon_icon;
     }
 
     @Override

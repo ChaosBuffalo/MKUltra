@@ -1,8 +1,9 @@
 package com.chaosbuffalo.mkultra.network;
 
 import com.chaosbuffalo.mkultra.client.gui.*;
+import com.chaosbuffalo.mkultra.core.ClassLists;
 import com.chaosbuffalo.mkultra.init.ModItems;
-import com.chaosbuffalo.mkultra.item.interfaces.IClassProvider;
+import com.chaosbuffalo.mkultra.core.IClassProvider;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.tiles.TileEntityMKSpawner;
 import com.chaosbuffalo.mkultra.tiles.TileEntityNPCSpawner;
@@ -107,10 +108,12 @@ public class ModGuiHandler implements IGuiHandler {
             BlockPos pos = new BlockPos(x, y, z);
             TileEntity te = world.getTileEntity(pos);
             Log.info("Trying to open class screen");
-            if (te instanceof IClassProvider){
-                Log.info("tile entity is a class provider");
-                return new ChooseClassScreen.FromTE(te, true, true);
-            }
+            if (te == null)
+                return null;
+            IClassProvider provider = IClassProvider.getProvider(te);
+            if (provider == null)
+                return null;
+            return new ChooseClassScreen.FromTE(te, true, true);
         }
 
         return null;

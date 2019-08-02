@@ -4,8 +4,7 @@ import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.client.gui.NPCEquipmentContainer;
 import com.chaosbuffalo.mkultra.core.*;
-import com.chaosbuffalo.mkultra.item.interfaces.IClassProvider;
-import com.chaosbuffalo.mkultra.log.Log;
+import com.chaosbuffalo.mkultra.core.IClassProvider;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -271,7 +270,7 @@ public class TileEntityNPCSpawner extends TileEntity implements ITickable, IClas
 
     @Override
     public ResourceLocation getIdentity() {
-        return new ResourceLocation(MKUltra.MODID, "textures/class/icons/ranger.png");
+        return new ResourceLocation(MKUltra.MODID, "provider.ranger");
     }
 
     @Override

@@ -1,19 +1,13 @@
 
 package com.chaosbuffalo.mkultra.network.packets;
 
-import com.chaosbuffalo.mkultra.core.MKUPlayerData;
-import com.chaosbuffalo.mkultra.core.MKURegistry;
-import com.chaosbuffalo.mkultra.core.PlayerClass;
-import com.chaosbuffalo.mkultra.core.PlayerData;
+import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.item.DiamondDust;
 import com.chaosbuffalo.mkultra.item.ItemHelper;
-import com.chaosbuffalo.mkultra.item.interfaces.IClassProvider;
-import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.network.MessageHandler;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
@@ -85,20 +79,9 @@ public class ClassLearnPacket implements IMessage {
 
             if (msg.source == LearnSource.TILE_ENTITY) {
                 TileEntity tileEntity = player.world.getTileEntity(msg.pos);
-                if (tileEntity instanceof IClassProvider){
-                    return (IClassProvider) tileEntity;
-                } else {
-                    Log.error("could not find TE!");
-                    return null;
-                }
+                return IClassProvider.getProvider(tileEntity);
             } else if (msg.source == LearnSource.ITEM) {
-                ItemStack mainHandStack = player.getHeldItemMainhand();
-                if (mainHandStack.isEmpty())
-                    return null;
-                Item mainHand = mainHandStack.getItem();
-                if (mainHand instanceof IClassProvider) {
-                    return ((IClassProvider) mainHand);
-                }
+                return IClassProvider.getProvider(player.getHeldItemMainhand());
             }
             return null;
         }

@@ -25,9 +25,12 @@ import java.util.Set;
 @GameRegistry.ObjectHolder(MKUltra.MODID)
 public final class ModItems {
     public static Item diamond_dust;
-    public static Item sun_icon;
-    public static Item moon_icon;
-    public static Item desperate_icon;
+    @GameRegistry.ObjectHolder("sun_icon")
+    public static ClassIcon sun_icon;
+    @GameRegistry.ObjectHolder("moon_icon")
+    public static ClassIcon moon_icon;
+    @GameRegistry.ObjectHolder("desperate_icon")
+    public static ClassIcon desperate_icon;
     public static Item manaRegenIdolIron;
     public static Item manaRegenIdolGold;
     public static Item manaRegenIdolWood;
@@ -117,17 +120,17 @@ public final class ModItems {
         regInternal(diamond_dust = new DiamondDust("diamond_dust")
                 .setCreativeTab(MKUltra.MKULTRA_TAB));
 
-        regInternal(sun_icon = new ClassIcon("sun_icon",
+        regInternal(new ClassIcon("sun_icon",
                 "The Sun God will bestow on you great powers. Choose your class: ", 8,
-                new ResourceLocation(MKUltra.MODID, "textures/class/icons/sun.png")
+                new ResourceLocation(MKUltra.MODID, "provider.sun_icon")
         ).setCreativeTab(MKUltra.MKULTRA_TAB), "sun_icon");
-        regInternal(moon_icon = new ClassIcon("moon_icon",
+        regInternal(new ClassIcon("moon_icon",
                 "The Mysterious Moon Goddess offers her arts to you. Choose your class: ", 1,
-                new ResourceLocation(MKUltra.MODID, "textures/class/icons/moon.png")
+                new ResourceLocation(MKUltra.MODID, "provider.moon_icon")
         ).setCreativeTab(MKUltra.MKULTRA_TAB), "moon_icon");
-        regInternal(desperate_icon = new ClassIcon("desperate_icon",
-                "The Enigmatic Wood Spirit offers her power to you. Choose your class: ",
-                1, new ResourceLocation(MKUltra.MODID, "textures/class/icons/desperate.png")
+        regInternal(new ClassIcon("desperate_icon",
+                "The Enigmatic Wood Spirit offers her power to you. Choose your class: ", 1,
+                new ResourceLocation(MKUltra.MODID, "provider.desperate_icon")
         ).setCreativeTab(MKUltra.MKULTRA_TAB), "desperate_icon");
         regInternal(forgetfulnessBread = new ForgetfulnessBread(8, 1.0f, false)
                 .setCreativeTab(MKUltra.MKULTRA_TAB), "forgetfulness_bread");
