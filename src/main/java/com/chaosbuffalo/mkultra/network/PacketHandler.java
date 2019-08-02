@@ -74,6 +74,7 @@ public final class PacketHandler {
 		registerPacket(PartyInviteResponsePacket.class, new PartyInviteResponsePacket.Handler(), Side.SERVER);
 		registerPacket(MKSpawnerSetPacket.class, new MKSpawnerSetPacket.Handler(), Side.SERVER);
 		registerPacket(AddTalentRequestPacket.class, new AddTalentRequestPacket.Handler(), Side.SERVER);
+		registerPacket(AddRemoveTalentPointPacket.class, new AddRemoveTalentPointPacket.Handler(), Side.SERVER);
 
 
 		registerPacket(ParticleEffectSpawnPacket.class, new ParticleEffectSpawnPacket.Handler(), Side.CLIENT);

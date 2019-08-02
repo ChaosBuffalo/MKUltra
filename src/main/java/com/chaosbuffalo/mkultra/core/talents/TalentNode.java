@@ -15,7 +15,7 @@ public class TalentNode {
     }
 
     public boolean hasSameTalent(BaseTalent talent){
-        return talent.getRegistryName().equals(talent.getRegistryName());
+        return talent.getRegistryName().equals(this.talent.getRegistryName());
     }
 
     public BaseTalent getTalent(){

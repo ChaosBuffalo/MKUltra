@@ -5,6 +5,7 @@ import com.chaosbuffalo.mkultra.core.talents.BaseTalent;
 import com.chaosbuffalo.mkultra.core.talents.RangedAttributeTalent;
 import com.chaosbuffalo.mkultra.core.talents.TalentTree;
 import com.chaosbuffalo.mkultra.core.talents.TalentTreeRecord;
+import com.chaosbuffalo.mkultra.log.Log;
 import com.google.common.collect.Maps;
 import net.minecraft.entity.ai.attributes.AbstractAttributeMap;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -88,6 +89,7 @@ public class PlayerClassInfo {
                     value += rec.getTotalForAttributeTalent(talent);
                 }
             }
+            Log.info("Total for attribute talent: %s, %f", talent.getRegistryName().toString(), value);
             AttributeModifier mod = new AttributeModifier(talent.getUUID(),
                     talent.getRegistryName().toString(), value, talent.getOp());
             attributeModifierMap.put(talent.getAttribute(), mod);
@@ -104,6 +106,7 @@ public class PlayerClassInfo {
             IAttributeInstance iattributeinstance = abstractAttributeMap.getAttributeInstance(entry.getKey());
             if (iattributeinstance != null) {
                 AttributeModifier attributemodifier = entry.getValue();
+                iattributeinstance.removeModifier(attributemodifier);
                 iattributeinstance.applyModifier(attributemodifier);
             }
         }

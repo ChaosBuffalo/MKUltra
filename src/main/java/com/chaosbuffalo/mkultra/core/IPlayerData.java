@@ -111,6 +111,10 @@ public interface IPlayerData {
 
     boolean refundTalentPoint(ResourceLocation talentTree, String line, int index);
 
+    boolean canSpendTalentPoint(ResourceLocation talentTree, String line, int index);
+
+    boolean canRefundTalentPoint(ResourceLocation talentTree, String line, int index);
+
     void gainTalentPoint();
 
     int getTotalTalentPoints();

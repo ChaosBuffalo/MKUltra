@@ -3,29 +3,48 @@ package com.chaosbuffalo.mkultra.client.gui.lib;
 import com.chaosbuffalo.mkultra.client.gui.lib.MKWidget;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.google.common.collect.Lists;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class MKScreen extends GuiScreen {
     public ArrayList<MKWidget> children;
     public ArrayList<MKWidget> reverseChildren;
     public static String NO_STATE = "NO_STATE";
-    private MKWidget selectedWidget;
+    private HashMap<Integer, MKWidget> selectedWidgets;
     public boolean firstRender;
     private String currentState;
     public HashMap<String, MKWidget> states;
+    private HashSet<Runnable> postSetupCallbacks;
 
     public MKScreen(){
         super();
-        this.selectedWidget = null;
         firstRender = true;
         children = new ArrayList<>();
         reverseChildren = new ArrayList<>();
         states = new HashMap<>();
+        postSetupCallbacks = new HashSet<>();
+        selectedWidgets = new HashMap<>();
         currentState = NO_STATE;
+    }
+
+    @Override
+    public void onResize(Minecraft minecraft, int width, int height) {
+        super.onResize(minecraft, width, height);
+        flagNeedSetup();
+    }
+
+    public void addRestoreStateCallbacks(){
+        String state = getState();
+        addPostSetupCallback(() -> setState(state));
+    }
+
+    public void addPostSetupCallback(Runnable callback){
+        postSetupCallbacks.add(callback);
     }
 
     public void addState(String name, MKWidget root){
@@ -37,6 +56,9 @@ public class MKScreen extends GuiScreen {
     }
 
     public void setState(String newState){
+        if (newState.equals(currentState)){
+            return;
+        }
         if (newState.equals(NO_STATE) || states.containsKey(newState)){
             if (!newState.equals(NO_STATE)){
                 this.addWidget(states.get(newState));
@@ -52,15 +74,27 @@ public class MKScreen extends GuiScreen {
         }
     }
 
+    public String getState(){
+        return currentState;
+    }
+
+    private void runSetup(){
+        setupScreen();
+        for (Runnable cb : postSetupCallbacks){
+            cb.run();
+        }
+        postSetupCallbacks.clear();
+    }
+
     public void setupScreen(){
         this.clearWidgets();
         this.states.clear();
         this.currentState = NO_STATE;
-        this.selectedWidget = null;
     }
 
     public void flagNeedSetup(){
         firstRender = true;
+        addRestoreStateCallbacks();
     }
 
     public void addWidget(MKWidget widget){
@@ -88,7 +122,7 @@ public class MKScreen extends GuiScreen {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         if (firstRender){
-            setupScreen();
+            runSetup();
             firstRender = false;
         }
         for (MKWidget child : children){
@@ -100,8 +134,8 @@ public class MKScreen extends GuiScreen {
 
     @Override
     protected void mouseClickMove(int mouseX, int mouseY, int mouseButton, long dt) {
-        if (selectedWidget != null){
-            if (selectedWidget.mouseDragged(this.mc, mouseX, mouseY, mouseButton)){
+        if (selectedWidgets.get(mouseButton) != null){
+            if (selectedWidgets.get(mouseButton).mouseDragged(this.mc, mouseX, mouseY, mouseButton)){
                 return;
             }
         }
@@ -117,7 +151,7 @@ public class MKScreen extends GuiScreen {
             }
             MKWidget clickHandler = child.mousePressed(this.mc, mouseX, mouseY, mouseButton);
             if (clickHandler != null){
-                selectedWidget = clickHandler;
+                selectedWidgets.put(mouseButton, clickHandler);
                 return;
             }
         }
@@ -138,9 +172,9 @@ public class MKScreen extends GuiScreen {
     @Override
     protected void mouseReleased(int mouseX, int mouseY, int mouseButton)
     {
-        if (selectedWidget != null){
-            MKWidget selected = selectedWidget;
-            selectedWidget = null;
+        if (selectedWidgets.get(mouseButton) != null){
+            MKWidget selected = selectedWidgets.get(mouseButton);
+            selectedWidgets.remove(mouseY);
             if (selected.mouseReleased(mouseX, mouseY, mouseButton)){
                 return;
             }

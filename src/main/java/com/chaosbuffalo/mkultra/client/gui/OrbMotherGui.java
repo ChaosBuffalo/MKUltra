@@ -8,8 +8,10 @@ import com.chaosbuffalo.mkultra.core.MKURegistry;
 import com.chaosbuffalo.mkultra.core.talents.TalentRecord;
 import com.chaosbuffalo.mkultra.core.talents.TalentTreeRecord;
 import com.chaosbuffalo.mkultra.log.Log;
+import com.chaosbuffalo.mkultra.network.packets.AddRemoveTalentPointPacket;
 import com.chaosbuffalo.mkultra.network.packets.AddTalentRequestPacket;
 import com.chaosbuffalo.mkultra.tiles.TileEntityNPCSpawner;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -35,12 +37,22 @@ public class OrbMotherGui extends MKScreen {
         this.spawner = spawner;
     }
 
+    @Override
     public void onGuiClosed() {
         IPlayerData data = MKUPlayerData.get(player);
         if (data != null) {
             Log.info("Unsubscribing gui to updates");
             data.unsubscribeGuiToClassUpdates(this::flagNeedSetup);
         }
+    }
+
+    @Override
+    public void addRestoreStateCallbacks() {
+        super.addRestoreStateCallbacks();
+        ResourceLocation tree = selectedTree;
+        addPostSetupCallback(() -> {
+            selectedTree = tree;
+        });
     }
 
     @Override
@@ -56,8 +68,9 @@ public class OrbMotherGui extends MKScreen {
         addState("select", selectRoot);
         MKWidget treeRoot = new MKWidget(xPos, yPos, panelWidth, panelHeight);
         addState("tree", treeRoot);
-
-        MKScrollView scrollView = new MKScrollView(xPos, yPos, panelWidth, panelHeight, width, height,
+        int scrollViewSpace = 30;
+        MKScrollView scrollView = new MKScrollView(xPos + 5, yPos + 5 + scrollViewSpace,
+                panelWidth - 10, panelHeight - 10 - scrollViewSpace, width, height,
                 scaledRes.getScaleFactor(), true);
         treeRoot.addWidget(scrollView);
         MKButton backButton = new MKButton(xPos + 10, yPos + 10, 30, 20, "Back")
@@ -103,7 +116,9 @@ public class OrbMotherGui extends MKScreen {
                     .setSizeHintWidth(0.6f)
                     .setPosHintX(0.2f);
             textLayout.addWidget(buyButton);
-            setupTalentTree(scrollView, data, xPos, yPos + 10);
+            setupTalentTree(scrollView, data, 0, 0);
+            scrollView.centerContentX();
+            scrollView.setToTop();
         }
         selectRoot.addWidget(textLayout);
         int ltop = textLayout.getY() + textLayout.getHeight();
@@ -119,7 +134,9 @@ public class OrbMotherGui extends MKScreen {
                 selectedTree = loc;
                 IPlayerData pdata = MKUPlayerData.get(player);
                 if (pdata != null){
-                    setupTalentTree(scrollView, pdata, xPos, yPos + 10);
+                    setupTalentTree(scrollView, pdata, 0, 0);
+                    scrollView.centerContentX();
+                    scrollView.setToTop();
                 }
                 setState("tree");
                 return true;
@@ -130,7 +147,32 @@ public class OrbMotherGui extends MKScreen {
         setState("select");
     }
 
-    private void setupTalentTree(MKScrollView container, IPlayerData data, int xPos, int yPos){
+
+    public Boolean pressTalentButton(MKButton button){
+        TalentButton talentButton = (TalentButton) button;
+        IPlayerData data = MKUPlayerData.get(player);
+        if (data != null){
+            if (isShiftKeyDown()){
+                if (data.canRefundTalentPoint(selectedTree, talentButton.line, talentButton.index)){
+                    Log.info("Sending packet to server for refund %s %s %d", selectedTree.toString(), talentButton.line, talentButton.index);
+                    MKUltra.packetHandler.sendToServer(new AddRemoveTalentPointPacket(
+                            selectedTree, talentButton.line, talentButton.index,
+                            AddRemoveTalentPointPacket.Mode.REFUND));
+                }
+            } else {
+                if (data.canSpendTalentPoint(selectedTree, talentButton.line, talentButton.index)){
+                    Log.info("Sending packet to server for spend %s %s %d", selectedTree.toString(), talentButton.line, talentButton.index);
+                    MKUltra.packetHandler.sendToServer(new AddRemoveTalentPointPacket(
+                            selectedTree, talentButton.line, talentButton.index,
+                            AddRemoveTalentPointPacket.Mode.SPEND
+                    ));
+                }
+            }
+        }
+        return true;
+    }
+
+    private MKWidget setupTalentTree(MKScrollView container, IPlayerData data, int xPos, int yPos){
         container.clearWidgets();
         TalentTreeRecord record = data.getTalentTree(selectedTree);
         int treeRenderingMarginX = 10;
@@ -149,14 +191,16 @@ public class OrbMotherGui extends MKScreen {
             String[] keys = record.records.keySet().toArray(new String[0]);
             Arrays.sort(keys);
             int largestIndex = 0;
+            int columnOffsetTotal = 0;
             for (String name : keys){
                 ArrayList<TalentRecord> talents = record.records.get(name);
                 int talentIndex = 0;
                 for (TalentRecord talent : talents){
                     TalentButton button = new TalentButton(talentIndex, name, talent,
-                            xPos + spacePerColumn * i + columnOffset,
+                            xPos + spacePerColumn * i + columnOffsetTotal,
                             yPos + talentIndex * talentButtonHeight + talentButtonYMargin
                     );
+                    button.setPressedCallback(this::pressTalentButton);
                     widget.addWidget(button);
                     if (talentIndex > largestIndex){
                         largestIndex = talentIndex;
@@ -164,11 +208,13 @@ public class OrbMotherGui extends MKScreen {
                     talentIndex++;
                 }
                 i++;
+                columnOffsetTotal += columnOffset;
             }
             widget.setWidth(talentWidth);
-            widget.setHeight(yPos + largestIndex * talentButtonHeight + talentButtonYMargin);
+            widget.setHeight(largestIndex * talentButtonHeight + talentButtonYMargin);
         }
         container.addWidget(widget);
+        return widget;
     }
 
     @Override

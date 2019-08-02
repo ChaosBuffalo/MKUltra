@@ -19,11 +19,11 @@ public class TalentButton extends MKButton {
     private static final int SLOT_HEIGHT = 16;
     private static final int OVERLAY_WIDTH = 2;
     private static final int OVERLAY_HEIGHT = 2;
-    public static final int HEIGHT = 30;
-    public static final int WIDTH = 70;
+    public static final int HEIGHT = 50;
+    public static final int WIDTH = 80;
     public static final int SLOT_Y_OFFSET = 4;
     public static final int TEXT_OFFSET = 4;
-    public static final int SLOT_X_OFFSET = 7;
+    public static final int SLOT_X_OFFSET = (WIDTH - SLOT_WIDTH) / 2;
 
     public final int index;
     public final String line;
@@ -37,6 +37,18 @@ public class TalentButton extends MKButton {
         this.record = record;
     }
 
+
+    @Override
+    public boolean isInBounds(int x, int y){
+        if (this.skipBoundsCheck){
+            return true;
+        }
+        return x >= this.getX() + 20 &&
+                y >= this.getY() + 10 &&
+                x < this.getX() + this.getWidth() - 20 &&
+                y < this.getY() + this.getHeight() - 20;
+    }
+
     @Override
     public void draw(Minecraft minecraft, int x, int y, int width, int height, int mouseX, int mouseY, float partialTicks){
         if (this.isVisible()) {
@@ -44,10 +56,7 @@ public class TalentButton extends MKButton {
             minecraft.getTextureManager().bindTexture(TALENT_SLOT_GRAPHIC);
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             this.hovered = isInBounds(mouseX, mouseY);
-            int hoverState = getHoverState(this.hovered);
             GlStateManager.enableBlend();
-//            GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-//            GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
             Gui.drawModalRectWithCustomSizedTexture(this.getX() + SLOT_X_OFFSET ,
                     this.getY() + SLOT_Y_OFFSET,
                     0, 0,
@@ -82,6 +91,14 @@ public class TalentButton extends MKButton {
             }
             this.drawCenteredString(fontrenderer, this.buttonText, this.getX() + this.getWidth() / 2,
                     this.getY() + SLOT_Y_OFFSET + SLOT_HEIGHT + OVERLAY_HEIGHT + TEXT_OFFSET, textColor);
+            int rank = record.getRank();
+            int maxRank = record.getNode().getMaxRanks();
+            String rankText = String.format("%d/%d", rank, maxRank);
+            this.drawCenteredString(fontrenderer, rankText,
+                    this.getX() + this.getWidth() / 2,
+                    this.getY() + SLOT_Y_OFFSET + SLOT_HEIGHT + OVERLAY_HEIGHT + TEXT_OFFSET
+                            + fontrenderer.FONT_HEIGHT + 2,
+                    textColor);
         }
     }
 }

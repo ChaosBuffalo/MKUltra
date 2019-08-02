@@ -127,13 +127,17 @@ public class PlayerData implements IPlayerData {
     public boolean spendTalentPoint(ResourceLocation talentTree, String line, int index){
         PlayerClassInfo classInfo = getActiveClass();
         boolean didSpend = false;
-        if (classInfo.unspentPoints > 0){
+        Log.info("In spend talent point %d", classInfo.unspentTalentPoints);
+        if (classInfo.unspentTalentPoints > 0){
             didSpend = classInfo.spendTalentPoint(player, talentTree, line, index);
             if (didSpend){
                 updateTalents();
-                classInfo.unspentPoints -= 1;
+                classInfo.unspentTalentPoints -= 1;
+                sendCurrentClassUpdate();
             }
+            Log.info("Did spend talent %b", didSpend);
         }
+
         return didSpend;
     }
 
@@ -143,9 +147,28 @@ public class PlayerData implements IPlayerData {
         boolean didSpend = classInfo.refundTalentPoint(player, talentTree, line, index);
         if (didSpend){
             updateTalents();
-            classInfo.unspentPoints += 1;
+            classInfo.unspentTalentPoints += 1;
+            sendCurrentClassUpdate();
         }
         return didSpend;
+    }
+
+    @Override
+    public boolean canSpendTalentPoint(ResourceLocation talentTree, String line, int index) {
+        PlayerClassInfo classInfo = getActiveClass();
+        if (classInfo == null){
+            return false;
+        }
+        return classInfo.canIncrementPointInTree(talentTree, line, index);
+    }
+
+    @Override
+    public boolean canRefundTalentPoint(ResourceLocation talentTree, String line, int index) {
+        PlayerClassInfo classInfo = getActiveClass();
+        if (classInfo == null){
+            return false;
+        }
+        return classInfo.canDecrementPointInTree(talentTree, line, index);
     }
 
     @Override
