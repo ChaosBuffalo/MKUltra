@@ -8,12 +8,13 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ResourceLocation;
 
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public class MKButton extends MKWidget {
     protected static final ResourceLocation BUTTON_TEXTURES = new ResourceLocation("textures/gui/widgets.png");
     public String buttonText;
-    public Function<MKButton, Boolean> pressedCallback;
+    public BiFunction<MKButton, Integer, Boolean> pressedCallback;
     public static final int DEFAULT_HEIGHT = 20;
     public static final int DEFAULT_WIDTH = 200;
 
@@ -42,7 +43,7 @@ public class MKButton extends MKWidget {
         this.buttonText = buttonText;
     }
 
-    public MKButton setPressedCallback(Function<MKButton, Boolean> callback){
+    public MKButton setPressedCallback(BiFunction<MKButton, Integer, Boolean> callback){
         this.pressedCallback = callback;
         return this;
     }
@@ -50,7 +51,7 @@ public class MKButton extends MKWidget {
     @Override
     public boolean onMousePressed(Minecraft minecraft, int mouseX, int mouseY, int mouseButton){
         if (pressedCallback != null){
-            if (pressedCallback.apply(this)){
+            if (pressedCallback.apply(this, mouseButton)){
                 playPressSound(minecraft.getSoundHandler());
                 return true;
             }

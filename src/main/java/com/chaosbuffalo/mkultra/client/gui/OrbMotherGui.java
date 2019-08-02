@@ -11,7 +11,6 @@ import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.network.packets.AddRemoveTalentPointPacket;
 import com.chaosbuffalo.mkultra.network.packets.AddTalentRequestPacket;
 import com.chaosbuffalo.mkultra.tiles.TileEntityNPCSpawner;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -50,9 +49,7 @@ public class OrbMotherGui extends MKScreen {
     public void addRestoreStateCallbacks() {
         super.addRestoreStateCallbacks();
         ResourceLocation tree = selectedTree;
-        addPostSetupCallback(() -> {
-            selectedTree = tree;
-        });
+        addPostSetupCallback(() -> selectedTree = tree);
     }
 
     @Override
@@ -74,7 +71,7 @@ public class OrbMotherGui extends MKScreen {
                 scaledRes.getScaleFactor(), true);
         treeRoot.addWidget(scrollView);
         MKButton backButton = new MKButton(xPos + 10, yPos + 10, 30, 20, "Back")
-                .setPressedCallback((MKButton button) -> {
+                .setPressedCallback((MKButton button, Integer mouseButton) -> {
                     setState("select");
                     return true;
                 });
@@ -109,7 +106,7 @@ public class OrbMotherGui extends MKScreen {
                     .setColor(8129636);
             textLayout.addWidget(nextPoint);
             MKWidget buyButton = new MKButton("Buy Talent Point")
-                    .setPressedCallback((MKButton button) -> {
+                    .setPressedCallback((MKButton button, Integer mouseButton) -> {
                         MKUltra.packetHandler.sendToServer(new AddTalentRequestPacket());
                         return true;
                     })
@@ -129,7 +126,7 @@ public class OrbMotherGui extends MKScreen {
         ArrayList<ResourceLocation> treeLocs = new ArrayList<>(MKURegistry.REGISTRY_TALENT_TREES.getKeys());
         for (ResourceLocation loc : treeLocs){
             MKButton locButton = new MKButton(loc.toString());
-            locButton.setPressedCallback((MKButton button)-> {
+            locButton.setPressedCallback((MKButton button, Integer mouseButton)-> {
                 Log.info("Tree list clicked %s", loc.toString());
                 selectedTree = loc;
                 IPlayerData pdata = MKUPlayerData.get(player);
@@ -148,7 +145,7 @@ public class OrbMotherGui extends MKScreen {
     }
 
 
-    public Boolean pressTalentButton(MKButton button){
+    public Boolean pressTalentButton(MKButton button, Integer mouseButton){
         TalentButton talentButton = (TalentButton) button;
         IPlayerData data = MKUPlayerData.get(player);
         if (data != null){
