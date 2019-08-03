@@ -38,6 +38,11 @@ public class MKScreen extends GuiScreen {
         flagNeedSetup();
     }
 
+    @Override
+    public boolean doesGuiPauseGame() {
+        return false;
+    }
+
     public void addRestoreStateCallbacks(){
         String state = getState();
         addPostSetupCallback(() -> setState(state));

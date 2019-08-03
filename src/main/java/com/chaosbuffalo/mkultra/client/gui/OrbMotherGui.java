@@ -20,6 +20,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -77,7 +78,7 @@ public class OrbMotherGui extends MKScreen {
     @Override
     public void setupScreen() {
         super.setupScreen();
-        int panelWidth = 256;
+        int panelWidth = 320;
         int panelHeight = 256;
         int xPos = width / 2 - panelWidth / 2;
         int yPos = height / 2 - panelHeight / 2;
@@ -90,8 +91,8 @@ public class OrbMotherGui extends MKScreen {
         MKScrollView scrollView = new MKScrollView(xPos + 5, yPos + 5 + scrollViewSpace,
                 panelWidth - 10, panelHeight - 10 - scrollViewSpace, width, height,
                 scaledRes.getScaleFactor(), true)
-                .setScrollMarginX(20)
-                .setScrollMarginY(20);
+                .setScrollMarginY(10);
+        scrollView.setDoScrollX(false);
         treeView = scrollView;
         treeRoot.addWidget(scrollView);
         MKButton backButton = new MKButton(xPos + 10, yPos + 10, 30, 20, "Back")
@@ -252,18 +253,19 @@ public class OrbMotherGui extends MKScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        int panelWidth = 256;
+        int panelWidth = 320;
         int panelHeight = 256;
         int xPos = width / 2 - panelWidth / 2;
         int yPos = height / 2 - panelHeight / 2;
-        ResourceLocation loc = new ResourceLocation(MKUltra.MODID, "textures/gui/full_background.png");
+
+        ResourceLocation loc = new ResourceLocation(MKUltra.MODID, "textures/gui/background_320.png");
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.renderEngine.bindTexture(loc);
         GL11.glDisable(GL11.GL_LIGHTING);
         drawModalRectWithCustomSizedTexture(xPos, yPos,
                 0, 0,
                 panelWidth, panelHeight,
-                256, 256);
+                512, 512);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 }
