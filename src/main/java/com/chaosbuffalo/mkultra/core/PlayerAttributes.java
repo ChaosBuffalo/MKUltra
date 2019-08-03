@@ -28,7 +28,7 @@ public class PlayerAttributes {
             .setDescription("Cooldown Rate")
             .setShouldWatch(true);
 
-    public static final RangedAttribute MELEE_CRIT = (RangedAttribute) new RangedAttribute(null, "mkultra.melee_crit_chance", 0.05, 0.0, 1.0)
+    public static final RangedAttribute MELEE_CRIT = (RangedAttribute) new RangedAttribute(null, "mkultra.melee_crit_chance", 0.00, 0.0, 1.0)
             .setDescription("Melee Critical Chance")
             .setShouldWatch(true);
 

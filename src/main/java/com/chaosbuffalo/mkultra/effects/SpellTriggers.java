@@ -201,8 +201,18 @@ public class SpellTriggers {
         private static void handleMelee(LivingHurtEvent event, DamageSource source, EntityLivingBase livingTarget,
                                         EntityPlayerMP playerSource, IPlayerData sourceData, boolean isDirect) {
             ItemStack mainHand = playerSource.getHeldItemMainhand();
-            if (checkCrit(playerSource, PlayerFormulas.getMeleeCritChanceForItem(sourceData, playerSource, mainHand))) {
-                float newDamage = event.getAmount() * ItemUtils.getCritDamageForItem(mainHand);
+            float critChance = PlayerFormulas.getMeleeCritChanceForItem(sourceData, playerSource, mainHand);
+            critChance += sourceData.getMeleeCritChance();
+            if (!isDirect){
+                IAttributeInstance atkDmg = playerSource.getAttributeMap().getAttributeInstance(
+                        SharedMonsterAttributes.ATTACK_DAMAGE);
+                event.setAmount((float) (event.getAmount() +
+                        atkDmg.getAttributeValue() * playerSource.world.rand.nextDouble()));
+            }
+            if (checkCrit(playerSource, critChance)) {
+                float critMultiplier = ItemUtils.getCritDamageForItem(mainHand);
+                critMultiplier += sourceData.getMeleeCritDamage();
+                float newDamage = event.getAmount() * critMultiplier;
                 event.setAmount(newDamage);
                 CritMessagePacket.CritType type = isDirect ?
                         CritMessagePacket.CritType.MELEE_CRIT :
@@ -211,13 +221,6 @@ public class SpellTriggers {
                 sendCritPacket(livingTarget, playerSource,
                         new CritMessagePacket(livingTarget.getEntityId(), playerSource.getUniqueID(), newDamage, type));
             }
-            if (!isDirect){
-                IAttributeInstance atkDmg = playerSource.getAttributeMap().getAttributeInstance(
-                        SharedMonsterAttributes.ATTACK_DAMAGE);
-                event.setAmount((float) (event.getAmount() +
-                        atkDmg.getAttributeValue() * playerSource.world.rand.nextDouble()));
-            }
-
             playerHurtEntityMeleeTriggers.forEach(f -> f.apply(event, source, livingTarget, playerSource, sourceData));
         }
     }

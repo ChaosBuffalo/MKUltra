@@ -32,6 +32,8 @@ public class OrbMotherGui extends MKScreen {
     private TileEntityNPCSpawner spawner;
     private ResourceLocation selectedTree;
     private MKScrollView treeView;
+    private int PANEL_WIDTH = 320;
+    private int PANEL_HEIGHT = 256;
 
     public OrbMotherGui(TileEntityNPCSpawner spawner, EntityPlayer player) {
         super();
@@ -78,8 +80,8 @@ public class OrbMotherGui extends MKScreen {
     @Override
     public void setupScreen() {
         super.setupScreen();
-        int panelWidth = 320;
-        int panelHeight = 256;
+        int panelWidth = PANEL_WIDTH;
+        int panelHeight = PANEL_HEIGHT;
         int xPos = width / 2 - panelWidth / 2;
         int yPos = height / 2 - panelHeight / 2;
         ScaledResolution scaledRes = new ScaledResolution(mc);
@@ -253,8 +255,8 @@ public class OrbMotherGui extends MKScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        int panelWidth = 320;
-        int panelHeight = 256;
+        int panelWidth = PANEL_WIDTH;
+        int panelHeight = PANEL_HEIGHT;
         int xPos = width / 2 - panelWidth / 2;
         int yPos = height / 2 - panelHeight / 2;
 

@@ -258,4 +258,6 @@ commands.mk.class.unlearnall=unlearnall [player]
 commands.mk.class.learn=learn [player] [classId]
 commands.mk.class.switch=switch [player] [classId]
 commands.mk.class.reset=reset [player]
+attribute.name.mkultra.heal_bonus=Heal Bonus
+attribute.name.mkultra.meleeCritDamage=Melee Crit Multiplier
 

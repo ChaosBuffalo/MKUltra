@@ -84,6 +84,10 @@ public interface IPlayerData {
 
     void setMeleeCritChance(float critChance);
 
+    float getMeleeCritDamage();
+
+    void setMeleeCritDamage(float critDamage);
+
     float getCooldownProgressSpeed();
 
     float getMagicDamageBonus();
@@ -91,6 +95,8 @@ public interface IPlayerData {
     float getMagicArmor();
 
     float getHealBonus();
+
+    int getCooldownForLevel(PlayerAbility ability, int level);
 
     boolean learnClass(IClassProvider provider, ResourceLocation classId);
 

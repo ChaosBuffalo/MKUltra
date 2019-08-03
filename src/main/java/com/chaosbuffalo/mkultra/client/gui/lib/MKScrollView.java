@@ -128,6 +128,10 @@ public class MKScrollView extends MKWidget{
         setOffsetY(getY());
     }
 
+    public void setToRight(){
+        setOffsetX(getX());
+    }
+
     @Override
     public void draw(Minecraft mc, int x, int y, int width, int height, int mouseX, int mouseY, float partialTicks) {
         GL11.glPushMatrix();
@@ -231,7 +235,7 @@ public class MKScrollView extends MKWidget{
         int scrollX = getX();
         int childWidth = child.getWidth();
         int scrollWidth = getWidth();
-        Log.info("ScrollX : %d, childWidth : %d, scrollWidth : %d, cameraX: %d, dX : %d", scrollX, childWidth, scrollWidth, offsetX, dX);
+//        Log.info("ScrollX : %d, childWidth : %d, scrollWidth : %d, cameraX: %d, dX : %d", scrollX, childWidth, scrollWidth, offsetX, dX);
         if (childWidth < scrollWidth){
             if (offsetX + dX < scrollX){
                 dX = scrollX - offsetX;

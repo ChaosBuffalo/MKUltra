@@ -1,6 +1,6 @@
 package com.chaosbuffalo.mkultra.client.gui.lib;
 
-import com.chaosbuffalo.mkultra.client.gui.lib.MKWidget;
+
 import com.chaosbuffalo.mkultra.log.Log;
 import com.google.common.collect.Lists;
 import net.minecraft.client.Minecraft;
@@ -9,7 +9,6 @@ import net.minecraft.client.gui.GuiScreen;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 
 public class MKScreen extends GuiScreen {
     public ArrayList<MKWidget> children;
@@ -20,6 +19,7 @@ public class MKScreen extends GuiScreen {
     private String currentState;
     public HashMap<String, MKWidget> states;
     private ArrayList<Runnable> postSetupCallbacks;
+    private ArrayList<Runnable> preDrawRunnables;
 
     public MKScreen(){
         super();
@@ -29,6 +29,7 @@ public class MKScreen extends GuiScreen {
         states = new HashMap<>();
         postSetupCallbacks = new ArrayList<>();
         selectedWidgets = new HashMap<>();
+        preDrawRunnables = new ArrayList<>();
         currentState = NO_STATE;
     }
 
@@ -36,6 +37,18 @@ public class MKScreen extends GuiScreen {
     public void onResize(Minecraft minecraft, int width, int height) {
         super.onResize(minecraft, width, height);
         flagNeedSetup();
+    }
+
+    public void addPreDrawRunnable(Runnable runnable){
+        preDrawRunnables.add(runnable);
+    }
+
+    public void removePreDrawRunnable(Runnable runnable){
+        preDrawRunnables.remove(runnable);
+    }
+
+    public void clearPreDrawRunnables(){
+        preDrawRunnables.clear();
     }
 
     @Override
@@ -72,7 +85,7 @@ public class MKScreen extends GuiScreen {
                 this.removeWidget(states.get(currentState));
             }
             this.currentState = newState;
-            Log.info("New state is %s", currentState);
+//            Log.info("New state is %s", currentState);
 
         } else {
             Log.info("Tried to set screen state to: %s, but doesn't exist.", newState);
@@ -92,7 +105,8 @@ public class MKScreen extends GuiScreen {
     }
 
     public void setupScreen(){
-        this.clearWidgets();
+        clearWidgets();
+        clearPreDrawRunnables();
         this.states.clear();
         this.currentState = NO_STATE;
     }
@@ -129,6 +143,9 @@ public class MKScreen extends GuiScreen {
         if (firstRender){
             runSetup();
             firstRender = false;
+        }
+        for (Runnable runnable : preDrawRunnables){
+            runnable.run();
         }
         for (MKWidget child : children){
             if (child.isVisible()){

@@ -330,6 +330,16 @@ public class PlayerData implements IPlayerData {
     }
 
     @Override
+    public float getMeleeCritDamage() {
+        return (float) player.getEntityAttribute(PlayerAttributes.MELEE_CRITICAL_DAMAGE).getAttributeValue();
+    }
+
+    @Override
+    public void setMeleeCritDamage(float critDamage) {
+        player.getEntityAttribute(PlayerAttributes.MELEE_CRITICAL_DAMAGE).setBaseValue(critDamage);
+    }
+
+    @Override
     public float getCooldownProgressSpeed() {
         return (float) player.getEntityAttribute(PlayerAttributes.COOLDOWN).getAttributeValue();
     }
@@ -453,6 +463,11 @@ public class PlayerData implements IPlayerData {
     @Override
     public int getAbilityCooldown(PlayerAbility ability) {
         return PlayerFormulas.applyCooldownReduction(this, ability.getCooldownTicks(getAbilityRank(ability.getAbilityId())));
+    }
+
+    @Override
+    public int getCooldownForLevel(PlayerAbility ability, int level){
+        return ability.getCooldownTicks(level);
     }
 
     @Override
