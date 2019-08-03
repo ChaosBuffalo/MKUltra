@@ -89,7 +89,7 @@ public class PlayerClassInfo {
                     value += rec.getTotalForAttributeTalent(talent);
                 }
             }
-            Log.info("Total for attribute talent: %s, %f", talent.getRegistryName().toString(), value);
+//            Log.info("Total for attribute talent: %s, %f", talent.getRegistryName().toString(), value);
             AttributeModifier mod = new AttributeModifier(talent.getUUID(),
                     talent.getRegistryName().toString(), value, talent.getOp());
             attributeModifierMap.put(talent.getAttribute(), mod);

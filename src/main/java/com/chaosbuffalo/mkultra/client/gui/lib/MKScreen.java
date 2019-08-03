@@ -19,7 +19,7 @@ public class MKScreen extends GuiScreen {
     public boolean firstRender;
     private String currentState;
     public HashMap<String, MKWidget> states;
-    private HashSet<Runnable> postSetupCallbacks;
+    private ArrayList<Runnable> postSetupCallbacks;
 
     public MKScreen(){
         super();
@@ -27,7 +27,7 @@ public class MKScreen extends GuiScreen {
         children = new ArrayList<>();
         reverseChildren = new ArrayList<>();
         states = new HashMap<>();
-        postSetupCallbacks = new HashSet<>();
+        postSetupCallbacks = new ArrayList<>();
         selectedWidgets = new HashMap<>();
         currentState = NO_STATE;
     }

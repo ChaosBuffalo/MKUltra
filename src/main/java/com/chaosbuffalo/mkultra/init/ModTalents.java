@@ -68,6 +68,7 @@ public class ModTalents {
 
     public static void loadTalentTree(ResourceLocation name, JsonObject obj,
                                      IForgeRegistry<TalentTree> registry) {
+        name = new ResourceLocation(name.getNamespace(), "talent_tree." + name.getPath());
         String[] keys = {"version", "lines"};
         if (!JsonLoader.checkKeysExist(keys, obj)) {
             return;
@@ -193,7 +194,7 @@ public class ModTalents {
         event.getRegistry().register(spellCrit);
         RangedAttributeTalent movementSpeed = new RangedAttributeTalent(
                 new ResourceLocation(MKUltra.MODID, "talent.movement_speed"),
-                PlayerAttributes.SPELL_CRIT,
+                (RangedAttribute) SharedMonsterAttributes.MOVEMENT_SPEED,
                 UUID.fromString("95fcf4d0-aaa9-413f-8362-7706e29412f7"));
         event.getRegistry().register(movementSpeed);
     }

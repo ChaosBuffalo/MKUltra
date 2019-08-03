@@ -1,11 +1,8 @@
 package com.chaosbuffalo.mkultra.client.gui.lib;
 
 import com.chaosbuffalo.mkultra.log.Log;
-import com.google.common.collect.Lists;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.GL11;
-
-import java.util.ArrayList;
 
 public class MKScrollView extends MKWidget{
 
@@ -21,6 +18,8 @@ public class MKScrollView extends MKWidget{
     private boolean doScrollLock;
     private int scrollMarginX;
     private int scrollMarginY;
+    private boolean doScrollX;
+    private boolean doScrollY;
 
     public MKScrollView(int x, int y, int width, int height, int screenWidth, int screenHeight, int scaleFactor,
                         boolean clipBounds) {
@@ -35,6 +34,8 @@ public class MKScrollView extends MKWidget{
         this.doScrollLock = true;
         scrollMarginX = 0;
         scrollMarginY = 0;
+        doScrollX = true;
+        doScrollY = true;
     }
 
     public MKScrollView setScrollLock(boolean state){
@@ -49,6 +50,24 @@ public class MKScrollView extends MKWidget{
     public MKScrollView setOffsetX(int value){
         offsetX = value;
         return this;
+    }
+
+    public MKScrollView setDoScrollX(boolean value){
+        doScrollX = value;
+        return this;
+    }
+
+    public MKScrollView setDoScrollY(boolean value){
+        doScrollY = value;
+        return this;
+    }
+
+    public boolean shouldScrollY(){
+        return doScrollY;
+    }
+
+    public boolean shouldScrollX(){
+        return doScrollX;
     }
 
     public MKScrollView setOffsetY(int value){
@@ -195,8 +214,12 @@ public class MKScrollView extends MKWidget{
                 dX = lockScrollX(child, dX);
                 dY = lockScrollY(child, dY);
             }
-            offsetX += dX;
-            offsetY += dY;
+            if (doScrollX){
+                offsetX += dX;
+            }
+            if (doScrollY){
+                offsetY += dY;
+            }
             lastMouseX = mouseX;
             lastMouseY = mouseY;
             return true;
@@ -230,7 +253,7 @@ public class MKScrollView extends MKWidget{
         int childHeight = child.getHeight();
         int scrollHeight = getHeight();
         if (childHeight < scrollHeight){
-            dY = scrollHeight /2 - childHeight / 2 + scrollY;
+            return getY() - offsetY;
         } else {
             if (offsetY + dY > scrollY + getScrollMarginY()){
                 dY = scrollY - offsetY + getScrollMarginY();

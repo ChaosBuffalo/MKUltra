@@ -5,7 +5,7 @@
       "name": "mkultra:mage_1",
       "talents": [
         {
-          "name": "mkultra:talent.spell_crit_chance",
+          "name": "mkultra:talent.spell_crit",
           "max_points": 2,
           "value": 0.01
         },
@@ -33,10 +33,6 @@
           "name": "mkultra:talent.spell_crit_damage",
           "max_points": 2,
           "value": 0.2
-        },
-        {
-          "name": "mkultra:talent.burning_soul",
-          "max_points": 1
         }
       ]
     },
@@ -64,7 +60,7 @@
           "value": 0.2
         },
         {
-          "name": "mkultra:talent.spell_crit_chance",
+          "name": "mkultra:talent.spell_crit",
           "max_points": 2,
           "value": 0.01
         },
@@ -82,10 +78,6 @@
           "name": "mkultra:talent.spell_crit_damage",
           "max_points": 2,
           "value": 0.2
-        },
-        {
-          "name": "mkultra:talent.meteor",
-          "max_points": 1
         }
       ]
     },
@@ -113,7 +105,7 @@
           "value": 1
         },
         {
-          "name": "mkultra:talent.spell_crit_chance",
+          "name": "mkultra:talent.spell_crit",
           "max_points": 2,
           "value": 0.01
         },
@@ -121,10 +113,6 @@
           "name": "mkultra:talent.spell_crit_damage",
           "max_points": 2,
           "value": 0.2
-        },
-        {
-          "name": "mkultra:talent.soul_drain",
-          "max_points": 1
         }
       ]
     }

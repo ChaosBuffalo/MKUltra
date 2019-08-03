@@ -241,6 +241,22 @@ public class MKWidget extends Gui {
         reverseChildren.clear();
     }
 
+    public int getRight(){
+        return getX() + getWidth();
+    }
+
+    public int getTop(){
+        return getY();
+    }
+
+    public int getLeft(){
+        return getX();
+    }
+
+    public int getBottom(){
+        return getY() + getHeight();
+    }
+
 
     public void drawWidget(Minecraft mc, int mouseX, int mouseY, float partialTicks){
         draw(mc, x, y, width, height, mouseX, mouseY, partialTicks);

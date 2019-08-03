@@ -127,7 +127,7 @@ public class PlayerData implements IPlayerData {
     public boolean spendTalentPoint(ResourceLocation talentTree, String line, int index){
         PlayerClassInfo classInfo = getActiveClass();
         boolean didSpend = false;
-        Log.info("In spend talent point %d", classInfo.unspentTalentPoints);
+//        Log.info("In spend talent point %d", classInfo.unspentTalentPoints);
         if (classInfo.unspentTalentPoints > 0){
             didSpend = classInfo.spendTalentPoint(player, talentTree, line, index);
             if (didSpend){
@@ -135,7 +135,7 @@ public class PlayerData implements IPlayerData {
                 classInfo.unspentTalentPoints -= 1;
                 sendCurrentClassUpdate();
             }
-            Log.info("Did spend talent %b", didSpend);
+//            Log.info("Did spend talent %b", didSpend);
         }
 
         return didSpend;
