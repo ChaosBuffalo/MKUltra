@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.client.gui;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.client.gui.lib.*;
 import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.network.packets.LevelAbilityPacket;
 import net.minecraft.client.gui.Gui;
@@ -9,35 +10,73 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AbstractAttributeMap;
+import net.minecraft.entity.ai.attributes.IAttribute;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by Jacob on 3/16/2016.
  */
-public class PlayerClassScreen extends GuiScreen {
+public class PlayerClassScreen extends MKScreen {
 
+    private int PANEL_WIDTH = 320;
+    private int PANEL_HEIGHT = 256;
+    private int BACKGROUND_WIDTH = 512;
+    private int BACKGROUND_HEIGHT = 512;
+    private int STAT_PANEL_START_X = 162;
+    private int STAT_PANEL_START_Y = 6;
+    private int STAT_PANEL_WIDTH = 148;
+    private int STAT_PANEL_HEIGHT = 126;
+    private int ABILITY_SCROLL_WIDTH = STAT_PANEL_START_X - 8;
+    private int X_POS_ICON_SLOT_TEX = 0;
+    private int Y_POS_ICON_SLOT_TEX = 259;
+    private int ICON_SLOT_WIDTH = 20;
+    private int ICON_SLOT_HEIGHT = 20;
+    private int DESCRIPTION_WIDTH = ABILITY_SCROLL_WIDTH - 36;
+    private static final ResourceLocation BACKGROUND_LOC = new ResourceLocation(MKUltra.MODID,
+            "textures/gui/class_background_320.png");
 
-    private int[] abilityPanelYs = {22, 88, 154, 88, 154};
-    private int[] abilityPanelXs = {10, 10, 10, 138, 138};
+    private static final ArrayList<IAttribute> STAT_PANEL_ATTRIBUTES = new ArrayList<>();
+
+    static {
+        STAT_PANEL_ATTRIBUTES.add(SharedMonsterAttributes.MAX_HEALTH);
+        STAT_PANEL_ATTRIBUTES.add(PlayerAttributes.HEALTH_REGEN);
+        STAT_PANEL_ATTRIBUTES.add(PlayerAttributes.MAX_MANA);
+        STAT_PANEL_ATTRIBUTES.add(PlayerAttributes.MANA_REGEN);
+        STAT_PANEL_ATTRIBUTES.add(SharedMonsterAttributes.ARMOR);
+        STAT_PANEL_ATTRIBUTES.add(SharedMonsterAttributes.ARMOR_TOUGHNESS);
+        STAT_PANEL_ATTRIBUTES.add(PlayerAttributes.MAGIC_ARMOR);
+        STAT_PANEL_ATTRIBUTES.add(SharedMonsterAttributes.ATTACK_DAMAGE);
+        STAT_PANEL_ATTRIBUTES.add(PlayerAttributes.MAGIC_ATTACK_DAMAGE);
+        STAT_PANEL_ATTRIBUTES.add(PlayerAttributes.HEAL_BONUS);
+        STAT_PANEL_ATTRIBUTES.add(SharedMonsterAttributes.ATTACK_SPEED);
+        STAT_PANEL_ATTRIBUTES.add(SharedMonsterAttributes.MOVEMENT_SPEED);
+        STAT_PANEL_ATTRIBUTES.add(PlayerAttributes.COOLDOWN);
+        STAT_PANEL_ATTRIBUTES.add(PlayerAttributes.MELEE_CRIT);
+        STAT_PANEL_ATTRIBUTES.add(PlayerAttributes.MELEE_CRITICAL_DAMAGE);
+        STAT_PANEL_ATTRIBUTES.add(PlayerAttributes.SPELL_CRIT);
+        STAT_PANEL_ATTRIBUTES.add(PlayerAttributes.SPELL_CRITICAL_DAMAGE);
+    }
+
+    public PlayerClassScreen(){
+        super();
+    }
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        this.drawDefaultBackground();
-        ScaledResolution scaledresolution = new ScaledResolution(this.mc);
-        int width = scaledresolution.getScaledWidth();
-        int height = scaledresolution.getScaledHeight();
-        int panelWidth = 256;
-        int panelHeight = 224;
-        int xPos = width / 2 - panelWidth / 2;
-        int yPos = height / 2 - panelHeight / 2;
-
-        ResourceLocation loc = new ResourceLocation(MKUltra.MODID, "textures/gui/class_background.png");
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.renderEngine.bindTexture(loc);
-        GL11.glDisable(GL11.GL_LIGHTING);
-        this.drawTexturedModalRect(xPos, yPos, 0, 0, panelWidth, panelHeight);
-        int titleHeight = 10;
+    public void setupScreen() {
+        super.setupScreen();
+        int xPos = width / 2 - PANEL_WIDTH / 2;
+        int yPos = height / 2 - PANEL_HEIGHT / 2;
+        ScaledResolution scaledRes = new ScaledResolution(mc);
+        MKWidget mainRoot = new MKWidget(xPos, yPos, PANEL_WIDTH, PANEL_HEIGHT);
+        addState("main", mainRoot);
 
         IPlayerData pData = MKUPlayerData.get(this.mc.player);
         if (pData == null)
@@ -46,128 +85,213 @@ public class PlayerClassScreen extends GuiScreen {
         if (playerClass == null)
             return;
 
-        this.fontRenderer.drawString(playerClass.getClassName(), xPos + 28, yPos + 9, 8129636);
-        int iconHeight = yPos + 6;
-        //drawing stats
-        drawStatPanel(pData, xPos, yPos);
-
-        //drawing ability
-        //draw icons
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        // Title and Class Icon
+        MKWidget className = new MKText(mc.fontRenderer, playerClass.getClassName())
+                .setColor(8129636)
+                .setX(xPos + 28)
+                .setY(yPos + 9);
+        mainRoot.addWidget(className);
         IClassClientData classProvider = playerClass.getClientData();
         ResourceLocation iconLoc1 = classProvider.getIcon();
-        this.mc.renderEngine.bindTexture(iconLoc1);
-        Gui.drawModalRectWithCustomSizedTexture(xPos + 6, iconHeight, 0, 0, 16, 16, 16, 16);
+        int iconHeight = yPos + 6;
+        MKImage classIcon = new MKImage(xPos + 6, iconHeight, 16, 16, iconLoc1);
+        mainRoot.addWidget(classIcon);
+
+        // Stat Panel
+        MKScrollView statScrollView = new MKScrollView(xPos + STAT_PANEL_START_X + 3,
+                yPos + STAT_PANEL_START_Y + 3,
+                STAT_PANEL_WIDTH - 6, STAT_PANEL_HEIGHT - 6, width, height,
+                scaledRes.getScaleFactor(), true);
+        statScrollView.addWidget(drawStatPanel(pData, 0, 0));
+        statScrollView.setToTop();
+        statScrollView.setToRight();
+        mainRoot.addWidget(statScrollView);
+
+        // Abilities
+        MKScrollView abilityScrollView = new MKScrollView(xPos + 4,
+                yPos + 28,
+                ABILITY_SCROLL_WIDTH, PANEL_HEIGHT - 32, width, height,
+                scaledRes.getScaleFactor(), true);
+        MKWidget abilityList = new MKWidget(0, 0);
+        int abilityHeight = 0;
         for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
             PlayerAbility ability = playerClass.getOfferedAbilityBySlot(i);
             if (ability == null)
                 continue;
-
-            int panelX = abilityPanelXs[i];
-            int panelY = abilityPanelYs[i];
-            mc.getTextureManager().bindTexture(ability.getAbilityIcon());
-            Gui.drawModalRectWithCustomSizedTexture(xPos + panelX + 2,
-                    yPos + panelY + 2 + 14,
-                    0, 0, 16, 16, 16, 16);
-        }
-        //draw text
-        this.buttonList.clear();
-        int scaleFactor = 2;
-        int unspent = pData.getUnspentPoints();
-        for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
-            PlayerAbility ability = playerClass.getOfferedAbilityBySlot(i);
-            if (ability == null)
-                continue;
-
+            int panelX = 10;
+            int panelY = abilityHeight;
+            int abilityIndex = i;
+            MKImage iconSlot = new MKImage(panelX, panelY, ICON_SLOT_WIDTH, ICON_SLOT_HEIGHT,
+                    BACKGROUND_LOC).setTexWidth(BACKGROUND_WIDTH).setTexHeight(BACKGROUND_HEIGHT)
+                    .setTexU(X_POS_ICON_SLOT_TEX).setTexV(Y_POS_ICON_SLOT_TEX);
+            abilityList.addWidget(iconSlot);
+            MKImage abilityIcon = new MKImage(panelX + 2, panelY + 2, 16, 16,
+                    ability.getAbilityIcon());
+            abilityList.addWidget(abilityIcon);
             int level = pData.getAbilityRank(ability.getAbilityId());
-
-            // Show req. level 1 at the minimum
-            int reqLevel = ability.getRequiredLevel(level);
-            reqLevel = reqLevel < 1 ? 1 : reqLevel;
-
-            int panelX = abilityPanelXs[i];
-            int panelY = abilityPanelYs[i];
-
-            GuiButton upButton = new GuiButton(i, xPos + panelX + 22 + 40 + 4, yPos + panelY + 10 + 3, 16, 19, "+");
-            upButton.enabled = unspent > 0 && pData.getLevel() >= reqLevel && level < ability.getMaxRank();
-            upButton.drawButton(this.mc, mouseX, mouseY, partialTicks);
-            this.buttonList.add(upButton);
-
-            GuiButton downButton = new GuiButton(i + GameConstants.ACTION_BAR_SIZE, xPos + panelX + 22 + 40 + 20 + 4, yPos + panelY + 10 + 3, 16, 19, "-");
-            downButton.enabled = level > 0;
-            downButton.drawButton(this.mc, mouseX, mouseY, partialTicks);
-            this.buttonList.add(downButton);
-
+            int displayLevel = Math.max(1, level); // Don't show the stats for a 0-level spell
             String name;
             if (level > 0) {
                 name = String.format("%s %d", ability.getAbilityName(), level);
             } else {
                 name = ability.getAbilityName();
             }
-            this.fontRenderer.drawString(name, xPos + panelX, yPos + panelY + 3, 38600);
-
-            GlStateManager.pushMatrix();
-            GlStateManager.scale(1.0f / scaleFactor, 1.0f / scaleFactor, 1.0f / scaleFactor);
-
-            int minLevel = Math.max(1, level); // Don't show the stats for a 0-level spell
-            this.fontRenderer.drawString("Mana: " + ability.getManaCost(minLevel),
-                    (xPos + panelX + 22) * scaleFactor, (yPos + panelY + 16) * scaleFactor, 0);
-            String cooldown = String.format("Cooldown: %.2f", (float) pData.getAbilityCooldown(ability) / (float) GameConstants.TICKS_PER_SECOND);
-            this.fontRenderer.drawString(cooldown,
-                    (xPos + panelX + 22) * scaleFactor, (yPos + panelY + 23) * scaleFactor, 0);
-            this.fontRenderer.drawString("Req. Level: " + reqLevel,
-                    (xPos + panelX + 22) * scaleFactor, (yPos + panelY + 30) * scaleFactor, 0);
-            this.fontRenderer.drawSplitString(ability.getAbilityDescription(),
-                    (xPos + panelX) * scaleFactor, (yPos + panelY + 36) * scaleFactor, 114 * scaleFactor, 0);
-            GlStateManager.popMatrix();
+            MKText nameWid = new MKText(mc.fontRenderer, name);
+            nameWid.setX(panelX + 22).setY(panelY + (mc.fontRenderer.FONT_HEIGHT + 4) / 2);
+            MKText manaCost = new MKText(mc.fontRenderer, "Mana: " + ability.getManaCost(displayLevel));
+            manaCost.setX(panelX).setY(panelY + (mc.fontRenderer.FONT_HEIGHT + 2) * 2);
+            manaCost.setColor(4934475);
+            MKText cooldown = new MKText(mc.fontRenderer, String.format("Cooldown: %.2f",
+                    (float) pData.getCooldownForLevel(ability, displayLevel) / (float) GameConstants.TICKS_PER_SECOND));
+            cooldown.setX(panelX).setY(panelY + (mc.fontRenderer.FONT_HEIGHT + 2) * 3);
+            cooldown.setColor(4934475);
+            MKText reqLev = new MKText(mc.fontRenderer, "Req. Level: " + ability.getRequiredLevel(level));
+            reqLev.setX(panelX).setY(panelY + (mc.fontRenderer.FONT_HEIGHT + 2) * 4);
+            reqLev.setColor(4934475);
+            MKText description = new MKText(mc.fontRenderer, ability.getAbilityDescription());
+            description.setMultiline(true).setWidth(DESCRIPTION_WIDTH).setX(panelX)
+                    .setY(panelY + (mc.fontRenderer.FONT_HEIGHT + 2) * 5);
+            description.setColor(2631720);
+            abilityList.addWidget(nameWid);
+            abilityList.addWidget(manaCost);
+            abilityList.addWidget(cooldown);
+            abilityList.addWidget(reqLev);
+            abilityList.addWidget(description);
+            MKButton upButton = new MKButton(panelX + DESCRIPTION_WIDTH + 2,
+                    panelY + mc.fontRenderer.FONT_HEIGHT + 2,
+                    20, 20, "+");
+            upButton.setPressedCallback((MKButton button, Integer buttonType) -> pressUpButton(
+                    button, buttonType, abilityIndex));
+            abilityList.addWidget(upButton);
+            MKButton downButton = new MKButton(panelX + DESCRIPTION_WIDTH + 2,
+                    panelY + mc.fontRenderer.FONT_HEIGHT + 2 + 24,
+                    20, 20, "-");
+            downButton.setPressedCallback((MKButton button, Integer buttonType) -> pressDownButton(
+                    button, buttonType, abilityIndex));
+            abilityList.addWidget(downButton);
+            addPreDrawRunnable(() -> {
+                int lvl = pData.getAbilityRank(ability.getAbilityId());
+                int displayLvl = Math.max(1, level); // Don't show the stats for a 0-level spell
+                String newName;
+                if (lvl > 0) {
+                    newName = String.format("%s %d", ability.getAbilityName(), lvl);
+                } else {
+                    newName = ability.getAbilityName();
+                }
+                nameWid.setText(newName);
+                manaCost.setText("Mana: " + ability.getManaCost(displayLvl));
+                cooldown.setText(String.format("Cooldown: %.2f",
+                        (float) pData.getCooldownForLevel(ability, displayLvl) / (float) GameConstants.TICKS_PER_SECOND));
+                reqLev.setText("Req. Level: " + ability.getRequiredLevel(lvl));
+                upButton.setEnabled(pData.getUnspentPoints() > 0 &&
+                        pData.getLevel() >= ability.getRequiredLevel(lvl) && lvl < ability.getMaxRank());
+                downButton.setEnabled(lvl > 0);
+            });
+            abilityHeight = description.getY() + description.getHeight() + 12;
         }
+        abilityList.setWidth(ABILITY_SCROLL_WIDTH);
+        abilityList.setHeight(abilityHeight);
+        abilityScrollView.addWidget(abilityList);
+        abilityScrollView.setToRight();
+        abilityScrollView.setToTop();
+        mainRoot.addWidget(abilityScrollView);
+        setState("main");
     }
 
-    private void drawStatPanel(IPlayerData pData, int xPos, int yPos) {
-        int statPanelX = xPos + 141;
-        int statPanelY = yPos + 11;
-        float statScalingFactor = 1.5f;
-
-        GlStateManager.pushMatrix();
-        GlStateManager.scale(1.0f / statScalingFactor, 1.0f / statScalingFactor, 1.0f / statScalingFactor);
-        int xCoord = (int) ((statPanelX + 3) * statScalingFactor);
-        int yCoord = (int) ((statPanelY + 4) * statScalingFactor);
-
-        String regenRate = String.format("Mana Regen Rate: %.2f", pData.getManaRegenRate());
-        String cdRate = String.format("Cooldown Reduction: %.2f%%", (pData.getCooldownProgressSpeed() - 1) * 100);
-        String magicArmor = String.format("Magic Armor: %.2f", pData.getMagicArmor());
-        String magicDamageBonus = String.format("Magic Damage Bonus: %.2f", pData.getMagicDamageBonus());
-
-        this.fontRenderer.drawString("Level: " + pData.getLevel(), xCoord, yCoord, 38600);
-        this.fontRenderer.drawString("Max Mana: " + pData.getTotalMana(), xCoord, yCoord + 11, 38600);
-        this.fontRenderer.drawString(regenRate, xCoord, yCoord + 22, 38600);
-        this.fontRenderer.drawString("Unspent Points: " + pData.getUnspentPoints(), xCoord, yCoord + 33, 38600);
-        this.fontRenderer.drawString(magicArmor, xCoord, yCoord + 44, 38600);
-        this.fontRenderer.drawString(magicDamageBonus, xCoord, yCoord + 55, 38600);
-        this.fontRenderer.drawString(cdRate, xCoord, yCoord + 66, 38600);
-        GlStateManager.popMatrix();
-    }
-
-
-    @Override
-    protected void actionPerformed(GuiButton button) {
+    public Boolean pressUpButton(MKButton button, Integer mouseButton, int abilityIndex){
         IPlayerData pData = MKUPlayerData.get(mc.player);
         if (pData == null)
-            return;
+            return true;
         PlayerClass playerClass = MKURegistry.getClass(pData.getClassId());
         if (playerClass == null)
-            return;
-        PlayerAbility ability = playerClass.getOfferedAbilityBySlot(button.id % GameConstants.ACTION_BAR_SIZE);
+            return true;
+        PlayerAbility ability = playerClass.getOfferedAbilityBySlot(
+                abilityIndex % GameConstants.ACTION_BAR_SIZE);
         if (ability == null)
-            return;
-
-        boolean raise = button.id < GameConstants.ACTION_BAR_SIZE;
-        MKUltra.packetHandler.sendToServer(new LevelAbilityPacket(ability.getAbilityId(), raise));
+            return true;
+        MKUltra.packetHandler.sendToServer(new LevelAbilityPacket(ability.getAbilityId(), true));
+        return true;
     }
+
+    public Boolean pressDownButton(MKButton button, Integer mouseButton, int abilityIndex){
+        IPlayerData pData = MKUPlayerData.get(mc.player);
+        if (pData == null)
+            return true;
+        PlayerClass playerClass = MKURegistry.getClass(pData.getClassId());
+        if (playerClass == null)
+            return true;
+        PlayerAbility ability = playerClass.getOfferedAbilityBySlot(
+                abilityIndex % GameConstants.ACTION_BAR_SIZE);
+        if (ability == null)
+            return true;
+        MKUltra.packetHandler.sendToServer(new LevelAbilityPacket(ability.getAbilityId(), false));
+        return true;
+    }
+
 
     @Override
-    public boolean doesGuiPauseGame() {
-        return false;
+    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        int xPos = width / 2 - PANEL_WIDTH / 2;
+        int yPos = height / 2 - PANEL_HEIGHT / 2;
+
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        this.mc.renderEngine.bindTexture(BACKGROUND_LOC);
+        GL11.glDisable(GL11.GL_LIGHTING);
+        drawModalRectWithCustomSizedTexture(xPos, yPos,
+                0, 0,
+                PANEL_WIDTH, PANEL_HEIGHT,
+                BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
+        super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
+    private MKWidget drawStatPanel(IPlayerData pData, int xPos, int yPos) {
+        AbstractAttributeMap attributes = this.mc.player.getAttributeMap();
+        MKWidget stackLayout = new MKStackLayoutVertical(xPos, yPos, STAT_PANEL_WIDTH - 6)
+                .setMarginTop(4)
+                .setMarginBot(4)
+                .setPaddingTop(2)
+                .setMarginLeft(4)
+                .setMarginRight(4)
+                .setPaddingBot(2);
+        MKText level = new MKText(mc.fontRenderer, "Level: " + pData.getLevel());
+        level.setColor(16777215);
+        MKText unspentPoints = new MKText(mc.fontRenderer, String.format("Ability Points: %d/%d",
+                pData.getUnspentPoints(), pData.getLevel()));
+        unspentPoints.setColor(16777215);
+        MKText talentPoints = new MKText(mc.fontRenderer,
+                String.format("Talent Points: %d/%d",
+                pData.getUnspentTalentPoints(), pData.getTotalTalentPoints()));
+        talentPoints.setColor(16777215);
+        stackLayout.addWidget(level);
+        stackLayout.addWidget(unspentPoints);
+        stackLayout.addWidget(talentPoints);
+        addPreDrawRunnable(() -> {
+            talentPoints.setText(String.format("Talent Points: %d/%d",
+                    pData.getUnspentTalentPoints(), pData.getTotalTalentPoints()));
+            unspentPoints.setText(String.format("Ability Points: %d/%d",
+                    pData.getUnspentPoints(), pData.getLevel()));
+            level.setText("Level: " + pData.getLevel());
+        });
+
+        for (IAttribute attr : STAT_PANEL_ATTRIBUTES){
+            IAttributeInstance attribute = attributes.getAttributeInstance(attr);
+            String text = String.format("%s: %.2f", I18n.format(String.format("attribute.name.%s",
+                    attribute.getAttribute().getName())), attribute.getAttributeValue());
+            MKText textWidget = new MKText(mc.fontRenderer, text).setMultiline(true);
+            addPreDrawRunnable(() -> {
+                String newText = String.format("%s: %.2f", I18n.format(String.format("attribute.name.%s",
+                        attribute.getAttribute().getName())), attribute.getAttributeValue());
+                textWidget.setText(newText);
+                if (attribute.getAttributeValue() < attribute.getBaseValue()){
+                    textWidget.setColor(13111115);
+                } else if (attribute.getAttributeValue() > attribute.getBaseValue()){
+                    textWidget.setColor(3334475);
+                } else {
+                    textWidget.setColor(16777215);
+                }
+            });
+            stackLayout.addWidget(textWidget);
+        }
+        return stackLayout;
+    }
 }

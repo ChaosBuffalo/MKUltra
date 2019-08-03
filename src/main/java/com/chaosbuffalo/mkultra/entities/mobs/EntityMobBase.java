@@ -8,9 +8,7 @@ import com.chaosbuffalo.mkultra.core.MobData;
 import com.chaosbuffalo.mkultra.mob_ai.*;
 import com.chaosbuffalo.mkultra.network.ModGuiHandler;
 import com.chaosbuffalo.mkultra.network.packets.OpenLearnClassTileEntityPacket;
-import com.chaosbuffalo.mkultra.network.packets.PartyInvitePacket;
 import com.chaosbuffalo.mkultra.tiles.TileEntityNPCSpawner;
-import com.chaosbuffalo.mkultra.utils.ServerUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -38,8 +36,11 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nullable;
 
 
 public class EntityMobBase extends EntityCreature implements IMob, IRangedAttackMob {
@@ -303,16 +304,25 @@ public class EntityMobBase extends EntityCreature implements IMob, IRangedAttack
                         player.openGui(MKUltra.INSTANCE,
                                 ModGuiHandler.NPC_SPAWNER_EQUIPMENT_SCREEN, world,
                                 spawnPoint.getX(), spawnPoint.getY(), spawnPoint.getZ());
+                        return EnumActionResult.SUCCESS;
                     } else {
-                        MKUltra.packetHandler.sendTo(new OpenLearnClassTileEntityPacket(spawnPoint),
-                                (EntityPlayerMP) player);
+                        IMessage packet = getInteractionPacket(player, spawner, spawnPoint);
+                        if (packet != null){
+                            MKUltra.packetHandler.sendTo(packet, (EntityPlayerMP) player);
+                            return EnumActionResult.SUCCESS;
+                        }
                     }
                 }
-                return EnumActionResult.SUCCESS;
+                return EnumActionResult.PASS;
             }
             return EnumActionResult.PASS;
         }
         return EnumActionResult.PASS;
+    }
+
+    @Nullable
+    public IMessage getInteractionPacket(EntityPlayer player, TileEntity spawner, BlockPos spawnPoint){
+        return null;
     }
 
     @Override

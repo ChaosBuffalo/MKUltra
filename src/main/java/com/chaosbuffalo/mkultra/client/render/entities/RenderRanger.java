@@ -1,7 +1,7 @@
 package com.chaosbuffalo.mkultra.client.render.entities;
 
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.client.model.ModelRanger;
+import com.chaosbuffalo.mkultra.client.model.ModelHumanoidBase;
 import com.chaosbuffalo.mkultra.entities.mobs.EntityRanger;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderBiped;
@@ -29,12 +29,12 @@ public class RenderRanger implements IRenderFactory<EntityRanger> {
         private static final ResourceLocation RANGER_TEXTURES = new ResourceLocation(MKUltra.MODID, "textures/entity/ranger/ranger.png");
 
         public Renderer(RenderManager renderManager) {
-            super(renderManager, new ModelRanger(), 0.5F);
+            super(renderManager, new ModelHumanoidBase(), 0.5F);
             this.addLayer(new LayerHeldItem(this));
             this.addLayer(new LayerBipedArmor(this) {
                 protected void initArmor() {
-                    this.modelLeggings = new ModelRanger(0.5F, true);
-                    this.modelArmor = new ModelRanger(1.0F, true);
+                    this.modelLeggings = new ModelHumanoidBase(0.5F, true);
+                    this.modelArmor = new ModelHumanoidBase(1.0F, true);
                 }
             });
         }

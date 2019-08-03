@@ -5,11 +5,15 @@ import com.chaosbuffalo.mkultra.core.IMobData;
 import com.chaosbuffalo.mkultra.core.MKURegistry;
 import com.chaosbuffalo.mkultra.core.MobAbility;
 import com.chaosbuffalo.mkultra.init.ModSpawn;
-import net.minecraft.init.Items;
-import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.ItemStack;
+import com.chaosbuffalo.mkultra.network.packets.OpenLearnClassTileEntityPacket;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+
+import javax.annotation.Nullable;
 
 public class EntityRanger extends EntityMobBase {
 
@@ -32,5 +36,11 @@ public class EntityRanger extends EntityMobBase {
                 "mob_ability.warp_dash"));
         data.addAbility(warp_dash);
         data.setAggroRange(20.0);
+    }
+
+    @Nullable
+    @Override
+    public IMessage getInteractionPacket(EntityPlayer player, TileEntity spawner, BlockPos spawnPoint) {
+        return new OpenLearnClassTileEntityPacket(spawnPoint);
     }
 }

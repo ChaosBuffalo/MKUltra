@@ -14,12 +14,12 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class ModelRanger extends ModelBiped {
-    public ModelRanger() {
+public class ModelHumanoidBase extends ModelBiped {
+    public ModelHumanoidBase() {
         this(0.0F, false);
     }
 
-    public ModelRanger(float p_i1168_1_, boolean p_i1168_2_)
+    public ModelHumanoidBase(float p_i1168_1_, boolean p_i1168_2_)
     {
         super(p_i1168_1_, 0.0F, 64, 32);
     }

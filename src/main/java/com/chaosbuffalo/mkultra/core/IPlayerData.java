@@ -1,5 +1,7 @@
 package com.chaosbuffalo.mkultra.core;
 
+import com.chaosbuffalo.mkultra.client.gui.lib.MKScreen;
+import com.chaosbuffalo.mkultra.core.talents.TalentTreeRecord;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
@@ -82,6 +84,10 @@ public interface IPlayerData {
 
     void setMeleeCritChance(float critChance);
 
+    float getMeleeCritDamage();
+
+    void setMeleeCritDamage(float critDamage);
+
     float getCooldownProgressSpeed();
 
     float getMagicDamageBonus();
@@ -89,6 +95,8 @@ public interface IPlayerData {
     float getMagicArmor();
 
     float getHealBonus();
+
+    int getCooldownForLevel(PlayerAbility ability, int level);
 
     boolean learnClass(IClassProvider provider, ResourceLocation classId);
 
@@ -105,4 +113,24 @@ public interface IPlayerData {
     void deserialize(NBTTagCompound tag);
 
     boolean canWearArmorMaterial(ItemArmor.ArmorMaterial material);
+
+    boolean spendTalentPoint(ResourceLocation talentTree, String line, int index);
+
+    boolean refundTalentPoint(ResourceLocation talentTree, String line, int index);
+
+    boolean canSpendTalentPoint(ResourceLocation talentTree, String line, int index);
+
+    boolean canRefundTalentPoint(ResourceLocation talentTree, String line, int index);
+
+    void gainTalentPoint();
+
+    int getTotalTalentPoints();
+
+    int getUnspentTalentPoints();
+
+    TalentTreeRecord getTalentTree(ResourceLocation loc);
+
+    void subscribeGuiToClassUpdates(Runnable cb);
+
+    void unsubscribeGuiToClassUpdates(Runnable cb);
 }

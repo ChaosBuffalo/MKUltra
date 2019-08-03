@@ -2,6 +2,9 @@ package com.chaosbuffalo.mkultra.core;
 
 
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.core.talents.BaseTalent;
+import com.chaosbuffalo.mkultra.core.talents.RangedAttributeTalent;
+import com.chaosbuffalo.mkultra.core.talents.TalentTree;
 import com.chaosbuffalo.mkultra.spawn.*;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
@@ -31,6 +34,8 @@ public class MKURegistry {
     public static IForgeRegistry<AIGenerator> REGISTRY_AI_GENERATORS = null;
     public static IForgeRegistry<AttributeSetter> REGISTRY_ATTRIBUTE_SETTERS = null;
     public static IForgeRegistry<CustomSetter> REGISTRY_CUSTOM_SETTERS = null;
+    public static IForgeRegistry<BaseTalent> REGISTRY_TALENTS = null;
+    public static IForgeRegistry<TalentTree> REGISTRY_TALENT_TREES = null;
 
 
     public static ResourceLocation INVALID_CLASS = new ResourceLocation(MKUltra.MODID, "class.invalid");
@@ -88,6 +93,21 @@ public class MKURegistry {
     @Nullable
     public static SpawnList getSpawnList(ResourceLocation name){
         return REGISTRY_SPAWN_LISTS.getValue(name);
+    }
+
+    @Nullable
+    public static BaseTalent getTalent(ResourceLocation name) {
+        return REGISTRY_TALENTS.getValue(name);
+    }
+
+    public static ArrayList<RangedAttributeTalent> getAllAttributeTalents(){
+        ArrayList<RangedAttributeTalent> talents = new ArrayList<>();
+        for (BaseTalent talent : REGISTRY_TALENTS.getValuesCollection()){
+            if (talent.getTalentType() == BaseTalent.TalentType.ATTRIBUTE){
+                talents.add((RangedAttributeTalent) talent);
+            }
+        }
+        return talents;
     }
 
     public static List<ResourceLocation> getValidClasses(Collection<ResourceLocation> classes) {
@@ -189,6 +209,18 @@ public class MKURegistry {
         REGISTRY_CUSTOM_SETTERS = new RegistryBuilder<CustomSetter>()
                 .setName(new ResourceLocation(MKUltra.MODID, "mob_custom_setters"))
                 .setType(CustomSetter.class)
+                .setIDRange(0, Integer.MAX_VALUE - 1)
+                .create();
+
+        REGISTRY_TALENTS = new RegistryBuilder<BaseTalent>()
+                .setName(new ResourceLocation(MKUltra.MODID, "talents"))
+                .setType(BaseTalent.class)
+                .setIDRange(0, Integer.MAX_VALUE - 1)
+                .create();
+
+        REGISTRY_TALENT_TREES = new RegistryBuilder<TalentTree>()
+                .setName(new ResourceLocation(MKUltra.MODID, "talent_trees"))
+                .setType(TalentTree.class)
                 .setIDRange(0, Integer.MAX_VALUE - 1)
                 .create();
     }

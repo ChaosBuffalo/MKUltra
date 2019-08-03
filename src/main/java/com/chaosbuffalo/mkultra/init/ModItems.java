@@ -250,7 +250,10 @@ public final class ModItems {
 
         regInternal(pipe = new Pipe("hemp_pipe").setCreativeTab(MKUltra.MKULTRA_TAB), "hemp_pipe");
         regInternal(fire_extinguisher_flask = new FireExtinguisherFlask(), "fire_extinguisher_flask");
-        regInternal(new NPCSpawnerIcon("ranger_icon"));
+        regInternal(new NPCSpawnerIcon("ranger_icon",
+                new ResourceLocation(MKUltra.MODID, "ranger")));
+        regInternal(new NPCSpawnerIcon("orb_mother_icon",
+                new ResourceLocation(MKUltra.MODID, "orb_mother")));
     }
 
     @SuppressWarnings("unused")

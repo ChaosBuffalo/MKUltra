@@ -1,0 +1,115 @@
+{
+  "version": 1,
+  "lines": [
+    {
+      "name": "mkultra:knight_1",
+      "talents": [
+        {
+          "name": "mkultra:talent.max_health",
+          "max_points": 2,
+          "value": 1
+        },
+        {
+          "name": "mkultra:talent.armor",
+          "max_points": 2,
+          "value": 1
+        },
+        {
+          "name": "mkultra:talent.magic_armor",
+          "max_points": 1,
+          "value": 1
+        },
+        {
+          "name": "mkultra:talent.max_mana",
+          "max_points": 2,
+          "value": 1
+        },
+        {
+          "name": "mkultra:talent.health_regen",
+          "max_points": 2,
+          "value": 0.25
+        }
+      ]
+    },
+    {
+      "name": "mkultra:knight_2",
+      "talents": [
+        {
+          "name": "mkultra:talent.max_health",
+          "max_points": 2,
+          "value": 1
+        },
+        {
+          "name": "mkultra:talent.health_regen",
+          "max_points": 4,
+          "value": 0.25
+        },
+        {
+          "name": "mkultra:talent.max_health",
+          "max_points": 4,
+          "value": 1
+        },
+        {
+          "name": "mkultra:talent.max_mana",
+          "max_points": 2,
+          "value": 1
+        },
+        {
+          "name": "mkultra:talent.heal_bonus",
+          "max_points": 3,
+          "value": 1
+        },
+        {
+          "name": "mkultra:talent.mana_regen",
+          "max_points": 2,
+          "value": 0.25
+        },
+        {
+          "name": "mkultra:talent.magic_armor",
+          "max_points": 2,
+          "value": 1
+        },
+        {
+          "name": "mkultra:talent.armor",
+          "max_points": 4,
+          "value": 1
+        },
+        {
+          "name": "mkultra:talent.mana_regen",
+          "max_points": 2,
+          "value": 0.25
+        }
+      ]
+    },
+    {
+      "name": "mkultra:knight_3",
+      "talents": [
+        {
+          "name": "mkultra:talent.max_health",
+          "max_points": 2,
+          "value": 1
+        },
+        {
+          "name": "mkultra:talent.magic_armor",
+          "max_points": 2,
+          "value": 1
+        },
+        {
+          "name": "mkultra:talent.health_regen",
+          "max_points": 2,
+          "value": 0.25
+        },
+        {
+          "name": "mkultra:talent.armor",
+          "max_points": 2,
+          "value": 1
+        },
+        {
+          "name": "mkultra:talent.mana_regen",
+          "max_points": 2,
+          "value": 0.25
+        }
+      ]
+    }
+  ]
+}

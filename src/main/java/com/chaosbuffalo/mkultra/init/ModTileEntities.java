@@ -16,6 +16,7 @@ public class ModTileEntities {
                 new ResourceLocation(MKUltra.MODID, "mk_spawner_tile"));
         GameRegistry.registerTileEntity(TileEntityNPCSpawner.class,
                 new ResourceLocation(MKUltra.MODID, "npc_spawner_tile"));
+
     }
 }
 

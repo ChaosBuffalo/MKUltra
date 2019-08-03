@@ -1,6 +1,7 @@
 package com.chaosbuffalo.mkultra.client.render.entities;
 
 import com.chaosbuffalo.mkultra.entities.EntityMKAreaEffect;
+import com.chaosbuffalo.mkultra.entities.mobs.EntityOrbMother;
 import com.chaosbuffalo.mkultra.entities.mobs.EntityRanger;
 import com.chaosbuffalo.mkultra.entities.projectiles.*;
 import com.chaosbuffalo.mkultra.init.ModItems;
@@ -38,5 +39,7 @@ public class EntityRenderRegister {
                 new RenderProjectile(ModItems.grasping_roots_projectile, 1.0f));
         RenderingRegistry.registerEntityRenderingHandler(EntityRanger.class,
                 new RenderRanger());
+        RenderingRegistry.registerEntityRenderingHandler(EntityOrbMother.class,
+                new RenderOrbMother());
     }
 }

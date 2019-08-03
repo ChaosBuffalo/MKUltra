@@ -72,6 +72,9 @@ public final class PacketHandler {
 		registerPacket(LevelUpRequestPacket.class, new LevelUpRequestPacket.Handler(), Side.SERVER);
 		registerPacket(PartyInviteResponsePacket.class, new PartyInviteResponsePacket.Handler(), Side.SERVER);
 		registerPacket(MKSpawnerSetPacket.class, new MKSpawnerSetPacket.Handler(), Side.SERVER);
+		registerPacket(AddTalentRequestPacket.class, new AddTalentRequestPacket.Handler(), Side.SERVER);
+		registerPacket(AddRemoveTalentPointPacket.class, new AddRemoveTalentPointPacket.Handler(), Side.SERVER);
+
 
 		registerPacket(ParticleEffectSpawnPacket.class, new ParticleEffectSpawnPacket.Handler(), Side.CLIENT);
 		registerPacket(AbilityUpdatePacket.class, new AbilityUpdatePacket.Handler(), Side.CLIENT);
@@ -81,6 +84,7 @@ public final class PacketHandler {
 		registerPacket(AbilityCooldownPacket.class, new AbilityCooldownPacket.Handler(), Side.CLIENT);
 		registerPacket(CritMessagePacket.class, new CritMessagePacket.Handler(), Side.CLIENT);
 		registerPacket(OpenLearnClassTileEntityPacket.class, new OpenLearnClassTileEntityPacket.Handler(), Side.CLIENT);
+		registerPacket(OpenTalentGuiPacket.class, new OpenTalentGuiPacket.Handler(), Side.CLIENT);
 	}
 
 	/**

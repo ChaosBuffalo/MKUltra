@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.init;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.entities.EntityMKAreaEffect;
+import com.chaosbuffalo.mkultra.entities.mobs.EntityOrbMother;
 import com.chaosbuffalo.mkultra.entities.mobs.EntityRanger;
 import com.chaosbuffalo.mkultra.entities.projectiles.*;
 import net.minecraft.entity.Entity;
@@ -67,6 +68,9 @@ public class ModEntities {
                 64, 1, true);
         register(evt, new ResourceLocation(MKUltra.MODID, "ranger"),
                 EntityRanger.class, "EntityRanger", 13, 64,
+                1, true);
+        register(evt, new ResourceLocation(MKUltra.MODID, "orb_mother"),
+                EntityOrbMother.class, "EntityOrbMother", 14, 64,
                 1, true);
     }
 }

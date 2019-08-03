@@ -11,16 +11,19 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class NPCSpawnerIcon extends Item{
+    private ResourceLocation mobName;
 
-    public NPCSpawnerIcon(String unlocalizedName) {
+    public NPCSpawnerIcon(String unlocalizedName, ResourceLocation mobName) {
         super();
         this.setTranslationKey(unlocalizedName);
         this.setCreativeTab(MKUltra.MKULTRA_TAB);
         this.setMaxStackSize(1);
+        this.mobName = mobName;
     }
 
     @Override
@@ -32,6 +35,8 @@ public class NPCSpawnerIcon extends Item{
             nbt = stack.getTagCompound();
         } else {
             nbt = new NBTTagCompound();
+            nbt.setString("mobName", mobName.toString());
+            nbt.setString("itemToDrop", this.getRegistryName().toString());
         }
         world.setBlockState(blockPos.up(), ModBlocks.npcSpawnerBlock.getDefaultState());
         TileEntity tileEntity = world.getTileEntity(blockPos.up());

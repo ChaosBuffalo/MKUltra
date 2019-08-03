@@ -11,6 +11,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
+import net.minecraftforge.registries.IForgeRegistry;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.util.TriConsumer;
 
@@ -23,27 +24,31 @@ import java.nio.file.Paths;
 public class JsonLoader {
     private static Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
 
-    public static <E> void loadModsForType(String subFolder,
+    public static <E extends IForgeRegistry> void loadModsForType(String subFolder, String configLocation,
+                                           String assetsLocation,
                                            TriConsumer<ResourceLocation, JsonObject, E> registerFunc,
                                            E register) {
         ModContainer old = Loader.instance().activeModContainer();
-        Loader.instance().getActiveModList().forEach(mod -> loadJsonFiles(mod, subFolder,
-                "assets", registerFunc, register));
+        Loader.instance().getActiveModList().forEach(mod -> {
+            loadJsonFiles(mod, subFolder, assetsLocation, registerFunc, register);
+            loadJsonConfigs(mod, subFolder, configLocation, registerFunc, register);
+        });
         Loader.instance().setActiveModContainer(old);
-        loadJsonConfigs(subFolder, registerFunc, register);
+
     }
 
-    public static <E> void loadJsonConfigs(String subFolder, TriConsumer<ResourceLocation, JsonObject, E> registerFunc,
-                                              E registry){
+    public static <E extends IForgeRegistry> void loadJsonConfigs(ModContainer mod, String subFolder, String baseDir,
+                                                                  TriConsumer<ResourceLocation, JsonObject, E> registerFunc,
+                                                                  E registry){
 
-        String path = MKUltra.config_loc + File.separator + MKUltra.MODID + File.separator + subFolder;
+        String path = MKUltra.config_loc + File.separator + baseDir + File.separator + mod.getModId() + File.separator + subFolder;
         if (Files.isDirectory(Paths.get(path))) {
             try {
                 Files.walk(Paths.get(path))
                         .filter((f) -> FilenameUtils.getExtension(f.toString()).equals("json"))
                         .forEach((f) -> {
                             String name = FilenameUtils.removeExtension(f.getFileName().toString()).replaceAll("\\\\", "/");
-                            ResourceLocation key = new ResourceLocation(MKUltra.MODID, name);
+                            ResourceLocation key = new ResourceLocation(mod.getModId(), name);
                             try (BufferedReader reader = Files.newBufferedReader(f)) {
                                 JsonObject json = JsonUtils.fromJson(GSON, reader, JsonObject.class);
                                 registerFunc.accept(key, json, registry);
@@ -57,6 +62,16 @@ public class JsonLoader {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static boolean checkKeysExist(String[] keys, JsonObject obj) {
+        for (String key : keys) {
+            if (!obj.has(key)) {
+                Log.info("Skipping load for %s because %s not present", obj.toString(), key);
+                return false;
+            }
+        }
+        return true;
     }
 
     public static <E> boolean loadJsonFiles(ModContainer mod, String subFolder, String baseDir,
@@ -75,7 +90,6 @@ public class JsonLoader {
                         String name = FilenameUtils.removeExtension(relative).replaceAll("\\\\", "/");
                         ResourceLocation key = new ResourceLocation(mod.getModId(), name);
                         Log.info("Trying to load %s", key.toString());
-
                         try (BufferedReader reader = Files.newBufferedReader(file)) {
                             JsonObject json = JsonUtils.fromJson(GSON, reader, JsonObject.class);
                             registerFunc.accept(key, json, event);
