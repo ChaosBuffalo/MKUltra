@@ -3,9 +3,9 @@ package com.chaosbuffalo.mkultra.item;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
-import com.chaosbuffalo.mkultra.item.interfaces.IClassProvider;
+import com.chaosbuffalo.mkultra.core.IClassProvider;
+import com.chaosbuffalo.mkultra.core.MKURegistry;
 import com.chaosbuffalo.mkultra.network.ModGuiHandler;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -20,21 +20,14 @@ import net.minecraft.world.World;
 public class ClassIcon extends Item implements IClassProvider {
 
     private final String iconText;
-    private final ResourceLocation iconLoc;
-    private final String xpTableText;
-    private final ResourceLocation xpTableBackground;
-    private final int xpTableTextColor;
+    private final ResourceLocation classListId;
 
-    public ClassIcon(String unlocalizedName, String iconText, int maxDamageIn, ResourceLocation iconLoc,
-                     String xpTableText, ResourceLocation xpTableBackground, int xpTableTextColor) {
+    public ClassIcon(String unlocalizedName, String iconText, int maxDamageIn, ResourceLocation classListId) {
         super();
         this.setTranslationKey(unlocalizedName);
         this.setCreativeTab(MKUltra.MKULTRA_TAB);
         this.iconText = iconText;
-        this.iconLoc = iconLoc;
-        this.xpTableText = xpTableText;
-        this.xpTableBackground = xpTableBackground;
-        this.xpTableTextColor = xpTableTextColor;
+        this.classListId = classListId;
         this.setMaxDamage(maxDamageIn);
         this.setMaxStackSize(1);
     }
@@ -52,28 +45,13 @@ public class ClassIcon extends Item implements IClassProvider {
     }
 
     @Override
-    public String getXpTableText() {
-        return xpTableText;
-    }
-
-    @Override
-    public ResourceLocation getIconForProvider() {
-        return iconLoc;
+    public ResourceLocation getIdentity() {
+        return classListId;
     }
 
     @Override
     public String getClassSelectionText() {
         return iconText;
-    }
-
-    @Override
-    public ResourceLocation getXpTableBackground() {
-        return xpTableBackground;
-    }
-
-    @Override
-    public int getXpTableTextColor() {
-        return xpTableTextColor;
     }
 
 }

@@ -5,9 +5,7 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.talents.BaseTalent;
 import com.chaosbuffalo.mkultra.core.talents.RangedAttributeTalent;
 import com.chaosbuffalo.mkultra.core.talents.TalentTree;
-import com.chaosbuffalo.mkultra.item.interfaces.IClassProvider;
 import com.chaosbuffalo.mkultra.spawn.*;
-import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -18,8 +16,8 @@ import net.minecraftforge.registries.RegistryBuilder;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Mod.EventBusSubscriber
@@ -112,18 +110,14 @@ public class MKURegistry {
         return talents;
     }
 
-    public static List<ResourceLocation> getClassesForProvider(IClassProvider provider) {
-        return REGISTRY_CLASSES.getEntries().stream()
-                .filter(kv -> kv.getValue().getClassProvider()
-                        .getIconForProvider().equals(provider.getIconForProvider()))
-                .map(Map.Entry::getKey)
-                .collect(Collectors.toList());
-    }
-
-    public static List<ResourceLocation> getValidClasses(List<ResourceLocation> classes) {
+    public static List<ResourceLocation> getValidClasses(Collection<ResourceLocation> classes) {
         return REGISTRY_CLASSES.getKeys().stream()
                 .filter(classes::contains)
                 .collect(Collectors.toList());
+    }
+
+    public static List<ResourceLocation> getAllClasses() {
+        return new ArrayList<>(REGISTRY_CLASSES.getKeys());
     }
 
     public static String getClassName(ResourceLocation classId) {

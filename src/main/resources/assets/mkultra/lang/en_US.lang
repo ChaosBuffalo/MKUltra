@@ -252,3 +252,10 @@ mkultra.talent_tree.mage.name=Mage Tree
 mkultra.talent_tree.knight.name=Knight Tree
 mkultra.talent_tree.priest.name=Priest Tree
 mkultra.talent_tree.warrior.name=Warrior Tree
+commands.mk.class=/mk class - Class Switching Commands
+commands.mk.class.unlearn=unlearn [player] [classId]
+commands.mk.class.unlearnall=unlearnall [player]
+commands.mk.class.learn=learn [player] [classId]
+commands.mk.class.switch=switch [player] [classId]
+commands.mk.class.reset=reset [player]
+

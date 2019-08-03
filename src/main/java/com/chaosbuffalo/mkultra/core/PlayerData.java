@@ -7,7 +7,6 @@ import com.chaosbuffalo.mkultra.core.talents.TalentUtils;
 import com.chaosbuffalo.mkultra.event.ItemRestrictionHandler;
 import com.chaosbuffalo.mkultra.item.ItemHelper;
 import com.chaosbuffalo.mkultra.item.ManaRegenIdol;
-import com.chaosbuffalo.mkultra.item.interfaces.IClassProvider;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.network.packets.PlayerSyncRequestPacket;
 import com.chaosbuffalo.mkultra.network.packets.AbilityUpdatePacket;
@@ -17,7 +16,6 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -25,10 +23,8 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
@@ -968,71 +964,22 @@ public class PlayerData implements IPlayerData {
         }
     }
 
-    private boolean checkClassLearnItem(ResourceLocation classId) {
-        ItemStack mainHandStack = player.getHeldItemMainhand();
-        if (mainHandStack.isEmpty())
-            return false;
-
-        PlayerClass baseClass = MKURegistry.getClass(classId);
-        if (baseClass == null)
-            return false;
-
-        Item mainHand = mainHandStack.getItem();
-        return mainHand == baseClass.getClassProvider();
+    @Override
+    public boolean learnClass(IClassProvider provider, ResourceLocation classId) {
+        return learnClass(provider, classId, true);
     }
 
-    private boolean checkClassLearnEntity(BlockPos pos, ResourceLocation classId){
-        TileEntity tileEntity = player.world.getTileEntity(pos);
-        if  (tileEntity == null){
-            return false;
-        }
-        PlayerClass baseClass = MKURegistry.getClass(classId);
-        if (baseClass == null){
-            return false;
-        }
-        if (tileEntity instanceof IClassProvider){
-            IClassProvider provider = (IClassProvider) tileEntity;
-            return provider.getIconForProvider().equals(baseClass.getClassProvider().getIconForProvider());
-        } else {
-            return false;
-        }
-
-    }
-
-    public boolean learnClassTileEntity(ResourceLocation classId, boolean enforceChecks, BlockPos pos){
+    public boolean learnClass(IClassProvider provider, ResourceLocation classId, boolean enforceChecks) {
         if (isClassKnown(classId)) {
             // Class was already known
             return true;
         }
 
-        if (enforceChecks && !checkClassLearnEntity(pos, classId))
+        PlayerClass playerClass = MKURegistry.getClass(classId);
+        if (playerClass == null)
             return false;
 
-        PlayerClassInfo info = new PlayerClassInfo(classId);
-        knownClasses.put(classId, info);
-        sendBulkClassUpdate();
-
-        // Learned class
-        return true;
-    }
-
-    @Override
-    public boolean learnClassItem(ResourceLocation classId) {
-        return learnClassItem(classId, true);
-    }
-
-    @Override
-    public boolean learnClassTileEntity(ResourceLocation classId, BlockPos pos) {
-        return learnClassTileEntity(classId, true, pos);
-    }
-
-    public boolean learnClassItem(ResourceLocation classId, boolean enforceChecks) {
-        if (isClassKnown(classId)) {
-            // Class was already known
-            return true;
-        }
-
-        if (enforceChecks && !checkClassLearnItem(classId))
+        if (enforceChecks && !provider.teachesClass(playerClass))
             return false;
 
         PlayerClassInfo info = new PlayerClassInfo(classId);
@@ -1044,18 +991,23 @@ public class PlayerData implements IPlayerData {
     }
 
     public void unlearnClass(ResourceLocation classId) {
-        if (isClassKnown(classId)) {
-            activateClass(MKURegistry.INVALID_CLASS);
-            knownClasses.remove(classId);
-
-            // Unlearn all abilities offered by this class
-            PlayerClass bc = MKURegistry.getClass(classId);
-            if (bc != null) {
-                bc.getAbilities().forEach(a -> unlearnAbility(a.getAbilityId(), false, true));
-            }
-
-            sendBulkClassUpdate();
+        if (!isClassKnown(classId)) {
+            return;
         }
+
+        // If it's the active class, switch to no class first
+        if (getClassId().compareTo(classId) == 0)
+            activateClass(MKURegistry.INVALID_CLASS);
+
+        knownClasses.remove(classId);
+
+        // Unlearn all abilities offered by this class
+        PlayerClass bc = MKURegistry.getClass(classId);
+        if (bc != null) {
+            bc.getAbilities().forEach(a -> unlearnAbility(a.getAbilityId(), false, true));
+        }
+
+        sendBulkClassUpdate();
     }
 
     private boolean isClassKnown(ResourceLocation classId) {

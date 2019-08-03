@@ -1,11 +1,8 @@
 package com.chaosbuffalo.mkultra.client.gui;
 
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.IPlayerData;
-import com.chaosbuffalo.mkultra.core.MKUPlayerData;
-import com.chaosbuffalo.mkultra.core.MKURegistry;
-import com.chaosbuffalo.mkultra.item.interfaces.IClassProvider;
-import com.chaosbuffalo.mkultra.network.packets.ClassLearnTileEntityPacket;
+import com.chaosbuffalo.mkultra.core.*;
+import com.chaosbuffalo.mkultra.network.packets.ClassLearnPacket;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
@@ -13,29 +10,31 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 
-public class ChooseClassFromTileEntityScreen extends GuiScreen {
+
+public abstract class ChooseClassScreen extends GuiScreen {
 
     private static final int PER_PAGE = 8;
     private boolean learning;
     private boolean enforceChecks;
     private List<ResourceLocation> classes;
     private int currentPage;
-    private TileEntity entity;
 
     private static int CHOOSE_BUTTON = 0;
     private static int NEXT_BUTTON = 1;
     private static int PREV_BUTTON = 2;
 
-    public ChooseClassFromTileEntityScreen(TileEntity tileProvider, boolean showAll, boolean enforceChecks) {
+    public ChooseClassScreen(boolean showAll, boolean enforceChecks) {
         currentPage = 0;
         this.learning = showAll;
         this.enforceChecks = enforceChecks;
-        this.entity = tileProvider;
     }
+
+    abstract IClassProvider getProvider();
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
@@ -52,8 +51,7 @@ public class ChooseClassFromTileEntityScreen extends GuiScreen {
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.renderEngine.bindTexture(loc);
         GL11.glDisable(GL11.GL_LIGHTING);
-        this.drawModalRectWithCustomSizedTexture(xPos, yPos, 0, 0, panelWidth, panelHeight,
-                256, 256);
+        drawModalRectWithCustomSizedTexture(xPos, yPos, 0, 0, panelWidth, panelHeight, 256, 256);
         int titleHeight = 15;
         this.fontRenderer.drawString("Choose Your Class: ", xPos + 15, yPos + 4, 8129636);
 
@@ -64,15 +62,18 @@ public class ChooseClassFromTileEntityScreen extends GuiScreen {
             return;
 
         boolean wasClassProvider = true;
-        String text;
-        if (entity instanceof IClassProvider) {
-            IClassProvider icon = (IClassProvider) entity;
-            text = icon.getClassSelectionText();
-        } else {
-            text = "You shouldn't see this.";
-            wasClassProvider = false;
+        IClassProvider provider = getProvider();
+        if (enforceChecks) {
+            String text;
+            if (provider != null) {
+                text = provider.getClassSelectionText();
+            } else {
+                text = "You shouldn't see this.";
+                wasClassProvider = false;
+            }
+
+            this.fontRenderer.drawSplitString(text, xPos + 15, yPos + titleHeight + 2 + 4, 220, 0);
         }
-        this.fontRenderer.drawSplitString(text, xPos + 15, yPos + titleHeight + 2 + 4, 220, 0);
         if (!wasClassProvider){
             return;
         }
@@ -85,7 +86,12 @@ public class ChooseClassFromTileEntityScreen extends GuiScreen {
         List<ResourceLocation> knownClasses = data.getKnownClasses();
 
         if (learning) {
-            classes = MKURegistry.getClassesForProvider((IClassProvider) entity);
+            if (enforceChecks) {
+                classes = provider.getClasses();
+            }
+            else {
+                classes = MKURegistry.getAllClasses();
+            }
         } else {
             classes = MKURegistry.getValidClasses(knownClasses);
         }
@@ -93,7 +99,7 @@ public class ChooseClassFromTileEntityScreen extends GuiScreen {
         boolean wasLarge = class_subset.size() > PER_PAGE;
         if (wasLarge){
             classes = class_subset.subList(PER_PAGE*currentPage,
-                    PER_PAGE*currentPage + Math.min(class_subset.size() - PER_PAGE*currentPage, PER_PAGE));
+                      PER_PAGE*currentPage + Math.min(class_subset.size() - PER_PAGE*currentPage, PER_PAGE));
         }
 
         // draw choose class buttons
@@ -131,12 +137,13 @@ public class ChooseClassFromTileEntityScreen extends GuiScreen {
         }
     }
 
+    abstract IMessage createPacket(ResourceLocation classId, boolean learning, boolean enforceChecks);
+
     @Override
     protected void actionPerformed(GuiButton button) {
         if (button.id == CHOOSE_BUTTON){
             ClassButton chooseButton = (ClassButton) button;
-            MKUltra.packetHandler.sendToServer(new ClassLearnTileEntityPacket(
-                    classes.get(chooseButton.classInteger), learning, enforceChecks, entity.getPos()));
+            MKUltra.packetHandler.sendToServer(createPacket(classes.get(chooseButton.classInteger), learning, enforceChecks));
             this.mc.displayGuiScreen(null);
             if (this.mc.currentScreen == null)
                 this.mc.setIngameFocus();
@@ -154,4 +161,38 @@ public class ChooseClassFromTileEntityScreen extends GuiScreen {
         return false;
     }
 
+    public static class FromItem extends ChooseClassScreen {
+
+        public FromItem(boolean showAll, boolean enforceChecks) {
+            super(showAll, enforceChecks);
+        }
+
+        @Override
+        IClassProvider getProvider() {
+            return IClassProvider.getProvider(mc.player.getHeldItemMainhand());
+        }
+
+        @Override
+        IMessage createPacket(ResourceLocation classId, boolean learning, boolean enforceChecks) {
+            return new ClassLearnPacket(classId, learning, enforceChecks);
+        }
+    }
+
+    public static class FromTE extends ChooseClassScreen {
+        TileEntity entity;
+        public FromTE(TileEntity tileProvider, boolean showAll, boolean enforceChecks) {
+            super(showAll, enforceChecks);
+            this.entity = tileProvider;
+        }
+
+        @Override
+        IClassProvider getProvider() {
+            return IClassProvider.getProvider(entity);
+        }
+
+        @Override
+        IMessage createPacket(ResourceLocation classId, boolean learning, boolean enforceChecks) {
+            return new ClassLearnPacket(classId, learning, enforceChecks, entity.getPos());
+        }
+    }
 }

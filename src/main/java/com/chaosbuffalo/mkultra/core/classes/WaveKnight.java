@@ -1,14 +1,9 @@
 package com.chaosbuffalo.mkultra.core.classes;
 
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.ArmorClass;
-import com.chaosbuffalo.mkultra.core.PlayerAbility;
-import com.chaosbuffalo.mkultra.core.PlayerClass;
+import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.core.abilities.*;
-import com.chaosbuffalo.mkultra.init.ModItems;
-import com.chaosbuffalo.mkultra.item.ClassIcon;
-import com.chaosbuffalo.mkultra.item.interfaces.IClassProvider;
-import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +12,7 @@ import java.util.List;
  * Created by Jacob on 3/25/2018.
  */
 public class WaveKnight extends PlayerClass {
+    public static ResourceLocation ID = new ResourceLocation(MKUltra.MODID, "class.wave_knight");
 
     private static final List<PlayerAbility> abilities = new ArrayList<>(5);
 
@@ -29,7 +25,7 @@ public class WaveKnight extends PlayerClass {
     }
 
     public WaveKnight() {
-        super(MKUltra.MODID, "class.wave_knight");
+        super(ID);
     }
 
     @Override
@@ -73,9 +69,7 @@ public class WaveKnight extends PlayerClass {
     }
 
     @Override
-    public IClassProvider getClassProvider() {
-        return (ClassIcon) ModItems.moon_icon;
+    public IClassClientData getClientData() {
+        return ClassClientData.MoonIcon.INSTANCE;
     }
-
 }
-

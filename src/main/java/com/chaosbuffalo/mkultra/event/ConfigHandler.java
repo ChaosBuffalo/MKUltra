@@ -3,6 +3,7 @@ package com.chaosbuffalo.mkultra.event;
 import com.chaosbuffalo.mkultra.MKConfig;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.ArmorClass;
+import com.chaosbuffalo.mkultra.core.ClassLists;
 import com.chaosbuffalo.mkultra.log.Log;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
@@ -21,6 +22,7 @@ public class ConfigHandler {
             ArmorClass.clearArmorClasses();
             MKConfig.registerArmors();
             MKConfig.setMaxHealthMax();
+            ClassLists.initFromConfig();
         }
     }
 }

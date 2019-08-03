@@ -5,7 +5,6 @@ import com.chaosbuffalo.mkultra.core.talents.TalentTreeRecord;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
 
 import java.util.List;
 
@@ -93,13 +92,15 @@ public interface IPlayerData {
 
     float getHealBonus();
 
-    boolean learnClassItem(ResourceLocation classId);
-
-    boolean learnClassTileEntity(ResourceLocation classId, BlockPos pos);
+    boolean learnClass(IClassProvider provider, ResourceLocation classId);
 
     void activateClass(ResourceLocation classId);
 
     List<ResourceLocation> getKnownClasses();
+
+    default boolean knowsClass(ResourceLocation classId) {
+        return getKnownClasses().contains(classId);
+    }
 
     void serialize(NBTTagCompound tag);
 

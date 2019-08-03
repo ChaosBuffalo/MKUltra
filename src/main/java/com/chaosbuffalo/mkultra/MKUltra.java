@@ -85,6 +85,7 @@ public class MKUltra {
         });
         ModSpawn.postInitJsonRegisistation();
         ModTalents.postInitJsonRegisistation();
+        ClassLists.initFromConfig();
         proxy.postInit(e);
         TalentUtils.loadAllAttributes();
     }
