@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:zombie",
+  "name": "Grasping Zombie",
+  "can_default_spawn": true,
+  "default_spawn_weight": 4.0,
+  "xp": 25,
+  "attributes": [
+    "mkultra:grunt_health",
+    "mkultra:melee_aggro",
+    "mkultra:follow_range"
+  ],
+  "item_options": [
+    "mkultra:grunt_helm",
+    "mkultra:grunt_chest"
+  ],
+  "abilities": [
+    "mkultra:mob_ability.grasping_touch"
+  ],
+  "ai_modifiers": [
+    "mkultra:remove_zombie_ai",
+    "mkultra:add_zombie_ai"
+  ]
+}

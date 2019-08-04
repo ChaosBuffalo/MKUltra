@@ -35,7 +35,7 @@ public class WildToxinTouch extends MobAbility {
 
     @Override
     public float getDistance() {
-        return 2.0f;
+        return 4.0f;
     }
 
     @Override

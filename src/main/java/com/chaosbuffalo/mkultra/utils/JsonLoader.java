@@ -42,6 +42,7 @@ public class JsonLoader {
                                                                   E registry){
 
         String path = MKUltra.config_loc + File.separator + baseDir + File.separator + mod.getModId() + File.separator + subFolder;
+        Log.info("Looking in %s for assets.", path);
         if (Files.isDirectory(Paths.get(path))) {
             try {
                 Files.walk(Paths.get(path))
@@ -79,7 +80,7 @@ public class JsonLoader {
                                             E event) {
         Loader.instance().setActiveModContainer(mod);
         String path = baseDir + File.separator + mod.getModId() + File.separator + subFolder;
-        Log.info("Looking in %s for spawn assets.", path);
+        Log.info("Looking in %s for assets.", path);
         return CraftingHelper.findFiles(mod, path,
                 root -> true,
                 (root, file) -> {

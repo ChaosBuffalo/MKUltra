@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:skeleton",
+  "name": "Skeletal Thrasher",
+  "can_default_spawn": true,
+  "default_spawn_weight": 3.0,
+  "xp": 60,
+  "attributes": [
+    "mkultra:captain_health",
+    "mkultra:melee_aggro",
+    "mkultra:follow_range"
+  ],
+  "item_options": [
+    "mkultra:captain_helm",
+    "mkultra:captain_chest",
+    "mkultra:iron_2h_weapons"
+  ],
+  "abilities": [
+    "mkultra:mob_ability.repulse",
+    "mkultra:mob_ability.power_word_summon",
+    "mkultra:mob_ability.warp_dash"
+  ],
+  "ai_modifiers": [
+    "mkultra:remove_skeleton_ai",
+    "mkultra:add_standard_ai"
+  ]
+}

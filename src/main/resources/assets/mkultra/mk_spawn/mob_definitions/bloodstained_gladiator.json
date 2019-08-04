@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:zombie",
+  "name": "A Blood-Stained Gladiator",
+  "can_default_spawn": true,
+  "default_spawn_weight": 2.0,
+  "xp": 100,
+  "attributes": [
+    "mkultra:boss_health",
+    "mkultra:boss_knockback_resist",
+    "mkultra:ranged_aggro",
+    "mkultra:follow_range",
+    "mkultra:slow_zombie_speed"
+  ],
+  "item_options": [
+    "mkultra:ancient_king_helm",
+    "mkultra:gladiator_legs",
+    "mkultra:iron_1h_weapons",
+    "mkultra:iron_1h_offhand_weapons"
+  ],
+  "abilities": [
+    "mkultra:mob_ability.furious_brooding",
+    "mkultra:mob_ability.grasping_touch",
+    "mkultra:mob_ability.yank",
+    "mkultra:mob_ability.haste",
+    "mkultra:mob_ability.wild_toxin_touch"
+  ],
+  "ai_modifiers": [
+    "mkultra:remove_zombie_ai",
+    "mkultra:add_zombie_ai"
+  ]
+}

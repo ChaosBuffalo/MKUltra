@@ -19,6 +19,7 @@ import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.IForgeRegistryModifiable;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -117,6 +118,10 @@ public class ModTalents {
             tree.addLine(lineName, talentLine.toArray(new TalentNode[0]));
         }
         Log.info("Registering Talent Tree: %s", name.toString());
+        if (registry instanceof IForgeRegistryModifiable){
+            IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) registry;
+            modRegistry.remove(name);
+        }
         registry.register(tree);
     }
 

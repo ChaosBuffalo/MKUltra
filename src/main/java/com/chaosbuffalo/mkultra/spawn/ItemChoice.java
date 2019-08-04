@@ -15,6 +15,6 @@ public class ItemChoice {
         this.dropChance = dropChance;
     }
     public ItemChoice(ItemStack item, double weight, int minLevel){
-        this(item, weight, minLevel, .05f);
+        this(item, weight, minLevel, .00f);
     }
 }

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:skeleton",
+  "name": "Skeletal Acolyte",
+  "can_default_spawn": true,
+  "default_spawn_weight": 10.0,
+  "xp": 25,
+  "attributes": [
+    "mkultra:grunt_health",
+    "mkultra:ranged_aggro",
+    "mkultra:follow_range"
+  ],
+  "item_options": [
+    "mkultra:mage_helm",
+    "mkultra:mage_chest",
+    "mkultra:iron_mage_weapons"
+  ],
+  "abilities": [
+    "mkultra:mob_ability.fireball"
+  ],
+  "ai_modifiers": [
+    "mkultra:remove_skeleton_ai",
+    "mkultra:add_standard_ai"
+  ]
+}

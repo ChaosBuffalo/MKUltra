@@ -158,13 +158,13 @@ public class PlayerClassScreen extends MKScreen {
             abilityList.addWidget(reqLev);
             abilityList.addWidget(description);
             MKButton upButton = new MKButton(panelX + DESCRIPTION_WIDTH + 2,
-                    panelY + mc.fontRenderer.FONT_HEIGHT + 2,
+                    panelY + (mc.fontRenderer.FONT_HEIGHT + 2) * 2,
                     20, 20, "+");
             upButton.setPressedCallback((MKButton button, Integer buttonType) -> pressUpButton(
                     button, buttonType, abilityIndex));
             abilityList.addWidget(upButton);
             MKButton downButton = new MKButton(panelX + DESCRIPTION_WIDTH + 2,
-                    panelY + mc.fontRenderer.FONT_HEIGHT + 2 + 24,
+                    panelY + (mc.fontRenderer.FONT_HEIGHT + 2) * 2 + 24,
                     20, 20, "-");
             downButton.setPressedCallback((MKButton button, Integer buttonType) -> pressDownButton(
                     button, buttonType, abilityIndex));
