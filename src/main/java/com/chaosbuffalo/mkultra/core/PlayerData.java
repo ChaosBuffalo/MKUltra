@@ -173,10 +173,10 @@ public class PlayerData implements IPlayerData {
             return;
         }
         PlayerClassInfo classInfo = getActiveClass();
-        if (player.experienceLevel >= classInfo.totalTalentPoints + 1){
+        if (player.experienceLevel >= classInfo.totalTalentPoints){
+            player.addExperienceLevel(-classInfo.totalTalentPoints);
             classInfo.totalTalentPoints += 1;
             classInfo.unspentTalentPoints += 1;
-            player.addExperienceLevel(-classInfo.totalTalentPoints);
             sendCurrentClassUpdate();
         }
     }
