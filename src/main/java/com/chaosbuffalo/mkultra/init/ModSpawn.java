@@ -30,6 +30,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.IForgeRegistryModifiable;
 
 import java.util.ArrayList;
 import java.util.function.BiConsumer;
@@ -274,6 +275,10 @@ public class ModSpawn {
         AttributeRange range = new AttributeRange(name, MKURegistry.getAttributeSetter(
                 new ResourceLocation(obj.get("setter").getAsString())),
                 obj.get("min_value").getAsDouble(), obj.get("max_value").getAsDouble());
+        if (registry instanceof IForgeRegistryModifiable){
+            IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) registry;
+            modRegistry.remove(name);
+        }
         registry.register(range);
     }
 
@@ -371,6 +376,10 @@ public class ModSpawn {
             }
         }
         ItemOption option = new ItemOption(name, assigner, choices.toArray(new ItemChoice[0]));
+        if (registry instanceof IForgeRegistryModifiable){
+            IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) registry;
+            modRegistry.remove(name);
+        }
         registry.register(option);
     }
 
@@ -407,6 +416,10 @@ public class ModSpawn {
             faction.setPlayerFriendly(isPlayerFriendly);
         }
         Log.info("Registered Faction %s", faction.getRegistryName().toString());
+        if (registry instanceof IForgeRegistryModifiable){
+            IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) registry;
+            modRegistry.remove(name);
+        }
         registry.register(faction);
     }
 
@@ -434,6 +447,10 @@ public class ModSpawn {
             choices.add(mobChoice);
         }
         SpawnList spawnList = new SpawnList(name).withOptions(choices.toArray(new MobChoice[0]));
+        if (registry instanceof IForgeRegistryModifiable){
+            IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) registry;
+            modRegistry.remove(name);
+        }
         registry.register(spawnList);
 
     }
@@ -556,6 +573,10 @@ public class ModSpawn {
                 Log.info("Adding spawn for: %s, %s", loc.toString(), definition.getRegistryName().toString());
                 DefaultSpawnIndex.addSpawn(loc, definition, definition.getDefaultSpawnWeight());
             }
+            if (registry instanceof IForgeRegistryModifiable){
+                IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) registry;
+                modRegistry.remove(name);
+            }
             registry.register(definition);
         } else {
             Log.info("%s  not an EntityLivingBase skipping mob definition %s",
@@ -600,12 +621,20 @@ public class ModSpawn {
                 }
                 Log.info("registering add task %s", name);
                 AIModifier ai_modifier = new AIModifier(name, modifier, choices.toArray(new BehaviorChoice[0]));
+                if (registry instanceof IForgeRegistryModifiable){
+                    IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) registry;
+                    modRegistry.remove(name);
+                }
                 registry.register(ai_modifier);
                 break;
             }
             case "REMOVE_ALL_TARGET_TASKS":
             case "REMOVE_ALL_TASKS": {
                 AIModifier ai_modifier = new AIModifier(name, modifier);
+                if (registry instanceof IForgeRegistryModifiable){
+                    IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) registry;
+                    modRegistry.remove(name);
+                }
                 registry.register(ai_modifier);
                 break;
             }
@@ -643,6 +672,10 @@ public class ModSpawn {
                 Log.info("registering remove task %s", name);
                 AIModifier remove_task = new AIModifier(name, AIModifiers.REMOVE_AI,
                         choices.toArray(new BehaviorChoice[0]));
+                if (registry instanceof IForgeRegistryModifiable){
+                    IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) registry;
+                    modRegistry.remove(name);
+                }
                 registry.register(remove_task);
             }
 

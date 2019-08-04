@@ -1,0 +1,15 @@
+{
+  "slot": "CHEST",
+  "choices": [
+    {
+      "item": "minecraft:iron_chestplate",
+      "weight": 5,
+      "min_level": 0
+    },
+    {
+      "item": "mkultra:chainmail_chestplate",
+      "weight": 5,
+      "min_level": 0
+    }
+  ]
+}

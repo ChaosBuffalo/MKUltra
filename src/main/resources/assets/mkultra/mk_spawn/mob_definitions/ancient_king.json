@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:zombie",
+  "name": "An Ancient King",
+  "can_default_spawn": true,
+  "default_spawn_weight": 1.0,
+  "additional_loot": "mkultra:entities/ancient_king",
+  "xp": 100,
+  "attributes": [
+    "mkultra:boss_health",
+    "mkultra:ranged_aggro",
+    "mkultra:follow_range",
+    "mkultra:boss_knockback_resist",
+    "mkultra:boss_armor",
+    "mkultra:slow_zombie_speed"
+  ],
+  "item_options": [
+    "mkultra:ancient_king_helm",
+    "mkultra:ancient_king_chest",
+    "mkultra:ancient_king_legs",
+    "mkultra:ancient_king_boots",
+    "mkultra:iron_2h_weapons"
+  ],
+  "abilities": [
+    "mkultra:mob_ability.flame_blade",
+    "mkultra:mob_ability.fire_immunity",
+    "mkultra:mob_ability.haste",
+    "mkultra:mob_ability.sprint",
+    "mkultra:mob_ability.grasping_touch",
+    "mkultra:mob_ability.yank"
+  ],
+  "ai_modifiers": [
+    "mkultra:remove_zombie_ai",
+    "mkultra:add_zombie_ai"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "slot": "CHEST",
+  "choices": [
+    {
+      "item": "mkultrax:diamond_dusted_invar_chestplate",
+      "weight": 5,
+      "min_level": 0
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "setter": "mkultra:movement_speed",
+  "min_value": 0.24,
+  "max_value": 0.30
+}

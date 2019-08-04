@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:zombie",
+  "name": "A Rotting Gladiator",
+  "can_default_spawn": true,
+  "default_spawn_weight": 5.0,
+  "xp": 40,
+  "attributes": [
+    "mkultra:captain_health",
+    "mkultra:ranged_aggro",
+    "mkultra:follow_range",
+    "mkultra:fast_zombie_speed"
+  ],
+  "item_options": [
+    "mkultra:ancient_king_helm",
+    "mkultra:cleric_chest",
+    "mkultra:iron_1h_weapons",
+    "mkultra:iron_1h_offhand_weapons"
+  ],
+  "abilities": [
+    "mkultra:mob_ability.grasping_touch",
+    "mkultra:mob_ability.yank"
+
+  ],
+  "ai_modifiers": [
+    "mkultra:remove_zombie_ai",
+    "mkultra:add_zombie_ai"
+  ]
+}

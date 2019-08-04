@@ -1,0 +1,10 @@
+{
+  "slot": "OFFHAND",
+  "choices": [
+    {
+      "item": "minecraft:shield",
+      "weight": 5,
+      "min_level": 0
+    }
+  ]
+}

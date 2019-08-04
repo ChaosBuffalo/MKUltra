@@ -1,0 +1,10 @@
+{
+  "slot": "HEAD",
+  "choices": [
+    {
+      "item": "mkultrax:diamond_dusted_invar_helmet",
+      "weight": 5,
+      "min_level": 0
+    }
+  ]
+}

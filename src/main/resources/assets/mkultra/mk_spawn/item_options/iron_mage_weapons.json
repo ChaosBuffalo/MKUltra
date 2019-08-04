@@ -1,0 +1,10 @@
+{
+  "slot": "MAINHAND",
+  "choices": [
+    {
+      "item": "spartanweaponry:dagger_iron",
+      "weight": 5,
+      "min_level": 0
+    }
+  ]
+}

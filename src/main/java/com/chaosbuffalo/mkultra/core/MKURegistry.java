@@ -155,24 +155,28 @@ public class MKURegistry {
                 .setName(new ResourceLocation(MKUltra.MODID, "mob_items"))
                 .setType(ItemOption.class)
                 .setIDRange(0, Integer.MAX_VALUE - 1)
+                .allowModification()
                 .create();
 
         REGISTRY_MOB_ATTRS = new RegistryBuilder<AttributeRange>()
                 .setName(new ResourceLocation(MKUltra.MODID, "mob_attr"))
                 .setType(AttributeRange.class)
                 .setIDRange(0, Integer.MAX_VALUE - 1)
+                .allowModification()
                 .create();
 
         REGISTRY_MOB_AI_MODS = new RegistryBuilder<AIModifier>()
                 .setName(new ResourceLocation(MKUltra.MODID, "mob_ai_mods"))
                 .setType(AIModifier.class)
                 .setIDRange(0, Integer.MAX_VALUE - 1)
+                .allowModification()
                 .create();
 
         REGISTRY_MOB_ABILITIES = new RegistryBuilder<MobAbility>()
                 .setName(new ResourceLocation(MKUltra.MODID, "mob_abilities"))
                 .setType(MobAbility.class)
                 .setIDRange(0, Integer.MAX_VALUE - 1)
+                .allowModification()
                 .create();
 
         // registries are alphabetical so we want to visit this one after all the other mob config ones
@@ -180,48 +184,56 @@ public class MKURegistry {
                 .setName(new ResourceLocation(MKUltra.MODID, "w_mob_def"))
                 .setType(MobDefinition.class)
                 .setIDRange(0, Integer.MAX_VALUE - 1)
+                .allowModification()
                 .create();
 
         REGISTRY_SPAWN_LISTS = new RegistryBuilder<SpawnList>()
                 .setName(new ResourceLocation(MKUltra.MODID, "x_mob_spawn_lists"))
                 .setType(SpawnList.class)
                 .setIDRange(0, Integer.MAX_VALUE - 1)
+                .allowModification()
                 .create();
 
         REGISTRY_MOB_FACTIONS = new RegistryBuilder<MobFaction>()
                 .setName(new ResourceLocation(MKUltra.MODID, "y_mob_factions"))
                 .setType(MobFaction.class)
                 .setIDRange(0, Integer.MAX_VALUE - 1)
+                .allowModification()
                 .create();
 
         REGISTRY_AI_GENERATORS = new RegistryBuilder<AIGenerator>()
                 .setName(new ResourceLocation(MKUltra.MODID, "mob_ai_generators"))
                 .setType(AIGenerator.class)
                 .setIDRange(0, Integer.MAX_VALUE - 1)
+                .allowModification()
                 .create();
 
         REGISTRY_ATTRIBUTE_SETTERS = new RegistryBuilder<AttributeSetter>()
                 .setName(new ResourceLocation(MKUltra.MODID, "mob_aattr_setters"))
                 .setType(AttributeSetter.class)
                 .setIDRange(0, Integer.MAX_VALUE - 1)
+                .allowModification()
                 .create();
 
         REGISTRY_CUSTOM_SETTERS = new RegistryBuilder<CustomSetter>()
                 .setName(new ResourceLocation(MKUltra.MODID, "mob_custom_setters"))
                 .setType(CustomSetter.class)
                 .setIDRange(0, Integer.MAX_VALUE - 1)
+                .allowModification()
                 .create();
 
         REGISTRY_TALENTS = new RegistryBuilder<BaseTalent>()
                 .setName(new ResourceLocation(MKUltra.MODID, "talents"))
                 .setType(BaseTalent.class)
                 .setIDRange(0, Integer.MAX_VALUE - 1)
+                .allowModification()
                 .create();
 
         REGISTRY_TALENT_TREES = new RegistryBuilder<TalentTree>()
                 .setName(new ResourceLocation(MKUltra.MODID, "talent_trees"))
                 .setType(TalentTree.class)
                 .setIDRange(0, Integer.MAX_VALUE - 1)
+                .allowModification()
                 .create();
     }
 }
