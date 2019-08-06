@@ -1,10 +1,16 @@
 package com.chaosbuffalo.mkultra.client.gui.lib;
 
 
+import com.chaosbuffalo.mkultra.core.IPlayerData;
+import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.google.common.collect.Lists;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraftforge.client.event.GuiScreenEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import org.lwjgl.input.Mouse;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,6 +37,24 @@ public class MKScreen extends GuiScreen {
         selectedWidgets = new HashMap<>();
         preDrawRunnables = new ArrayList<>();
         currentState = NO_STATE;
+        MinecraftForge.EVENT_BUS.register(this);
+    }
+
+    @SubscribeEvent
+    public void handleMouseScroll(GuiScreenEvent.MouseInputEvent.Pre event){
+        int i = Integer.signum(Mouse.getEventDWheel());
+        if (Mouse.getEventDWheel() != 0){
+            int x = Mouse.getEventX() * this.width / this.mc.displayWidth;
+            int y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
+            for (MKWidget child : reverseChildren){
+                if (!child.isVisible()){
+                    continue;
+                }
+                if (child.mouseScrollWheel(this.mc, x, y, i)){
+                    return;
+                }
+            }
+        }
     }
 
     @Override
@@ -136,6 +160,11 @@ public class MKScreen extends GuiScreen {
             }
         }
         return false;
+    }
+
+    @Override
+    public void onGuiClosed() {
+        MinecraftForge.EVENT_BUS.unregister(this);
     }
 
     @Override

@@ -32,6 +32,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryModifiable;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
@@ -59,23 +60,23 @@ public class ModSpawn {
 
     public static void postInitJsonRegisistation(){
         ModContainer old = Loader.instance().activeModContainer();
-        JsonLoader.loadModsForType("mk_spawn/attributes",
-                "mk_spawn_overrides", "assets",
+        JsonLoader.loadModsForType("mk_spawn" + File.separator + "attributes",
+                "mk_overrides", "assets",
                 ModSpawn::loadAttribute, MKURegistry.REGISTRY_MOB_ATTRS);
-        JsonLoader.loadModsForType("mk_spawn/item_options",
-                "mk_spawn_overrides", "assets",
+        JsonLoader.loadModsForType("mk_spawn" + File.separator + "item_options",
+                "mk_overrides", "assets",
                 ModSpawn::loadItemOption, MKURegistry.REGISTRY_MOB_ITEMS);
-        JsonLoader.loadModsForType("mk_spawn/ai_modifiers",
-                "mk_spawn_overrides", "assets",
+        JsonLoader.loadModsForType("mk_spawn" + File.separator + "ai_modifiers",
+                "mk_overrides", "assets",
                 ModSpawn::loadAIModifier, MKURegistry.REGISTRY_MOB_AI_MODS);
-        JsonLoader.loadModsForType("mk_spawn/mob_definitions",
-                "mk_spawn_overrides", "assets",
+        JsonLoader.loadModsForType("mk_spawn" + File.separator + "mob_definitions",
+                "mk_overrides", "assets",
                 ModSpawn::loadMobDefinition, MKURegistry.REGISTRY_MOB_DEF);
-        JsonLoader.loadModsForType("mk_spawn/spawn_lists",
-                "mk_spawn_overrides", "assets",
+        JsonLoader.loadModsForType("mk_spawn" + File.separator + "spawn_lists",
+                "mk_overrides", "assets",
                 ModSpawn::loadSpawnList, MKURegistry.REGISTRY_SPAWN_LISTS);
-        JsonLoader.loadModsForType("mk_spawn/mob_factions",
-                "mk_spawn_overrides", "assets",
+        JsonLoader.loadModsForType("mk_spawn" + File.separator + "mob_factions",
+                "mk_overrides", "assets",
                 ModSpawn::loadMobFactions, MKURegistry.REGISTRY_MOB_FACTIONS);
         Loader.instance().setActiveModContainer(old);
     }

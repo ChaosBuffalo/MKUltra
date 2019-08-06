@@ -21,6 +21,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryModifiable;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -61,8 +62,8 @@ public class ModTalents {
 
     public static void postInitJsonRegisistation(){
         ModContainer old = Loader.instance().activeModContainer();
-        JsonLoader.loadModsForType("mk_talents/trees",
-                "mk_talent_overrides", "assets",
+        JsonLoader.loadModsForType("mk_talents" + File.separator + "trees",
+                "mk_overrides", "assets",
                 ModTalents::loadTalentTree, MKURegistry.REGISTRY_TALENT_TREES);
         Loader.instance().setActiveModContainer(old);
     }
