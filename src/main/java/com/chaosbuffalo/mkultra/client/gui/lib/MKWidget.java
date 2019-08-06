@@ -133,6 +133,25 @@ public class MKWidget extends Gui {
         return parent;
     }
 
+    public boolean onMouseScrollWheel(Minecraft minecraft, int mouseX, int mouseY, int direction){
+        return false;
+    }
+
+    public boolean mouseScrollWheel(Minecraft minecraft, int mouseX, int mouseY, int direction){
+        if (!this.isEnabled() || !this.isVisible() || !this.isInBounds(mouseX, mouseY)){
+            return false;
+        }
+        for (MKWidget child : reverseChildren){
+            if (child.mouseScrollWheel(minecraft, mouseX, mouseY, direction)){
+                return true;
+            }
+        }
+        if (onMouseScrollWheel(minecraft, mouseX, mouseY, direction)){
+            return true;
+        }
+        return false;
+    }
+
     public boolean mouseDragged(Minecraft minecraft, int mouseX, int mouseY, int mouseButton) {
         for (MKWidget child : reverseChildren){
             if (child.mouseDragged(minecraft, mouseX, mouseY, mouseButton)){
@@ -225,6 +244,10 @@ public class MKWidget extends Gui {
         }
     }
 
+    public void preDraw(Minecraft mc, int x, int y, int width, int height, int mouseX, int mouseY, float partialTicks) {
+
+    }
+
     public void draw(Minecraft mc, int x, int y, int width, int height, int mouseX, int mouseY, float partialTicks) {
 
     }
@@ -259,6 +282,7 @@ public class MKWidget extends Gui {
 
 
     public void drawWidget(Minecraft mc, int mouseX, int mouseY, float partialTicks){
+        preDraw(mc, x, y, width, height, mouseX, mouseY, partialTicks);
         draw(mc, x, y, width, height, mouseX, mouseY, partialTicks);
         for (MKWidget child : children){
             if (child.isVisible()){

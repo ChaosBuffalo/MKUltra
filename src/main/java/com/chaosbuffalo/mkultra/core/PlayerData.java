@@ -30,6 +30,7 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.*;
 
 public class PlayerData implements IPlayerData {
@@ -107,6 +108,7 @@ public class PlayerData implements IPlayerData {
         }
     }
 
+    @Nullable
     private PlayerClassInfo getActiveClass() {
         return knownClasses.get(getClassId());
     }
@@ -122,6 +124,9 @@ public class PlayerData implements IPlayerData {
     @Override
     public boolean spendTalentPoint(ResourceLocation talentTree, String line, int index){
         PlayerClassInfo classInfo = getActiveClass();
+        if (classInfo == null){
+            return false;
+        }
         boolean didSpend = false;
 //        Log.info("In spend talent point %d", classInfo.unspentTalentPoints);
         if (classInfo.unspentTalentPoints > 0){
@@ -140,6 +145,9 @@ public class PlayerData implements IPlayerData {
     @Override
     public boolean refundTalentPoint(ResourceLocation talentTree, String line, int index){
         PlayerClassInfo classInfo = getActiveClass();
+        if (classInfo == null){
+            return false;
+        }
         boolean didSpend = classInfo.refundTalentPoint(player, talentTree, line, index);
         if (didSpend){
             updateTalents();
@@ -173,6 +181,9 @@ public class PlayerData implements IPlayerData {
             return;
         }
         PlayerClassInfo classInfo = getActiveClass();
+        if (classInfo == null){
+            return;
+        }
         if (player.experienceLevel >= classInfo.totalTalentPoints){
             player.addExperienceLevel(-classInfo.totalTalentPoints);
             classInfo.totalTalentPoints += 1;
@@ -187,6 +198,9 @@ public class PlayerData implements IPlayerData {
             return 0;
         }
         PlayerClassInfo classInfo = getActiveClass();
+        if (classInfo == null){
+            return 0;
+        }
         return classInfo.totalTalentPoints;
     }
 
@@ -195,6 +209,9 @@ public class PlayerData implements IPlayerData {
             return false;
         }
         PlayerClassInfo classInfo = getActiveClass();
+        if (classInfo == null){
+            return false;
+        }
         int spent = classInfo.getTotalSpentPoints();
         if (classInfo.totalTalentPoints - spent != classInfo.unspentTalentPoints){
             classInfo.unspentTalentPoints = classInfo.totalTalentPoints - spent;
@@ -209,6 +226,9 @@ public class PlayerData implements IPlayerData {
             return 0;
         }
         PlayerClassInfo classInfo = getActiveClass();
+        if (classInfo == null){
+            return 0;
+        }
         return classInfo.unspentTalentPoints;
     }
 
@@ -218,6 +238,9 @@ public class PlayerData implements IPlayerData {
             return null;
         }
         PlayerClassInfo classInfo = getActiveClass();
+        if (classInfo == null){
+            return null;
+        }
         return classInfo.getTalentTree(loc);
     }
 
@@ -243,6 +266,9 @@ public class PlayerData implements IPlayerData {
             return;
         }
         PlayerClassInfo activeClass = getActiveClass();
+        if (activeClass == null){
+            return;
+        }
         activeClass.applyAttributesModifiersToPlayer(player);
     }
 
@@ -785,9 +811,12 @@ public class PlayerData implements IPlayerData {
 
     private void sendCurrentClassUpdate() {
         if (isServerSide()){
-            ArrayList<PlayerClassInfo> infos = new ArrayList<>();
-            infos.add(getActiveClass());
-            MKUltra.packetHandler.sendTo(new ClassUpdatePacket(infos, false), (EntityPlayerMP) player);
+            PlayerClassInfo activeClass = getActiveClass();
+            if (activeClass != null){
+                ArrayList<PlayerClassInfo> infos = new ArrayList<>();
+                infos.add(getActiveClass());
+                MKUltra.packetHandler.sendTo(new ClassUpdatePacket(infos, false), (EntityPlayerMP) player);
+            }
         }
     }
 

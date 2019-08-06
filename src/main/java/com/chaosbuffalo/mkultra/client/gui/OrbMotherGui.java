@@ -45,6 +45,7 @@ public class OrbMotherGui extends MKScreen {
 
     @Override
     public void onGuiClosed() {
+        super.onGuiClosed();
         IPlayerData data = MKUPlayerData.get(player);
         if (data != null) {
             data.unsubscribeGuiToClassUpdates(this::flagNeedSetup);

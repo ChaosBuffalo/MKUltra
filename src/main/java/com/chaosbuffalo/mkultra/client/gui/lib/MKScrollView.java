@@ -2,6 +2,12 @@ package com.chaosbuffalo.mkultra.client.gui.lib;
 
 import com.chaosbuffalo.mkultra.log.Log;
 import net.minecraft.client.Minecraft;
+import net.minecraftforge.client.event.GuiScreenEvent;
+import net.minecraftforge.client.event.MouseEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.InputEvent;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nullable;
@@ -23,6 +29,7 @@ public class MKScrollView extends MKWidget{
     private boolean doScrollX;
     private boolean doScrollY;
     private boolean drawScrollBars;
+    private int SCROLL_VELOCITY = 10;
     private static final int SCROLL_BAR_WIDTH = 1;
 
     public MKScrollView(int x, int y, int width, int height, int screenWidth, int screenHeight, int scaleFactor,
@@ -51,6 +58,19 @@ public class MKScrollView extends MKWidget{
     public MKScrollView setDrawScrollBars(boolean value){
         drawScrollBars = value;
         return this;
+    }
+
+    @Override
+    public boolean onMouseScrollWheel(Minecraft minecraft, int mouseX, int mouseY, int direction) {
+        int dY = direction * SCROLL_VELOCITY;
+        if (isScrollLockOn()){
+            MKWidget child = getChild();
+            if (child != null){
+                dY = lockScrollY(child, dY);
+            }
+        }
+        offsetY += dY;
+        return true;
     }
 
     public boolean shouldDrawScrollbars(){
