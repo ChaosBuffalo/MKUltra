@@ -116,16 +116,20 @@ public abstract class SpellPotionBase extends Potion {
 
     @Override
     public void removeAttributesModifiersFromEntity(EntityLivingBase target, @Nonnull AbstractAttributeMap attributes, int amplifier) {
-
-        if (!target.world.isRemote || !isServerSideOnly()) {
-            SpellCast cast = SpellManager.get(target, this);
-            if (cast != null) {
-                onPotionRemove(cast, target, attributes, amplifier);
+        if (shouldPotionRemove(target, attributes, amplifier)){
+            if (!target.world.isRemote || !isServerSideOnly()) {
+                SpellCast cast = SpellManager.get(target, this);
+                if (cast != null) {
+                    onPotionRemove(cast, target, attributes, amplifier);
+                }
             }
+            // Called on removal
+            super.removeAttributesModifiersFromEntity(target, attributes, amplifier);
         }
+    }
 
-        // Called on removal
-        super.removeAttributesModifiersFromEntity(target, attributes, amplifier);
+    public boolean shouldPotionRemove(EntityLivingBase target, @Nonnull AbstractAttributeMap attributes, int amplifier){
+        return true;
     }
 
     public void onPotionAdd(SpellCast cast, EntityLivingBase target, AbstractAttributeMap attributes, int amplifier) {

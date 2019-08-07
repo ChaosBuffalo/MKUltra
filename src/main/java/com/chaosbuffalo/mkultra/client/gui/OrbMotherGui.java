@@ -113,7 +113,6 @@ public class OrbMotherGui extends MKScreen {
                 .setPaddingBot(4);
         IPlayerData data = MKUPlayerData.get(player);
         if (data != null){
-//            data.subscribeGuiToClassUpdates(this::flagNeedSetup);
             String unspentText = String.format("Unspent Points: %d", data.getUnspentTalentPoints());
             MKWidget unspentPoints = new MKText(mc.fontRenderer, unspentText)
                     .setColor(8129636);
@@ -142,7 +141,6 @@ public class OrbMotherGui extends MKScreen {
                     .setX(backButton.getRight() + 10)
                     .setY(backButton.getTop() + backButton.getHeight() / 2);
             treeRoot.addWidget(unspentPointsTree);
-
         }
         selectRoot.addWidget(textLayout);
         int ltop = textLayout.getY() + textLayout.getHeight();

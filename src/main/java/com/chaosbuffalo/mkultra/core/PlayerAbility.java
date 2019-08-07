@@ -22,6 +22,7 @@ public abstract class PlayerAbility extends IForgeRegistryEntry.Impl<PlayerAbili
 
     public static final int ACTIVE_ABILITY = 0;
     public static final int TOGGLE_ABILITY = 1;
+    public static final int PASSIVE_ABILITY = 2;
 
     private ResourceLocation abilityId;
 
