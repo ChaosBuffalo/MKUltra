@@ -3,6 +3,7 @@ package com.chaosbuffalo.mkultra.client.gui.lib;
 
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
+import com.chaosbuffalo.mkultra.core.events.client.PlayerDataUpdateEvent;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.google.common.collect.Lists;
 import net.minecraft.client.Minecraft;
