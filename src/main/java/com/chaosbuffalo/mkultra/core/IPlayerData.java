@@ -130,7 +130,4 @@ public interface IPlayerData {
 
     TalentTreeRecord getTalentTree(ResourceLocation loc);
 
-    void subscribeGuiToClassUpdates(Runnable cb);
-
-    void unsubscribeGuiToClassUpdates(Runnable cb);
 }

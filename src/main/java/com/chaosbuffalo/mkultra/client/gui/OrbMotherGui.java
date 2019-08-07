@@ -5,9 +5,9 @@ import com.chaosbuffalo.mkultra.client.gui.lib.*;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.core.MKURegistry;
+import com.chaosbuffalo.mkultra.core.events.client.PlayerDataUpdateEvent;
 import com.chaosbuffalo.mkultra.core.talents.TalentRecord;
 import com.chaosbuffalo.mkultra.core.talents.TalentTreeRecord;
-import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.network.packets.AddRemoveTalentPointPacket;
 import com.chaosbuffalo.mkultra.network.packets.AddTalentRequestPacket;
 import com.chaosbuffalo.mkultra.tiles.TileEntityNPCSpawner;
@@ -17,15 +17,12 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-@Mod.EventBusSubscriber(Side.CLIENT)
 public class OrbMotherGui extends MKScreen {
 
     private EntityPlayer player;
@@ -43,13 +40,9 @@ public class OrbMotherGui extends MKScreen {
         treeView = null;
     }
 
-    @Override
-    public void onGuiClosed() {
-        super.onGuiClosed();
-        IPlayerData data = MKUPlayerData.get(player);
-        if (data != null) {
-            data.unsubscribeGuiToClassUpdates(this::flagNeedSetup);
-        }
+    @SubscribeEvent
+    public void handlePlayerDataUpdate(PlayerDataUpdateEvent event){
+        this.flagNeedSetup();
     }
 
     @Override
@@ -120,7 +113,7 @@ public class OrbMotherGui extends MKScreen {
                 .setPaddingBot(4);
         IPlayerData data = MKUPlayerData.get(player);
         if (data != null){
-            data.subscribeGuiToClassUpdates(this::flagNeedSetup);
+//            data.subscribeGuiToClassUpdates(this::flagNeedSetup);
             String unspentText = String.format("Unspent Points: %d", data.getUnspentTalentPoints());
             MKWidget unspentPoints = new MKText(mc.fontRenderer, unspentText)
                     .setColor(8129636);
@@ -167,7 +160,6 @@ public class OrbMotherGui extends MKScreen {
             MKButton locButton = new MKButton(I18n.format(String.format("%s.%s.name",
                     loc.getNamespace(), loc.getPath())));
             locButton.setPressedCallback((MKButton button, Integer mouseButton)-> {
-                Log.info("Tree list clicked %s", loc.toString());
                 selectedTree = loc;
                 IPlayerData pdata = MKUPlayerData.get(player);
                 if (pdata != null){
