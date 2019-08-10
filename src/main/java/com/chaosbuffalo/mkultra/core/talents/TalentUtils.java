@@ -1,5 +1,7 @@
 package com.chaosbuffalo.mkultra.core.talents;
 
+import com.chaosbuffalo.mkultra.core.IPlayerData;
+import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.core.MKURegistry;
 import com.google.common.collect.Maps;
 import net.minecraft.entity.ai.attributes.AbstractAttributeMap;
@@ -8,6 +10,7 @@ import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -30,6 +33,19 @@ public class TalentUtils {
             IAttributeInstance iattributeinstance = abstractAttributeMap.getAttributeInstance(entry.getKey());
             if (iattributeinstance != null) {
                 iattributeinstance.removeModifier(entry.getValue());
+            }
+        }
+    }
+
+    public static void removeAllPassiveTalents(EntityPlayer player){
+        ArrayList<PassiveAbilityTalent> passiveTalents = MKURegistry.getAllPassiveTalents();
+        IPlayerData data = MKUPlayerData.get(player);
+        if (data == null){
+            return;
+        }
+        for (PassiveAbilityTalent talent : passiveTalents){
+            if (player.isPotionActive(talent.getAbility().getPassiveEffect())){
+                talent.getAbility().removeEffect(player, data, player.world);
             }
         }
     }

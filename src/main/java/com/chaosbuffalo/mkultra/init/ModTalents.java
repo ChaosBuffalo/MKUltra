@@ -99,14 +99,18 @@ public class ModTalents {
                 if (talent != null){
                     switch (talent.getTalentType()){
                         case ATTRIBUTE:
-                            String[] extraAttrKeys = {"value"};
-                            if (!JsonLoader.checkKeysExist(extraAttrKeys, talentObj)){
+                            String[] attrKeys = {"value"};
+                            if (!JsonLoader.checkKeysExist(attrKeys, talentObj)){
                                 Log.info("Skipping attribute missing extra keys.");
                                 break;
                             }
                             AttributeTalentNode attrNode = new AttributeTalentNode(
                                     (RangedAttributeTalent) talent, maxPoints, talentObj.get("value").getAsDouble());
                             talentLine.add(attrNode);
+                            break;
+                        case PASSIVE:
+                            TalentNode node = new TalentNode(talent, maxPoints);
+                            talentLine.add(node);
                             break;
                         default:
                             Log.info("Type %s not implemented, skipping talent parsing",

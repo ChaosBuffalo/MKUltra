@@ -3,6 +3,7 @@ package com.chaosbuffalo.mkultra.core;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.talents.BaseTalent;
+import com.chaosbuffalo.mkultra.core.talents.PassiveAbilityTalent;
 import com.chaosbuffalo.mkultra.core.talents.RangedAttributeTalent;
 import com.chaosbuffalo.mkultra.core.talents.TalentTree;
 import com.chaosbuffalo.mkultra.spawn.*;
@@ -109,6 +110,17 @@ public class MKURegistry {
         }
         return talents;
     }
+
+    public static ArrayList<PassiveAbilityTalent> getAllPassiveTalents(){
+        ArrayList<PassiveAbilityTalent> talents = new ArrayList<>();
+        for (BaseTalent talent : REGISTRY_TALENTS.getValuesCollection()){
+            if (talent.getTalentType() == BaseTalent.TalentType.PASSIVE){
+                talents.add((PassiveAbilityTalent) talent);
+            }
+        }
+        return talents;
+    }
+
 
     public static List<ResourceLocation> getValidClasses(Collection<ResourceLocation> classes) {
         return REGISTRY_CLASSES.getKeys().stream()

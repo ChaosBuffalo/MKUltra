@@ -165,6 +165,25 @@ public class TalentTreeRecord {
         return count;
     }
 
+    public HashSet<PassiveAbilityTalent> getPassivesWithPoints(){
+        HashSet<PassiveAbilityTalent> talents = new HashSet<>();
+        for (String key : records.keySet()) {
+            if (hasPointsInLine(key)) {
+                ArrayList<TalentRecord> line = records.get(key);
+                for (TalentRecord rec : line) {
+                    if (rec.getRank() == 0) {
+                        break;
+                    } else {
+                        if (rec.getNode().getTalentType() == BaseTalent.TalentType.PASSIVE){
+                            talents.add((PassiveAbilityTalent) rec.getNode().getTalent());
+                        }
+                    }
+                }
+            }
+        }
+        return talents;
+    }
+
     public HashSet<RangedAttributeTalent> getAttributeTalentsWithPoints(){
         HashSet<RangedAttributeTalent> talents = new HashSet<>();
         for (String key : records.keySet()) {

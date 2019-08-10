@@ -18,7 +18,7 @@ import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public abstract class PlayerAbility extends IForgeRegistryEntry.Impl<PlayerAbility> {
+public abstract class  PlayerAbility extends IForgeRegistryEntry.Impl<PlayerAbility> {
 
     public static final int ACTIVE_ABILITY = 0;
     public static final int TOGGLE_ABILITY = 1;

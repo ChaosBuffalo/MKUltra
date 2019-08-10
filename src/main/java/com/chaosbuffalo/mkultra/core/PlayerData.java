@@ -733,7 +733,7 @@ public class PlayerData implements IPlayerData {
         healthRegenTime += 1. / 20.;
         float i_regen = 3.0f / this.getHealthRegenRate();
         if (healthRegenTime >= i_regen) {
-            if (this.getHealth() < this.getTotalHealth()) {
+            if (this.getHealth() > 0 && this.getHealth() < this.getTotalHealth()) {
                 this.setHealth(this.getHealth() + 1);
             }
             healthRegenTime -= i_regen;

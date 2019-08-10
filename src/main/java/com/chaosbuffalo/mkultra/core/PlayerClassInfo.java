@@ -1,12 +1,10 @@
 package com.chaosbuffalo.mkultra.core;
 
 import com.chaosbuffalo.mkultra.GameConstants;
-import com.chaosbuffalo.mkultra.core.talents.BaseTalent;
-import com.chaosbuffalo.mkultra.core.talents.RangedAttributeTalent;
-import com.chaosbuffalo.mkultra.core.talents.TalentTree;
-import com.chaosbuffalo.mkultra.core.talents.TalentTreeRecord;
+import com.chaosbuffalo.mkultra.core.talents.*;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.google.common.collect.Maps;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.attributes.AbstractAttributeMap;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttribute;
@@ -16,6 +14,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
 import java.util.*;
@@ -29,7 +28,7 @@ public class PlayerClassInfo {
     public HashMap<ResourceLocation, TalentTreeRecord> talentTrees;
     private ResourceLocation[] hotbar;
     private Deque<ResourceLocation> spendOrder;
-
+    private HashSet<PlayerPassiveAbility> passiveAbilities;
 
     public PlayerClassInfo(ResourceLocation classId) {
         this.classId = classId;
@@ -37,6 +36,7 @@ public class PlayerClassInfo {
         this.unspentPoints = 1;
         this.totalTalentPoints = 0;
         this.unspentTalentPoints = 0;
+        passiveAbilities = new HashSet<>();
         hotbar = new ResourceLocation[GameConstants.ACTION_BAR_SIZE];
         Arrays.fill(hotbar, MKURegistry.INVALID_ABILITY);
         spendOrder = new ArrayDeque<>(GameConstants.MAX_CLASS_LEVEL);
@@ -54,6 +54,30 @@ public class PlayerClassInfo {
             arr[i] = new ResourceLocation(list.getStringTagAt(i));
         }
         return arr;
+    }
+
+    public void applyPassives(EntityPlayer player, IPlayerData data, World world){
+        for (PlayerPassiveAbility ability : passiveAbilities){
+            ability.execute(player, data, world);
+        }
+    }
+
+    public void loadPassiveAbilitiesFromTree(){
+        passiveAbilities = getPassiveAbilitiesFromTalents();
+    }
+
+    public HashSet<PlayerPassiveAbility> getPassiveAbilitiesFromTalents(){
+        HashSet<PlayerPassiveAbility> abilities = new HashSet<>();
+        for (ResourceLocation loc : talentTrees.keySet()) {
+            TalentTreeRecord rec = talentTrees.get(loc);
+            if (rec.hasPointsInTree()) {
+                HashSet<PassiveAbilityTalent> talents = rec.getPassivesWithPoints();
+                talents.forEach((PassiveAbilityTalent talent) -> {
+                   abilities.add(talent.getAbility());
+                });
+            }
+        }
+        return abilities;
     }
 
     public HashSet<RangedAttributeTalent> getAttributeTalentSet(){
@@ -124,8 +148,6 @@ public class PlayerClassInfo {
             }
         }
     }
-
-
 
     private void writeNBTAbilityArray(NBTTagCompound tag, String name, Collection<ResourceLocation> array, int size) {
         NBTTagList list = new NBTTagList();
