@@ -114,6 +114,10 @@ public abstract class SpellPotionBase extends Potion {
         super.applyAttributesModifiersToEntity(target, attributes, amplifier);
     }
 
+    public boolean shouldPotionRemove(EntityLivingBase target, int amplifier){
+        return true;
+    }
+
     @Override
     public void removeAttributesModifiersFromEntity(EntityLivingBase target, @Nonnull AbstractAttributeMap attributes, int amplifier) {
         if (!target.world.isRemote || !isServerSideOnly()) {

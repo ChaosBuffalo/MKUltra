@@ -4,7 +4,7 @@ import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.events.client.PlayerDataUpdateEvent;
 import com.chaosbuffalo.mkultra.core.talents.TalentTreeRecord;
-import com.chaosbuffalo.mkultra.core.talents.TalentUtils;
+import com.chaosbuffalo.mkultra.utils.TalentUtils;
 import com.chaosbuffalo.mkultra.event.ItemRestrictionHandler;
 import com.chaosbuffalo.mkultra.item.ItemHelper;
 import com.chaosbuffalo.mkultra.item.ManaRegenIdol;

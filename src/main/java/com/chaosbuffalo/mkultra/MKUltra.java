@@ -2,7 +2,7 @@ package com.chaosbuffalo.mkultra;
 
 import com.chaosbuffalo.mkultra.command.MKCommand;
 import com.chaosbuffalo.mkultra.core.*;
-import com.chaosbuffalo.mkultra.core.talents.TalentUtils;
+import com.chaosbuffalo.mkultra.utils.TalentUtils;
 import com.chaosbuffalo.mkultra.init.*;
 import com.chaosbuffalo.mkultra.item.MKUltraTab;
 import com.chaosbuffalo.mkultra.log.Log;

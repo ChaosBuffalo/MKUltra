@@ -1,14 +1,17 @@
-package com.chaosbuffalo.mkultra.core.talents;
+package com.chaosbuffalo.mkultra.utils;
 
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.core.MKURegistry;
+import com.chaosbuffalo.mkultra.core.talents.PassiveAbilityTalent;
+import com.chaosbuffalo.mkultra.core.talents.RangedAttributeTalent;
 import com.google.common.collect.Maps;
 import net.minecraft.entity.ai.attributes.AbstractAttributeMap;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.potion.PotionEffect;
 
 import java.util.ArrayList;
 import java.util.Iterator;

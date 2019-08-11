@@ -31,7 +31,6 @@ public abstract class PlayerPassiveAbility  extends PlayerAbility {
     public abstract void applyEffect(EntityPlayer entity, IPlayerData pData, World theWorld);
 
     public void removeEffect(EntityPlayer entity, IPlayerData pData, World theWorld) {
-        getPassiveEffect().markForCleanup(entity);
         entity.removePotionEffect(getPassiveEffect());
     }
 
