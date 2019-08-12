@@ -109,17 +109,6 @@ public class PlayerClassInfo {
         return attributeTalents;
     }
 
-    public Map<IAttribute, AttributeModifier> getAttributeModifiersForRemoval() {
-        HashSet<RangedAttributeTalent> presentTalents = getAttributeTalentSet();
-        Map<IAttribute, AttributeModifier> attributeModifierMap = Maps.newHashMap();
-        for (RangedAttributeTalent talent : presentTalents) {
-            AttributeModifier mod = new AttributeModifier(talent.getUUID(),
-                    talent.getRegistryName().toString(), 1.0, talent.getOp());
-            attributeModifierMap.put(talent.getAttribute(), mod);
-        }
-        return attributeModifierMap;
-    }
-
     public Map<IAttribute, AttributeModifier> getAttributeModifiers(){
         HashSet<RangedAttributeTalent> presentTalents = getAttributeTalentSet();
         Map<IAttribute, AttributeModifier> attributeModifierMap = Maps.newHashMap();
@@ -140,29 +129,25 @@ public class PlayerClassInfo {
     }
 
     public void applyAttributesModifiersToPlayer(EntityPlayer player) {
-        Iterator modIterator = getAttributeModifiers().entrySet().iterator();
-        AbstractAttributeMap abstractAttributeMap = player.getAttributeMap();
+        AbstractAttributeMap attributeMap = player.getAttributeMap();
 
-        while(modIterator.hasNext()) {
-            Map.Entry<IAttribute, AttributeModifier> entry = (Map.Entry)modIterator.next();
-            IAttributeInstance iattributeinstance = abstractAttributeMap.getAttributeInstance(entry.getKey());
-            if (iattributeinstance != null) {
+        for (Map.Entry<IAttribute, AttributeModifier> entry : getAttributeModifiers().entrySet()) {
+            IAttributeInstance instance = attributeMap.getAttributeInstance(entry.getKey());
+            if (instance != null) {
                 AttributeModifier attributemodifier = entry.getValue();
-                iattributeinstance.removeModifier(attributemodifier);
-                iattributeinstance.applyModifier(attributemodifier);
+                instance.removeModifier(attributemodifier);
+                instance.applyModifier(attributemodifier);
             }
         }
     }
 
     public void removeAttributesModifiersFromPlayer(EntityPlayer player) {
-        Iterator modIterator = getAttributeModifiersForRemoval().entrySet().iterator();
-        AbstractAttributeMap abstractAttributeMap = player.getAttributeMap();
+        AbstractAttributeMap attributeMap = player.getAttributeMap();
 
-        while(modIterator.hasNext()) {
-            Map.Entry<IAttribute, AttributeModifier> entry = (Map.Entry)modIterator.next();
-            IAttributeInstance iattributeinstance = abstractAttributeMap.getAttributeInstance(entry.getKey());
-            if (iattributeinstance != null) {
-                iattributeinstance.removeModifier(entry.getValue());
+        for (RangedAttributeTalent entry : getAttributeTalentSet()) {
+            IAttributeInstance instance = attributeMap.getAttributeInstance(entry.getAttribute());
+            if (instance != null) {
+                instance.removeModifier(entry.getUUID());
             }
         }
     }
