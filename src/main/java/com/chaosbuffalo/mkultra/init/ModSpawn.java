@@ -58,6 +58,16 @@ public class ModSpawn {
         levelChances.add(1.0, 10);
     }
 
+    public static void addMobDefinitionsToDefaultSpawnIndex(){
+        for (MobDefinition def : MKURegistry.REGISTRY_MOB_DEF) {
+            if (def.getCanDefaultSpawn()) {
+                DefaultSpawnIndex.addSpawn(def.getRegistryName(), def, def.getDefaultSpawnWeight());
+                Log.info("%s  added to Default Spawn Index with weight %f", def.getRegistryName().toString(),
+                        def.getDefaultSpawnWeight());
+            }
+        }
+    }
+
     public static void postInitJsonRegisistation(){
         ModContainer old = Loader.instance().activeModContainer();
         JsonLoader.loadModsForType("mk_spawn" + File.separator + "attributes",
@@ -78,6 +88,7 @@ public class ModSpawn {
         JsonLoader.loadModsForType("mk_spawn" + File.separator + "mob_factions",
                 "mk_overrides", "assets",
                 ModSpawn::loadMobFactions, MKURegistry.REGISTRY_MOB_FACTIONS);
+        addMobDefinitionsToDefaultSpawnIndex();
         Loader.instance().setActiveModContainer(old);
     }
 
@@ -568,11 +579,9 @@ public class ModSpawn {
                 double weight = obj.get("default_spawn_weight").getAsDouble();
                 definition.setDefaultSpawnWeight(weight);
             }
-            if (obj.has("can_default_spawn")){
+            if (obj.has("can_default_spawn")) {
                 boolean canSpawn = obj.get("can_default_spawn").getAsBoolean();
                 definition.setCanDefaultSpawn(canSpawn);
-                Log.info("Adding spawn for: %s, %s", loc.toString(), definition.getRegistryName().toString());
-                DefaultSpawnIndex.addSpawn(loc, definition, definition.getDefaultSpawnWeight());
             }
             if (registry instanceof IForgeRegistryModifiable){
                 IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) registry;

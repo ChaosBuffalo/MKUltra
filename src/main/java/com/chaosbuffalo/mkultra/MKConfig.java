@@ -169,6 +169,10 @@ public class MKConfig {
         @Config.Comment("Set to true if you want heals to damage undead")
         public boolean HEALS_DAMAGE_UNDEAD = true;
 
+        @Config.Name("Spawn Replacement")
+        @Config.Comment("Set to false if you don't want the MK mobs to replace vanilla spawns")
+        public boolean SPAWN_REPLACEMENT = true;
+
         @Config.Name("Undead healing damage multiplier")
         @Config.Comment("Multiplier to scale healing damage to undead by if HEALS_DAMAGE_UNDEAD is true")
         public float HEAL_DAMAGE_MULTIPLIER = 2.0f;

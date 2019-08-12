@@ -126,6 +126,9 @@ public class EntityEventHandler {
 //                    addAttackSpeed(entLiv);
                     definition.applyDefinition(world, entLiv, mobD.getMobLevel());
                 } else {
+                    if (!MKConfig.gameplay.SPAWN_REPLACEMENT){
+                        return;
+                    }
                     // here we should randomly choose a mob definition appropriate for the entity type if available.
                     ResourceLocation entityId = EntityList.getKey(entLiv);
                     SpawnList spawnList = DefaultSpawnIndex.getSpawnListForEntity(entityId);
