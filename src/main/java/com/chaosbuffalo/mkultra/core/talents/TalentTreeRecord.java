@@ -12,12 +12,16 @@ import java.util.function.BiConsumer;
 
 public class TalentTreeRecord {
     private TalentTree tree;
-    public HashMap<String, ArrayList<TalentRecord>> records;
+    private HashMap<String, ArrayList<TalentRecord>> records;
 
     public TalentTreeRecord(TalentTree tree) {
         this.tree = tree;
         this.records = new HashMap<>();
         setup();
+    }
+
+    public HashMap<String, ArrayList<TalentRecord>> getRecords() {
+        return records;
     }
 
     private void setup() {
