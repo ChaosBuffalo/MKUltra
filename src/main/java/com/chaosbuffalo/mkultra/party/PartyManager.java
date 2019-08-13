@@ -119,14 +119,13 @@ public class PartyManager {
                 }
             }
             int pCount = members.size();
+            int playerExp = Math.max(exp / pCount, 1);
             for (EntityPlayer p : members) {
-                // ensure every player gets at least 1 xp
-                int playerExp = Math.max(exp / pCount, 1);
-                p.addExperience(playerExp);
-//                gainBrouzoufs(p);
+                if (!p.equals(original)){
+                    p.addExperience(playerExp);
+                }
             }
-            e.getOrb().setDead();
-            e.setCanceled(true);
+            e.getOrb().xpValue = playerExp;
         }
     }
 }
