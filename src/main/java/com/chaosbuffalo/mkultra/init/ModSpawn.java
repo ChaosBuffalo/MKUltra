@@ -281,7 +281,7 @@ public class ModSpawn {
     public static void loadAttribute(ResourceLocation name, JsonObject obj,
                                      IForgeRegistry<AttributeRange> registry) {
         String[] keys = {"setter", "min_value", "max_value"};
-        if (!JsonLoader.checkKeysExist(keys, obj)) {
+        if (!JsonLoader.checkKeysExist(obj, keys)) {
             return;
         }
         AttributeRange range = new AttributeRange(name, MKURegistry.getAttributeSetter(
@@ -343,7 +343,7 @@ public class ModSpawn {
     public static void loadItemOption(ResourceLocation name, JsonObject obj,
                                       IForgeRegistry<ItemOption> registry) {
         String[] keys = {"slot", "choices"};
-        if (!JsonLoader.checkKeysExist(keys, obj)) {
+        if (!JsonLoader.checkKeysExist(obj, keys)) {
             return;
         }
         BiConsumer<EntityLivingBase, ItemChoice> assigner = getItemAssigner(obj.get("slot").getAsString());
@@ -356,7 +356,7 @@ public class ModSpawn {
         ArrayList<ItemChoice> choices = new ArrayList<>();
         for (JsonElement subEle : obj.getAsJsonArray("choices")) {
             JsonObject jsonObject = subEle.getAsJsonObject();
-            if (!JsonLoader.checkKeysExist(choiceKeys, jsonObject)) {
+            if (!JsonLoader.checkKeysExist(jsonObject, choiceKeys)) {
                 continue;
             }
             float dropChance = .00f;
@@ -399,7 +399,7 @@ public class ModSpawn {
     public static void loadMobFactions(ResourceLocation name, JsonObject obj,
                                        IForgeRegistry<MobFaction> registry) {
         String[] keys = {"groups"};
-        if (!JsonLoader.checkKeysExist(keys, obj)) {
+        if (!JsonLoader.checkKeysExist(obj, keys)) {
             return;
         }
         MobFaction faction = new MobFaction(name);
@@ -410,7 +410,7 @@ public class ModSpawn {
             for (JsonElement ele : options) {
                 JsonObject jsonObject = ele.getAsJsonObject();
                 String[] eleKeys = {"spawn_list", "weight"};
-                if (!JsonLoader.checkKeysExist(eleKeys, jsonObject)) {
+                if (!JsonLoader.checkKeysExist(jsonObject, eleKeys)) {
                     continue;
                 }
                 SpawnList spawnList = MKURegistry.getSpawnList(new ResourceLocation(jsonObject.get("spawn_list")
@@ -438,7 +438,7 @@ public class ModSpawn {
     public static void loadSpawnList(ResourceLocation name, JsonObject obj,
                                      IForgeRegistry<SpawnList> registry) {
         String[] keys = {"options"};
-        if (!JsonLoader.checkKeysExist(keys, obj)) {
+        if (!JsonLoader.checkKeysExist(obj, keys)) {
             return;
         }
         JsonArray options = obj.get("options").getAsJsonArray();
@@ -446,7 +446,7 @@ public class ModSpawn {
         for (JsonElement ele : options) {
             JsonObject jsonObject = ele.getAsJsonObject();
             String[] optionkeys = {"definition", "weight"};
-            if (!JsonLoader.checkKeysExist(optionkeys, jsonObject)) {
+            if (!JsonLoader.checkKeysExist(jsonObject, optionkeys)) {
                 continue;
             }
             MobDefinition definition = MKURegistry.getMobDefinition(
@@ -471,7 +471,7 @@ public class ModSpawn {
                                          IForgeRegistry<MobDefinition> registry) {
         Log.info("Loading Mob Definition: %s", name.toString());
         String[] keys = {"type"};
-        if (!JsonLoader.checkKeysExist(keys, obj)) {
+        if (!JsonLoader.checkKeysExist(obj, keys)) {
             return;
         }
         ResourceLocation loc = new ResourceLocation(obj.get("type").getAsString());
@@ -557,7 +557,7 @@ public class ModSpawn {
                 for (JsonElement ele : json_modifiers) {
                     JsonObject jsonObject = ele.getAsJsonObject();
                     String[] customKeys = {"setter"};
-                    if (!JsonLoader.checkKeysExist(customKeys, jsonObject)) {
+                    if (!JsonLoader.checkKeysExist(jsonObject, customKeys)) {
                         continue;
                     }
                     CustomSetter setter = MKURegistry.getCustomSetter(
@@ -597,7 +597,7 @@ public class ModSpawn {
     public static void loadAIModifier(ResourceLocation name, JsonObject obj,
                                       IForgeRegistry<AIModifier> registry) {
         String[] keys = {"type", "choices"};
-        if (!JsonLoader.checkKeysExist(keys, obj)) {
+        if (!JsonLoader.checkKeysExist(obj, keys)) {
             return;
         }
         String type = obj.get("type").getAsString();
@@ -613,7 +613,7 @@ public class ModSpawn {
                 ArrayList<BehaviorChoice> choices = new ArrayList<>();
                 for (JsonElement subEle : obj.getAsJsonArray("choices")) {
                     JsonObject jsonObject = subEle.getAsJsonObject();
-                    if (!JsonLoader.checkKeysExist(choiceKeys, jsonObject)) {
+                    if (!JsonLoader.checkKeysExist(jsonObject, choiceKeys)) {
                         continue;
                     }
                     BehaviorChoice.TaskType taskType = getTaskType(jsonObject.get("task_type").getAsString());
@@ -653,7 +653,7 @@ public class ModSpawn {
                 ArrayList<BehaviorChoice> choices = new ArrayList<>();
                 for (JsonElement subEle : obj.getAsJsonArray("choices")) {
                     JsonObject jsonObject = subEle.getAsJsonObject();
-                    if (!JsonLoader.checkKeysExist(choiceKeys, jsonObject)) {
+                    if (!JsonLoader.checkKeysExist(jsonObject, choiceKeys)) {
                         continue;
                     }
                     BehaviorChoice.TaskType taskType = getTaskType(jsonObject.get("task_type").getAsString());

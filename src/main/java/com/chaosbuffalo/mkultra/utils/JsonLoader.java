@@ -65,7 +65,7 @@ public class JsonLoader {
         }
     }
 
-    public static boolean checkKeysExist(String[] keys, JsonObject obj) {
+    public static boolean checkKeysExist(JsonObject obj, String... keys) {
         for (String key : keys) {
             if (!obj.has(key)) {
                 Log.info("Skipping load for %s because %s not present", obj.toString(), key);

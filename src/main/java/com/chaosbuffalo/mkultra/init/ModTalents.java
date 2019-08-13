@@ -72,7 +72,7 @@ public class ModTalents {
                                      IForgeRegistry<TalentTree> registry) {
         name = new ResourceLocation(name.getNamespace(), "talent_tree." + name.getPath());
         String[] keys = {"version", "lines"};
-        if (!JsonLoader.checkKeysExist(keys, obj)) {
+        if (!JsonLoader.checkKeysExist(obj, keys)) {
             return;
         }
         int version = obj.get("version").getAsInt();
@@ -81,7 +81,7 @@ public class ModTalents {
         for (JsonElement lineEle : lineEles){
             String[] lineKeys = {"name", "talents"};
             JsonObject lineObj = lineEle.getAsJsonObject();
-            if (!JsonLoader.checkKeysExist(lineKeys, lineObj)){
+            if (!JsonLoader.checkKeysExist(lineObj, lineKeys)){
                 continue;
             }
             String lineName = lineObj.get("name").getAsString();
@@ -90,7 +90,7 @@ public class ModTalents {
             for (JsonElement talentEle : talentEles){
                 String[] talentKeys = {"name", "max_points"};
                 JsonObject talentObj = talentEle.getAsJsonObject();
-                if (!JsonLoader.checkKeysExist(talentKeys, talentObj)){
+                if (!JsonLoader.checkKeysExist(talentObj, talentKeys)){
                     continue;
                 }
                 ResourceLocation talentName = new ResourceLocation(talentObj.get("name").getAsString());
@@ -100,7 +100,7 @@ public class ModTalents {
                     switch (talent.getTalentType()){
                         case ATTRIBUTE:
                             String[] attrKeys = {"value"};
-                            if (!JsonLoader.checkKeysExist(attrKeys, talentObj)){
+                            if (!JsonLoader.checkKeysExist(talentObj, attrKeys)){
                                 Log.info("Skipping attribute missing extra keys.");
                                 break;
                             }
