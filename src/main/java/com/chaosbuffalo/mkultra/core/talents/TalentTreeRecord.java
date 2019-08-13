@@ -2,11 +2,13 @@ package com.chaosbuffalo.mkultra.core.talents;
 
 import com.chaosbuffalo.mkultra.log.Log;
 import com.google.common.collect.Multimap;
+import com.google.common.util.concurrent.AtomicDouble;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.function.BiConsumer;
 
 public class TalentTreeRecord {
     private TalentTree tree;
@@ -167,59 +169,41 @@ public class TalentTreeRecord {
 
     public HashSet<PassiveAbilityTalent> getPassivesWithPoints() {
         HashSet<PassiveAbilityTalent> talents = new HashSet<>();
-        for (String key : records.keySet()) {
-            if (hasPointsInLine(key)) {
-                ArrayList<TalentRecord> line = records.get(key);
-                for (TalentRecord rec : line) {
-                    if (rec.getRank() == 0) {
-                        break;
-                    } else {
-                        if (rec.getNode().getTalentType() == BaseTalent.TalentType.PASSIVE) {
-                            talents.add((PassiveAbilityTalent) rec.getNode().getTalent());
-                        }
-                    }
-                }
-            }
-        }
+        iterateKnownTalents(PassiveAbilityTalent.class, BaseTalent.TalentType.PASSIVE, (r, t) -> talents.add(t));
         return talents;
     }
 
     public HashSet<RangedAttributeTalent> getAttributeTalentsWithPoints() {
         HashSet<RangedAttributeTalent> talents = new HashSet<>();
-        for (String key : records.keySet()) {
-            if (hasPointsInLine(key)) {
-                ArrayList<TalentRecord> line = records.get(key);
-                for (TalentRecord rec : line) {
-                    if (rec.getRank() == 0) {
-                        break;
-                    } else {
-                        if (rec.getNode().getTalentType() == BaseTalent.TalentType.ATTRIBUTE) {
-                            talents.add((RangedAttributeTalent) rec.getNode().getTalent());
-                        }
-                    }
-                }
-            }
-        }
+        iterateKnownTalents(RangedAttributeTalent.class, BaseTalent.TalentType.ATTRIBUTE, (r, t) -> talents.add(t));
         return talents;
     }
 
-    public double getTotalForAttributeTalent(RangedAttributeTalent talent) {
-        double val = 0.0;
+    private <T extends BaseTalent> void iterateKnownTalents(Class<T> clazz, BaseTalent.TalentType type, BiConsumer<TalentRecord, T> consumer) {
         for (String key : records.keySet()) {
             if (hasPointsInLine(key)) {
-                ArrayList<TalentRecord> line = records.get(key);
-                for (TalentRecord rec : line) {
+                for (TalentRecord rec : records.get(key)) {
                     if (rec.getRank() == 0) {
                         break;
                     } else {
-                        if (rec.getNode().hasSameTalent(talent)) {
-                            AttributeTalentNode attrNode = (AttributeTalentNode) rec.getNode();
-                            val += attrNode.getValue(rec.getRank());
+                        if (rec.getNode().getTalentType() == type) {
+                            consumer.accept(rec, (T) rec.getNode().getTalent());
                         }
                     }
                 }
             }
         }
-        return val;
+    }
+
+    public double getTotalForAttributeTalent(RangedAttributeTalent talent) {
+        // Sorta awkward, maybe revisit this later
+        AtomicDouble val = new AtomicDouble(0.0);
+        iterateKnownTalents(RangedAttributeTalent.class, BaseTalent.TalentType.ATTRIBUTE, (r, t) -> {
+            if (r.getNode().hasSameTalent(talent)) {
+                AttributeTalentNode attrNode = (AttributeTalentNode) r.getNode();
+                val.addAndGet(attrNode.getValue(r.getRank()));
+            }
+        });
+        return val.get();
     }
 }
