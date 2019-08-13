@@ -1,6 +1,7 @@
 package com.chaosbuffalo.mkultra.core.talents;
 
 import com.chaosbuffalo.mkultra.core.PlayerAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.RangedAttribute;
 import net.minecraft.util.ResourceLocation;
 
@@ -27,4 +28,8 @@ public class RangedAttributeTalent extends BaseTalent {
     }
 
     public int getOp() { return op; }
+
+    public AttributeModifier createModifier(double value) {
+        return new AttributeModifier(getUUID(), getRegistryName().toString(), value, getOp()).setSaved(false);
+    }
 }

@@ -117,9 +117,7 @@ public class PlayerClassInfo {
                 }
             }
 //            Log.info("Total for attribute talent: %s, %f", talent.getRegistryName().toString(), value);
-            AttributeModifier mod = new AttributeModifier(talent.getUUID(),
-                    talent.getRegistryName().toString(), value, talent.getOp()).setSaved(false);
-            attributeModifierMap.put(talent.getAttribute(), mod);
+            attributeModifierMap.put(talent.getAttribute(), talent.createModifier(value));
         }
         return attributeModifierMap;
     }
