@@ -12,7 +12,7 @@ public class PassiveAbilityTalent extends BaseTalent {
         this.ability = ability;
     }
 
-    public PlayerPassiveAbility getAbility(){
+    public PlayerPassiveAbility getAbility() {
         return ability;
     }
 }

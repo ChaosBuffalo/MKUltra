@@ -42,7 +42,7 @@ public class PlayerClassInfo {
         Arrays.fill(hotbar, MKURegistry.INVALID_ABILITY);
         spendOrder = new ArrayDeque<>(GameConstants.MAX_CLASS_LEVEL);
         talentTrees = new HashMap<>();
-        for (TalentTree tree : MKURegistry.REGISTRY_TALENT_TREES.getValuesCollection()){
+        for (TalentTree tree : MKURegistry.REGISTRY_TALENT_TREES.getValuesCollection()) {
             talentTrees.put(tree.getRegistryName(), new TalentTreeRecord(tree));
         }
     }
@@ -57,26 +57,26 @@ public class PlayerClassInfo {
         return arr;
     }
 
-    public void applyPassives(EntityPlayer player, IPlayerData data, World world){
-        for (ResourceLocation loc : loadedPassives){
-            if (!loc.equals(MKURegistry.INVALID_ABILITY)){
+    public void applyPassives(EntityPlayer player, IPlayerData data, World world) {
+        for (ResourceLocation loc : loadedPassives) {
+            if (!loc.equals(MKURegistry.INVALID_ABILITY)) {
                 PlayerAbility ability = MKURegistry.getAbility(loc);
-                if (ability != null){
+                if (ability != null) {
                     ability.execute(player, data, world);
                 }
             }
         }
     }
 
-    public boolean addPassiveToSlot(ResourceLocation loc, int slotIndex){
-        if (canAddPassiveToSlot(loc, slotIndex)){
+    public boolean addPassiveToSlot(ResourceLocation loc, int slotIndex) {
+        if (canAddPassiveToSlot(loc, slotIndex)) {
             loadedPassives[slotIndex] = loc;
             return true;
         }
         return false;
     }
 
-    public boolean canAddPassiveToSlot(ResourceLocation loc, int slotIndex){
+    public boolean canAddPassiveToSlot(ResourceLocation loc, int slotIndex) {
         return slotIndex < GameConstants.MAX_PASSIVES && hasTrainedPassive(loc);
     }
 
@@ -90,7 +90,7 @@ public class PlayerClassInfo {
         return abilities;
     }
 
-    public boolean hasTrainedPassive(ResourceLocation loc){
+    public boolean hasTrainedPassive(ResourceLocation loc) {
         HashSet<PlayerPassiveAbility> abilities = getPassiveAbilitiesFromTalents();
         PlayerAbility ability = MKURegistry.getAbility(loc);
         return ability instanceof PlayerPassiveAbility && abilities.contains(ability);
@@ -154,27 +154,27 @@ public class PlayerClassInfo {
         tag.setTag(name, list);
     }
 
-    public void writeTalentTrees(NBTTagCompound tag){
+    public void writeTalentTrees(NBTTagCompound tag) {
         NBTTagCompound trees = new NBTTagCompound();
         boolean hadTalents = false;
-        for (ResourceLocation loc : talentTrees.keySet()){
+        for (ResourceLocation loc : talentTrees.keySet()) {
             TalentTreeRecord record = talentTrees.get(loc);
-            if (record.hasPointsInTree()){
+            if (record.hasPointsInTree()) {
                 trees.setTag(loc.toString(), record.toTag());
                 hadTalents = true;
             }
         }
-        if (hadTalents){
+        if (hadTalents) {
             tag.setTag("trees", trees);
         }
     }
 
-    public void parseTalentTrees(NBTTagCompound tag){
-        if (tag.hasKey("trees")){
+    public void parseTalentTrees(NBTTagCompound tag) {
+        if (tag.hasKey("trees")) {
             NBTTagCompound trees = tag.getCompoundTag("trees");
-            for (String key : trees.getKeySet()){
+            for (String key : trees.getKeySet()) {
                 ResourceLocation loc = new ResourceLocation(key);
-                if (talentTrees.containsKey(loc)){
+                if (talentTrees.containsKey(loc)) {
                     talentTrees.get(loc).fromTag(trees.getCompoundTag(key));
                 }
             }
@@ -197,19 +197,19 @@ public class PlayerClassInfo {
         unspentPoints = tag.getInteger("unspentPoints");
         spendOrder = new ArrayDeque<>(Arrays.asList(parseNBTAbilityArray(tag, "spendOrder", GameConstants.MAX_CLASS_LEVEL)));
         setActiveAbilities(parseNBTAbilityArray(tag, "hotbar", GameConstants.ACTION_BAR_SIZE));
-        if (tag.hasKey("loadedPassives")){
+        if (tag.hasKey("loadedPassives")) {
             setLoadedPassives(parseNBTAbilityArray(tag, "loadedPassives", GameConstants.MAX_PASSIVES));
         }
         deserializeTalentInfo(tag);
     }
 
-    public void serializeTalentInfo(NBTTagCompound tag){
+    public void serializeTalentInfo(NBTTagCompound tag) {
         tag.setInteger("unspentTalentPoints", unspentTalentPoints);
         tag.setInteger("totalTalentPoints", totalTalentPoints);
         writeTalentTrees(tag);
     }
 
-    public void deserializeTalentInfo(NBTTagCompound tag){
+    public void deserializeTalentInfo(NBTTagCompound tag) {
         unspentTalentPoints = tag.getInteger("unspentTalentPoints");
         totalTalentPoints = tag.getInteger("totalTalentPoints");
         parseTalentTrees(tag);
@@ -224,21 +224,21 @@ public class PlayerClassInfo {
         unspentTalentPoints += pointCount;
     }
 
-    public boolean canIncrementPointInTree(ResourceLocation tree, String line, int index){
+    public boolean canIncrementPointInTree(ResourceLocation tree, String line, int index) {
         TalentTreeRecord talentTree = talentTrees.get(tree);
         return talentTree.containsIndex(line, index) && talentTree.canIncrementPoint(line, index);
     }
 
-    public boolean canDecrementPointInTree(ResourceLocation tree, String line, int index){
+    public boolean canDecrementPointInTree(ResourceLocation tree, String line, int index) {
         TalentTreeRecord talentTree = talentTrees.get(tree);
         return talentTree.containsIndex(line, index) && talentTree.canDecrementPoint(line, index);
     }
 
-    public boolean spendTalentPoint(EntityPlayer player, ResourceLocation tree, String line, int index){
-        if (canIncrementPointInTree(tree, line, index)){
+    public boolean spendTalentPoint(EntityPlayer player, ResourceLocation tree, String line, int index) {
+        if (canIncrementPointInTree(tree, line, index)) {
             TalentTreeRecord talentTree = talentTrees.get(tree);
             BaseTalent.TalentType type = talentTree.getTypeForPoint(line, index);
-            if (type == BaseTalent.TalentType.ATTRIBUTE){
+            if (type == BaseTalent.TalentType.ATTRIBUTE) {
                 removeAttributesModifiersFromPlayer(player);
                 talentTree.incrementPoint(line, index);
                 applyAttributesModifiersToPlayer(player);
@@ -251,19 +251,19 @@ public class PlayerClassInfo {
         }
     }
 
-    public int getTotalSpentPoints(){
+    public int getTotalSpentPoints() {
         int tot = 0;
-        for (TalentTreeRecord talentTree : talentTrees.values()){
+        for (TalentTreeRecord talentTree : talentTrees.values()) {
             tot += talentTree.getPointsInTree();
         }
         return tot;
     }
 
-    public boolean refundTalentPoint(EntityPlayer player, ResourceLocation tree, String line, int index){
-        if (canDecrementPointInTree(tree, line, index)){
+    public boolean refundTalentPoint(EntityPlayer player, ResourceLocation tree, String line, int index) {
+        if (canDecrementPointInTree(tree, line, index)) {
             TalentTreeRecord talentTree = talentTrees.get(tree);
             BaseTalent.TalentType type = talentTree.getTypeForPoint(line, index);
-            if (type == BaseTalent.TalentType.ATTRIBUTE){
+            if (type == BaseTalent.TalentType.ATTRIBUTE) {
                 removeAttributesModifiersFromPlayer(player);
                 talentTree.decrementPoint(line, index);
                 applyAttributesModifiersToPlayer(player);
@@ -276,7 +276,7 @@ public class PlayerClassInfo {
         }
     }
 
-    void setLoadedPassives(ResourceLocation[] passives){
+    void setLoadedPassives(ResourceLocation[] passives) {
         this.loadedPassives = passives;
     }
 
@@ -291,13 +291,12 @@ public class PlayerClassInfo {
     public ResourceLocation getLastUpgradedAbility() {
         if (spendOrder.size() != 0) {
             return spendOrder.removeFirst();
-        }
-        else {
+        } else {
             return MKURegistry.INVALID_ABILITY;
         }
     }
 
-    public TalentTreeRecord getTalentTree(ResourceLocation loc){
+    public TalentTreeRecord getTalentTree(ResourceLocation loc) {
         return talentTrees.get(loc);
     }
 }
