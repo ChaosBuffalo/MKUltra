@@ -80,13 +80,11 @@ public class PlayerClassInfo {
         return slotIndex < GameConstants.MAX_PASSIVES && hasTrainedPassive(loc);
     }
 
-    public HashSet<PlayerPassiveAbility> getPassiveAbilitiesFromTalents(){
+    public HashSet<PlayerPassiveAbility> getPassiveAbilitiesFromTalents() {
         HashSet<PlayerPassiveAbility> abilities = new HashSet<>();
-        for (ResourceLocation loc : talentTrees.keySet()) {
-            TalentTreeRecord rec = talentTrees.get(loc);
+        for (TalentTreeRecord rec : talentTrees.values()) {
             if (rec.hasPointsInTree()) {
-                rec.getPassivesWithPoints().forEach(
-                        (PassiveAbilityTalent talent) -> abilities.add(talent.getAbility()));
+                rec.getPassivesWithPoints().forEach(talent -> abilities.add(talent.getAbility()));
             }
         }
         return abilities;
@@ -98,25 +96,23 @@ public class PlayerClassInfo {
         return ability instanceof PlayerPassiveAbility && abilities.contains(ability);
     }
 
-    public HashSet<RangedAttributeTalent> getAttributeTalentSet(){
+    public HashSet<RangedAttributeTalent> getAttributeTalentSet() {
         HashSet<RangedAttributeTalent> attributeTalents = new HashSet<>();
-        for (ResourceLocation loc : talentTrees.keySet()){
-            TalentTreeRecord rec = talentTrees.get(loc);
-            if (rec.hasPointsInTree()){
+        for (TalentTreeRecord rec : talentTrees.values()) {
+            if (rec.hasPointsInTree()) {
                 attributeTalents.addAll(rec.getAttributeTalentsWithPoints());
             }
         }
         return attributeTalents;
     }
 
-    public Map<IAttribute, AttributeModifier> getAttributeModifiers(){
+    public Map<IAttribute, AttributeModifier> getAttributeModifiers() {
         HashSet<RangedAttributeTalent> presentTalents = getAttributeTalentSet();
         Map<IAttribute, AttributeModifier> attributeModifierMap = Maps.newHashMap();
-        for (RangedAttributeTalent talent : presentTalents){
+        for (RangedAttributeTalent talent : presentTalents) {
             double value = 0.0;
-            for (ResourceLocation loc : talentTrees.keySet()){
-                TalentTreeRecord rec = talentTrees.get(loc);
-                if (rec.hasPointsInTree()){
+            for (TalentTreeRecord rec : talentTrees.values()) {
+                if (rec.hasPointsInTree()) {
                     value += rec.getTotalForAttributeTalent(talent);
                 }
             }
