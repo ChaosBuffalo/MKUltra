@@ -1,6 +1,7 @@
 package com.chaosbuffalo.mkultra.core.talents;
 
 import com.chaosbuffalo.mkultra.log.Log;
+import com.google.common.collect.Multimap;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.ArrayList;
@@ -17,12 +18,11 @@ public class TalentTreeRecord {
         setup();
     }
 
-    private void setup(){
-        HashMap<String, ArrayList<TalentNode>> lines = tree.getLines();
-        for (String key : lines.keySet()){
-            ArrayList<TalentNode> line = lines.get(key);
+    private void setup() {
+        Multimap<String, TalentNode> lines = tree.getLines();
+        for (String key : lines.keySet()) {
             ArrayList<TalentRecord> recordLine = new ArrayList<>();
-            for (TalentNode node : line){
+            for (TalentNode node : lines.get(key)) {
                 recordLine.add(new TalentRecord(node));
             }
             records.put(key, recordLine);

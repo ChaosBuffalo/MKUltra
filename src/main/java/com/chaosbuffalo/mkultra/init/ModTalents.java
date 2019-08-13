@@ -120,7 +120,7 @@ public class ModTalents {
                 }
             }
             Log.info("Loading Line: %s for Tree: %s with %d talents", lineName, name.toString(), talentLine.size());
-            tree.addLine(lineName, talentLine.toArray(new TalentNode[0]));
+            tree.addLine(lineName, talentLine);
         }
         Log.info("Registering Talent Tree: %s", name.toString());
         if (registry instanceof IForgeRegistryModifiable){
