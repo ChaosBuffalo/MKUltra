@@ -100,7 +100,7 @@ public class PlayerClassScreen extends MKScreen {
         // Stat Panel
         MKScrollView statScrollView = new MKScrollView(xPos + STAT_PANEL_START_X + 3,
                 yPos + STAT_PANEL_START_Y + 3,
-                STAT_PANEL_WIDTH - 6, STAT_PANEL_HEIGHT - 6, width, height,
+                STAT_PANEL_WIDTH - 6, STAT_PANEL_HEIGHT - 6,
                 scaledRes.getScaleFactor(), true);
         statScrollView.addWidget(drawStatPanel(pData, 0, 0));
         statScrollView.setToTop();
@@ -110,7 +110,7 @@ public class PlayerClassScreen extends MKScreen {
         // Abilities
         MKScrollView abilityScrollView = new MKScrollView(xPos + 4,
                 yPos + 28,
-                ABILITY_SCROLL_WIDTH, PANEL_HEIGHT - 32, width, height,
+                ABILITY_SCROLL_WIDTH, PANEL_HEIGHT - 32,
                 scaledRes.getScaleFactor(), true);
         MKWidget abilityList = new MKWidget(0, 0);
         int abilityHeight = 0;

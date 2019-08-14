@@ -11,6 +11,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nullable;
+import java.util.Iterator;
 
 public class MKScrollView extends MKWidget{
 
@@ -32,15 +33,13 @@ public class MKScrollView extends MKWidget{
     private int SCROLL_VELOCITY = 10;
     private static final int SCROLL_BAR_WIDTH = 1;
 
-    public MKScrollView(int x, int y, int width, int height, int screenWidth, int screenHeight, int scaleFactor,
+    public MKScrollView(int x, int y, int width, int height, int scaleFactor,
                         boolean clipBounds) {
         super(x, y, width, height);
         offsetX = 0;
         offsetY = 0;
         this.clipBounds = clipBounds;
         isDragging = false;
-        this.screenWidth = screenWidth;
-        this.screenHeight = screenHeight;
         this.scaleFactor = scaleFactor;
         this.doScrollLock = true;
         scrollMarginX = 0;
@@ -48,6 +47,16 @@ public class MKScrollView extends MKWidget{
         doScrollX = true;
         doScrollY = true;
         drawScrollBars = true;
+    }
+
+    @Override
+    public void setScreen(MKScreen screen) {
+        super.setScreen(screen);
+        if (screen != null){
+            screenWidth = screen.width;
+            screenHeight = screen.height;
+        }
+
     }
 
     public MKScrollView setScrollLock(boolean state){
@@ -146,14 +155,14 @@ public class MKScrollView extends MKWidget{
 
     public void centerContentX(){
         if (children.size() > 0){
-            MKWidget child = this.children.get(0);
+            MKWidget child = this.children.getFirst();
             setOffsetX(getWidth()/2 - child.getWidth()/2 + getX());
         }
     }
 
     public void centerContentY(){
         if (children.size() > 0){
-            MKWidget child = this.children.get(0);
+            MKWidget child = this.children.getFirst();
             setOffsetX(getHeight()/2 - child.getHeight()/2 + getY());
         }
     }
@@ -230,6 +239,15 @@ public class MKScrollView extends MKWidget{
     }
 
     @Override
+    public Vec2d getParentCoords(Vec2d pos){
+        if (parent == null){
+            return pos.add(offsetX, offsetY);
+        } else {
+            return parent.getParentCoords(pos.add(offsetX, offsetY));
+        }
+    }
+
+    @Override
     public void drawWidget(Minecraft mc, int mouseX, int mouseY, float partialTicks){
         draw(mc, getX(), getY(), getWidth(), getHeight(), mouseX, mouseY, partialTicks);
         for (MKWidget child : children){
@@ -245,7 +263,9 @@ public class MKScrollView extends MKWidget{
         if (!this.isEnabled() || !this.isVisible() || !this.isInBounds(mouseX, mouseY)){
             return null;
         }
-        for (MKWidget child : reverseChildren){
+        Iterator<MKWidget> it = children.descendingIterator();
+        while (it.hasNext()){
+            MKWidget child = it.next();
             if (child.mousePressed(minecraft, mouseX - offsetX, mouseY - offsetY, mouseButton) != null){
                 return child;
             }
@@ -258,7 +278,9 @@ public class MKScrollView extends MKWidget{
 
     @Override
     public boolean mouseDragged(Minecraft minecraft, int mouseX, int mouseY, int mouseButton) {
-        for (MKWidget child : reverseChildren){
+        Iterator<MKWidget> it = children.descendingIterator();
+        while (it.hasNext()){
+            MKWidget child = it.next();
             if (child.mouseDragged(minecraft, mouseX - offsetX, mouseY - offsetY, mouseButton)){
                 return true;
             }
@@ -271,7 +293,9 @@ public class MKScrollView extends MKWidget{
 
     @Override
     public boolean mouseReleased(int mouseX, int mouseY, int mouseButton) {
-        for (MKWidget child : reverseChildren){
+        Iterator<MKWidget> it = children.descendingIterator();
+        while (it.hasNext()){
+            MKWidget child = it.next();
             if (child.mouseReleased(mouseX - offsetX, mouseY - offsetX, mouseButton)){
                 return true;
             }
@@ -286,7 +310,7 @@ public class MKScrollView extends MKWidget{
     @Nullable
     public MKWidget getChild(){
         if (children.size() > 0){
-            return this.children.get(0);
+            return this.children.getFirst();
         } else {
             return null;
         }

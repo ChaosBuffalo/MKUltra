@@ -2,7 +2,7 @@
   "type": "minecraft:zombie",
   "name": "A Decaying Zombie",
   "can_default_spawn": true,
-  "default_spawn_weight": 12.0,
+  "default_spawn_weight": 10.0,
   "xp": 25,
   "attributes": [
     "mkultra:grunt_health",

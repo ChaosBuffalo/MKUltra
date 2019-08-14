@@ -85,8 +85,8 @@ public class OrbMotherGui extends MKScreen {
         addState("tree", treeRoot);
         int scrollViewSpace = 30;
         MKScrollView scrollView = new MKScrollView(xPos + 5, yPos + 5 + scrollViewSpace,
-                panelWidth - 10, panelHeight - 10 - scrollViewSpace, width, height,
-                scaledRes.getScaleFactor(), true)
+                panelWidth - 10, panelHeight - 10 - scrollViewSpace, scaledRes.getScaleFactor(),
+                true)
                 .setScrollMarginY(10);
         scrollView.setDoScrollX(false);
         treeView = scrollView;
@@ -147,8 +147,7 @@ public class OrbMotherGui extends MKScreen {
         int lwidth = 160;
         int layoutX = xPos + (panelWidth - lwidth) / 2;
         MKScrollView svTreeList = new MKScrollView(layoutX, ltop,
-                lwidth, 160, width, height,
-                scaledRes.getScaleFactor(), true);
+                lwidth, 160, scaledRes.getScaleFactor(), true);
         svTreeList.setScrollMarginX(20).setDoScrollX(false);
         MKStackLayoutVertical layout = new MKStackLayoutVertical(0, 0, lwidth - 40);
         svTreeList.addWidget(layout);

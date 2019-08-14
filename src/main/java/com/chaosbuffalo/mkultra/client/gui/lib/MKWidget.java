@@ -5,7 +5,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 
 import javax.annotation.Nullable;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.UUID;
 
 public class MKWidget extends Gui {
@@ -19,13 +21,13 @@ public class MKWidget extends Gui {
     public boolean skipBoundsCheck;
     protected boolean hovered;
     public UUID id;
-    public ArrayList<MKWidget> children;
-    public ArrayList<MKWidget> reverseChildren;
+    public ArrayDeque<MKWidget> children;
     // These should be used by layouts.
     private float sizeHintWidth;
     private float sizeHintHeight;
     private float posHintX;
     private float posHintY;
+    public MKScreen screen;
 
     public MKWidget(int x, int y){
         this(x, y, 200, 20);
@@ -41,13 +43,24 @@ public class MKWidget extends Gui {
         this.visible = true;
         this.hovered = false;
         this.parent = null;
-        this.children = new ArrayList<>();
-        this.reverseChildren = new ArrayList<>();
+        this.children = new ArrayDeque<>();
         this.skipBoundsCheck = false;
         this.sizeHintWidth = 1.0f;
         this.sizeHintHeight = 1.0f;
         this.posHintX = 0.0f;
         this.posHintY = 0.0f;
+    }
+
+    public void setScreen(MKScreen screen){
+        this.screen = screen;
+        for (MKWidget child : children){
+            child.setScreen(screen);
+        }
+    }
+
+    @Nullable
+    public MKScreen getScreen(){
+        return this.screen;
     }
 
     public MKWidget setSizeHintWidth(float ratio){
@@ -68,6 +81,14 @@ public class MKWidget extends Gui {
     public MKWidget setPosHintY(float ratio){
         this.posHintY = ratio;
         return this;
+    }
+
+    public Vec2d getParentCoords(Vec2d pos){
+        if (parent == null){
+            return pos;
+        } else {
+            return parent.getParentCoords(pos);
+        }
     }
 
 
@@ -141,7 +162,9 @@ public class MKWidget extends Gui {
         if (!this.isEnabled() || !this.isVisible() || !this.isInBounds(mouseX, mouseY)){
             return false;
         }
-        for (MKWidget child : reverseChildren){
+        Iterator<MKWidget> it = children.descendingIterator();
+        while (it.hasNext()){
+            MKWidget child = it.next();
             if (child.mouseScrollWheel(minecraft, mouseX, mouseY, direction)){
                 return true;
             }
@@ -153,7 +176,9 @@ public class MKWidget extends Gui {
     }
 
     public boolean mouseDragged(Minecraft minecraft, int mouseX, int mouseY, int mouseButton) {
-        for (MKWidget child : reverseChildren){
+        Iterator<MKWidget> it = children.descendingIterator();
+        while (it.hasNext()){
+            MKWidget child = it.next();
             if (child.mouseDragged(minecraft, mouseX, mouseY, mouseButton)){
                 return true;
             }
@@ -169,7 +194,9 @@ public class MKWidget extends Gui {
     }
 
     public boolean mouseReleased(int mouseX, int mouseY, int mouseButton) {
-        for (MKWidget child : reverseChildren){
+        Iterator<MKWidget> it = children.descendingIterator();
+        while (it.hasNext()){
+            MKWidget child = it.next();
             if (child.mouseReleased(mouseX, mouseY, mouseButton)){
                 return true;
             }
@@ -188,7 +215,9 @@ public class MKWidget extends Gui {
         if (!this.isEnabled() || !this.isVisible() || !this.isInBounds(mouseX, mouseY)){
             return null;
         }
-        for (MKWidget child : reverseChildren){
+        Iterator<MKWidget> it = children.descendingIterator();
+        while (it.hasNext()){
+            MKWidget child = it.next();
             if (child.mousePressed(minecraft, mouseX, mouseY, mouseButton) != null){
                 return child;
             }
@@ -230,17 +259,16 @@ public class MKWidget extends Gui {
 
     public boolean addWidget(MKWidget widget){
         widget.setParent(this);
+        widget.setScreen(getScreen());
         this.children.add(widget);
-        this.reverseChildren = new ArrayList<>(Lists.reverse(children));
         return true;
     }
 
     public void removeWidget(MKWidget widget){
         if (widget.getParent() != null && widget.getParent().id.equals(this.id)){
-            if (children.removeIf((x) -> x.id.equals(widget.id))){
-                this.reverseChildren = new ArrayList<>(Lists.reverse(children));
-            }
+            children.removeIf((x) -> x.id.equals(widget.id));
             widget.setParent(null);
+            widget.setScreen(null);
         }
     }
 
@@ -261,7 +289,6 @@ public class MKWidget extends Gui {
             widget.setParent(null);
         }
         children.clear();
-        reverseChildren.clear();
     }
 
     public int getRight(){

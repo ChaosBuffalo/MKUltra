@@ -17,6 +17,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
+import javax.annotation.Nullable;
 import java.util.*;
 
 public class PlayerClassInfo {
@@ -74,6 +75,14 @@ public class PlayerClassInfo {
             return true;
         }
         return false;
+    }
+
+    @Nullable
+    public ResourceLocation getPassiveForSlot(int slotIndex){
+        if (slotIndex > GameConstants.MAX_PASSIVES){
+            return null;
+        }
+        return loadedPassives[slotIndex];
     }
 
     public boolean canAddPassiveToSlot(ResourceLocation loc, int slotIndex) {

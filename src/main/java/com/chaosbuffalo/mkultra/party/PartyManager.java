@@ -103,13 +103,7 @@ public class PartyManager {
 
         if (team != null) {
             World world = original.getEntityWorld();
-
             EntityXPOrb orb = e.getOrb();
-            world.playSound(null, orb.posX, orb.posY, orb.posZ,
-                    SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP,
-                    SoundCategory.PLAYERS,
-                    0.1F, 0.5F * ((original.getRNG().nextFloat() - original.getRNG().nextFloat()) * 0.7F + 1.8F));
-
             int exp = orb.getXpValue();
             ArrayList<EntityPlayer> members = new ArrayList<>();
             for (String member : team.getMembershipCollection()) {

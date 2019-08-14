@@ -1,11 +1,7 @@
 package com.chaosbuffalo.mkultra.client.gui.lib;
 
 
-import com.chaosbuffalo.mkultra.core.IPlayerData;
-import com.chaosbuffalo.mkultra.core.MKUPlayerData;
-import com.chaosbuffalo.mkultra.core.events.client.PlayerDataUpdateEvent;
 import com.chaosbuffalo.mkultra.log.Log;
-import com.google.common.collect.Lists;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.client.event.GuiScreenEvent;
@@ -14,12 +10,10 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.input.Mouse;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
 public class MKScreen extends GuiScreen {
-    public ArrayList<MKWidget> children;
-    public ArrayList<MKWidget> reverseChildren;
+    public ArrayDeque<MKWidget> children;
     public static String NO_STATE = "NO_STATE";
     private HashMap<Integer, MKWidget> selectedWidgets;
     public boolean firstRender;
@@ -27,16 +21,19 @@ public class MKScreen extends GuiScreen {
     public HashMap<String, MKWidget> states;
     private ArrayList<Runnable> postSetupCallbacks;
     private ArrayList<Runnable> preDrawRunnables;
+    private ArrayList<HoveringTextInstruction> hoveringText;
+    private ArrayDeque<MKModal> modals;
 
     public MKScreen(){
         super();
         firstRender = true;
-        children = new ArrayList<>();
-        reverseChildren = new ArrayList<>();
+        children = new ArrayDeque<>();
         states = new HashMap<>();
         postSetupCallbacks = new ArrayList<>();
         selectedWidgets = new HashMap<>();
         preDrawRunnables = new ArrayList<>();
+        hoveringText = new ArrayList<>();
+        modals = new ArrayDeque<>();
         currentState = NO_STATE;
         MinecraftForge.EVENT_BUS.register(this);
     }
@@ -47,7 +44,9 @@ public class MKScreen extends GuiScreen {
         if (Mouse.getEventDWheel() != 0){
             int x = Mouse.getEventX() * this.width / this.mc.displayWidth;
             int y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
-            for (MKWidget child : reverseChildren){
+            Iterator<MKWidget> it = children.descendingIterator();
+            while (it.hasNext()){
+                MKWidget child = it.next();
                 if (!child.isVisible()){
                     continue;
                 }
@@ -57,6 +56,27 @@ public class MKScreen extends GuiScreen {
             }
         }
     }
+
+    public void addHoveringText(HoveringTextInstruction instruction){
+        hoveringText.add(instruction);
+    }
+
+    public void addModal(MKModal modal){
+        modal.setScreen(this);
+        modal.setWidth(width);
+        modal.setHeight(height);
+        this.modals.add(modal);
+    }
+
+    public void closeModal(MKModal modal){
+        if (this.modals.removeIf((x) -> x.id.equals(modal.id))){
+            if (modal.getOnCloseCallback() != null){
+                modal.getOnCloseCallback().run();
+            }
+            modal.setScreen(null);
+        }
+    }
+
 
     @Override
     public void onResize(Minecraft minecraft, int width, int height) {
@@ -141,15 +161,17 @@ public class MKScreen extends GuiScreen {
         addRestoreStateCallbacks();
     }
 
+
+
     public void addWidget(MKWidget widget){
+        widget.setScreen(this);
         this.children.add(widget);
-        this.reverseChildren = new ArrayList<>(Lists.reverse(children));
     }
 
     public void removeWidget(MKWidget widget){
         if (containsWidget(widget)){
             if (children.removeIf((x) -> x.id.equals(widget.id))){
-                this.reverseChildren = new ArrayList<>(Lists.reverse(children));
+                widget.setScreen(null);
             }
         }
     }
@@ -182,6 +204,15 @@ public class MKScreen extends GuiScreen {
                 child.drawWidget(mc, mouseX, mouseY, partialTicks);
             }
         }
+        for (MKModal modal : modals){
+            if (modal.isVisible()){
+                modal.drawWidget(mc, mouseX, mouseY, partialTicks);
+            }
+        }
+        for (HoveringTextInstruction instruction : hoveringText){
+            instruction.draw(fontRenderer, this.width, this.height);
+        }
+        hoveringText.clear();
     }
 
     @Override
@@ -197,7 +228,21 @@ public class MKScreen extends GuiScreen {
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException
     {
-        for (MKWidget child : reverseChildren){
+        Iterator<MKModal> modalIt = modals.descendingIterator();
+        while (modalIt.hasNext()){
+            MKModal child = modalIt.next();
+            if (!child.isVisible()){
+                continue;
+            }
+            MKWidget clickHandler = child.mousePressed(this.mc, mouseX, mouseY, mouseButton);
+            if (clickHandler != null){
+                selectedWidgets.put(mouseButton, clickHandler);
+                return;
+            }
+        }
+        Iterator<MKWidget> it = children.descendingIterator();
+        while (it.hasNext()){
+            MKWidget child = it.next();
             if (!child.isVisible()){
                 continue;
             }
@@ -212,12 +257,24 @@ public class MKScreen extends GuiScreen {
 
     public void clearWidgets(){
         for (MKWidget widget : children){
-            widget.setParent(null);
+            widget.setScreen(null);
         }
         children.clear();
-        reverseChildren.clear();
     }
 
+    public void clearModals()
+    {
+        for (MKModal modal : modals){
+            modal.setScreen(null);
+        }
+        modals.clear();
+    }
+
+    public void clear(){
+        clearWidgets();
+        clearModals();
+        hoveringText.clear();
+    }
     /**
      * Called when a mouse button is released.
      */

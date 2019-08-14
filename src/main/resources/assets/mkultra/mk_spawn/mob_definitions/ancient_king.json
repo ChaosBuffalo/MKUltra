@@ -2,7 +2,7 @@
   "type": "minecraft:zombie",
   "name": "An Ancient King",
   "can_default_spawn": true,
-  "default_spawn_weight": 1.0,
+  "default_spawn_weight": 3.0,
   "additional_loot": "mkultra:entities/ancient_king",
   "xp": 100,
   "attributes": [
