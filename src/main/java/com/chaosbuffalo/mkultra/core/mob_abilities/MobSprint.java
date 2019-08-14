@@ -68,7 +68,7 @@ public class MobSprint extends MobAbility {
         Vec3d lookVec = entity.getLookVec();
         MKUltra.packetHandler.sendToAllAround(
                 new ParticleEffectSpawnPacket(
-                        EnumParticleTypes.MOB_APPEARANCE.getParticleID(),
+                        EnumParticleTypes.SPELL_MOB.getParticleID(),
                         ParticleEffects.CIRCLE_MOTION, 50, 0,
                         entity.posX, entity.posY + 1.5,
                         entity.posZ, 1.0, 1.0, 1.0, 1.0f,
