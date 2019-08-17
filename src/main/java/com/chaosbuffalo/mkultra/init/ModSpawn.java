@@ -61,7 +61,7 @@ public class ModSpawn {
     public static void addMobDefinitionsToDefaultSpawnIndex(){
         for (MobDefinition def : MKURegistry.REGISTRY_MOB_DEF) {
             if (def.getCanDefaultSpawn()) {
-                DefaultSpawnIndex.addSpawn(def.getRegistryName(), def, def.getDefaultSpawnWeight());
+                DefaultSpawnIndex.addSpawn(def.getEntityName(), def, def.getDefaultSpawnWeight());
                 Log.info("%s  added to Default Spawn Index with weight %f", def.getRegistryName().toString(),
                         def.getDefaultSpawnWeight());
             }
@@ -88,8 +88,8 @@ public class ModSpawn {
         JsonLoader.loadModsForType("mk_spawn" + File.separator + "mob_factions",
                 "mk_overrides", "assets",
                 ModSpawn::loadMobFactions, MKURegistry.REGISTRY_MOB_FACTIONS);
-        addMobDefinitionsToDefaultSpawnIndex();
         Loader.instance().setActiveModContainer(old);
+        addMobDefinitionsToDefaultSpawnIndex();
     }
 
     @SuppressWarnings("unused")

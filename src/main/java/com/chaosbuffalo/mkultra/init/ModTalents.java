@@ -180,32 +180,38 @@ public class ModTalents {
         RangedAttributeTalent cooldownRate = new RangedAttributeTalent(
                 new ResourceLocation(MKUltra.MODID, "talent.cooldown_reduction"),
                 PlayerAttributes.COOLDOWN,
-                UUID.fromString("5378ff4c-0606-4781-abc0-c7d3e945b378"));
+                UUID.fromString("5378ff4c-0606-4781-abc0-c7d3e945b378"),
+                true);
         event.getRegistry().register(cooldownRate);
         RangedAttributeTalent meleeCritDamage = new RangedAttributeTalent(
                 new ResourceLocation(MKUltra.MODID, "talent.melee_crit_damage"),
                 PlayerAttributes.MELEE_CRITICAL_DAMAGE,
-                UUID.fromString("0032d49a-ed71-4dfb-a9f5-f0d3dd183e96"));
+                UUID.fromString("0032d49a-ed71-4dfb-a9f5-f0d3dd183e96"),
+                true);
         event.getRegistry().register(meleeCritDamage);
         RangedAttributeTalent spellCritDamage = new RangedAttributeTalent(
                 new ResourceLocation(MKUltra.MODID, "talent.spell_crit_damage"),
                 PlayerAttributes.SPELL_CRITICAL_DAMAGE,
-                UUID.fromString("a9d6069c-98b9-454d-b59f-c5a6e81966d5"));
+                UUID.fromString("a9d6069c-98b9-454d-b59f-c5a6e81966d5"),
+                true);
         event.getRegistry().register(spellCritDamage);
         RangedAttributeTalent meleeCrit = new RangedAttributeTalent(
                 new ResourceLocation(MKUltra.MODID, "talent.melee_crit"),
                 PlayerAttributes.MELEE_CRIT,
-                UUID.fromString("3b9ea27d-61ca-47b4-9bba-e82679b74ddd"));
+                UUID.fromString("3b9ea27d-61ca-47b4-9bba-e82679b74ddd"),
+                true);
         event.getRegistry().register(meleeCrit);
         RangedAttributeTalent spellCrit = new RangedAttributeTalent(
                 new ResourceLocation(MKUltra.MODID, "talent.spell_crit"),
                 PlayerAttributes.SPELL_CRIT,
-                UUID.fromString("9fbc7b94-4836-45ca-933a-4edaabcf2c6a"));
+                UUID.fromString("9fbc7b94-4836-45ca-933a-4edaabcf2c6a"),
+                true);
         event.getRegistry().register(spellCrit);
         RangedAttributeTalent movementSpeed = new RangedAttributeTalent(
                 new ResourceLocation(MKUltra.MODID, "talent.movement_speed"),
                 (RangedAttribute) SharedMonsterAttributes.MOVEMENT_SPEED,
-                UUID.fromString("95fcf4d0-aaa9-413f-8362-7706e29412f7"));
+                UUID.fromString("95fcf4d0-aaa9-413f-8362-7706e29412f7"),
+                true);
         event.getRegistry().register(movementSpeed);
     }
 }

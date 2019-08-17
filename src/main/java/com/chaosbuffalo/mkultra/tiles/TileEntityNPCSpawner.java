@@ -31,9 +31,9 @@ import java.util.List;
 
 public class TileEntityNPCSpawner extends TileEntity implements ITickable, IClassProvider {
     private static double RANGE = 100.0;
-    private static int TICK_INTERVAL = 10 * GameConstants.TICKS_PER_SECOND;
+    private static int TICK_INTERVAL = 5 * GameConstants.TICKS_PER_SECOND;
     private static int CLEANUP_THRESHOLD = 180 * GameConstants.TICKS_PER_SECOND;
-    private static int SLEEP_TICK_INTERVAL = 30 * GameConstants.TICKS_PER_SECOND;
+    private static int SLEEP_TICK_INTERVAL = 15 * GameConstants.TICKS_PER_SECOND;
     public static final int SIZE = 6;
     private int ticksBeforeSpawn;
     private int currentMob;
