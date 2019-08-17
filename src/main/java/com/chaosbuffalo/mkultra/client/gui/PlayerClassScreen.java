@@ -171,7 +171,7 @@ public class PlayerClassScreen extends MKScreen {
             abilityList.addWidget(downButton);
             addPreDrawRunnable(() -> {
                 int lvl = pData.getAbilityRank(ability.getAbilityId());
-                int displayLvl = Math.max(1, level); // Don't show the stats for a 0-level spell
+                int displayLvl = Math.max(1, lvl); // Don't show the stats for a 0-level spell
                 String newName;
                 if (lvl > 0) {
                     newName = String.format("%s %d", ability.getAbilityName(), lvl);
@@ -182,7 +182,7 @@ public class PlayerClassScreen extends MKScreen {
                 manaCost.setText("Mana: " + ability.getManaCost(displayLvl));
                 cooldown.setText(String.format("Cooldown: %.2f",
                         (float) pData.getCooldownForLevel(ability, displayLvl) / (float) GameConstants.TICKS_PER_SECOND));
-                reqLev.setText("Req. Level: " + ability.getRequiredLevel(lvl));
+                reqLev.setText("Req. Level: " + Math.max(1, ability.getRequiredLevel(lvl)));
                 upButton.setEnabled(pData.getUnspentPoints() > 0 &&
                         pData.getLevel() >= ability.getRequiredLevel(lvl) && lvl < ability.getMaxRank());
                 downButton.setEnabled(lvl > 0);
