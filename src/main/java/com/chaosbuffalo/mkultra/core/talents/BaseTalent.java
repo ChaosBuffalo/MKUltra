@@ -1,7 +1,9 @@
 package com.chaosbuffalo.mkultra.core.talents;
 
+import com.chaosbuffalo.mkultra.MKUltra;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistryEntry;
@@ -36,8 +38,14 @@ public class BaseTalent extends IForgeRegistryEntry.Impl<BaseTalent> {
 
     @SideOnly(Side.CLIENT)
     public String getTalentDescription() {
-        return I18n.format(String.format("%s.%s.description",
+        return TextFormatting.GRAY + I18n.format(String.format("%s.%s.description",
                 getRegistryName().getNamespace(), getRegistryName().getPath()));
+    }
+
+    @SideOnly(Side.CLIENT)
+    public String getTalentTypeName(){
+        return TextFormatting.GOLD +I18n.format(String.format("%s.talent_type.%s.name",
+                MKUltra.MODID, getTalentType().toString().toLowerCase()));
     }
 
     public ResourceLocation getIcon() {

@@ -72,7 +72,7 @@ public class ModTalents {
                                      IForgeRegistry<TalentTree> registry) {
         name = new ResourceLocation(name.getNamespace(), "talent_tree." + name.getPath());
         String[] keys = {"version", "lines"};
-        if (!JsonLoader.checkKeysExist(keys, obj)) {
+        if (!JsonLoader.checkKeysExist(obj, keys)) {
             return;
         }
         int version = obj.get("version").getAsInt();
@@ -81,7 +81,7 @@ public class ModTalents {
         for (JsonElement lineEle : lineEles){
             String[] lineKeys = {"name", "talents"};
             JsonObject lineObj = lineEle.getAsJsonObject();
-            if (!JsonLoader.checkKeysExist(lineKeys, lineObj)){
+            if (!JsonLoader.checkKeysExist(lineObj, lineKeys)){
                 continue;
             }
             String lineName = lineObj.get("name").getAsString();
@@ -90,7 +90,7 @@ public class ModTalents {
             for (JsonElement talentEle : talentEles){
                 String[] talentKeys = {"name", "max_points"};
                 JsonObject talentObj = talentEle.getAsJsonObject();
-                if (!JsonLoader.checkKeysExist(talentKeys, talentObj)){
+                if (!JsonLoader.checkKeysExist(talentObj, talentKeys)){
                     continue;
                 }
                 ResourceLocation talentName = new ResourceLocation(talentObj.get("name").getAsString());
@@ -99,14 +99,18 @@ public class ModTalents {
                 if (talent != null){
                     switch (talent.getTalentType()){
                         case ATTRIBUTE:
-                            String[] extraAttrKeys = {"value"};
-                            if (!JsonLoader.checkKeysExist(extraAttrKeys, talentObj)){
+                            String[] attrKeys = {"value"};
+                            if (!JsonLoader.checkKeysExist(talentObj, attrKeys)){
                                 Log.info("Skipping attribute missing extra keys.");
                                 break;
                             }
                             AttributeTalentNode attrNode = new AttributeTalentNode(
                                     (RangedAttributeTalent) talent, maxPoints, talentObj.get("value").getAsDouble());
                             talentLine.add(attrNode);
+                            break;
+                        case PASSIVE:
+                            TalentNode node = new TalentNode(talent, maxPoints);
+                            talentLine.add(node);
                             break;
                         default:
                             Log.info("Type %s not implemented, skipping talent parsing",
@@ -116,7 +120,7 @@ public class ModTalents {
                 }
             }
             Log.info("Loading Line: %s for Tree: %s with %d talents", lineName, name.toString(), talentLine.size());
-            tree.addLine(lineName, talentLine.toArray(new TalentNode[0]));
+            tree.addLine(lineName, talentLine);
         }
         Log.info("Registering Talent Tree: %s", name.toString());
         if (registry instanceof IForgeRegistryModifiable){
@@ -176,32 +180,38 @@ public class ModTalents {
         RangedAttributeTalent cooldownRate = new RangedAttributeTalent(
                 new ResourceLocation(MKUltra.MODID, "talent.cooldown_reduction"),
                 PlayerAttributes.COOLDOWN,
-                UUID.fromString("5378ff4c-0606-4781-abc0-c7d3e945b378"));
+                UUID.fromString("5378ff4c-0606-4781-abc0-c7d3e945b378"),
+                true);
         event.getRegistry().register(cooldownRate);
         RangedAttributeTalent meleeCritDamage = new RangedAttributeTalent(
                 new ResourceLocation(MKUltra.MODID, "talent.melee_crit_damage"),
                 PlayerAttributes.MELEE_CRITICAL_DAMAGE,
-                UUID.fromString("0032d49a-ed71-4dfb-a9f5-f0d3dd183e96"));
+                UUID.fromString("0032d49a-ed71-4dfb-a9f5-f0d3dd183e96"),
+                true);
         event.getRegistry().register(meleeCritDamage);
         RangedAttributeTalent spellCritDamage = new RangedAttributeTalent(
                 new ResourceLocation(MKUltra.MODID, "talent.spell_crit_damage"),
                 PlayerAttributes.SPELL_CRITICAL_DAMAGE,
-                UUID.fromString("a9d6069c-98b9-454d-b59f-c5a6e81966d5"));
+                UUID.fromString("a9d6069c-98b9-454d-b59f-c5a6e81966d5"),
+                true);
         event.getRegistry().register(spellCritDamage);
         RangedAttributeTalent meleeCrit = new RangedAttributeTalent(
                 new ResourceLocation(MKUltra.MODID, "talent.melee_crit"),
                 PlayerAttributes.MELEE_CRIT,
-                UUID.fromString("3b9ea27d-61ca-47b4-9bba-e82679b74ddd"));
+                UUID.fromString("3b9ea27d-61ca-47b4-9bba-e82679b74ddd"),
+                true);
         event.getRegistry().register(meleeCrit);
         RangedAttributeTalent spellCrit = new RangedAttributeTalent(
                 new ResourceLocation(MKUltra.MODID, "talent.spell_crit"),
                 PlayerAttributes.SPELL_CRIT,
-                UUID.fromString("9fbc7b94-4836-45ca-933a-4edaabcf2c6a"));
+                UUID.fromString("9fbc7b94-4836-45ca-933a-4edaabcf2c6a"),
+                true);
         event.getRegistry().register(spellCrit);
         RangedAttributeTalent movementSpeed = new RangedAttributeTalent(
                 new ResourceLocation(MKUltra.MODID, "talent.movement_speed"),
                 (RangedAttribute) SharedMonsterAttributes.MOVEMENT_SPEED,
-                UUID.fromString("95fcf4d0-aaa9-413f-8362-7706e29412f7"));
+                UUID.fromString("95fcf4d0-aaa9-413f-8362-7706e29412f7"),
+                true);
         event.getRegistry().register(movementSpeed);
     }
 }

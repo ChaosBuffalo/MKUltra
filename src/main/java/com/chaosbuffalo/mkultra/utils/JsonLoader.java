@@ -30,6 +30,10 @@ public class JsonLoader {
                                            E register) {
         ModContainer old = Loader.instance().activeModContainer();
         Loader.instance().getActiveModList().forEach(mod -> {
+            if (mod.getModId().matches(".*[/\n\r\t\0\f`?*<>|\":].*")){
+                Log.info("Skipping %s because it contains invalid characters.", mod.getModId());
+                return;
+            }
             loadJsonFiles(mod, subFolder, assetsLocation, registerFunc, register);
             loadJsonConfigs(mod, subFolder, configLocation, registerFunc, register);
         });
@@ -65,7 +69,7 @@ public class JsonLoader {
         }
     }
 
-    public static boolean checkKeysExist(String[] keys, JsonObject obj) {
+    public static boolean checkKeysExist(JsonObject obj, String... keys) {
         for (String key : keys) {
             if (!obj.has(key)) {
                 Log.info("Skipping load for %s because %s not present", obj.toString(), key);

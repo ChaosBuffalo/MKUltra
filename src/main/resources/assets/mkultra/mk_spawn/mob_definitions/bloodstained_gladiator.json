@@ -2,7 +2,7 @@
   "type": "minecraft:zombie",
   "name": "A Blood-Stained Gladiator",
   "can_default_spawn": true,
-  "default_spawn_weight": 2.0,
+  "default_spawn_weight": 3.0,
   "xp": 100,
   "attributes": [
     "mkultra:boss_health",

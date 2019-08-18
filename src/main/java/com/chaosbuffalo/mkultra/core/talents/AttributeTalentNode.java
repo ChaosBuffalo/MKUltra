@@ -12,8 +12,16 @@ public class AttributeTalentNode extends TalentNode {
         rangedTalent = talent;
     }
 
-    public double getValue(int rank){
+    public double getValue(int rank) {
         return perRank * rank;
+    }
+
+    public double getPerRank(){
+        return perRank;
+    }
+
+    public RangedAttributeTalent getRangedTalent(){
+        return rangedTalent;
     }
 
 }

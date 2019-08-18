@@ -1,13 +1,19 @@
 package com.chaosbuffalo.mkultra.client.gui;
 
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.client.gui.lib.HoveringTextInstruction;
 import com.chaosbuffalo.mkultra.client.gui.lib.MKButton;
+import com.chaosbuffalo.mkultra.client.gui.lib.Vec2d;
+import com.chaosbuffalo.mkultra.core.talents.AttributeTalentNode;
+import com.chaosbuffalo.mkultra.core.talents.BaseTalent;
 import com.chaosbuffalo.mkultra.core.talents.TalentRecord;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
+
+import java.util.ArrayList;
 
 public class TalentButton extends MKButton {
 
@@ -24,6 +30,7 @@ public class TalentButton extends MKButton {
     public static final int SLOT_Y_OFFSET = 4;
     public static final int TEXT_OFFSET = 4;
     public static final int SLOT_X_OFFSET = (WIDTH - SLOT_WIDTH) / 2;
+    private ArrayList<String> tooltip;
 
     public final int index;
     public final String line;
@@ -35,6 +42,17 @@ public class TalentButton extends MKButton {
         this.index = index;
         this.line = line;
         this.record = record;
+        this.tooltip = new ArrayList<>();
+        BaseTalent baseTalent = record.getNode().getTalent();
+        tooltip.add(baseTalent.getTalentName());
+        tooltip.add(baseTalent.getTalentTypeName());
+        if (record.getNode() instanceof AttributeTalentNode){
+            AttributeTalentNode attrNode = (AttributeTalentNode) record.getNode();
+            tooltip.add(attrNode.getRangedTalent().getTalentDescription(attrNode.getPerRank(),
+                    record.getRank() * attrNode.getPerRank()));
+        } else {
+            tooltip.add(record.getNode().getTalent().getTalentDescription());
+        }
     }
 
 
@@ -99,6 +117,12 @@ public class TalentButton extends MKButton {
                     this.getY() + SLOT_Y_OFFSET + SLOT_HEIGHT + OVERLAY_HEIGHT + TEXT_OFFSET
                             + fontrenderer.FONT_HEIGHT + 2,
                     textColor);
+            if (hovered){
+                if (getScreen() != null){
+                    screen.addHoveringText(new HoveringTextInstruction(tooltip,
+                            getParentCoords(new Vec2d(mouseX, mouseY))));
+                }
+            }
         }
     }
 }

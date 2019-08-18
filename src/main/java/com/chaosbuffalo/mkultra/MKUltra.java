@@ -2,7 +2,7 @@ package com.chaosbuffalo.mkultra;
 
 import com.chaosbuffalo.mkultra.command.MKCommand;
 import com.chaosbuffalo.mkultra.core.*;
-import com.chaosbuffalo.mkultra.core.talents.TalentUtils;
+import com.chaosbuffalo.mkultra.utils.TalentUtils;
 import com.chaosbuffalo.mkultra.init.*;
 import com.chaosbuffalo.mkultra.item.MKUltraTab;
 import com.chaosbuffalo.mkultra.log.Log;
@@ -75,6 +75,7 @@ public class MKUltra {
     @EventHandler
     public void postInit(FMLPostInitializationEvent e) {
         MKConfig.registerArmors();
+        MKConfig.setupAttackSpeedWhitelist();
         GameRegistry.findRegistry(Block.class).getKeys().forEach(key -> {
             if (key.getPath().toLowerCase().contains("fire")){
                 EnvironmentUtils.addFireBlock(
@@ -87,7 +88,6 @@ public class MKUltra {
         ModTalents.postInitJsonRegisistation();
         ClassLists.initFromConfig();
         proxy.postInit(e);
-        TalentUtils.loadAllAttributes();
     }
 
     @EventHandler

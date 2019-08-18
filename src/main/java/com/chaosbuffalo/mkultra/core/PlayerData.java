@@ -4,7 +4,7 @@ import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.events.client.PlayerDataUpdateEvent;
 import com.chaosbuffalo.mkultra.core.talents.TalentTreeRecord;
-import com.chaosbuffalo.mkultra.core.talents.TalentUtils;
+import com.chaosbuffalo.mkultra.utils.TalentUtils;
 import com.chaosbuffalo.mkultra.event.ItemRestrictionHandler;
 import com.chaosbuffalo.mkultra.item.ItemHelper;
 import com.chaosbuffalo.mkultra.item.ManaRegenIdol;
@@ -733,7 +733,7 @@ public class PlayerData implements IPlayerData {
         healthRegenTime += 1. / 20.;
         float i_regen = 3.0f / this.getHealthRegenRate();
         if (healthRegenTime >= i_regen) {
-            if (this.getHealth() < this.getTotalHealth()) {
+            if (this.getHealth() > 0 && this.getHealth() < this.getTotalHealth()) {
                 this.setHealth(this.getHealth() + 1);
             }
             healthRegenTime -= i_regen;

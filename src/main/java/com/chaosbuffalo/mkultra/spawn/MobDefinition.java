@@ -4,6 +4,7 @@ import com.chaosbuffalo.mkultra.core.IMobData;
 import com.chaosbuffalo.mkultra.core.MKUMobData;
 import com.chaosbuffalo.mkultra.core.MobAbilityTracker;
 import com.chaosbuffalo.mkultra.init.ModSpawn;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -44,6 +45,10 @@ public class MobDefinition extends IForgeRegistryEntry.Impl<MobDefinition> {
         canDefaultSpawn = false;
         defaultSpawnWeight = 1.0;
         bonusExperience = 0;
+    }
+
+    public ResourceLocation getEntityName(){
+        return EntityList.getKey(entityClass);
     }
 
     public MobDefinition withAttributeRanges(AttributeRange... ranges){

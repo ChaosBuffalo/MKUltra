@@ -103,13 +103,7 @@ public class PartyManager {
 
         if (team != null) {
             World world = original.getEntityWorld();
-
             EntityXPOrb orb = e.getOrb();
-            world.playSound(null, orb.posX, orb.posY, orb.posZ,
-                    SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP,
-                    SoundCategory.PLAYERS,
-                    0.1F, 0.5F * ((original.getRNG().nextFloat() - original.getRNG().nextFloat()) * 0.7F + 1.8F));
-
             int exp = orb.getXpValue();
             ArrayList<EntityPlayer> members = new ArrayList<>();
             for (String member : team.getMembershipCollection()) {
@@ -119,14 +113,13 @@ public class PartyManager {
                 }
             }
             int pCount = members.size();
+            int playerExp = Math.max(exp / pCount, 1);
             for (EntityPlayer p : members) {
-                // ensure every player gets at least 1 xp
-                int playerExp = Math.max(exp / pCount, 1);
-                p.addExperience(playerExp);
-//                gainBrouzoufs(p);
+                if (!p.equals(original)){
+                    p.addExperience(playerExp);
+                }
             }
-            e.getOrb().setDead();
-            e.setCanceled(true);
+            e.getOrb().xpValue = playerExp;
         }
     }
 }
