@@ -4,10 +4,8 @@ import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.client.gui.lib.*;
 import com.chaosbuffalo.mkultra.core.*;
+import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.network.packets.LevelAbilityPacket;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
@@ -19,7 +17,7 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by Jacob on 3/16/2016.
@@ -40,8 +38,6 @@ public class PlayerClassScreen extends MKScreen {
     private int ICON_SLOT_WIDTH = 20;
     private int ICON_SLOT_HEIGHT = 20;
     private int DESCRIPTION_WIDTH = ABILITY_SCROLL_WIDTH - 36;
-    private static final ResourceLocation BACKGROUND_LOC = new ResourceLocation(MKUltra.MODID,
-            "textures/gui/class_background_320.png");
 
     private static final ArrayList<IAttribute> STAT_PANEL_ATTRIBUTES = new ArrayList<>();
 
@@ -121,8 +117,11 @@ public class PlayerClassScreen extends MKScreen {
             int panelX = 10;
             int panelY = abilityHeight;
             int abilityIndex = i;
-            MKImage iconSlot = new MKImage(panelX, panelY, ICON_SLOT_WIDTH, ICON_SLOT_HEIGHT,
-                    BACKGROUND_LOC).setTexWidth(BACKGROUND_WIDTH).setTexHeight(BACKGROUND_HEIGHT)
+            MKImage iconSlot = new MKImage(
+                    panelX, panelY,
+                    ICON_SLOT_WIDTH, ICON_SLOT_HEIGHT,
+                    GuiTextures.CLASS_BACKGROUND_GRAPHIC)
+                    .setTexWidth(BACKGROUND_WIDTH).setTexHeight(BACKGROUND_HEIGHT)
                     .setTexU(X_POS_ICON_SLOT_TEX).setTexV(Y_POS_ICON_SLOT_TEX);
             abilityList.addWidget(iconSlot);
             MKImage abilityIcon = new MKImage(panelX + 2, panelY + 2, 16, 16,
@@ -195,6 +194,12 @@ public class PlayerClassScreen extends MKScreen {
         abilityScrollView.setToRight();
         abilityScrollView.setToTop();
         mainRoot.addWidget(abilityScrollView);
+        MKWidget passiveTray = drawPassivePanel(pData, xPos + STAT_PANEL_START_X,
+                yPos + STAT_PANEL_START_Y + STAT_PANEL_HEIGHT + 4);
+        if (passiveTray != null){
+            Log.info("Adding passive tray");
+            mainRoot.addWidget(passiveTray);
+        }
         setState("main");
     }
 
@@ -235,7 +240,7 @@ public class PlayerClassScreen extends MKScreen {
         int yPos = height / 2 - PANEL_HEIGHT / 2;
 
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.renderEngine.bindTexture(BACKGROUND_LOC);
+        this.mc.renderEngine.bindTexture(GuiTextures.CLASS_BACKGROUND_GRAPHIC);
         GL11.glDisable(GL11.GL_LIGHTING);
         drawModalRectWithCustomSizedTexture(xPos, yPos,
                 0, 0,
@@ -244,9 +249,43 @@ public class PlayerClassScreen extends MKScreen {
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
+    private MKWidget drawPassivePanel(IPlayerData pData, int xPos, int yPos){
+        List<ResourceLocation> passives = pData.getActivePassives();
+        if (passives == null){
+            return null;
+        } else {
+            MKWidget root = new MKWidget(xPos, yPos, STAT_PANEL_WIDTH,
+                    PassiveAbilityButton.HEIGHT + 4 + UIConstants.TEXT_HEIGHT);
+            MKText title = new MKText(fontRenderer, "Passives").setColor(16777215);
+            title.setX(xPos).setY(yPos).setWidth(STAT_PANEL_WIDTH);
+            title.setIsCentered(true);
+            root.addWidget(title);
+            MKStackLayoutHorizontal layout = new MKStackLayoutHorizontal(xPos,
+                    yPos + UIConstants.TEXT_HEIGHT, PassiveAbilityButton.HEIGHT);
+            layout.setMarginLeft(4).setMarginRight(4).setMarginTop(4);
+            root.addWidget(layout);
+            for (ResourceLocation passive : passives){
+                PassiveAbilityButton button;
+                if (passive.equals(MKURegistry.INVALID_ABILITY)){
+                    button = new PassiveAbilityButton(null, pData, 0, 0);
+                } else {
+                    PlayerAbility ability = MKURegistry.getAbility(passive);
+                    if (ability instanceof PlayerPassiveAbility){
+                        button = new PassiveAbilityButton((PlayerPassiveAbility) ability, pData, 0, 0);
+                    } else {
+                        button = new PassiveAbilityButton(null, pData, 0, 0);
+                    }
+                }
+                layout.addWidget(button);
+            }
+            return root;
+        }
+    }
+
     private MKWidget drawStatPanel(IPlayerData pData, int xPos, int yPos) {
         AbstractAttributeMap attributes = this.mc.player.getAttributeMap();
         MKWidget stackLayout = new MKStackLayoutVertical(xPos, yPos, STAT_PANEL_WIDTH - 6)
+                .doSetWidth(true)
                 .setMarginTop(4)
                 .setMarginBot(4)
                 .setPaddingTop(2)

@@ -224,6 +224,10 @@ public class PlayerClassInfo {
         parseTalentTrees(tag);
     }
 
+    public ResourceLocation[] getActivePassives() {
+        return loadedPassives;
+    }
+
     public ResourceLocation[] getActiveAbilities() {
         return hotbar;
     }

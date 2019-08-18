@@ -6,6 +6,9 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public interface IPlayerData {
@@ -129,5 +132,13 @@ public interface IPlayerData {
     int getUnspentTalentPoints();
 
     TalentTreeRecord getTalentTree(ResourceLocation loc);
+
+    @Nullable
+    List<ResourceLocation> getActivePassives();
+
+    @Nullable
+    HashSet<PlayerPassiveAbility> getLearnedPassives();
+
+
 
 }

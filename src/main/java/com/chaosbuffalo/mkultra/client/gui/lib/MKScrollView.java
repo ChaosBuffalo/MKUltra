@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.client.gui.lib;
 
 import com.chaosbuffalo.mkultra.log.Log;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -47,6 +48,10 @@ public class MKScrollView extends MKWidget{
         doScrollX = true;
         doScrollY = true;
         drawScrollBars = true;
+    }
+
+    public MKScrollView(int x, int y, int width, int height, boolean clipBounds){
+        this(x, y, width, height, new ScaledResolution(Minecraft.getMinecraft()).getScaleFactor(), clipBounds);
     }
 
     @Override

@@ -38,7 +38,7 @@ public class MKText extends MKWidget {
         if (isCentered()){
             this.drawCenteredString(this.fontRenderer, this.getText(),
                     this.getX() + this.getWidth() / 2,
-                    this.getY() + (this.getHeight() - 8) / 2, color);
+                    this.getY() + this.getHeight() / 2, color);
         } else if (isMultiline()){
             fontRenderer.drawSplitString(this.getText(), this.getX(), this.getY(), this.getWidth(), this.color);
         } else {

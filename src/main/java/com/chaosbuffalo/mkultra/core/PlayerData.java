@@ -245,6 +245,26 @@ public class PlayerData implements IPlayerData {
         return classInfo.getTalentTree(loc);
     }
 
+    @Override
+    @Nullable
+    public List<ResourceLocation> getActivePassives() {
+        PlayerClassInfo activeClass = getActiveClass();
+        if (activeClass != null){
+            return Arrays.asList(activeClass.getActivePassives());
+        }
+        return null;
+    }
+
+    @Override
+    @Nullable
+    public HashSet<PlayerPassiveAbility> getLearnedPassives() {
+        PlayerClassInfo activeClass = getActiveClass();
+        if (activeClass != null){
+            return activeClass.getPassiveAbilitiesFromTalents();
+        }
+        return null;
+    }
+
     private void updateTalents(){
         TalentUtils.removeAllAttributeTalents(player);
         if (!hasChosenClass()){
