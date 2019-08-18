@@ -74,8 +74,7 @@ public class MKButton extends MKWidget {
         FontRenderer fontrenderer = mc.fontRenderer;
         mc.getTextureManager().bindTexture(BUTTON_TEXTURES);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        this.hovered = isInBounds(mouseX, mouseY);
-        int i = getHoverState(this.hovered);
+        int i = getHoverState(isHovered());
         GlStateManager.enableBlend();
         GlStateManager.tryBlendFuncSeparate(
                 GlStateManager.SourceFactor.SRC_ALPHA,
@@ -99,7 +98,7 @@ public class MKButton extends MKWidget {
         int j = 14737632;
         if (!this.isEnabled()) {
             j = 10526880;
-        } else if (this.hovered) {
+        } else if (isHovered()) {
             j = 16777120;
         }
         this.drawCenteredString(fontrenderer, this.buttonText,

@@ -139,6 +139,8 @@ public interface IPlayerData {
     @Nullable
     HashSet<PlayerPassiveAbility> getLearnedPassives();
 
+    boolean canActivatePassiveForSlot(ResourceLocation loc, int slotIndex);
 
+    boolean activatePassiveForSlot(ResourceLocation loc, int slotIndex);
 
 }

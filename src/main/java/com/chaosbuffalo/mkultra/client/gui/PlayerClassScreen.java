@@ -4,6 +4,7 @@ import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.client.gui.lib.*;
 import com.chaosbuffalo.mkultra.core.*;
+import com.chaosbuffalo.mkultra.core.events.client.PlayerDataUpdateEvent;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.network.packets.LevelAbilityPacket;
 import net.minecraft.client.gui.ScaledResolution;
@@ -14,6 +15,7 @@ import net.minecraft.entity.ai.attributes.AbstractAttributeMap;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -38,6 +40,8 @@ public class PlayerClassScreen extends MKScreen {
     private int ICON_SLOT_WIDTH = 20;
     private int ICON_SLOT_HEIGHT = 20;
     private int DESCRIPTION_WIDTH = ABILITY_SCROLL_WIDTH - 36;
+    private MKWidget passivePanel;
+    private MKWidget mainRoot;
 
     private static final ArrayList<IAttribute> STAT_PANEL_ATTRIBUTES = new ArrayList<>();
 
@@ -65,6 +69,25 @@ public class PlayerClassScreen extends MKScreen {
         super();
     }
 
+    @SubscribeEvent
+    public void handlePlayerDataUpdate(PlayerDataUpdateEvent event) {
+        Log.info("In update player data");
+        if (passivePanel != null){
+            mainRoot.removeWidget(passivePanel);
+        }
+        int xPos = width / 2 - PANEL_WIDTH / 2;
+        int yPos = height / 2 - PANEL_HEIGHT / 2;
+        IPlayerData pData = MKUPlayerData.get(this.mc.player);
+        if (pData == null)
+            return;
+        MKWidget passiveTray = drawPassivePanel(pData, xPos + STAT_PANEL_START_X,
+                yPos + STAT_PANEL_START_Y + STAT_PANEL_HEIGHT + 4);
+        passivePanel = passiveTray;
+        if (passiveTray != null){
+            mainRoot.addWidget(passiveTray);
+        }
+    }
+
     @Override
     public void setupScreen() {
         super.setupScreen();
@@ -72,6 +95,7 @@ public class PlayerClassScreen extends MKScreen {
         int yPos = height / 2 - PANEL_HEIGHT / 2;
         ScaledResolution scaledRes = new ScaledResolution(mc);
         MKWidget mainRoot = new MKWidget(xPos, yPos, PANEL_WIDTH, PANEL_HEIGHT);
+        this.mainRoot = mainRoot;
         addState("main", mainRoot);
 
         IPlayerData pData = MKUPlayerData.get(this.mc.player);
@@ -196,6 +220,7 @@ public class PlayerClassScreen extends MKScreen {
         mainRoot.addWidget(abilityScrollView);
         MKWidget passiveTray = drawPassivePanel(pData, xPos + STAT_PANEL_START_X,
                 yPos + STAT_PANEL_START_Y + STAT_PANEL_HEIGHT + 4);
+        passivePanel = passiveTray;
         if (passiveTray != null){
             Log.info("Adding passive tray");
             mainRoot.addWidget(passiveTray);
@@ -264,18 +289,22 @@ public class PlayerClassScreen extends MKScreen {
                     yPos + UIConstants.TEXT_HEIGHT, PassiveAbilityButton.HEIGHT);
             layout.setMarginLeft(4).setMarginRight(4).setMarginTop(4);
             root.addWidget(layout);
+            int passiveCount = 0;
             for (ResourceLocation passive : passives){
                 PassiveAbilityButton button;
+                Log.info("Adding button for passive: %s", passive.toString());
                 if (passive.equals(MKURegistry.INVALID_ABILITY)){
-                    button = new PassiveAbilityButton(null, pData, 0, 0);
+                    button = new PassiveAbilityButton(null, pData, passiveCount, 0, 0);
                 } else {
                     PlayerAbility ability = MKURegistry.getAbility(passive);
                     if (ability instanceof PlayerPassiveAbility){
-                        button = new PassiveAbilityButton((PlayerPassiveAbility) ability, pData, 0, 0);
+                        button = new PassiveAbilityButton((PlayerPassiveAbility) ability,
+                                pData, passiveCount,0, 0);
                     } else {
-                        button = new PassiveAbilityButton(null, pData, 0, 0);
+                        button = new PassiveAbilityButton(null, pData, passiveCount,0, 0);
                     }
                 }
+                passiveCount++;
                 layout.addWidget(button);
             }
             return root;

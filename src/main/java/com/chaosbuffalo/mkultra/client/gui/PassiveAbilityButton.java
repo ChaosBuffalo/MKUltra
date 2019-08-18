@@ -1,13 +1,17 @@
 package com.chaosbuffalo.mkultra.client.gui;
 
+import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.client.gui.lib.*;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerPassiveAbility;
 import com.chaosbuffalo.mkultra.log.Log;
+import com.chaosbuffalo.mkultra.network.packets.ActivatePassivePacket;
+import com.chaosbuffalo.mkultra.network.packets.AddRemoveTalentPointPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.ArrayList;
@@ -36,18 +40,50 @@ public class PassiveAbilityButton extends MKButton {
     public final IPlayerData playerData;
     private MKModal dropdown;
     private boolean isDropdownOpen;
+    private int slotIndex;
 
-    public PassiveAbilityButton(PlayerPassiveAbility ability, IPlayerData data, int x, int y){
+    public PassiveAbilityButton(PlayerPassiveAbility ability, IPlayerData data, int slotIndex, int x, int y){
         super(x, y, WIDTH, HEIGHT, "");
         this.ability = ability;
         this.playerData = data;
         this.tooltip = new ArrayList<>();
         isDropdownOpen = false;
+        this.slotIndex = slotIndex;
         if (ability != null){
             tooltip.add(ability.getAbilityName());
             tooltip.add(ability.getAbilityDescription());
         }
     }
+
+    @Override
+    public void longHoverDraw(Minecraft mc, int x, int y, int width, int height, int mouseX, int mouseY, float partialTicks) {
+        HashSet<PlayerPassiveAbility> learned = playerData.getLearnedPassives();
+        if (learned == null || learned.size() == 0){
+            if (getScreen() != null){
+                getScreen().addHoveringText(new HoveringTextInstruction(
+                        I18n.format("mkultra.ui_msg.no_passives"),
+                        getParentCoords(new Vec2d(mouseX, mouseY))));
+            }
+        } else if (ability == null){
+            if (getScreen() != null){
+                getScreen().addHoveringText(new HoveringTextInstruction(
+                        I18n.format("mkultra.ui_msg.learn_passive_prompt"),
+                        getParentCoords(new Vec2d(mouseX, mouseY))));
+            }
+        }
+    }
+
+    @Override
+    public boolean isInBounds(int x, int y){
+        if (this.skipBoundsCheck){
+            return true;
+        }
+        return x >= this.getX() + SLOT_X_OFFSET &&
+                y >= this.getY() + SLOT_Y_OFFSET &&
+                x < this.getX() + SLOT_X_OFFSET + TALENT_SLOT_WIDTH &&
+                y < this.getY() + SLOT_Y_OFFSET + TALENT_SLOT_HEIGHT;
+    }
+
 
     public MKModal getDropdown(int mouseX, int mouseY){
         HashSet<PlayerPassiveAbility> learned = playerData.getLearnedPassives();
@@ -55,7 +91,6 @@ public class PassiveAbilityButton extends MKButton {
             return null;
         }
         MKModal dropdownModal = new MKModal();
-        Log.info("Mouse x %d, mouse y %d", mouseX, mouseY);
         MKScrollView scrollView = new MKScrollView(mouseX - DROP_DOWN_WIDTH / 2, mouseY, DROP_DOWN_WIDTH, DROPDOWN_HEIGHT, true);
         scrollView.setToTop();
         scrollView.setDoScrollX(false);
@@ -68,6 +103,10 @@ public class PassiveAbilityButton extends MKButton {
             MKButton button = new MKButton(ability.getAbilityName());
             layout.addWidget(button);
             button.setPressedCallback((MKButton btn, Integer buttonType) -> {
+                if (playerData.canActivatePassiveForSlot(ability.getAbilityId(), slotIndex)){
+                    Log.info("sending learn passive packet");
+                    MKUltra.packetHandler.sendToServer(new ActivatePassivePacket(ability.getAbilityId(), slotIndex));
+                }
                 MKScreen screen = getScreen();
                 if (screen != null){
                     screen.closeModal(this.dropdown);
@@ -86,7 +125,6 @@ public class PassiveAbilityButton extends MKButton {
 
     @Override
     public boolean onMousePressed(Minecraft minecraft, int mouseX, int mouseY, int mouseButton) {
-
         if (mouseButton == UIConstants.MOUSE_BUTTON_RIGHT){
             MKModal dropdown = getDropdown(mouseX, mouseY);
             if (dropdown != null && getScreen() != null){
@@ -104,12 +142,16 @@ public class PassiveAbilityButton extends MKButton {
     }
 
     @Override
+    public boolean checkHovered(int mouseX, int mouseY){
+        return isVisible() && isEnabled() && isInBounds(mouseX, mouseY) && !isDropdownOpen;
+    }
+
+    @Override
     public void draw(Minecraft minecraft, int x, int y, int width, int height, int mouseX, int mouseY, float partialTicks){
         if (this.isVisible()) {
             FontRenderer fontrenderer = minecraft.fontRenderer;
             minecraft.getTextureManager().bindTexture(GuiTextures.CLASS_BACKGROUND_GRAPHIC);
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-            this.hovered = isInBounds(mouseX, mouseY) && !isDropdownOpen;
             GlStateManager.enableBlend();
             DrawingUtils.drawTexturedRect(this.getX() + SLOT_X_OFFSET ,
                     this.getY() + SLOT_Y_OFFSET,
@@ -126,14 +168,14 @@ public class PassiveAbilityButton extends MKButton {
                 int textColor = 14737632;
                 if (!this.isEnabled()) {
                     textColor = 10526880;
-                } else if (this.hovered) {
+                } else if (isHovered()) {
                     textColor = 16777120;
                 }
                 this.drawCenteredString(fontrenderer, ability.getAbilityName(), this.getX() + this.getWidth() / 2,
                         this.getY() + SLOT_Y_OFFSET + TALENT_SLOT_HEIGHT + TEXT_OFFSET, textColor);
-                if (hovered){
+                if (isHovered()){
                     if (getScreen() != null){
-                        screen.addHoveringText(new HoveringTextInstruction(tooltip,
+                       getScreen().addHoveringText(new HoveringTextInstruction(tooltip,
                                 getParentCoords(new Vec2d(mouseX, mouseY))));
                     }
                 }
