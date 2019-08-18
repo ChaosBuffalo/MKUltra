@@ -43,15 +43,19 @@ public class RangedAttributeTalent extends BaseTalent {
     }
 
     @SideOnly(Side.CLIENT)
-    public String getTalentDescription(double value) {
+    public String getTalentDescription(double perRank, double currentValue) {
         String amount;
+        String totalAmount;
         if (renderAsPercentage){
-            amount = Double.toString(value * 100.0) + "%";
+            amount = Double.toString(perRank * 100.0) + "%";
+            totalAmount = Double.toString(currentValue * 100.0) + "%";
         } else {
-            amount = Double.toString(value);
+            amount = Double.toString(perRank);
+            totalAmount = Double.toString(currentValue);
         }
+        String finalAmount = String.format("%s (%s)", amount, totalAmount);
         return TextFormatting.GRAY + I18n.format(String.format("%s.%s.description",
-                getRegistryName().getNamespace(), getRegistryName().getPath()), amount);
+                getRegistryName().getNamespace(), getRegistryName().getPath()), finalAmount);
     }
 
     public AttributeModifier createModifier(double value) {

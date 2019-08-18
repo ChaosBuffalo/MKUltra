@@ -48,7 +48,8 @@ public class TalentButton extends MKButton {
         tooltip.add(baseTalent.getTalentTypeName());
         if (record.getNode() instanceof AttributeTalentNode){
             AttributeTalentNode attrNode = (AttributeTalentNode) record.getNode();
-            tooltip.add(attrNode.getRangedTalent().getTalentDescription(attrNode.getPerRank()));
+            tooltip.add(attrNode.getRangedTalent().getTalentDescription(attrNode.getPerRank(),
+                    record.getRank() * attrNode.getPerRank()));
         } else {
             tooltip.add(record.getNode().getTalent().getTalentDescription());
         }

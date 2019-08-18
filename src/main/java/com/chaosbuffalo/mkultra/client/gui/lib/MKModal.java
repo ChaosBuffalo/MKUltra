@@ -2,8 +2,6 @@ package com.chaosbuffalo.mkultra.client.gui.lib;
 
 import net.minecraft.client.Minecraft;
 
-import java.util.Iterator;
-
 public class MKModal extends MKWidget {
 
     private boolean doBackground;
@@ -45,6 +43,7 @@ public class MKModal extends MKWidget {
     public boolean onMousePressed(Minecraft minecraft, int mouseX, int mouseY, int mouseButton) {
         if (getScreen() != null && shouldCloseOnClickOutside()){
             getScreen().closeModal(this);
+            return true;
         }
         return super.onMousePressed(minecraft, mouseX, mouseY, mouseButton);
 
