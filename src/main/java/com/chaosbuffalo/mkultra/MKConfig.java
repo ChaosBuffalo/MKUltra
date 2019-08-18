@@ -4,6 +4,7 @@ import com.chaosbuffalo.mkultra.core.ArmorClass;
 import com.chaosbuffalo.mkultra.core.ClassLists;
 import com.chaosbuffalo.mkultra.core.classes.*;
 import com.chaosbuffalo.mkultra.log.Log;
+import com.chaosbuffalo.mkultra.utils.MobUtils;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.RangedAttribute;
 import net.minecraft.item.ItemArmor;
@@ -180,6 +181,12 @@ public class MKConfig {
         @Config.Name("Maximum Entity Health")
         @Config.Comment("Adjusts the default maximum health in minecraft for entities")
         public double MAX_ENTITY_HEALTH = 4096.0;
+
+        @Config.Comment("These mobs will have attack speed added to their mob states, for use with the mob definition system.")
+        public String[] ATTACK_SPEED_ON_MOBS = {
+                "minecraft:skeleton",
+                "minecraft:zombie"
+        };
     }
 
     public static class ClassConfiguration {
@@ -256,6 +263,13 @@ public class MKConfig {
         Arrays.stream(armor.LIGHT_ARMOR).forEach((x) -> registerArmorFromName(x, ArmorClass.LIGHT));
         Arrays.stream(armor.MEDIUM_ARMOR).forEach((x) -> registerArmorFromName(x, ArmorClass.MEDIUM));
         Arrays.stream(armor.HEAVY_ARMOR).forEach((x) -> registerArmorFromName(x, ArmorClass.HEAVY));
+    }
+
+    public static void setupAttackSpeedWhitelist(){
+        MobUtils.mobsToAddAttackSpeed.clear();
+        for (String name : gameplay.ATTACK_SPEED_ON_MOBS){
+            MobUtils.mobsToAddAttackSpeed.add(new ResourceLocation(name));
+        }
     }
 
 

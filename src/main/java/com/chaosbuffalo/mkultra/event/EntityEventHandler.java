@@ -8,6 +8,7 @@ import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.spawn.DefaultSpawnIndex;
 import com.chaosbuffalo.mkultra.spawn.MobDefinition;
 import com.chaosbuffalo.mkultra.spawn.SpawnList;
+import com.chaosbuffalo.mkultra.utils.MobUtils;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AbstractAttributeMap;
@@ -35,6 +36,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -115,7 +117,6 @@ public class EntityEventHandler {
         EntityLivingBase entLiv = (EntityLivingBase) event.getEntity();
         MobData mobD = (MobData) MKUMobData.get(entLiv);
         World world = event.getWorld();
-        addAttackSpeed(entLiv);
         if (mobD != null){
             if (mobD.isMKSpawned()) {
                 entLiv.setDead();
@@ -123,7 +124,6 @@ public class EntityEventHandler {
                 ResourceLocation mobDefinition = mobD.getMobDefinition();
                 MobDefinition definition = MKURegistry.getMobDefinition(mobDefinition);
                 if (definition != MKURegistry.EMPTY_MOB){
-//                    addAttackSpeed(entLiv);
                     definition.applyDefinition(world, entLiv, mobD.getMobLevel());
                 } else {
                     if (!MKConfig.gameplay.SPAWN_REPLACEMENT){
@@ -133,7 +133,6 @@ public class EntityEventHandler {
                     ResourceLocation entityId = EntityList.getKey(entLiv);
                     SpawnList spawnList = DefaultSpawnIndex.getSpawnListForEntity(entityId);
                     if (spawnList != null){
-//                        addAttackSpeed(entLiv);
                         MobDefinition def = spawnList.getNextDefinition();
                         mobD.setMobDefinition(def.getRegistryName());
                         mobD.setMobFaction(WORLD_FACTION);
@@ -217,8 +216,6 @@ public class EntityEventHandler {
         // Run this on the server if we are single player.
         } else if (event.getEntity() instanceof EntityLivingBase && !event.getWorld().isRemote){
             handleMobJoinWorld(event);
-        } else if (event.getEntity() instanceof EntityLivingBase && event.getWorld().isRemote){
-            addAttackSpeed((EntityLivingBase) event.getEntity());
         }
     }
 
@@ -265,6 +262,11 @@ public class EntityEventHandler {
             event.addCapability(PLAYER_DATA, new PlayerDataProvider((EntityPlayer) event.getObject()));
         } else if (event.getObject() instanceof EntityLivingBase){
             event.addCapability(MOB_DATA, new MobDataProvider((EntityLivingBase) event.getObject()));
+            ResourceLocation entityName = EntityList.getKey(event.getObject());
+            if (MobUtils.mobsToAddAttackSpeed.contains(entityName)){
+                addAttackSpeed((EntityLivingBase) event.getObject());
+            }
+
         }
     }
 }

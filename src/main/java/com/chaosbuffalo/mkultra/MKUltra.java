@@ -75,6 +75,7 @@ public class MKUltra {
     @EventHandler
     public void postInit(FMLPostInitializationEvent e) {
         MKConfig.registerArmors();
+        MKConfig.setupAttackSpeedWhitelist();
         GameRegistry.findRegistry(Block.class).getKeys().forEach(key -> {
             if (key.getPath().toLowerCase().contains("fire")){
                 EnvironmentUtils.addFireBlock(

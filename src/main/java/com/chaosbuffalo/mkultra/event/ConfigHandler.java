@@ -23,6 +23,7 @@ public class ConfigHandler {
             MKConfig.registerArmors();
             MKConfig.setMaxHealthMax();
             ClassLists.initFromConfig();
+            MKConfig.setupAttackSpeedWhitelist();
         }
     }
 }
