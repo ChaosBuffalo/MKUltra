@@ -33,6 +33,10 @@
           "name": "mkultra:talent.spell_crit_damage",
           "max_points": 2,
           "value": 0.2
+        },
+        {
+          "name": "mkultra:talent.burning_soul",
+          "max_points": 1
         }
       ]
     },

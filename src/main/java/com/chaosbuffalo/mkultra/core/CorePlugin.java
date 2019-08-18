@@ -1,6 +1,7 @@
 package com.chaosbuffalo.mkultra.core;
 
 import com.chaosbuffalo.mkultra.MKConfig;
+import com.chaosbuffalo.mkultra.core.abilities.passives.BurningSoul;
 import com.chaosbuffalo.mkultra.core.classes.*;
 import com.google.common.collect.Lists;
 import net.minecraftforge.event.RegistryEvent;

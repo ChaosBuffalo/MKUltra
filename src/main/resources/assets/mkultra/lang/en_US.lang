@@ -276,4 +276,9 @@ mkultra.talent.melee_crit.description=Increases your chance to make melee crits 
 mkultra.talent.spell_crit.description=Increases your chance to make spell crits by %s
 mkultra.talent.movement_speed.description=Increases your run speed by %s
 mkultra.talent_type.attribute.name=Attribute Talent
+mkultra.talent_type.passive.name=Passive Ability Talent
+mkultra.talent.burning_soul.name=Burning Soul
+mkultra.talent.burning_soul.description=Increases your spell crit rate by 10\% and your spell crit damage by 100\%
+mkultra.ability.burning_soul.name=Burning Soul
+mkultra.ability.burning_soul.description=Increases your spell crit rate by 10\% and your spell crit damage by 100\%
 

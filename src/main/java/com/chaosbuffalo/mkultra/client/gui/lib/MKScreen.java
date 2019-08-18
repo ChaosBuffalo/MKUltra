@@ -44,6 +44,16 @@ public class MKScreen extends GuiScreen {
         if (Mouse.getEventDWheel() != 0){
             int x = Mouse.getEventX() * this.width / this.mc.displayWidth;
             int y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
+            Iterator<MKModal> modalIt = modals.descendingIterator();
+            while (modalIt.hasNext()) {
+                MKModal child = modalIt.next();
+                if (!child.isVisible()) {
+                    continue;
+                }
+                if (child.mouseScrollWheel(this.mc, x, y, i)){
+                    return;
+                }
+            }
             Iterator<MKWidget> it = children.descendingIterator();
             while (it.hasNext()){
                 MKWidget child = it.next();

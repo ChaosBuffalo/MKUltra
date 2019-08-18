@@ -3,6 +3,7 @@ package com.chaosbuffalo.mkultra.client.gui;
 import com.chaosbuffalo.mkultra.client.gui.lib.*;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerPassiveAbility;
+import com.chaosbuffalo.mkultra.log.Log;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
@@ -17,7 +18,7 @@ public class PassiveAbilityButton extends MKButton {
     private static int Y_POS_TALENT_SLOT_TEX = 259;
     private static int TALENT_SLOT_WIDTH = 20;
     private static int TALENT_SLOT_HEIGHT = 20;
-    private static final int DROP_DOWN_WIDTH = 50;
+    private static final int DROP_DOWN_WIDTH = 90;
     private static final int WIDTH = 70;
     private static int ICON_WIDTH = 16;
     private static int ICON_HEIGHT = 16;
@@ -25,7 +26,7 @@ public class PassiveAbilityButton extends MKButton {
     private static final int TEXT_OFFSET = 4;
     private static final int SLOT_X_OFFSET = (WIDTH - TALENT_SLOT_WIDTH) / 2;
     public static final int HEIGHT = TALENT_SLOT_HEIGHT + TEXT_OFFSET + SLOT_Y_OFFSET + UIConstants.TEXT_HEIGHT;
-    private static final int DROPDOWN_HEIGHT = 256 - 132 - HEIGHT;
+    private static final int DROPDOWN_HEIGHT = 80;
     private static int ICON_X_OFFSET = SLOT_X_OFFSET + (TALENT_SLOT_WIDTH - ICON_WIDTH) / 2;
     private static int ICON_Y_OFFSET = SLOT_Y_OFFSET + (TALENT_SLOT_HEIGHT  - ICON_HEIGHT) / 2;
 
@@ -33,6 +34,7 @@ public class PassiveAbilityButton extends MKButton {
 
     public final PlayerPassiveAbility ability;
     public final IPlayerData playerData;
+    private MKModal dropdown;
     private boolean isDropdownOpen;
 
     public PassiveAbilityButton(PlayerPassiveAbility ability, IPlayerData data, int x, int y){
@@ -53,10 +55,13 @@ public class PassiveAbilityButton extends MKButton {
             return null;
         }
         MKModal dropdownModal = new MKModal();
-        MKScrollView scrollView = new MKScrollView(mouseX, mouseY, DROP_DOWN_WIDTH, DROPDOWN_HEIGHT, true);
+        Log.info("Mouse x %d, mouse y %d", mouseX, mouseY);
+        MKScrollView scrollView = new MKScrollView(mouseX - DROP_DOWN_WIDTH / 2, mouseY, DROP_DOWN_WIDTH, DROPDOWN_HEIGHT, true);
+        scrollView.setToTop();
         scrollView.setDoScrollX(false);
         dropdownModal.addWidget(scrollView);
         MKStackLayoutVertical layout = new MKStackLayoutVertical(0, 0, DROP_DOWN_WIDTH - 4);
+        layout.setPaddingTop(1).setPaddingBot(1).setMarginTop(2).setMarginBot(2);
         layout.doSetWidth(true);
         scrollView.addWidget(layout);
         for (PlayerPassiveAbility ability : learned){
@@ -65,12 +70,17 @@ public class PassiveAbilityButton extends MKButton {
             button.setPressedCallback((MKButton btn, Integer buttonType) -> {
                 MKScreen screen = getScreen();
                 if (screen != null){
-                    screen.closeModal(dropdownModal);
+                    screen.closeModal(this.dropdown);
                 }
                 return true;
             });
         }
-        dropdownModal.setOnCloseCallback(() -> isDropdownOpen = false);
+        scrollView.centerContentX();
+        dropdownModal.setOnCloseCallback(() ->
+        {
+            isDropdownOpen = false;
+            dropdown = null;
+        });
         return dropdownModal;
     }
 
@@ -81,6 +91,7 @@ public class PassiveAbilityButton extends MKButton {
             MKModal dropdown = getDropdown(mouseX, mouseY);
             if (dropdown != null && getScreen() != null){
                 isDropdownOpen = true;
+                this.dropdown = dropdown;
                 getScreen().addModal(dropdown);
                 return true;
             } else {

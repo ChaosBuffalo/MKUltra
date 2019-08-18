@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.client.gui.lib;
 
+import com.chaosbuffalo.mkultra.log.Log;
 import com.google.common.collect.Lists;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
