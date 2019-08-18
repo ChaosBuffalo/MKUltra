@@ -19,6 +19,16 @@ public class HoveringTextInstruction{
         this(texts, new Vec2d(x, y));
     }
 
+    public HoveringTextInstruction(String text, int x, int y){
+        this(new ArrayList<>(), x, y);
+        texts.add(text);
+    }
+
+    public HoveringTextInstruction(String text, Vec2d mousePos){
+        this(new ArrayList<>(), mousePos);
+        texts.add(text);
+    }
+
     public void draw(FontRenderer renderer, int width, int height){
         GuiUtils.drawHoveringText(texts, mousePos.x, mousePos.y, width, height, -1, renderer);
     }

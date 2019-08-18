@@ -245,6 +245,46 @@ public class PlayerData implements IPlayerData {
         return classInfo.getTalentTree(loc);
     }
 
+    @Override
+    @Nullable
+    public List<ResourceLocation> getActivePassives() {
+        PlayerClassInfo activeClass = getActiveClass();
+        if (activeClass != null){
+            return Arrays.asList(activeClass.getActivePassives());
+        }
+        return null;
+    }
+
+    @Override
+    @Nullable
+    public HashSet<PlayerPassiveAbility> getLearnedPassives() {
+        PlayerClassInfo activeClass = getActiveClass();
+        if (activeClass != null){
+            return activeClass.getPassiveAbilitiesFromTalents();
+        }
+        return null;
+    }
+
+    @Override
+    public boolean canActivatePassiveForSlot(ResourceLocation loc, int slotIndex) {
+        PlayerClassInfo activeClass = getActiveClass();
+        if (activeClass != null){
+            return activeClass.canAddPassiveToSlot(loc, slotIndex);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean activatePassiveForSlot(ResourceLocation loc, int slotIndex) {
+        PlayerClassInfo activeClass = getActiveClass();
+        if (activeClass != null){
+            boolean didWork = activeClass.addPassiveToSlot(loc, slotIndex);
+            sendCurrentClassUpdate();
+            return didWork;
+        }
+        return false;
+    }
+
     private void updateTalents(){
         TalentUtils.removeAllAttributeTalents(player);
         if (!hasChosenClass()){

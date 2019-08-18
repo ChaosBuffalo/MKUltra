@@ -60,7 +60,7 @@ public class MKImage extends MKWidget{
     public void draw(Minecraft mc, int x, int y, int width, int height, int mouseX, int mouseY, float partialTicks) {
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         mc.renderEngine.bindTexture(imageLoc);
-        drawModalRectWithCustomSizedTexture(getX(), getY(), getTexU(), getTexV(),
+        DrawingUtils.drawTexturedRect(getX(), getY(), getTexU(), getTexV(),
                 getWidth(), getHeight(), getTexWidth(), getTexHeight());
     }
 }

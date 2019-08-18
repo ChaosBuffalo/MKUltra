@@ -3,6 +3,7 @@ package com.chaosbuffalo.mkultra.init;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.MKURegistry;
 import com.chaosbuffalo.mkultra.core.PlayerAttributes;
+import com.chaosbuffalo.mkultra.core.abilities.passives.BurningSoul;
 import com.chaosbuffalo.mkultra.core.talents.*;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.utils.JsonLoader;
@@ -213,5 +214,10 @@ public class ModTalents {
                 UUID.fromString("95fcf4d0-aaa9-413f-8362-7706e29412f7"),
                 true);
         event.getRegistry().register(movementSpeed);
+        PassiveAbilityTalent burningSoul = new PassiveAbilityTalent(
+                new ResourceLocation(MKUltra.MODID, "talent.burning_soul"),
+                BurningSoul.INSTANCE
+        );
+        event.getRegistry().register(burningSoul);
     }
 }

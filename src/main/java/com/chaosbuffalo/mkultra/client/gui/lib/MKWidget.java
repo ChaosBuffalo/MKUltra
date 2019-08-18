@@ -1,12 +1,10 @@
 package com.chaosbuffalo.mkultra.client.gui.lib;
 
-import com.google.common.collect.Lists;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 
 import javax.annotation.Nullable;
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.UUID;
 
@@ -19,7 +17,8 @@ public class MKWidget extends Gui {
     private boolean enabled;
     private boolean visible;
     public boolean skipBoundsCheck;
-    protected boolean hovered;
+    private boolean hovered;
+    private float hoveredTicks;
     public UUID id;
     public ArrayDeque<MKWidget> children;
     // These should be used by layouts.
@@ -27,7 +26,9 @@ public class MKWidget extends Gui {
     private float sizeHintHeight;
     private float posHintX;
     private float posHintY;
+    private int longHoverTicks;
     public MKScreen screen;
+
 
     public MKWidget(int x, int y){
         this(x, y, 200, 20);
@@ -48,7 +49,9 @@ public class MKWidget extends Gui {
         this.sizeHintWidth = 1.0f;
         this.sizeHintHeight = 1.0f;
         this.posHintX = 0.0f;
+        this.hoveredTicks = 0;
         this.posHintY = 0.0f;
+        longHoverTicks = UIConstants.DEFAULT_LONG_HOVER_TICKS;
     }
 
     public void setScreen(MKScreen screen){
@@ -56,6 +59,15 @@ public class MKWidget extends Gui {
         for (MKWidget child : children){
             child.setScreen(screen);
         }
+    }
+
+    public MKWidget setLongHoverTime(int newTime){
+        longHoverTicks = newTime;
+        return this;
+    }
+
+    public int getLongHoverTicks(){
+        return longHoverTicks;
     }
 
     @Nullable
@@ -239,8 +251,12 @@ public class MKWidget extends Gui {
         return x >= this.x && y >= this.y && x < this.x + this.width && y < this.y + this.height;
     }
 
-    public boolean isMouseOver() {
+    public boolean isHovered() {
         return this.hovered;
+    }
+
+    public void setHovered(boolean value){
+        this.hovered = value;
     }
 
     public boolean isVisible() { return this.visible; }
@@ -276,6 +292,40 @@ public class MKWidget extends Gui {
 
     }
 
+    public void longHoverDraw(Minecraft mc, int x, int y, int width, int height,
+                              int mouseX, int mouseY, float partialTicks){
+
+    }
+
+    public void handleHoverDetection(int mouseX, int mouseY, float partialTicks){
+        boolean hovered = checkHovered(mouseX, mouseY);
+        if (hovered){
+            setHoveredTicks(getHoveredTicks() + partialTicks);
+        } else {
+            setHoveredTicks(0);
+        }
+        setHovered(hovered);
+    }
+
+    public void handleLongHoverDraw(Minecraft mc, int x, int y, int width, int height,
+                                    int mouseX, int mouseY, float partialTicks){
+        if (isHovered() && getHoveredTicks() > getLongHoverTicks()){
+            longHoverDraw(mc, x, y, width, height, mouseX, mouseY, partialTicks);
+        }
+    }
+
+    public float getHoveredTicks(){
+        return hoveredTicks;
+    }
+
+    public void setHoveredTicks(float value){
+        hoveredTicks = value;
+    }
+
+    public boolean checkHovered(int mouseX, int mouseY){
+        return isVisible() && isEnabled() && isInBounds(mouseX, mouseY);
+    }
+
     public void draw(Minecraft mc, int x, int y, int width, int height, int mouseX, int mouseY, float partialTicks) {
 
     }
@@ -309,6 +359,11 @@ public class MKWidget extends Gui {
 
 
     public void drawWidget(Minecraft mc, int mouseX, int mouseY, float partialTicks){
+        handleHoverDetection(mouseX, mouseY, partialTicks);
+        int x = getX();
+        int y = getY();
+        int width = getWidth();
+        int height = getHeight();
         preDraw(mc, x, y, width, height, mouseX, mouseY, partialTicks);
         draw(mc, x, y, width, height, mouseX, mouseY, partialTicks);
         for (MKWidget child : children){
@@ -317,6 +372,7 @@ public class MKWidget extends Gui {
             }
         }
         postDraw(mc, x, y, width, height, mouseX, mouseY, partialTicks);
+        handleLongHoverDraw(mc, x, y, width, height, mouseX, mouseY, partialTicks);
     }
 
 }

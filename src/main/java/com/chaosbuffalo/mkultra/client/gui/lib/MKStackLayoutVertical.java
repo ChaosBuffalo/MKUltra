@@ -3,10 +3,21 @@ package com.chaosbuffalo.mkultra.client.gui.lib;
 public class MKStackLayoutVertical extends MKLayout {
 
     private int currentY;
+    private boolean doSetWidth;
 
     public MKStackLayoutVertical(int x, int y, int width) {
         super(x, y, width, 0);
         currentY = y;
+        doSetWidth = false;
+    }
+
+    public MKStackLayoutVertical doSetWidth(boolean value){
+        doSetWidth = value;
+        return this;
+    }
+
+    public boolean shouldSetWidth(){
+        return doSetWidth;
     }
 
     @Override
@@ -18,8 +29,11 @@ public class MKStackLayoutVertical extends MKLayout {
     @Override
     public void doLayout(MKWidget widget, int index){
         widget.setY(currentY);
-        widget.setX(getX() + getMarginLeft() + (int) ((getWidth() - getMarginLeft() - getMarginRight()) * widget.getPosHintX()));
-        widget.setWidth((int)((getWidth()  - getMarginRight() - getMarginLeft()) * widget.getSizeHintWidth()));
+        widget.setX(getX() + getMarginLeft() + (int) ((getWidth() - getMarginLeft() -
+                getMarginRight()) * widget.getPosHintX()));
+        if (shouldSetWidth()){
+            widget.setWidth((int)((getWidth()  - getMarginRight() - getMarginLeft()) * widget.getSizeHintWidth()));
+        }
         currentY += widget.getHeight() + getPaddingBot() + getPaddingTop();
     }
 

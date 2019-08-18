@@ -105,6 +105,7 @@ public class OrbMotherGui extends MKScreen {
                 .setY(yPos + 4);
         selectRoot.addWidget(title);
         MKWidget textLayout = new MKStackLayoutVertical(xPos, title.getY() + title.getHeight(), panelWidth)
+                .doSetWidth(true)
                 .setMarginTop(8)
                 .setMarginBot(8)
                 .setPaddingTop(4)
@@ -149,7 +150,7 @@ public class OrbMotherGui extends MKScreen {
         MKScrollView svTreeList = new MKScrollView(layoutX, ltop,
                 lwidth, 160, scaledRes.getScaleFactor(), true);
         svTreeList.setScrollMarginX(20).setDoScrollX(false);
-        MKStackLayoutVertical layout = new MKStackLayoutVertical(0, 0, lwidth - 40);
+        MKStackLayoutVertical layout = new MKStackLayoutVertical(0, 0, lwidth - 40).doSetWidth(true);
         svTreeList.addWidget(layout);
         layout.setPaddingBot(2).setPaddingTop(2).setMarginTop(4);
         ArrayList<ResourceLocation> treeLocs = new ArrayList<>(MKURegistry.REGISTRY_TALENT_TREES.getKeys());

@@ -72,6 +72,11 @@ public class PlayerClassInfo {
     public boolean addPassiveToSlot(ResourceLocation loc, int slotIndex) {
         if (canAddPassiveToSlot(loc, slotIndex)) {
             loadedPassives[slotIndex] = loc;
+            for (int i = 0; i < GameConstants.MAX_PASSIVES; i++){
+                if (i != slotIndex && loc.equals(loadedPassives[i])){
+                    loadedPassives[i] = MKURegistry.INVALID_ABILITY;
+                }
+            }
             return true;
         }
         return false;
@@ -196,7 +201,6 @@ public class PlayerClassInfo {
         tag.setInteger("unspentPoints", unspentPoints);
         writeNBTAbilityArray(tag, "spendOrder", spendOrder, GameConstants.MAX_CLASS_LEVEL);
         writeNBTAbilityArray(tag, "hotbar", Arrays.asList(hotbar), GameConstants.ACTION_BAR_SIZE);
-        writeNBTAbilityArray(tag, "loadedPassives", Arrays.asList(loadedPassives), GameConstants.MAX_PASSIVES);
         serializeTalentInfo(tag);
     }
 
@@ -206,22 +210,27 @@ public class PlayerClassInfo {
         unspentPoints = tag.getInteger("unspentPoints");
         spendOrder = new ArrayDeque<>(Arrays.asList(parseNBTAbilityArray(tag, "spendOrder", GameConstants.MAX_CLASS_LEVEL)));
         setActiveAbilities(parseNBTAbilityArray(tag, "hotbar", GameConstants.ACTION_BAR_SIZE));
-        if (tag.hasKey("loadedPassives")) {
-            setLoadedPassives(parseNBTAbilityArray(tag, "loadedPassives", GameConstants.MAX_PASSIVES));
-        }
         deserializeTalentInfo(tag);
     }
 
     public void serializeTalentInfo(NBTTagCompound tag) {
         tag.setInteger("unspentTalentPoints", unspentTalentPoints);
         tag.setInteger("totalTalentPoints", totalTalentPoints);
+        writeNBTAbilityArray(tag, "loadedPassives", Arrays.asList(loadedPassives), GameConstants.MAX_PASSIVES);
         writeTalentTrees(tag);
     }
 
     public void deserializeTalentInfo(NBTTagCompound tag) {
         unspentTalentPoints = tag.getInteger("unspentTalentPoints");
         totalTalentPoints = tag.getInteger("totalTalentPoints");
+        if (tag.hasKey("loadedPassives")) {
+            setLoadedPassives(parseNBTAbilityArray(tag, "loadedPassives", GameConstants.MAX_PASSIVES));
+        }
         parseTalentTrees(tag);
+    }
+
+    public ResourceLocation[] getActivePassives() {
+        return loadedPassives;
     }
 
     public ResourceLocation[] getActiveAbilities() {

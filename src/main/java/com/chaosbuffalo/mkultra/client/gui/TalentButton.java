@@ -73,7 +73,6 @@ public class TalentButton extends MKButton {
             FontRenderer fontrenderer = minecraft.fontRenderer;
             minecraft.getTextureManager().bindTexture(TALENT_SLOT_GRAPHIC);
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-            this.hovered = isInBounds(mouseX, mouseY);
             GlStateManager.enableBlend();
             Gui.drawModalRectWithCustomSizedTexture(this.getX() + SLOT_X_OFFSET ,
                     this.getY() + SLOT_Y_OFFSET,
@@ -104,7 +103,7 @@ public class TalentButton extends MKButton {
             int textColor = 14737632;
             if (!this.isEnabled()) {
                 textColor = 10526880;
-            } else if (this.hovered) {
+            } else if (isHovered()) {
                 textColor = 16777120;
             }
             this.drawCenteredString(fontrenderer, this.buttonText, this.getX() + this.getWidth() / 2,
@@ -117,7 +116,7 @@ public class TalentButton extends MKButton {
                     this.getY() + SLOT_Y_OFFSET + SLOT_HEIGHT + OVERLAY_HEIGHT + TEXT_OFFSET
                             + fontrenderer.FONT_HEIGHT + 2,
                     textColor);
-            if (hovered){
+            if (isHovered()){
                 if (getScreen() != null){
                     screen.addHoveringText(new HoveringTextInstruction(tooltip,
                             getParentCoords(new Vec2d(mouseX, mouseY))));
