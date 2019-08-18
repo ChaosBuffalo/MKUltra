@@ -59,6 +59,7 @@ public class PlayerClassInfo {
     }
 
     public void applyPassives(EntityPlayer player, IPlayerData data, World world) {
+        Log.debug("applyPassives - loadedPassives %s %s", loadedPassives[0], loadedPassives[1]);
         for (ResourceLocation loc : loadedPassives) {
             if (!loc.equals(MKURegistry.INVALID_ABILITY)) {
                 PlayerAbility ability = MKURegistry.getAbility(loc);
@@ -83,8 +84,8 @@ public class PlayerClassInfo {
     }
 
     @Nullable
-    public ResourceLocation getPassiveForSlot(int slotIndex){
-        if (slotIndex > GameConstants.MAX_PASSIVES){
+    public ResourceLocation getPassiveForSlot(int slotIndex) {
+        if (slotIndex >= GameConstants.MAX_PASSIVES) {
             return null;
         }
         return loadedPassives[slotIndex];
