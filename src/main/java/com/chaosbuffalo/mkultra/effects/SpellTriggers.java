@@ -21,6 +21,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.fml.common.registry.IThrowableEntity;
 
@@ -30,20 +31,25 @@ import java.util.Map;
 public class SpellTriggers {
 
 
-    private static boolean isMKUltraAbilityDamage(DamageSource source) {
+    public static boolean isMKUltraAbilityDamage(DamageSource source) {
         return source instanceof MKDamageSource;
     }
 
-    private static boolean isPlayerPhysicalDamage(DamageSource source) {
+    public static boolean isPlayerPhysicalDamage(DamageSource source) {
         return (!source.isFireDamage() && !source.isExplosion() && !source.isMagicDamage() &&
                 source.getDamageType().equals("player"));
     }
 
-    private static boolean isMislabeledThrowable(DamageSource source){
+    public static boolean isMeleeDamage(DamageSource source){
+        return isPlayerPhysicalDamage(source)||
+                (source instanceof MKDamageSource && ((MKDamageSource) source).isMeleeAbility());
+    }
+
+    public static boolean isMislabeledThrowable(DamageSource source){
         return source.getImmediateSource() instanceof IThrowableEntity;
     }
 
-    private static boolean isProjectileDamage(DamageSource source){
+    public static boolean isProjectileDamage(DamageSource source){
         return source.isProjectile();
     }
 
@@ -64,6 +70,24 @@ public class SpellTriggers {
         public static void onLivingFall(LivingHurtEvent event, DamageSource source, EntityLivingBase entity) {
             fallTriggers.forEach(f -> f.apply(event, source, entity));
         }
+    }
+
+    public static class PLAYER_KILL_ENTITY {
+        private static List<PlayerKillEntityTrigger> killTriggers = Lists.newArrayList();
+
+        @FunctionalInterface
+        public interface PlayerKillEntityTrigger {
+            void apply(LivingDeathEvent event, DamageSource source, EntityPlayer player);
+        }
+
+        public static void register(PlayerKillEntityTrigger trigger){
+            killTriggers.add(trigger);
+        }
+
+        public static void onEntityDeath(LivingDeathEvent event, DamageSource source, EntityPlayer entity){
+            killTriggers.forEach(f -> f.apply(event, source, entity));
+        }
+
     }
 
     public static class ENTITY_HURT_PLAYER {

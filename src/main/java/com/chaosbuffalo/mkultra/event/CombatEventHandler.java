@@ -10,6 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -84,6 +85,17 @@ public class CombatEventHandler {
         Entity target = event.getTarget();
 
         SpellTriggers.ATTACK_ENTITY.onAttackEntity(player, target);
+    }
+
+    @SubscribeEvent
+    public static void onEntityDeath(LivingDeathEvent event){
+        if (event.getSource().getTrueSource() instanceof EntityPlayer){
+            EntityPlayer player = (EntityPlayer) event.getSource().getTrueSource();
+            if (player.world.isRemote){
+                return;
+            }
+            SpellTriggers.PLAYER_KILL_ENTITY.onEntityDeath(event, event.getSource(), player);
+        }
     }
 
 }

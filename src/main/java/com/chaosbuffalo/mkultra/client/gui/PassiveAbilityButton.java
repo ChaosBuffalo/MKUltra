@@ -3,10 +3,9 @@ package com.chaosbuffalo.mkultra.client.gui;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.client.gui.lib.*;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
+import com.chaosbuffalo.mkultra.core.MKURegistry;
 import com.chaosbuffalo.mkultra.core.PlayerPassiveAbility;
-import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.network.packets.ActivatePassivePacket;
-import com.chaosbuffalo.mkultra.network.packets.AddRemoveTalentPointPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
@@ -99,12 +98,22 @@ public class PassiveAbilityButton extends MKButton {
         layout.setPaddingTop(1).setPaddingBot(1).setMarginTop(2).setMarginBot(2);
         layout.doSetWidth(true);
         scrollView.addWidget(layout);
+        MKButton emptyButton = new MKButton(I18n.format("mkultra.ui_msg.clear_passive_slot"));
+        emptyButton.setPressedCallback((MKButton btn, Integer buttonType) -> {
+            if (playerData.canActivatePassiveForSlot(MKURegistry.INVALID_ABILITY, slotIndex)){
+                MKUltra.packetHandler.sendToServer(new ActivatePassivePacket(MKURegistry.INVALID_ABILITY, slotIndex));
+            }
+            MKScreen screen = getScreen();
+            if (screen != null){
+                screen.closeModal(this.dropdown);
+            }
+            return true;
+        });
         for (PlayerPassiveAbility ability : learned){
             MKButton button = new MKButton(ability.getAbilityName());
             layout.addWidget(button);
             button.setPressedCallback((MKButton btn, Integer buttonType) -> {
                 if (playerData.canActivatePassiveForSlot(ability.getAbilityId(), slotIndex)){
-                    Log.info("sending learn passive packet");
                     MKUltra.packetHandler.sendToServer(new ActivatePassivePacket(ability.getAbilityId(), slotIndex));
                 }
                 MKScreen screen = getScreen();
