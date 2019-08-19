@@ -108,6 +108,10 @@
           "name": "mkultra:talent.melee_crit",
           "max_points": 3,
           "value": 0.01
+        },
+        {
+          "name": "mkultra:talent.extended_duration",
+          "max_points": 1
         }
       ]
     }
