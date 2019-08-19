@@ -4,6 +4,7 @@ import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
+import com.chaosbuffalo.mkultra.core.PlayerFormulas;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.NaturesRemedyPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
@@ -75,9 +76,10 @@ public class NaturesRemedy extends PlayerAbility {
         pData.startAbility(this);
         Log.info(String.format("Adding natures remedy to %s", targetEntity.getName()));
 
+        int duration = (BASE_DURATION + level * DURATION_SCALE) * GameConstants.TICKS_PER_SECOND;
+        duration = PlayerFormulas.applyBuffDurationBonus(pData, duration);
         SpellCast heal = NaturesRemedyPotion.Create(entity, targetEntity, BASE_VALUE, VALUE_SCALE);
-        targetEntity.addPotionEffect(heal.toPotionEffect((BASE_DURATION + level * DURATION_SCALE)
-                * GameConstants.TICKS_PER_SECOND, level));
+        targetEntity.addPotionEffect(heal.toPotionEffect(duration, level));
 
         Vec3d lookVec = entity.getLookVec();
         MKUltra.packetHandler.sendToAllAround(

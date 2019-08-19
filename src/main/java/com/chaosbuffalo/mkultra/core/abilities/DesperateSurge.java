@@ -69,6 +69,7 @@ public class DesperateSurge extends PlayerAbility {
             pData.startAbility(this);
             entity.getFoodStats().setFoodLevel(entity.getFoodStats().getFoodLevel() - (FOOD_COST + level * FOOD_SCALE));
             int duration = (BASE_DURATION + DURATION_SCALE * level) * GameConstants.TICKS_PER_SECOND;
+            duration = PlayerFormulas.applyBuffDurationBonus(pData, duration);
             entity.addPotionEffect(ShieldingPotion.Create(entity).setTarget(entity).toPotionEffect(
                             duration, BASE_SHIELDING + level * SHIELDING_SCALE));
             entity.addPotionEffect(new PotionEffect(MobEffects.SPEED, duration * 2, 2 + level));

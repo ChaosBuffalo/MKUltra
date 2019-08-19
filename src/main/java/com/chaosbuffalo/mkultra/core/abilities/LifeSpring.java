@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.core.abilities;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.core.PlayerFormulas;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.ClericHealPotion;
@@ -69,6 +70,7 @@ public class LifeSpring  extends PlayerAbility {
 
 
         int totalDuration = GameConstants.TICKS_PER_SECOND * 5 + level * 5;
+        totalDuration = PlayerFormulas.applyBuffDurationBonus(pData, totalDuration);
         int tickSpeed = 30;
 
         AreaEffectBuilder.Create(entity, entity)
