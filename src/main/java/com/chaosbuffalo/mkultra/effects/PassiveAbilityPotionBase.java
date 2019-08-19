@@ -7,6 +7,8 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.potion.PotionEffect;
 
+import javax.annotation.Nonnull;
+
 
 public class PassiveAbilityPotionBase extends SpellPotionBase {
 
@@ -22,6 +24,18 @@ public class PassiveAbilityPotionBase extends SpellPotionBase {
     @Override
     public Targeting.TargetType getTargetType() {
         return Targeting.TargetType.SELF;
+    }
+
+    @Override
+    public void performEffect(@Nonnull EntityLivingBase target, int amplifier) {
+        if (!target.world.isRemote)
+            refreshEffect(target);
+    }
+
+    @Override
+    public void affectEntity(Entity applier, Entity caster, @Nonnull EntityLivingBase target, int amplifier, double health) {
+        if (!target.world.isRemote)
+            refreshEffect(target);
     }
 
     @Override

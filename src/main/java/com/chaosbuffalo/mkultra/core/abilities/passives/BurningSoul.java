@@ -1,6 +1,5 @@
 package com.chaosbuffalo.mkultra.core.abilities.passives;
 
-import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerAbility;
@@ -8,7 +7,6 @@ import com.chaosbuffalo.mkultra.core.PlayerPassiveAbility;
 import com.chaosbuffalo.mkultra.effects.PassiveAbilityPotionBase;
 import com.chaosbuffalo.mkultra.effects.spells.BurningSoulPotion;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -35,9 +33,7 @@ public class BurningSoul extends PlayerPassiveAbility {
 
     @Override
     public void applyEffect(EntityPlayer entity, IPlayerData pData, World theWorld) {
-        PotionEffect effect = BurningSoulPotion
-                .Create(entity).toPotionEffect(GameConstants.TICKS_PER_SECOND * 600, 1);
-        entity.addPotionEffect(effect);
+        entity.addPotionEffect(getPassiveEffect().createInstance(entity));
     }
 
 }
