@@ -83,6 +83,16 @@ public class PlayerClassInfo {
         return false;
     }
 
+    public int getPassiveSlot(ResourceLocation loc) {
+        for (int i = 0; i < GameConstants.MAX_PASSIVES; i++) {
+            if (loc.equals(loadedPassives[i])) {
+                return i;
+            }
+        }
+
+        return GameConstants.PASSIVE_INVALID_SLOT;
+    }
+
     public void clearPassiveSlot(int slotIndex) {
         loadedPassives[slotIndex] = MKURegistry.INVALID_ABILITY;
     }
@@ -259,15 +269,13 @@ public class PlayerClassInfo {
     public boolean spendTalentPoint(EntityPlayer player, ResourceLocation tree, String line, int index) {
         if (canIncrementPointInTree(tree, line, index)) {
             TalentTreeRecord talentTree = talentTrees.get(tree);
-            BaseTalent.TalentType type = talentTree.getTypeForPoint(line, index);
-            if (type == BaseTalent.TalentType.ATTRIBUTE) {
-                removeAttributesModifiersFromPlayer(player);
+            BaseTalent talentDef = talentTree.getTalentDefinition(line, index);
+            if (talentDef.onAdd(player, this)) {
                 talentTree.incrementPoint(line, index);
-                applyAttributesModifiersToPlayer(player);
-            } else {
-                talentTree.incrementPoint(line, index);
+                return true;
             }
-            return true;
+
+            return false;
         } else {
             return false;
         }
@@ -285,25 +293,12 @@ public class PlayerClassInfo {
         if (canDecrementPointInTree(tree, line, index)) {
             TalentTreeRecord talentTree = talentTrees.get(tree);
             BaseTalent talentDef = talentTree.getTalentDefinition(line, index);
-            BaseTalent.TalentType type = talentDef.getTalentType();
-            if (type == BaseTalent.TalentType.ATTRIBUTE) {
-                removeAttributesModifiersFromPlayer(player);
+            if (talentDef.onRemove(player, this)) {
                 talentTree.decrementPoint(line, index);
-                applyAttributesModifiersToPlayer(player);
-            } else if (type == BaseTalent.TalentType.PASSIVE) {
-                PassiveAbilityTalent passive = (PassiveAbilityTalent) talentDef;
-                for (int i = 0; i < GameConstants.MAX_PASSIVES; i++) {
-                    ResourceLocation current = getPassiveForSlot(i);
-                    if (current.compareTo(passive.getAbility().getAbilityId()) == 0) {
-                        clearPassiveSlot(i);
-                        break;
-                    }
-                }
-                talentTree.decrementPoint(line, index);
-            } else {
-                talentTree.decrementPoint(line, index);
+                return true;
             }
-            return true;
+
+            return false;
         } else {
             return false;
         }

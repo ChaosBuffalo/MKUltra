@@ -1,9 +1,13 @@
 package com.chaosbuffalo.mkultra.core.talents;
 
+import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.core.*;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistryEntry;
@@ -28,6 +32,14 @@ public class BaseTalent extends IForgeRegistryEntry.Impl<BaseTalent> {
 
     public TalentType getTalentType() {
         return talentType;
+    }
+
+    public boolean onAdd(EntityPlayer player, PlayerClassInfo classInfo) {
+        return true;
+    }
+
+    public boolean onRemove(EntityPlayer player, PlayerClassInfo classInfo) {
+        return true;
     }
 
     @SideOnly(Side.CLIENT)

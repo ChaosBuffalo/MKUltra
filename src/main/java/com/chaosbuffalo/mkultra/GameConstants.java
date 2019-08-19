@@ -15,4 +15,5 @@ public class GameConstants {
     public static final int GLOBAL_COOLDOWN_TICKS = 1 * TICKS_PER_SECOND;
 
     public static final int MAX_PASSIVES = 2;
+    public static final int PASSIVE_INVALID_SLOT = -1;
 }
