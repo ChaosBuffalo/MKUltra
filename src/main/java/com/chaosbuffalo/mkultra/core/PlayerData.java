@@ -4,9 +4,9 @@ import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.events.client.PlayerDataUpdateEvent;
 import com.chaosbuffalo.mkultra.core.talents.PassiveAbilityTalent;
+import com.chaosbuffalo.mkultra.core.talents.RangedAttributeTalent;
 import com.chaosbuffalo.mkultra.core.talents.TalentTreeRecord;
 import com.chaosbuffalo.mkultra.effects.PassiveAbilityPotionBase;
-import com.chaosbuffalo.mkultra.utils.TalentUtils;
 import com.chaosbuffalo.mkultra.event.ItemRestrictionHandler;
 import com.chaosbuffalo.mkultra.item.ItemHelper;
 import com.chaosbuffalo.mkultra.item.ManaRegenIdol;
@@ -17,6 +17,8 @@ import com.chaosbuffalo.mkultra.network.packets.ClassUpdatePacket;
 import com.google.common.collect.Lists;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AbstractAttributeMap;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemArmor;
@@ -291,7 +293,7 @@ public class PlayerData implements IPlayerData {
         activeClass.applyAttributesModifiersToPlayer(player);
         // Since this can be called early, don't try to apply potions before being added to the world
         if (player.addedToChunk) {
-            TalentUtils.removeAllPassiveTalents(player);
+            removeAllPassiveTalents(player);
             activeClass.applyPassives(player, this, player.getEntityWorld());
         }
         else {
@@ -301,8 +303,26 @@ public class PlayerData implements IPlayerData {
     }
 
     private void removeTalents() {
-        TalentUtils.removeAllAttributeTalents(player);
-        TalentUtils.removeAllPassiveTalents(player);
+        removeAllAttributeTalents(player);
+        removeAllPassiveTalents(player);
+    }
+
+    private void removeAllAttributeTalents(EntityPlayer player) {
+        AbstractAttributeMap attributeMap = player.getAttributeMap();
+        for (RangedAttributeTalent entry : MKURegistry.getAllAttributeTalents()) {
+            IAttributeInstance instance = attributeMap.getAttributeInstance(entry.getAttribute());
+            if (instance != null) {
+                instance.removeModifier(entry.getUUID());
+            }
+        }
+    }
+
+    private void removeAllPassiveTalents(EntityPlayer player) {
+        for (PassiveAbilityTalent talent : MKURegistry.getAllPassiveTalents()) {
+            if (player.isPotionActive(talent.getAbility().getPassiveEffect())) {
+                talent.getAbility().removeEffect(player, this, player.world);
+            }
+        }
     }
 
     public void setRefreshPassiveTalents() {
@@ -835,7 +855,7 @@ public class PlayerData implements IPlayerData {
             Log.debug("doing passive talent refresh");
             PlayerClassInfo info = getActiveClass();
             if (info != null) {
-                TalentUtils.removeAllPassiveTalents(player);
+                removeAllPassiveTalents(player);
                 info.applyPassives(player, this, player.getEntityWorld());
             }
             needPassiveTalentRefresh = false;
