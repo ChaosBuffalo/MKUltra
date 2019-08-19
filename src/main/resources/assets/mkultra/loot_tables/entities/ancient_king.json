@@ -6,12 +6,12 @@
       "entries": [
         {
           "type": "empty",
-          "weight": 9
+          "weight": 4
         },
         {
           "type": "item",
           "name": "mkultra:orb_mother_icon",
-          "weight": 2
+          "weight": 1
         }
       ]
     }
