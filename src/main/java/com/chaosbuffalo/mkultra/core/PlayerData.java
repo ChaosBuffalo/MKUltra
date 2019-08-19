@@ -44,16 +44,11 @@ public class PlayerData implements IPlayerData {
     private final static DataParameter<Integer> UNSPENT_POINTS = EntityDataManager.createKey(EntityPlayer.class, DataSerializers.VARINT);
     private final static DataParameter<String> CLASS_ID = EntityDataManager.createKey(EntityPlayer.class, DataSerializers.STRING);
     private final static DataParameter<String>[] ACTION_BAR_ABILITY_ID;
-    private final static DataParameter<Integer>[] ACTION_BAR_ABILITY_RANK;
 
     static {
         ACTION_BAR_ABILITY_ID = new DataParameter[GameConstants.ACTION_BAR_SIZE];
         for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
             ACTION_BAR_ABILITY_ID[i] = EntityDataManager.createKey(EntityPlayer.class, DataSerializers.STRING);
-        }
-        ACTION_BAR_ABILITY_RANK = new DataParameter[GameConstants.ACTION_BAR_SIZE];
-        for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
-            ACTION_BAR_ABILITY_RANK[i] = EntityDataManager.createKey(EntityPlayer.class, DataSerializers.VARINT);
         }
     }
 
@@ -98,7 +93,6 @@ public class PlayerData implements IPlayerData {
         privateData.register(LEVEL, 0);
         for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
             privateData.register(ACTION_BAR_ABILITY_ID[i], MKURegistry.INVALID_ABILITY.toString());
-            privateData.register(ACTION_BAR_ABILITY_RANK[i], GameConstants.ABILITY_INVALID_RANK);
         }
     }
 
@@ -109,7 +103,6 @@ public class PlayerData implements IPlayerData {
         privateData.setDirty(LEVEL);
         for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
             privateData.setDirty(ACTION_BAR_ABILITY_ID[i]);
-            privateData.setDirty(ACTION_BAR_ABILITY_RANK[i]);
         }
     }
 
@@ -720,10 +713,7 @@ public class PlayerData implements IPlayerData {
 
         boolean valid = abilityInfo != null && abilityInfo.isCurrentlyKnown();
         ResourceLocation id = valid ? abilityInfo.getId() : MKURegistry.INVALID_ABILITY;
-        int rank = valid ? abilityInfo.getRank() : GameConstants.ABILITY_INVALID_RANK;
-
         setAbilityInSlot(index, id);
-        privateData.set(ACTION_BAR_ABILITY_RANK[index], rank);
 
         if (abilityTracker.hasCooldown(abilityInfo)) {
             int cd = abilityTracker.getCooldownTicks(abilityInfo);
