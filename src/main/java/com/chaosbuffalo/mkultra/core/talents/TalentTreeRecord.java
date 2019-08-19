@@ -53,12 +53,6 @@ public class TalentTreeRecord {
         record.addToRank(1);
     }
 
-    public BaseTalent.TalentType getTypeForPoint(String lineName, int index) {
-        ArrayList<TalentRecord> line = records.get(lineName);
-        TalentRecord record = line.get(index);
-        return record.getNode().getTalentType();
-    }
-
     public BaseTalent getTalentDefinition(String lineName, int index) {
         ArrayList<TalentRecord> line = records.get(lineName);
         TalentRecord record = line.get(index);
@@ -80,7 +74,8 @@ public class TalentTreeRecord {
         TalentRecord record = line.get(index);
         if (index < line.size() - 1) {
             TalentRecord next = line.get(index + 1);
-            if (next.getRank() > 0) {
+            // We must have at least 1 point in a talent to put points in its child
+            if (next.getRank() > 0 && record.getRank() <= 1) {
                 return false;
             }
         }
