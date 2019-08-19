@@ -1,6 +1,12 @@
 package com.chaosbuffalo.mkultra.event;
 
-import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
+import com.chaosbuffalo.mkultra.core.MKUPlayerData;
+import com.chaosbuffalo.mkultra.core.PlayerData;
+import com.chaosbuffalo.mkultra.effects.PassiveAbilityPotionBase;
+import com.chaosbuffalo.mkultra.log.Log;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -10,11 +16,14 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class PotionEventHandler {
 
     @SubscribeEvent
-    public static void onPotionRemove(PotionEvent.PotionRemoveEvent event){
-        if (event.getPotionEffect() != null && event.getPotion() instanceof SpellPotionBase){
-            SpellPotionBase spellPotion = (SpellPotionBase) event.getPotion();
-            if (!spellPotion.shouldPotionRemove(event.getEntityLiving(), event.getPotionEffect().getAmplifier())){
-                event.setCanceled(true);
+    public static void onPotionRemove(PotionEvent.PotionRemoveEvent event) {
+//        Log.debug("PotionRemoveEvent - %s - %s", event.getEntityLiving(), event.getPotionEffect());
+
+        if (event.getEntityLiving() instanceof EntityPlayerMP && event.getPotion() instanceof PassiveAbilityPotionBase) {
+            EntityPlayerMP player = (EntityPlayerMP)event.getEntityLiving();
+            PlayerData data = (PlayerData) MKUPlayerData.get(player);
+            if (data != null && !data.getPassiveTalentsUnlocked()) {
+                data.setRefreshPassiveTalents();
             }
         }
     }

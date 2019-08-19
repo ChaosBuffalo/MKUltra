@@ -59,6 +59,12 @@ public class TalentTreeRecord {
         return record.getNode().getTalentType();
     }
 
+    public BaseTalent getTalentDefinition(String lineName, int index) {
+        ArrayList<TalentRecord> line = records.get(lineName);
+        TalentRecord record = line.get(index);
+        return record.getNode().getTalent();
+    }
+
     public void decrementPoint(String lineName, int index) {
         ArrayList<TalentRecord> line = records.get(lineName);
         TalentRecord record = line.get(index);

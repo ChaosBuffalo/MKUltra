@@ -1,9 +1,11 @@
 package com.chaosbuffalo.mkultra.core.talents;
 
 import com.chaosbuffalo.mkultra.core.PlayerAttributes;
+import com.chaosbuffalo.mkultra.core.PlayerClassInfo;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.RangedAttribute;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
@@ -61,4 +63,19 @@ public class RangedAttributeTalent extends BaseTalent {
     public AttributeModifier createModifier(double value) {
         return new AttributeModifier(getUUID(), getRegistryName().toString(), value, getOp()).setSaved(false);
     }
+
+    @Override
+    public boolean onAdd(EntityPlayer player, PlayerClassInfo classInfo) {
+        classInfo.removeAttributesModifiersFromPlayer(player);
+        classInfo.applyAttributesModifiersToPlayer(player);
+        return true;
+    }
+
+    @Override
+    public boolean onRemove(EntityPlayer player, PlayerClassInfo classInfo) {
+        classInfo.removeAttributesModifiersFromPlayer(player);
+        classInfo.applyAttributesModifiersToPlayer(player);
+        return true;
+    }
+
 }

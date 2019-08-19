@@ -114,9 +114,6 @@ public abstract class SpellPotionBase extends Potion {
         super.applyAttributesModifiersToEntity(target, attributes, amplifier);
     }
 
-    public boolean shouldPotionRemove(EntityLivingBase target, int amplifier){
-        return true;
-    }
 
     @Override
     public void removeAttributesModifiersFromEntity(EntityLivingBase target, @Nonnull AbstractAttributeMap attributes, int amplifier) {
@@ -129,8 +126,6 @@ public abstract class SpellPotionBase extends Potion {
         // Called on removal
         super.removeAttributesModifiersFromEntity(target, attributes, amplifier);
     }
-
-
 
     public void onPotionAdd(SpellCast cast, EntityLivingBase target, AbstractAttributeMap attributes, int amplifier) {
     }

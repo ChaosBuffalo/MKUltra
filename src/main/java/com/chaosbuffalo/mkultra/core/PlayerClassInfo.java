@@ -59,6 +59,7 @@ public class PlayerClassInfo {
     }
 
     public void applyPassives(EntityPlayer player, IPlayerData data, World world) {
+        Log.debug("applyPassives - loadedPassives %s %s", loadedPassives[0], loadedPassives[1]);
         for (ResourceLocation loc : loadedPassives) {
             if (!loc.equals(MKURegistry.INVALID_ABILITY)) {
                 PlayerAbility ability = MKURegistry.getAbility(loc);
@@ -82,10 +83,23 @@ public class PlayerClassInfo {
         return false;
     }
 
-    @Nullable
-    public ResourceLocation getPassiveForSlot(int slotIndex){
-        if (slotIndex > GameConstants.MAX_PASSIVES){
-            return null;
+    public int getPassiveSlot(ResourceLocation loc) {
+        for (int i = 0; i < GameConstants.MAX_PASSIVES; i++) {
+            if (loc.equals(loadedPassives[i])) {
+                return i;
+            }
+        }
+
+        return GameConstants.PASSIVE_INVALID_SLOT;
+    }
+
+    public void clearPassiveSlot(int slotIndex) {
+        loadedPassives[slotIndex] = MKURegistry.INVALID_ABILITY;
+    }
+
+    public ResourceLocation getPassiveForSlot(int slotIndex) {
+        if (slotIndex >= GameConstants.MAX_PASSIVES) {
+            return MKURegistry.INVALID_ABILITY;
         }
         return loadedPassives[slotIndex];
     }
@@ -255,15 +269,13 @@ public class PlayerClassInfo {
     public boolean spendTalentPoint(EntityPlayer player, ResourceLocation tree, String line, int index) {
         if (canIncrementPointInTree(tree, line, index)) {
             TalentTreeRecord talentTree = talentTrees.get(tree);
-            BaseTalent.TalentType type = talentTree.getTypeForPoint(line, index);
-            if (type == BaseTalent.TalentType.ATTRIBUTE) {
-                removeAttributesModifiersFromPlayer(player);
+            BaseTalent talentDef = talentTree.getTalentDefinition(line, index);
+            if (talentDef.onAdd(player, this)) {
                 talentTree.incrementPoint(line, index);
-                applyAttributesModifiersToPlayer(player);
-            } else {
-                talentTree.incrementPoint(line, index);
+                return true;
             }
-            return true;
+
+            return false;
         } else {
             return false;
         }
@@ -280,15 +292,13 @@ public class PlayerClassInfo {
     public boolean refundTalentPoint(EntityPlayer player, ResourceLocation tree, String line, int index) {
         if (canDecrementPointInTree(tree, line, index)) {
             TalentTreeRecord talentTree = talentTrees.get(tree);
-            BaseTalent.TalentType type = talentTree.getTypeForPoint(line, index);
-            if (type == BaseTalent.TalentType.ATTRIBUTE) {
-                removeAttributesModifiersFromPlayer(player);
+            BaseTalent talentDef = talentTree.getTalentDefinition(line, index);
+            if (talentDef.onRemove(player, this)) {
                 talentTree.decrementPoint(line, index);
-                applyAttributesModifiersToPlayer(player);
-            } else {
-                talentTree.decrementPoint(line, index);
+                return true;
             }
-            return true;
+
+            return false;
         } else {
             return false;
         }

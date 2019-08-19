@@ -3,7 +3,9 @@ package com.chaosbuffalo.mkultra.core;
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.events.client.PlayerDataUpdateEvent;
+import com.chaosbuffalo.mkultra.core.talents.PassiveAbilityTalent;
 import com.chaosbuffalo.mkultra.core.talents.TalentTreeRecord;
+import com.chaosbuffalo.mkultra.effects.PassiveAbilityPotionBase;
 import com.chaosbuffalo.mkultra.utils.TalentUtils;
 import com.chaosbuffalo.mkultra.event.ItemRestrictionHandler;
 import com.chaosbuffalo.mkultra.item.ItemHelper;
@@ -64,6 +66,8 @@ public class PlayerData implements IPlayerData {
     private Map<ResourceLocation, PlayerClassInfo> knownClasses = new HashMap<>();
     private Map<ResourceLocation, PlayerAbilityInfo> abilityInfoMap = new HashMap<>(5);
     private Set<ItemArmor.ArmorMaterial> alwaysAllowedArmorMaterials = new HashSet<>();
+    private boolean needPassiveTalentRefresh;
+    private boolean talentPassivesUnlocked;
 
     public PlayerData(EntityPlayer player) {
         this.player = player;
@@ -279,6 +283,7 @@ public class PlayerData implements IPlayerData {
         PlayerClassInfo activeClass = getActiveClass();
         if (activeClass != null){
             boolean didWork = activeClass.addPassiveToSlot(loc, slotIndex);
+            setRefreshPassiveTalents();
             sendCurrentClassUpdate();
             return didWork;
         }
@@ -286,15 +291,47 @@ public class PlayerData implements IPlayerData {
     }
 
     private void updateTalents(){
-        TalentUtils.removeAllAttributeTalents(player);
+        removeTalents();
         if (!hasChosenClass()){
             return;
         }
+        applyTalents();
+    }
+
+    private void applyTalents() {
         PlayerClassInfo activeClass = getActiveClass();
-        if (activeClass == null){
+        if (activeClass == null) {
             return;
         }
         activeClass.applyAttributesModifiersToPlayer(player);
+        // Since this can be called early, don't try to apply potions before being added to the world
+        if (player.addedToChunk) {
+            TalentUtils.removeAllPassiveTalents(player);
+            activeClass.applyPassives(player, this, player.getEntityWorld());
+        }
+        else {
+
+            setRefreshPassiveTalents();
+        }
+    }
+
+    private void removeTalents() {
+        TalentUtils.removeAllAttributeTalents(player);
+        TalentUtils.removeAllPassiveTalents(player);
+    }
+
+    public void setRefreshPassiveTalents() {
+        needPassiveTalentRefresh = true;
+    }
+
+    public boolean getPassiveTalentsUnlocked() {
+        return talentPassivesUnlocked;
+    }
+
+    void removePassiveEffect(PassiveAbilityPotionBase passiveEffect) {
+        talentPassivesUnlocked = true;
+        player.removePotionEffect(passiveEffect);
+        talentPassivesUnlocked = false;
     }
 
     private void updatePlayerStats(boolean doTalents) {
@@ -306,7 +343,7 @@ public class PlayerData implements IPlayerData {
             setHealth(Math.min(20, this.player.getHealth()));
             setTotalHealth(20);
             if (doTalents) {
-                TalentUtils.removeAllAttributeTalents(player);
+                removeTalents();
             }
         } else {
             PlayerClass playerClass = MKURegistry.getClass(getClassId());
@@ -323,9 +360,9 @@ public class PlayerData implements IPlayerData {
             setHealth(Math.min(newTotalHealth, this.player.getHealth()));
             setManaRegen(newManaRegen);
             setHealthRegen(0);
-            if (doTalents){
-               updateTalents();
-               checkTalentTotals();
+            if (doTalents) {
+                updateTalents();
+                checkTalentTotals();
             }
         }
     }
@@ -811,6 +848,16 @@ public class PlayerData implements IPlayerData {
 
         if (!isServerSide())
             return;
+
+        if (needPassiveTalentRefresh) {
+            Log.debug("doing passive talent refresh");
+            PlayerClassInfo info = getActiveClass();
+            if (info != null) {
+                TalentUtils.removeAllPassiveTalents(player);
+                info.applyPassives(player, this, player.getEntityWorld());
+            }
+            needPassiveTalentRefresh = false;
+        }
 
         updateMana();
         updateHealth();

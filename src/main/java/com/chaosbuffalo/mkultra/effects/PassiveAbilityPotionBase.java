@@ -1,14 +1,21 @@
 package com.chaosbuffalo.mkultra.effects;
 
+import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.potion.PotionEffect;
 
+import javax.annotation.Nonnull;
+
 
 public class PassiveAbilityPotionBase extends SpellPotionBase {
-    static final int CLEANUP_AMPLIFIER = 127;
+
+    // This is arbitrary and can be much higher
+    private static int PASSIVE_DURATION = 2000;
+    // This should stay above 600 so the client is refreshed before hitting 0
+    private static int REFRESH_DURATION = 610;
 
     protected PassiveAbilityPotionBase() {
         super(false, 0);
@@ -19,35 +26,45 @@ public class PassiveAbilityPotionBase extends SpellPotionBase {
         return Targeting.TargetType.SELF;
     }
 
+    @Override
+    public void performEffect(@Nonnull EntityLivingBase target, int amplifier) {
+        if (!target.world.isRemote)
+            refreshEffect(target);
+    }
+
+    @Override
+    public void affectEntity(Entity applier, Entity caster, @Nonnull EntityLivingBase target, int amplifier, double health) {
+        if (!target.world.isRemote)
+            refreshEffect(target);
+    }
 
     @Override
     public void doEffect(Entity applier, Entity caster, EntityLivingBase target, int amplifier, SpellCast cast) {
-
-    }
-
-    public void markForCleanup(EntityLivingBase target){
-        if (!target.world.isRemote || !isServerSideOnly()) {
-            if (target.isPotionActive(this)){
-                SpellCast cast = SpellManager.get(target, this);
-                PotionEffect effect = target.getActivePotionEffect(this);
-                if (cast != null && effect != null){
-                    target.addPotionEffect(cast.toPotionEffect(effect.getDuration(), CLEANUP_AMPLIFIER));
-                }
-            }
-        }
+        refreshEffect(target);
     }
 
     @Override
-    public boolean shouldPotionRemove(EntityLivingBase target, int amplifier) {
-        if (amplifier < CLEANUP_AMPLIFIER){
-            return false;
-        }
-        return super.shouldPotionRemove(target, amplifier);
+    public boolean isReady(int duration, int amplitude) {
+        // Don't do anything until it's time to refresh
+        return duration <= REFRESH_DURATION;
     }
 
-    @Override
-    public boolean isInstant() {
-        return false;
+    private void refreshEffect(EntityLivingBase target) {
+
+//        Log.debug("passive refresh %s %s", target.toString(), this.toString());
+        PotionEffect effect = target.getActivePotionEffect(this);
+//        if (effect != null)
+//            Log.debug("effect %s", effect.toString());
+        if (effect != null && effect.getDuration() <= REFRESH_DURATION) {
+            // Create a duplicate effect, and then combine them to extend the original
+            PotionEffect extend = new PotionEffect(this, PASSIVE_DURATION, effect.getAmplifier(), effect.getIsAmbient(), effect.doesShowParticles());
+            extend.setCurativeItems(effect.getCurativeItems());
+            effect.combine(extend);
+        }
+    }
+
+    public PotionEffect createInstance(EntityLivingBase caster) {
+        return newSpellCast(caster).setTarget(caster).toPotionEffect(PASSIVE_DURATION, 1);
     }
 
     @Override
@@ -56,6 +73,10 @@ public class PassiveAbilityPotionBase extends SpellPotionBase {
     }
 
     @Override
+    public boolean isInstant() {
+        return false;
+    }
+
     public double getAttributeModifierAmount(int amplifier, AttributeModifier modifier) {
         return modifier.getAmount() * (double) (amplifier);
     }
