@@ -28,7 +28,7 @@ public class UnderwayPotion extends PassiveEffect {
 
     public static final UnderwayPotion INSTANCE = (UnderwayPotion)(new UnderwayPotion()
         .registerPotionAttributeModifier(PlayerAttributes.COOLDOWN, MODIFIER_ID.toString(),
-                -0.1, PlayerAttributes.OP_INCREMENT)
+                0.1, PlayerAttributes.OP_SCALE_MULTIPLICATIVE)
         .registerPotionAttributeModifier(SharedMonsterAttributes.MOVEMENT_SPEED, MODIFIER_ID.toString(),
                 .15, PlayerAttributes.OP_SCALE_MULTIPLICATIVE)
     );

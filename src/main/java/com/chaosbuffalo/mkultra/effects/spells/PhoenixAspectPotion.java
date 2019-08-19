@@ -27,7 +27,7 @@ public class PhoenixAspectPotion extends PassiveEffect {
 
     public static final PhoenixAspectPotion INSTANCE = (PhoenixAspectPotion) new PhoenixAspectPotion()
             .registerPotionAttributeModifier(PlayerAttributes.COOLDOWN, MODIFIER_ID.toString(),
-                    -0.33, PlayerAttributes.OP_INCREMENT)
+                    0.33, PlayerAttributes.OP_SCALE_MULTIPLICATIVE)
             .registerPotionAttributeModifier(PlayerAttributes.MANA_REGEN, MODIFIER_ID.toString(),
                     1.0f, PlayerAttributes.OP_INCREMENT)
             ;

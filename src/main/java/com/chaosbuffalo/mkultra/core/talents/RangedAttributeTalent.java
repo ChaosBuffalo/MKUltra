@@ -29,7 +29,6 @@ public class RangedAttributeTalent extends BaseTalent {
         this.attr = attr;
         this.op = PlayerAttributes.OP_INCREMENT;
         this.renderAsPercentage = renderAsPercentage;
-
     }
 
     public RangedAttribute getAttribute() {
@@ -42,6 +41,11 @@ public class RangedAttributeTalent extends BaseTalent {
 
     public int getOp() {
         return op;
+    }
+
+    public RangedAttributeTalent setOp(int value){
+        op = value;
+        return this;
     }
 
     @SideOnly(Side.CLIENT)
