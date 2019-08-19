@@ -296,6 +296,8 @@ public class PlayerClassInfo {
     }
 
     public boolean canIncrementPointInTree(ResourceLocation tree, String line, int index) {
+        if (getUnspentTalentPoints() == 0)
+            return false;
         TalentTreeRecord talentTree = talentTrees.get(tree);
         return talentTree.containsIndex(line, index) && talentTree.canIncrementPoint(line, index);
     }
