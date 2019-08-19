@@ -49,23 +49,13 @@ public class EntityEventHandler {
     public static final ResourceLocation WORLD_FACTION = new ResourceLocation(MKUltra.MODID, "world_mobs");
 
     @SubscribeEvent
-    @SideOnly(Side.SERVER)
-    public static void onEntityJoinWorldEventServer(EntityJoinWorldEvent event) {
-        if (event.getEntity() instanceof EntityPlayerMP) {
+    public static void onEntityJoinWorld(EntityJoinWorldEvent event) {
+        if (event.getEntity() instanceof EntityPlayer) {
             PlayerData data = (PlayerData) MKUPlayerData.get((EntityPlayer) event.getEntity());
             if (data != null) {
                 data.onJoinWorld();
             }
-//            for (PotionEffect effect : ((EntityPlayer) event.getEntity()).getActivePotionEffects()) {
-//                System.out.println(effect.getPotion().getRegistryName().toString());
-//                if (effect.getPotion() instanceof SongPotionBase) {
-//                    SongPotionBase songPotion = (SongPotionBase) effect.getPotion();
-//                    if (songPotion.isHostSong) {
-//                        ((EntityPlayer)event.getEntity()).removePotionEffect(songPotion);
-//                    }
-//                }
-//            }
-        } else if (event.getEntity() instanceof EntityLivingBase){
+        } else if (event.getEntity() instanceof EntityLivingBase && !event.getWorld().isRemote) {
             handleMobJoinWorld(event);
         }
     }
@@ -195,29 +185,7 @@ public class EntityEventHandler {
         }
     }
 
-    @SubscribeEvent
-    @SideOnly(Side.CLIENT)
-    public static void onEntityJoinWorldEventClient(EntityJoinWorldEvent event) {
 
-        if (event.getEntity() instanceof EntityPlayerSP) {
-            PlayerData data = (PlayerData) MKUPlayerData.get((EntityPlayer) event.getEntity());
-            if (data != null) {
-                data.onJoinWorld();
-            }
-//            for (PotionEffect effect : ((EntityPlayer) event.getEntity()).getActivePotionEffects()) {
-//                System.out.println(effect.getPotion().getRegistryName().toString());
-//                if (effect.getPotion() instanceof SongPotionBase) {
-//                    SongPotionBase songPotion = (SongPotionBase) effect.getPotion();
-//                    if (songPotion.isHostSong) {
-//                        ((EntityPlayer)event.getEntity()).removePotionEffect(songPotion);
-//                    }
-//                }
-//            }
-        // Run this on the server if we are single player.
-        } else if (event.getEntity() instanceof EntityLivingBase && !event.getWorld().isRemote){
-            handleMobJoinWorld(event);
-        }
-    }
 
     @SubscribeEvent
     public static void onLivingUpdateTick(LivingEvent.LivingUpdateEvent e) {
