@@ -80,4 +80,9 @@ public class PassiveAbilityPotionBase extends SpellPotionBase {
     public double getAttributeModifierAmount(int amplifier, AttributeModifier modifier) {
         return modifier.getAmount() * (double) (amplifier);
     }
+
+    @Override
+    public boolean shouldRender(PotionEffect effect) {
+        return false;
+    }
 }

@@ -48,6 +48,11 @@ public class VampiricReverePotion extends PassiveEffect {
         return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/vampiric_revere.png");
     }
 
+    @Override
+    public boolean shouldRender(PotionEffect effect) {
+        return false;
+    }
+
     private void onMelee(LivingHurtEvent event, DamageSource source, EntityLivingBase livingTarget, EntityPlayerMP playerSource, IPlayerData sourceData) {
         PotionEffect potion = playerSource.getActivePotionEffect(INSTANCE);
         if (potion != null && sourceData.consumeMana(1)) {
