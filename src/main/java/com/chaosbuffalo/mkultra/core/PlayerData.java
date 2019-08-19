@@ -127,11 +127,10 @@ public class PlayerData implements IPlayerData {
         }
         boolean didSpend = false;
 //        Log.info("In spend talent point %d", classInfo.unspentTalentPoints);
-        if (classInfo.unspentTalentPoints > 0){
+        if (classInfo.getUnspentTalentPoints() > 0){
             didSpend = classInfo.spendTalentPoint(player, talentTree, line, index);
             if (didSpend){
                 updateTalents();
-                classInfo.unspentTalentPoints -= 1;
                 sendCurrentClassUpdate();
             }
 //            Log.info("Did spend talent %b", didSpend);
@@ -149,7 +148,6 @@ public class PlayerData implements IPlayerData {
         boolean didSpend = classInfo.refundTalentPoint(player, talentTree, line, index);
         if (didSpend){
             updateTalents();
-            classInfo.unspentTalentPoints += 1;
             sendCurrentClassUpdate();
         }
         return didSpend;
@@ -175,17 +173,16 @@ public class PlayerData implements IPlayerData {
 
     @Override
     public void gainTalentPoint() {
-        if (!hasChosenClass()){
+        if (!hasChosenClass()) {
             return;
         }
         PlayerClassInfo classInfo = getActiveClass();
-        if (classInfo == null){
+        if (classInfo == null) {
             return;
         }
-        if (player.experienceLevel >= classInfo.totalTalentPoints){
-            player.addExperienceLevel(-classInfo.totalTalentPoints);
-            classInfo.totalTalentPoints += 1;
-            classInfo.unspentTalentPoints += 1;
+        if (player.experienceLevel >= classInfo.getTotalTalentPoints()) {
+            player.addExperienceLevel(-classInfo.getTotalTalentPoints());
+            classInfo.addTalentPoints(1);
             sendCurrentClassUpdate();
         }
     }
@@ -199,23 +196,18 @@ public class PlayerData implements IPlayerData {
         if (classInfo == null){
             return 0;
         }
-        return classInfo.totalTalentPoints;
+        return classInfo.getTotalTalentPoints();
     }
 
     private boolean checkTalentTotals() {
-        if (!hasChosenClass()){
+        if (!hasChosenClass()) {
             return false;
         }
         PlayerClassInfo classInfo = getActiveClass();
-        if (classInfo == null){
+        if (classInfo == null) {
             return false;
         }
-        int spent = classInfo.getTotalSpentPoints();
-        if (classInfo.totalTalentPoints - spent != classInfo.unspentTalentPoints){
-            classInfo.unspentTalentPoints = classInfo.totalTalentPoints - spent;
-            return true;
-        }
-        return false;
+        return classInfo.checkTalentTotals();
     }
 
     @Override
@@ -227,7 +219,7 @@ public class PlayerData implements IPlayerData {
         if (classInfo == null){
             return 0;
         }
-        return classInfo.unspentTalentPoints;
+        return classInfo.getUnspentTalentPoints();
     }
 
     @Override
@@ -895,11 +887,11 @@ public class PlayerData implements IPlayerData {
     public void clientBulkKnownClassUpdate(List<PlayerClassInfo> info, boolean isFullUpdate) {
         if (isFullUpdate){
             knownClasses.clear();
-            info.forEach(ci -> knownClasses.put(ci.classId, ci));
+            info.forEach(ci -> knownClasses.put(ci.getClassId(), ci));
         } else {
             info.forEach(ci -> {
-                knownClasses.remove(ci.classId);
-                knownClasses.put(ci.classId, ci);
+                knownClasses.remove(ci.getClassId());
+                knownClasses.put(ci.getClassId(), ci);
             });
         }
         MinecraftForge.EVENT_BUS.post(new PlayerDataUpdateEvent());
@@ -959,7 +951,7 @@ public class PlayerData implements IPlayerData {
                 PlayerClassInfo info = new PlayerClassInfo(new ResourceLocation(cls.getString("id")));
                 info.deserialize(cls);
 
-                knownClasses.put(info.classId, info);
+                knownClasses.put(info.getClassId(), info);
             }
         }
 
@@ -1131,9 +1123,7 @@ public class PlayerData implements IPlayerData {
         }
 
         // save current class data
-        cinfo.level = getLevel();
-        cinfo.unspentPoints = getUnspentPoints();
-        cinfo.setActiveAbilities(getActiveAbilities());
+        cinfo.save(this);
     }
 
     private void deactivateCurrentToggleAbilities() {
@@ -1167,8 +1157,8 @@ public class PlayerData implements IPlayerData {
             Arrays.fill(hotbar, MKURegistry.INVALID_ABILITY);
         } else {
             PlayerClassInfo info = knownClasses.get(classId);
-            level = info.level;
-            unspent = info.unspentPoints;
+            level = info.getLevel();
+            unspent = info.getUnspentPoints();
             hotbar = info.getActiveAbilities();
         }
 

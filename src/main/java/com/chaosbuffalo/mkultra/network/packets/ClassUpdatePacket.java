@@ -43,16 +43,9 @@ public class ClassUpdatePacket implements IMessage {
         classes = new ArrayList<>(count);
 
         for (int i = 0; i < count; i++) {
-            PlayerClassInfo info = new PlayerClassInfo(pb.readResourceLocation());
-
-            info.level = pb.readInt();
-            try {
-                NBTTagCompound talentData = pb.readCompoundTag();
-                info.deserializeTalentInfo(talentData);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            classes.add(info);
+            PlayerClassInfo info = PlayerClassInfo.deserializeUpdate(pb);
+            if (info != null)
+                classes.add(info);
         }
     }
 
@@ -63,11 +56,7 @@ public class ClassUpdatePacket implements IMessage {
         pb.writeBoolean(fullUpdate);
 
         for (PlayerClassInfo info : classes) {
-            pb.writeResourceLocation(info.classId);
-            pb.writeInt(info.level);
-            NBTTagCompound talentData = new NBTTagCompound();
-            info.serializeTalentInfo(talentData);
-            pb.writeCompoundTag(talentData);
+            info.serializeUpdate(pb);
         }
     }
 

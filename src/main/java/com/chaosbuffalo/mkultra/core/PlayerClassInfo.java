@@ -13,20 +13,22 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
 import javax.annotation.Nullable;
+import java.io.IOException;
 import java.util.*;
 
 public class PlayerClassInfo {
-    public ResourceLocation classId;
-    public int level;
-    public int unspentPoints;
-    public int totalTalentPoints;
-    public int unspentTalentPoints;
-    public HashMap<ResourceLocation, TalentTreeRecord> talentTrees;
+    private ResourceLocation classId;
+    private int level;
+    private int unspentPoints;
+    private int totalTalentPoints;
+    private int unspentTalentPoints;
+    private HashMap<ResourceLocation, TalentTreeRecord> talentTrees;
     private ResourceLocation[] hotbar;
     private Deque<ResourceLocation> spendOrder;
     private ResourceLocation[] loadedPassives;
@@ -46,6 +48,43 @@ public class PlayerClassInfo {
         for (TalentTree tree : MKURegistry.REGISTRY_TALENT_TREES.getValuesCollection()) {
             talentTrees.put(tree.getRegistryName(), new TalentTreeRecord(tree));
         }
+    }
+
+    public ResourceLocation getClassId() {
+        return classId;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public int getUnspentPoints() {
+        return unspentPoints;
+    }
+
+    public int getTotalTalentPoints() {
+        return totalTalentPoints;
+    }
+
+    public int getUnspentTalentPoints() {
+        return unspentTalentPoints;
+    }
+
+    void save(PlayerData data) {
+        level = data.getLevel();
+        unspentPoints = data.getUnspentPoints();
+        for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
+            hotbar[i] = data.getAbilityInSlot(i);
+        }
+    }
+
+    boolean checkTalentTotals() {
+        int spent = getTotalSpentPoints();
+        if (getTotalTalentPoints() - spent != getUnspentTalentPoints()){
+            unspentTalentPoints = getTotalTalentPoints() - spent;
+            return true;
+        }
+        return false;
     }
 
     private ResourceLocation[] parseNBTAbilityArray(NBTTagCompound tag, String name, int size) {
@@ -272,6 +311,7 @@ public class PlayerClassInfo {
             BaseTalent talentDef = talentTree.getTalentDefinition(line, index);
             if (talentDef.onAdd(player, this)) {
                 talentTree.incrementPoint(line, index);
+                unspentTalentPoints -= 1;
                 return true;
             }
 
@@ -295,6 +335,7 @@ public class PlayerClassInfo {
             BaseTalent talentDef = talentTree.getTalentDefinition(line, index);
             if (talentDef.onRemove(player, this)) {
                 talentTree.decrementPoint(line, index);
+                unspentTalentPoints += 1;
                 return true;
             }
 
@@ -326,5 +367,28 @@ public class PlayerClassInfo {
 
     public TalentTreeRecord getTalentTree(ResourceLocation loc) {
         return talentTrees.get(loc);
+    }
+
+
+    public static PlayerClassInfo deserializeUpdate(PacketBuffer pb) {
+        PlayerClassInfo info = new PlayerClassInfo(pb.readResourceLocation());
+
+        info.level = pb.readInt();
+        try {
+            NBTTagCompound talentData = pb.readCompoundTag();
+            info.deserializeTalentInfo(talentData);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return info;
+    }
+
+    public void serializeUpdate(PacketBuffer pb) {
+        pb.writeResourceLocation(getClassId());
+        pb.writeInt(getLevel());
+        NBTTagCompound talentData = new NBTTagCompound();
+        serializeTalentInfo(talentData);
+        pb.writeCompoundTag(talentData);
     }
 }
