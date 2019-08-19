@@ -4,9 +4,9 @@ import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.events.client.PlayerDataUpdateEvent;
 import com.chaosbuffalo.mkultra.core.talents.PassiveAbilityTalent;
+import com.chaosbuffalo.mkultra.core.talents.RangedAttributeTalent;
 import com.chaosbuffalo.mkultra.core.talents.TalentTreeRecord;
 import com.chaosbuffalo.mkultra.effects.PassiveAbilityPotionBase;
-import com.chaosbuffalo.mkultra.utils.TalentUtils;
 import com.chaosbuffalo.mkultra.event.ItemRestrictionHandler;
 import com.chaosbuffalo.mkultra.item.ItemHelper;
 import com.chaosbuffalo.mkultra.item.ManaRegenIdol;
@@ -17,6 +17,8 @@ import com.chaosbuffalo.mkultra.network.packets.ClassUpdatePacket;
 import com.google.common.collect.Lists;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AbstractAttributeMap;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemArmor;
@@ -44,16 +46,11 @@ public class PlayerData implements IPlayerData {
     private final static DataParameter<Integer> UNSPENT_POINTS = EntityDataManager.createKey(EntityPlayer.class, DataSerializers.VARINT);
     private final static DataParameter<String> CLASS_ID = EntityDataManager.createKey(EntityPlayer.class, DataSerializers.STRING);
     private final static DataParameter<String>[] ACTION_BAR_ABILITY_ID;
-    private final static DataParameter<Integer>[] ACTION_BAR_ABILITY_RANK;
 
     static {
         ACTION_BAR_ABILITY_ID = new DataParameter[GameConstants.ACTION_BAR_SIZE];
         for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
             ACTION_BAR_ABILITY_ID[i] = EntityDataManager.createKey(EntityPlayer.class, DataSerializers.STRING);
-        }
-        ACTION_BAR_ABILITY_RANK = new DataParameter[GameConstants.ACTION_BAR_SIZE];
-        for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
-            ACTION_BAR_ABILITY_RANK[i] = EntityDataManager.createKey(EntityPlayer.class, DataSerializers.VARINT);
         }
     }
 
@@ -98,7 +95,6 @@ public class PlayerData implements IPlayerData {
         privateData.register(LEVEL, 0);
         for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
             privateData.register(ACTION_BAR_ABILITY_ID[i], MKURegistry.INVALID_ABILITY.toString());
-            privateData.register(ACTION_BAR_ABILITY_RANK[i], GameConstants.ABILITY_INVALID_RANK);
         }
     }
 
@@ -109,7 +105,6 @@ public class PlayerData implements IPlayerData {
         privateData.setDirty(LEVEL);
         for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
             privateData.setDirty(ACTION_BAR_ABILITY_ID[i]);
-            privateData.setDirty(ACTION_BAR_ABILITY_RANK[i]);
         }
     }
 
@@ -134,11 +129,10 @@ public class PlayerData implements IPlayerData {
         }
         boolean didSpend = false;
 //        Log.info("In spend talent point %d", classInfo.unspentTalentPoints);
-        if (classInfo.unspentTalentPoints > 0){
+        if (classInfo.getUnspentTalentPoints() > 0){
             didSpend = classInfo.spendTalentPoint(player, talentTree, line, index);
             if (didSpend){
                 updateTalents();
-                classInfo.unspentTalentPoints -= 1;
                 sendCurrentClassUpdate();
             }
 //            Log.info("Did spend talent %b", didSpend);
@@ -156,7 +150,6 @@ public class PlayerData implements IPlayerData {
         boolean didSpend = classInfo.refundTalentPoint(player, talentTree, line, index);
         if (didSpend){
             updateTalents();
-            classInfo.unspentTalentPoints += 1;
             sendCurrentClassUpdate();
         }
         return didSpend;
@@ -182,17 +175,16 @@ public class PlayerData implements IPlayerData {
 
     @Override
     public void gainTalentPoint() {
-        if (!hasChosenClass()){
+        if (!hasChosenClass()) {
             return;
         }
         PlayerClassInfo classInfo = getActiveClass();
-        if (classInfo == null){
+        if (classInfo == null) {
             return;
         }
-        if (player.experienceLevel >= classInfo.totalTalentPoints){
-            player.addExperienceLevel(-classInfo.totalTalentPoints);
-            classInfo.totalTalentPoints += 1;
-            classInfo.unspentTalentPoints += 1;
+        if (player.experienceLevel >= classInfo.getTotalTalentPoints()) {
+            player.addExperienceLevel(-classInfo.getTotalTalentPoints());
+            classInfo.addTalentPoints(1);
             sendCurrentClassUpdate();
         }
     }
@@ -206,23 +198,18 @@ public class PlayerData implements IPlayerData {
         if (classInfo == null){
             return 0;
         }
-        return classInfo.totalTalentPoints;
+        return classInfo.getTotalTalentPoints();
     }
 
     private boolean checkTalentTotals() {
-        if (!hasChosenClass()){
+        if (!hasChosenClass()) {
             return false;
         }
         PlayerClassInfo classInfo = getActiveClass();
-        if (classInfo == null){
+        if (classInfo == null) {
             return false;
         }
-        int spent = classInfo.getTotalSpentPoints();
-        if (classInfo.totalTalentPoints - spent != classInfo.unspentTalentPoints){
-            classInfo.unspentTalentPoints = classInfo.totalTalentPoints - spent;
-            return true;
-        }
-        return false;
+        return classInfo.checkTalentTotals();
     }
 
     @Override
@@ -234,7 +221,7 @@ public class PlayerData implements IPlayerData {
         if (classInfo == null){
             return 0;
         }
-        return classInfo.unspentTalentPoints;
+        return classInfo.getUnspentTalentPoints();
     }
 
     @Override
@@ -306,7 +293,7 @@ public class PlayerData implements IPlayerData {
         activeClass.applyAttributesModifiersToPlayer(player);
         // Since this can be called early, don't try to apply potions before being added to the world
         if (player.addedToChunk) {
-            TalentUtils.removeAllPassiveTalents(player);
+            removeAllPassiveTalents(player);
             activeClass.applyPassives(player, this, player.getEntityWorld());
         }
         else {
@@ -316,8 +303,26 @@ public class PlayerData implements IPlayerData {
     }
 
     private void removeTalents() {
-        TalentUtils.removeAllAttributeTalents(player);
-        TalentUtils.removeAllPassiveTalents(player);
+        removeAllAttributeTalents(player);
+        removeAllPassiveTalents(player);
+    }
+
+    private void removeAllAttributeTalents(EntityPlayer player) {
+        AbstractAttributeMap attributeMap = player.getAttributeMap();
+        for (RangedAttributeTalent entry : MKURegistry.getAllAttributeTalents()) {
+            IAttributeInstance instance = attributeMap.getAttributeInstance(entry.getAttribute());
+            if (instance != null) {
+                instance.removeModifier(entry.getUUID());
+            }
+        }
+    }
+
+    private void removeAllPassiveTalents(EntityPlayer player) {
+        for (PassiveAbilityTalent talent : MKURegistry.getAllPassiveTalents()) {
+            if (player.isPotionActive(talent.getAbility().getPassiveEffect())) {
+                talent.getAbility().removeEffect(player, this, player.world);
+            }
+        }
     }
 
     public void setRefreshPassiveTalents() {
@@ -720,10 +725,7 @@ public class PlayerData implements IPlayerData {
 
         boolean valid = abilityInfo != null && abilityInfo.isCurrentlyKnown();
         ResourceLocation id = valid ? abilityInfo.getId() : MKURegistry.INVALID_ABILITY;
-        int rank = valid ? abilityInfo.getRank() : GameConstants.ABILITY_INVALID_RANK;
-
         setAbilityInSlot(index, id);
-        privateData.set(ACTION_BAR_ABILITY_RANK[index], rank);
 
         if (abilityTracker.hasCooldown(abilityInfo)) {
             int cd = abilityTracker.getCooldownTicks(abilityInfo);
@@ -853,7 +855,7 @@ public class PlayerData implements IPlayerData {
             Log.debug("doing passive talent refresh");
             PlayerClassInfo info = getActiveClass();
             if (info != null) {
-                TalentUtils.removeAllPassiveTalents(player);
+                removeAllPassiveTalents(player);
                 info.applyPassives(player, this, player.getEntityWorld());
             }
             needPassiveTalentRefresh = false;
@@ -905,11 +907,11 @@ public class PlayerData implements IPlayerData {
     public void clientBulkKnownClassUpdate(List<PlayerClassInfo> info, boolean isFullUpdate) {
         if (isFullUpdate){
             knownClasses.clear();
-            info.forEach(ci -> knownClasses.put(ci.classId, ci));
+            info.forEach(ci -> knownClasses.put(ci.getClassId(), ci));
         } else {
             info.forEach(ci -> {
-                knownClasses.remove(ci.classId);
-                knownClasses.put(ci.classId, ci);
+                knownClasses.remove(ci.getClassId());
+                knownClasses.put(ci.getClassId(), ci);
             });
         }
         MinecraftForge.EVENT_BUS.post(new PlayerDataUpdateEvent());
@@ -969,7 +971,7 @@ public class PlayerData implements IPlayerData {
                 PlayerClassInfo info = new PlayerClassInfo(new ResourceLocation(cls.getString("id")));
                 info.deserialize(cls);
 
-                knownClasses.put(info.classId, info);
+                knownClasses.put(info.getClassId(), info);
             }
         }
 
@@ -1141,9 +1143,7 @@ public class PlayerData implements IPlayerData {
         }
 
         // save current class data
-        cinfo.level = getLevel();
-        cinfo.unspentPoints = getUnspentPoints();
-        cinfo.setActiveAbilities(getActiveAbilities());
+        cinfo.save(this);
     }
 
     private void deactivateCurrentToggleAbilities() {
@@ -1177,8 +1177,8 @@ public class PlayerData implements IPlayerData {
             Arrays.fill(hotbar, MKURegistry.INVALID_ABILITY);
         } else {
             PlayerClassInfo info = knownClasses.get(classId);
-            level = info.level;
-            unspent = info.unspentPoints;
+            level = info.getLevel();
+            unspent = info.getUnspentPoints();
             hotbar = info.getActiveAbilities();
         }
 
