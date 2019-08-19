@@ -283,6 +283,7 @@ public class PlayerData implements IPlayerData {
         PlayerClassInfo activeClass = getActiveClass();
         if (activeClass != null){
             boolean didWork = activeClass.addPassiveToSlot(loc, slotIndex);
+            setRefreshPassiveTalents();
             sendCurrentClassUpdate();
             return didWork;
         }
@@ -325,16 +326,6 @@ public class PlayerData implements IPlayerData {
 
     public boolean getPassiveTalentsUnlocked() {
         return talentPassivesUnlocked;
-    }
-
-    public boolean setPassiveTalent(int slot, PlayerPassiveAbility passiveAbility) {
-        PlayerClassInfo info = getActiveClass();
-        boolean added = false;
-        if (info != null) {
-            added = info.addPassiveToSlot(passiveAbility.getAbilityId(), slot);
-            setRefreshPassiveTalents();
-        }
-        return added;
     }
 
     void removePassiveEffect(PassiveAbilityPotionBase passiveEffect) {
