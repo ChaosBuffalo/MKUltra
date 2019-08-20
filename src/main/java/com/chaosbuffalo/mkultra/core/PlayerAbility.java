@@ -82,7 +82,7 @@ public abstract class  PlayerAbility extends IForgeRegistryEntry.Impl<PlayerAbil
         return Targeting.isValidTarget(getTargetType(), caster, target, !canSelfCast());
     }
 
-    public abstract int getManaCost(int currentRank);
+    public abstract float getManaCost(int currentRank);
 
     public abstract int getRequiredLevel(int currentRank);
 

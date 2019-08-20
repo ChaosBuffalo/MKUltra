@@ -40,7 +40,7 @@ public class FairyFire extends PlayerAbility {
     }
 
     @Override
-    public int getManaCost(int currentRank) {
+    public float getManaCost(int currentRank) {
         return 3 + currentRank;
     }
 

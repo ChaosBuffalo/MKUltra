@@ -43,7 +43,7 @@ public class ArrowStorm extends PlayerAbility {
     }
 
     @Override
-    public int getManaCost(int currentRank) {
+    public float getManaCost(int currentRank) {
         return 14 - currentRank * 2;
     }
 

@@ -37,7 +37,7 @@ public class FuriousBrooding extends PlayerAbility {
     }
 
     @Override
-    public int getManaCost(int currentRank) {
+    public float getManaCost(int currentRank) {
         return 4 + 2 * currentRank;
     }
 

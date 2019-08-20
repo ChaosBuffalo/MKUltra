@@ -41,7 +41,7 @@ public class WhirlwindBlades extends PlayerAbility {
     }
 
     @Override
-    public int getManaCost(int currentRank) {
+    public float getManaCost(int currentRank) {
         return 3 + 2 * currentRank;
     }
 

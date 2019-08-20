@@ -32,7 +32,7 @@ public class TNTWhisperer extends PlayerAbility {
     }
 
     @Override
-    public int getManaCost(int currentRank){
+    public float getManaCost(int currentRank){
         return 15 - currentRank * 5;
     }
 

@@ -42,7 +42,7 @@ public class WaveBreak extends PlayerToggleAbility {
     }
 
     @Override
-    public int getManaCost(int currentRank) {
+    public float getManaCost(int currentRank) {
         return 3 - currentRank;
     }
 

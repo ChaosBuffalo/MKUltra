@@ -45,7 +45,7 @@ public class NocturnalCommunion extends PlayerAbility {
     }
 
     @Override
-    public int getManaCost(int currentRank) {
+    public float getManaCost(int currentRank) {
         return 2 + currentRank * 4;
     }
 

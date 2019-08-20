@@ -43,7 +43,7 @@ import java.util.*;
 
 public class PlayerData implements IPlayerData {
 
-    private final static DataParameter<Integer> MANA = EntityDataManager.createKey(EntityPlayer.class, DataSerializers.VARINT);
+    private final static DataParameter<Float> MANA = EntityDataManager.createKey(EntityPlayer.class, DataSerializers.FLOAT);
     private final static DataParameter<Integer> LEVEL = EntityDataManager.createKey(EntityPlayer.class, DataSerializers.VARINT);
     private final static DataParameter<Integer> UNSPENT_POINTS = EntityDataManager.createKey(EntityPlayer.class, DataSerializers.VARINT);
     private final static DataParameter<String> CLASS_ID = EntityDataManager.createKey(EntityPlayer.class, DataSerializers.STRING);
@@ -99,7 +99,7 @@ public class PlayerData implements IPlayerData {
 
     private void setupWatcher() {
 
-        privateData.register(MANA, 0);
+        privateData.register(MANA, 0f);
         privateData.register(UNSPENT_POINTS, 0);
         privateData.register(CLASS_ID, MKURegistry.INVALID_CLASS.toString());
         privateData.register(LEVEL, 0);
@@ -786,7 +786,7 @@ public class PlayerData implements IPlayerData {
         if (mainHandItem.getItem() instanceof ManaRegenIdol) {
             ItemHelper.damageStack(player, mainHandItem, 1);
         }
-        int manaCost = ability.getManaCost(info.getRank());
+        float manaCost = ability.getManaCost(info.getRank());
         manaCost = PlayerFormulas.applyManaCostReduction(this, manaCost);
         setMana(getMana() - manaCost);
 
@@ -862,12 +862,12 @@ public class PlayerData implements IPlayerData {
     }
 
     @Override
-    public void setMana(int mana) {
+    public void setMana(float mana) {
         privateData.set(MANA, mana);
     }
 
     @Override
-    public int getMana() {
+    public float getMana() {
         return privateData.get(MANA);
     }
 
@@ -1077,7 +1077,7 @@ public class PlayerData implements IPlayerData {
 
     @Override
     public void serialize(NBTTagCompound nbt) {
-        nbt.setInteger("mana", getMana());
+        nbt.setFloat("mana", getMana());
         nbt.setFloat("manaRegenRate", getBaseManaRegenRate());
         nbt.setInteger("totalMana", getBaseTotalMana());
         nbt.setFloat("healthRegenRate", getBaseHealthRegenRate());
@@ -1087,8 +1087,8 @@ public class PlayerData implements IPlayerData {
 
     @Override
     public void deserialize(NBTTagCompound nbt) {
-        if (nbt.hasKey("mana", 3)) {
-            setMana(nbt.getInteger("mana"));
+        if (nbt.hasKey("mana")) {
+            setMana(nbt.getFloat("mana"));
         }
         if (nbt.hasKey("manaRegenRate", 3)) {
             setManaRegen(nbt.getFloat("manaRegenRate"));

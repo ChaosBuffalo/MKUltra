@@ -37,7 +37,7 @@ public class Geyser extends PlayerAbility {
     }
 
     @Override
-    public int getManaCost(int currentRank) {
+    public float getManaCost(int currentRank) {
         return 1 + 2* currentRank;
     }
 
