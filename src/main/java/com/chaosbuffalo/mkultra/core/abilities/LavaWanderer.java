@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.core.abilities;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.core.PlayerFormulas;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.ParticlePotion;
@@ -55,11 +56,13 @@ public class LavaWanderer extends PlayerAbility {
 
         int level = pData.getAbilityRank(getAbilityId());
 
+        int duration = GameConstants.TICKS_PER_SECOND * DURATION_PER_LEVEL * level;
+        duration = PlayerFormulas.applyBuffDurationBonus(pData, duration);
         PotionEffect fireResist = new PotionEffect(MobEffects.FIRE_RESISTANCE,
-                GameConstants.TICKS_PER_SECOND * DURATION_PER_LEVEL * level,
+                duration,
                 level, false, true);
         PotionEffect speed = new PotionEffect(MobEffects.HASTE,
-                GameConstants.TICKS_PER_SECOND * DURATION_PER_LEVEL * level,
+                duration,
                 level, false, true);
 
         SpellCast particle = ParticlePotion.Create(entity,

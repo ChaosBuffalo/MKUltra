@@ -48,6 +48,10 @@ public class PlayerAttributes {
             .setDescription("Melee Critical Damage")
             .setShouldWatch(true);
 
+    public static final RangedAttribute BUFF_DURATION = (RangedAttribute) new RangedAttribute(null, "mkultra.buff_duration", 1.0, 0.0, 5.0)
+            .setDescription("Buff Duration")
+            .setShouldWatch(true);
+
     /**
      * Operation 0: Increment X by Amount
      * The game first sets X = Base, then executes all Operation 0 modifiers, then sets Y = X, then executes all Operation 1 modifiers, and finally executes all Operation 2 modifiers.

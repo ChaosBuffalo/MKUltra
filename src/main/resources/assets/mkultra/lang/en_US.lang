@@ -284,4 +284,9 @@ mkultra.ability.burning_soul.description=Increases your spell crit rate by 10%% 
 mkultra.ui_msg.no_passives=You do not know any passive abilities
 mkultra.ui_msg.learn_passive_prompt=Right click to slot a passive
 mkultra.ui_msg.clear_passive_slot=Clear Slot
+attribute.name.mkultra.buff_duration=Buff Duration Bonus
+mkultra.talent.extended_duration.name=Extended Buff Duration
+mkultra.talent.extended_duration.description=Extends Buff Duration by 50%%
+mkultra.ability.extended_duration.name=Extended Buff Duration
+mkultra.ability.extended_duration.description=Extends Buff Duration by 50%%
 

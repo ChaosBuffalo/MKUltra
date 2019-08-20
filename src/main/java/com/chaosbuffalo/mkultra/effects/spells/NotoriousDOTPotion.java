@@ -2,12 +2,14 @@ package com.chaosbuffalo.mkultra.effects.spells;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.abilities.NotoriousDOT;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.songs.SongEffect;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
@@ -34,7 +36,7 @@ public class NotoriousDOTPotion extends SongEffect {
     }
 
     @Override
-    public AreaEffectBuilder prepareAreaEffect(Entity source, int level, AreaEffectBuilder builder) {
+    public AreaEffectBuilder prepareAreaEffect(EntityPlayer source, IPlayerData playerData, int level, AreaEffectBuilder builder) {
         builder.spellCast(AbilityMagicDamage.Create(
                 source, NotoriousDOT.BASE_DAMAGE, NotoriousDOT.DAMAGE_SCALE),
                 level, Targeting.TargetType.ENEMY);

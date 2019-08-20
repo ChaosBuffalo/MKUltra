@@ -4,6 +4,7 @@ import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
+import com.chaosbuffalo.mkultra.core.PlayerFormulas;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
@@ -67,8 +68,9 @@ public class SpiritOfWolf extends PlayerAbility {
         
         pData.startAbility(this);
 
-        PotionEffect addSpeed = new PotionEffect(MobEffects.SPEED,
-                GameConstants.TICKS_PER_SECOND * 60 * (BASE_DURATION + DURATION_SCALE * level), level - 1);
+        int duration = GameConstants.TICKS_PER_SECOND * 60 * (BASE_DURATION + DURATION_SCALE * level);
+        duration = PlayerFormulas.applyBuffDurationBonus(pData, duration);
+        PotionEffect addSpeed = new PotionEffect(MobEffects.SPEED, duration, level - 1);
         targetEntity.addPotionEffect(addSpeed);
 
         Vec3d lookVec = entity.getLookVec();

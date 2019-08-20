@@ -16,6 +16,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
@@ -54,6 +55,11 @@ public class SkinLikeWoodPotion extends PassiveEffect {
     @Override
     public ResourceLocation getIconTexture() {
         return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/skin_like_wood.png");
+    }
+
+    @Override
+    public boolean shouldRender(PotionEffect effect) {
+        return false;
     }
 
     private void playerHurtPreScale(LivingHurtEvent event, DamageSource source, EntityPlayer livingTarget, IPlayerData targetData) {

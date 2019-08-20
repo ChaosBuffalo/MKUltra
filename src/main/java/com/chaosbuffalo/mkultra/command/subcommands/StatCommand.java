@@ -28,6 +28,7 @@ public class StatCommand extends CommandTreeBase {
         addSubcommand(new CooldownReductionStat());
         addSubcommand(new ArmorStat());
         addSubcommand(new HealBonusStat());
+        addSubcommand(new BuffDurationStat());
         addSubcommand(new CommandTreeHelp(this)); // MUST be last
     }
 
@@ -185,6 +186,12 @@ public class StatCommand extends CommandTreeBase {
     class HealBonusStat extends AttrStat {
         protected HealBonusStat() {
             super("healbonus", PlayerAttributes.HEAL_BONUS);
+        }
+    }
+
+    class BuffDurationStat extends AttrStat {
+        protected BuffDurationStat() {
+            super("buffduration", PlayerAttributes.BUFF_DURATION);
         }
     }
 }

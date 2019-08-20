@@ -4,6 +4,7 @@ import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
+import com.chaosbuffalo.mkultra.core.PlayerFormulas;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.ParticlePotion;
@@ -66,6 +67,7 @@ public class Underway extends PlayerAbility {
 
         // What to do for each target hit
         int duration = (BASE_DURATION + DURATION_SCALE * level) * GameConstants.TICKS_PER_SECOND;
+        duration = PlayerFormulas.applyBuffDurationBonus(pData, duration);
         SpellCast effect = UnderwayPotion.Create(entity);
         SpellCast particlePotion = ParticlePotion.Create(entity,
                 EnumParticleTypes.WATER_BUBBLE.getParticleID(),

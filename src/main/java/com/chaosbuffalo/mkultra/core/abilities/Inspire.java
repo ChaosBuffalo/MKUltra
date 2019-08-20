@@ -1,6 +1,7 @@
 package com.chaosbuffalo.mkultra.core.abilities;
 
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.core.PlayerFormulas;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
@@ -57,8 +58,11 @@ public class Inspire extends PlayerAbility {
 
         int level = pData.getAbilityRank(getAbilityId());
 
-        PotionEffect hasteEffect = new PotionEffect(MobEffects.HASTE, 900, level, false, true);
-        PotionEffect regenEffect = new PotionEffect(MobEffects.REGENERATION, 900, level + 1, false, true);
+        int duration = 900;
+        duration = PlayerFormulas.applyBuffDurationBonus(pData, duration);
+
+        PotionEffect hasteEffect = new PotionEffect(MobEffects.HASTE, duration, level, false, true);
+        PotionEffect regenEffect = new PotionEffect(MobEffects.REGENERATION, duration, level + 1, false, true);
 
         AreaEffectBuilder.Create(entity, entity)
                 .effect(hasteEffect, Targeting.TargetType.FRIENDLY)

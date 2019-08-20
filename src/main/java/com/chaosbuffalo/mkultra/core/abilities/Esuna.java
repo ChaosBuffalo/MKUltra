@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.core.abilities;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.core.PlayerFormulas;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.CurePotion;
@@ -63,8 +64,9 @@ public class Esuna extends PlayerAbility {
         SpellCast esuna = EsunaPotion.Create(entity);
         SpellCast cure = CurePotion.Create(entity);
 
+        int esunaDuration = PlayerFormulas.applyBuffDurationBonus(pData, 4 * GameConstants.TICKS_PER_SECOND);
         AreaEffectBuilder.Create(entity, entity)
-                .spellCast(esuna, 4 * GameConstants.TICKS_PER_SECOND, level, getTargetType())
+                .spellCast(esuna, esunaDuration, level, getTargetType())
                 .spellCast(cure, level, getTargetType())
                 .instant()
                 .color(65480).radius(getDistance(level), true)

@@ -85,6 +85,7 @@ public class PlayerData implements IPlayerData {
         player.getAttributeMap().registerAttribute(PlayerAttributes.HEALTH_REGEN);
         player.getAttributeMap().registerAttribute(PlayerAttributes.HEAL_BONUS);
         player.getAttributeMap().registerAttribute(PlayerAttributes.MELEE_CRITICAL_DAMAGE);
+        player.getAttributeMap().registerAttribute(PlayerAttributes.BUFF_DURATION);
     }
 
     private void setupWatcher() {
@@ -450,6 +451,11 @@ public class PlayerData implements IPlayerData {
     @Override
     public float getHealBonus() {
         return (float) player.getEntityAttribute(PlayerAttributes.HEAL_BONUS).getAttributeValue();
+    }
+
+    @Override
+    public float getBuffDurationBonus() {
+        return (float) player.getEntityAttribute(PlayerAttributes.BUFF_DURATION).getAttributeValue();
     }
 
     @Override

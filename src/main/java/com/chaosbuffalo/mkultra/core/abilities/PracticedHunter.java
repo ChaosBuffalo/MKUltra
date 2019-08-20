@@ -4,6 +4,7 @@ import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
+import com.chaosbuffalo.mkultra.core.PlayerFormulas;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
@@ -63,9 +64,11 @@ public class PracticedHunter extends PlayerAbility {
     public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
         int level = pData.getAbilityRank(getAbilityId());
         pData.startAbility(this);
+        int duration = (BASE_DURATION + DURATION_SCALE * level) * GameConstants.TICKS_PER_SECOND;
+        duration = PlayerFormulas.applyBuffDurationBonus(pData, duration);
         entity.addPotionEffect(new PotionEffect(
                 MobEffects.NIGHT_VISION,
-                (BASE_DURATION + DURATION_SCALE * level) * GameConstants.TICKS_PER_SECOND,
+                duration,
                 0, false, false)
         );
         entity.getFoodStats().addStats(FOOD_AMOUNT + level * FOOD_SCALE,
