@@ -65,7 +65,7 @@ public class EsunaPotion extends SpellPeriodicPotionBase {
             int boostAmount = 10;
             float amount = 2 * (amplifier);
 
-            int maxMana = pData.getTotalMana() + boostAmount;
+            float maxMana = pData.getTotalMana() + boostAmount;
             float curMana = pData.getMana();
 
             amount = Math.min(maxMana - curMana, amount);

@@ -848,17 +848,17 @@ public class PlayerData implements IPlayerData {
     }
 
     @Override
-    public void setTotalMana(int totalMana) {
+    public void setTotalMana(float totalMana) {
         player.getEntityAttribute(PlayerAttributes.MAX_MANA).setBaseValue(totalMana);
     }
 
     @Override
-    public int getTotalMana() {
-        return (int) player.getEntityAttribute(PlayerAttributes.MAX_MANA).getAttributeValue();
+    public float getTotalMana() {
+        return (float) player.getEntityAttribute(PlayerAttributes.MAX_MANA).getAttributeValue();
     }
 
-    private int getBaseTotalMana() {
-        return (int) player.getEntityAttribute(PlayerAttributes.MAX_MANA).getBaseValue();
+    private float getBaseTotalMana() {
+        return (float) player.getEntityAttribute(PlayerAttributes.MAX_MANA).getBaseValue();
     }
 
     @Override
@@ -1079,7 +1079,7 @@ public class PlayerData implements IPlayerData {
     public void serialize(NBTTagCompound nbt) {
         nbt.setFloat("mana", getMana());
         nbt.setFloat("manaRegenRate", getBaseManaRegenRate());
-        nbt.setInteger("totalMana", getBaseTotalMana());
+        nbt.setFloat("totalMana", getBaseTotalMana());
         nbt.setFloat("healthRegenRate", getBaseHealthRegenRate());
         serializeSkills(nbt);
         serializeClasses(nbt);
@@ -1094,7 +1094,7 @@ public class PlayerData implements IPlayerData {
             setManaRegen(nbt.getFloat("manaRegenRate"));
         }
         if (nbt.hasKey("totalMana", 3)) {
-            setTotalMana(nbt.getInteger("totalMana"));
+            setTotalMana(nbt.getFloat("totalMana"));
         }
         if (nbt.hasKey("healthRegenRate", 3)){
             setHealthRegen(nbt.getFloat("healthRegenRate"));
