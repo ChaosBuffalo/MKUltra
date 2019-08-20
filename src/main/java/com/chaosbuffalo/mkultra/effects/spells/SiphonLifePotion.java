@@ -14,8 +14,10 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+@Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class SiphonLifePotion extends PassiveEffect {
 
     public static final SiphonLifePotion INSTANCE = new SiphonLifePotion();
@@ -32,12 +34,12 @@ public class SiphonLifePotion extends PassiveEffect {
     private SiphonLifePotion() {
         super(false, 4393423);
         setPotionName("effect.siphon_life");
-        SpellTriggers.PLAYER_KILL_ENTITY.register(this::onPlayerKillEntity);
+        SpellTriggers.PLAYER_KILL_ENTITY.register(this, this::onPlayerKillEntity);
     }
 
     public void onPlayerKillEntity(LivingDeathEvent event, DamageSource source, EntityPlayer player){
         IPlayerData pData = MKUPlayerData.get(player);
-        if (player.isPotionActive(this) && pData != null){
+        if (pData != null){
             if (SpellTriggers.isMeleeDamage(source)){
                 float healAmount = PlayerFormulas.applyHealBonus(pData, 4.0f);
                 player.heal(healAmount);

@@ -3,7 +3,6 @@ package com.chaosbuffalo.mkultra.effects.spells;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
-import com.chaosbuffalo.mkultra.core.PlayerFormulas;
 import com.chaosbuffalo.mkultra.effects.PassiveEffect;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellTriggers;
@@ -14,8 +13,10 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+@Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class SoulDrainPotion extends PassiveEffect {
 
     public static final SoulDrainPotion INSTANCE = new SoulDrainPotion();
@@ -32,12 +33,12 @@ public class SoulDrainPotion extends PassiveEffect {
     private SoulDrainPotion() {
         super(false, 4393423);
         setPotionName("effect.soul_drain");
-        SpellTriggers.PLAYER_KILL_ENTITY.register(this::onPlayerKillEntity);
+        SpellTriggers.PLAYER_KILL_ENTITY.register(this, this::onPlayerKillEntity);
     }
 
     public void onPlayerKillEntity(LivingDeathEvent event, DamageSource source, EntityPlayer player){
         IPlayerData pData = MKUPlayerData.get(player);
-        if (player.isPotionActive(this) && pData != null){
+        if (pData != null){
             if (SpellTriggers.isMKUltraAbilityDamage(source)){
                 pData.setMana(Math.min(pData.getMana() + 4, pData.getTotalMana()));
             }
