@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.core.abilities;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.core.PlayerFormulas;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.ParticlePotion;
@@ -63,6 +64,7 @@ public class Undertow extends PlayerAbility {
 
         // What to do for each target hit
         int duration = (BASE_DURATION + DURATION_SCALE * level) * GameConstants.TICKS_PER_SECOND;
+        duration = PlayerFormulas.applyBuffDurationBonus(pData, duration);
         SpellCast undertow = UndertowPotion.Create(entity);
         SpellCast particlePotion = ParticlePotion.Create(entity,
                 EnumParticleTypes.WATER_BUBBLE.getParticleID(),

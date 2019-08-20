@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.core.abilities;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.core.PlayerFormulas;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.CriticalChancePotion;
@@ -62,6 +63,7 @@ public class Yaup extends PlayerAbility {
 
         int duration = 15 + (level * 15);
         duration *= GameConstants.TICKS_PER_SECOND;
+        duration = PlayerFormulas.applyBuffDurationBonus(pData, duration);
 
         PotionEffect hasteEffect = new PotionEffect(MobEffects.HASTE, duration, level - 1, false, true);
         PotionEffect damageEffect = new PotionEffect(MobEffects.STRENGTH, duration, level - 1, false, true);

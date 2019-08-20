@@ -63,6 +63,7 @@ public class PlayerClassScreen extends MKScreen {
         STAT_PANEL_ATTRIBUTES.add(PlayerAttributes.MELEE_CRITICAL_DAMAGE);
         STAT_PANEL_ATTRIBUTES.add(PlayerAttributes.SPELL_CRIT);
         STAT_PANEL_ATTRIBUTES.add(PlayerAttributes.SPELL_CRITICAL_DAMAGE);
+        STAT_PANEL_ATTRIBUTES.add(PlayerAttributes.BUFF_DURATION);
     }
 
     public PlayerClassScreen(){

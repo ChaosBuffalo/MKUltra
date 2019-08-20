@@ -4,6 +4,7 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.MKURegistry;
 import com.chaosbuffalo.mkultra.core.PlayerAttributes;
 import com.chaosbuffalo.mkultra.core.abilities.passives.BurningSoul;
+import com.chaosbuffalo.mkultra.core.abilities.passives.ExtendedDuration;
 import com.chaosbuffalo.mkultra.core.talents.*;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.utils.JsonLoader;
@@ -219,5 +220,10 @@ public class ModTalents {
                 BurningSoul.INSTANCE
         );
         event.getRegistry().register(burningSoul);
+
+        PassiveAbilityTalent extendedDuration = new PassiveAbilityTalent(
+                new ResourceLocation(MKUltra.MODID, "talent.extended_duration"),
+                ExtendedDuration.INSTANCE);
+        event.getRegistry().register(extendedDuration);
     }
 }

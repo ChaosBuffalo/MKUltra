@@ -99,6 +99,8 @@ public interface IPlayerData {
 
     float getHealBonus();
 
+    float getBuffDurationBonus();
+
     int getCooldownForLevel(PlayerAbility ability, int level);
 
     boolean learnClass(IClassProvider provider, ResourceLocation classId);

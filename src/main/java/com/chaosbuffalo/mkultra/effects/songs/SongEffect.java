@@ -14,13 +14,15 @@ public abstract class SongEffect extends SongPotionBase {
         super(period, true, isBadEffectIn, liquidColorIn);
     }
 
-    public AreaEffectBuilder prepareAreaEffect(Entity source, int level, AreaEffectBuilder builder) {
+    public AreaEffectBuilder prepareAreaEffect(EntityPlayer source, IPlayerData playerData, int level, AreaEffectBuilder builder) {
         return builder;
     }
 
     public abstract float getSongDistance(int level);
 
-    public EnumParticleTypes getSongParticle() { return EnumParticleTypes.NOTE; }
+    public EnumParticleTypes getSongParticle() {
+        return EnumParticleTypes.NOTE;
+    }
 
     @Override
     public void doEffect(Entity source, Entity indirectSource, EntityLivingBase target, int amplifier, SpellCast cast) {
@@ -39,7 +41,7 @@ public abstract class SongEffect extends SongPotionBase {
                     .particle(getSongParticle())
                     .color(16762905)
                     .radius(getSongDistance(amplifier), true);
-            prepareAreaEffect(player, amplifier, builder).spawn();
+            prepareAreaEffect(player, pData, amplifier, builder).spawn();
         }
     }
 }

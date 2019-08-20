@@ -4,6 +4,7 @@ import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
+import com.chaosbuffalo.mkultra.core.PlayerFormulas;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
@@ -57,10 +58,13 @@ public class FuriousBrooding extends PlayerAbility {
 
         pData.startAbility(this);
 
+        int duration = (6 + 5 * level) * GameConstants.TICKS_PER_SECOND;
+        duration = PlayerFormulas.applyBuffDurationBonus(pData, duration);
+
         entity.addPotionEffect(
-                new PotionEffect(MobEffects.REGENERATION, (6 + 5 * level) * GameConstants.TICKS_PER_SECOND, level + 1, false, true));
+                new PotionEffect(MobEffects.REGENERATION, duration, level + 1, false, true));
         entity.addPotionEffect(
-                new PotionEffect(MobEffects.SLOWNESS, (6 + 5 * level) * GameConstants.TICKS_PER_SECOND, level - 1, false, true));
+                new PotionEffect(MobEffects.SLOWNESS, duration, level - 1, false, true));
 
         Vec3d lookVec = entity.getLookVec();
         MKUltra.packetHandler.sendToAllAround(

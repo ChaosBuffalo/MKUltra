@@ -5,6 +5,7 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKDamageSource;
+import com.chaosbuffalo.mkultra.core.PlayerFormulas;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.ParticlePotion;
@@ -77,8 +78,10 @@ public class SlayingEdge extends PlayerAbility {
                         ParticleEffects.SPHERE_MOTION, false, new Vec3d(1.0, 1.0, 1.0),
                         new Vec3d(0.0, 1.0, 0.0), 20, 5, 0.5);
 
+                int duration = 10 * GameConstants.TICKS_PER_SECOND;
+                duration = PlayerFormulas.applyBuffDurationBonus(pData, duration);
                 AreaEffectBuilder.Create(entity, entity)
-                        .spellCast(slaying_edge, 10 * GameConstants.TICKS_PER_SECOND, level, Targeting.TargetType.FRIENDLY)
+                        .spellCast(slaying_edge, duration, level, Targeting.TargetType.FRIENDLY)
                         .spellCast(particlePotion, 0, Targeting.TargetType.FRIENDLY)
                         .instant().color(10158335).radius(getDistance(level), true)
                         .spawn();

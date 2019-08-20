@@ -1,6 +1,7 @@
 package com.chaosbuffalo.mkultra.core.abilities;
 
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.core.PlayerFormulas;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.CurePotion;
@@ -11,6 +12,7 @@ import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.Vec3d;
@@ -59,7 +61,9 @@ public class Galvanize extends PlayerAbility {
 
         int level = pData.getAbilityRank(getAbilityId());
 
-        PotionEffect jump = new PotionEffect(MobEffects.JUMP_BOOST, 100 + (50 * level), level - 1, false, true);
+        int duration = 100 + (50 * level);
+        duration = PlayerFormulas.applyBuffDurationBonus(pData, duration);
+        PotionEffect jump = new PotionEffect(MobEffects.JUMP_BOOST, duration, level - 1, false, true);
         SpellCast cure = CurePotion.Create(entity);
 
         AreaEffectBuilder.Create(entity, entity)

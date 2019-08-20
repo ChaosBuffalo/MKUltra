@@ -47,6 +47,11 @@ public class WildToxinPotion extends PassiveEffect {
         return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/wild_toxin.png");
     }
 
+    @Override
+    public boolean shouldRender(PotionEffect effect) {
+        return false;
+    }
+
     private void onAttackEntity(EntityLivingBase player, Entity target, PotionEffect potion) {
 
         if (target instanceof EntityLivingBase && player instanceof EntityPlayer) {
