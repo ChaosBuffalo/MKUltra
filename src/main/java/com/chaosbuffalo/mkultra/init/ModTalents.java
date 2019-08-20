@@ -183,7 +183,7 @@ public class ModTalents {
                 new ResourceLocation(MKUltra.MODID, "talent.cooldown_reduction"),
                 PlayerAttributes.COOLDOWN,
                 UUID.fromString("5378ff4c-0606-4781-abc0-c7d3e945b378"),
-                true);
+                true).setOp(PlayerAttributes.OP_SCALE_MULTIPLICATIVE);
         event.getRegistry().register(cooldownRate);
         RangedAttributeTalent meleeCritDamage = new RangedAttributeTalent(
                 new ResourceLocation(MKUltra.MODID, "talent.melee_crit_damage"),

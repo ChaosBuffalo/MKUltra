@@ -1,17 +1,12 @@
 package com.chaosbuffalo.mkultra.mob_ai;
 
 import com.chaosbuffalo.mkultra.GameConstants;
-import com.chaosbuffalo.mkultra.core.PlayerAttributes;
-import com.chaosbuffalo.mkultra.event.ItemRestrictionHandler;
-import com.chaosbuffalo.mkultra.log.Log;
-import com.google.common.collect.Multimap;
+import com.chaosbuffalo.mkultra.event.ItemEventHandler;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.Path;
@@ -167,7 +162,7 @@ public class EntityAIAttackMeleeMK extends EntityAIBase {
         double attackRange = this.attacker.width * 2.0;
         if (inMainhand != ItemStack.EMPTY){
             Item item = inMainhand.getItem();
-            if (ItemRestrictionHandler.isNoShieldItem(item)){
+            if (ItemEventHandler.isNoShieldItem(item)){
                 attackRange *= 2.0;
             }
         }

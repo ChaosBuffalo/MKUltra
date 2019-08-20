@@ -229,6 +229,7 @@ public class EntityEventHandler {
         if (event.getObject() instanceof EntityPlayer){
             event.addCapability(PLAYER_DATA, new PlayerDataProvider((EntityPlayer) event.getObject()));
         } else if (event.getObject() instanceof EntityLivingBase){
+            ((EntityLivingBase) event.getObject()).maxHurtResistantTime = 0;
             event.addCapability(MOB_DATA, new MobDataProvider((EntityLivingBase) event.getObject()));
             ResourceLocation entityName = EntityList.getKey(event.getObject());
             if (MobUtils.mobsToAddAttackSpeed.contains(entityName)){

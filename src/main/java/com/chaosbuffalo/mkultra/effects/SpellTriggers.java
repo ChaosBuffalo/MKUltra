@@ -21,6 +21,8 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.fml.common.registry.IThrowableEntity;
 
@@ -30,20 +32,25 @@ import java.util.Map;
 public class SpellTriggers {
 
 
-    private static boolean isMKUltraAbilityDamage(DamageSource source) {
+    public static boolean isMKUltraAbilityDamage(DamageSource source) {
         return source instanceof MKDamageSource;
     }
 
-    private static boolean isPlayerPhysicalDamage(DamageSource source) {
+    public static boolean isPlayerPhysicalDamage(DamageSource source) {
         return (!source.isFireDamage() && !source.isExplosion() && !source.isMagicDamage() &&
                 source.getDamageType().equals("player"));
     }
 
-    private static boolean isMislabeledThrowable(DamageSource source){
+    public static boolean isMeleeDamage(DamageSource source){
+        return isPlayerPhysicalDamage(source)||
+                (source instanceof MKDamageSource && ((MKDamageSource) source).isMeleeAbility());
+    }
+
+    public static boolean isMislabeledThrowable(DamageSource source){
         return source.getImmediateSource() instanceof IThrowableEntity;
     }
 
-    private static boolean isProjectileDamage(DamageSource source){
+    public static boolean isProjectileDamage(DamageSource source){
         return source.isProjectile();
     }
 
@@ -63,6 +70,50 @@ public class SpellTriggers {
 
         public static void onLivingFall(LivingHurtEvent event, DamageSource source, EntityLivingBase entity) {
             fallTriggers.forEach(f -> f.apply(event, source, entity));
+        }
+    }
+
+    public static class PLAYER_KILL_ENTITY {
+        private static Map<SpellPotionBase, PlayerKillEntityTrigger> killTriggers = Maps.newLinkedHashMap();
+
+        @FunctionalInterface
+        public interface PlayerKillEntityTrigger {
+            void apply(LivingDeathEvent event, DamageSource source, EntityPlayer player);
+        }
+
+        public static void register(SpellPotionBase potion, PlayerKillEntityTrigger trigger){
+            killTriggers.put(potion, trigger);
+        }
+
+        public static void onEntityDeath(LivingDeathEvent event, DamageSource source, EntityPlayer entity){
+            killTriggers.forEach((spellPotionBase, trigger) -> {
+                PotionEffect effect = entity.getActivePotionEffect(spellPotionBase);
+                if (effect != null) {
+                    trigger.apply(event, source, entity);
+                }
+            });
+        }
+    }
+
+    public static class PLAYER_EQUIPMENT_CHANGE {
+        private static Map<SpellPotionBase, PlayerEquipmentChangeTrigger> triggers = Maps.newLinkedHashMap();
+
+        @FunctionalInterface
+        public interface PlayerEquipmentChangeTrigger {
+            void apply(LivingEquipmentChangeEvent event, IPlayerData data, EntityPlayer player);
+        }
+
+        public static void register(SpellPotionBase potion, PlayerEquipmentChangeTrigger trigger){
+            triggers.put(potion, trigger);
+        }
+
+        public static void onEquipmentChange(LivingEquipmentChangeEvent event, IPlayerData data, EntityPlayer player){
+            triggers.forEach((spellPotionBase, trigger) -> {
+                PotionEffect effect = player.getActivePotionEffect(spellPotionBase);
+                if (effect != null) {
+                    trigger.apply(event, data, player);
+                }
+            });
         }
     }
 

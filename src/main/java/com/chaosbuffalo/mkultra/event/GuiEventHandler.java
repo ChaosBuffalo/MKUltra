@@ -62,7 +62,7 @@ public class GuiEventHandler {
         if (ItemUtils.CRIT.hasChance(event.getItemStack().getItem())){
             doCritTooltip(event);
         }
-        if (!MKConfig.cheats.BIG_HANDS_MODE && ItemRestrictionHandler.isNoShieldItem(event.getItemStack().getItem())){
+        if (!MKConfig.cheats.BIG_HANDS_MODE && ItemEventHandler.isNoShieldItem(event.getItemStack().getItem())){
             doNoShieldTooltip(event);
         }
         if (SmokeUtils.isSmokeable(event.getItemStack())){

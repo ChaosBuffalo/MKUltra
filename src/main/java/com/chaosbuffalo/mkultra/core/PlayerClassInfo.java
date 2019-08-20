@@ -113,7 +113,7 @@ public class PlayerClassInfo {
         if (canAddPassiveToSlot(loc, slotIndex)) {
             loadedPassives[slotIndex] = loc;
             for (int i = 0; i < GameConstants.MAX_PASSIVES; i++){
-                if (i != slotIndex && loc.equals(loadedPassives[i])){
+                if (!loc.equals(MKURegistry.INVALID_ABILITY) && i != slotIndex && loc.equals(loadedPassives[i])){
                     loadedPassives[i] = MKURegistry.INVALID_ABILITY;
                 }
             }
@@ -158,6 +158,9 @@ public class PlayerClassInfo {
     }
 
     public boolean hasTrainedPassive(ResourceLocation loc) {
+        if (loc.equals(MKURegistry.INVALID_ABILITY)){
+            return true;
+        }
         HashSet<PlayerPassiveAbility> abilities = getPassiveAbilitiesFromTalents();
         PlayerAbility ability = MKURegistry.getAbility(loc);
         return ability instanceof PlayerPassiveAbility && abilities.contains(ability);

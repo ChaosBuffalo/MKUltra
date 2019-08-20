@@ -7,7 +7,7 @@ import com.chaosbuffalo.mkultra.core.talents.PassiveAbilityTalent;
 import com.chaosbuffalo.mkultra.core.talents.RangedAttributeTalent;
 import com.chaosbuffalo.mkultra.core.talents.TalentTreeRecord;
 import com.chaosbuffalo.mkultra.effects.PassiveAbilityPotionBase;
-import com.chaosbuffalo.mkultra.event.ItemRestrictionHandler;
+import com.chaosbuffalo.mkultra.event.ItemEventHandler;
 import com.chaosbuffalo.mkultra.item.ItemHelper;
 import com.chaosbuffalo.mkultra.item.ManaRegenIdol;
 import com.chaosbuffalo.mkultra.log.Log;
@@ -1192,7 +1192,7 @@ public class PlayerData implements IPlayerData {
         setLevel(level);
         setUnspentPoints(unspent);
         setActiveAbilities(hotbar);
-        ItemRestrictionHandler.checkEquipment(player);
+        ItemEventHandler.checkEquipment(player);
         updateTalents();
         checkTalentTotals();
         sendCurrentClassUpdate();

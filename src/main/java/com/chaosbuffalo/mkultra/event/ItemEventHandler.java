@@ -3,14 +3,13 @@ package com.chaosbuffalo.mkultra.event;
 import com.chaosbuffalo.mkultra.MKConfig;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
+import com.chaosbuffalo.mkultra.effects.SpellTriggers;
 import com.chaosbuffalo.mkultra.item.ItemHelper;
+import com.chaosbuffalo.mkultra.utils.ItemUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemShield;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -19,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 @Mod.EventBusSubscriber
-public class ItemRestrictionHandler {
+public class ItemEventHandler {
 
     private static final ArrayList<ShieldRestrictionEntry> NO_SHIELD_ITEMS = new ArrayList<>();
 
@@ -93,10 +92,11 @@ public class ItemRestrictionHandler {
             checkShieldRestriction(player);
         }
 
-
         IPlayerData playerData = MKUPlayerData.get(player);
         if (playerData == null)
             return;
+
+        SpellTriggers.PLAYER_EQUIPMENT_CHANGE.onEquipmentChange(event, playerData, player);
 
         if (!MKConfig.cheats.TOUGH_GUY_MODE && event.getSlot().getSlotType() == EntityEquipmentSlot.Type.ARMOR) {
             checkBlockedArmor(player, event.getTo(), playerData, event.getSlot());

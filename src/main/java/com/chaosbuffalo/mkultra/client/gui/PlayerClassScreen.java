@@ -72,7 +72,6 @@ public class PlayerClassScreen extends MKScreen {
 
     @SubscribeEvent
     public void handlePlayerDataUpdate(PlayerDataUpdateEvent event) {
-        Log.info("In update player data");
         if (passivePanel != null){
             mainRoot.removeWidget(passivePanel);
         }
@@ -223,7 +222,6 @@ public class PlayerClassScreen extends MKScreen {
                 yPos + STAT_PANEL_START_Y + STAT_PANEL_HEIGHT + 4);
         passivePanel = passiveTray;
         if (passiveTray != null){
-            Log.info("Adding passive tray");
             mainRoot.addWidget(passiveTray);
         }
         setState("main");
@@ -293,7 +291,6 @@ public class PlayerClassScreen extends MKScreen {
             int passiveCount = 0;
             for (ResourceLocation passive : passives){
                 PassiveAbilityButton button;
-                Log.info("Adding button for passive: %s", passive.toString());
                 if (passive.equals(MKURegistry.INVALID_ABILITY)){
                     button = new PassiveAbilityButton(null, pData, passiveCount, 0, 0);
                 } else {
