@@ -91,7 +91,8 @@ public abstract class  PlayerAbility extends IForgeRegistryEntry.Impl<PlayerAbil
     }
 
     public boolean meetsRequirements(IPlayerData player) {
-        return player.getMana() >= getManaCost(player.getAbilityRank(abilityId)) &&
+        return player.getMana() >=
+                PlayerFormulas.applyManaCostReduction(player, getManaCost(player.getAbilityRank(abilityId))) &&
                 player.getCurrentAbilityCooldown(abilityId) == 0;
     }
 

@@ -786,8 +786,7 @@ public class PlayerData implements IPlayerData {
         if (mainHandItem.getItem() instanceof ManaRegenIdol) {
             ItemHelper.damageStack(player, mainHandItem, 1);
         }
-        float manaCost = ability.getManaCost(info.getRank());
-        manaCost = PlayerFormulas.applyManaCostReduction(this, manaCost);
+        float manaCost = PlayerFormulas.applyManaCostReduction(this, ability.getManaCost(info.getRank()));
         setMana(getMana() - manaCost);
 
         int cooldown = ability.getCooldownTicks(info.getRank());
