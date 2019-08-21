@@ -21,6 +21,7 @@ import net.minecraft.entity.ai.attributes.AbstractAttributeMap;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -33,6 +34,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -65,6 +67,7 @@ public class PlayerData implements IPlayerData {
     private Set<ItemArmor.ArmorMaterial> alwaysAllowedArmorMaterials = new HashSet<>();
     private boolean needPassiveTalentRefresh;
     private boolean talentPassivesUnlocked;
+    private ItemStack mainHandItem;
 
     public PlayerData(EntityPlayer player) {
         this.player = player;
@@ -72,6 +75,7 @@ public class PlayerData implements IPlayerData {
         healthRegenTime = 0;
         abilityTracker = AbilityTracker.getTracker(player);
         privateData = player.getDataManager();
+        mainHandItem = null;
         setupWatcher();
 
         player.getAttributeMap().registerAttribute(PlayerAttributes.MAX_MANA);
@@ -851,9 +855,19 @@ public class PlayerData implements IPlayerData {
 
     }
 
+    public void doMainHandEquipmentChangeCheck(){
+        if (mainHandItem == null){
+            mainHandItem = player.getHeldItemMainhand();
+        } else {
+            if (!ItemStack.areItemStacksEqual(mainHandItem, player.getHeldItemMainhand())){
+                MinecraftForge.EVENT_BUS.post(new LivingEquipmentChangeEvent(player,
+                        EntityEquipmentSlot.MAINHAND, mainHandItem, player.getHeldItemMainhand()));
+            }
+        }
+    }
+
     public void onTick() {
         abilityTracker.tick();
-
         if (!isServerSide())
             return;
 
@@ -866,7 +880,7 @@ public class PlayerData implements IPlayerData {
             }
             needPassiveTalentRefresh = false;
         }
-
+        doMainHandEquipmentChangeCheck();
         updateMana();
         updateHealth();
     }
