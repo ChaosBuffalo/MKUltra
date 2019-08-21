@@ -67,7 +67,7 @@ public class PlayerData implements IPlayerData {
     private Set<ItemArmor.ArmorMaterial> alwaysAllowedArmorMaterials = new HashSet<>();
     private boolean needPassiveTalentRefresh;
     private boolean talentPassivesUnlocked;
-    private ItemStack mainHandItem;
+    private ItemStack lastMainHandItem;
 
     public PlayerData(EntityPlayer player) {
         this.player = player;
@@ -75,7 +75,7 @@ public class PlayerData implements IPlayerData {
         healthRegenTime = 0;
         abilityTracker = AbilityTracker.getTracker(player);
         privateData = player.getDataManager();
-        mainHandItem = null;
+        lastMainHandItem = null;
         setupWatcher();
 
         player.getAttributeMap().registerAttribute(PlayerAttributes.MAX_MANA);
@@ -856,12 +856,13 @@ public class PlayerData implements IPlayerData {
     }
 
     public void doMainHandEquipmentChangeCheck(){
-        if (mainHandItem == null){
-            mainHandItem = player.getHeldItemMainhand();
+        if (lastMainHandItem == null){
+            lastMainHandItem = player.getHeldItemMainhand();
         } else {
-            if (!ItemStack.areItemStacksEqual(mainHandItem, player.getHeldItemMainhand())){
+            if (!ItemStack.areItemStacksEqual(lastMainHandItem, player.getHeldItemMainhand())){
                 MinecraftForge.EVENT_BUS.post(new LivingEquipmentChangeEvent(player,
-                        EntityEquipmentSlot.MAINHAND, mainHandItem, player.getHeldItemMainhand()));
+                        EntityEquipmentSlot.MAINHAND, lastMainHandItem, player.getHeldItemMainhand()));
+                lastMainHandItem = player.getHeldItemMainhand();
             }
         }
     }
