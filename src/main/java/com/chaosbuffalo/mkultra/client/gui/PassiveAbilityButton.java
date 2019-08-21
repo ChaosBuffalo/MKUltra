@@ -12,6 +12,7 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -21,14 +22,14 @@ public class PassiveAbilityButton extends MKButton {
     private static int Y_POS_TALENT_SLOT_TEX = 259;
     private static int TALENT_SLOT_WIDTH = 20;
     private static int TALENT_SLOT_HEIGHT = 20;
-    private static final int DROP_DOWN_WIDTH = 90;
+    private static final int DROP_DOWN_WIDTH = 150;
     private static final int WIDTH = 70;
     private static int ICON_WIDTH = 16;
     private static int ICON_HEIGHT = 16;
     private static final int SLOT_Y_OFFSET = 4;
     private static final int TEXT_OFFSET = 4;
-    private static final int SLOT_X_OFFSET = (WIDTH - TALENT_SLOT_WIDTH) / 2;
-    public static final int HEIGHT = TALENT_SLOT_HEIGHT + TEXT_OFFSET + SLOT_Y_OFFSET + UIConstants.TEXT_HEIGHT;
+    private static final int SLOT_X_OFFSET = 4;
+    public static final int HEIGHT = TALENT_SLOT_HEIGHT + SLOT_Y_OFFSET * 2;
     private static final int DROPDOWN_HEIGHT = 80;
     private static int ICON_X_OFFSET = SLOT_X_OFFSET + (TALENT_SLOT_WIDTH - ICON_WIDTH) / 2;
     private static int ICON_Y_OFFSET = SLOT_Y_OFFSET + (TALENT_SLOT_HEIGHT  - ICON_HEIGHT) / 2;
@@ -109,6 +110,7 @@ public class PassiveAbilityButton extends MKButton {
             }
             return true;
         });
+        layout.addWidget(emptyButton);
         for (PlayerPassiveAbility ability : learned){
             MKButton button = new MKButton(ability.getAbilityName());
             layout.addWidget(button);
@@ -180,14 +182,24 @@ public class PassiveAbilityButton extends MKButton {
                 } else if (isHovered()) {
                     textColor = 16777120;
                 }
-                this.drawCenteredString(fontrenderer, ability.getAbilityName(), this.getX() + this.getWidth() / 2,
-                        this.getY() + SLOT_Y_OFFSET + TALENT_SLOT_HEIGHT + TEXT_OFFSET, textColor);
+                int slotOffsetX = SLOT_X_OFFSET + TALENT_SLOT_WIDTH + SLOT_X_OFFSET;
+                int fontWidth = getWidth() - slotOffsetX;
+                int fontHeight = fontrenderer.getWordWrappedHeight(ability.getAbilityName(), fontWidth);
+                int fontYOffset = (getHeight() - fontHeight) / 2 + 1;
+                String name;
                 if (isHovered()){
                     if (getScreen() != null){
-                       getScreen().addHoveringText(new HoveringTextInstruction(tooltip,
+                        getScreen().addHoveringText(new HoveringTextInstruction(tooltip,
                                 getParentCoords(new Vec2d(mouseX, mouseY))));
                     }
+                    name = TextFormatting.DARK_GREEN + ability.getAbilityName();
+                } else {
+                    name = TextFormatting.BLACK + ability.getAbilityName();
                 }
+                fontrenderer.drawSplitString(name, this.getX() + slotOffsetX,
+                        this.getY() + fontYOffset,
+                        fontWidth, textColor);
+
             }
 
         }
