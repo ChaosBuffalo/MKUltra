@@ -3,6 +3,7 @@ package com.chaosbuffalo.mkultra.effects.spells;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerAttributes;
+import com.chaosbuffalo.mkultra.effects.PassiveAbilityPotionBase;
 import com.chaosbuffalo.mkultra.effects.PassiveEffect;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellTriggers;
@@ -26,7 +27,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import java.util.UUID;
 
 @Mod.EventBusSubscriber(modid = MKUltra.MODID)
-public class TwoHandedStylePotion  extends PassiveEffect {
+public class TwoHandedStylePotion  extends PassiveAbilityPotionBase {
     public static final UUID ARMOR_UUID = UUID.fromString("229ae2a5-f4fe-408f-b50e-46ff66253c7d");
 
     public static final TwoHandedStylePotion INSTANCE = new TwoHandedStylePotion();
@@ -48,7 +49,7 @@ public class TwoHandedStylePotion  extends PassiveEffect {
     }
 
     private TwoHandedStylePotion() {
-        super(false, 4393423);
+        super();
         setPotionName("effect.two_handed_style");
         SpellTriggers.PLAYER_EQUIPMENT_CHANGE.register(this, this::onEquipmentChange);
     }
@@ -76,7 +77,7 @@ public class TwoHandedStylePotion  extends PassiveEffect {
     }
 
     public void onEquipmentChange(LivingEquipmentChangeEvent event, IPlayerData data, EntityPlayer player){
-        if (event.getSlot() == EntityEquipmentSlot.OFFHAND){
+        if (event.getSlot() == EntityEquipmentSlot.MAINHAND){
             if (ItemUtils.isTwoHandedWeapon(event.getFrom().getItem())) {
                 player.getAttributeMap().removeAttributeModifiers(POTION_MODIFIERS);
             }

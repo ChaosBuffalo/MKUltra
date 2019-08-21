@@ -72,7 +72,7 @@ public class CombatEventHandler {
             }
         }
         if (source instanceof EntityLivingBase) {
-            SpellTriggers.ATTACK_ENTITY.onAttackEntity((EntityLivingBase) source, target);
+            SpellTriggers.ATTACK_ENTITY.onAttackEntity((EntityLivingBase) source, target, false);
         }
     }
 
@@ -84,7 +84,7 @@ public class CombatEventHandler {
             return;
         Entity target = event.getTarget();
 
-        SpellTriggers.ATTACK_ENTITY.onAttackEntity(player, target);
+        SpellTriggers.ATTACK_ENTITY.onAttackEntity(player, target, true);
     }
 
     @SubscribeEvent

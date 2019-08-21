@@ -67,7 +67,9 @@ public class PlayerData implements IPlayerData {
     private Set<ItemArmor.ArmorMaterial> alwaysAllowedArmorMaterials = new HashSet<>();
     private boolean needPassiveTalentRefresh;
     private boolean talentPassivesUnlocked;
-    private ItemStack lastMainHandItem;
+    private int offhandSwingDelayTime;
+    private boolean waitingOnOffhandSwing;
+    private int timeWaiting;
 
     public PlayerData(EntityPlayer player) {
         this.player = player;
@@ -75,7 +77,8 @@ public class PlayerData implements IPlayerData {
         healthRegenTime = 0;
         abilityTracker = AbilityTracker.getTracker(player);
         privateData = player.getDataManager();
-        lastMainHandItem = null;
+        timeWaiting = 0;
+        offhandSwingDelayTime = 0;
         setupWatcher();
 
         player.getAttributeMap().registerAttribute(PlayerAttributes.MAX_MANA);
@@ -801,6 +804,13 @@ public class PlayerData implements IPlayerData {
         return privateData.get(MANA);
     }
 
+    @Override
+    public void flagDelayedOffhandSwing(int delay) {
+        waitingOnOffhandSwing = true;
+        offhandSwingDelayTime = delay;
+        timeWaiting = 0;
+    }
+
     private void updateMana() {
         if (this.getManaRegenRate() == 0.0f){
             return;
@@ -855,23 +865,19 @@ public class PlayerData implements IPlayerData {
 
     }
 
-    public void doMainHandEquipmentChangeCheck(){
-        if (lastMainHandItem == null){
-            lastMainHandItem = player.getHeldItemMainhand();
-        } else {
-            if (!ItemStack.areItemStacksEqual(lastMainHandItem, player.getHeldItemMainhand())){
-                MinecraftForge.EVENT_BUS.post(new LivingEquipmentChangeEvent(player,
-                        EntityEquipmentSlot.MAINHAND, lastMainHandItem, player.getHeldItemMainhand()));
-                lastMainHandItem = player.getHeldItemMainhand();
-            }
-        }
-    }
-
     public void onTick() {
         abilityTracker.tick();
         if (!isServerSide())
             return;
-
+        if (waitingOnOffhandSwing){
+            if (timeWaiting > offhandSwingDelayTime){
+                Log.info("swinging arm");
+                player.isSwingInProgress = false;
+                player.swingArm(EnumHand.OFF_HAND);
+                waitingOnOffhandSwing = false;
+            }
+            timeWaiting++;
+        }
         if (needPassiveTalentRefresh) {
             Log.debug("doing passive talent refresh");
             PlayerClassInfo info = getActiveClass();
@@ -881,7 +887,6 @@ public class PlayerData implements IPlayerData {
             }
             needPassiveTalentRefresh = false;
         }
-        doMainHandEquipmentChangeCheck();
         updateMana();
         updateHealth();
     }

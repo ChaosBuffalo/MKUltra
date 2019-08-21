@@ -41,7 +41,7 @@ public class UndertowPotion extends PassiveEffect {
         return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/undertow.png");
     }
 
-    private void onAttackEntity(EntityLivingBase player, Entity target, PotionEffect effect) {
+    private void onAttackEntity(EntityLivingBase player, Entity target, PotionEffect effect, boolean isPlayerAttack) {
         if (target instanceof EntityLivingBase) {
             EntityLivingBase livingEnt = (EntityLivingBase) target;
             if (livingEnt.isPotionActive(DrownPotion.INSTANCE)) {

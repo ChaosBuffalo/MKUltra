@@ -4,7 +4,7 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerFormulas;
-import com.chaosbuffalo.mkultra.effects.PassiveEffect;
+import com.chaosbuffalo.mkultra.effects.PassiveAbilityPotionBase;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellTriggers;
 import net.minecraft.entity.Entity;
@@ -18,7 +18,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Mod.EventBusSubscriber(modid = MKUltra.MODID)
-public class SiphonLifePotion extends PassiveEffect {
+public class SiphonLifePotion extends PassiveAbilityPotionBase {
 
     public static final SiphonLifePotion INSTANCE = new SiphonLifePotion();
 
@@ -32,7 +32,6 @@ public class SiphonLifePotion extends PassiveEffect {
     }
 
     private SiphonLifePotion() {
-        super(false, 4393423);
         setPotionName("effect.siphon_life");
         SpellTriggers.PLAYER_KILL_ENTITY.register(this, this::onPlayerKillEntity);
     }

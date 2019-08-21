@@ -44,7 +44,7 @@ public class FlameBladePotion extends PassiveEffect {
         return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/flame_blade.png");
     }
 
-    private void onAttackEntity(EntityLivingBase player, Entity target, PotionEffect potion) {
+    private void onAttackEntity(EntityLivingBase player, Entity target, PotionEffect potion, boolean isPlayerAttack) {
         SpellCast flames = FlameBladeEffectPotion.Create(player, FlameBlade.BASE_DAMAGE, FlameBlade.DAMAGE_SCALE);
         SpellCast particles = ParticlePotion.Create(player,
                 EnumParticleTypes.LAVA.getParticleID(),

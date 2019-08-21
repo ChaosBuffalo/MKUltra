@@ -11,6 +11,8 @@ import com.chaosbuffalo.mkultra.party.PartyCommand;
 import com.chaosbuffalo.mkultra.utils.EnvironmentUtils;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.RangedAttribute;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -52,6 +54,8 @@ public class MKUltra {
         config_loc = e.getModConfigurationDirectory();
         MKConfig.init(e.getSuggestedConfigurationFile());
         MKConfig.setMaxHealthMax();
+        RangedAttribute attackDamage = (RangedAttribute) SharedMonsterAttributes.ATTACK_DAMAGE;
+        attackDamage.setShouldWatch(true);
         ModTileEntities.registerTileEntities();
         ModItems.initItems();
         CapabilityManager.INSTANCE.register(IPlayerData.class, new PlayerDataStorage(), PlayerData.class);

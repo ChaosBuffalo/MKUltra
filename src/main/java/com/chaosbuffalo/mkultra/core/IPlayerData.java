@@ -55,6 +55,8 @@ public interface IPlayerData {
 
     int getMana();
 
+    void flagDelayedOffhandSwing(int delay);
+
     default boolean consumeMana(int amount) {
         if (getMana() >= amount) {
             setMana(getMana() - amount);

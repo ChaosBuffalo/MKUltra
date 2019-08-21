@@ -3,7 +3,7 @@ package com.chaosbuffalo.mkultra.effects.spells;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
-import com.chaosbuffalo.mkultra.effects.PassiveEffect;
+import com.chaosbuffalo.mkultra.effects.PassiveAbilityPotionBase;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellTriggers;
 import net.minecraft.entity.Entity;
@@ -17,7 +17,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Mod.EventBusSubscriber(modid = MKUltra.MODID)
-public class SoulDrainPotion extends PassiveEffect {
+public class SoulDrainPotion extends PassiveAbilityPotionBase {
 
     public static final SoulDrainPotion INSTANCE = new SoulDrainPotion();
 
@@ -31,7 +31,7 @@ public class SoulDrainPotion extends PassiveEffect {
     }
 
     private SoulDrainPotion() {
-        super(false, 4393423);
+        super();
         setPotionName("effect.soul_drain");
         SpellTriggers.PLAYER_KILL_ENTITY.register(this, this::onPlayerKillEntity);
     }
