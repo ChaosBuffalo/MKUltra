@@ -279,14 +279,14 @@ public class PlayerClassScreen extends MKScreen {
             return null;
         } else {
             MKWidget root = new MKWidget(xPos, yPos, STAT_PANEL_WIDTH,
-                    PassiveAbilityButton.HEIGHT + 4 + UIConstants.TEXT_HEIGHT);
+                    UIConstants.TEXT_HEIGHT);
             MKText title = new MKText(fontRenderer, "Passives").setColor(16777215);
             title.setX(xPos).setY(yPos).setWidth(STAT_PANEL_WIDTH);
             title.setIsCentered(true);
             root.addWidget(title);
-            MKStackLayoutHorizontal layout = new MKStackLayoutHorizontal(xPos,
-                    yPos + UIConstants.TEXT_HEIGHT, PassiveAbilityButton.HEIGHT);
-            layout.setMarginLeft(4).setMarginRight(4).setMarginTop(4);
+            MKStackLayoutVertical layout = new MKStackLayoutVertical(xPos,
+                    yPos + UIConstants.TEXT_HEIGHT, STAT_PANEL_WIDTH);
+            layout.doSetWidth(true).setMarginTop(4);
             root.addWidget(layout);
             int passiveCount = 0;
             for (ResourceLocation passive : passives){
@@ -305,6 +305,7 @@ public class PlayerClassScreen extends MKScreen {
                 passiveCount++;
                 layout.addWidget(button);
             }
+            root.setHeight(layout.getHeight() + UIConstants.TEXT_HEIGHT + 4);
             return root;
         }
     }
