@@ -24,6 +24,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.registry.IThrowableEntity;
 
 import java.util.List;
@@ -291,6 +292,29 @@ public class SpellTriggers {
                 livingTarget, 25.0f);
     }
 
+    public static class EMPTY_LEFT_CLICK {
+
+        @FunctionalInterface
+        public interface EmptyLeftClickTrigger {
+            void apply(PlayerInteractEvent.LeftClickEmpty event, EntityPlayer player, PotionEffect effect);
+        }
+
+        private static Map<SpellPotionBase, EmptyLeftClickTrigger> emptyLeftClickTriggers = Maps.newLinkedHashMap();
+
+        public static void register(SpellPotionBase potion, EmptyLeftClickTrigger trigger){
+            emptyLeftClickTriggers.put(potion, trigger);
+        }
+
+        public static void onEmptyLeftClick(EntityPlayer player, PlayerInteractEvent.LeftClickEmpty event){
+            emptyLeftClickTriggers.forEach((spellPotionBase, trigger) -> {
+                PotionEffect effect = player.getActivePotionEffect(spellPotionBase);
+                if (effect != null) {
+                    trigger.apply(event, player, effect);
+                }
+            });
+        }
+    }
+
 
     public static class ATTACK_ENTITY {
 
@@ -302,6 +326,28 @@ public class SpellTriggers {
         private static Map<SpellPotionBase, AttackEntityTrigger> attackEntityTriggers = Maps.newLinkedHashMap();
 
         public static void register(SpellPotionBase potion, AttackEntityTrigger trigger) {
+            attackEntityTriggers.put(potion, trigger);
+        }
+
+        public static void onAttackEntity(EntityLivingBase attacker, Entity target) {
+            attackEntityTriggers.forEach((spellPotionBase, attackEntityTrigger) -> {
+                PotionEffect effect = attacker.getActivePotionEffect(spellPotionBase);
+                if (effect != null) {
+                    attackEntityTrigger.apply(attacker, target, effect);
+                }
+            });
+        }
+    }
+
+    public static class PLAYER_ATTACK_ENTITY {
+        @FunctionalInterface
+        public interface PlayerAttackEntityTrigger {
+            void apply(EntityLivingBase player, Entity target, PotionEffect effect);
+        }
+
+        private static Map<SpellPotionBase, PlayerAttackEntityTrigger> attackEntityTriggers = Maps.newLinkedHashMap();
+
+        public static void register(SpellPotionBase potion, PlayerAttackEntityTrigger trigger) {
             attackEntityTriggers.put(potion, trigger);
         }
 

@@ -28,6 +28,10 @@
           "name": "mkultra:talent.melee_crit_damage",
           "max_points": 2,
           "value": 0.1
+        },
+        {
+          "name": "mkultra:talent.dual_wield",
+          "max_points": 1
         }
       ]
     },

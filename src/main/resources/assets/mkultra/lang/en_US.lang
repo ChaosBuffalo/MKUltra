@@ -289,4 +289,16 @@ mkultra.talent.extended_duration.name=Extended Buff Duration
 mkultra.talent.extended_duration.description=Extends Buff Duration by 50%%
 mkultra.ability.extended_duration.name=Extended Buff Duration
 mkultra.ability.extended_duration.description=Extends Buff Duration by 50%%
+effect.dual_wield=Dual Wield
+effect.two_handed_style=Two-Handed Style
+effect.soul_drain=Soul Drain
+effect.siphon_life=Siphon Life
+mkultra.talent.two_handed_style.name=Two-Handed Style
+mkultra.talent.two_handed_style.description=Grants 4 armor if you are using a two-handed weapon in your mainhand
+mkultra.ability.two_handed_style.name=Two-Handed Style
+mkultra.ability.two_handed_style.description=Grants 4 armor if you are using a two-handed weapon in your mainhand
+mkultra.talent.dual_wield.name=Dual Wield
+mkultra.talent.dual_wield.description=Allows the player to fight with a weapon in the off-hand as well
+mkultra.ability.dual_wield.name=Dual Wield
+mkultra.ability.dual_wield.description=Allows the player to fight with a weapon in the off-hand as well
 

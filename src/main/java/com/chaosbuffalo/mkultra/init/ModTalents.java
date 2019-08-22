@@ -4,7 +4,9 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.MKURegistry;
 import com.chaosbuffalo.mkultra.core.PlayerAttributes;
 import com.chaosbuffalo.mkultra.core.abilities.passives.BurningSoul;
+import com.chaosbuffalo.mkultra.core.abilities.passives.DualWield;
 import com.chaosbuffalo.mkultra.core.abilities.passives.ExtendedDuration;
+import com.chaosbuffalo.mkultra.core.abilities.passives.TwoHandedStyle;
 import com.chaosbuffalo.mkultra.core.talents.*;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.utils.JsonLoader;
@@ -225,5 +227,14 @@ public class ModTalents {
                 new ResourceLocation(MKUltra.MODID, "talent.extended_duration"),
                 ExtendedDuration.INSTANCE);
         event.getRegistry().register(extendedDuration);
+
+        PassiveAbilityTalent twoHandedStyle = new PassiveAbilityTalent(
+                new ResourceLocation(MKUltra.MODID, "talent.two_handed_style"),
+                TwoHandedStyle.INSTANCE);
+        event.getRegistry().register(twoHandedStyle);
+        PassiveAbilityTalent dualWield = new PassiveAbilityTalent(
+                new ResourceLocation(MKUltra.MODID, "talent.dual_wield"),
+                DualWield.INSTANCE);
+        event.getRegistry().register(dualWield);
     }
 }

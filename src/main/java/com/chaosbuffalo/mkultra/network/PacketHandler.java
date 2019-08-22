@@ -75,6 +75,7 @@ public final class PacketHandler {
 		registerPacket(AddTalentRequestPacket.class, new AddTalentRequestPacket.Handler(), Side.SERVER);
 		registerPacket(AddRemoveTalentPointPacket.class, new AddRemoveTalentPointPacket.Handler(), Side.SERVER);
 		registerPacket(ActivatePassivePacket.class, new ActivatePassivePacket.Handler(), Side.SERVER);
+		registerPacket(PlayerLeftClickEmptyPacket.class, new PlayerLeftClickEmptyPacket.Handler(), Side.SERVER);
 
 
 		registerPacket(ParticleEffectSpawnPacket.class, new ParticleEffectSpawnPacket.Handler(), Side.CLIENT);

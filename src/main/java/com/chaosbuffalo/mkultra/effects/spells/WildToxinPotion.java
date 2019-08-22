@@ -54,19 +54,38 @@ public class WildToxinPotion extends PassiveEffect {
 
     private void onAttackEntity(EntityLivingBase player, Entity target, PotionEffect potion) {
 
-        if (target instanceof EntityLivingBase && player instanceof EntityPlayer) {
-            IPlayerData pData = MKUPlayerData.get((EntityPlayer) player);
-            if (pData == null)
-                return;
+        if (target instanceof EntityLivingBase) {
 
-            if (pData.consumeMana(potion.getAmplifier())) {
+            if (player instanceof EntityPlayer){
+                IPlayerData pData = MKUPlayerData.get((EntityPlayer) player);
+                if (pData == null)
+                    return;
+                if (pData.consumeMana(potion.getAmplifier())) {
+                    EntityLivingBase livingTarget = (EntityLivingBase) target;
+
+                    SpellCast toxin = WildToxinEffectPotion.Create(player);
+                    livingTarget.addPotionEffect(toxin.setTarget(livingTarget).toPotionEffect(
+                            potion.getAmplifier() * 6 * GameConstants.TICKS_PER_SECOND,
+                            potion.getAmplifier()));
+
+                    MKUltra.packetHandler.sendToAllAround(
+                            new ParticleEffectSpawnPacket(
+                                    EnumParticleTypes.SPELL_MOB.getParticleID(),
+                                    ParticleEffects.SPHERE_MOTION, 4, 4,
+                                    1.0, 1.0, 1.0,
+                                    target.posX, target.posY + 1.0f, target.posZ,
+                                    1.0,
+                                    target.getLookVec()),
+                            target, 50.0f);
+                } else {
+                    player.removePotionEffect(WildToxinPotion.INSTANCE);
+                }
+            } else {
                 EntityLivingBase livingTarget = (EntityLivingBase) target;
-
                 SpellCast toxin = WildToxinEffectPotion.Create(player);
                 livingTarget.addPotionEffect(toxin.setTarget(livingTarget).toPotionEffect(
                         potion.getAmplifier() * 6 * GameConstants.TICKS_PER_SECOND,
                         potion.getAmplifier()));
-
                 MKUltra.packetHandler.sendToAllAround(
                         new ParticleEffectSpawnPacket(
                                 EnumParticleTypes.SPELL_MOB.getParticleID(),
@@ -76,9 +95,8 @@ public class WildToxinPotion extends PassiveEffect {
                                 1.0,
                                 target.getLookVec()),
                         target, 50.0f);
-            } else {
-                player.removePotionEffect(WildToxinPotion.INSTANCE);
             }
+
         }
     }
 }

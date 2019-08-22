@@ -28,6 +28,10 @@
           "name": "mkultra:talent.health_regen",
           "max_points": 2,
           "value": 0.25
+        },
+        {
+          "name": "mkultra:talent.two_handed_style",
+          "max_points": 1
         }
       ]
     },

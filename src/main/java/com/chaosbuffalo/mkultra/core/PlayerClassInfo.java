@@ -111,12 +111,12 @@ public class PlayerClassInfo {
 
     public boolean addPassiveToSlot(ResourceLocation loc, int slotIndex) {
         if (canAddPassiveToSlot(loc, slotIndex)) {
-            loadedPassives[slotIndex] = loc;
             for (int i = 0; i < GameConstants.MAX_PASSIVES; i++){
                 if (!loc.equals(MKURegistry.INVALID_ABILITY) && i != slotIndex && loc.equals(loadedPassives[i])){
-                    loadedPassives[i] = MKURegistry.INVALID_ABILITY;
+                    loadedPassives[i] = loadedPassives[slotIndex];
                 }
             }
+            loadedPassives[slotIndex] = loc;
             return true;
         }
         return false;

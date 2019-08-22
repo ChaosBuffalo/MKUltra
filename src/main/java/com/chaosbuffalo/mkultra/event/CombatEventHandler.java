@@ -1,9 +1,12 @@
 package com.chaosbuffalo.mkultra.event;
 
+import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKDamageSource;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.effects.SpellTriggers;
+import com.chaosbuffalo.mkultra.log.Log;
+import com.chaosbuffalo.mkultra.network.packets.PlayerLeftClickEmptyPacket;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,6 +16,7 @@ import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -76,7 +80,6 @@ public class CombatEventHandler {
         }
     }
 
-
     @SubscribeEvent
     public static void onAttackEntityEvent(AttackEntityEvent event) {
         EntityPlayer player = event.getEntityPlayer();
@@ -84,7 +87,17 @@ public class CombatEventHandler {
             return;
         Entity target = event.getTarget();
 
-        SpellTriggers.ATTACK_ENTITY.onAttackEntity(player, target);
+        SpellTriggers.PLAYER_ATTACK_ENTITY.onAttackEntity(player, target);
+    }
+
+    @SubscribeEvent
+    public static void onLeftClickEmpty(PlayerInteractEvent.LeftClickEmpty event){
+        if (!event.getEntityPlayer().world.isRemote){
+            SpellTriggers.EMPTY_LEFT_CLICK.onEmptyLeftClick(event.getEntityPlayer(), event);
+        } else {
+            MKUltra.packetHandler.sendToServer(new PlayerLeftClickEmptyPacket());
+        }
+
     }
 
     @SubscribeEvent

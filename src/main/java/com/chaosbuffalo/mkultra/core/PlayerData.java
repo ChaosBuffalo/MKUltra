@@ -29,6 +29,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.MinecraftForge;
@@ -65,11 +66,20 @@ public class PlayerData implements IPlayerData {
     private Set<ItemArmor.ArmorMaterial> alwaysAllowedArmorMaterials = new HashSet<>();
     private boolean needPassiveTalentRefresh;
     private boolean talentPassivesUnlocked;
+    private EnumHandSide originalMainHand;
+    private boolean isDualWielding;
+    private int ticksSinceLastSwing;
+    private final static int DUAL_WIELD_TIMEOUT = 25;
+
+
 
     public PlayerData(EntityPlayer player) {
         this.player = player;
         regenTime = 0;
         healthRegenTime = 0;
+        ticksSinceLastSwing = 0;
+        isDualWielding = false;
+        originalMainHand = player.getPrimaryHand();
         abilityTracker = AbilityTracker.getTracker(player);
         privateData = player.getDataManager();
         setupWatcher();
@@ -276,6 +286,45 @@ public class PlayerData implements IPlayerData {
             return didWork;
         }
         return false;
+    }
+
+    private void swapHands(){
+        player.setPrimaryHand(player.getPrimaryHand() == EnumHandSide.RIGHT ?
+                EnumHandSide.LEFT : EnumHandSide.RIGHT);
+        ItemStack mainHand = player.getHeldItemMainhand();
+        player.setHeldItem(EnumHand.MAIN_HAND, player.getHeldItem(EnumHand.OFF_HAND));
+        player.setHeldItem(EnumHand.OFF_HAND, mainHand);
+    }
+
+    @Override
+    public void startDualWieldSequence() {
+        isDualWielding = true;
+        originalMainHand = player.getPrimaryHand();
+        ticksSinceLastSwing = 0;
+    }
+
+    @Override
+    public void continueDualWieldSequence() {
+        ticksSinceLastSwing = 0;
+        swapHands();
+    }
+
+    @Override
+    public void endDualWieldSequence() {
+        isDualWielding = false;
+        if (!hasCorrectHand()){
+            swapHands();
+        }
+    }
+
+    @Override
+    public boolean hasCorrectHand(){
+        return player.getPrimaryHand() == originalMainHand;
+    }
+
+    @Override
+    public boolean isDualWielding() {
+        return isDualWielding;
     }
 
     private void updateTalents(){
@@ -853,10 +902,15 @@ public class PlayerData implements IPlayerData {
 
     public void onTick() {
         abilityTracker.tick();
-
         if (!isServerSide())
             return;
-
+        if (isDualWielding){
+            if (ticksSinceLastSwing > DUAL_WIELD_TIMEOUT){
+                endDualWieldSequence();
+            } else {
+                ticksSinceLastSwing++;
+            }
+        }
         if (needPassiveTalentRefresh) {
             Log.debug("doing passive talent refresh");
             PlayerClassInfo info = getActiveClass();
@@ -866,7 +920,6 @@ public class PlayerData implements IPlayerData {
             }
             needPassiveTalentRefresh = false;
         }
-
         updateMana();
         updateHealth();
     }

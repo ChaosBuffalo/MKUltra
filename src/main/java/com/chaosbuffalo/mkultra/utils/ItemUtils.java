@@ -1,9 +1,12 @@
 package com.chaosbuffalo.mkultra.utils;
 
+import com.chaosbuffalo.mkultra.core.PlayerAttributes;
 import com.chaosbuffalo.mkultra.core.stats.CriticalStats;
 import com.chaosbuffalo.mkultra.event.ItemEventHandler;
+import com.chaosbuffalo.mkultra.log.Log;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.*;
@@ -77,9 +80,18 @@ public class ItemUtils {
                 EntityEquipmentSlot.MAINHAND, item);
         Multimap<String, AttributeModifier> newModifiers = HashMultimap.create();
         modifiers.forEach((key, modifier) -> {
-            AttributeModifier newMod = new AttributeModifier(OFFHAND_UUID,
-                    modifier.getName(), modifier.getAmount(), modifier.getOperation());
-            newModifiers.put(key, newMod);
+            if (key.equals(SharedMonsterAttributes.ATTACK_SPEED.getName())){
+                double attacksPerSecond = 4.0 + modifier.getAmount();
+                double ratio = attacksPerSecond / 8.0;
+                Log.info("ratio is %f, %f", ratio, attacksPerSecond);
+                newModifiers.put(key, new AttributeModifier(OFFHAND_UUID,
+                        "Weapon modifier offhand", -ratio, PlayerAttributes.OP_SCALE_MULTIPLICATIVE));
+            } else {
+                AttributeModifier newMod = new AttributeModifier(OFFHAND_UUID,
+                        "Weapon modifier offhand", modifier.getAmount(), modifier.getOperation());
+                newModifiers.put(key, newMod);
+            }
+
         });
         return newModifiers;
     }

@@ -3,8 +3,10 @@ package com.chaosbuffalo.mkultra.event;
 import com.chaosbuffalo.mkultra.MKConfig;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.*;
+import com.chaosbuffalo.mkultra.effects.SpellTriggers;
 import com.chaosbuffalo.mkultra.init.ModSpawn;
 import com.chaosbuffalo.mkultra.log.Log;
+import com.chaosbuffalo.mkultra.network.packets.PlayerLeftClickEmptyPacket;
 import com.chaosbuffalo.mkultra.spawn.DefaultSpawnIndex;
 import com.chaosbuffalo.mkultra.spawn.MobDefinition;
 import com.chaosbuffalo.mkultra.spawn.SpawnList;
@@ -16,8 +18,10 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -30,6 +34,7 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -67,6 +72,7 @@ public class EntityEventHandler {
             event.setDroppedExperience(event.getDroppedExperience() + mobData.getBonusExperience());
         }
     }
+
 
     @SubscribeEvent
     public static void onSpecialSpawn(LivingSpawnEvent.SpecialSpawn event){
