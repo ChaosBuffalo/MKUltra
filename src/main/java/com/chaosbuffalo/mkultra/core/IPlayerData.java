@@ -55,8 +55,6 @@ public interface IPlayerData {
 
     int getMana();
 
-    void flagDelayedOffhandSwing(int delay);
-
     default boolean consumeMana(int amount) {
         if (getMana() >= amount) {
             setMana(getMana() - amount);
@@ -146,5 +144,15 @@ public interface IPlayerData {
     boolean canActivatePassiveForSlot(ResourceLocation loc, int slotIndex);
 
     boolean activatePassiveForSlot(ResourceLocation loc, int slotIndex);
+
+    void startDualWieldSequence();
+
+    void continueDualWieldSequence();
+
+    void endDualWieldSequence();
+
+    boolean isDualWielding();
+
+    boolean hasCorrectHand();
 
 }

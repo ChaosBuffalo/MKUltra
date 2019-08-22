@@ -21,7 +21,6 @@ import net.minecraft.entity.ai.attributes.AbstractAttributeMap;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -30,11 +29,11 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -67,18 +66,22 @@ public class PlayerData implements IPlayerData {
     private Set<ItemArmor.ArmorMaterial> alwaysAllowedArmorMaterials = new HashSet<>();
     private boolean needPassiveTalentRefresh;
     private boolean talentPassivesUnlocked;
-    private int offhandSwingDelayTime;
-    private boolean waitingOnOffhandSwing;
-    private int timeWaiting;
+    private EnumHandSide originalMainHand;
+    private boolean isDualWielding;
+    private int ticksSinceLastSwing;
+    private final static int DUAL_WIELD_TIMEOUT = 25;
+
+
 
     public PlayerData(EntityPlayer player) {
         this.player = player;
         regenTime = 0;
         healthRegenTime = 0;
+        ticksSinceLastSwing = 0;
+        isDualWielding = false;
+        originalMainHand = player.getPrimaryHand();
         abilityTracker = AbilityTracker.getTracker(player);
         privateData = player.getDataManager();
-        timeWaiting = 0;
-        offhandSwingDelayTime = 0;
         setupWatcher();
 
         player.getAttributeMap().registerAttribute(PlayerAttributes.MAX_MANA);
@@ -283,6 +286,45 @@ public class PlayerData implements IPlayerData {
             return didWork;
         }
         return false;
+    }
+
+    private void swapHands(){
+        player.setPrimaryHand(player.getPrimaryHand() == EnumHandSide.RIGHT ?
+                EnumHandSide.LEFT : EnumHandSide.RIGHT);
+        ItemStack mainHand = player.getHeldItemMainhand();
+        player.setHeldItem(EnumHand.MAIN_HAND, player.getHeldItem(EnumHand.OFF_HAND));
+        player.setHeldItem(EnumHand.OFF_HAND, mainHand);
+    }
+
+    @Override
+    public void startDualWieldSequence() {
+        isDualWielding = true;
+        originalMainHand = player.getPrimaryHand();
+        ticksSinceLastSwing = 0;
+    }
+
+    @Override
+    public void continueDualWieldSequence() {
+        ticksSinceLastSwing = 0;
+        swapHands();
+    }
+
+    @Override
+    public void endDualWieldSequence() {
+        isDualWielding = false;
+        if (!hasCorrectHand()){
+            swapHands();
+        }
+    }
+
+    @Override
+    public boolean hasCorrectHand(){
+        return player.getPrimaryHand() == originalMainHand;
+    }
+
+    @Override
+    public boolean isDualWielding() {
+        return isDualWielding;
     }
 
     private void updateTalents(){
@@ -804,13 +846,6 @@ public class PlayerData implements IPlayerData {
         return privateData.get(MANA);
     }
 
-    @Override
-    public void flagDelayedOffhandSwing(int delay) {
-        waitingOnOffhandSwing = true;
-        offhandSwingDelayTime = delay;
-        timeWaiting = 0;
-    }
-
     private void updateMana() {
         if (this.getManaRegenRate() == 0.0f){
             return;
@@ -869,14 +904,12 @@ public class PlayerData implements IPlayerData {
         abilityTracker.tick();
         if (!isServerSide())
             return;
-        if (waitingOnOffhandSwing){
-            if (timeWaiting > offhandSwingDelayTime){
-                Log.info("swinging arm");
-                player.isSwingInProgress = false;
-                player.swingArm(EnumHand.OFF_HAND);
-                waitingOnOffhandSwing = false;
+        if (isDualWielding){
+            if (ticksSinceLastSwing > DUAL_WIELD_TIMEOUT){
+                endDualWieldSequence();
+            } else {
+                ticksSinceLastSwing++;
             }
-            timeWaiting++;
         }
         if (needPassiveTalentRefresh) {
             Log.debug("doing passive talent refresh");

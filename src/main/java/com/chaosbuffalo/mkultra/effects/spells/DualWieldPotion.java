@@ -3,34 +3,35 @@ package com.chaosbuffalo.mkultra.effects.spells;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
+import com.chaosbuffalo.mkultra.core.PlayerAttributes;
 import com.chaosbuffalo.mkultra.effects.PassiveAbilityPotionBase;
-import com.chaosbuffalo.mkultra.effects.PassiveEffect;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellTriggers;
-import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.utils.ItemUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AbstractAttributeMap;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.MobEffects;
-import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import java.util.UUID;
 
 
 @Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class DualWieldPotion extends PassiveAbilityPotionBase {
 
-    public static final DualWieldPotion INSTANCE = new DualWieldPotion();
+    public static final UUID MODIFIER_ID = UUID.fromString("33fdd512-830a-4bcd-8e91-f277e58a40d4");
+
+    public static final DualWieldPotion INSTANCE = (DualWieldPotion) (new DualWieldPotion().registerPotionAttributeModifier(
+            SharedMonsterAttributes.ATTACK_SPEED, MODIFIER_ID.toString(),
+                0.4, PlayerAttributes.OP_SCALE_MULTIPLICATIVE));
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {
@@ -43,44 +44,40 @@ public class DualWieldPotion extends PassiveAbilityPotionBase {
 
     private DualWieldPotion() {
         setPotionName("effect.dual_wield");
-        SpellTriggers.PLAYER_EQUIPMENT_CHANGE.register(this, this::onEquipmentChange);
-        SpellTriggers.ATTACK_ENTITY.register(this, this::onAttackEntity);
+        SpellTriggers.PLAYER_ATTACK_ENTITY.register(this, this::onAttackEntity);
+        SpellTriggers.EMPTY_LEFT_CLICK.register(this, this::onLeftClickEmpty);
     }
 
-    private int getArmSwingAnimationTime(EntityLivingBase entity) {
-        if (entity.isPotionActive(MobEffects.HASTE)) {
-            return 6 - (1 + entity.getActivePotionEffect(MobEffects.HASTE).getAmplifier());
-        } else {
-            return entity.isPotionActive(MobEffects.MINING_FATIGUE) ? 6 + (1 + entity.getActivePotionEffect(MobEffects.MINING_FATIGUE).getAmplifier()) * 2 : 6;
+
+    public void onLeftClickEmpty(PlayerInteractEvent.LeftClickEmpty event, EntityPlayer player, PotionEffect effect){
+        if (ItemUtils.isSuitableOffhandWeapon(player.getHeldItemOffhand())){
+            IPlayerData pData = MKUPlayerData.get(player);
+            if (pData == null){
+                return;
+            }
+            if (!pData.isDualWielding()){
+                pData.startDualWieldSequence();
+            } else {
+                pData.continueDualWieldSequence();
+            }
+
         }
     }
 
 
-    public void onAttackEntity(EntityLivingBase entity, Entity target, PotionEffect effect, boolean isPlayerAttack){
-        if (!isPlayerAttack){
-            return;
-        }
-        ItemStack heldItem = entity.getHeldItemOffhand();
-        if (ItemUtils.isSuitableOffhandWeapon(heldItem)){
-            Log.info("attacking with offhand");
-            heldItem.damageItem(1, entity);
+    public void onAttackEntity(EntityLivingBase entity, Entity target, PotionEffect effect){
+        if (ItemUtils.isSuitableOffhandWeapon(entity.getHeldItemOffhand())){
             if (entity instanceof EntityPlayer){
                 EntityPlayer player = (EntityPlayer) entity;
-                IPlayerData data = MKUPlayerData.get(player);
-                Log.info("flagging delayed offhand");
-                data.flagDelayedOffhandSwing(getArmSwingAnimationTime(player) + 10);
-            }
-        }
-    }
-
-    @Override
-    public void onPotionAdd(SpellCast cast, EntityLivingBase target, AbstractAttributeMap attributes, int amplifier) {
-        super.onPotionAdd(cast, target, attributes, amplifier);
-        if (target instanceof EntityPlayer){
-            EntityPlayer player = (EntityPlayer) target;
-            if (ItemUtils.isSuitableOffhandWeapon(target.getHeldItemOffhand())) {
-                player.getAttributeMap().applyAttributeModifiers(
-                        ItemUtils.getOffhandModifiersForItem(target.getHeldItemOffhand()));
+                IPlayerData pData = MKUPlayerData.get(player);
+                if (pData == null){
+                    return;
+                }
+                if (!pData.isDualWielding()){
+                    pData.startDualWieldSequence();
+                } else {
+                    pData.continueDualWieldSequence();
+                }
             }
         }
     }
@@ -90,24 +87,12 @@ public class DualWieldPotion extends PassiveAbilityPotionBase {
         super.onPotionRemove(cast, target, attributes, amplifier);
         if (target instanceof EntityPlayer){
             EntityPlayer player = (EntityPlayer) target;
-            if (ItemUtils.isSuitableOffhandWeapon(target.getHeldItemOffhand())) {
-                player.getAttributeMap().removeAttributeModifiers(
-                        ItemUtils.getOffhandModifiersForItem(target.getHeldItemOffhand()));
+            IPlayerData pData = MKUPlayerData.get(player);
+            if (pData == null){
+                return;
             }
-        }
-    }
-
-    public void onEquipmentChange(LivingEquipmentChangeEvent event, IPlayerData data, EntityPlayer player){
-        if (ItemStack.areItemsEqualIgnoreDurability(event.getFrom(), event.getTo())){
-            return;
-        }
-        if (event.getSlot() == EntityEquipmentSlot.OFFHAND){
-            Log.info("In equipment change");
-            if (ItemUtils.isSuitableOffhandWeapon(event.getFrom())) {
-                player.getAttributeMap().removeAttributeModifiers(ItemUtils.getOffhandModifiersForItem(event.getFrom()));
-            }
-            if (ItemUtils.isSuitableOffhandWeapon(event.getTo())){
-                player.getAttributeMap().applyAttributeModifiers(ItemUtils.getOffhandModifiersForItem(event.getTo()));
+            if (!pData.isDualWielding()){
+                pData.endDualWieldSequence();
             }
         }
     }

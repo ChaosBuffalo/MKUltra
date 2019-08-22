@@ -52,7 +52,7 @@ public class WildToxinPotion extends PassiveEffect {
         return false;
     }
 
-    private void onAttackEntity(EntityLivingBase player, Entity target, PotionEffect potion, boolean isPlayerAttack) {
+    private void onAttackEntity(EntityLivingBase player, Entity target, PotionEffect potion) {
 
         if (target instanceof EntityLivingBase) {
 

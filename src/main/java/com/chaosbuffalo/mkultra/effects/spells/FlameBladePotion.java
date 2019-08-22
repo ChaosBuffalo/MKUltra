@@ -16,6 +16,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -37,6 +38,7 @@ public class FlameBladePotion extends PassiveEffect {
         super(false, 4393423);
         setPotionName("effect.flame_blade");
         SpellTriggers.ATTACK_ENTITY.register(this, this::onAttackEntity);
+        SpellTriggers.EMPTY_LEFT_CLICK.register(this, this::onEmptyLeftClick);
     }
 
     @Override
@@ -44,7 +46,19 @@ public class FlameBladePotion extends PassiveEffect {
         return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/flame_blade.png");
     }
 
-    private void onAttackEntity(EntityLivingBase player, Entity target, PotionEffect potion, boolean isPlayerAttack) {
+    public void onEmptyLeftClick(PlayerInteractEvent.LeftClickEmpty event, EntityPlayer player, PotionEffect effect){
+        if (player.isPotionActive(PhoenixAspectPotion.INSTANCE))
+        {
+            World world = player.getEntityWorld();
+            EntityFlameBladeProjectile flamep = new EntityFlameBladeProjectile(world, player);
+            flamep.setAmplifier(effect.getAmplifier());
+            flamep.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, FlameBlade.PROJECTILE_SPEED,
+                    FlameBlade.PROJECTILE_INACCURACY);
+            world.spawnEntity(flamep);
+        }
+    }
+
+    private void onAttackEntity(EntityLivingBase player, Entity target, PotionEffect potion) {
         SpellCast flames = FlameBladeEffectPotion.Create(player, FlameBlade.BASE_DAMAGE, FlameBlade.DAMAGE_SCALE);
         SpellCast particles = ParticlePotion.Create(player,
                 EnumParticleTypes.LAVA.getParticleID(),
