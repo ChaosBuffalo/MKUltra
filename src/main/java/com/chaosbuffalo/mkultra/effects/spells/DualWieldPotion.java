@@ -91,7 +91,7 @@ public class DualWieldPotion extends PassiveAbilityPotionBase {
             if (pData == null){
                 return;
             }
-            if (!pData.isDualWielding()){
+            if (pData.isDualWielding()){
                 pData.endDualWieldSequence();
             }
         }
