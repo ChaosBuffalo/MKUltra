@@ -107,6 +107,10 @@
           "name": "mkultra:talent.melee_crit_damage",
           "max_points": 2,
           "value": 0.1
+        },
+        {
+          "name": "mkultra:talent.blademaster",
+          "max_points": 1
         }
       ]
     }

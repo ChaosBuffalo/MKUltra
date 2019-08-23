@@ -155,4 +155,13 @@ public interface IPlayerData {
 
     boolean hasCorrectHand();
 
+    void setArbitraryCooldown(ResourceLocation loc, int cooldown);
+
+    @Nullable
+    int getArbitraryCooldown(ResourceLocation loc);
+
+    boolean hasArbitraryCooldown(ResourceLocation loc);
+
+    boolean isArbitraryOnCooldown(ResourceLocation loc);
+
 }

@@ -11,6 +11,7 @@ import com.chaosbuffalo.mkultra.event.ItemEventHandler;
 import com.chaosbuffalo.mkultra.item.ItemHelper;
 import com.chaosbuffalo.mkultra.item.ManaRegenIdol;
 import com.chaosbuffalo.mkultra.log.Log;
+import com.chaosbuffalo.mkultra.network.packets.ArbitraryCooldownsUpdatePacket;
 import com.chaosbuffalo.mkultra.network.packets.PlayerSyncRequestPacket;
 import com.chaosbuffalo.mkultra.network.packets.AbilityUpdatePacket;
 import com.chaosbuffalo.mkultra.network.packets.ClassUpdatePacket;
@@ -70,6 +71,7 @@ public class PlayerData implements IPlayerData {
     private boolean isDualWielding;
     private int ticksSinceLastSwing;
     private final static int DUAL_WIELD_TIMEOUT = 25;
+    private Map<ResourceLocation, Integer> arbitraryCooldowns = new HashMap<>();
 
 
 
@@ -83,7 +85,6 @@ public class PlayerData implements IPlayerData {
         abilityTracker = AbilityTracker.getTracker(player);
         privateData = player.getDataManager();
         setupWatcher();
-
         player.getAttributeMap().registerAttribute(PlayerAttributes.MAX_MANA);
         player.getAttributeMap().registerAttribute(PlayerAttributes.MANA_REGEN);
         player.getAttributeMap().registerAttribute(PlayerAttributes.MAGIC_ATTACK_DAMAGE);
@@ -320,6 +321,27 @@ public class PlayerData implements IPlayerData {
     @Override
     public boolean hasCorrectHand(){
         return player.getPrimaryHand() == originalMainHand;
+    }
+
+    @Override
+    public void setArbitraryCooldown(ResourceLocation loc, int cooldown) {
+        arbitraryCooldowns.put(loc, cooldown);
+    }
+
+    @Nullable
+    @Override
+    public int getArbitraryCooldown(ResourceLocation loc) {
+        return arbitraryCooldowns.get(loc);
+    }
+
+    @Override
+    public boolean hasArbitraryCooldown(ResourceLocation loc) {
+        return arbitraryCooldowns.containsKey(loc);
+    }
+
+    @Override
+    public boolean isArbitraryOnCooldown(ResourceLocation loc) {
+        return arbitraryCooldowns.containsKey(loc) && arbitraryCooldowns.get(loc) > 0;
     }
 
     @Override
@@ -900,10 +922,24 @@ public class PlayerData implements IPlayerData {
 
     }
 
-    public void onTick() {
-        abilityTracker.tick();
-        if (!isServerSide())
-            return;
+    private void updateArbitraryCooldowns(){
+        HashSet<ResourceLocation> toRemove = new HashSet<>();
+        int cooldownCount = arbitraryCooldowns.size();
+        arbitraryCooldowns.replaceAll((loc, val) -> --val);
+        arbitraryCooldowns.forEach((loc, val) -> {
+            if (val <= 0){
+                toRemove.add(loc);
+            }
+        });
+        arbitraryCooldowns.keySet().removeAll(toRemove);
+        if (cooldownCount > 0 && isServerSide()){
+            NBTTagCompound tag = new NBTTagCompound();
+            serializeArbitraryCooldowns(tag);
+            MKUltra.packetHandler.sendTo(new ArbitraryCooldownsUpdatePacket(tag), (EntityPlayerMP) this.player);
+        }
+    }
+
+    private void updateDualWielding(){
         if (isDualWielding){
             if (ticksSinceLastSwing > DUAL_WIELD_TIMEOUT){
                 endDualWieldSequence();
@@ -911,8 +947,13 @@ public class PlayerData implements IPlayerData {
                 ticksSinceLastSwing++;
             }
         }
+    }
+
+    public void onTick() {
+        abilityTracker.tick();
+        if (!isServerSide())
+            return;
         if (needPassiveTalentRefresh) {
-            Log.debug("doing passive talent refresh");
             PlayerClassInfo info = getActiveClass();
             if (info != null) {
                 removeAllPassiveTalents(player);
@@ -922,6 +963,8 @@ public class PlayerData implements IPlayerData {
         }
         updateMana();
         updateHealth();
+        updateDualWielding();
+        updateArbitraryCooldowns();
     }
 
     private void sendSingleAbilityUpdate(PlayerAbilityInfo info) {
@@ -1047,6 +1090,23 @@ public class PlayerData implements IPlayerData {
         }
     }
 
+    private void serializeArbitraryCooldowns(NBTTagCompound nbt){
+        NBTTagCompound cooldowns = new NBTTagCompound();
+        arbitraryCooldowns.forEach((loc, cd) -> cooldowns.setInteger(loc.toString(), cd));
+        nbt.setTag("arbitraryCooldowns", cooldowns);
+    }
+
+    private void deserializeArbitraryCooldowns(NBTTagCompound nbt){
+        if (nbt.hasKey("arbitraryCooldowns")){
+            NBTTagCompound cooldowns = nbt.getCompoundTag("arbitraryCooldowns");
+            arbitraryCooldowns = new HashMap<>(cooldowns.getSize());
+            for (String key : cooldowns.getKeySet()){
+                ResourceLocation loc = new ResourceLocation(key);
+                arbitraryCooldowns.put(loc, cooldowns.getInteger(key));
+            }
+        }
+    }
+
     @Override
     public void serialize(NBTTagCompound nbt) {
         nbt.setInteger("mana", getMana());
@@ -1055,6 +1115,7 @@ public class PlayerData implements IPlayerData {
         nbt.setFloat("healthRegenRate", getBaseHealthRegenRate());
         serializeSkills(nbt);
         serializeClasses(nbt);
+        serializeArbitraryCooldowns(nbt);
     }
 
     @Override
@@ -1071,9 +1132,9 @@ public class PlayerData implements IPlayerData {
         if (nbt.hasKey("healthRegenRate", 3)){
             setHealthRegen(nbt.getFloat("healthRegenRate"));
         }
-
         deserializeSkills(nbt);
         deserializeClasses(nbt);
+        deserializeArbitraryCooldowns(nbt);
     }
 
     public void clone(EntityPlayer previous) {
