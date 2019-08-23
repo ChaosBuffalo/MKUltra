@@ -303,7 +303,7 @@ mkultra.ability.dual_wield.name=Dual Wield
 mkultra.ability.dual_wield.description=Allows the player to fight with a weapon in the off-hand as well
 effect.blademaster=Blademaster
 mkultra.talent.blademaster.name=Blademaster
-mkultra.talent.blademaster.description=Increases your spell crit rate by 5%% and your spell crit damage by 50%%
+mkultra.talent.blademaster.description=Increases your crit rate by 5%% and your melee crit damage by 50%%
 mkultra.ability.blademaster.name=Blademaster
-mkultra.ability.blademaster.description=Increases your spell crit rate by 5%% and your spell crit damage by 50%%
+mkultra.ability.blademaster.description=Increases your crit rate by 5%% and your melee crit damage by 50%%
 
