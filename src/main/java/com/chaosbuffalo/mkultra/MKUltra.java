@@ -68,7 +68,6 @@ public class MKUltra {
     public void init(FMLInitializationEvent e) {
         TargetingExtensions.init();
         ModLootTables.init();
-        ArmorClass.registerDefaults();
         NetworkRegistry.INSTANCE.registerGuiHandler(MKUltra.INSTANCE, new ModGuiHandler());
         MKUltra.packetHandler = new PacketHandler(MKUltra.MODID);
         MKUltra.packetHandler.registerPackets();
