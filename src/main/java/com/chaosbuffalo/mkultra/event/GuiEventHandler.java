@@ -23,7 +23,8 @@ public class GuiEventHandler {
     private static void doArmorClassTooltip(ItemTooltipEvent event){
         ArmorClass armorClass = ArmorClass.getArmorClassForArmorMat(
                 ((ItemArmor) event.getItemStack().getItem()).getArmorMaterial());
-        event.getToolTip().add(armorClass.getName());
+        event.getToolTip().add(String.format("%s: %s", I18n.format("mkultra.ui_msg.armor_class"),
+                armorClass.getName()));
         if (MKConfig.display.SHOW_ARMOR_MAT) {
             event.getToolTip().add(String.format("Armor Material: %s",
                     ((ItemArmor) event.getItemStack().getItem()).getArmorMaterial().getName()));
