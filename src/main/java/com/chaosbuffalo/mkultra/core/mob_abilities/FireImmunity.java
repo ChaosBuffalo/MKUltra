@@ -68,7 +68,7 @@ public class FireImmunity extends MobAbility {
         MKUltra.packetHandler.sendToAllAround(
                 new ParticleEffectSpawnPacket(
                         EnumParticleTypes.DRIP_LAVA.getParticleID(),
-                        ParticleEffects.SPHERE_MOTION, 50, 0,
+                        ParticleEffects.SPHERE_MOTION, 50, 5,
                         entity.posX, entity.posY + 1.5,
                         entity.posZ, 1.0, 1.0, 1.0, 0.5f,
                         lookVec),
