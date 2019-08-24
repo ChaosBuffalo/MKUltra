@@ -4,6 +4,7 @@ import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.attributes.AbstractAttributeMap;
@@ -176,14 +177,33 @@ public abstract class SpellPotionBase extends Potion {
         return null;
     }
 
+    @Override
+    public boolean shouldRenderInvText(PotionEffect p_shouldRenderInvText_1_) {
+        return false;
+    }
+
     @SideOnly(Side.CLIENT)
     @Override
-    public void renderInventoryEffect(int x, int y, PotionEffect effect, Minecraft mc) {
-        if (mc.currentScreen != null && getIconTexture() != null) {
-            mc.getTextureManager().bindTexture(getIconTexture());
+    public void renderInventoryEffect(PotionEffect effect, Gui gui, int x, int y, float partialTicks) {
+        if (gui != null && getIconTexture() != null) {
+            Minecraft.getMinecraft().getTextureManager().bindTexture(getIconTexture());
             Gui.drawModalRectWithCustomSizedTexture(x + 6, y + 7, 0, 0, 16, 16, 16, 16);
+
+            String s1 = I18n.format(this.getName());
+            if (effect.getAmplifier() == 2) {
+                s1 = s1 + " " + I18n.format("enchantment.level.2");
+            } else if (effect.getAmplifier() == 3) {
+                s1 = s1 + " " + I18n.format("enchantment.level.3");
+            } else if (effect.getAmplifier() == 4) {
+                s1 = s1 + " " + I18n.format("enchantment.level.4");
+            }
+            Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(s1, (float)(x + 10 + 18), (float)(y + 6), 16777215);
+            String s = Potion.getPotionDurationString(effect, 1.0F);
+            Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(s, (float)(x + 10 + 18), (float)(y + 6 + 10), 8355711);
         }
     }
+
+
 
     @SideOnly(Side.CLIENT)
     @Override

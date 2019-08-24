@@ -11,7 +11,7 @@ public abstract class PeriodicPassiveAbilityPotionBase extends PassiveAbilityPot
 
     @Override
     public boolean isReady(int duration, int amplitude) {
-        return super.isReady(duration, amplitude) && duration % period == 0;
+        return super.isReady(duration, amplitude) || duration % period == 0;
     }
 
     @Override
