@@ -239,5 +239,9 @@ public class ModTalents {
                 new ResourceLocation(MKUltra.MODID, "talent.holy_aura"),
                 HolyAura.INSTANCE);
         event.getRegistry().register(holyAura);
+        PassiveAbilityTalent armorTraining = new PassiveAbilityTalent(
+                new ResourceLocation(MKUltra.MODID, "talent.armor_training"),
+                ArmorTraining.INSTANCE);
+        event.getRegistry().register(armorTraining);
     }
 }

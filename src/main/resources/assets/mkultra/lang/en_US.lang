@@ -311,4 +311,8 @@ mkultra.talent.holy_aura.name=Holy Aura
 mkultra.talent.holy_aura.description=Reduces damage from undead creatures by 40%, deals damage to all surrounding undead
 mkultra.ability.holy_aura.name=Holy Aura
 mkultra.ability.holy_aura.description=Reduces damage from undead creatures by 40%, deals damage to all surrounding undead
+mkultra.talent.armor_training.name=Armor Training
+mkultra.talent.armor_training.description=Allows the player to wear one higher class of armor
+mkultra.ability.armor_training.name=Armor Training
+mkultra.ability.armor_training.description=Allows the player to wear one higher class of armor
 
