@@ -72,7 +72,6 @@ public class PlayerData implements IPlayerData {
     private final static int DUAL_WIELD_TIMEOUT = 25;
 
 
-
     public PlayerData(EntityPlayer player) {
         this.player = player;
         regenTime = 0;
@@ -83,7 +82,6 @@ public class PlayerData implements IPlayerData {
         abilityTracker = AbilityTracker.getTracker(player);
         privateData = player.getDataManager();
         setupWatcher();
-
         player.getAttributeMap().registerAttribute(PlayerAttributes.MAX_MANA);
         player.getAttributeMap().registerAttribute(PlayerAttributes.MANA_REGEN);
         player.getAttributeMap().registerAttribute(PlayerAttributes.MAGIC_ATTACK_DAMAGE);
@@ -320,6 +318,34 @@ public class PlayerData implements IPlayerData {
     @Override
     public boolean hasCorrectHand(){
         return player.getPrimaryHand() == originalMainHand;
+    }
+
+    @Override
+    public void setArbitraryCooldown(ResourceLocation loc, int cooldown) {
+        PlayerAbilityInfo info = new PlayerAbilityInfo(loc);
+        info.setCooldownTicks(cooldown);
+        abilityInfoMap.put(loc, info);
+
+    }
+
+    @Override
+    public int getArbitraryCooldown(ResourceLocation loc) {
+        if (abilityInfoMap.containsKey(loc)){
+            return abilityInfoMap.get(loc).getCooldown();
+        } else {
+            return -1;
+        }
+
+    }
+
+    @Override
+    public boolean hasArbitraryCooldown(ResourceLocation loc) {
+        return abilityInfoMap.containsKey(loc);
+    }
+
+    @Override
+    public boolean isArbitraryOnCooldown(ResourceLocation loc) {
+        return abilityInfoMap.containsKey(loc) && abilityInfoMap.get(loc).getCooldown() > 0;
     }
 
     @Override
@@ -900,10 +926,8 @@ public class PlayerData implements IPlayerData {
 
     }
 
-    public void onTick() {
-        abilityTracker.tick();
-        if (!isServerSide())
-            return;
+
+    private void updateDualWielding(){
         if (isDualWielding){
             if (ticksSinceLastSwing > DUAL_WIELD_TIMEOUT){
                 endDualWieldSequence();
@@ -911,8 +935,13 @@ public class PlayerData implements IPlayerData {
                 ticksSinceLastSwing++;
             }
         }
+    }
+
+    public void onTick() {
+        abilityTracker.tick();
+        if (!isServerSide())
+            return;
         if (needPassiveTalentRefresh) {
-            Log.debug("doing passive talent refresh");
             PlayerClassInfo info = getActiveClass();
             if (info != null) {
                 removeAllPassiveTalents(player);
@@ -922,6 +951,7 @@ public class PlayerData implements IPlayerData {
         }
         updateMana();
         updateHealth();
+        updateDualWielding();
     }
 
     private void sendSingleAbilityUpdate(PlayerAbilityInfo info) {
@@ -1071,7 +1101,6 @@ public class PlayerData implements IPlayerData {
         if (nbt.hasKey("healthRegenRate", 3)){
             setHealthRegen(nbt.getFloat("healthRegenRate"));
         }
-
         deserializeSkills(nbt);
         deserializeClasses(nbt);
     }
