@@ -4,7 +4,7 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.PlayerPassiveAbility;
-import com.chaosbuffalo.mkultra.effects.PassiveAbilityPotionBase;
+import com.chaosbuffalo.mkultra.effects.passives.PassiveAbilityPotionBase;
 import com.chaosbuffalo.mkultra.effects.spells.TwoHandedStylePotion;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;

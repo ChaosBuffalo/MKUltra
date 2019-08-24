@@ -1,5 +1,7 @@
-package com.chaosbuffalo.mkultra.effects;
+package com.chaosbuffalo.mkultra.effects.passives;
 
+import com.chaosbuffalo.mkultra.effects.SpellCast;
+import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;

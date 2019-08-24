@@ -116,6 +116,10 @@ public class EntityMKAreaEffect extends Entity {
         this.effects.add(new EffectEntry(effect, targetType, excludeCaster));
     }
 
+    public void setNoRender(){
+        this.getDataManager().set(PARTICLE, -1);
+    }
+
     public int getColor() {
         return this.getDataManager().get(COLOR);
     }
