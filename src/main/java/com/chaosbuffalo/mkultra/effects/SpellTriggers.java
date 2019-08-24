@@ -360,4 +360,25 @@ public class SpellTriggers {
             });
         }
     }
+
+    public static class PLAYER_DEATH {
+        @FunctionalInterface
+        public interface PlayerKillEntityTrigger {
+            void apply(LivingDeathEvent event, DamageSource source, EntityPlayer player);
+        }
+
+        private static Map<SpellPotionBase, PlayerKillEntityTrigger> killTriggers = Maps.newLinkedHashMap();
+
+        public static void register(SpellPotionBase potion, PlayerKillEntityTrigger trigger) {
+            killTriggers.put(potion, trigger);
+        }
+
+        public static void onEntityDeath(LivingDeathEvent event, DamageSource source, EntityPlayer entity) {
+            killTriggers.forEach((spellPotionBase, trigger) -> {
+                if (entity.isPotionActive(spellPotionBase)) {
+                    trigger.apply(event, source, entity);
+                }
+            });
+        }
+    }
 }
