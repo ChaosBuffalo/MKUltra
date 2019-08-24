@@ -90,6 +90,11 @@ public class AreaEffectBuilder {
         return this;
     }
 
+    public AreaEffectBuilder disableParticle() {
+        areaEffectCloud.disableParticle();
+        return this;
+    }
+
     public AreaEffectBuilder period(int ticksBetweenApplication) {
         areaEffectCloud.setReapplicationDelay(ticksBetweenApplication);
         return this;
