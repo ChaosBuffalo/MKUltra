@@ -2,11 +2,8 @@ package com.chaosbuffalo.mkultra.event;
 
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerData;
-import com.chaosbuffalo.mkultra.effects.PassiveAbilityPotionBase;
-import com.chaosbuffalo.mkultra.log.Log;
+import com.chaosbuffalo.mkultra.effects.passives.PassiveAbilityPotionBase;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;

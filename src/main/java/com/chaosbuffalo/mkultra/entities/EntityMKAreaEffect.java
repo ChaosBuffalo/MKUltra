@@ -116,6 +116,10 @@ public class EntityMKAreaEffect extends Entity {
         this.effects.add(new EffectEntry(effect, targetType, excludeCaster));
     }
 
+    public void setNoRender(){
+        this.getDataManager().set(PARTICLE, -1);
+    }
+
     public int getColor() {
         return this.getDataManager().get(COLOR);
     }
@@ -131,6 +135,10 @@ public class EntityMKAreaEffect extends Entity {
 
     public void setParticle(EnumParticleTypes particleIn) {
         this.getDataManager().set(PARTICLE, particleIn.getParticleID());
+    }
+
+    public void disableParticle() {
+        getDataManager().set(PARTICLE, -1);
     }
 
     protected void setIsSinglePoint(boolean ignoreRadius) {
@@ -384,7 +392,9 @@ public class EntityMKAreaEffect extends Entity {
         tagCompound.setFloat("RadiusOnUse", this.radiusOnUse);
         tagCompound.setFloat("RadiusPerTick", this.radiusPerTick);
         tagCompound.setFloat("Radius", this.getRadius());
-        tagCompound.setString("Particle", this.getParticle().getParticleName());
+        EnumParticleTypes particle = getParticle();
+        String particleName = particle == null ? "NO_PARTICLE" : particle.getParticleName();
+        tagCompound.setString("Particle", particleName);
 
         if (this.ownerUniqueId != null) {
             tagCompound.setUniqueId("OwnerUUID", this.ownerUniqueId);
@@ -430,6 +440,8 @@ public class EntityMKAreaEffect extends Entity {
             return;
         }
         EnumParticleTypes enumparticletypes = this.getParticle();
+        if (enumparticletypes == null)
+            return;
 
         if (singlePoint) {
             if (this.rand.nextBoolean()) {
