@@ -328,3 +328,9 @@ mkultra.ui_msg.ability_points=Ability Points
 mkultra.ui_msg.level=Level
 mkultra.ui_msg.talent_points=Talent Points
 mkultra.ui_msg.passives=Passives
+mkultra.talent.guardian_angel.name=Guardian Angel
+mkultra.talent.guardian_angel.description=Absorbs a killing blow and grants invulnerability for 10 seconds. Usable every 2 minutes
+mkultra.ability.guardian_angel.name=Guardian Angel
+mkultra.ability.guardian_angel.description=Absorbs a killing blow and grants invulnerability for 10 seconds. Usable every 2 minutes
+effect.guardian_angel_invulnerability=Invulnerability
+

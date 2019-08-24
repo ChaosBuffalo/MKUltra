@@ -326,27 +326,22 @@ public class PlayerData implements IPlayerData {
         PlayerAbilityInfo info = new PlayerAbilityInfo(loc);
         info.setCooldownTicks(cooldown);
         abilityInfoMap.put(loc, info);
-
+        setCooldown(loc, cooldown);
     }
 
     @Override
     public int getArbitraryCooldown(ResourceLocation loc) {
-        if (abilityInfoMap.containsKey(loc)){
-            return abilityInfoMap.get(loc).getCooldown();
-        } else {
-            return -1;
-        }
-
+        return getCurrentAbilityCooldown(loc);
     }
 
     @Override
     public boolean hasArbitraryCooldown(ResourceLocation loc) {
-        return abilityInfoMap.containsKey(loc);
+        return getArbitraryCooldown(loc) != GameConstants.ACTION_BAR_INVALID_COOLDOWN;
     }
 
     @Override
     public boolean isArbitraryOnCooldown(ResourceLocation loc) {
-        return abilityInfoMap.containsKey(loc) && abilityInfoMap.get(loc).getCooldown() > 0;
+        return getArbitraryCooldown(loc) > 0;
     }
 
     @Override
@@ -1341,8 +1336,13 @@ public class PlayerData implements IPlayerData {
         sender.sendMessage(new TextComponentString(msg));
         for (PlayerAbilityInfo info : abilityInfoMap.values()) {
             PlayerAbility ability = MKURegistry.getAbility(info.getId());
+            if (ability != null) {
+                msg = String.format("%s: %d / %d", ability.getAbilityName(), abilityTracker.getCooldownTicks(info), getAbilityCooldown(ability));
+            }
+            else {
+                msg = String.format("%s: %d / %d", info.getId(), abilityTracker.getCooldownTicks(info), info.getCooldown());
+            }
 
-            msg = String.format("%s: %d / %d", ability.getAbilityName(), abilityTracker.getCooldownTicks(info), getAbilityCooldown(ability));
             sender.sendMessage(new TextComponentString(msg));
         }
     }
