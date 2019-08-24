@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
@@ -35,12 +36,12 @@ public class FireExtinguisherFlask extends Item {
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn,
                                                     EntityPlayer playerIn, EnumHand hand) {
+        ItemStack stack = playerIn.getHeldItem(hand);
         if (!worldIn.isRemote) {
             BlockPos player_pos = playerIn.getPosition();
             EnvironmentUtils.putOutFires(worldIn, player_pos, new Vec3i(rangeX, rangeY, rangeZ));
-            ItemStack stack = playerIn.getHeldItem(hand);
             ItemHelper.shrinkStack(playerIn, stack, 1);
         }
-        return super.onItemRightClick(worldIn, playerIn, hand);
+        return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
     }
 }
