@@ -71,7 +71,7 @@ public abstract class SpellPotionBase extends Potion {
 
         SpellCast cast = SpellManager.get(target, this);
         if (cast == null) {
-            Log.warn("affectEntity cast was null! Spell: %s", getName());
+//            Log.warn("affectEntity cast was null! Spell: %s", getName());
             return;
         }
 
@@ -90,7 +90,7 @@ public abstract class SpellPotionBase extends Potion {
 
         SpellCast cast = SpellManager.get(target, this);
         if (cast == null) {
-            Log.warn("performEffect cast was null! Spell: %s", getName());
+//            Log.warn("performEffect cast was null! Spell: %s", getName());
             return;
         }
 

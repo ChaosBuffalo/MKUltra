@@ -47,7 +47,7 @@ public class SpellManager implements IWorldEventListener {
 
         Map<SpellPotionBase, SpellCast> targetSpells = allCasts.get(target.getUniqueID());
         if (targetSpells == null) {
-            Log.warn("Tried to get a spell on an unregistered target! Spell: %s", potion.getName());
+//            Log.warn("Tried to get a spell on an unregistered target! Spell: %s", potion.getName());
             return null;
         }
 

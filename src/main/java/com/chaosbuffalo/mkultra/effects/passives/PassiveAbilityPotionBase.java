@@ -29,18 +29,6 @@ public class PassiveAbilityPotionBase extends SpellPotionBase {
     }
 
     @Override
-    public void performEffect(@Nonnull EntityLivingBase target, int amplifier) {
-        if (!target.world.isRemote)
-            refreshEffect(target);
-    }
-
-    @Override
-    public void affectEntity(Entity applier, Entity caster, @Nonnull EntityLivingBase target, int amplifier, double health) {
-        if (!target.world.isRemote)
-            refreshEffect(target);
-    }
-
-    @Override
     public void doEffect(Entity applier, Entity caster, EntityLivingBase target, int amplifier, SpellCast cast) {
         refreshEffect(target);
     }
@@ -52,6 +40,8 @@ public class PassiveAbilityPotionBase extends SpellPotionBase {
     }
 
     private void refreshEffect(EntityLivingBase target) {
+        if (target.world.isRemote)
+            return;
 
 //        Log.debug("passive refresh %s %s", target.toString(), this.toString());
         PotionEffect effect = target.getActivePotionEffect(this);
