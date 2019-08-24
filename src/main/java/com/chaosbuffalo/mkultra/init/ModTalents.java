@@ -236,5 +236,10 @@ public class ModTalents {
                 new ResourceLocation(MKUltra.MODID, "talent.blademaster"),
                 Blademaster.INSTANCE);
         event.getRegistry().register(blademaster);
+
+        PassiveAbilityTalent armorTraining = new PassiveAbilityTalent(
+                new ResourceLocation(MKUltra.MODID, "talent.armor_training"),
+                ArmorTraining.INSTANCE);
+        event.getRegistry().register(armorTraining);
     }
 }
