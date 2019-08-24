@@ -251,5 +251,10 @@ public class ModTalents {
                 new ResourceLocation(MKUltra.MODID, "talent.life_siphon"),
                 LifeSiphon.INSTANCE);
         event.getRegistry().register(lifeSiphon);
+
+        PassiveAbilityTalent guardianAngel = new PassiveAbilityTalent(
+                new ResourceLocation(MKUltra.MODID, "talent.guardian_angel"),
+                GuardianAngel.INSTANCE);
+        event.getRegistry().register(guardianAngel);
     }
 }

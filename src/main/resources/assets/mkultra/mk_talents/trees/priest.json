@@ -107,6 +107,10 @@
           "name": "mkultra:talent.heal_bonus",
           "max_points": 1,
           "value": 1
+        },
+        {
+          "name": "mkultra:talent.guardian_angel",
+          "max_points": 1
         }
       ]
     }
