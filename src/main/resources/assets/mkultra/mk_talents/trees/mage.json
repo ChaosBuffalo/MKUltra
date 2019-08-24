@@ -117,6 +117,10 @@
           "name": "mkultra:talent.spell_crit_damage",
           "max_points": 2,
           "value": 0.2
+        },
+        {
+          "name": "mkultra:talent.soul_drain",
+          "max_points": 1
         }
       ]
     }

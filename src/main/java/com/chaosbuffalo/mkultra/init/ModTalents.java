@@ -243,5 +243,13 @@ public class ModTalents {
                 new ResourceLocation(MKUltra.MODID, "talent.armor_training"),
                 ArmorTraining.INSTANCE);
         event.getRegistry().register(armorTraining);
+        PassiveAbilityTalent soulDrain = new PassiveAbilityTalent(
+                new ResourceLocation(MKUltra.MODID, "talent.soul_drain"),
+                SoulDrain.INSTANCE);
+        event.getRegistry().register(soulDrain);
+        PassiveAbilityTalent lifeSiphon = new PassiveAbilityTalent(
+                new ResourceLocation(MKUltra.MODID, "talent.life_siphon"),
+                LifeSiphon.INSTANCE);
+        event.getRegistry().register(lifeSiphon);
     }
 }

@@ -28,6 +28,10 @@
           "name": "mkultra:talent.max_health",
           "max_points": 2,
           "value": 1
+        },
+        {
+          "name": "mkultra:talent.life_siphon",
+          "max_points": 1
         }
       ]
     },

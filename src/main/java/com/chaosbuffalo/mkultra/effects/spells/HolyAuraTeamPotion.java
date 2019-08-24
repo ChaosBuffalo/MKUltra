@@ -31,7 +31,7 @@ public class HolyAuraTeamPotion extends PassiveEffect {
 
     private HolyAuraTeamPotion() {
         super(false, 16762880);
-        setPotionName("effect.holy_armor_team");
+        setPotionName("effect.holy_aura_team");
         SpellTriggers.ENTITY_HURT_PLAYER.registerPreScale(this::playerHurtPreScale);
     }
 

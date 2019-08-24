@@ -18,9 +18,9 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Mod.EventBusSubscriber(modid = MKUltra.MODID)
-public class SiphonLifePotion extends PassiveAbilityPotionBase {
+public class LifeSiphonPotion extends PassiveAbilityPotionBase {
 
-    public static final SiphonLifePotion INSTANCE = new SiphonLifePotion();
+    public static final LifeSiphonPotion INSTANCE = new LifeSiphonPotion();
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {
@@ -31,8 +31,8 @@ public class SiphonLifePotion extends PassiveAbilityPotionBase {
         return INSTANCE.newSpellCast(source);
     }
 
-    private SiphonLifePotion() {
-        setPotionName("effect.siphon_life");
+    private LifeSiphonPotion() {
+        setPotionName("effect.life_siphon");
         SpellTriggers.PLAYER_KILL_ENTITY.register(this, this::onPlayerKillEntity);
     }
 
@@ -48,6 +48,6 @@ public class SiphonLifePotion extends PassiveAbilityPotionBase {
 
     @Override
     public ResourceLocation getIconTexture() {
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/siphon_life.png");
+        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/life_siphon.png");
     }
 }

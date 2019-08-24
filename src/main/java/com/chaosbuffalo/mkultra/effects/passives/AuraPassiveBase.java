@@ -22,6 +22,7 @@ public abstract class AuraPassiveBase extends PeriodicPassiveAbilityPotionBase {
 
     @Override
     public void doEffect(Entity source, Entity indirectSource, EntityLivingBase target, int amplifier, SpellCast cast) {
+        super.doEffect(source, indirectSource, target, amplifier, cast);
         if (source instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) source;
             IPlayerData pData = MKUPlayerData.get(player);
