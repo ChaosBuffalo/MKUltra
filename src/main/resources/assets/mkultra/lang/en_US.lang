@@ -306,4 +306,9 @@ mkultra.talent.blademaster.name=Blademaster
 mkultra.talent.blademaster.description=Increases your crit rate by 5%% and your melee crit damage by 50%%
 mkultra.ability.blademaster.name=Blademaster
 mkultra.ability.blademaster.description=Increases your crit rate by 5%% and your melee crit damage by 50%%
+effect.holy_aura_team=Holy Aura
+mkultra.talent.holy_aura.name=Holy Aura
+mkultra.talent.holy_aura.description=Reduces damage from undead creatures by 40%, deals damage to all surrounding undead
+mkultra.ability.holy_aura.name=Holy Aura
+mkultra.ability.holy_aura.description=Reduces damage from undead creatures by 40%, deals damage to all surrounding undead
 
