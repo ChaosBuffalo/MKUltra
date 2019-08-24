@@ -223,7 +223,6 @@ public class ModTalents {
                 new ResourceLocation(MKUltra.MODID, "talent.extended_duration"),
                 ExtendedDuration.INSTANCE);
         event.getRegistry().register(extendedDuration);
-
         PassiveAbilityTalent twoHandedStyle = new PassiveAbilityTalent(
                 new ResourceLocation(MKUltra.MODID, "talent.two_handed_style"),
                 TwoHandedStyle.INSTANCE);
@@ -236,7 +235,10 @@ public class ModTalents {
                 new ResourceLocation(MKUltra.MODID, "talent.blademaster"),
                 Blademaster.INSTANCE);
         event.getRegistry().register(blademaster);
-
+        PassiveAbilityTalent holyAura = new PassiveAbilityTalent(
+                new ResourceLocation(MKUltra.MODID, "talent.holy_aura"),
+                HolyAura.INSTANCE);
+        event.getRegistry().register(holyAura);
         PassiveAbilityTalent armorTraining = new PassiveAbilityTalent(
                 new ResourceLocation(MKUltra.MODID, "talent.armor_training"),
                 ArmorTraining.INSTANCE);

@@ -7,11 +7,13 @@ import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.passives.AuraPassiveBase;
+import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -52,6 +54,7 @@ public class HolyAuraPotion extends AuraPassiveBase {
 
     @Override
     public void doEffect(Entity source, Entity indirectSource, EntityLivingBase target, int amplifier, SpellCast cast) {
+        Log.info("Casting holy aura potion");
         super.doEffect(source, indirectSource, target, amplifier, cast);
         if (source instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) source;
@@ -63,5 +66,10 @@ public class HolyAuraPotion extends AuraPassiveBase {
                     .radius(getNegativeDistance(amplifier), true);
             builder.spawn();
         }
+    }
+
+    @Override
+    public ResourceLocation getIconTexture() {
+        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/holy_aura.png");
     }
 }
