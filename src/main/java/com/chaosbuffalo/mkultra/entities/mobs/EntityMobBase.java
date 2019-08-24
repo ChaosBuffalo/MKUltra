@@ -295,29 +295,25 @@ public class EntityMobBase extends EntityCreature implements IMob, IRangedAttack
                                                    EnumHand hand) {
 
         IMobData data = MKUMobData.get(this);
-        if (data != null && data.hasSpawnPoint()){
+        if (data != null && data.hasSpawnPoint()) {
             BlockPos spawnPoint = data.getSpawnPoint();
             TileEntity spawner = player.world.getTileEntity(spawnPoint);
-            if (spawner != null && spawner instanceof TileEntityNPCSpawner){
-                if (!world.isRemote && player instanceof EntityPlayerMP){
-                    if (player.isSneaking()){
+            if (spawner instanceof TileEntityNPCSpawner) {
+                if (!world.isRemote && player instanceof EntityPlayerMP) {
+                    if (player.isSneaking()) {
                         player.openGui(MKUltra.INSTANCE,
                                 ModGuiHandler.NPC_SPAWNER_EQUIPMENT_SCREEN, world,
                                 spawnPoint.getX(), spawnPoint.getY(), spawnPoint.getZ());
-                        return EnumActionResult.SUCCESS;
                     } else {
                         IMessage packet = getInteractionPacket(player, spawner, spawnPoint);
-                        if (packet != null){
+                        if (packet != null) {
                             MKUltra.packetHandler.sendTo(packet, (EntityPlayerMP) player);
-                            return EnumActionResult.SUCCESS;
                         }
                     }
                 }
-                return EnumActionResult.PASS;
             }
-            return EnumActionResult.PASS;
         }
-        return EnumActionResult.PASS;
+        return EnumActionResult.SUCCESS;
     }
 
     @Nullable

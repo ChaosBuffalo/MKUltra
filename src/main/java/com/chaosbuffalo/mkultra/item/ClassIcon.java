@@ -10,6 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -41,7 +42,7 @@ public class ClassIcon extends Item implements IClassProvider {
                         (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
             }
         }
-        return super.onItemRightClick(worldIn, playerIn, hand);
+        return ActionResult.newResult(EnumActionResult.SUCCESS, playerIn.getHeldItem(hand));
     }
 
     @Override
