@@ -29,6 +29,7 @@ public abstract class AuraPassiveBase extends PeriodicPassiveAbilityPotionBase {
                 return;
             AreaEffectBuilder builder = AreaEffectBuilder.Create(player, player)
                     .instant()
+                    .disableParticle()
                     .radius(getAuraDistance(amplifier), true);
             prepareAreaEffect(player, pData, amplifier, builder).spawn();
         }

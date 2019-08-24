@@ -57,6 +57,7 @@ public class HolyAuraPotion extends AuraPassiveBase {
             EntityPlayer player = (EntityPlayer) source;
             AreaEffectBuilder builder = AreaEffectBuilder.Create(player, player)
                     .instant()
+                    .disableParticle()
                     .spellCast(AbilityMagicDamage.Create(player, 4.0f, 4.0f),
                             1, Targeting.TargetType.ENEMY)
                     .radius(getNegativeDistance(amplifier), true);
