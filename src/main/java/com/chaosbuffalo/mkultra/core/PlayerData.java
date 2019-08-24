@@ -1288,16 +1288,17 @@ public class PlayerData implements IPlayerData {
         return Lists.newArrayList(knownClasses.keySet());
     }
 
-    private ArmorClass getEffectiveArmorClass() {
+    @Override
+    public ArmorClass getArmorClass() {
         PlayerClass currentClass = MKURegistry.getClass(getClassId());
         if (currentClass == null)
-            return null;
+            return ArmorClass.ALL;
         ArmorClass ac = currentClass.getArmorClass();
         return player.isPotionActive(ArmorTrainingPotion.INSTANCE) ? ac.getSuccessor() : ac;
     }
 
     public boolean canWearArmorMaterial(ItemArmor.ArmorMaterial material) {
-        ArmorClass effective = getEffectiveArmorClass();
+        ArmorClass effective = getArmorClass();
         // If no class, default to vanilla behaviour of wearing anything
         // Then check the current class if it's allowed
         // Then check for special exceptions granted by other means

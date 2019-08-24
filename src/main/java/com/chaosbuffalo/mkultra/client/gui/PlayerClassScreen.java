@@ -280,7 +280,7 @@ public class PlayerClassScreen extends MKScreen {
         } else {
             MKWidget root = new MKWidget(xPos, yPos, STAT_PANEL_WIDTH,
                     UIConstants.TEXT_HEIGHT);
-            MKText title = new MKText(fontRenderer, "Passives").setColor(16777215);
+            MKText title = new MKText(fontRenderer, I18n.format("mkultra.ui_msg.passives")).setColor(16777215);
             title.setX(xPos).setY(yPos).setWidth(STAT_PANEL_WIDTH);
             title.setIsCentered(true);
             root.addWidget(title);
@@ -320,24 +320,40 @@ public class PlayerClassScreen extends MKScreen {
                 .setMarginLeft(4)
                 .setMarginRight(4)
                 .setPaddingBot(2);
-        MKText level = new MKText(mc.fontRenderer, "Level: " + pData.getLevel());
+
+        MKText level = new MKText(mc.fontRenderer,
+                String.format("%s: %d", I18n.format("mkultra.ui_msg.level"), pData.getLevel()));
         level.setColor(16777215);
-        MKText unspentPoints = new MKText(mc.fontRenderer, String.format("Ability Points: %d/%d",
-                pData.getUnspentPoints(), pData.getLevel()));
+        MKText unspentPoints = new MKText(mc.fontRenderer,
+                String.format("%s: %d/%d", I18n.format("mkultra.ui_msg.ability_points"),
+                        pData.getUnspentPoints(), pData.getLevel()));
         unspentPoints.setColor(16777215);
         MKText talentPoints = new MKText(mc.fontRenderer,
-                String.format("Talent Points: %d/%d",
+                String.format("%s: %d/%d",
+                I18n.format("mkultra.ui_msg.talent_points"),
                 pData.getUnspentTalentPoints(), pData.getTotalTalentPoints()));
         talentPoints.setColor(16777215);
+        String armorClassString = String.format("%s: %s",
+                I18n.format("mkultra.ui_msg.armor_class"),
+                pData.getArmorClass().getName());
+        MKText armorClass = new MKText(mc.fontRenderer, armorClassString);
+        armorClass.setColor(16777215);
         stackLayout.addWidget(level);
         stackLayout.addWidget(unspentPoints);
         stackLayout.addWidget(talentPoints);
+        stackLayout.addWidget(armorClass);
         addPreDrawRunnable(() -> {
-            talentPoints.setText(String.format("Talent Points: %d/%d",
+            talentPoints.setText(String.format("%s: %d/%d",
+                    I18n.format("mkultra.ui_msg.talent_points"),
                     pData.getUnspentTalentPoints(), pData.getTotalTalentPoints()));
-            unspentPoints.setText(String.format("Ability Points: %d/%d",
+            unspentPoints.setText(String.format("%s: %d/%d",
+                    I18n.format("mkultra.ui_msg.ability_points"),
                     pData.getUnspentPoints(), pData.getLevel()));
-            level.setText("Level: " + pData.getLevel());
+            level.setText(String.format("%s: %d", I18n.format("mkultra.ui_msg.level"),
+                    pData.getLevel()));
+            armorClass.setText(String.format("%s: %s",
+                    I18n.format("mkultra.ui_msg.armor_class"),
+                    pData.getArmorClass().getName()));
         });
 
         for (IAttribute attr : STAT_PANEL_ATTRIBUTES){

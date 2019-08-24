@@ -164,4 +164,6 @@ public interface IPlayerData {
 
     boolean isArbitraryOnCooldown(ResourceLocation loc);
 
+     ArmorClass getArmorClass();
+
 }
