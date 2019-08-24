@@ -7,6 +7,7 @@ import com.chaosbuffalo.mkultra.core.talents.PassiveAbilityTalent;
 import com.chaosbuffalo.mkultra.core.talents.RangedAttributeTalent;
 import com.chaosbuffalo.mkultra.core.talents.TalentTreeRecord;
 import com.chaosbuffalo.mkultra.effects.passives.PassiveAbilityPotionBase;
+import com.chaosbuffalo.mkultra.effects.passives.ArmorTrainingPotion;
 import com.chaosbuffalo.mkultra.event.ItemEventHandler;
 import com.chaosbuffalo.mkultra.item.ItemHelper;
 import com.chaosbuffalo.mkultra.item.ManaRegenIdol;
@@ -369,13 +370,16 @@ public class PlayerData implements IPlayerData {
         activeClass.applyAttributesModifiersToPlayer(player);
         // Since this can be called early, don't try to apply potions before being added to the world
         if (player.addedToChunk) {
-            removeAllPassiveTalents(player);
-            activeClass.applyPassives(player, this, player.getEntityWorld());
-        }
-        else {
-
+            refreshPassiveTalents(activeClass);
+        } else {
             setRefreshPassiveTalents();
         }
+    }
+
+    private void refreshPassiveTalents(PlayerClassInfo activeClass) {
+        removeAllPassiveTalents(player);
+        activeClass.applyPassives(player, this, player.getEntityWorld());
+        ItemEventHandler.checkEquipment(player);
     }
 
     private void removeTalents() {
@@ -944,8 +948,7 @@ public class PlayerData implements IPlayerData {
         if (needPassiveTalentRefresh) {
             PlayerClassInfo info = getActiveClass();
             if (info != null) {
-                removeAllPassiveTalents(player);
-                info.applyPassives(player, this, player.getEntityWorld());
+                refreshPassiveTalents(info);
             }
             needPassiveTalentRefresh = false;
         }
@@ -1285,16 +1288,22 @@ public class PlayerData implements IPlayerData {
         return Lists.newArrayList(knownClasses.keySet());
     }
 
-    public boolean canWearArmorMaterial(ItemArmor.ArmorMaterial material) {
-
+    private ArmorClass getEffectiveArmorClass() {
         PlayerClass currentClass = MKURegistry.getClass(getClassId());
+        if (currentClass == null)
+            return null;
+        ArmorClass ac = currentClass.getArmorClass();
+        return player.isPotionActive(ArmorTrainingPotion.INSTANCE) ? ac.getSuccessor() : ac;
+    }
+
+    public boolean canWearArmorMaterial(ItemArmor.ArmorMaterial material) {
+        ArmorClass effective = getEffectiveArmorClass();
         // If no class, default to vanilla behaviour of wearing anything
         // Then check the current class if it's allowed
         // Then check for special exceptions granted by other means
-        return currentClass == null ||
-                currentClass.getArmorClass().canWear(material) ||
+        return effective == null ||
+                effective.canWear(material) ||
                 alwaysAllowedArmorMaterials.contains(material);
-
     }
 
     @Override

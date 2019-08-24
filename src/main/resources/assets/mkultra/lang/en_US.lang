@@ -306,4 +306,8 @@ mkultra.talent.blademaster.name=Blademaster
 mkultra.talent.blademaster.description=Increases your crit rate by 5%% and your melee crit damage by 50%%
 mkultra.ability.blademaster.name=Blademaster
 mkultra.ability.blademaster.description=Increases your crit rate by 5%% and your melee crit damage by 50%%
+mkultra.talent.armor_training.name=Armor Training
+mkultra.talent.armor_training.description=Allows the player to wear one higher class of armor
+mkultra.ability.armor_training.name=Armor Training
+mkultra.ability.armor_training.description=Allows the player to wear one higher class of armor
 
