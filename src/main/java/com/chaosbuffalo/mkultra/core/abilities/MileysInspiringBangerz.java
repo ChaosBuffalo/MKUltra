@@ -1,30 +1,22 @@
 package com.chaosbuffalo.mkultra.core.abilities;
 
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.PlayerToggleGroupAbility;
-import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
-import com.chaosbuffalo.mkultra.effects.spells.MileysInspiringBangerzSongPotion;
-import com.chaosbuffalo.mkultra.effects.spells.NotoriousDOTSongPotion;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
-import com.chaosbuffalo.mkultra.effects.spells.SwiftsRodeoHBSongPotion;
+import com.chaosbuffalo.mkultra.core.PlayerToggleAbility;
+import com.chaosbuffalo.mkultra.core.classes.Skald;
+import com.chaosbuffalo.mkultra.effects.spells.MileysInspiringBangerzSongPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
-public class MileysInspiringBangerz extends PlayerToggleGroupAbility {
+public class MileysInspiringBangerz extends PlayerToggleAbility {
     public static int BASE_DURATION = 32767;
-    public static final Set<SpellPotionBase> TOGGLE_GROUP = new HashSet<>(
-            Arrays.asList(SwiftsRodeoHBSongPotion.INSTANCE,
-                    NotoriousDOTSongPotion.INSTANCE));
 
     public MileysInspiringBangerz() {
         super(MKUltra.MODID, "ability.mileys_bangerz");
@@ -42,7 +34,13 @@ public class MileysInspiringBangerz extends PlayerToggleGroupAbility {
     }
 
     @Override
+    public ResourceLocation getToggleGroupId() {
+        return Skald.TOGGLE_GROUP;
+    }
+
+    @Override
     public void applyEffect(EntityPlayer entity, IPlayerData pData, World theWorld) {
+        super.applyEffect(entity, pData, theWorld);
         int level = pData.getAbilityRank(getAbilityId());
         entity.addPotionEffect(MileysInspiringBangerzSongPotion.Create(entity).setTarget(entity)
                 .toPotionEffect(BASE_DURATION, level));
@@ -77,8 +75,4 @@ public class MileysInspiringBangerz extends PlayerToggleGroupAbility {
         return 6 + currentRank * 2;
     }
 
-    @Override
-    public Set<SpellPotionBase> getToggleGroup() {
-        return TOGGLE_GROUP;
-    }
 }

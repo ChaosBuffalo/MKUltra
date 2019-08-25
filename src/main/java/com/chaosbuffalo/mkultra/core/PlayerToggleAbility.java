@@ -28,6 +28,10 @@ public abstract class PlayerToggleAbility extends PlayerAbility {
         toggleAbilityMap.put(getToggleEffect(), abilityId);
     }
 
+    public ResourceLocation getToggleGroupId() {
+        return getAbilityId();
+    }
+
     public abstract Potion getToggleEffect();
 
     @Override
@@ -35,9 +39,12 @@ public abstract class PlayerToggleAbility extends PlayerAbility {
         return AbilityType.Toggle;
     }
 
-    public abstract void applyEffect(EntityPlayer entity, IPlayerData pData, World theWorld);
+    public void applyEffect(EntityPlayer entity, IPlayerData pData, World theWorld) {
+        pData.setToggleGroupAbility(getToggleGroupId(), this);
+    }
 
     public void removeEffect(EntityPlayer entity, IPlayerData pData, World theWorld) {
+        pData.clearToggleGroupAbility(getToggleGroupId());
         entity.removePotionEffect(getToggleEffect());
     }
 
@@ -47,6 +54,11 @@ public abstract class PlayerToggleAbility extends PlayerAbility {
         if (entity.getActivePotionEffect(getToggleEffect()) != null) {
             removeEffect(entity, pData, theWorld);
         } else {
+            PlayerToggleAbility current = pData.getActiveToggleGroupAbility(getToggleGroupId());
+            if (current != null) {
+                current.removeEffect(entity, pData, theWorld);
+                pData.setCooldown(current.getAbilityId(), pData.getAbilityCooldown(current));
+            }
             applyEffect(entity, pData, theWorld);
         }
     }

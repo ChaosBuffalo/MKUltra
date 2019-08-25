@@ -1,13 +1,11 @@
 package com.chaosbuffalo.mkultra.core;
 
-import com.chaosbuffalo.mkultra.client.gui.lib.MKScreen;
 import com.chaosbuffalo.mkultra.core.talents.TalentTreeRecord;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -166,4 +164,9 @@ public interface IPlayerData {
 
      ArmorClass getArmorClass();
 
+     PlayerToggleAbility getActiveToggleGroupAbility(ResourceLocation groupId);
+
+     void clearToggleGroupAbility(ResourceLocation groupId);
+
+     void setToggleGroupAbility(ResourceLocation groupId, PlayerToggleAbility ability);
 }
