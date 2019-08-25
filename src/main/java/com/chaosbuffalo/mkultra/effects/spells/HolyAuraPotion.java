@@ -29,6 +29,7 @@ public class HolyAuraPotion extends AuraPassiveBase {
 
     protected HolyAuraPotion() {
         super(APPLICATION_PERIOD);
+        setPotionName("effect.holy_aura");
     }
 
     @SubscribeEvent
