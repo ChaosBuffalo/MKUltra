@@ -212,7 +212,11 @@ public class SpellTriggers {
         private static void handleMagic(LivingHurtEvent event, EntityLivingBase livingTarget, EntityPlayerMP playerSource,
                                         IPlayerData sourceData, MKDamageSource mkSource) {
 
-            if (checkCrit(playerSource, sourceData.getSpellCritChance())) {
+            float spellCritchance = sourceData.getSpellCritChance();
+            if (mkSource.isHolyDamage()){
+                spellCritchance *= 2.0f;
+            }
+            if (checkCrit(playerSource, spellCritchance)) {
                 float newDamage = event.getAmount() * sourceData.getSpellCritDamage();
                 event.setAmount(newDamage);
 
@@ -220,6 +224,9 @@ public class SpellTriggers {
                 if (mkSource.isIndirectMagic()) {
                     packet = new CritMessagePacket(livingTarget.getEntityId(), playerSource.getUniqueID(),
                             newDamage, CritMessagePacket.CritType.INDIRECT_MAGIC_CRIT);
+                } else if (mkSource.isHolyDamage()){
+                    packet = new CritMessagePacket(livingTarget.getEntityId(), playerSource.getUniqueID(),
+                            newDamage, CritMessagePacket.CritType.HOLY_DAMAGE_CRIT);
                 } else {
                     PlayerAbility ability = MKURegistry.getAbility(mkSource.getAbilityId());
                     packet = new CritMessagePacket(livingTarget.getEntityId(), playerSource.getUniqueID(),

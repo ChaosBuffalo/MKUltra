@@ -7,7 +7,6 @@ import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.passives.AuraPassiveBase;
-import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -62,7 +61,7 @@ public class HolyAuraPotion extends AuraPassiveBase {
             AreaEffectBuilder builder = AreaEffectBuilder.Create(player, player)
                     .instant()
                     .disableParticle()
-                    .spellCast(AbilityMagicDamage.Create(player, 4.0f, 4.0f),
+                    .spellCast(HolyDamagePotion.Create(player, 4.0f, 4.0f),
                             1, Targeting.TargetType.ENEMY)
                     .radius(getNegativeDistance(amplifier), true);
             builder.spawn();

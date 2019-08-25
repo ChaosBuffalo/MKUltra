@@ -26,6 +26,7 @@ public class CritMessagePacket implements IMessage {
         SPELL_CRIT,
         INDIRECT_CRIT,
         PROJECTILE_CRIT,
+        HOLY_DAMAGE_CRIT
     }
     private int targetId;
     private UUID sourceUUID;
@@ -149,6 +150,23 @@ public class CritMessagePacket implements IMessage {
                     } else {
                         player.sendMessage(new TextComponentString(
                                 String.format("%s's magic spell just crit %s for %s",
+                                        playerSource.getDisplayName().getUnformattedText(),
+                                        target.getDisplayName().getUnformattedText(),
+                                        Integer.toString(Math.round(msg.critDamage))))
+                                .setStyle(messageStyle));
+                    }
+                    break;
+                case HOLY_DAMAGE_CRIT:
+                    messageStyle.setColor(TextFormatting.RED);
+                    if (isSelf) {
+                        player.sendMessage(new TextComponentString(
+                                String.format("Your holy aura just crit %s for %s",
+                                        target.getDisplayName().getUnformattedText(),
+                                        Integer.toString(Math.round(msg.critDamage))))
+                                .setStyle(messageStyle));
+                    } else {
+                        player.sendMessage(new TextComponentString(
+                                String.format("%s's holy aura just crit %s for %s",
                                         playerSource.getDisplayName().getUnformattedText(),
                                         target.getDisplayName().getUnformattedText(),
                                         Integer.toString(Math.round(msg.critDamage))))
