@@ -20,9 +20,12 @@ import java.util.regex.Pattern;
 
 public abstract class  PlayerAbility extends IForgeRegistryEntry.Impl<PlayerAbility> {
 
-    public static final int ACTIVE_ABILITY = 0;
-    public static final int TOGGLE_ABILITY = 1;
-    public static final int PASSIVE_ABILITY = 2;
+    public enum AbilityType {
+        Active,
+        Toggle,
+        Passive,
+        Ultimate
+    }
 
     private ResourceLocation abilityId;
 
@@ -68,8 +71,8 @@ public abstract class  PlayerAbility extends IForgeRegistryEntry.Impl<PlayerAbil
         return getCooldown(currentRank) * GameConstants.TICKS_PER_SECOND;
     }
 
-    public int getType() {
-        return ACTIVE_ABILITY;
+    public AbilityType getType() {
+        return AbilityType.Active;
     }
 
     public abstract Targeting.TargetType getTargetType();

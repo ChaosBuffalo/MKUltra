@@ -31,8 +31,8 @@ public class SkinLikeWood extends PlayerToggleAbility {
     }
 
     @Override
-    public int getType() {
-        return TOGGLE_ABILITY;
+    public AbilityType getType() {
+        return AbilityType.Toggle;
     }
 
     @Override

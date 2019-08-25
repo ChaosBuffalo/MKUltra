@@ -41,8 +41,8 @@ public class SwiftsRodeoHeartbreak extends PlayerToggleGroupAbility {
     }
 
     @Override
-    public int getType() {
-        return TOGGLE_ABILITY;
+    public AbilityType getType() {
+        return AbilityType.Toggle;
     }
 
 

@@ -35,8 +35,8 @@ public class KPDarkWail extends PlayerAbility {
     }
 
     @Override
-    public int getType() {
-        return ACTIVE_ABILITY;
+    public AbilityType getType() {
+        return AbilityType.Active;
     }
 
     @Override
