@@ -73,10 +73,10 @@ public class MoonTrancePotion extends SpellPeriodicPotionBase {
                 return;
 
             int boostAmount = 5;
-            int amount = 1 * (amplifier);
+            float amount = 1 * (amplifier);
 
-            int maxMana = pData.getTotalMana() + boostAmount;
-            int curMana = pData.getMana();
+            float maxMana = pData.getTotalMana() + boostAmount;
+            float curMana = pData.getMana();
 
             amount = Math.min(maxMana - curMana, amount);
 

@@ -47,7 +47,7 @@ public class NaturesRemedy extends PlayerAbility {
     }
 
     @Override
-    public int getManaCost(int currentRank) {
+    public float getManaCost(int currentRank) {
         return 2 + currentRank * 2;
     }
 

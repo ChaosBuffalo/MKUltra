@@ -38,7 +38,7 @@ public class PhoenixAspect extends PlayerAbility {
     }
 
     @Override
-    public int getManaCost(int currentRank) {
+    public float getManaCost(int currentRank) {
         return 10 + currentRank * 5;
     }
 

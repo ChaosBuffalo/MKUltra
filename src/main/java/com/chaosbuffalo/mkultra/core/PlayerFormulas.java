@@ -25,7 +25,7 @@ public class PlayerFormulas {
         return (int) newTicks;
     }
 
-    public static int applyManaCostReduction(IPlayerData playerData, int originalCost) {
+    public static float applyManaCostReduction(IPlayerData playerData, float originalCost) {
         return originalCost;
     }
 

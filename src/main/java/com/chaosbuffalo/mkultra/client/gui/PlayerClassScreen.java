@@ -161,7 +161,7 @@ public class PlayerClassScreen extends MKScreen {
             }
             MKText nameWid = new MKText(mc.fontRenderer, name);
             nameWid.setX(panelX + 22).setY(panelY + (mc.fontRenderer.FONT_HEIGHT + 4) / 2);
-            MKText manaCost = new MKText(mc.fontRenderer, "Mana: " + ability.getManaCost(displayLevel));
+            MKText manaCost = new MKText(mc.fontRenderer, String.format("Mana: %.2f", ability.getManaCost(displayLevel)));
             manaCost.setX(panelX).setY(panelY + (mc.fontRenderer.FONT_HEIGHT + 2) * 2);
             manaCost.setColor(4934475);
             MKText cooldown = new MKText(mc.fontRenderer, String.format("Cooldown: %.2f",
@@ -202,7 +202,7 @@ public class PlayerClassScreen extends MKScreen {
                     newName = ability.getAbilityName();
                 }
                 nameWid.setText(newName);
-                manaCost.setText("Mana: " + ability.getManaCost(displayLvl));
+                manaCost.setText(String.format("Mana: %.2f", ability.getManaCost(displayLvl)));
                 cooldown.setText(String.format("Cooldown: %.2f",
                         (float) pData.getCooldownForLevel(ability, displayLvl) / (float) GameConstants.TICKS_PER_SECOND));
                 reqLev.setText("Req. Level: " + Math.max(1, ability.getRequiredLevel(lvl)));

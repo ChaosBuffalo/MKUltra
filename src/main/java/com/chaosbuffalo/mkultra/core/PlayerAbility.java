@@ -85,7 +85,7 @@ public abstract class  PlayerAbility extends IForgeRegistryEntry.Impl<PlayerAbil
         return Targeting.isValidTarget(getTargetType(), caster, target, !canSelfCast());
     }
 
-    public abstract int getManaCost(int currentRank);
+    public abstract float getManaCost(int currentRank);
 
     public abstract int getRequiredLevel(int currentRank);
 
@@ -94,7 +94,8 @@ public abstract class  PlayerAbility extends IForgeRegistryEntry.Impl<PlayerAbil
     }
 
     public boolean meetsRequirements(IPlayerData player) {
-        return player.getMana() >= getManaCost(player.getAbilityRank(abilityId)) &&
+        return player.getMana() >=
+                PlayerFormulas.applyManaCostReduction(player, getManaCost(player.getAbilityRank(abilityId))) &&
                 player.getCurrentAbilityCooldown(abilityId) == 0;
     }
 

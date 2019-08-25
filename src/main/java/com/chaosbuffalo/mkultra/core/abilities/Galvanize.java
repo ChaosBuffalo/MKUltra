@@ -34,7 +34,7 @@ public class Galvanize extends PlayerAbility {
     }
 
     @Override
-    public int getManaCost(int currentRank) {
+    public float getManaCost(int currentRank) {
         return 10 - 2 * currentRank;
     }
 

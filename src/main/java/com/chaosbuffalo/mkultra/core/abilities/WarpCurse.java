@@ -36,7 +36,7 @@ public class WarpCurse extends PlayerAbility {
     }
 
     @Override
-    public int getManaCost(int currentRank) {
+    public float getManaCost(int currentRank) {
         return 6 + currentRank * 2;
     }
 

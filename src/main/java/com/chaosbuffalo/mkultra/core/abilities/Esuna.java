@@ -34,7 +34,7 @@ public class Esuna extends PlayerAbility {
     }
 
     @Override
-    public int getManaCost(int currentRank) {
+    public float getManaCost(int currentRank) {
         return 12 - currentRank * 3;
     }
 

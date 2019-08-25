@@ -36,7 +36,7 @@ public class LavaWanderer extends PlayerAbility {
     }
 
     @Override
-    public int getManaCost(int currentRank){
+    public float getManaCost(int currentRank){
         return 5 + 5 * currentRank;
     }
 

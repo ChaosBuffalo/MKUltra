@@ -32,7 +32,7 @@ public class HopeBread extends PlayerAbility {
     }
 
     @Override
-    public int getManaCost(int currentRank){
+    public float getManaCost(int currentRank){
         return 4 + currentRank * 4;
     }
 

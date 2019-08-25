@@ -32,7 +32,7 @@ public class MassDrown extends PlayerAbility {
     }
 
     @Override
-    public int getManaCost(int currentRank) {
+    public float getManaCost(int currentRank) {
         return 8 + currentRank * 4;
     }
 
