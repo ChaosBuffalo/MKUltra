@@ -65,6 +65,7 @@ public class PlayerData implements IPlayerData {
     private Map<ResourceLocation, PlayerClassInfo> knownClasses = new HashMap<>();
     private Map<ResourceLocation, PlayerAbilityInfo> abilityInfoMap = new HashMap<>(5);
     private Set<ItemArmor.ArmorMaterial> alwaysAllowedArmorMaterials = new HashSet<>();
+    private Map<ResourceLocation, PlayerToggleAbility> activeToggleMap = new HashMap<>();
     private boolean needPassiveTalentRefresh;
     private boolean talentPassivesUnlocked;
     private EnumHandSide originalMainHand;
@@ -753,6 +754,21 @@ public class PlayerData implements IPlayerData {
                 toggle.removeEffect(player, this, player.getEntityWorld());
             }
         }
+    }
+
+    @Override
+    public PlayerToggleAbility getActiveToggleGroupAbility(ResourceLocation groupId) {
+        return activeToggleMap.get(groupId);
+    }
+
+    @Override
+    public void clearToggleGroupAbility(ResourceLocation groupId) {
+        activeToggleMap.remove(groupId);
+    }
+
+    @Override
+    public void setToggleGroupAbility(ResourceLocation groupId, PlayerToggleAbility ability) {
+        activeToggleMap.put(groupId, ability);
     }
 
     @Override

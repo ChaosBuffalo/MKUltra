@@ -10,6 +10,7 @@ import java.util.List;
 
 public class Skald extends PlayerClass {
     public static ResourceLocation ID = new ResourceLocation(MKUltra.MODID, "class.skald");
+    public static ResourceLocation TOGGLE_GROUP = new ResourceLocation(MKUltra.MODID, "toggle_group.skald");
 
     public static final List<PlayerAbility> abilities = new ArrayList<>(5);
     static {

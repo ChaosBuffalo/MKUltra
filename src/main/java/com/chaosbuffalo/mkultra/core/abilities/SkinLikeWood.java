@@ -55,7 +55,7 @@ public class SkinLikeWood extends PlayerToggleAbility {
 
     @Override
     public void applyEffect(EntityPlayer entity, IPlayerData pData, World theWorld) {
-
+        super.applyEffect(entity, pData, theWorld);
         int level = pData.getAbilityRank(getAbilityId());
 
         // What to do for each target hit
