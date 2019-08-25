@@ -6,14 +6,11 @@ import com.chaosbuffalo.mkultra.entities.projectiles.SpellCastArrow;
 import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
-import com.chaosbuffalo.mkultra.item.ItemHelper;
+import com.chaosbuffalo.mkultra.item.RangedWeaponry;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemArrow;
-import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.Vec3d;
@@ -53,23 +50,30 @@ public class FireArrow extends PlayerAbility {
 
     @Override
     public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
-
-        ItemStack ammo = ItemHelper.findAmmo(entity);
-        if (ammo.isEmpty() || !(entity.getHeldItemMainhand().getItem() instanceof ItemBow)) {
+        ItemStack mainHand = entity.getHeldItemMainhand();
+        if (mainHand.isEmpty())
             return;
-        }
+
+        RangedWeaponry.IRangedWeapon weapon = RangedWeaponry.findWeapon(mainHand);
+        if (weapon == null)
+            return;
+
+        ItemStack ammo = weapon.findAmmo(entity);
+        if (ammo.isEmpty())
+            return;
+
         int level = pData.getAbilityRank(getAbilityId());
         pData.startAbility(this);
-        ItemArrow itemarrow = (ItemArrow) (ammo.getItem() instanceof ItemArrow ? ammo.getItem() : Items.ARROW);
-        EntityArrow entityarrow = itemarrow.createArrow(theWorld, ammo, entity);
+        EntityArrow entityarrow = weapon.createAmmoEntity(theWorld, ammo, entity);
         SpellCastArrow arrow = new SpellCastArrow(theWorld, entity);
+        weapon.applyEffects(arrow, mainHand, ammo);
         arrow.shoot(entity, entity.rotationPitch, entity.rotationYaw, 0.0F, 3.0F, 1.0F);
         arrow.setDamage(entityarrow.getDamage() + BASE_ARROW_DAMAGE + level * SCALE_ARROW_DAMAGE);
         arrow.addSpellCast(FireArrowPotion.Create(entity, BASE_DAMAGE, DAMAGE_SCALE, 10.0f), 1);
         arrow.pickupStatus = EntityArrow.PickupStatus.DISALLOWED;
         theWorld.spawnEntity(arrow);
 
-        ItemHelper.shrinkStack(entity, ammo, 1);
+        weapon.consumeAmmo(entity, ammo, 1);
 
         Vec3d lookVec = entity.getLookVec();
         MKUltra.packetHandler.sendToAllAround(
@@ -83,5 +87,3 @@ public class FireArrow extends PlayerAbility {
                 entity.posY, entity.posZ, 50.0f);
     }
 }
-
-
