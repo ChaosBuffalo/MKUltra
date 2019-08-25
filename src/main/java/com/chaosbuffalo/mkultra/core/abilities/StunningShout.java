@@ -5,6 +5,7 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKDamageSource;
+import com.chaosbuffalo.mkultra.effects.spells.AIStunPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
@@ -65,15 +66,21 @@ public class StunningShout extends PlayerAbility {
                 EntityLivingBase targetEntity = (EntityLivingBase) ent;
                 targetEntity.addPotionEffect(
                         new PotionEffect(MobEffects.SLOWNESS,
-                                (2 + 2 * level) * GameConstants.TICKS_PER_SECOND, 100, false, true));
+                                (2 + 2 * level) * GameConstants.TICKS_PER_SECOND,
+                                100, false, true));
                 targetEntity.addPotionEffect(
                         new PotionEffect(MobEffects.BLINDNESS,
-                                (2 + 2 * level) * GameConstants.TICKS_PER_SECOND, 100, false, true));
+                                (2 + 2 * level) * GameConstants.TICKS_PER_SECOND,
+                                100, false, true));
                 targetEntity.addPotionEffect(
                         new PotionEffect(MobEffects.WEAKNESS,
-                                (2 + 2 * level) * GameConstants.TICKS_PER_SECOND, 100, false, true));
+                                (2 + 2 * level) * GameConstants.TICKS_PER_SECOND,
+                                100, false, true));
                 targetEntity.attackEntityFrom(MKDamageSource.fromMeleeSkill(getAbilityId(), entity, entity),
                         DAMAGE_BASE + (level * DAMAGE_SCALE));
+                targetEntity.addPotionEffect(AIStunPotion.Create(entity).setTarget(targetEntity)
+                        .toPotionEffect((2 + 2 * level) * GameConstants.TICKS_PER_SECOND, level));
+
                 MKUltra.packetHandler.sendToAllAround(
                         new ParticleEffectSpawnPacket(
                                 EnumParticleTypes.FALLING_DUST.getParticleID(),

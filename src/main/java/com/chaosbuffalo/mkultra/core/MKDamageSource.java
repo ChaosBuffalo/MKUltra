@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.core;
 
 import com.chaosbuffalo.mkultra.effects.spells.AbilityMagicDamage;
 import com.chaosbuffalo.mkultra.effects.spells.AbilityMeleeDamage;
+import com.chaosbuffalo.mkultra.effects.spells.HolyDamagePotion;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSourceIndirect;
@@ -35,6 +36,10 @@ public class MKDamageSource extends EntityDamageSourceIndirect {
 
     public boolean isIndirectMagic() {
         return abilityId.equals(AbilityMagicDamage.INDIRECT_MAGIC_DMG_ABILITY_ID);
+    }
+
+    public boolean isHolyDamage(){
+        return abilityId.equals(HolyDamagePotion.HOLY_DMG_ABILITY_ID);
     }
 
     public boolean isMeleeAbility() {

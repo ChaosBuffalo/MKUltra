@@ -333,4 +333,5 @@ mkultra.talent.guardian_angel.description=Absorbs a killing blow and grants invu
 mkultra.ability.guardian_angel.name=Guardian Angel
 mkultra.ability.guardian_angel.description=Absorbs a killing blow and grants invulnerability for 10 seconds. Usable every 2 minutes
 effect.guardian_angel_invulnerability=Invulnerability
+effect.holy_damage=Holy Damage
 
