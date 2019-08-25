@@ -29,7 +29,7 @@ public class StunningShout extends PlayerAbility {
 
     @Override
     public int getCooldown(int currentRank) {
-        return 14 - currentRank * 2;
+        return 18 - currentRank * 2;
     }
 
     @Override
@@ -66,20 +66,20 @@ public class StunningShout extends PlayerAbility {
                 EntityLivingBase targetEntity = (EntityLivingBase) ent;
                 targetEntity.addPotionEffect(
                         new PotionEffect(MobEffects.SLOWNESS,
-                                (2 + 2 * level) * GameConstants.TICKS_PER_SECOND,
+                                (2 * level) * GameConstants.TICKS_PER_SECOND,
                                 100, false, true));
                 targetEntity.addPotionEffect(
                         new PotionEffect(MobEffects.BLINDNESS,
-                                (2 + 2 * level) * GameConstants.TICKS_PER_SECOND,
+                                (2 * level) * GameConstants.TICKS_PER_SECOND,
                                 100, false, true));
                 targetEntity.addPotionEffect(
                         new PotionEffect(MobEffects.WEAKNESS,
-                                (2 + 2 * level) * GameConstants.TICKS_PER_SECOND,
+                                (2 * level) * GameConstants.TICKS_PER_SECOND,
                                 100, false, true));
                 targetEntity.attackEntityFrom(MKDamageSource.fromMeleeSkill(getAbilityId(), entity, entity),
                         DAMAGE_BASE + (level * DAMAGE_SCALE));
                 targetEntity.addPotionEffect(AIStunPotion.Create(entity).setTarget(targetEntity)
-                        .toPotionEffect((2 + 2 * level) * GameConstants.TICKS_PER_SECOND, level));
+                        .toPotionEffect((2 * level) * GameConstants.TICKS_PER_SECOND, level));
 
                 MKUltra.packetHandler.sendToAllAround(
                         new ParticleEffectSpawnPacket(
