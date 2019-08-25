@@ -7,7 +7,6 @@ import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.item.RangedWeaponry;
-import com.chaosbuffalo.mkultra.item.ItemHelper;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.player.EntityPlayer;
@@ -51,7 +50,11 @@ public class FireArrow extends PlayerAbility {
 
     @Override
     public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
-        RangedWeaponry.IRangedWeapon weapon = RangedWeaponry.findWeapon(entity.getHeldItemMainhand());
+        ItemStack mainHand = entity.getHeldItemMainhand();
+        if (mainHand.isEmpty())
+            return;
+
+        RangedWeaponry.IRangedWeapon weapon = RangedWeaponry.findWeapon(mainHand);
         if (weapon == null)
             return;
 
@@ -63,13 +66,14 @@ public class FireArrow extends PlayerAbility {
         pData.startAbility(this);
         EntityArrow entityarrow = weapon.createAmmoEntity(theWorld, ammo, entity);
         SpellCastArrow arrow = new SpellCastArrow(theWorld, entity);
+        weapon.applyEffects(arrow, mainHand, ammo);
         arrow.shoot(entity, entity.rotationPitch, entity.rotationYaw, 0.0F, 3.0F, 1.0F);
         arrow.setDamage(entityarrow.getDamage() + BASE_ARROW_DAMAGE + level * SCALE_ARROW_DAMAGE);
         arrow.addSpellCast(FireArrowPotion.Create(entity, BASE_DAMAGE, DAMAGE_SCALE, 10.0f), 1);
         arrow.pickupStatus = EntityArrow.PickupStatus.DISALLOWED;
         theWorld.spawnEntity(arrow);
 
-        ItemHelper.shrinkStack(entity, ammo, 1);
+        weapon.consumeAmmo(entity, ammo, 1);
 
         Vec3d lookVec = entity.getLookVec();
         MKUltra.packetHandler.sendToAllAround(

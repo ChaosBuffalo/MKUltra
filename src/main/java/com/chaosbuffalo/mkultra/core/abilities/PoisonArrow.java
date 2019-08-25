@@ -53,7 +53,11 @@ public class PoisonArrow extends PlayerAbility {
 
     @Override
     public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
-        RangedWeaponry.IRangedWeapon weapon = RangedWeaponry.findWeapon(entity.getHeldItemMainhand());
+        ItemStack mainHand = entity.getHeldItemMainhand();
+        if (mainHand.isEmpty())
+            return;
+
+        RangedWeaponry.IRangedWeapon weapon = RangedWeaponry.findWeapon(mainHand);
         if (weapon == null)
             return;
 
@@ -65,6 +69,7 @@ public class PoisonArrow extends PlayerAbility {
         pData.startAbility(this);
         EntityArrow entityarrow = weapon.createAmmoEntity(theWorld, ammo, entity);
         SpellCastArrow arrow = new SpellCastArrow(theWorld, entity);
+        weapon.applyEffects(arrow, mainHand, ammo);
         arrow.shoot(entity, entity.rotationPitch, entity.rotationYaw, 0.0F, 3.0F, 1.0F);
         arrow.setDamage(entityarrow.getDamage() + BASE_ARROW_DAMAGE + level * SCALE_ARROW_DAMAGE);
         arrow.addEffect(new PotionEffect(MobEffects.POISON, 9 * GameConstants.TICKS_PER_SECOND, level, false, true));
@@ -75,7 +80,7 @@ public class PoisonArrow extends PlayerAbility {
         arrow.pickupStatus = EntityArrow.PickupStatus.DISALLOWED;
         theWorld.spawnEntity(arrow);
 
-        ItemHelper.shrinkStack(entity, ammo, 1);
+        weapon.consumeAmmo(entity, ammo, 1);
 
         Vec3d lookVec = entity.getLookVec();
         MKUltra.packetHandler.sendToAllAround(

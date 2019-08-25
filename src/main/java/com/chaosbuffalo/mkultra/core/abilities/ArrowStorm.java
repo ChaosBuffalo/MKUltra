@@ -48,7 +48,11 @@ public class ArrowStorm extends PlayerAbility {
 
     @Override
     public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
-        RangedWeaponry.IRangedWeapon weapon = RangedWeaponry.findWeapon(entity.getHeldItemMainhand());
+        ItemStack mainHand = entity.getHeldItemMainhand();
+        if (mainHand.isEmpty())
+            return;
+
+        RangedWeaponry.IRangedWeapon weapon = RangedWeaponry.findWeapon(mainHand);
         if (weapon == null)
             return;
 
@@ -61,13 +65,14 @@ public class ArrowStorm extends PlayerAbility {
         pData.startAbility(this);
         for (int i = 0; i < shootCount; i++) {
             EntityArrow entityarrow = weapon.createAmmoEntity(theWorld, ammo, entity);
+            weapon.applyEffects(entityarrow, mainHand, ammo);
             entityarrow.shoot(entity, entity.rotationPitch, entity.rotationYaw, 0.0F, 4.0F, 10.0F);
             entityarrow.setDamage(entityarrow.getDamage() + BASE_DAMAGE + level * DAMAGE_SCALE);
             entityarrow.pickupStatus = EntityArrow.PickupStatus.DISALLOWED;
             theWorld.spawnEntity(entityarrow);
         }
 
-        ItemHelper.shrinkStack(entity, ammo, 1);
+        weapon.consumeAmmo(entity, ammo, 1);
 
         Vec3d lookVec = entity.getLookVec();
         MKUltra.packetHandler.sendToAllAround(
