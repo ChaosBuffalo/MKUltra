@@ -27,8 +27,8 @@ public abstract class PlayerPassiveAbility  extends PlayerAbility {
     }
 
     @Override
-    public int getType() {
-        return PASSIVE_ABILITY;
+    public AbilityType getType() {
+        return AbilityType.Passive;
     }
 
     @Override

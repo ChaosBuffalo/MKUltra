@@ -31,8 +31,8 @@ public abstract class PlayerToggleAbility extends PlayerAbility {
     public abstract Potion getToggleEffect();
 
     @Override
-    public int getType() {
-        return TOGGLE_ABILITY;
+    public AbilityType getType() {
+        return AbilityType.Toggle;
     }
 
     public abstract void applyEffect(EntityPlayer entity, IPlayerData pData, World theWorld);

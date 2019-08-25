@@ -32,11 +32,6 @@ public class Undertow extends PlayerAbility {
     }
 
     @Override
-    public int getType() {
-        return ACTIVE_ABILITY;
-    }
-
-    @Override
     public Targeting.TargetType getTargetType() {
         return Targeting.TargetType.FRIENDLY;
     }

@@ -24,6 +24,11 @@ public abstract class PlayerToggleGroupAbility extends PlayerToggleAbility {
     }
 
     @Override
+    public AbilityType getType() {
+        return AbilityType.Toggle;
+    }
+
+    @Override
     public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
         pData.startAbility(this);
         if (entity.getActivePotionEffect(getToggleEffect()) != null) {
