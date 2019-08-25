@@ -37,11 +37,6 @@ public class FlameBlade  extends PlayerAbility {
     }
 
     @Override
-    public AbilityType getType() {
-        return AbilityType.Active;
-    }
-
-    @Override
     public Targeting.TargetType getTargetType() {
         return Targeting.TargetType.FRIENDLY;
     }
