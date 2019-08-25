@@ -4,8 +4,6 @@ import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
-import com.chaosbuffalo.mkultra.core.PlayerFormulas;
-import com.chaosbuffalo.mkultra.core.abilities.passives.GuardianAngel;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellTriggers;
 import com.chaosbuffalo.mkultra.effects.passives.PassiveAbilityPotionBase;
@@ -54,7 +52,7 @@ public class GuardianAngelPotion extends PassiveAbilityPotionBase {
             if (!pData.isArbitraryOnCooldown(TIMER_NAME)) {
                 player.setHealth(1.0f);
                 event.setCanceled(true);
-                player.addPotionEffect(GuardianAngelInvulnerability.Create(player).setTarget(player).toPotionEffect(INVULN_DURATION, 1));
+                player.addPotionEffect(GuardianAngelInvulnerabilityPotion.Create(player).setTarget(player).toPotionEffect(INVULN_DURATION, 1));
                 pData.setArbitraryCooldown(TIMER_NAME, TIMER_COOLDOWN);
             }
         }
