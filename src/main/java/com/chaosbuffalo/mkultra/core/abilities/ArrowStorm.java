@@ -4,14 +4,12 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.item.RangedWeaponry;
 import com.chaosbuffalo.mkultra.item.ItemHelper;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemArrow;
-import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.Vec3d;
@@ -50,17 +48,19 @@ public class ArrowStorm extends PlayerAbility {
 
     @Override
     public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
-
-        ItemStack ammo = ItemHelper.findAmmo(entity);
-        if (ammo.isEmpty() || !(entity.getHeldItemMainhand().getItem() instanceof ItemBow)) {
+        RangedWeaponry.IRangedWeapon weapon = RangedWeaponry.findWeapon(entity.getHeldItemMainhand());
+        if (weapon == null)
             return;
-        }
+
+        ItemStack ammo = weapon.findAmmo(entity);
+        if (ammo.isEmpty())
+            return;
+
         int level = pData.getAbilityRank(getAbilityId());
         int shootCount = ARROW_PER_LEVEL * level;
         pData.startAbility(this);
         for (int i = 0; i < shootCount; i++) {
-            ItemArrow itemarrow = (ItemArrow) (ammo.getItem() instanceof ItemArrow ? ammo.getItem() : Items.ARROW);
-            EntityArrow entityarrow = itemarrow.createArrow(theWorld, ammo, entity);
+            EntityArrow entityarrow = weapon.createAmmoEntity(theWorld, ammo, entity);
             entityarrow.shoot(entity, entity.rotationPitch, entity.rotationYaw, 0.0F, 4.0F, 10.0F);
             entityarrow.setDamage(entityarrow.getDamage() + BASE_DAMAGE + level * DAMAGE_SCALE);
             entityarrow.pickupStatus = EntityArrow.PickupStatus.DISALLOWED;

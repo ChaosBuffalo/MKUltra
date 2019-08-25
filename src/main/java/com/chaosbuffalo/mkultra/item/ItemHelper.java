@@ -1,42 +1,27 @@
 package com.chaosbuffalo.mkultra.item;
 
-import com.chaosbuffalo.mkultra.init.ModItems;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
-import net.minecraftforge.items.ItemHandlerHelper;
 
-import java.util.HashSet;
+import java.util.function.Predicate;
 
 public class ItemHelper {
 
-    public static boolean isArrow(ItemStack stack)
-    {
-        return !stack.isEmpty() && stack.getItem() instanceof ItemArrow;
-    }
+    private static final Predicate<ItemStack> IS_EMPTY = i -> !i.isEmpty();
 
-    public static ItemStack findAmmo(EntityPlayer player)
-    {
-        if (isArrow(player.getHeldItem(EnumHand.OFF_HAND)))
-        {
+    public static ItemStack find(EntityPlayer player, Predicate<ItemStack> filter) {
+        filter = IS_EMPTY.and(filter);
+        if (filter.test(player.getHeldItem(EnumHand.OFF_HAND))) {
             return player.getHeldItem(EnumHand.OFF_HAND);
-        }
-        else if (isArrow(player.getHeldItem(EnumHand.MAIN_HAND)))
-        {
+        } else if (filter.test(player.getHeldItem(EnumHand.MAIN_HAND))) {
             return player.getHeldItem(EnumHand.MAIN_HAND);
-        }
-        else
-        {
-            for (int i = 0; i < player.inventory.getSizeInventory(); ++i)
-            {
+        } else {
+            for (int i = 0; i < player.inventory.getSizeInventory(); ++i) {
                 ItemStack itemstack = player.inventory.getStackInSlot(i);
 
-                if (isArrow(itemstack))
-                {
+                if (filter.test(itemstack)) {
                     return itemstack;
                 }
             }
@@ -47,8 +32,7 @@ public class ItemHelper {
 
     public static void unequip(EntityPlayer player, EntityEquipmentSlot slot) {
         ItemStack off = player.getItemStackFromSlot(slot);
-        if (!player.inventory.addItemStackToInventory(off))
-        {
+        if (!player.inventory.addItemStackToInventory(off)) {
             player.dropItem(off, true);
         }
         player.setItemStackToSlot(slot, ItemStack.EMPTY);
