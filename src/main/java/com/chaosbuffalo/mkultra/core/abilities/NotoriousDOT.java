@@ -40,11 +40,6 @@ public class NotoriousDOT extends PlayerToggleGroupAbility {
     }
 
     @Override
-    public AbilityType getType() {
-        return AbilityType.Toggle;
-    }
-
-    @Override
     public Targeting.TargetType getTargetType() {
         return Targeting.TargetType.SELF;
     }

@@ -42,11 +42,6 @@ public class MileysInspiringBangerz extends PlayerToggleGroupAbility {
     }
 
     @Override
-    public AbilityType getType() {
-        return AbilityType.Toggle;
-    }
-
-    @Override
     public void applyEffect(EntityPlayer entity, IPlayerData pData, World theWorld) {
         int level = pData.getAbilityRank(getAbilityId());
         entity.addPotionEffect(MileysInspiringBangerzSongPotion.Create(entity).setTarget(entity)

@@ -32,11 +32,6 @@ public class WaveBreak extends PlayerToggleAbility {
     }
 
     @Override
-    public AbilityType getType() {
-        return AbilityType.Toggle;
-    }
-
-    @Override
     public Targeting.TargetType getTargetType() {
         return Targeting.TargetType.SELF;
     }
