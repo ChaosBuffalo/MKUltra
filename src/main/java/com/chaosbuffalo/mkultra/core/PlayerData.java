@@ -64,7 +64,6 @@ public class PlayerData implements IPlayerData {
     private AbilityTracker abilityTracker;
     private Map<ResourceLocation, PlayerClassInfo> knownClasses = new HashMap<>();
     private Map<ResourceLocation, PlayerAbilityInfo> abilityInfoMap = new HashMap<>(5);
-    private Set<ItemArmor.ArmorMaterial> alwaysAllowedArmorMaterials = new HashSet<>();
     private Map<ResourceLocation, PlayerToggleAbility> activeToggleMap = new HashMap<>();
     private boolean needPassiveTalentRefresh;
     private boolean talentPassivesUnlocked;
@@ -1312,9 +1311,7 @@ public class PlayerData implements IPlayerData {
         // If no class, default to vanilla behaviour of wearing anything
         // Then check the current class if it's allowed
         // Then check for special exceptions granted by other means
-        return effective == null ||
-                effective.canWear(material) ||
-                alwaysAllowedArmorMaterials.contains(material);
+        return effective == null || effective.canWear(material);
     }
 
     @Override
