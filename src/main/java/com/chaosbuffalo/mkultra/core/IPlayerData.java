@@ -143,15 +143,7 @@ public interface IPlayerData {
 
     boolean activatePassiveForSlot(ResourceLocation loc, int slotIndex);
 
-    void startDualWieldSequence();
-
-    void continueDualWieldSequence();
-
-    void endDualWieldSequence();
-
     boolean isDualWielding();
-
-    boolean hasCorrectHand();
 
     void setArbitraryCooldown(ResourceLocation loc, int cooldown);
 

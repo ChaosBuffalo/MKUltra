@@ -287,7 +287,7 @@ public class PlayerData implements IPlayerData {
         return false;
     }
 
-    private void swapHands(){
+    private void swapHands() {
         player.setPrimaryHand(player.getPrimaryHand() == EnumHandSide.RIGHT ?
                 EnumHandSide.LEFT : EnumHandSide.RIGHT);
         ItemStack mainHand = player.getHeldItemMainhand();
@@ -295,30 +295,28 @@ public class PlayerData implements IPlayerData {
         player.setHeldItem(EnumHand.OFF_HAND, mainHand);
     }
 
-    @Override
-    public void startDualWieldSequence() {
-        isDualWielding = true;
-        originalMainHand = player.getPrimaryHand();
-        ticksSinceLastSwing = 0;
-    }
-
-    @Override
-    public void continueDualWieldSequence() {
-        ticksSinceLastSwing = 0;
-        swapHands();
-    }
-
-    @Override
-    public void endDualWieldSequence() {
-        isDualWielding = false;
-        if (!hasCorrectHand()){
+    public void performDualWieldSequence() {
+        if (!isDualWielding) {
+            isDualWielding = true;
+            originalMainHand = player.getPrimaryHand();
+        } else {
             swapHands();
+        }
+        ticksSinceLastSwing = 0;
+    }
+
+    public void endDualWieldSequence() {
+        if (isDualWielding) {
+            isDualWielding = false;
+            if (player.getPrimaryHand() != originalMainHand) {
+                swapHands();
+            }
         }
     }
 
     @Override
-    public boolean hasCorrectHand(){
-        return player.getPrimaryHand() == originalMainHand;
+    public boolean isDualWielding() {
+        return isDualWielding;
     }
 
     @Override
@@ -342,11 +340,6 @@ public class PlayerData implements IPlayerData {
     @Override
     public boolean isArbitraryOnCooldown(ResourceLocation loc) {
         return getArbitraryCooldown(loc) > 0;
-    }
-
-    @Override
-    public boolean isDualWielding() {
-        return isDualWielding;
     }
 
     private void updateTalents(){
@@ -940,9 +933,9 @@ public class PlayerData implements IPlayerData {
     }
 
 
-    private void updateDualWielding(){
-        if (isDualWielding){
-            if (ticksSinceLastSwing > DUAL_WIELD_TIMEOUT){
+    private void updateDualWielding() {
+        if (isDualWielding) {
+            if (ticksSinceLastSwing > DUAL_WIELD_TIMEOUT) {
                 endDualWieldSequence();
             } else {
                 ticksSinceLastSwing++;
