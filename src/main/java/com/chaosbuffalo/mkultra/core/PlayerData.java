@@ -6,6 +6,8 @@ import com.chaosbuffalo.mkultra.core.events.client.PlayerDataUpdateEvent;
 import com.chaosbuffalo.mkultra.core.talents.PassiveAbilityTalent;
 import com.chaosbuffalo.mkultra.core.talents.RangedAttributeTalent;
 import com.chaosbuffalo.mkultra.core.talents.TalentTreeRecord;
+import com.chaosbuffalo.mkultra.effects.SpellCast;
+import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
 import com.chaosbuffalo.mkultra.effects.passives.PassiveAbilityPotionBase;
 import com.chaosbuffalo.mkultra.effects.spells.ArmorTrainingPotion;
 import com.chaosbuffalo.mkultra.event.ItemEventHandler;
@@ -760,6 +762,11 @@ public class PlayerData implements IPlayerData {
 
     @Override
     public void setToggleGroupAbility(ResourceLocation groupId, PlayerToggleAbility ability) {
+        PlayerToggleAbility current = getActiveToggleGroupAbility(ability.getToggleGroupId());
+        if (current != null) {
+            current.removeEffect(player, this, player.getEntityWorld());
+            setCooldown(current.getAbilityId(), getAbilityCooldown(current));
+        }
         activeToggleMap.put(groupId, ability);
     }
 
@@ -924,6 +931,8 @@ public class PlayerData implements IPlayerData {
         Log.trace("PlayerData@onJoinWorld\n");
 
         if (isServerSide()) {
+            checkPassiveEffects();
+            rebuildActiveToggleMap();
             updatePlayerStats(true);
         } else {
             Log.trace("PlayerData@onJoinWorld - Client sending sync req\n");
@@ -1248,6 +1257,33 @@ public class PlayerData implements IPlayerData {
                 toggle.removeEffect(player, this, player.getEntityWorld());
             }
         }
+    }
+
+    private void rebuildActiveToggleMap() {
+        for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
+            ResourceLocation abilityId = getAbilityInSlot(i);
+            PlayerAbility ability = MKURegistry.getAbility(abilityId);
+            if (ability instanceof PlayerToggleAbility && player != null) {
+                PlayerToggleAbility toggle = (PlayerToggleAbility) ability;
+                if (player.isPotionActive(toggle.getToggleEffect()))
+                    setToggleGroupAbility(toggle.getToggleGroupId(), toggle);
+            }
+        }
+    }
+
+    private void checkPassiveEffects() {
+        player.getActivePotionMap().forEach((p, e) -> {
+            if (p instanceof SpellPotionBase) {
+                SpellPotionBase sp = (SpellPotionBase)p;
+                if (!sp.canPersistAcrossSessions()) {
+                    SpellCast cast = sp.createReapplicationCast(player);
+                    if (cast != null) {
+                        // Force PotionEffect combination so it will call add/remove of potion attributes
+                        player.addPotionEffect(cast.toPotionEffect(e.getDuration(), e.getAmplifier()));
+                    }
+                }
+            }
+        });
     }
 
     @Override

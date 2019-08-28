@@ -39,4 +39,9 @@ public abstract class PassiveEffect extends SpellPotionBase {
     public double getAttributeModifierAmount(int amplifier, AttributeModifier modifier) {
         return modifier.getAmount() * (double) (amplifier);
     }
+
+    @Override
+    public boolean canPersistAcrossSessions() {
+        return false;
+    }
 }
