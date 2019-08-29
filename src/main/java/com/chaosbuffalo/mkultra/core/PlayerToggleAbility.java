@@ -54,11 +54,6 @@ public abstract class PlayerToggleAbility extends PlayerAbility {
         if (entity.getActivePotionEffect(getToggleEffect()) != null) {
             removeEffect(entity, pData, theWorld);
         } else {
-            PlayerToggleAbility current = pData.getActiveToggleGroupAbility(getToggleGroupId());
-            if (current != null) {
-                current.removeEffect(entity, pData, theWorld);
-                pData.setCooldown(current.getAbilityId(), pData.getAbilityCooldown(current));
-            }
             applyEffect(entity, pData, theWorld);
         }
     }

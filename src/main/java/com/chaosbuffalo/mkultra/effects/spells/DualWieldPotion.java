@@ -1,9 +1,9 @@
 package com.chaosbuffalo.mkultra.effects.spells;
 
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerAttributes;
+import com.chaosbuffalo.mkultra.core.PlayerData;
 import com.chaosbuffalo.mkultra.effects.passives.PassiveAbilityPotionBase;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellTriggers;
@@ -48,36 +48,27 @@ public class DualWieldPotion extends PassiveAbilityPotionBase {
         SpellTriggers.EMPTY_LEFT_CLICK.register(this, this::onLeftClickEmpty);
     }
 
-
-    public void onLeftClickEmpty(PlayerInteractEvent.LeftClickEmpty event, EntityPlayer player, PotionEffect effect){
-        if (ItemUtils.isSuitableOffhandWeapon(player.getHeldItemOffhand())){
-            IPlayerData pData = MKUPlayerData.get(player);
-            if (pData == null){
+    public void onLeftClickEmpty(PlayerInteractEvent.LeftClickEmpty event, EntityPlayer player, PotionEffect effect) {
+        if (ItemUtils.isSuitableOffhandWeapon(player.getHeldItemOffhand())) {
+            PlayerData pData = (PlayerData) MKUPlayerData.get(player);
+            if (pData == null) {
                 return;
             }
-            if (!pData.isDualWielding()){
-                pData.startDualWieldSequence();
-            } else {
-                pData.continueDualWieldSequence();
-            }
+            pData.performDualWieldSequence();
 
         }
     }
 
-
-    public void onAttackEntity(EntityLivingBase entity, Entity target, PotionEffect effect){
-        if (ItemUtils.isSuitableOffhandWeapon(entity.getHeldItemOffhand())){
-            if (entity instanceof EntityPlayer){
+    public void onAttackEntity(EntityLivingBase entity, Entity target, PotionEffect effect) {
+        if (ItemUtils.isSuitableOffhandWeapon(entity.getHeldItemOffhand())) {
+            if (entity instanceof EntityPlayer) {
                 EntityPlayer player = (EntityPlayer) entity;
-                IPlayerData pData = MKUPlayerData.get(player);
-                if (pData == null){
+                PlayerData pData = (PlayerData) MKUPlayerData.get(player);
+                if (pData == null) {
                     return;
                 }
-                if (!pData.isDualWielding()){
-                    pData.startDualWieldSequence();
-                } else {
-                    pData.continueDualWieldSequence();
-                }
+
+                pData.performDualWieldSequence();
             }
         }
     }
@@ -85,15 +76,14 @@ public class DualWieldPotion extends PassiveAbilityPotionBase {
     @Override
     public void onPotionRemove(SpellCast cast, EntityLivingBase target, AbstractAttributeMap attributes, int amplifier) {
         super.onPotionRemove(cast, target, attributes, amplifier);
-        if (target instanceof EntityPlayer){
+        if (target instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) target;
-            IPlayerData pData = MKUPlayerData.get(player);
-            if (pData == null){
+            PlayerData pData = (PlayerData) MKUPlayerData.get(player);
+            if (pData == null) {
                 return;
             }
-            if (pData.isDualWielding()){
-                pData.endDualWieldSequence();
-            }
+
+            pData.endDualWieldSequence();
         }
     }
 

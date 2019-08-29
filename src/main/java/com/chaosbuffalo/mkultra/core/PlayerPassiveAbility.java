@@ -51,7 +51,9 @@ public abstract class PlayerPassiveAbility  extends PlayerAbility {
         return Targeting.TargetType.SELF;
     }
 
-    public abstract void applyEffect(EntityPlayer entity, IPlayerData pData, World theWorld);
+    public void applyEffect(EntityPlayer entity, IPlayerData pData, World theWorld) {
+        entity.addPotionEffect(getPassiveEffect().createInstance(entity));
+    }
 
     public void removeEffect(EntityPlayer entity, IPlayerData pData, World theWorld) {
         ((PlayerData) pData).removePassiveEffect(getPassiveEffect());

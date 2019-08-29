@@ -43,7 +43,7 @@ public class RangedAttributeTalent extends BaseTalent {
         return op;
     }
 
-    public RangedAttributeTalent setOp(int value){
+    public RangedAttributeTalent setOp(int value) {
         op = value;
         return this;
     }
@@ -52,12 +52,12 @@ public class RangedAttributeTalent extends BaseTalent {
     public String getTalentDescription(double perRank, double currentValue) {
         String amount;
         String totalAmount;
-        if (renderAsPercentage){
-            amount = Double.toString(perRank * 100.0) + "%";
-            totalAmount = Double.toString(currentValue * 100.0) + "%";
+        if (renderAsPercentage) {
+            amount = String.format("%.2f%%", perRank * 100);
+            totalAmount = String.format("%.2f%%", currentValue * 100);
         } else {
-            amount = Double.toString(perRank);
-            totalAmount = Double.toString(currentValue);
+            amount = String.format("%.2f", perRank);
+            totalAmount = String.format("%.2f", currentValue);
         }
         String finalAmount = String.format("%s (%s)", amount, totalAmount);
         return TextFormatting.GRAY + I18n.format(String.format("%s.%s.description",
@@ -81,5 +81,4 @@ public class RangedAttributeTalent extends BaseTalent {
         classInfo.applyAttributesModifiersToPlayer(player);
         return true;
     }
-
 }

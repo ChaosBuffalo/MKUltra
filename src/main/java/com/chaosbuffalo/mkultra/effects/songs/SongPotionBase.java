@@ -26,6 +26,11 @@ public abstract class SongPotionBase extends SpellPeriodicPotionBase {
     public boolean canSelfCast() { return true; }
 
     @Override
+    public boolean canPersistAcrossSessions() {
+        return false;
+    }
+
+    @Override
     public boolean shouldRenderHUD(PotionEffect effect)
     {
         return isVisible;

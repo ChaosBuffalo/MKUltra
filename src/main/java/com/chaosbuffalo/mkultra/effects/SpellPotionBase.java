@@ -57,6 +57,20 @@ public abstract class SpellPotionBase extends Potion {
         return duration >= 1;
     }
 
+    public boolean canPersistAcrossSessions() {
+        return true;
+    }
+
+    public SpellCast createReapplicationCast(EntityLivingBase target) {
+        if (!canPersistAcrossSessions()) {
+            PotionEffect current = target.getActivePotionEffect(this);
+            if (current != null) {
+                return newSpellCast(target).setTarget(target);
+            }
+        }
+        return null;
+    }
+
     @Override
     public boolean isInstant() {
         return true;
@@ -72,7 +86,13 @@ public abstract class SpellPotionBase extends Potion {
 
         SpellCast cast = SpellManager.get(target, this);
         if (cast == null) {
-//            Log.warn("affectEntity cast was null! Spell: %s", getName());
+            cast = createReapplicationCast(target);
+//            Log.debug("affectEntity cast was null, recasting Spell: %s", getName());
+        }
+
+        // Second chance
+        if (cast == null) {
+//            Log.warn("affectEntity cast was null after recast! Spell: %s", getName());
             return;
         }
 
@@ -91,7 +111,13 @@ public abstract class SpellPotionBase extends Potion {
 
         SpellCast cast = SpellManager.get(target, this);
         if (cast == null) {
-//            Log.warn("performEffect cast was null! Spell: %s", getName());
+            cast = createReapplicationCast(target);
+//            Log.debug("performEffect cast was null, recasting Spell: %s", getName());
+        }
+
+        // Second chance
+        if (cast == null) {
+//            Log.warn("performEffect cast was null after recast! Spell: %s", getName());
             return;
         }
 
@@ -103,9 +129,13 @@ public abstract class SpellPotionBase extends Potion {
 
     @Override
     public void applyAttributesModifiersToEntity(EntityLivingBase target, @Nonnull AbstractAttributeMap attributes, int amplifier) {
-
         if (!target.world.isRemote || !isServerSideOnly()) {
             SpellCast cast = SpellManager.get(target, this);
+            if (cast == null) {
+                cast = createReapplicationCast(target);
+//                Log.debug("applyAttributesModifiersToEntity cast was null! Spell: %s", getName());
+            }
+
             if (cast != null) {
                 onPotionAdd(cast, target, attributes, amplifier);
             }
@@ -120,6 +150,11 @@ public abstract class SpellPotionBase extends Potion {
     public void removeAttributesModifiersFromEntity(EntityLivingBase target, @Nonnull AbstractAttributeMap attributes, int amplifier) {
         if (!target.world.isRemote || !isServerSideOnly()) {
             SpellCast cast = SpellManager.get(target, this);
+            if (cast == null) {
+                cast = createReapplicationCast(target);
+//                Log.debug("removeAttributesModifiersFromEntity cast was null! Spell: %s", getName());
+            }
+
             if (cast != null) {
                 onPotionRemove(cast, target, attributes, amplifier);
             }

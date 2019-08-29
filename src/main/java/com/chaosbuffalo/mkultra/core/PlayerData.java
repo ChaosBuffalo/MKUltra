@@ -6,6 +6,8 @@ import com.chaosbuffalo.mkultra.core.events.client.PlayerDataUpdateEvent;
 import com.chaosbuffalo.mkultra.core.talents.PassiveAbilityTalent;
 import com.chaosbuffalo.mkultra.core.talents.RangedAttributeTalent;
 import com.chaosbuffalo.mkultra.core.talents.TalentTreeRecord;
+import com.chaosbuffalo.mkultra.effects.SpellCast;
+import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
 import com.chaosbuffalo.mkultra.effects.passives.PassiveAbilityPotionBase;
 import com.chaosbuffalo.mkultra.effects.spells.ArmorTrainingPotion;
 import com.chaosbuffalo.mkultra.event.ItemEventHandler;
@@ -64,7 +66,6 @@ public class PlayerData implements IPlayerData {
     private AbilityTracker abilityTracker;
     private Map<ResourceLocation, PlayerClassInfo> knownClasses = new HashMap<>();
     private Map<ResourceLocation, PlayerAbilityInfo> abilityInfoMap = new HashMap<>(5);
-    private Set<ItemArmor.ArmorMaterial> alwaysAllowedArmorMaterials = new HashSet<>();
     private Map<ResourceLocation, PlayerToggleAbility> activeToggleMap = new HashMap<>();
     private boolean needPassiveTalentRefresh;
     private boolean talentPassivesUnlocked;
@@ -288,7 +289,7 @@ public class PlayerData implements IPlayerData {
         return false;
     }
 
-    private void swapHands(){
+    private void swapHands() {
         player.setPrimaryHand(player.getPrimaryHand() == EnumHandSide.RIGHT ?
                 EnumHandSide.LEFT : EnumHandSide.RIGHT);
         ItemStack mainHand = player.getHeldItemMainhand();
@@ -296,30 +297,28 @@ public class PlayerData implements IPlayerData {
         player.setHeldItem(EnumHand.OFF_HAND, mainHand);
     }
 
-    @Override
-    public void startDualWieldSequence() {
-        isDualWielding = true;
-        originalMainHand = player.getPrimaryHand();
-        ticksSinceLastSwing = 0;
-    }
-
-    @Override
-    public void continueDualWieldSequence() {
-        ticksSinceLastSwing = 0;
-        swapHands();
-    }
-
-    @Override
-    public void endDualWieldSequence() {
-        isDualWielding = false;
-        if (!hasCorrectHand()){
+    public void performDualWieldSequence() {
+        if (!isDualWielding) {
+            isDualWielding = true;
+            originalMainHand = player.getPrimaryHand();
+        } else {
             swapHands();
+        }
+        ticksSinceLastSwing = 0;
+    }
+
+    public void endDualWieldSequence() {
+        if (isDualWielding) {
+            isDualWielding = false;
+            if (player.getPrimaryHand() != originalMainHand) {
+                swapHands();
+            }
         }
     }
 
     @Override
-    public boolean hasCorrectHand(){
-        return player.getPrimaryHand() == originalMainHand;
+    public boolean isDualWielding() {
+        return isDualWielding;
     }
 
     @Override
@@ -343,11 +342,6 @@ public class PlayerData implements IPlayerData {
     @Override
     public boolean isArbitraryOnCooldown(ResourceLocation loc) {
         return getArbitraryCooldown(loc) > 0;
-    }
-
-    @Override
-    public boolean isDualWielding() {
-        return isDualWielding;
     }
 
     private void updateTalents(){
@@ -768,6 +762,11 @@ public class PlayerData implements IPlayerData {
 
     @Override
     public void setToggleGroupAbility(ResourceLocation groupId, PlayerToggleAbility ability) {
+        PlayerToggleAbility current = getActiveToggleGroupAbility(ability.getToggleGroupId());
+        if (current != null) {
+            current.removeEffect(player, this, player.getEntityWorld());
+            setCooldown(current.getAbilityId(), getAbilityCooldown(current));
+        }
         activeToggleMap.put(groupId, ability);
     }
 
@@ -932,6 +931,8 @@ public class PlayerData implements IPlayerData {
         Log.trace("PlayerData@onJoinWorld\n");
 
         if (isServerSide()) {
+            checkPassiveEffects();
+            rebuildActiveToggleMap();
             updatePlayerStats(true);
         } else {
             Log.trace("PlayerData@onJoinWorld - Client sending sync req\n");
@@ -941,9 +942,9 @@ public class PlayerData implements IPlayerData {
     }
 
 
-    private void updateDualWielding(){
-        if (isDualWielding){
-            if (ticksSinceLastSwing > DUAL_WIELD_TIMEOUT){
+    private void updateDualWielding() {
+        if (isDualWielding) {
+            if (ticksSinceLastSwing > DUAL_WIELD_TIMEOUT) {
                 endDualWieldSequence();
             } else {
                 ticksSinceLastSwing++;
@@ -1258,6 +1259,33 @@ public class PlayerData implements IPlayerData {
         }
     }
 
+    private void rebuildActiveToggleMap() {
+        for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
+            ResourceLocation abilityId = getAbilityInSlot(i);
+            PlayerAbility ability = MKURegistry.getAbility(abilityId);
+            if (ability instanceof PlayerToggleAbility && player != null) {
+                PlayerToggleAbility toggle = (PlayerToggleAbility) ability;
+                if (player.isPotionActive(toggle.getToggleEffect()))
+                    setToggleGroupAbility(toggle.getToggleGroupId(), toggle);
+            }
+        }
+    }
+
+    private void checkPassiveEffects() {
+        player.getActivePotionMap().forEach((p, e) -> {
+            if (p instanceof SpellPotionBase) {
+                SpellPotionBase sp = (SpellPotionBase)p;
+                if (!sp.canPersistAcrossSessions()) {
+                    SpellCast cast = sp.createReapplicationCast(player);
+                    if (cast != null) {
+                        // Force PotionEffect combination so it will call add/remove of potion attributes
+                        player.addPotionEffect(cast.toPotionEffect(e.getDuration(), e.getAmplifier()));
+                    }
+                }
+            }
+        });
+    }
+
     @Override
     public void activateClass(ResourceLocation classId) {
 
@@ -1312,9 +1340,7 @@ public class PlayerData implements IPlayerData {
         // If no class, default to vanilla behaviour of wearing anything
         // Then check the current class if it's allowed
         // Then check for special exceptions granted by other means
-        return effective == null ||
-                effective.canWear(material) ||
-                alwaysAllowedArmorMaterials.contains(material);
+        return effective == null || effective.canWear(material);
     }
 
     @Override
