@@ -35,7 +35,7 @@ public class PlayerFormulas {
     }
 
     public static float getMeleeCritChanceForItem(IPlayerData data, EntityPlayerMP player, ItemStack item) {
-        return data.getMeleeCritChance() + ItemUtils.getCritChanceForItem(item);
+        return ItemUtils.getCritChanceForItem(item);
     }
 
     public static float getRangedCritChanceForEntity(IPlayerData data, EntityPlayerMP player, Entity entity){
