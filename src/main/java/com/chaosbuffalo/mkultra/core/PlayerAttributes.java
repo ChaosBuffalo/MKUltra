@@ -1,6 +1,5 @@
 package com.chaosbuffalo.mkultra.core;
 
-import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.ai.attributes.RangedAttribute;
 
 public class PlayerAttributes {

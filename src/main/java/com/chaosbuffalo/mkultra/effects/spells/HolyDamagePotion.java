@@ -43,7 +43,7 @@ public class HolyDamagePotion extends SpellPotionBase {
 
     @Override
     public void doEffect(Entity applier, Entity caster, EntityLivingBase target, int amplifier, SpellCast cast) {
-        if (target.isEntityUndead()){
+        if (target.isEntityUndead()) {
             float damage = cast.getScaledValue(amplifier);
             target.attackEntityFrom(MKDamageSource.causeIndirectMagicDamage(HOLY_DMG_ABILITY_ID,
                     applier, caster), damage);

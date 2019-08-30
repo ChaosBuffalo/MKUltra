@@ -69,7 +69,7 @@ public class NaturesRemedyPotion extends SpellPeriodicPotionBase {
 
         float value = cast.getScaledValue(amplifier);
         if (caster instanceof EntityPlayerMP) {
-            IPlayerData data = MKUPlayerData.get((EntityPlayerMP)caster);
+            IPlayerData data = MKUPlayerData.get((EntityPlayerMP) caster);
             if (data != null) {
                 value = PlayerFormulas.applyHealBonus(data, value);
             }

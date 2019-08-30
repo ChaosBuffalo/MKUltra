@@ -38,7 +38,7 @@ public class ItemAttributeArmor extends ItemArmor {
         this.setTranslationKey(unlocalizedName);
     }
 
-    public ItemAttributeArmor addAttribute(ItemAttributeEntry entry){
+    public ItemAttributeArmor addAttribute(ItemAttributeEntry entry) {
         this.attributes.add(entry);
         return this;
     }
@@ -47,10 +47,10 @@ public class ItemAttributeArmor extends ItemArmor {
     public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
         Multimap<String, AttributeModifier> mods = super.getAttributeModifiers(slot, stack);
         if (slot == this.armorType) {
-            for (ItemAttributeEntry attr_entry : attributes){
+            for (ItemAttributeEntry attr_entry : attributes) {
                 AttributeModifier mod = new AttributeModifier(uuids.get(this.armorType),
                         attr_entry.attr.getDescription(), attr_entry.amount, attr_entry.operation)
-                    .setSaved(false);
+                        .setSaved(false);
                 mods.put(attr_entry.attr.getName(), mod);
             }
         }

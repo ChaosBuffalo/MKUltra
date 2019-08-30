@@ -9,7 +9,6 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
 public class MKButton extends MKWidget {
     protected static final ResourceLocation BUTTON_TEXTURES = new ResourceLocation("textures/gui/widgets.png");
@@ -22,19 +21,19 @@ public class MKButton extends MKWidget {
         this(x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT, buttonText);
     }
 
-    public MKButton(String buttonText, int width, int height){
+    public MKButton(String buttonText, int width, int height) {
         this(0, 0, width, height, buttonText);
     }
 
-    public MKButton(String buttonText){
+    public MKButton(String buttonText) {
         this(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT, buttonText);
     }
 
-    public MKButton(String buttonText, int height){
+    public MKButton(String buttonText, int height) {
         this(0, 0, DEFAULT_WIDTH, height, buttonText);
     }
 
-    public MKButton(int width, String buttonText){
+    public MKButton(int width, String buttonText) {
         this(0, 0, width, DEFAULT_HEIGHT, buttonText);
     }
 
@@ -43,15 +42,15 @@ public class MKButton extends MKWidget {
         this.buttonText = buttonText;
     }
 
-    public MKButton setPressedCallback(BiFunction<MKButton, Integer, Boolean> callback){
+    public MKButton setPressedCallback(BiFunction<MKButton, Integer, Boolean> callback) {
         this.pressedCallback = callback;
         return this;
     }
 
     @Override
-    public boolean onMousePressed(Minecraft minecraft, int mouseX, int mouseY, int mouseButton){
-        if (pressedCallback != null){
-            if (pressedCallback.apply(this, mouseButton)){
+    public boolean onMousePressed(Minecraft minecraft, int mouseX, int mouseY, int mouseButton) {
+        if (pressedCallback != null) {
+            if (pressedCallback.apply(this, mouseButton)) {
                 playPressSound(minecraft.getSoundHandler());
                 return true;
             }

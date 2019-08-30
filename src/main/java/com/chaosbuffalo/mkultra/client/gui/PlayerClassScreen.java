@@ -5,7 +5,6 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.client.gui.lib.*;
 import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.core.events.client.PlayerDataUpdateEvent;
-import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.network.packets.LevelAbilityPacket;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
@@ -66,13 +65,13 @@ public class PlayerClassScreen extends MKScreen {
         STAT_PANEL_ATTRIBUTES.add(PlayerAttributes.BUFF_DURATION);
     }
 
-    public PlayerClassScreen(){
+    public PlayerClassScreen() {
         super();
     }
 
     @SubscribeEvent
     public void handlePlayerDataUpdate(PlayerDataUpdateEvent event) {
-        if (passivePanel != null){
+        if (passivePanel != null) {
             mainRoot.removeWidget(passivePanel);
         }
         int xPos = width / 2 - PANEL_WIDTH / 2;
@@ -83,7 +82,7 @@ public class PlayerClassScreen extends MKScreen {
         MKWidget passiveTray = drawPassivePanel(pData, xPos + STAT_PANEL_START_X,
                 yPos + STAT_PANEL_START_Y + STAT_PANEL_HEIGHT + 4);
         passivePanel = passiveTray;
-        if (passiveTray != null){
+        if (passiveTray != null) {
             mainRoot.addWidget(passiveTray);
         }
     }
@@ -221,13 +220,13 @@ public class PlayerClassScreen extends MKScreen {
         MKWidget passiveTray = drawPassivePanel(pData, xPos + STAT_PANEL_START_X,
                 yPos + STAT_PANEL_START_Y + STAT_PANEL_HEIGHT + 4);
         passivePanel = passiveTray;
-        if (passiveTray != null){
+        if (passiveTray != null) {
             mainRoot.addWidget(passiveTray);
         }
         setState("main");
     }
 
-    public Boolean pressUpButton(MKButton button, Integer mouseButton, int abilityIndex){
+    public Boolean pressUpButton(MKButton button, Integer mouseButton, int abilityIndex) {
         IPlayerData pData = MKUPlayerData.get(mc.player);
         if (pData == null)
             return true;
@@ -242,7 +241,7 @@ public class PlayerClassScreen extends MKScreen {
         return true;
     }
 
-    public Boolean pressDownButton(MKButton button, Integer mouseButton, int abilityIndex){
+    public Boolean pressDownButton(MKButton button, Integer mouseButton, int abilityIndex) {
         IPlayerData pData = MKUPlayerData.get(mc.player);
         if (pData == null)
             return true;
@@ -273,9 +272,9 @@ public class PlayerClassScreen extends MKScreen {
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
-    private MKWidget drawPassivePanel(IPlayerData pData, int xPos, int yPos){
+    private MKWidget drawPassivePanel(IPlayerData pData, int xPos, int yPos) {
         List<ResourceLocation> passives = pData.getActivePassives();
-        if (passives == null){
+        if (passives == null) {
             return null;
         } else {
             MKWidget root = new MKWidget(xPos, yPos, STAT_PANEL_WIDTH,
@@ -289,17 +288,17 @@ public class PlayerClassScreen extends MKScreen {
             layout.doSetWidth(true).setMarginTop(4);
             root.addWidget(layout);
             int passiveCount = 0;
-            for (ResourceLocation passive : passives){
+            for (ResourceLocation passive : passives) {
                 PassiveAbilityButton button;
-                if (passive.equals(MKURegistry.INVALID_ABILITY)){
+                if (passive.equals(MKURegistry.INVALID_ABILITY)) {
                     button = new PassiveAbilityButton(null, pData, passiveCount, 0, 0);
                 } else {
                     PlayerAbility ability = MKURegistry.getAbility(passive);
-                    if (ability instanceof PlayerPassiveAbility){
+                    if (ability instanceof PlayerPassiveAbility) {
                         button = new PassiveAbilityButton((PlayerPassiveAbility) ability,
-                                pData, passiveCount,0, 0);
+                                pData, passiveCount, 0, 0);
                     } else {
-                        button = new PassiveAbilityButton(null, pData, passiveCount,0, 0);
+                        button = new PassiveAbilityButton(null, pData, passiveCount, 0, 0);
                     }
                 }
                 passiveCount++;
@@ -330,8 +329,8 @@ public class PlayerClassScreen extends MKScreen {
         unspentPoints.setColor(16777215);
         MKText talentPoints = new MKText(mc.fontRenderer,
                 String.format("%s: %d/%d",
-                I18n.format("mkultra.ui_msg.talent_points"),
-                pData.getUnspentTalentPoints(), pData.getTotalTalentPoints()));
+                        I18n.format("mkultra.ui_msg.talent_points"),
+                        pData.getUnspentTalentPoints(), pData.getTotalTalentPoints()));
         talentPoints.setColor(16777215);
         String armorClassString = String.format("%s: %s",
                 I18n.format("mkultra.ui_msg.armor_class"),
@@ -356,7 +355,7 @@ public class PlayerClassScreen extends MKScreen {
                     pData.getArmorClass().getName()));
         });
 
-        for (IAttribute attr : STAT_PANEL_ATTRIBUTES){
+        for (IAttribute attr : STAT_PANEL_ATTRIBUTES) {
             IAttributeInstance attribute = attributes.getAttributeInstance(attr);
             String text = String.format("%s: %.2f", I18n.format(String.format("attribute.name.%s",
                     attribute.getAttribute().getName())), attribute.getAttributeValue());
@@ -365,9 +364,9 @@ public class PlayerClassScreen extends MKScreen {
                 String newText = String.format("%s: %.2f", I18n.format(String.format("attribute.name.%s",
                         attribute.getAttribute().getName())), attribute.getAttributeValue());
                 textWidget.setText(newText);
-                if (attribute.getAttributeValue() < attribute.getBaseValue()){
+                if (attribute.getAttributeValue() < attribute.getBaseValue()) {
                     textWidget.setColor(13111115);
-                } else if (attribute.getAttributeValue() > attribute.getBaseValue()){
+                } else if (attribute.getAttributeValue() > attribute.getBaseValue()) {
                     textWidget.setColor(3334475);
                 } else {
                     textWidget.setColor(16777215);

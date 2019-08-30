@@ -40,7 +40,7 @@ public class FlameWave extends MobAbility {
     }
 
     @Override
-    public float getDistance(){
+    public float getDistance() {
         return 3.0f;
     }
 

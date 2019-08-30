@@ -7,7 +7,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 
-public abstract class PlayerPassiveAbility  extends PlayerAbility {
+public abstract class PlayerPassiveAbility extends PlayerAbility {
 
     public PlayerPassiveAbility(String domain, String id) {
         this(new ResourceLocation(domain, id));

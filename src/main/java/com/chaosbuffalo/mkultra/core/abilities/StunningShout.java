@@ -2,9 +2,9 @@ package com.chaosbuffalo.mkultra.core.abilities;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKDamageSource;
+import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.effects.spells.AIStunPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
@@ -61,8 +61,8 @@ public class StunningShout extends PlayerAbility {
         Vec3d to = from.add(look);
 
         Vec3d lookVec = entity.getLookVec();
-        for (Entity ent : getTargetsInLine(entity, from, to, true, 2.5f)){
-            if (ent instanceof EntityLivingBase){
+        for (Entity ent : getTargetsInLine(entity, from, to, true, 2.5f)) {
+            if (ent instanceof EntityLivingBase) {
                 EntityLivingBase targetEntity = (EntityLivingBase) ent;
                 targetEntity.addPotionEffect(
                         new PotionEffect(MobEffects.SLOWNESS,

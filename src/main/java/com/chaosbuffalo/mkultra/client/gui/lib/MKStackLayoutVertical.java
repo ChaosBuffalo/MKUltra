@@ -11,41 +11,41 @@ public class MKStackLayoutVertical extends MKLayout {
         doSetWidth = false;
     }
 
-    public MKStackLayoutVertical doSetWidth(boolean value){
+    public MKStackLayoutVertical doSetWidth(boolean value) {
         doSetWidth = value;
         return this;
     }
 
-    public boolean shouldSetWidth(){
+    public boolean shouldSetWidth() {
         return doSetWidth;
     }
 
     @Override
-    public void setupLayoutStartState(){
+    public void setupLayoutStartState() {
         currentY = getY();
         currentY += getMarginTop();
     }
 
     @Override
-    public void doLayout(MKWidget widget, int index){
+    public void doLayout(MKWidget widget, int index) {
         widget.setY(currentY);
         widget.setX(getX() + getMarginLeft() + (int) ((getWidth() - getMarginLeft() -
                 getMarginRight()) * widget.getPosHintX()));
-        if (shouldSetWidth()){
-            widget.setWidth((int)((getWidth()  - getMarginRight() - getMarginLeft()) * widget.getSizeHintWidth()));
+        if (shouldSetWidth()) {
+            widget.setWidth((int) ((getWidth() - getMarginRight() - getMarginLeft()) * widget.getSizeHintWidth()));
         }
         currentY += widget.getHeight() + getPaddingBot() + getPaddingTop();
     }
 
     @Override
-    public boolean addWidget(MKWidget widget){
+    public boolean addWidget(MKWidget widget) {
         super.addWidget(widget);
         setHeight(getHeight() + widget.getHeight() + getPaddingTop() + getPaddingBot());
         return true;
     }
 
     @Override
-    public void removeWidget(MKWidget widget){
+    public void removeWidget(MKWidget widget) {
         super.removeWidget(widget);
         setHeight(getHeight() - widget.getHeight() - getPaddingTop() - getPaddingBot());
     }
@@ -82,12 +82,12 @@ public class MKStackLayoutVertical extends MKLayout {
     public void recomputeChildren() {
         int height = getMarginTop();
         int i = 0;
-        for (MKWidget child : children){
+        for (MKWidget child : children) {
             height += child.getHeight();
-            if (i != 0){
+            if (i != 0) {
                 height += getPaddingTop();
             }
-            if (i != children.size() - 1){
+            if (i != children.size() - 1) {
                 height += getPaddingBot();
             }
             i++;

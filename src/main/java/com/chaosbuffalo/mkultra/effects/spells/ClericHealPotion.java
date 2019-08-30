@@ -65,14 +65,14 @@ public class ClericHealPotion extends SpellPotionBase {
         float value = cast.getScaledValue(amplifier);
 
         if (caster instanceof EntityPlayerMP) {
-            IPlayerData data = MKUPlayerData.get((EntityPlayerMP)caster);
+            IPlayerData data = MKUPlayerData.get((EntityPlayerMP) caster);
             if (data != null) {
                 value = PlayerFormulas.applyHealBonus(data, value);
             }
         }
 
         if (target.isEntityUndead()) {
-            if (MKConfig.gameplay.HEALS_DAMAGE_UNDEAD){
+            if (MKConfig.gameplay.HEALS_DAMAGE_UNDEAD) {
                 target.attackEntityFrom(MKDamageSource.causeIndirectMagicDamage(
                         new Heal().getAbilityId(), applier, caster), MKConfig.gameplay.HEAL_DAMAGE_MULTIPLIER * value);
             }

@@ -14,7 +14,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
 
-
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -42,7 +41,7 @@ public class MKURegistry {
     public static ResourceLocation INVALID_CLASS = new ResourceLocation(MKUltra.MODID, "class.invalid");
     public static ResourceLocation INVALID_ABILITY = new ResourceLocation(MKUltra.MODID, "ability.invalid");
     public static ResourceLocation INVALID_MOB = new ResourceLocation(MKUltra.MODID, "mob.invalid");
-    public static final MobDefinition EMPTY_MOB = new MobDefinition(INVALID_MOB,null);
+    public static final MobDefinition EMPTY_MOB = new MobDefinition(INVALID_MOB, null);
     public static ResourceLocation INVALID_MOB_ABILITY = new ResourceLocation(MKUltra.MODID, "mob_ability.invalid");
     public static ResourceLocation INVALID_SPAWN_LIST = new ResourceLocation(MKUltra.MODID, "spawn_list.invalid");
     public static ResourceLocation INVALID_FACTION = new ResourceLocation(MKUltra.MODID, "mob_faction.invalid");
@@ -53,27 +52,31 @@ public class MKURegistry {
     }
 
     @Nullable
-    public static ItemOption getItemOption(ResourceLocation name){
+    public static ItemOption getItemOption(ResourceLocation name) {
         return REGISTRY_MOB_ITEMS.getValue(name);
     }
 
     @Nullable
-    public static AttributeRange getAttributeRange(ResourceLocation name){
+    public static AttributeRange getAttributeRange(ResourceLocation name) {
         return REGISTRY_MOB_ATTRS.getValue(name);
     }
 
     @Nullable
-    public static AIGenerator getAIGenerator(ResourceLocation name){ return REGISTRY_AI_GENERATORS.getValue(name); }
+    public static AIGenerator getAIGenerator(ResourceLocation name) {
+        return REGISTRY_AI_GENERATORS.getValue(name);
+    }
 
     @Nullable
-    public static CustomSetter getCustomSetter(ResourceLocation name) { return REGISTRY_CUSTOM_SETTERS.getValue(name); }
+    public static CustomSetter getCustomSetter(ResourceLocation name) {
+        return REGISTRY_CUSTOM_SETTERS.getValue(name);
+    }
 
     @Nullable
     public static MobAbility getMobAbility(ResourceLocation abilityId) {
         return REGISTRY_MOB_ABILITIES.getValue(abilityId);
     }
 
-    public static MobDefinition getMobDefinition(ResourceLocation name){
+    public static MobDefinition getMobDefinition(ResourceLocation name) {
         MobDefinition val = REGISTRY_MOB_DEF.getValue(name);
         if (val != null) {
             return val;
@@ -82,17 +85,17 @@ public class MKURegistry {
     }
 
     @Nullable
-    public static AIModifier getAIModifier(ResourceLocation name){
+    public static AIModifier getAIModifier(ResourceLocation name) {
         return REGISTRY_MOB_AI_MODS.getValue(name);
     }
 
     @Nullable
-    public static MobFaction getFaction(ResourceLocation name){
+    public static MobFaction getFaction(ResourceLocation name) {
         return REGISTRY_MOB_FACTIONS.getValue(name);
     }
 
     @Nullable
-    public static SpawnList getSpawnList(ResourceLocation name){
+    public static SpawnList getSpawnList(ResourceLocation name) {
         return REGISTRY_SPAWN_LISTS.getValue(name);
     }
 
@@ -101,20 +104,20 @@ public class MKURegistry {
         return REGISTRY_TALENTS.getValue(name);
     }
 
-    public static ArrayList<RangedAttributeTalent> getAllAttributeTalents(){
+    public static ArrayList<RangedAttributeTalent> getAllAttributeTalents() {
         ArrayList<RangedAttributeTalent> talents = new ArrayList<>();
-        for (BaseTalent talent : REGISTRY_TALENTS.getValuesCollection()){
-            if (talent.getTalentType() == BaseTalent.TalentType.ATTRIBUTE){
+        for (BaseTalent talent : REGISTRY_TALENTS.getValuesCollection()) {
+            if (talent.getTalentType() == BaseTalent.TalentType.ATTRIBUTE) {
                 talents.add((RangedAttributeTalent) talent);
             }
         }
         return talents;
     }
 
-    public static ArrayList<PassiveAbilityTalent> getAllPassiveTalents(){
+    public static ArrayList<PassiveAbilityTalent> getAllPassiveTalents() {
         ArrayList<PassiveAbilityTalent> talents = new ArrayList<>();
-        for (BaseTalent talent : REGISTRY_TALENTS.getValuesCollection()){
-            if (talent.getTalentType() == BaseTalent.TalentType.PASSIVE){
+        for (BaseTalent talent : REGISTRY_TALENTS.getValuesCollection()) {
+            if (talent.getTalentType() == BaseTalent.TalentType.PASSIVE) {
                 talents.add((PassiveAbilityTalent) talent);
             }
         }
@@ -143,7 +146,7 @@ public class MKURegistry {
     }
 
     @Nullable
-    public static AttributeSetter getAttributeSetter(ResourceLocation name){
+    public static AttributeSetter getAttributeSetter(ResourceLocation name) {
         return REGISTRY_ATTRIBUTE_SETTERS.getValue(name);
     }
 

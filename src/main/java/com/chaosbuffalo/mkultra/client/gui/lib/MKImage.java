@@ -4,7 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 
-public class MKImage extends MKWidget{
+public class MKImage extends MKWidget {
     private ResourceLocation imageLoc;
     private int texU;
     private int texV;
@@ -20,39 +20,39 @@ public class MKImage extends MKWidget{
         texHeight = height;
     }
 
-    public MKImage setTexU(int value){
+    public MKImage setTexU(int value) {
         texU = value;
         return this;
     }
 
-    public MKImage setTexV(int value){
+    public MKImage setTexV(int value) {
         texV = value;
         return this;
     }
 
-    public int getTexU(){
+    public int getTexU() {
         return texU;
     }
 
-    public int getTexV(){
+    public int getTexV() {
         return texV;
     }
 
-    public MKImage setTexWidth(int value){
+    public MKImage setTexWidth(int value) {
         texWidth = value;
         return this;
     }
 
-    public MKImage setTexHeight(int value){
+    public MKImage setTexHeight(int value) {
         texHeight = value;
         return this;
     }
 
-    public int getTexWidth(){
+    public int getTexWidth() {
         return texWidth;
     }
 
-    public int getTexHeight(){
+    public int getTexHeight() {
         return texHeight;
     }
 

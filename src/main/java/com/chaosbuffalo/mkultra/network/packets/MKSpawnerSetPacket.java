@@ -39,7 +39,7 @@ public class MKSpawnerSetPacket implements IMessage {
         pos = pb.readBlockPos();
         spawnTime = pb.readInt();
         spawnListId = pb.readResourceLocation();
-        if (spawnListId.equals(MKURegistry.INVALID_SPAWN_LIST)){
+        if (spawnListId.equals(MKURegistry.INVALID_SPAWN_LIST)) {
             spawnListId = null;
         }
     }
@@ -51,7 +51,7 @@ public class MKSpawnerSetPacket implements IMessage {
         pb.writeString(spawnerType);
         pb.writeBlockPos(pos);
         pb.writeInt(spawnTime);
-        if (spawnListId != null){
+        if (spawnListId != null) {
             pb.writeResourceLocation(spawnListId);
         } else {
             pb.writeResourceLocation(MKURegistry.INVALID_SPAWN_LIST);

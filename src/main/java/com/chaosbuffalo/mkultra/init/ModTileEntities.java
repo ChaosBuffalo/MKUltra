@@ -1,4 +1,5 @@
 package com.chaosbuffalo.mkultra.init;
+
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.tiles.TileEntityMKSpawner;
 import com.chaosbuffalo.mkultra.tiles.TileEntityNPCSpawner;

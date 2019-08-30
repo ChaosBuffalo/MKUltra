@@ -2,7 +2,8 @@ package com.chaosbuffalo.mkultra.blocks;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.tiles.TileEntityNPCSpawner;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -42,8 +43,7 @@ public class NPCSpawnerBlock extends Block implements ITileEntityProvider {
 
     @Override
     @Deprecated
-    public boolean isOpaqueCube(IBlockState state)
-    {
+    public boolean isOpaqueCube(IBlockState state) {
         return false;
     }
 
@@ -54,8 +54,7 @@ public class NPCSpawnerBlock extends Block implements ITileEntityProvider {
 
     @Override
     @Deprecated
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
-    {
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         return BLOCK_AABB;
     }
 
@@ -67,14 +66,14 @@ public class NPCSpawnerBlock extends Block implements ITileEntityProvider {
 
     @Override
     public void getDrops(NonNullList<ItemStack> drops, IBlockAccess access, BlockPos pos, IBlockState blockState, int p_getDrops_5_) {
-        TileEntity tileEntity =  access.getTileEntity(pos);
+        TileEntity tileEntity = access.getTileEntity(pos);
 
-        if (tileEntity != null && tileEntity instanceof TileEntityNPCSpawner){
+        if (tileEntity != null && tileEntity instanceof TileEntityNPCSpawner) {
             TileEntityNPCSpawner npcSpawner = (TileEntityNPCSpawner) tileEntity;
             ResourceLocation itemToDrop = npcSpawner.getItemToDrop();
-            if (itemToDrop != null){
+            if (itemToDrop != null) {
                 Item item = Item.REGISTRY.getObject(itemToDrop);
-                if (item != null){
+                if (item != null) {
                     ItemStack stack = new ItemStack(item);
                     stack.setTagCompound(npcSpawner.serializeForItem());
                     drops.add(stack);
@@ -98,8 +97,8 @@ public class NPCSpawnerBlock extends Block implements ITileEntityProvider {
 
     @Override
     public void breakBlock(World world, BlockPos pos, IBlockState p_breakBlock_3_) {
-        TileEntity tileEntity =  world.getTileEntity(pos);
-        if (tileEntity != null && tileEntity instanceof TileEntityNPCSpawner){
+        TileEntity tileEntity = world.getTileEntity(pos);
+        if (tileEntity != null && tileEntity instanceof TileEntityNPCSpawner) {
             TileEntityNPCSpawner npcSpawner = (TileEntityNPCSpawner) tileEntity;
             npcSpawner.cleanupMob();
         }

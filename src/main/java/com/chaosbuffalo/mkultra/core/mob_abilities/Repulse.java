@@ -39,12 +39,12 @@ public class Repulse extends MobAbility {
     }
 
     @Override
-    public float getDistance(){
+    public float getDistance() {
         return 3.0f;
     }
 
     @Override
-    public int getCastTime(){
+    public int getCastTime() {
         return GameConstants.TICKS_PER_SECOND / 2;
     }
 

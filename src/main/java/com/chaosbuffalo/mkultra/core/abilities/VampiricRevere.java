@@ -1,9 +1,9 @@
 package com.chaosbuffalo.mkultra.core.abilities;
 
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.effects.spells.VampiricReverePotion;
-import com.chaosbuffalo.mkultra.core.PlayerToggleAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
+import com.chaosbuffalo.mkultra.core.PlayerToggleAbility;
+import com.chaosbuffalo.mkultra.effects.spells.VampiricReverePotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
@@ -46,7 +46,9 @@ public class VampiricRevere extends PlayerToggleAbility {
     }
 
     @Override
-    public Potion getToggleEffect() { return VampiricReverePotion.INSTANCE; }
+    public Potion getToggleEffect() {
+        return VampiricReverePotion.INSTANCE;
+    }
 
     @Override
     public int getRequiredLevel(int currentRank) {

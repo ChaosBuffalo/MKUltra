@@ -1,17 +1,10 @@
 package com.chaosbuffalo.mkultra.mob_ai;
 
 import com.chaosbuffalo.mkultra.core.IMobData;
-import com.chaosbuffalo.mkultra.log.Log;
 import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.ai.EntityAIHurtByTarget;
-import net.minecraft.entity.ai.EntityAITasks;
-import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.pathfinding.Path;
 import net.minecraft.util.math.BlockPos;
 
 public class EntityAIReturnToSpawn extends EntityAIBase {
@@ -31,12 +24,12 @@ public class EntityAIReturnToSpawn extends EntityAIBase {
     }
 
     public boolean shouldExecute() {
-        if (mobData.hasSpawnPoint()){
+        if (mobData.hasSpawnPoint()) {
             double distFromSpawn = creature.getDistanceSq(mobData.getSpawnPoint());
-            if (distFromSpawn <= 4.0){
+            if (distFromSpawn <= 4.0) {
                 return false;
             }
-            if (distFromSpawn > LEASH_RANGE * LEASH_RANGE || creature.getAttackTarget() == null){
+            if (distFromSpawn > LEASH_RANGE * LEASH_RANGE || creature.getAttackTarget() == null) {
                 return true;
             }
         }
@@ -58,7 +51,7 @@ public class EntityAIReturnToSpawn extends EntityAIBase {
         BlockPos spawnPoint = mobData.getSpawnPoint();
         double distFromSpawn = creature.getDistanceSq(spawnPoint);
         IAttributeInstance followRange = creature.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE);
-        if (distFromSpawn >= followRange.getAttributeValue() * followRange.getAttributeValue()){
+        if (distFromSpawn >= followRange.getAttributeValue() * followRange.getAttributeValue()) {
 //            Log.info("Should teleport home.");
             creature.setPositionAndUpdate(spawnPoint.getX(), spawnPoint.getY(), spawnPoint.getZ());
         }

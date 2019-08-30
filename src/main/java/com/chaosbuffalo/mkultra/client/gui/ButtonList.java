@@ -19,26 +19,26 @@ public class ButtonList<E> extends GuiListExtended {
                       Minecraft client,
                       int width, int height,
                       int top, int bottom,
-                      int entryHeight, int left){
+                      int entryHeight, int left) {
         super(client, width, height, top, bottom, entryHeight);
         this.list = new ArrayList<>();
-        for (E item : list){
+        for (E item : list) {
             this.list.add(new ButtonListEntry<>(item, handler, listId, getHumanReadable, client));
         }
         this.left = left;
         this.right = left + width;
     }
+
     @Override
-    protected void elementClicked(int slotIndex, boolean isDoubleClick, int mouseX, int mouseY){
+    protected void elementClicked(int slotIndex, boolean isDoubleClick, int mouseX, int mouseY) {
     }
 
-    protected int getScrollBarX()
-    {
+    protected int getScrollBarX() {
         return this.left + this.width - 6;
     }
 
     @Override
-    protected void drawContainerBackground(Tessellator tessellator){
+    protected void drawContainerBackground(Tessellator tessellator) {
 
     }
 

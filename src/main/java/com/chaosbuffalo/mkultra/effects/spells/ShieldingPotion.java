@@ -3,12 +3,9 @@ package com.chaosbuffalo.mkultra.effects.spells;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.PassiveEffect;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
-import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
-import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.attributes.AbstractAttributeMap;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
@@ -45,13 +42,13 @@ public class ShieldingPotion extends PassiveEffect {
 
     @Override
     public void onPotionAdd(SpellCast cast, EntityLivingBase target, AbstractAttributeMap attributes, int amplifier) {
-        target.setAbsorptionAmount(target.getAbsorptionAmount() + (float)(amplifier));
+        target.setAbsorptionAmount(target.getAbsorptionAmount() + (float) (amplifier));
 
     }
 
     @Override
     public void onPotionRemove(SpellCast cast, EntityLivingBase target, AbstractAttributeMap attributes, int amplifier) {
-        target.setAbsorptionAmount(target.getAbsorptionAmount() - (float)(amplifier));
+        target.setAbsorptionAmount(target.getAbsorptionAmount() - (float) (amplifier));
     }
 
 }

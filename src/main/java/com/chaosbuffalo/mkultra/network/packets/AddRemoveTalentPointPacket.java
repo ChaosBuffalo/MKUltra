@@ -15,12 +15,13 @@ public class AddRemoveTalentPointPacket implements IMessage {
     private String line;
     private int index;
     private Mode mode;
+
     public enum Mode {
         SPEND,
         REFUND
     }
 
-    public AddRemoveTalentPointPacket(){
+    public AddRemoveTalentPointPacket() {
 
     }
 
@@ -60,9 +61,9 @@ public class AddRemoveTalentPointPacket implements IMessage {
             IPlayerData data = MKUPlayerData.get(player);
             if (data != null) {
                 Log.info("Handling packet for %s %s, %s, %d", msg.mode.toString(), msg.talentTree.toString(), msg.line, msg.index);
-                if (msg.mode == Mode.REFUND){
+                if (msg.mode == Mode.REFUND) {
                     data.refundTalentPoint(msg.talentTree, msg.line, msg.index);
-                } else if (msg.mode == Mode.SPEND){
+                } else if (msg.mode == Mode.SPEND) {
                     data.spendTalentPoint(msg.talentTree, msg.line, msg.index);
                 }
             }

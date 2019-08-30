@@ -12,40 +12,40 @@ public class MKStackLayoutHorizontal extends MKLayout {
         doSetHeight = false;
     }
 
-    public MKStackLayoutHorizontal doSetHeight(boolean value){
+    public MKStackLayoutHorizontal doSetHeight(boolean value) {
         doSetHeight = value;
         return this;
     }
 
-    public boolean shouldSetHeight(){
+    public boolean shouldSetHeight() {
         return doSetHeight;
     }
 
     @Override
-    public void setupLayoutStartState(){
+    public void setupLayoutStartState() {
         currentX = getX();
         currentX += getMarginLeft();
     }
 
     @Override
-    public void doLayout(MKWidget widget, int index){
+    public void doLayout(MKWidget widget, int index) {
         widget.setX(currentX);
         widget.setY(getY() + getMarginTop() + (int) ((getHeight() - getMarginTop() - getMarginBot()) * widget.getPosHintY()));
-        if (shouldSetHeight()){
-            widget.setHeight((int)((getHeight()  - getMarginTop() - getMarginBot()) * widget.getSizeHintHeight()));
+        if (shouldSetHeight()) {
+            widget.setHeight((int) ((getHeight() - getMarginTop() - getMarginBot()) * widget.getSizeHintHeight()));
         }
         currentX += widget.getWidth() + getPaddingLeft() + getPaddingRight();
     }
 
     @Override
-    public boolean addWidget(MKWidget widget){
+    public boolean addWidget(MKWidget widget) {
         super.addWidget(widget);
         setWidth(getWidth() + widget.getWidth() + getPaddingLeft() + getPaddingRight());
         return true;
     }
 
     @Override
-    public void removeWidget(MKWidget widget){
+    public void removeWidget(MKWidget widget) {
         super.removeWidget(widget);
         setWidth(getWidth() - widget.getWidth() - getPaddingLeft() - getPaddingRight());
     }
@@ -82,12 +82,12 @@ public class MKStackLayoutHorizontal extends MKLayout {
     public void recomputeChildren() {
         int width = getMarginLeft();
         int i = 0;
-        for (MKWidget child : children){
+        for (MKWidget child : children) {
             width += child.getWidth();
-            if (i != 0){
+            if (i != 0) {
                 width += getPaddingLeft();
             }
-            if (i != children.size() - 1){
+            if (i != children.size() - 1) {
                 width += getPaddingRight();
             }
             i++;

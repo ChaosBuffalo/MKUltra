@@ -49,10 +49,10 @@ public class EntityCleansingSeedProjectile extends EntityBaseProjectile {
         if (entity instanceof EntityPlayer && result.entityHit instanceof EntityLivingBase) {
             EntityLivingBase targetEntity = (EntityLivingBase) result.entityHit;
 
-            if (Targeting.isValidTarget(Targeting.TargetType.FRIENDLY, getThrower(), targetEntity, false)){
+            if (Targeting.isValidTarget(Targeting.TargetType.FRIENDLY, getThrower(), targetEntity, false)) {
                 targetEntity.addPotionEffect(CurePotion.Create(entity).setTarget(targetEntity)
                         .toPotionEffect(level));
-            } else if (Targeting.isValidTarget(Targeting.TargetType.ENEMY, getThrower(), targetEntity, true)){
+            } else if (Targeting.isValidTarget(Targeting.TargetType.ENEMY, getThrower(), targetEntity, true)) {
                 targetEntity.attackEntityFrom(MKDamageSource.causeIndirectMagicDamage(
                         CleansingSeed.INSTANCE.getAbilityId(), this, getThrower()),
                         CleansingSeed.BASE_DAMAGE + level * CleansingSeed.DAMAGE_SCALE);

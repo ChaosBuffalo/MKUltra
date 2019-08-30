@@ -46,7 +46,7 @@ public class FlameBlade extends MobAbility {
     }
 
     @Override
-    public int getCastTime(){
+    public int getCastTime() {
         return GameConstants.TICKS_PER_SECOND / 2;
     }
 
@@ -65,10 +65,10 @@ public class FlameBlade extends MobAbility {
     }
 
     @Override
-    public boolean shouldCast(EntityLivingBase caster, EntityLivingBase target){
-        if (caster instanceof EntityCreature){
+    public boolean shouldCast(EntityLivingBase caster, EntityLivingBase target) {
+        if (caster instanceof EntityCreature) {
             EntityCreature creature = (EntityCreature) caster;
-            if (creature.getAttackTarget() == null){
+            if (creature.getAttackTarget() == null) {
                 return false;
             }
         }

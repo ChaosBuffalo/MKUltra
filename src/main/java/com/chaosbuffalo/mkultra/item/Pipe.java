@@ -23,7 +23,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-
 import javax.annotation.Nullable;
 import java.util.List;
 
@@ -46,7 +45,7 @@ public class Pipe extends Item {
     @Override
     @Nullable
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
-        if( stack.getItem() == ModItems.pipe) {
+        if (stack.getItem() == ModItems.pipe) {
             return new PipeProvider();
         }
         return null;
@@ -54,8 +53,7 @@ public class Pipe extends Item {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
-    {
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         tooltip.add("Right click while sneaking to load the Pipe.");
         // We can't do this because Item Capabilities dont auto sync with the client. Would need to implement some kind of
         // packet.
@@ -75,18 +73,17 @@ public class Pipe extends Item {
     public ActionResult<ItemStack> onItemRightClick(World worldIn,
                                                     EntityPlayer playerIn, EnumHand hand) {
         if (!worldIn.isRemote) {
-            if (playerIn.isSneaking()){
+            if (playerIn.isSneaking()) {
                 playerIn.openGui(MKUltra.INSTANCE, ModGuiHandler.PIPE_CONTAINER_SCREEN, worldIn,
                         (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
-            } else
-            {
+            } else {
                 ItemStack pipe = playerIn.getHeldItem(hand);
                 IItemHandler inventory = pipe.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-                if (inventory != null){
+                if (inventory != null) {
                     ItemStack smokeable = inventory.getStackInSlot(0);
-                    if (!smokeable.isEmpty()){
+                    if (!smokeable.isEmpty()) {
                         PotionEffect effect_to_add = SmokeUtils.getPotionEffectForSmokeable(smokeable, playerIn);
-                        if (effect_to_add != null){
+                        if (effect_to_add != null) {
                             playerIn.addPotionEffect(effect_to_add);
                         }
                         ItemStack pipe_item = playerIn.getHeldItem(hand);

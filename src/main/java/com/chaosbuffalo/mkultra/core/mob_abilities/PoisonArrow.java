@@ -17,7 +17,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class PoisonArrow  extends MobAbility {
+public class PoisonArrow extends MobAbility {
     private static float BASE_ARROW_DAMAGE = 2.0f;
     private static float SCALE_ARROW_DAMAGE = .5f;
     private static float BASE_DAMAGE = 3.0f;
@@ -34,7 +34,7 @@ public class PoisonArrow  extends MobAbility {
     }
 
     @Override
-    public int getCastTime(){
+    public int getCastTime() {
         return GameConstants.TICKS_PER_SECOND / 2;
     }
 
@@ -49,7 +49,7 @@ public class PoisonArrow  extends MobAbility {
     }
 
     @Override
-    public float getDistance(){
+    public float getDistance() {
         return 20.0f;
     }
 
@@ -62,7 +62,7 @@ public class PoisonArrow  extends MobAbility {
         int plevel = level > 5 ? 2 : 1;
         arrow.addEffect(new PotionEffect(MobEffects.POISON, 5 * GameConstants.TICKS_PER_SECOND, plevel, false, true));
         arrow.addEffect(new PotionEffect(MobEffects.SLOWNESS, 5 * GameConstants.TICKS_PER_SECOND, plevel + 2, false, true));
-        if (level >= 5){
+        if (level >= 5) {
             arrow.addSpellCast(PoisonArrowPotion.Create(entity, 10.0f), plevel);
         }
         arrow.pickupStatus = EntityArrow.PickupStatus.DISALLOWED;

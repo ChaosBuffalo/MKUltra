@@ -34,7 +34,7 @@ public class Drown extends MobAbility {
     }
 
     @Override
-    public float getDistance(){
+    public float getDistance() {
         return 20.0f;
     }
 

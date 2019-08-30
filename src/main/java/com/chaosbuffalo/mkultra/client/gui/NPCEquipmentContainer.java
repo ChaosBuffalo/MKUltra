@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class NPCEquipmentContainer extends Container {
 
     public static ArrayList<EntityEquipmentSlot> slotTypes = new ArrayList<>();
+
     static {
         slotTypes.add(EntityEquipmentSlot.MAINHAND);
         slotTypes.add(EntityEquipmentSlot.OFFHAND);
@@ -22,6 +23,7 @@ public class NPCEquipmentContainer extends Container {
         slotTypes.add(EntityEquipmentSlot.LEGS);
         slotTypes.add(EntityEquipmentSlot.FEET);
     }
+
     private TileEntityNPCSpawner spawner;
 
 
@@ -34,29 +36,29 @@ public class NPCEquipmentContainer extends Container {
         int slot_size = 21;
 
         IItemHandler itemHandler = this.spawner.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-        for( int x = 0; x < num_slots; ++x ) {
-            addSlotToContainer( new EquipmentSlotHandler(itemHandler, iid, xPos + x * slot_size, yPos, slotTypes.get(x)));
+        for (int x = 0; x < num_slots; ++x) {
+            addSlotToContainer(new EquipmentSlotHandler(itemHandler, iid, xPos + x * slot_size, yPos, slotTypes.get(x)));
             iid++;
         }
 
         xPos = 8;
         yPos = 51;
 
-        for( int y = 0; y < 3; ++y ) {
-            for( int x = 0; x < 9; ++x ) {
-                addSlotToContainer( new Slot(p.inventory, x + y * 9 + 9, xPos + x * 18, yPos + y * 18 ));
+        for (int y = 0; y < 3; ++y) {
+            for (int x = 0; x < 9; ++x) {
+                addSlotToContainer(new Slot(p.inventory, x + y * 9 + 9, xPos + x * 18, yPos + y * 18));
             }
         }
 
         yPos = 109;
-        for( int x = 0; x < 9; ++x ) {
-            addSlotToContainer( new Slot(p.inventory, x, xPos + x * 18, yPos));
+        for (int x = 0; x < 9; ++x) {
+            addSlotToContainer(new Slot(p.inventory, x, xPos + x * 18, yPos));
         }
 
     }
 
     @Override
-    public boolean canInteractWith( EntityPlayer p ) {
+    public boolean canInteractWith(EntityPlayer p) {
         return true;
     }
 

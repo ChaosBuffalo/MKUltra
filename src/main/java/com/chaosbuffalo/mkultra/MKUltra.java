@@ -28,8 +28,8 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 
 
-@Mod(modid = MKUltra.MODID, name= MKUltra.MODNAME, version = MKUltra.VERSION,
-        dependencies="required-after:targeting_api;")
+@Mod(modid = MKUltra.MODID, name = MKUltra.MODNAME, version = MKUltra.VERSION,
+        dependencies = "required-after:targeting_api;")
 public class MKUltra {
     public static final String MODID = "mkultra";
     public static final String VERSION = "@VERSION@";
@@ -79,7 +79,7 @@ public class MKUltra {
         MKConfig.registerArmors();
         MKConfig.setupAttackSpeedWhitelist();
         GameRegistry.findRegistry(Block.class).getKeys().forEach(key -> {
-            if (key.getPath().toLowerCase().contains("fire")){
+            if (key.getPath().toLowerCase().contains("fire")) {
                 EnvironmentUtils.addFireBlock(
                         GameRegistry.findRegistry(Block.class).getValue(key)
                 );

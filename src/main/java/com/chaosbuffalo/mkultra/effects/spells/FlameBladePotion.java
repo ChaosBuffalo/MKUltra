@@ -2,7 +2,10 @@ package com.chaosbuffalo.mkultra.effects.spells;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.abilities.FlameBlade;
-import com.chaosbuffalo.mkultra.effects.*;
+import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
+import com.chaosbuffalo.mkultra.effects.PassiveEffect;
+import com.chaosbuffalo.mkultra.effects.SpellCast;
+import com.chaosbuffalo.mkultra.effects.SpellTriggers;
 import com.chaosbuffalo.mkultra.entities.projectiles.EntityFlameBladeProjectile;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.targeting_api.Targeting;
@@ -46,9 +49,8 @@ public class FlameBladePotion extends PassiveEffect {
         return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/flame_blade.png");
     }
 
-    public void onEmptyLeftClick(PlayerInteractEvent.LeftClickEmpty event, EntityPlayer player, PotionEffect effect){
-        if (player.isPotionActive(PhoenixAspectPotion.INSTANCE))
-        {
+    public void onEmptyLeftClick(PlayerInteractEvent.LeftClickEmpty event, EntityPlayer player, PotionEffect effect) {
+        if (player.isPotionActive(PhoenixAspectPotion.INSTANCE)) {
             World world = player.getEntityWorld();
             EntityFlameBladeProjectile flamep = new EntityFlameBladeProjectile(world, player);
             flamep.setAmplifier(effect.getAmplifier());
@@ -72,8 +74,7 @@ public class FlameBladePotion extends PassiveEffect {
                 .color(16737305).radius(1.0f, true)
                 .particle(EnumParticleTypes.LAVA)
                 .spawn();
-        if (player.isPotionActive(PhoenixAspectPotion.INSTANCE))
-        {
+        if (player.isPotionActive(PhoenixAspectPotion.INSTANCE)) {
             World world = player.getEntityWorld();
             EntityFlameBladeProjectile flamep = new EntityFlameBladeProjectile(world, player);
             flamep.setAmplifier(potion.getAmplifier());

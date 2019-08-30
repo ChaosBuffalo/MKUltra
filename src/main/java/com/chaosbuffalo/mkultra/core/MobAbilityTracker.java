@@ -8,47 +8,49 @@ public class MobAbilityTracker {
     private int cooldownLeft;
     private IMobData mobData;
 
-    public MobAbilityTracker(MobAbility abilityIn, IMobData mobData){
+    public MobAbilityTracker(MobAbility abilityIn, IMobData mobData) {
         cooldownLeft = 0;
         this.mobData = mobData;
         ability = abilityIn;
     }
 
-    public void update(){
-        if (cooldownLeft > 0){
+    public void update() {
+        if (cooldownLeft > 0) {
             cooldownLeft--;
         }
     }
 
-    public MobAbility getAbility(){
+    public MobAbility getAbility() {
         return ability;
     }
 
-    public boolean isAbilityOnCooldown(){
+    public boolean isAbilityOnCooldown() {
         return cooldownLeft > 0;
     }
 
-    public int getCooldown(){return cooldownLeft;}
+    public int getCooldown() {
+        return cooldownLeft;
+    }
 
-    public boolean isCooldownGreaterThanAttackTime(int attackTime){
-        if (attackTime < 0){
+    public boolean isCooldownGreaterThanAttackTime(int attackTime) {
+        if (attackTime < 0) {
             return false;
         }
 
         return cooldownLeft > attackTime;
     }
 
-    public boolean isEngageTimeGreaterThanCastTime(int engageTime){
+    public boolean isEngageTimeGreaterThanCastTime(int engageTime) {
         return engageTime >= ability.getCastTime();
     }
 
-    public void useAbility(EntityLivingBase target){
+    public void useAbility(EntityLivingBase target) {
         ability.execute(mobData.getEntity(), mobData, target, mobData.getEntity().getEntityWorld());
         cooldownLeft = ability.getCooldown();
         mobData.setTimeBetweenCasts(mobData.getEntity().getEntityWorld().rand.nextInt(mobData.getMaxTimeBetweenCasts()));
     }
 
-    public void setCooldown(int cooldown){
+    public void setCooldown(int cooldown) {
         cooldownLeft = cooldown;
     }
 }

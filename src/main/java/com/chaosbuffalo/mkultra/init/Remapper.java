@@ -88,13 +88,11 @@ public class Remapper {
 
         if (tryRemapItem(entry, mkxPath)) {
             return true;
-        }
-        else if (!Loader.isModLoaded(MKX_MOD_ID)) {
+        } else if (!Loader.isModLoaded(MKX_MOD_ID)) {
             Log.info("MKCompat not found! Dropping item %s", entry.key.toString());
             entry.ignore();
             return true;
-        }
-        else {
+        } else {
             Log.info("Failed to find remap target for %s", entry.key.toString());
             FMLCommonHandler.instance().exitJava(1, false);
         }
@@ -151,7 +149,6 @@ public class Remapper {
                     entry.ignore();
                     continue;
                 }
-
 
 
             } else if (entry.key.getNamespace().equals("minekampf")) {

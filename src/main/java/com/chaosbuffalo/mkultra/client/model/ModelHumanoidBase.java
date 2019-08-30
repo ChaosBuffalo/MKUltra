@@ -19,8 +19,7 @@ public class ModelHumanoidBase extends ModelBiped {
         this(0.0F, false);
     }
 
-    public ModelHumanoidBase(float p_i1168_1_, boolean p_i1168_2_)
-    {
+    public ModelHumanoidBase(float p_i1168_1_, boolean p_i1168_2_) {
         super(p_i1168_1_, 0.0F, 64, 32);
     }
 
@@ -29,7 +28,7 @@ public class ModelHumanoidBase extends ModelBiped {
         this.rightArmPose = ArmPose.EMPTY;
         this.leftArmPose = ArmPose.EMPTY;
         ItemStack inMainhand = entity.getHeldItem(EnumHand.MAIN_HAND);
-        if (inMainhand.getItem()instanceof ItemBow && ((EntityMobBase)entity).isSwingingArms()) {
+        if (inMainhand.getItem() instanceof ItemBow && ((EntityMobBase) entity).isSwingingArms()) {
             if (entity.getPrimaryHand() == EnumHandSide.RIGHT) {
                 this.rightArmPose = ArmPose.BOW_AND_ARROW;
             } else {
@@ -42,7 +41,7 @@ public class ModelHumanoidBase extends ModelBiped {
 
     public void setRotationAngles(float p_setRotationAngles_1_, float p_setRotationAngles_2_, float p_setRotationAngles_3_, float p_setRotationAngles_4_, float p_setRotationAngles_5_, float p_setRotationAngles_6_, Entity p_setRotationAngles_7_) {
         super.setRotationAngles(p_setRotationAngles_1_, p_setRotationAngles_2_, p_setRotationAngles_3_, p_setRotationAngles_4_, p_setRotationAngles_5_, p_setRotationAngles_6_, p_setRotationAngles_7_);
-        ItemStack itemMainhand = ((EntityLivingBase)p_setRotationAngles_7_).getHeldItemMainhand();
+        ItemStack itemMainhand = ((EntityLivingBase) p_setRotationAngles_7_).getHeldItemMainhand();
         EntityMobBase mobBase = (EntityMobBase) p_setRotationAngles_7_;
         if (mobBase.isSwingingArms() && (itemMainhand.isEmpty() || !(itemMainhand.getItem() instanceof ItemBow))) {
             float lvt_10_1_ = MathHelper.sin(this.swingProgress * 3.1415927F);

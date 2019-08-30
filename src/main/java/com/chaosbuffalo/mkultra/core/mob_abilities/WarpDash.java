@@ -22,7 +22,7 @@ public class WarpDash extends MobAbility {
     float BASE_DAMAGE = .5f;
     float DAMAGE_SCALE = .5f;
 
-    public WarpDash(){
+    public WarpDash() {
         super(MKUltra.MODID, "mob_ability.warp_dash");
     }
 
@@ -42,7 +42,7 @@ public class WarpDash extends MobAbility {
     }
 
     @Override
-    public int getCastTime(){
+    public int getCastTime() {
         return GameConstants.TICKS_PER_SECOND;
     }
 
@@ -72,7 +72,7 @@ public class WarpDash extends MobAbility {
             Vec3d teleLoc = target.getPositionVector().add(new Vec3d(movementVec.x, 0.0, movementVec.z));
             RayTraceResult colTrace = RayTraceUtils.rayTraceBlocks(theWorld, target.getPositionVector(),
                     teleLoc, false);
-            if (colTrace != null && colTrace.typeOfHit == RayTraceResult.Type.BLOCK){
+            if (colTrace != null && colTrace.typeOfHit == RayTraceResult.Type.BLOCK) {
                 teleLoc = colTrace.hitVec;
             }
             Vec3d lookDelta = teleLoc.subtract(target.getPositionVector().add(new Vec3d(0.0f, .5f, 0.0f))).normalize();
@@ -82,8 +82,8 @@ public class WarpDash extends MobAbility {
             yaw = yaw * 180.0 / Math.PI;
             yaw += 90f;
             // Unfortunately setRotation is protected so we have to set these directly.
-            entity.rotationYaw = (float)yaw;
-            entity.rotationPitch = (float)pitch;
+            entity.rotationYaw = (float) yaw;
+            entity.rotationPitch = (float) pitch;
             entity.setPositionAndUpdate(teleLoc.x, teleLoc.y, teleLoc.z);
             entity.addPotionEffect(new PotionEffect(MobEffects.SPEED, 2 * GameConstants.TICKS_PER_SECOND, 2));
         }

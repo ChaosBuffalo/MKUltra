@@ -23,7 +23,7 @@ public class EntityOrbMother extends EntityMobBase {
     }
 
     @Override
-    public void setupMKMobData(IMobData data){
+    public void setupMKMobData(IMobData data) {
         data.setMobLevel(6);
         data.setMobFaction(ModSpawn.NPC_FACTION_NAME);
         MobAbility heal = MKURegistry.getMobAbility(new ResourceLocation(MKUltra.MODID,

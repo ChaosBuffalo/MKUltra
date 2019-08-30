@@ -18,7 +18,7 @@ public class MobYank extends MobAbility {
     float BASE_DAMAGE = 1.0f;
     float DAMAGE_SCALE = .25f;
 
-    public MobYank(){
+    public MobYank() {
         super(MKUltra.MODID, "mob_ability.yank");
     }
 
@@ -38,7 +38,7 @@ public class MobYank extends MobAbility {
     }
 
     @Override
-    public int getCastTime(){
+    public int getCastTime() {
         return GameConstants.TICKS_PER_SECOND;
     }
 

@@ -17,7 +17,7 @@ public class PotionEventHandler {
 //        Log.debug("PotionRemoveEvent - %s - %s", event.getEntityLiving(), event.getPotionEffect());
 
         if (event.getEntityLiving() instanceof EntityPlayerMP && event.getPotion() instanceof PassiveAbilityPotionBase) {
-            EntityPlayerMP player = (EntityPlayerMP)event.getEntityLiving();
+            EntityPlayerMP player = (EntityPlayerMP) event.getEntityLiving();
             PlayerData data = (PlayerData) MKUPlayerData.get(player);
             if (data != null && !data.getPassiveTalentsUnlocked()) {
                 data.setRefreshPassiveTalents();

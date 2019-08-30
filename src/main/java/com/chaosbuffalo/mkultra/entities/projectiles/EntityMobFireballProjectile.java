@@ -14,7 +14,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class EntityMobFireballProjectile extends EntityBaseProjectile{
+public class EntityMobFireballProjectile extends EntityBaseProjectile {
 
     public EntityMobFireballProjectile(World worldIn) {
         super(worldIn);

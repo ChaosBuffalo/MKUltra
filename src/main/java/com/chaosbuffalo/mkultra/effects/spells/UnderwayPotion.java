@@ -4,12 +4,8 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.PlayerAttributes;
 import com.chaosbuffalo.mkultra.effects.PassiveEffect;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
-import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
-import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
@@ -26,11 +22,11 @@ public class UnderwayPotion extends PassiveEffect {
 
     public static final UUID MODIFIER_ID = UUID.fromString("771f39b8-c161-4b80-897f-724f84e08ae7");
 
-    public static final UnderwayPotion INSTANCE = (UnderwayPotion)(new UnderwayPotion()
-        .registerPotionAttributeModifier(PlayerAttributes.COOLDOWN, MODIFIER_ID.toString(),
-                0.1, PlayerAttributes.OP_SCALE_MULTIPLICATIVE)
-        .registerPotionAttributeModifier(SharedMonsterAttributes.MOVEMENT_SPEED, MODIFIER_ID.toString(),
-                .15, PlayerAttributes.OP_SCALE_MULTIPLICATIVE)
+    public static final UnderwayPotion INSTANCE = (UnderwayPotion) (new UnderwayPotion()
+            .registerPotionAttributeModifier(PlayerAttributes.COOLDOWN, MODIFIER_ID.toString(),
+                    0.1, PlayerAttributes.OP_SCALE_MULTIPLICATIVE)
+            .registerPotionAttributeModifier(SharedMonsterAttributes.MOVEMENT_SPEED, MODIFIER_ID.toString(),
+                    .15, PlayerAttributes.OP_SCALE_MULTIPLICATIVE)
     );
 
 

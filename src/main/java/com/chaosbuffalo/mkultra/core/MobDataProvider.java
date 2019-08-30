@@ -13,7 +13,7 @@ public class MobDataProvider implements ICapabilitySerializable<NBTTagCompound> 
 
     private MobData data;
 
-    public MobDataProvider(EntityLivingBase entity){
+    public MobDataProvider(EntityLivingBase entity) {
         this.data = new MobData(entity);
     }
 
@@ -37,7 +37,7 @@ public class MobDataProvider implements ICapabilitySerializable<NBTTagCompound> 
 
     @Override
     public NBTTagCompound serializeNBT() {
-        return (NBTTagCompound)Capabilities.MOB_DATA_CAPABILITY.writeNBT(data, null);
+        return (NBTTagCompound) Capabilities.MOB_DATA_CAPABILITY.writeNBT(data, null);
     }
 
 }

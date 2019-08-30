@@ -20,22 +20,22 @@ import net.minecraft.client.Minecraft;
  */
 public class ClientUtils {
 
-	/**
-	 * Returns the instance of Minecraft.
-	 *
-	 * @return The instance of Minecraft.
-	 */
-	public static Minecraft mc() {
-		return Minecraft.getMinecraft();
-	}
+    /**
+     * Returns the instance of Minecraft.
+     *
+     * @return The instance of Minecraft.
+     */
+    public static Minecraft mc() {
+        return Minecraft.getMinecraft();
+    }
 
-	/**
-	 * Adds a task to the Minecraft client task queue. Should be used when
-	 * processing packets, as they are executed in another thread.
-	 *
-	 * @param task the task to schedule.
-	 */
-	public static void addScheduledTask(Runnable task) {
-		mc().addScheduledTask(task);
-	}
+    /**
+     * Adds a task to the Minecraft client task queue. Should be used when
+     * processing packets, as they are executed in another thread.
+     *
+     * @param task the task to schedule.
+     */
+    public static void addScheduledTask(Runnable task) {
+        mc().addScheduledTask(task);
+    }
 }

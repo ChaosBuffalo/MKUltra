@@ -14,7 +14,7 @@ public class ActivatePassivePacket implements IMessage {
     private ResourceLocation loc;
     private int slotIndex;
 
-    public ActivatePassivePacket(){
+    public ActivatePassivePacket() {
 
     }
 
@@ -48,7 +48,7 @@ public class ActivatePassivePacket implements IMessage {
             IPlayerData data = MKUPlayerData.get(player);
             if (data != null) {
                 Log.info("activating passive, %s, %d", msg.loc.toString(), msg.slotIndex);
-                if (data.activatePassiveForSlot(msg.loc, msg.slotIndex)){
+                if (data.activatePassiveForSlot(msg.loc, msg.slotIndex)) {
                     Log.info("passive learned");
                 }
 

@@ -49,7 +49,7 @@ public class HolyAuraPotion extends AuraPassiveBase {
         return 30.0f;
     }
 
-    public float getNegativeDistance(int level){
+    public float getNegativeDistance(int level) {
         return 5.0f;
     }
 
@@ -74,12 +74,13 @@ public class HolyAuraPotion extends AuraPassiveBase {
     }
 
     @Override
-    public boolean shouldRenderHUD(PotionEffect effect)
-    {
+    public boolean shouldRenderHUD(PotionEffect effect) {
         return false;
     }
 
 
     @Override
-    public boolean shouldRender(PotionEffect effect) { return false; }
+    public boolean shouldRender(PotionEffect effect) {
+        return false;
+    }
 }

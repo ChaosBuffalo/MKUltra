@@ -8,13 +8,14 @@ public class ItemChoice {
     public final int minLevel;
     public final float dropChance;
 
-    public ItemChoice(ItemStack item, double weight, int minLevel, float dropChance){
+    public ItemChoice(ItemStack item, double weight, int minLevel, float dropChance) {
         this.item = item;
         this.weight = weight;
         this.minLevel = minLevel;
         this.dropChance = dropChance;
     }
-    public ItemChoice(ItemStack item, double weight, int minLevel){
+
+    public ItemChoice(ItemStack item, double weight, int minLevel) {
         this(item, weight, minLevel, .00f);
     }
 }

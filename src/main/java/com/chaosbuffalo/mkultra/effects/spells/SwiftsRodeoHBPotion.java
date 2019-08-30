@@ -39,7 +39,7 @@ public class SwiftsRodeoHBPotion extends SongEffect {
     }
 
     @Override
-    public AreaEffectBuilder prepareAreaEffect(EntityPlayer source, IPlayerData playerData, int level, AreaEffectBuilder builder){
+    public AreaEffectBuilder prepareAreaEffect(EntityPlayer source, IPlayerData playerData, int level, AreaEffectBuilder builder) {
         int duration = PlayerFormulas.applyBuffDurationBonus(playerData, PERIOD);
         builder.effect(new PotionEffect(MobEffects.SPEED, duration, level), Targeting.TargetType.FRIENDLY);
         return builder;
@@ -51,7 +51,9 @@ public class SwiftsRodeoHBPotion extends SongEffect {
     }
 
     @Override
-    public EnumParticleTypes getSongParticle() { return EnumParticleTypes.NOTE; }
+    public EnumParticleTypes getSongParticle() {
+        return EnumParticleTypes.NOTE;
+    }
 
     @Override
     public ResourceLocation getIconTexture() {

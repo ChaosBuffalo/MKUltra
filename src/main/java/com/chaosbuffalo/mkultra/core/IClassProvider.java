@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface IClassProvider {
     ResourceLocation getIdentity();
+
     String getClassSelectionText();
 
     default boolean teachesClass(PlayerClass playerClass) {

@@ -7,7 +7,6 @@ import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.AbilityMagicDamage;
 import com.chaosbuffalo.mkultra.effects.spells.GraspingRootsPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
-import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
@@ -32,7 +31,7 @@ public class EntityGraspingRootsProjectile extends EntityBaseProjectile {
         this.setGroundProcTime(20);
     }
 
-    public EntityGraspingRootsProjectile(World worldIn, EntityLivingBase throwerIn, double offset){
+    public EntityGraspingRootsProjectile(World worldIn, EntityLivingBase throwerIn, double offset) {
         super(worldIn, throwerIn, offset);
         this.setDeathTime(85);
         this.setDoGroundProc(true);
@@ -78,7 +77,7 @@ public class EntityGraspingRootsProjectile extends EntityBaseProjectile {
     @Override
     protected boolean onImpact(EntityLivingBase caster, RayTraceResult result, int amplifier) {
         if (!this.world.isRemote && caster != null) {
-            switch (result.typeOfHit){
+            switch (result.typeOfHit) {
                 case BLOCK:
                     return false;
                 case ENTITY:

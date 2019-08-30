@@ -1,7 +1,7 @@
 package com.chaosbuffalo.mkultra.mob_ai;
 
-import com.chaosbuffalo.mkultra.core.MobAbility;
 import com.chaosbuffalo.mkultra.core.IMobData;
+import com.chaosbuffalo.mkultra.core.MobAbility;
 import com.chaosbuffalo.mkultra.core.MobAbilityTracker;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLiving;
@@ -28,7 +28,7 @@ public class EntityAISpellAttack extends EntityAISpellCastingBase {
     public boolean shouldExecute() {
         if (mobData.hasAbilities() && entity instanceof EntityLiving) {
             EntityLivingBase target = ((EntityLiving) entity).getAttackTarget();
-            if (target != null && !mobData.isOnCastCooldown()){
+            if (target != null && !mobData.isOnCastCooldown()) {
                 for (MobAbilityTracker tracker : mobData.getAbilityTrackers()) {
                     if (!tracker.isAbilityOnCooldown()) {
                         if (tracker.getAbility().getAbilityType() == MobAbility.AbilityType.ATTACK &&

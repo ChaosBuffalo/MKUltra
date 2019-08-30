@@ -1,6 +1,5 @@
 package com.chaosbuffalo.mkultra.effects;
 
-import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -232,12 +231,11 @@ public abstract class SpellPotionBase extends Potion {
             } else if (effect.getAmplifier() == 4) {
                 s1 = s1 + " " + I18n.format("enchantment.level.4");
             }
-            Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(s1, (float)(x + 10 + 18), (float)(y + 6), 16777215);
+            Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(s1, (float) (x + 10 + 18), (float) (y + 6), 16777215);
             String s = Potion.getPotionDurationString(effect, 1.0F);
-            Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(s, (float)(x + 10 + 18), (float)(y + 6 + 10), 8355711);
+            Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(s, (float) (x + 10 + 18), (float) (y + 6 + 10), 8355711);
         }
     }
-
 
 
     @SideOnly(Side.CLIENT)

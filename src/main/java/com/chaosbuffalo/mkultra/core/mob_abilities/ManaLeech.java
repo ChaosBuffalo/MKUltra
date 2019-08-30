@@ -19,7 +19,7 @@ public class ManaLeech extends MobAbility {
     float MANA_LEECH_BASE = 2.0f;
     float MANA_LEECH_SCALE = .5f;
 
-    public ManaLeech(){
+    public ManaLeech() {
         super(MKUltra.MODID, "mob_ability.mana_leech");
     }
 
@@ -39,7 +39,7 @@ public class ManaLeech extends MobAbility {
     }
 
     @Override
-    public int getCastTime(){
+    public int getCastTime() {
         return 2 * GameConstants.TICKS_PER_SECOND;
     }
 
@@ -54,10 +54,10 @@ public class ManaLeech extends MobAbility {
             int level = data.getMobLevel();
             target.attackEntityFrom(MKDamageSource.causeIndirectMobMagicDamage(getAbilityId(), entity, entity),
                     BASE_DAMAGE + DAMAGE_SCALE * level);
-            if (target instanceof EntityPlayer){
+            if (target instanceof EntityPlayer) {
                 EntityPlayer playerTarget = (EntityPlayer) target;
                 IPlayerData pData = MKUPlayerData.get(playerTarget);
-                if (pData != null){
+                if (pData != null) {
                     pData.setMana(
                             Math.max(0, pData.getMana() - Math.round(MANA_LEECH_BASE + MANA_LEECH_SCALE * level)));
                 }

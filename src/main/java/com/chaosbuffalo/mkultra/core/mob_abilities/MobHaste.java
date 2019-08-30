@@ -43,7 +43,7 @@ public class MobHaste extends MobAbility {
     }
 
     @Override
-    public int getCastTime(){
+    public int getCastTime() {
         return GameConstants.TICKS_PER_SECOND / 2;
     }
 

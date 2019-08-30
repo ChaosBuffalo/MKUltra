@@ -4,9 +4,9 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerAttributes;
 import com.chaosbuffalo.mkultra.core.PlayerData;
-import com.chaosbuffalo.mkultra.effects.passives.PassiveAbilityPotionBase;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellTriggers;
+import com.chaosbuffalo.mkultra.effects.passives.PassiveAbilityPotionBase;
 import com.chaosbuffalo.mkultra.utils.ItemUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -31,7 +31,7 @@ public class DualWieldPotion extends PassiveAbilityPotionBase {
 
     public static final DualWieldPotion INSTANCE = (DualWieldPotion) (new DualWieldPotion().registerPotionAttributeModifier(
             SharedMonsterAttributes.ATTACK_SPEED, MODIFIER_ID.toString(),
-                0.4, PlayerAttributes.OP_SCALE_MULTIPLICATIVE));
+            0.4, PlayerAttributes.OP_SCALE_MULTIPLICATIVE));
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {

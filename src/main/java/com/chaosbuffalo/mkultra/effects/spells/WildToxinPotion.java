@@ -56,7 +56,7 @@ public class WildToxinPotion extends PassiveEffect {
 
         if (target instanceof EntityLivingBase) {
 
-            if (player instanceof EntityPlayer){
+            if (player instanceof EntityPlayer) {
                 IPlayerData pData = MKUPlayerData.get((EntityPlayer) player);
                 if (pData == null)
                     return;

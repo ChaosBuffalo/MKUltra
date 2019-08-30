@@ -19,7 +19,7 @@ public class GraspingTouch extends MobAbility {
     float BASE_DAMAGE = 1.0f;
     float DAMAGE_SCALE = .25f;
 
-    public GraspingTouch(){
+    public GraspingTouch() {
         super(MKUltra.MODID, "mob_ability.grasping_touch");
     }
 
@@ -39,7 +39,7 @@ public class GraspingTouch extends MobAbility {
     }
 
     @Override
-    public int getCastTime(){
+    public int getCastTime() {
         return GameConstants.TICKS_PER_SECOND;
     }
 

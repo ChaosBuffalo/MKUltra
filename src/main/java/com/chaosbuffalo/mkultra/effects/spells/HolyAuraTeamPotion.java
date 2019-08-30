@@ -37,10 +37,10 @@ public class HolyAuraTeamPotion extends PassiveEffect {
 
     private void playerHurtPreScale(LivingHurtEvent event, DamageSource source, EntityPlayer livingTarget,
                                     IPlayerData targetData) {
-        if (livingTarget.isPotionActive(this)){
-            if (source.getTrueSource() instanceof EntityLivingBase){
+        if (livingTarget.isPotionActive(this)) {
+            if (source.getTrueSource() instanceof EntityLivingBase) {
                 EntityLivingBase entLiv = (EntityLivingBase) source.getTrueSource();
-                if (entLiv.isEntityUndead()){
+                if (entLiv.isEntityUndead()) {
                     event.setAmount(event.getAmount() * .6f);
                 }
             }

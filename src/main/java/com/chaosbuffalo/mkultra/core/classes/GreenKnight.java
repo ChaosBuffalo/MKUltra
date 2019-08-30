@@ -34,32 +34,32 @@ public class GreenKnight extends PlayerClass {
     }
 
     @Override
-    public int getHealthPerLevel(){
+    public int getHealthPerLevel() {
         return 2;
     }
 
     @Override
-    public int getBaseHealth(){
+    public int getBaseHealth() {
         return 24;
     }
 
     @Override
-    public float getBaseManaRegen(){
+    public float getBaseManaRegen() {
         return 1;
     }
 
     @Override
-    public float getManaRegenPerLevel(){
+    public float getManaRegenPerLevel() {
         return 0.3f;
     }
 
     @Override
-    public int getBaseMana(){
+    public int getBaseMana() {
         return 14;
     }
 
     @Override
-    public int getManaPerLevel(){
+    public int getManaPerLevel() {
         return 1;
     }
 

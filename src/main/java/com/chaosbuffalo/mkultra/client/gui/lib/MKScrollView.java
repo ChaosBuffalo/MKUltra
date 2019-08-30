@@ -7,7 +7,7 @@ import org.lwjgl.opengl.GL11;
 import javax.annotation.Nullable;
 import java.util.Iterator;
 
-public class MKScrollView extends MKWidget{
+public class MKScrollView extends MKWidget {
 
     private int offsetX;
     private int offsetY;
@@ -43,26 +43,26 @@ public class MKScrollView extends MKWidget{
         drawScrollBars = true;
     }
 
-    public MKScrollView(int x, int y, int width, int height, boolean clipBounds){
+    public MKScrollView(int x, int y, int width, int height, boolean clipBounds) {
         this(x, y, width, height, new ScaledResolution(Minecraft.getMinecraft()).getScaleFactor(), clipBounds);
     }
 
     @Override
     public void setScreen(MKScreen screen) {
         super.setScreen(screen);
-        if (screen != null){
+        if (screen != null) {
             screenWidth = screen.width;
             screenHeight = screen.height;
         }
 
     }
 
-    public MKScrollView setScrollLock(boolean state){
+    public MKScrollView setScrollLock(boolean state) {
         this.doScrollLock = state;
         return this;
     }
 
-    public MKScrollView setDrawScrollBars(boolean value){
+    public MKScrollView setDrawScrollBars(boolean value) {
         drawScrollBars = value;
         return this;
     }
@@ -70,9 +70,9 @@ public class MKScrollView extends MKWidget{
     @Override
     public boolean onMouseScrollWheel(Minecraft minecraft, int mouseX, int mouseY, int direction) {
         int dY = direction * SCROLL_VELOCITY;
-        if (isScrollLockOn()){
+        if (isScrollLockOn()) {
             MKWidget child = getChild();
-            if (child != null){
+            if (child != null) {
                 dY = lockScrollY(child, dY);
             }
         }
@@ -80,96 +80,96 @@ public class MKScrollView extends MKWidget{
         return true;
     }
 
-    public boolean shouldDrawScrollbars(){
+    public boolean shouldDrawScrollbars() {
         return drawScrollBars;
     }
 
-    public boolean isClipBoundsEnabled(){
+    public boolean isClipBoundsEnabled() {
         return clipBounds;
     }
 
-    public MKScrollView setOffsetX(int value){
+    public MKScrollView setOffsetX(int value) {
         offsetX = value;
         return this;
     }
 
-    public MKScrollView setDoScrollX(boolean value){
+    public MKScrollView setDoScrollX(boolean value) {
         doScrollX = value;
         return this;
     }
 
-    public MKScrollView setDoScrollY(boolean value){
+    public MKScrollView setDoScrollY(boolean value) {
         doScrollY = value;
         return this;
     }
 
-    public boolean shouldScrollY(){
+    public boolean shouldScrollY() {
         return doScrollY;
     }
 
-    public boolean shouldScrollX(){
+    public boolean shouldScrollX() {
         return doScrollX;
     }
 
-    public MKScrollView setOffsetY(int value){
+    public MKScrollView setOffsetY(int value) {
         offsetY = value;
         return this;
     }
 
-    public int getOffsetX(){
+    public int getOffsetX() {
         return offsetX;
     }
 
-    public int getOffsetY(){
+    public int getOffsetY() {
         return offsetY;
     }
 
-    public MKScrollView setClipBoundsEnabled(boolean value){
+    public MKScrollView setClipBoundsEnabled(boolean value) {
         clipBounds = value;
         return this;
     }
 
-    public boolean isScrollLockOn(){
+    public boolean isScrollLockOn() {
         return doScrollLock;
     }
 
-    public int getScrollMarginX(){
+    public int getScrollMarginX() {
         return scrollMarginX;
     }
 
-    public int getScrollMarginY(){
+    public int getScrollMarginY() {
         return scrollMarginY;
     }
 
-    public MKScrollView setScrollMarginX(int value){
+    public MKScrollView setScrollMarginX(int value) {
         scrollMarginX = value;
         return this;
     }
 
-    public MKScrollView setScrollMarginY(int value){
+    public MKScrollView setScrollMarginY(int value) {
         scrollMarginY = value;
         return this;
     }
 
-    public void centerContentX(){
-        if (children.size() > 0){
+    public void centerContentX() {
+        if (children.size() > 0) {
             MKWidget child = this.children.getFirst();
-            setOffsetX(getWidth()/2 - child.getWidth()/2 + getX());
+            setOffsetX(getWidth() / 2 - child.getWidth() / 2 + getX());
         }
     }
 
-    public void centerContentY(){
-        if (children.size() > 0){
+    public void centerContentY() {
+        if (children.size() > 0) {
             MKWidget child = this.children.getFirst();
-            setOffsetX(getHeight()/2 - child.getHeight()/2 + getY());
+            setOffsetX(getHeight() / 2 - child.getHeight() / 2 + getY());
         }
     }
 
-    public void setToTop(){
+    public void setToTop() {
         setOffsetY(getY());
     }
 
-    public void setToRight(){
+    public void setToRight() {
         setOffsetX(getX());
     }
 
@@ -178,7 +178,7 @@ public class MKScrollView extends MKWidget{
         GL11.glPushMatrix();
         GL11.glTranslatef(offsetX, offsetY, 0);
 
-        if (isClipBoundsEnabled()){
+        if (isClipBoundsEnabled()) {
             GL11.glEnable(GL11.GL_SCISSOR_TEST);
             int y1 = screenHeight - y - height;
             GL11.glScissor(x * scaleFactor, y1 * scaleFactor,
@@ -186,34 +186,34 @@ public class MKScrollView extends MKWidget{
         }
     }
 
-    public boolean isContentWider(){
+    public boolean isContentWider() {
         MKWidget child = getChild();
-        if (child == null){
+        if (child == null) {
             return false;
         }
         return child.getWidth() > getWidth();
     }
 
-    public boolean isContentTaller(){
+    public boolean isContentTaller() {
         MKWidget child = getChild();
-        if (child == null){
+        if (child == null) {
             return false;
         }
         return child.getHeight() > getHeight();
     }
 
     @Override
-    public void postDraw(Minecraft mc, int x, int y, int width, int height, int mouseX, int mouseY, float partialTicks){
-        if (isClipBoundsEnabled()){
+    public void postDraw(Minecraft mc, int x, int y, int width, int height, int mouseX, int mouseY, float partialTicks) {
+        if (isClipBoundsEnabled()) {
             GL11.glDisable(GL11.GL_SCISSOR_TEST);
         }
         GL11.glPopMatrix();
-        if (shouldDrawScrollbars()){
+        if (shouldDrawScrollbars()) {
             MKWidget child = getChild();
-            if (child == null){
+            if (child == null) {
                 return;
             }
-            if (isContentTaller()){
+            if (isContentTaller()) {
                 float ratio = (float) getHeight() / (float) child.getHeight();
                 int heightForScrollbar = (int) (ratio * getHeight());
                 float posRatio = (float) (getY() - getOffsetY()) / (float) child.getHeight();
@@ -223,7 +223,7 @@ public class MKScrollView extends MKWidget{
                 drawRect(barX, barY, barX + SCROLL_BAR_WIDTH, barY + heightForScrollbar,
                         0x7DFFFFFF);
             }
-            if (isContentWider()){
+            if (isContentWider()) {
                 float ratio = (float) getWidth() / (float) child.getWidth();
                 int widthForScrollbar = (int) (ratio * getWidth());
                 float posRatio = (float) (getX() - getOffsetX()) / (float) child.getWidth();
@@ -237,8 +237,8 @@ public class MKScrollView extends MKWidget{
     }
 
     @Override
-    public Vec2d getParentCoords(Vec2d pos){
-        if (parent == null){
+    public Vec2d getParentCoords(Vec2d pos) {
+        if (parent == null) {
             return pos.add(offsetX, offsetY);
         } else {
             return parent.getParentCoords(pos.add(offsetX, offsetY));
@@ -246,10 +246,10 @@ public class MKScrollView extends MKWidget{
     }
 
     @Override
-    public void drawWidget(Minecraft mc, int mouseX, int mouseY, float partialTicks){
+    public void drawWidget(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
         draw(mc, getX(), getY(), getWidth(), getHeight(), mouseX, mouseY, partialTicks);
-        for (MKWidget child : children){
-            if (child.isVisible()){
+        for (MKWidget child : children) {
+            if (child.isVisible()) {
                 child.drawWidget(mc, mouseX - offsetX, mouseY - offsetY, partialTicks);
             }
         }
@@ -258,17 +258,17 @@ public class MKScrollView extends MKWidget{
 
     @Override
     public MKWidget mousePressed(Minecraft minecraft, int mouseX, int mouseY, int mouseButton) {
-        if (!this.isEnabled() || !this.isVisible() || !this.isInBounds(mouseX, mouseY)){
+        if (!this.isEnabled() || !this.isVisible() || !this.isInBounds(mouseX, mouseY)) {
             return null;
         }
         Iterator<MKWidget> it = children.descendingIterator();
-        while (it.hasNext()){
+        while (it.hasNext()) {
             MKWidget child = it.next();
-            if (child.mousePressed(minecraft, mouseX - offsetX, mouseY - offsetY, mouseButton) != null){
+            if (child.mousePressed(minecraft, mouseX - offsetX, mouseY - offsetY, mouseButton) != null) {
                 return child;
             }
         }
-        if (onMousePressed(minecraft, mouseX, mouseY, mouseButton)){
+        if (onMousePressed(minecraft, mouseX, mouseY, mouseButton)) {
             return this;
         }
         return null;
@@ -277,13 +277,13 @@ public class MKScrollView extends MKWidget{
     @Override
     public boolean mouseDragged(Minecraft minecraft, int mouseX, int mouseY, int mouseButton) {
         Iterator<MKWidget> it = children.descendingIterator();
-        while (it.hasNext()){
+        while (it.hasNext()) {
             MKWidget child = it.next();
-            if (child.mouseDragged(minecraft, mouseX - offsetX, mouseY - offsetY, mouseButton)){
+            if (child.mouseDragged(minecraft, mouseX - offsetX, mouseY - offsetY, mouseButton)) {
                 return true;
             }
         }
-        if (onMouseDragged(minecraft, mouseX, mouseY, mouseButton)){
+        if (onMouseDragged(minecraft, mouseX, mouseY, mouseButton)) {
             return true;
         }
         return false;
@@ -292,13 +292,13 @@ public class MKScrollView extends MKWidget{
     @Override
     public boolean mouseReleased(int mouseX, int mouseY, int mouseButton) {
         Iterator<MKWidget> it = children.descendingIterator();
-        while (it.hasNext()){
+        while (it.hasNext()) {
             MKWidget child = it.next();
-            if (child.mouseReleased(mouseX - offsetX, mouseY - offsetX, mouseButton)){
+            if (child.mouseReleased(mouseX - offsetX, mouseY - offsetX, mouseButton)) {
                 return true;
             }
         }
-        if (onMouseRelease(mouseX, mouseY, mouseButton)){
+        if (onMouseRelease(mouseX, mouseY, mouseButton)) {
             return true;
         }
         return false;
@@ -306,8 +306,8 @@ public class MKScrollView extends MKWidget{
 
 
     @Nullable
-    public MKWidget getChild(){
-        if (children.size() > 0){
+    public MKWidget getChild() {
+        if (children.size() > 0) {
             return this.children.getFirst();
         } else {
             return null;
@@ -315,19 +315,19 @@ public class MKScrollView extends MKWidget{
     }
 
     @Override
-    public boolean onMouseDragged(Minecraft minecraft, int mouseX, int mouseY, int mouseButton){
-        if (isDragging){
+    public boolean onMouseDragged(Minecraft minecraft, int mouseX, int mouseY, int mouseButton) {
+        if (isDragging) {
             int dX = mouseX - lastMouseX;
             int dY = mouseY - lastMouseY;
             MKWidget child = getChild();
-            if (isScrollLockOn() && child != null){
+            if (isScrollLockOn() && child != null) {
                 dX = lockScrollX(child, dX);
                 dY = lockScrollY(child, dY);
             }
-            if (doScrollX){
+            if (doScrollX) {
                 offsetX += dX;
             }
-            if (doScrollY){
+            if (doScrollY) {
                 offsetY += dY;
             }
             lastMouseX = mouseX;
@@ -337,45 +337,45 @@ public class MKScrollView extends MKWidget{
         return false;
     }
 
-    public int lockScrollX(MKWidget child, int dX){
+    public int lockScrollX(MKWidget child, int dX) {
         int scrollX = getX();
         int childWidth = child.getWidth();
         int scrollWidth = getWidth();
 //        Log.info("ScrollX : %d, childWidth : %d, scrollWidth : %d, cameraX: %d, dX : %d", scrollX, childWidth, scrollWidth, offsetX, dX);
-        if (childWidth < scrollWidth){
-            if (offsetX + dX < scrollX){
+        if (childWidth < scrollWidth) {
+            if (offsetX + dX < scrollX) {
                 dX = scrollX - offsetX;
-            } else if (offsetX + dX + childWidth > scrollX + scrollWidth){
-                dX = scrollX + scrollWidth  - offsetX - childWidth;
+            } else if (offsetX + dX + childWidth > scrollX + scrollWidth) {
+                dX = scrollX + scrollWidth - offsetX - childWidth;
             }
         } else {
-            if (offsetX + dX > scrollX + getScrollMarginX()){
+            if (offsetX + dX > scrollX + getScrollMarginX()) {
                 dX = scrollX - offsetX + getScrollMarginX();
-            } else if (offsetX + dX + childWidth <= scrollX + scrollWidth - getScrollMarginX()){
+            } else if (offsetX + dX + childWidth <= scrollX + scrollWidth - getScrollMarginX()) {
                 dX = scrollX + scrollWidth - getScrollMarginX() - offsetX - childWidth;
             }
         }
         return dX;
     }
 
-    public int lockScrollY(MKWidget child, int dY){
+    public int lockScrollY(MKWidget child, int dY) {
         int scrollY = getY();
         int childHeight = child.getHeight();
         int scrollHeight = getHeight();
-        if (childHeight < scrollHeight){
+        if (childHeight < scrollHeight) {
             return getY() - offsetY;
         } else {
-            if (offsetY + dY > scrollY + getScrollMarginY()){
+            if (offsetY + dY > scrollY + getScrollMarginY()) {
                 dY = scrollY - offsetY + getScrollMarginY();
             } else if (offsetY + dY + childHeight <= scrollY + scrollHeight - getScrollMarginY()) {
-                dY = scrollY + scrollHeight - getScrollMarginY() - offsetY  - childHeight;
+                dY = scrollY + scrollHeight - getScrollMarginY() - offsetY - childHeight;
             }
         }
         return dY;
     }
 
     @Override
-    public boolean onMousePressed(Minecraft minecraft, int mouseX, int mouseY, int mouseButton){
+    public boolean onMousePressed(Minecraft minecraft, int mouseX, int mouseY, int mouseButton) {
         isDragging = true;
         lastMouseX = mouseX;
         lastMouseY = mouseY;
@@ -383,8 +383,8 @@ public class MKScrollView extends MKWidget{
     }
 
     @Override
-    public boolean onMouseRelease(int mouseX, int mouseY, int mouseButton){
-        if (isDragging){
+    public boolean onMouseRelease(int mouseX, int mouseY, int mouseButton) {
+        if (isDragging) {
             isDragging = false;
             return true;
         }
@@ -392,8 +392,8 @@ public class MKScrollView extends MKWidget{
     }
 
     @Override
-    public boolean addWidget(MKWidget widget){
-        if (this.children.size() > 0){
+    public boolean addWidget(MKWidget widget) {
+        if (this.children.size() > 0) {
             return false;
         }
         return super.addWidget(widget);

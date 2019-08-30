@@ -3,12 +3,10 @@ package com.chaosbuffalo.mkultra.party;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerPickupXpEvent;
@@ -115,7 +113,7 @@ public class PartyManager {
             int pCount = members.size();
             int playerExp = Math.max(exp / pCount, 1);
             for (EntityPlayer p : members) {
-                if (!p.equals(original)){
+                if (!p.equals(original)) {
                     p.addExperience(playerExp);
                 }
             }

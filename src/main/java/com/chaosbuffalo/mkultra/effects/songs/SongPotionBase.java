@@ -23,7 +23,9 @@ public abstract class SongPotionBase extends SpellPeriodicPotionBase {
     }
 
     @Override
-    public boolean canSelfCast() { return true; }
+    public boolean canSelfCast() {
+        return true;
+    }
 
     @Override
     public boolean canPersistAcrossSessions() {
@@ -31,18 +33,18 @@ public abstract class SongPotionBase extends SpellPeriodicPotionBase {
     }
 
     @Override
-    public boolean shouldRenderHUD(PotionEffect effect)
-    {
+    public boolean shouldRenderHUD(PotionEffect effect) {
         return isVisible;
     }
 
     @Override
-    public boolean shouldRenderInvText(PotionEffect effect)
-    {
+    public boolean shouldRenderInvText(PotionEffect effect) {
         return isVisible;
     }
 
     @Override
-    public boolean shouldRender(PotionEffect effect) { return isVisible; }
+    public boolean shouldRender(PotionEffect effect) {
+        return isVisible;
+    }
 
 }

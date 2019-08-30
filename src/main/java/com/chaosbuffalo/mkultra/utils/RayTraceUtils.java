@@ -17,11 +17,11 @@ public class RayTraceUtils {
     private static Predicate<Entity> defaultFilter = e -> EntitySelectors.IS_ALIVE.apply(e) && EntitySelectors.NOT_SPECTATING.apply(e);
 
 
-    public static Vec3d getPerpendicular(Vec3d vec){
+    public static Vec3d getPerpendicular(Vec3d vec) {
         Vec3d cVec;
-        if (vec.y != 0 || vec.z != 0){
+        if (vec.y != 0 || vec.z != 0) {
             cVec = new Vec3d(1, 0, 0);
-        } else{
+        } else {
             cVec = new Vec3d(0, 1, 0);
         }
         return vec.crossProduct(cVec);
@@ -98,7 +98,7 @@ public class RayTraceUtils {
     }
 
     private static <E extends Entity> RayTraceResult rayTraceBlocksAndEntities(Class<E> clazz, World world, Vec3d from, Vec3d to, boolean stopOnLiquid,
-                                                            final Predicate<E> entityFilter) {
+                                                                               final Predicate<E> entityFilter) {
         RayTraceResult block = rayTraceBlocks(world, from, to, stopOnLiquid);
         if (block != null)
             to = block.hitVec;

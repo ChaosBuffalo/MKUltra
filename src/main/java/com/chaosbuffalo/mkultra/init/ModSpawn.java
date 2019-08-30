@@ -7,10 +7,10 @@ import com.chaosbuffalo.mkultra.core.MKUMobData;
 import com.chaosbuffalo.mkultra.core.MKURegistry;
 import com.chaosbuffalo.mkultra.core.MobAbility;
 import com.chaosbuffalo.mkultra.core.mob_abilities.*;
-import com.chaosbuffalo.mkultra.utils.JsonLoader;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.mob_ai.*;
 import com.chaosbuffalo.mkultra.spawn.*;
+import com.chaosbuffalo.mkultra.utils.JsonLoader;
 import com.chaosbuffalo.mkultra.utils.RandomCollection;
 import com.chaosbuffalo.targeting_api.Targeting;
 import com.google.gson.JsonArray;
@@ -45,6 +45,7 @@ public class ModSpawn {
     public static final MobFaction NPC_FACTION = new MobFaction(NPC_FACTION_NAME, true);
 
     public static final RandomCollection<Integer> levelChances = new RandomCollection<>();
+
     static {
         levelChances.add(8.0, 1);
         levelChances.add(6.0, 2);
@@ -58,7 +59,7 @@ public class ModSpawn {
         levelChances.add(1.0, 10);
     }
 
-    public static void addMobDefinitionsToDefaultSpawnIndex(){
+    public static void addMobDefinitionsToDefaultSpawnIndex() {
         for (MobDefinition def : MKURegistry.REGISTRY_MOB_DEF) {
             if (def.getCanDefaultSpawn()) {
                 DefaultSpawnIndex.addSpawn(def.getEntityName(), def, def.getDefaultSpawnWeight());
@@ -68,7 +69,7 @@ public class ModSpawn {
         }
     }
 
-    public static void postInitJsonRegisistation(){
+    public static void postInitJsonRegisistation() {
         ModContainer old = Loader.instance().activeModContainer();
         JsonLoader.loadModsForType("mk_spawn" + File.separator + "attributes",
                 "mk_overrides", "assets",
@@ -161,7 +162,7 @@ public class ModSpawn {
 
     @SuppressWarnings("unused")
     @SubscribeEvent
-    public static void registerAIGenerators(RegistryEvent.Register<AIGenerator> event){
+    public static void registerAIGenerators(RegistryEvent.Register<AIGenerator> event) {
         Log.info("Registering AI Generators");
         BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> getWatchClosestLongRange =
                 (entity, choice) -> new EntityAIWatchClosest(entity, EntityPlayer.class, 20.0F);
@@ -177,7 +178,7 @@ public class ModSpawn {
         event.getRegistry().register(beneficialSpells);
         BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addNoStrafeBuffs = (entity, choice) -> {
             IMobData mobData = MKUMobData.get(entity);
-            if (mobData == null){
+            if (mobData == null) {
                 return null;
             }
             EntityAIBuffTeammates ai = new EntityAIBuffTeammates(entity, mobData,
@@ -188,19 +189,19 @@ public class ModSpawn {
         AIGenerator noStrafeBuffs = new AIGenerator(MKUltra.MODID, "no_strafe_buffs", addNoStrafeBuffs);
         event.getRegistry().register(noStrafeBuffs);
         BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addAggroTarget =
-                (entity, choice) -> new EntityAINearestAttackableTargetMK((EntityCreature) entity,true,
+                (entity, choice) -> new EntityAINearestAttackableTargetMK((EntityCreature) entity, true,
                         Targeting.TargetType.PLAYERS);
         AIGenerator aggroTarget = new AIGenerator(MKUltra.MODID, "aggro_target", addAggroTarget);
         event.getRegistry().register(aggroTarget);
         BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addAggroTargetEnemies =
-                (entity, choice) -> new EntityAINearestAttackableTargetMK((EntityCreature) entity,true,
+                (entity, choice) -> new EntityAINearestAttackableTargetMK((EntityCreature) entity, true,
                         Targeting.TargetType.ENEMY);
         AIGenerator aggroTargetEnemy = new AIGenerator(MKUltra.MODID, "aggro_target_enemies",
                 addAggroTargetEnemies);
         event.getRegistry().register(aggroTargetEnemy);
         BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addOffensiveSpells = (entity, choice) -> {
             IMobData mobData = MKUMobData.get(entity);
-            if (mobData == null){
+            if (mobData == null) {
                 return null;
             }
             return new EntityAISpellAttack(entity, mobData,
@@ -211,7 +212,7 @@ public class ModSpawn {
         event.getRegistry().register(offensiveSpells);
         BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addNoStrafeSpells = (entity, choice) -> {
             IMobData mobData = MKUMobData.get(entity);
-            if (mobData == null){
+            if (mobData == null) {
                 return null;
             }
             EntityAISpellAttack ai = new EntityAISpellAttack(entity, mobData,
@@ -224,23 +225,23 @@ public class ModSpawn {
         event.getRegistry().register(noStrafespells);
         BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addLeashRange = (entity, choice) -> {
             IMobData mobData = MKUMobData.get(entity);
-            if (!(entity instanceof EntityCreature)){
+            if (!(entity instanceof EntityCreature)) {
                 Log.info("Failed to add leash range ai, " +
                         "because it is not an EntityCreature");
                 return null;
             }
-            return new EntityAIReturnToSpawn((EntityCreature)entity, mobData, 1.0);
+            return new EntityAIReturnToSpawn((EntityCreature) entity, mobData, 1.0);
         };
         AIGenerator leashRange = new AIGenerator(
                 MKUltra.MODID, "leash_range", addLeashRange);
         event.getRegistry().register(leashRange);
         BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addHurtTarget = (entity, choice) ->
-                new EntityAIHurtByTargetMK((EntityCreature)entity, true);
+                new EntityAIHurtByTargetMK((EntityCreature) entity, true);
         AIGenerator hurtTarget = new AIGenerator(
                 MKUltra.MODID, "hurt_target", addHurtTarget);
         event.getRegistry().register(hurtTarget);
         BiFunction<EntityLiving, BehaviorChoice, EntityAIBase> addAttackTarget = (entity, choice) ->
-                new EntityAIAttackMeleeMK((EntityCreature)entity, 1.0, false);
+                new EntityAIAttackMeleeMK((EntityCreature) entity, 1.0, false);
         AIGenerator attackTarget = new AIGenerator(
                 MKUltra.MODID, "attack_target", addAttackTarget);
         event.getRegistry().register(attackTarget);
@@ -258,7 +259,7 @@ public class ModSpawn {
 
 
     @SubscribeEvent
-    public static void registerMobFactions(RegistryEvent.Register<MobFaction> event){
+    public static void registerMobFactions(RegistryEvent.Register<MobFaction> event) {
         event.getRegistry().register(NPC_FACTION);
     }
 
@@ -287,7 +288,7 @@ public class ModSpawn {
         AttributeRange range = new AttributeRange(name, MKURegistry.getAttributeSetter(
                 new ResourceLocation(obj.get("setter").getAsString())),
                 obj.get("min_value").getAsDouble(), obj.get("max_value").getAsDouble());
-        if (registry instanceof IForgeRegistryModifiable){
+        if (registry instanceof IForgeRegistryModifiable) {
             IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) registry;
             modRegistry.remove(name);
         }
@@ -388,7 +389,7 @@ public class ModSpawn {
             }
         }
         ItemOption option = new ItemOption(name, assigner, choices.toArray(new ItemChoice[0]));
-        if (registry instanceof IForgeRegistryModifiable){
+        if (registry instanceof IForgeRegistryModifiable) {
             IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) registry;
             modRegistry.remove(name);
         }
@@ -428,7 +429,7 @@ public class ModSpawn {
             faction.setPlayerFriendly(isPlayerFriendly);
         }
         Log.info("Registered Faction %s", faction.getRegistryName().toString());
-        if (registry instanceof IForgeRegistryModifiable){
+        if (registry instanceof IForgeRegistryModifiable) {
             IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) registry;
             modRegistry.remove(name);
         }
@@ -459,7 +460,7 @@ public class ModSpawn {
             choices.add(mobChoice);
         }
         SpawnList spawnList = new SpawnList(name).withOptions(choices.toArray(new MobChoice[0]));
-        if (registry instanceof IForgeRegistryModifiable){
+        if (registry instanceof IForgeRegistryModifiable) {
             IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) registry;
             modRegistry.remove(name);
         }
@@ -476,7 +477,7 @@ public class ModSpawn {
         }
         ResourceLocation loc = new ResourceLocation(obj.get("type").getAsString());
         Class<? extends Entity> mobClass = EntityList.getClass(loc);
-        if  (mobClass == null){
+        if (mobClass == null) {
             Log.info("Mob not found for: %s", loc.toString());
             return;
         }
@@ -547,7 +548,7 @@ public class ModSpawn {
                 String lootTable = obj.get("additional_loot").getAsString();
                 definition.setAdditionalLootTable(new ResourceLocation(lootTable));
             }
-            if (obj.has("xp")){
+            if (obj.has("xp")) {
                 int bonus = obj.get("xp").getAsInt();
                 definition.setBonusExperience(bonus);
             }
@@ -575,7 +576,7 @@ public class ModSpawn {
                 }
                 definition.withCustomModifiers(modifiers.toArray(new CustomModifier[0]));
             }
-            if (obj.has("default_spawn_weight")){
+            if (obj.has("default_spawn_weight")) {
                 double weight = obj.get("default_spawn_weight").getAsDouble();
                 definition.setDefaultSpawnWeight(weight);
             }
@@ -583,14 +584,14 @@ public class ModSpawn {
                 boolean canSpawn = obj.get("can_default_spawn").getAsBoolean();
                 definition.setCanDefaultSpawn(canSpawn);
             }
-            if (registry instanceof IForgeRegistryModifiable){
+            if (registry instanceof IForgeRegistryModifiable) {
                 IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) registry;
                 modRegistry.remove(name);
             }
             registry.register(definition);
         } else {
             Log.info("%s  not an EntityLivingBase skipping mob definition %s",
-                loc.toString(), obj.toString());
+                    loc.toString(), obj.toString());
         }
     }
 
@@ -631,7 +632,7 @@ public class ModSpawn {
                 }
                 Log.info("registering add task %s", name);
                 AIModifier ai_modifier = new AIModifier(name, modifier, choices.toArray(new BehaviorChoice[0]));
-                if (registry instanceof IForgeRegistryModifiable){
+                if (registry instanceof IForgeRegistryModifiable) {
                     IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) registry;
                     modRegistry.remove(name);
                 }
@@ -641,7 +642,7 @@ public class ModSpawn {
             case "REMOVE_ALL_TARGET_TASKS":
             case "REMOVE_ALL_TASKS": {
                 AIModifier ai_modifier = new AIModifier(name, modifier);
-                if (registry instanceof IForgeRegistryModifiable){
+                if (registry instanceof IForgeRegistryModifiable) {
                     IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) registry;
                     modRegistry.remove(name);
                 }
@@ -682,7 +683,7 @@ public class ModSpawn {
                 Log.info("registering remove task %s", name);
                 AIModifier remove_task = new AIModifier(name, AIModifiers.REMOVE_AI,
                         choices.toArray(new BehaviorChoice[0]));
-                if (registry instanceof IForgeRegistryModifiable){
+                if (registry instanceof IForgeRegistryModifiable) {
                     IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) registry;
                     modRegistry.remove(name);
                 }

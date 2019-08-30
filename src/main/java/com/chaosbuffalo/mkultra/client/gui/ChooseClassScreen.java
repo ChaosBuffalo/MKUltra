@@ -1,7 +1,10 @@
 package com.chaosbuffalo.mkultra.client.gui;
 
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.*;
+import com.chaosbuffalo.mkultra.core.IClassProvider;
+import com.chaosbuffalo.mkultra.core.IPlayerData;
+import com.chaosbuffalo.mkultra.core.MKUPlayerData;
+import com.chaosbuffalo.mkultra.core.MKURegistry;
 import com.chaosbuffalo.mkultra.network.packets.ClassLearnPacket;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -74,7 +77,7 @@ public abstract class ChooseClassScreen extends GuiScreen {
 
             this.fontRenderer.drawSplitString(text, xPos + 15, yPos + titleHeight + 2 + 4, 220, 0);
         }
-        if (!wasClassProvider){
+        if (!wasClassProvider) {
             return;
         }
         int contentHeight = 20;
@@ -88,8 +91,7 @@ public abstract class ChooseClassScreen extends GuiScreen {
         if (learning) {
             if (enforceChecks) {
                 classes = provider.getClasses();
-            }
-            else {
+            } else {
                 classes = MKURegistry.getAllClasses();
             }
         } else {
@@ -97,9 +99,9 @@ public abstract class ChooseClassScreen extends GuiScreen {
         }
         List<ResourceLocation> class_subset = classes;
         boolean wasLarge = class_subset.size() > PER_PAGE;
-        if (wasLarge){
-            classes = class_subset.subList(PER_PAGE*currentPage,
-                      PER_PAGE*currentPage + Math.min(class_subset.size() - PER_PAGE*currentPage, PER_PAGE));
+        if (wasLarge) {
+            classes = class_subset.subList(PER_PAGE * currentPage,
+                    PER_PAGE * currentPage + Math.min(class_subset.size() - PER_PAGE * currentPage, PER_PAGE));
         }
 
         // draw choose class buttons
@@ -123,13 +125,13 @@ public abstract class ChooseClassScreen extends GuiScreen {
         // draw next page button
         int afterChooseY = buttonStartY + 2 + (PER_PAGE / 2) * chooseButtonHeight;
 
-        if (class_subset.size() > (currentPage + 1) * PER_PAGE){
+        if (class_subset.size() > (currentPage + 1) * PER_PAGE) {
             GuiButton button = new GuiButton(NEXT_BUTTON, buttonStartX + 90, afterChooseY, 80, 20, "Next");
             button.drawButton(this.mc, mouseX, mouseY, partialTicks);
             this.buttonList.add(button);
         }
 
-        if (currentPage > 0){
+        if (currentPage > 0) {
             GuiButton button = new GuiButton(PREV_BUTTON, buttonStartX, afterChooseY,
                     80, 20, "Back");
             button.drawButton(this.mc, mouseX, mouseY, partialTicks);
@@ -141,16 +143,15 @@ public abstract class ChooseClassScreen extends GuiScreen {
 
     @Override
     protected void actionPerformed(GuiButton button) {
-        if (button.id == CHOOSE_BUTTON){
+        if (button.id == CHOOSE_BUTTON) {
             ClassButton chooseButton = (ClassButton) button;
             MKUltra.packetHandler.sendToServer(createPacket(classes.get(chooseButton.classInteger), learning, enforceChecks));
             this.mc.displayGuiScreen(null);
             if (this.mc.currentScreen == null)
                 this.mc.setIngameFocus();
-        }
-        else if (button.id == NEXT_BUTTON){
+        } else if (button.id == NEXT_BUTTON) {
             currentPage += 1;
-        } else if (button.id == PREV_BUTTON){
+        } else if (button.id == PREV_BUTTON) {
             currentPage -= 1;
         }
 
@@ -180,6 +181,7 @@ public abstract class ChooseClassScreen extends GuiScreen {
 
     public static class FromTE extends ChooseClassScreen {
         TileEntity entity;
+
         public FromTE(TileEntity tileProvider, boolean showAll, boolean enforceChecks) {
             super(showAll, enforceChecks);
             this.entity = tileProvider;

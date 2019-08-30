@@ -32,7 +32,7 @@ public class PassiveAbilityButton extends MKButton {
     public static final int HEIGHT = TALENT_SLOT_HEIGHT + SLOT_Y_OFFSET * 2;
     private static final int DROPDOWN_HEIGHT = 80;
     private static int ICON_X_OFFSET = SLOT_X_OFFSET + (TALENT_SLOT_WIDTH - ICON_WIDTH) / 2;
-    private static int ICON_Y_OFFSET = SLOT_Y_OFFSET + (TALENT_SLOT_HEIGHT  - ICON_HEIGHT) / 2;
+    private static int ICON_Y_OFFSET = SLOT_Y_OFFSET + (TALENT_SLOT_HEIGHT - ICON_HEIGHT) / 2;
 
     private ArrayList<String> tooltip;
 
@@ -42,14 +42,14 @@ public class PassiveAbilityButton extends MKButton {
     private boolean isDropdownOpen;
     private int slotIndex;
 
-    public PassiveAbilityButton(PlayerPassiveAbility ability, IPlayerData data, int slotIndex, int x, int y){
+    public PassiveAbilityButton(PlayerPassiveAbility ability, IPlayerData data, int slotIndex, int x, int y) {
         super(x, y, WIDTH, HEIGHT, "");
         this.ability = ability;
         this.playerData = data;
         this.tooltip = new ArrayList<>();
         isDropdownOpen = false;
         this.slotIndex = slotIndex;
-        if (ability != null){
+        if (ability != null) {
             tooltip.add(ability.getAbilityName());
             tooltip.add(ability.getAbilityDescription());
         }
@@ -58,14 +58,14 @@ public class PassiveAbilityButton extends MKButton {
     @Override
     public void longHoverDraw(Minecraft mc, int x, int y, int width, int height, int mouseX, int mouseY, float partialTicks) {
         HashSet<PlayerPassiveAbility> learned = playerData.getLearnedPassives();
-        if (learned == null || learned.size() == 0){
-            if (getScreen() != null){
+        if (learned == null || learned.size() == 0) {
+            if (getScreen() != null) {
                 getScreen().addHoveringText(new HoveringTextInstruction(
                         I18n.format("mkultra.ui_msg.no_passives"),
                         getParentCoords(new Vec2d(mouseX, mouseY))));
             }
-        } else if (ability == null){
-            if (getScreen() != null){
+        } else if (ability == null) {
+            if (getScreen() != null) {
                 getScreen().addHoveringText(new HoveringTextInstruction(
                         I18n.format("mkultra.ui_msg.learn_passive_prompt"),
                         getParentCoords(new Vec2d(mouseX, mouseY))));
@@ -74,8 +74,8 @@ public class PassiveAbilityButton extends MKButton {
     }
 
     @Override
-    public boolean isInBounds(int x, int y){
-        if (this.skipBoundsCheck){
+    public boolean isInBounds(int x, int y) {
+        if (this.skipBoundsCheck) {
             return true;
         }
         return x >= this.getX() + SLOT_X_OFFSET &&
@@ -85,9 +85,9 @@ public class PassiveAbilityButton extends MKButton {
     }
 
 
-    public MKModal getDropdown(int mouseX, int mouseY){
+    public MKModal getDropdown(int mouseX, int mouseY) {
         HashSet<PlayerPassiveAbility> learned = playerData.getLearnedPassives();
-        if (learned == null || learned.size() == 0){
+        if (learned == null || learned.size() == 0) {
             return null;
         }
         MKModal dropdownModal = new MKModal();
@@ -101,25 +101,25 @@ public class PassiveAbilityButton extends MKButton {
         scrollView.addWidget(layout);
         MKButton emptyButton = new MKButton(I18n.format("mkultra.ui_msg.clear_passive_slot"));
         emptyButton.setPressedCallback((MKButton btn, Integer buttonType) -> {
-            if (playerData.canActivatePassiveForSlot(MKURegistry.INVALID_ABILITY, slotIndex)){
+            if (playerData.canActivatePassiveForSlot(MKURegistry.INVALID_ABILITY, slotIndex)) {
                 MKUltra.packetHandler.sendToServer(new ActivatePassivePacket(MKURegistry.INVALID_ABILITY, slotIndex));
             }
             MKScreen screen = getScreen();
-            if (screen != null){
+            if (screen != null) {
                 screen.closeModal(this.dropdown);
             }
             return true;
         });
         layout.addWidget(emptyButton);
-        for (PlayerPassiveAbility ability : learned){
+        for (PlayerPassiveAbility ability : learned) {
             MKButton button = new MKButton(ability.getAbilityName());
             layout.addWidget(button);
             button.setPressedCallback((MKButton btn, Integer buttonType) -> {
-                if (playerData.canActivatePassiveForSlot(ability.getAbilityId(), slotIndex)){
+                if (playerData.canActivatePassiveForSlot(ability.getAbilityId(), slotIndex)) {
                     MKUltra.packetHandler.sendToServer(new ActivatePassivePacket(ability.getAbilityId(), slotIndex));
                 }
                 MKScreen screen = getScreen();
-                if (screen != null){
+                if (screen != null) {
                     screen.closeModal(this.dropdown);
                 }
                 return true;
@@ -136,9 +136,9 @@ public class PassiveAbilityButton extends MKButton {
 
     @Override
     public boolean onMousePressed(Minecraft minecraft, int mouseX, int mouseY, int mouseButton) {
-        if (mouseButton == UIConstants.MOUSE_BUTTON_RIGHT){
+        if (mouseButton == UIConstants.MOUSE_BUTTON_RIGHT) {
             MKModal dropdown = getDropdown(mouseX, mouseY);
-            if (dropdown != null && getScreen() != null){
+            if (dropdown != null && getScreen() != null) {
                 isDropdownOpen = true;
                 this.dropdown = dropdown;
                 getScreen().addModal(dropdown);
@@ -153,26 +153,26 @@ public class PassiveAbilityButton extends MKButton {
     }
 
     @Override
-    public boolean checkHovered(int mouseX, int mouseY){
+    public boolean checkHovered(int mouseX, int mouseY) {
         return isVisible() && isEnabled() && isInBounds(mouseX, mouseY) && !isDropdownOpen;
     }
 
     @Override
-    public void draw(Minecraft minecraft, int x, int y, int width, int height, int mouseX, int mouseY, float partialTicks){
+    public void draw(Minecraft minecraft, int x, int y, int width, int height, int mouseX, int mouseY, float partialTicks) {
         if (this.isVisible()) {
             FontRenderer fontrenderer = minecraft.fontRenderer;
             minecraft.getTextureManager().bindTexture(GuiTextures.CLASS_BACKGROUND_GRAPHIC);
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             GlStateManager.enableBlend();
-            DrawingUtils.drawTexturedRect(this.getX() + SLOT_X_OFFSET ,
+            DrawingUtils.drawTexturedRect(this.getX() + SLOT_X_OFFSET,
                     this.getY() + SLOT_Y_OFFSET,
                     X_POS_TALENT_SLOT_TEX, Y_POS_TALENT_SLOT_TEX,
                     TALENT_SLOT_WIDTH, TALENT_SLOT_HEIGHT,
                     GuiTextures.CLASS_BACKGROUND_WIDTH, GuiTextures.CLASS_BACKGROUND_HEIGHT);
-            if (ability != null){
+            if (ability != null) {
                 ResourceLocation icon = ability.getAbilityIcon();
                 minecraft.getTextureManager().bindTexture(icon);
-                Gui.drawModalRectWithCustomSizedTexture(this.getX() + ICON_X_OFFSET ,
+                Gui.drawModalRectWithCustomSizedTexture(this.getX() + ICON_X_OFFSET,
                         this.getY() + ICON_Y_OFFSET,
                         0, 0,
                         ICON_WIDTH, ICON_HEIGHT, ICON_WIDTH, ICON_HEIGHT);
@@ -187,8 +187,8 @@ public class PassiveAbilityButton extends MKButton {
                 int fontHeight = fontrenderer.getWordWrappedHeight(ability.getAbilityName(), fontWidth);
                 int fontYOffset = (getHeight() - fontHeight) / 2 + 1;
                 String name;
-                if (isHovered()){
-                    if (getScreen() != null){
+                if (isHovered()) {
+                    if (getScreen() != null) {
                         getScreen().addHoveringText(new HoveringTextInstruction(tooltip,
                                 getParentCoords(new Vec2d(mouseX, mouseY))));
                     }

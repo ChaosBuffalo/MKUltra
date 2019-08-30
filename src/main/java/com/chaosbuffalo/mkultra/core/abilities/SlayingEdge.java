@@ -2,9 +2,9 @@ package com.chaosbuffalo.mkultra.core.abilities;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKDamageSource;
+import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.PlayerFormulas;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
@@ -48,7 +48,7 @@ public class SlayingEdge extends PlayerAbility {
 
     @Override
     public float getDistance(int currentRank) {
-        return 5.0f+3.0f* currentRank;
+        return 5.0f + 3.0f * currentRank;
     }
 
     @Override
@@ -66,7 +66,7 @@ public class SlayingEdge extends PlayerAbility {
             targetEntity.attackEntityFrom(
                     MKDamageSource.fromMeleeSkill(getAbilityId(), entity, entity),
                     BASE_DAMAGE + DAMAGE_SCALE * level);
-            if (!targetEntity.isEntityAlive()){
+            if (!targetEntity.isEntityAlive()) {
                 SpellCast slaying_edge = SlayingEdgePotion.Create(entity);
                 SpellCast particlePotion = ParticlePotion.Create(entity,
                         EnumParticleTypes.SPELL_MOB.getParticleID(),

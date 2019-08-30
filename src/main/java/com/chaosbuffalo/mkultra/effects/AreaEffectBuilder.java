@@ -101,7 +101,7 @@ public class AreaEffectBuilder {
     }
 
     public void spawn() {
-        if (areaEffectCloud.getOwner() != null){
+        if (areaEffectCloud.getOwner() != null) {
             areaEffectCloud.getOwner().world.spawnEntity(areaEffectCloud);
         }
 

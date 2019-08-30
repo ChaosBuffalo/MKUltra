@@ -1,8 +1,8 @@
 package com.chaosbuffalo.mkultra.core.abilities;
 
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
+import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
@@ -23,7 +23,7 @@ public class GoldenOpportunity extends PlayerAbility {
     }
 
     @Override
-    public int getCooldown(int currentRank){
+    public int getCooldown(int currentRank) {
         return 30;
     }
 
@@ -33,7 +33,7 @@ public class GoldenOpportunity extends PlayerAbility {
     }
 
     @Override
-    public float getManaCost(int currentRank){
+    public float getManaCost(int currentRank) {
         return 10;
     }
 

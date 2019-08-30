@@ -13,7 +13,7 @@ public class PlayerDataProvider implements ICapabilitySerializable<NBTTagCompoun
 
     private PlayerData data;
 
-    public PlayerDataProvider(EntityPlayer player){
+    public PlayerDataProvider(EntityPlayer player) {
         this.data = new PlayerData(player);
     }
 
@@ -37,7 +37,7 @@ public class PlayerDataProvider implements ICapabilitySerializable<NBTTagCompoun
 
     @Override
     public NBTTagCompound serializeNBT() {
-        return (NBTTagCompound)Capabilities.PLAYER_DATA_CAPABILITY.writeNBT(data, null);
+        return (NBTTagCompound) Capabilities.PLAYER_DATA_CAPABILITY.writeNBT(data, null);
     }
 
 }

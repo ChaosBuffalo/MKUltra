@@ -20,7 +20,7 @@ import java.util.UUID;
  * Created by Jacob on 7/15/2018.
  */
 public class CritMessagePacket implements IMessage {
-    public enum CritType{
+    public enum CritType {
         INDIRECT_MAGIC_CRIT,
         MELEE_CRIT,
         SPELL_CRIT,
@@ -28,6 +28,7 @@ public class CritMessagePacket implements IMessage {
         PROJECTILE_CRIT,
         HOLY_DAMAGE_CRIT
     }
+
     private int targetId;
     private UUID sourceUUID;
     private ResourceLocation abilityName;
@@ -53,7 +54,7 @@ public class CritMessagePacket implements IMessage {
         this.abilityName = abilityName;
     }
 
-    public CritMessagePacket(int targetId, UUID sourceUUID, float critDamage, int projectileId){
+    public CritMessagePacket(int targetId, UUID sourceUUID, float critDamage, int projectileId) {
         this.type = CritType.PROJECTILE_CRIT;
         this.targetId = targetId;
         this.sourceUUID = sourceUUID;
@@ -68,10 +69,10 @@ public class CritMessagePacket implements IMessage {
         this.targetId = pb.readInt();
         this.sourceUUID = pb.readUniqueId();
         this.critDamage = pb.readFloat();
-        if (type == CritType.SPELL_CRIT){
+        if (type == CritType.SPELL_CRIT) {
             this.abilityName = pb.readResourceLocation();
         }
-        if (type == CritType.PROJECTILE_CRIT){
+        if (type == CritType.PROJECTILE_CRIT) {
             this.projectileId = pb.readInt();
         }
     }
@@ -83,10 +84,10 @@ public class CritMessagePacket implements IMessage {
         pb.writeInt(targetId);
         pb.writeUniqueId(sourceUUID);
         pb.writeFloat(critDamage);
-        if (type == CritType.SPELL_CRIT){
+        if (type == CritType.SPELL_CRIT) {
             pb.writeResourceLocation(this.abilityName);
         }
-        if (type ==  CritType.PROJECTILE_CRIT){
+        if (type == CritType.PROJECTILE_CRIT) {
             pb.writeInt(this.projectileId);
         }
     }
@@ -176,7 +177,7 @@ public class CritMessagePacket implements IMessage {
                 case SPELL_CRIT:
                     messageStyle.setColor(TextFormatting.AQUA);
                     PlayerAbility ability = MKURegistry.getAbility(msg.abilityName);
-                    if (ability == null){
+                    if (ability == null) {
                         break;
                     }
                     if (isSelf) {

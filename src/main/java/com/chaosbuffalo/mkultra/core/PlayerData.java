@@ -14,9 +14,9 @@ import com.chaosbuffalo.mkultra.event.ItemEventHandler;
 import com.chaosbuffalo.mkultra.item.ItemHelper;
 import com.chaosbuffalo.mkultra.item.ManaRegenIdol;
 import com.chaosbuffalo.mkultra.log.Log;
-import com.chaosbuffalo.mkultra.network.packets.PlayerSyncRequestPacket;
 import com.chaosbuffalo.mkultra.network.packets.AbilityUpdatePacket;
 import com.chaosbuffalo.mkultra.network.packets.ClassUpdatePacket;
+import com.chaosbuffalo.mkultra.network.packets.PlayerSyncRequestPacket;
 import com.google.common.collect.Lists;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -134,16 +134,16 @@ public class PlayerData implements IPlayerData {
     }
 
     @Override
-    public boolean spendTalentPoint(ResourceLocation talentTree, String line, int index){
+    public boolean spendTalentPoint(ResourceLocation talentTree, String line, int index) {
         PlayerClassInfo classInfo = getActiveClass();
-        if (classInfo == null){
+        if (classInfo == null) {
             return false;
         }
         boolean didSpend = false;
 //        Log.info("In spend talent point %d", classInfo.unspentTalentPoints);
-        if (classInfo.getUnspentTalentPoints() > 0){
+        if (classInfo.getUnspentTalentPoints() > 0) {
             didSpend = classInfo.spendTalentPoint(player, talentTree, line, index);
-            if (didSpend){
+            if (didSpend) {
                 updateTalents();
                 sendCurrentClassUpdate();
             }
@@ -154,13 +154,13 @@ public class PlayerData implements IPlayerData {
     }
 
     @Override
-    public boolean refundTalentPoint(ResourceLocation talentTree, String line, int index){
+    public boolean refundTalentPoint(ResourceLocation talentTree, String line, int index) {
         PlayerClassInfo classInfo = getActiveClass();
-        if (classInfo == null){
+        if (classInfo == null) {
             return false;
         }
         boolean didSpend = classInfo.refundTalentPoint(player, talentTree, line, index);
-        if (didSpend){
+        if (didSpend) {
             updateTalents();
             sendCurrentClassUpdate();
         }
@@ -170,7 +170,7 @@ public class PlayerData implements IPlayerData {
     @Override
     public boolean canSpendTalentPoint(ResourceLocation talentTree, String line, int index) {
         PlayerClassInfo classInfo = getActiveClass();
-        if (classInfo == null){
+        if (classInfo == null) {
             return false;
         }
         return classInfo.canIncrementPointInTree(talentTree, line, index);
@@ -179,7 +179,7 @@ public class PlayerData implements IPlayerData {
     @Override
     public boolean canRefundTalentPoint(ResourceLocation talentTree, String line, int index) {
         PlayerClassInfo classInfo = getActiveClass();
-        if (classInfo == null){
+        if (classInfo == null) {
             return false;
         }
         return classInfo.canDecrementPointInTree(talentTree, line, index);
@@ -203,11 +203,11 @@ public class PlayerData implements IPlayerData {
 
     @Override
     public int getTotalTalentPoints() {
-        if (!hasChosenClass()){
+        if (!hasChosenClass()) {
             return 0;
         }
         PlayerClassInfo classInfo = getActiveClass();
-        if (classInfo == null){
+        if (classInfo == null) {
             return 0;
         }
         return classInfo.getTotalTalentPoints();
@@ -226,11 +226,11 @@ public class PlayerData implements IPlayerData {
 
     @Override
     public int getUnspentTalentPoints() {
-        if (!hasChosenClass()){
+        if (!hasChosenClass()) {
             return 0;
         }
         PlayerClassInfo classInfo = getActiveClass();
-        if (classInfo == null){
+        if (classInfo == null) {
             return 0;
         }
         return classInfo.getUnspentTalentPoints();
@@ -238,11 +238,11 @@ public class PlayerData implements IPlayerData {
 
     @Override
     public TalentTreeRecord getTalentTree(ResourceLocation loc) {
-        if (!hasChosenClass()){
+        if (!hasChosenClass()) {
             return null;
         }
         PlayerClassInfo classInfo = getActiveClass();
-        if (classInfo == null){
+        if (classInfo == null) {
             return null;
         }
         return classInfo.getTalentTree(loc);
@@ -252,7 +252,7 @@ public class PlayerData implements IPlayerData {
     @Nullable
     public List<ResourceLocation> getActivePassives() {
         PlayerClassInfo activeClass = getActiveClass();
-        if (activeClass != null){
+        if (activeClass != null) {
             return Arrays.asList(activeClass.getActivePassives());
         }
         return null;
@@ -262,7 +262,7 @@ public class PlayerData implements IPlayerData {
     @Nullable
     public HashSet<PlayerPassiveAbility> getLearnedPassives() {
         PlayerClassInfo activeClass = getActiveClass();
-        if (activeClass != null){
+        if (activeClass != null) {
             return activeClass.getPassiveAbilitiesFromTalents();
         }
         return null;
@@ -271,7 +271,7 @@ public class PlayerData implements IPlayerData {
     @Override
     public boolean canActivatePassiveForSlot(ResourceLocation loc, int slotIndex) {
         PlayerClassInfo activeClass = getActiveClass();
-        if (activeClass != null){
+        if (activeClass != null) {
             return activeClass.canAddPassiveToSlot(loc, slotIndex);
         }
         return false;
@@ -280,7 +280,7 @@ public class PlayerData implements IPlayerData {
     @Override
     public boolean activatePassiveForSlot(ResourceLocation loc, int slotIndex) {
         PlayerClassInfo activeClass = getActiveClass();
-        if (activeClass != null){
+        if (activeClass != null) {
             boolean didWork = activeClass.addPassiveToSlot(loc, slotIndex);
             setRefreshPassiveTalents();
             sendCurrentClassUpdate();
@@ -344,9 +344,9 @@ public class PlayerData implements IPlayerData {
         return getArbitraryCooldown(loc) > 0;
     }
 
-    private void updateTalents(){
+    private void updateTalents() {
         removeTalents();
-        if (!hasChosenClass()){
+        if (!hasChosenClass()) {
             return;
         }
         applyTalents();
@@ -634,7 +634,7 @@ public class PlayerData implements IPlayerData {
     }
 
     @Override
-    public int getCooldownForLevel(PlayerAbility ability, int level){
+    public int getCooldownForLevel(PlayerAbility ability, int level) {
         return ability.getCooldownTicks(level);
     }
 
@@ -709,8 +709,7 @@ public class PlayerData implements IPlayerData {
             while (info.isCurrentlyKnown())
                 if (info.downgrade())
                     ranks += 1;
-        }
-        else {
+        } else {
             if (info.isCurrentlyKnown())
                 if (info.downgrade())
                     ranks += 1;
@@ -886,7 +885,7 @@ public class PlayerData implements IPlayerData {
     }
 
     private void updateMana() {
-        if (this.getManaRegenRate() == 0.0f){
+        if (this.getManaRegenRate() == 0.0f) {
             return;
         }
         regenTime += 1. / 20.;
@@ -900,7 +899,7 @@ public class PlayerData implements IPlayerData {
     }
 
     private void updateHealth() {
-        if (this.getHealthRegenRate() == 0.0f){
+        if (this.getHealthRegenRate() == 0.0f) {
             return;
         }
         healthRegenTime += 1. / 20.;
@@ -987,9 +986,9 @@ public class PlayerData implements IPlayerData {
     }
 
     private void sendCurrentClassUpdate() {
-        if (isServerSide()){
+        if (isServerSide()) {
             PlayerClassInfo activeClass = getActiveClass();
-            if (activeClass != null){
+            if (activeClass != null) {
                 ArrayList<PlayerClassInfo> infos = new ArrayList<>();
                 infos.add(getActiveClass());
                 MKUltra.packetHandler.sendTo(new ClassUpdatePacket(infos, false), (EntityPlayerMP) player);
@@ -1008,7 +1007,7 @@ public class PlayerData implements IPlayerData {
 
     @SideOnly(Side.CLIENT)
     public void clientBulkKnownClassUpdate(List<PlayerClassInfo> info, boolean isFullUpdate) {
-        if (isFullUpdate){
+        if (isFullUpdate) {
             knownClasses.clear();
             info.forEach(ci -> knownClasses.put(ci.getClassId(), ci));
         } else {
@@ -1112,7 +1111,7 @@ public class PlayerData implements IPlayerData {
         if (nbt.hasKey("totalMana", 3)) {
             setTotalMana(nbt.getFloat("totalMana"));
         }
-        if (nbt.hasKey("healthRegenRate", 3)){
+        if (nbt.hasKey("healthRegenRate", 3)) {
             setHealthRegen(nbt.getFloat("healthRegenRate"));
         }
         deserializeSkills(nbt);
@@ -1274,7 +1273,7 @@ public class PlayerData implements IPlayerData {
     private void checkPassiveEffects() {
         player.getActivePotionMap().forEach((p, e) -> {
             if (p instanceof SpellPotionBase) {
-                SpellPotionBase sp = (SpellPotionBase)p;
+                SpellPotionBase sp = (SpellPotionBase) p;
                 if (!sp.canPersistAcrossSessions()) {
                     SpellCast cast = sp.createReapplicationCast(player);
                     if (cast != null) {
@@ -1379,8 +1378,7 @@ public class PlayerData implements IPlayerData {
             PlayerAbility ability = MKURegistry.getAbility(info.getId());
             if (ability != null) {
                 msg = String.format("%s: %d / %d", ability.getAbilityName(), abilityTracker.getCooldownTicks(info), getAbilityCooldown(ability));
-            }
-            else {
+            } else {
                 msg = String.format("%s: %d / %d", info.getId(), abilityTracker.getCooldownTicks(info), info.getCooldown());
             }
 

@@ -10,8 +10,8 @@ public class DefaultSpawnIndex {
 
     private static final HashMap<ResourceLocation, SpawnList> spawnLists = new HashMap<>();
 
-    public static void addSpawn(ResourceLocation entityName, MobDefinition definition, double weight){
-        if (!spawnLists.containsKey(entityName)){
+    public static void addSpawn(ResourceLocation entityName, MobDefinition definition, double weight) {
+        if (!spawnLists.containsKey(entityName)) {
             spawnLists.put(entityName, new SpawnList(new ResourceLocation(MKUltra.MODID,
                     "default_" + entityName.getNamespace() + "_" + entityName.getPath())));
         }
@@ -19,9 +19,9 @@ public class DefaultSpawnIndex {
     }
 
     @Nullable
-    public static SpawnList getSpawnListForEntity(ResourceLocation entityName){
-        if (spawnLists.containsKey(entityName)){
-            if (!spawnLists.get(entityName).isEmpty()){
+    public static SpawnList getSpawnListForEntity(ResourceLocation entityName) {
+        if (spawnLists.containsKey(entityName)) {
+            if (!spawnLists.get(entityName).isEmpty()) {
                 return spawnLists.get(entityName);
             }
         }

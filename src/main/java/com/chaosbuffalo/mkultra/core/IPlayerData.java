@@ -154,11 +154,11 @@ public interface IPlayerData {
 
     boolean isArbitraryOnCooldown(ResourceLocation loc);
 
-     ArmorClass getArmorClass();
+    ArmorClass getArmorClass();
 
-     PlayerToggleAbility getActiveToggleGroupAbility(ResourceLocation groupId);
+    PlayerToggleAbility getActiveToggleGroupAbility(ResourceLocation groupId);
 
-     void clearToggleGroupAbility(ResourceLocation groupId);
+    void clearToggleGroupAbility(ResourceLocation groupId);
 
-     void setToggleGroupAbility(ResourceLocation groupId, PlayerToggleAbility ability);
+    void setToggleGroupAbility(ResourceLocation groupId, PlayerToggleAbility ability);
 }

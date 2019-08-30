@@ -25,7 +25,7 @@ public class GraspingRootsPotion extends PassiveEffect {
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {
-            event.getRegistry().register(INSTANCE.finish());
+        event.getRegistry().register(INSTANCE.finish());
     }
 
     public static SpellCast Create(Entity source) {

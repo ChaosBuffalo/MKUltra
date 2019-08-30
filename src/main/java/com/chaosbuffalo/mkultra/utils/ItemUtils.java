@@ -28,22 +28,22 @@ public class ItemUtils {
 
     public static ArrayList<Function<Item, Boolean>> IS_TWO_HANDED_CALLBACKS = new ArrayList<>();
 
-    public static void addCriticalStats(Class<? extends Item> itemIn, int priority, float criticalChance, float damageMultiplier){
+    public static void addCriticalStats(Class<? extends Item> itemIn, int priority, float criticalChance, float damageMultiplier) {
         CRIT.addCriticalStats(itemIn, priority, criticalChance, damageMultiplier);
     }
 
-    public static boolean isSuitableOffhandWeapon(ItemStack item){
+    public static boolean isSuitableOffhandWeapon(ItemStack item) {
         return !item.equals(ItemStack.EMPTY) && item.getItem() instanceof ItemSword &&
                 !ItemEventHandler.isNoShieldItem(item.getItem());
     }
 
-    public static void addTwoHandedCallback(Function<Item, Boolean> func){
+    public static void addTwoHandedCallback(Function<Item, Boolean> func) {
         IS_TWO_HANDED_CALLBACKS.add(func);
     }
 
-    public static boolean isTwoHandedWeapon(Item item){
-        for (Function<Item, Boolean> callback : IS_TWO_HANDED_CALLBACKS){
-            if (callback.apply(item)){
+    public static boolean isTwoHandedWeapon(Item item) {
+        for (Function<Item, Boolean> callback : IS_TWO_HANDED_CALLBACKS) {
+            if (callback.apply(item)) {
                 return true;
             }
         }
@@ -59,28 +59,28 @@ public class ItemUtils {
 
 
     public static float getCritChanceForItem(ItemStack itemInHand) {
-        if (itemInHand.equals(ItemStack.EMPTY)){
+        if (itemInHand.equals(ItemStack.EMPTY)) {
             return DEFAULT_CRIT_RATE;
         }
         Item item = itemInHand.getItem();
         return CRIT.getChance(item);
     }
 
-    public static float getCritDamageForItem(ItemStack itemInHand){
-        if (itemInHand.equals(ItemStack.EMPTY)){
+    public static float getCritDamageForItem(ItemStack itemInHand) {
+        if (itemInHand.equals(ItemStack.EMPTY)) {
             return DEFAULT_CRIT_DAMAGE;
         }
         Item item = itemInHand.getItem();
         return CRIT.getDamage(item);
     }
 
-    public static Multimap<String, AttributeModifier> getOffhandModifiersForItem(ItemStack item){
+    public static Multimap<String, AttributeModifier> getOffhandModifiersForItem(ItemStack item) {
         ItemSword sword = (ItemSword) item.getItem();
         Multimap<String, AttributeModifier> modifiers = sword.getAttributeModifiers(
                 EntityEquipmentSlot.MAINHAND, item);
         Multimap<String, AttributeModifier> newModifiers = HashMultimap.create();
         modifiers.forEach((key, modifier) -> {
-            if (key.equals(SharedMonsterAttributes.ATTACK_SPEED.getName())){
+            if (key.equals(SharedMonsterAttributes.ATTACK_SPEED.getName())) {
                 double attacksPerSecond = 4.0 + modifier.getAmount();
                 double ratio = attacksPerSecond / 8.0;
                 Log.info("ratio is %f, %f", ratio, attacksPerSecond);

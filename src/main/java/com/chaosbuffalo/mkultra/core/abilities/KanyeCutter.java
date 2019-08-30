@@ -2,9 +2,9 @@ package com.chaosbuffalo.mkultra.core.abilities;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKDamageSource;
+import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.mkultra.utils.RayTraceUtils;
@@ -71,7 +71,7 @@ public class KanyeCutter extends PlayerAbility {
             Vec3d teleLoc = targetEntity.getPositionVector().add(new Vec3d(movementVec.x, 0.0, movementVec.z));
             RayTraceResult colTrace = RayTraceUtils.rayTraceBlocks(theWorld, targetEntity.getPositionVector(),
                     teleLoc, false);
-            if (colTrace != null && colTrace.typeOfHit == RayTraceResult.Type.BLOCK){
+            if (colTrace != null && colTrace.typeOfHit == RayTraceResult.Type.BLOCK) {
                 teleLoc = colTrace.hitVec;
             }
             Vec3d lookDelta = teleLoc.subtract(targetEntity.getPositionVector().add(new Vec3d(0.0f, .5f, 0.0f))).normalize();
@@ -81,8 +81,8 @@ public class KanyeCutter extends PlayerAbility {
             yaw = yaw * 180.0 / Math.PI;
             yaw += 90f;
             // Unfortunately setRotation is protected so we have to set these directly.
-            entity.rotationYaw = (float)yaw;
-            entity.rotationPitch = (float)pitch;
+            entity.rotationYaw = (float) yaw;
+            entity.rotationPitch = (float) pitch;
             entity.setPositionAndUpdate(teleLoc.x, teleLoc.y, teleLoc.z);
             entity.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 3 * GameConstants.TICKS_PER_SECOND, 5));
 

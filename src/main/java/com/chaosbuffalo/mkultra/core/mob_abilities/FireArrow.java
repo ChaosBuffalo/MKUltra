@@ -15,7 +15,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class FireArrow extends MobAbility{
+public class FireArrow extends MobAbility {
     private static float BASE_ARROW_DAMAGE = 2.0f;
     private static float SCALE_ARROW_DAMAGE = .5f;
     private static float BASE_DAMAGE = 3.0f;
@@ -32,7 +32,7 @@ public class FireArrow extends MobAbility{
     }
 
     @Override
-    public int getCastTime(){
+    public int getCastTime() {
         return GameConstants.TICKS_PER_SECOND / 2;
     }
 
@@ -47,7 +47,7 @@ public class FireArrow extends MobAbility{
     }
 
     @Override
-    public float getDistance(){
+    public float getDistance() {
         return 20.0f;
     }
 

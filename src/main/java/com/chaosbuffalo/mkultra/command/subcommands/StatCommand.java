@@ -93,7 +93,7 @@ public class StatCommand extends CommandTreeBase {
             if (args.length == 0) {
                 message = String.format("You have %f/%f health", data.getHealth(), data.getTotalHealth());
             } else {
-                float health = (float)parseDouble(args[0]);
+                float health = (float) parseDouble(args[0]);
                 if (health > data.getTotalHealth()) {
                     data.setTotalHealth(health);
                 }

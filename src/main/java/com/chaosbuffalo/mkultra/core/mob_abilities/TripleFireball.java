@@ -35,14 +35,14 @@ public class TripleFireball extends MobAbility {
     }
 
     @Override
-    public float getDistance(){
+    public float getDistance() {
         return 20.0f;
     }
 
     @Override
     public void execute(EntityLivingBase entity, IMobData data, EntityLivingBase target, World theWorld) {
         World world = entity.getEntityWorld();
-        for (int i=0; i < PROJECTILE_COUNT; i++){
+        for (int i = 0; i < PROJECTILE_COUNT; i++) {
             EntityMobFireballProjectile flamep = new EntityMobFireballProjectile(world, entity,
                     entity.getEyeHeight() / 2.0);
             flamep.setAmplifier(data.getMobLevel() / 2);

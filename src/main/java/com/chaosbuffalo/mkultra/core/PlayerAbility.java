@@ -18,7 +18,7 @@ import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public abstract class  PlayerAbility extends IForgeRegistryEntry.Impl<PlayerAbility> {
+public abstract class PlayerAbility extends IForgeRegistryEntry.Impl<PlayerAbility> {
 
     public enum AbilityType {
         Active,
@@ -43,20 +43,17 @@ public abstract class  PlayerAbility extends IForgeRegistryEntry.Impl<PlayerAbil
     }
 
     @SideOnly(Side.CLIENT)
-    public String getAbilityName()
-    {
+    public String getAbilityName() {
         return I18n.format(String.format("%s.%s.name", abilityId.getNamespace(), abilityId.getPath()));
     }
 
     @SideOnly(Side.CLIENT)
-    public String getAbilityDescription()
-    {
+    public String getAbilityDescription() {
         return I18n.format(String.format("%s.%s.description", abilityId.getNamespace(), abilityId.getPath()));
     }
 
 
-    public ResourceLocation getAbilityIcon()
-    {
+    public ResourceLocation getAbilityIcon() {
         return new ResourceLocation(abilityId.getNamespace(), String.format("textures/class/abilities/%s.png", abilityId.getPath().split(Pattern.quote("."))[1]));
     }
 
@@ -115,7 +112,7 @@ public abstract class  PlayerAbility extends IForgeRegistryEntry.Impl<PlayerAbil
     }
 
     protected <E extends EntityLivingBase> E getSingleLivingTarget(Class<E> clazz, EntityLivingBase caster,
-                                                                    float distance, boolean checkValid) {
+                                                                   float distance, boolean checkValid) {
         RayTraceResult lookingAt = RayTraceUtils.getLookingAt(clazz, caster, distance,
                 e -> !checkValid || (e != null && isValidTarget(caster, e)));
 

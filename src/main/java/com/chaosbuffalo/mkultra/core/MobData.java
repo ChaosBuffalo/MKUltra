@@ -1,11 +1,11 @@
 package com.chaosbuffalo.mkultra.core;
+
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.spawn.MobFaction;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 
 import java.util.HashSet;
 
@@ -53,11 +53,11 @@ public class MobData implements IMobData {
 
     @Override
     public void onTick() {
-        if (hasAbilities){
-            for (MobAbilityTracker tracker : trackers){
+        if (hasAbilities) {
+            for (MobAbilityTracker tracker : trackers) {
                 tracker.update();
             }
-            if (timeBetweenCasts > 0){
+            if (timeBetweenCasts > 0) {
                 timeBetweenCasts--;
             }
         }
@@ -83,13 +83,13 @@ public class MobData implements IMobData {
         tag.setBoolean("isMKSpawned", isMKSpawned());
         tag.setBoolean("isBoss", isBoss());
         tag.setInteger("level", level);
-        if (hasAdditionalLootTable()){
+        if (hasAdditionalLootTable()) {
             tag.setString("additionalLootTable", additionalLootTable.toString());
         }
-        if (!mobDefinition.equals(MKURegistry.INVALID_MOB)){
+        if (!mobDefinition.equals(MKURegistry.INVALID_MOB)) {
             tag.setString("mobDefinition", mobDefinition.toString());
         }
-        if (!factionName.equals(MKURegistry.INVALID_FACTION)){
+        if (!factionName.equals(MKURegistry.INVALID_FACTION)) {
             tag.setString("mobFaction", factionName.toString());
         }
     }
@@ -99,19 +99,19 @@ public class MobData implements IMobData {
         if (tag.hasKey("isMKSpawned")) {
             setMKSpawned(tag.getBoolean("isMKSpawned"));
         }
-        if (tag.hasKey("additionalLootTable")){
+        if (tag.hasKey("additionalLootTable")) {
             setAdditionalLootTable(new ResourceLocation(tag.getString("additionalLootTable")));
         }
-        if (tag.hasKey("isBoss")){
+        if (tag.hasKey("isBoss")) {
             setIsBoss(tag.getBoolean("isBoss"));
         }
-        if (tag.hasKey("mobDefinition")){
+        if (tag.hasKey("mobDefinition")) {
             setMobDefinition(new ResourceLocation(tag.getString("mobDefinition")));
         }
-        if (tag.hasKey("level")){
+        if (tag.hasKey("level")) {
             setMobLevel(tag.getInteger("level"));
         }
-        if (tag.hasKey("mobFaction")){
+        if (tag.hasKey("mobFaction")) {
             setMobFaction(new ResourceLocation(tag.getString("mobFaction")));
         }
     }
@@ -195,7 +195,7 @@ public class MobData implements IMobData {
     @Override
     public boolean isSameFaction(EntityLivingBase other) {
         IMobData otherData = MKUMobData.get(other);
-        if (otherData == null || factionName.equals(MKURegistry.INVALID_FACTION)){
+        if (otherData == null || factionName.equals(MKURegistry.INVALID_FACTION)) {
             return false;
         }
         return factionName.equals(otherData.getMobFaction());
@@ -204,7 +204,7 @@ public class MobData implements IMobData {
     @Override
     public boolean isFactionPlayerFriendly() {
         MobFaction faction = MKURegistry.getFaction(factionName);
-        if (faction != null){
+        if (faction != null) {
             return faction.isPlayerFriendly();
         }
         return false;

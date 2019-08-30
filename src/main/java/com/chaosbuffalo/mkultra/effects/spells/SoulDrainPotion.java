@@ -3,9 +3,9 @@ package com.chaosbuffalo.mkultra.effects.spells;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
-import com.chaosbuffalo.mkultra.effects.passives.PassiveAbilityPotionBase;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellTriggers;
+import com.chaosbuffalo.mkultra.effects.passives.PassiveAbilityPotionBase;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
@@ -36,10 +36,10 @@ public class SoulDrainPotion extends PassiveAbilityPotionBase {
         SpellTriggers.PLAYER_KILL_ENTITY.register(this, this::onPlayerKillEntity);
     }
 
-    public void onPlayerKillEntity(LivingDeathEvent event, DamageSource source, EntityPlayer player){
+    public void onPlayerKillEntity(LivingDeathEvent event, DamageSource source, EntityPlayer player) {
         IPlayerData pData = MKUPlayerData.get(player);
-        if (pData != null){
-            if (SpellTriggers.isMKUltraAbilityDamage(source)){
+        if (pData != null) {
+            if (SpellTriggers.isMKUltraAbilityDamage(source)) {
                 pData.setMana(Math.min(pData.getMana() + 4, pData.getTotalMana()));
             }
         }

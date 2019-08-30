@@ -73,7 +73,7 @@ public class EntityAIAttackMeleeMK extends EntityAIBase {
         } else if (!this.attacker.isWithinHomeDistanceFromPosition(new BlockPos(entitylivingbase))) {
             return false;
         } else {
-            return !(entitylivingbase instanceof EntityPlayer) || !((EntityPlayer)entitylivingbase).isSpectator() && !((EntityPlayer)entitylivingbase).isCreative();
+            return !(entitylivingbase instanceof EntityPlayer) || !((EntityPlayer) entitylivingbase).isSpectator() && !((EntityPlayer) entitylivingbase).isCreative();
         }
     }
 
@@ -86,9 +86,9 @@ public class EntityAIAttackMeleeMK extends EntityAIBase {
     public void resetTask() {
 //        Log.info("Resetting Attack Melee: %s", attacker.toString());
         EntityLivingBase entitylivingbase = this.attacker.getAttackTarget();
-        if (entitylivingbase instanceof EntityPlayer && (((EntityPlayer)entitylivingbase).isSpectator() ||
-                ((EntityPlayer)entitylivingbase).isCreative())) {
-            this.attacker.setAttackTarget((EntityLivingBase)null);
+        if (entitylivingbase instanceof EntityPlayer && (((EntityPlayer) entitylivingbase).isSpectator() ||
+                ((EntityPlayer) entitylivingbase).isCreative())) {
+            this.attacker.setAttackTarget((EntityLivingBase) null);
         }
 
         this.attacker.getNavigator().clearPath();
@@ -97,7 +97,7 @@ public class EntityAIAttackMeleeMK extends EntityAIBase {
     public void updateTask() {
 //        Log.info("Updating Attack Melee: %s", attacker.toString());
         EntityLivingBase entitylivingbase = this.attacker.getAttackTarget();
-        if (entitylivingbase == null){
+        if (entitylivingbase == null) {
             return;
         }
         this.attacker.getLookHelper().setLookPositionWithEntity(entitylivingbase, 30.0F,
@@ -119,7 +119,7 @@ public class EntityAIAttackMeleeMK extends EntityAIBase {
                 if (this.attacker.getNavigator().getPath() != null) {
                     PathPoint finalPathPoint = this.attacker.getNavigator().getPath().getFinalPathPoint();
                     if (finalPathPoint != null && entitylivingbase.getDistanceSq((
-                            double)finalPathPoint.x, (double)finalPathPoint.y, (double)finalPathPoint.z) < 1.0D) {
+                            double) finalPathPoint.x, (double) finalPathPoint.y, (double) finalPathPoint.z) < 1.0D) {
                         this.failedPathFindingPenalty = 0;
                     } else {
                         this.failedPathFindingPenalty += 10;
@@ -149,7 +149,7 @@ public class EntityAIAttackMeleeMK extends EntityAIBase {
         if (distance <= d0 && this.attackTick <= 0) {
             double attackSpeed = attacker.getAttributeMap()
                     .getAttributeInstance(SharedMonsterAttributes.ATTACK_SPEED).getAttributeValue();
-            int attackTicks = (int)(GameConstants.TICKS_PER_SECOND / attackSpeed);
+            int attackTicks = (int) (GameConstants.TICKS_PER_SECOND / attackSpeed);
             this.attackTick = attackTicks;
             this.attacker.swingArm(EnumHand.MAIN_HAND);
             this.attacker.attackEntityAsMob(attackTarget);
@@ -160,9 +160,9 @@ public class EntityAIAttackMeleeMK extends EntityAIBase {
     protected double getAttackReachSqr(EntityLivingBase attackTarget) {
         ItemStack inMainhand = attacker.getHeldItemMainhand();
         double attackRange = this.attacker.width * 2.0;
-        if (inMainhand != ItemStack.EMPTY){
+        if (inMainhand != ItemStack.EMPTY) {
             Item item = inMainhand.getItem();
-            if (ItemEventHandler.isNoShieldItem(item)){
+            if (ItemEventHandler.isNoShieldItem(item)) {
                 attackRange *= 2.0;
             }
         }

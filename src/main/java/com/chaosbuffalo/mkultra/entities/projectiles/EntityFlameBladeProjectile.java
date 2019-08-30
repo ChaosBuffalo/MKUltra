@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 /**
  * Created by Jacob on 4/21/2018.
  */
-public class EntityFlameBladeProjectile extends EntityBaseProjectile{
+public class EntityFlameBladeProjectile extends EntityBaseProjectile {
 
     public EntityFlameBladeProjectile(World worldIn) {
         super(worldIn);

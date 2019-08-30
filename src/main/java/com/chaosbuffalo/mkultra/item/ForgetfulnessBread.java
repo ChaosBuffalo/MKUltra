@@ -1,9 +1,9 @@
 package com.chaosbuffalo.mkultra.item;
 
 import com.chaosbuffalo.mkultra.GameConstants;
-import com.chaosbuffalo.mkultra.core.MKURegistry;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
+import com.chaosbuffalo.mkultra.core.MKURegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemFood;

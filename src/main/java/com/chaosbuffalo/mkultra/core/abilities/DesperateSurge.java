@@ -2,8 +2,8 @@ package com.chaosbuffalo.mkultra.core.abilities;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
+import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.PlayerFormulas;
 import com.chaosbuffalo.mkultra.effects.spells.ShieldingPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
@@ -60,13 +60,13 @@ public class DesperateSurge extends PlayerAbility {
     @Override
     public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
         int level = pData.getAbilityRank(getAbilityId());
-        if (entity.getFoodStats().getFoodLevel() >= FOOD_COST + level * FOOD_SCALE){
+        if (entity.getFoodStats().getFoodLevel() >= FOOD_COST + level * FOOD_SCALE) {
             pData.startAbility(this);
             entity.getFoodStats().setFoodLevel(entity.getFoodStats().getFoodLevel() - (FOOD_COST + level * FOOD_SCALE));
             int duration = (BASE_DURATION + DURATION_SCALE * level) * GameConstants.TICKS_PER_SECOND;
             duration = PlayerFormulas.applyBuffDurationBonus(pData, duration);
             entity.addPotionEffect(ShieldingPotion.Create(entity).setTarget(entity).toPotionEffect(
-                            duration, BASE_SHIELDING + level * SHIELDING_SCALE));
+                    duration, BASE_SHIELDING + level * SHIELDING_SCALE));
             entity.addPotionEffect(new PotionEffect(MobEffects.SPEED, duration * 2, 2 + level));
             float healAmount = PlayerFormulas.applyHealBonus(pData, 2.0f * level);
             entity.heal(healAmount);

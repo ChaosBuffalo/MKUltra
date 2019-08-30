@@ -1,6 +1,5 @@
 package com.chaosbuffalo.mkultra.mob_ai;
 
-import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
@@ -39,6 +38,7 @@ public class EntityAIHurtByTargetMK extends EntityAITarget {
         }
         super.startExecuting();
     }
+
     protected AxisAlignedBB getTargetableArea(double distance) {
         return taskOwner.getEntityBoundingBox().grow(distance, distance, distance);
     }
@@ -48,10 +48,10 @@ public class EntityAIHurtByTargetMK extends EntityAITarget {
         List<Entity> nearbyFriendlies = taskOwner.world.getEntitiesWithinAABB(EntityLivingBase.class,
                 getTargetableArea(CALL_FOR_HELP_RANGE),
                 e -> Targeting.isValidTarget(Targeting.TargetType.FRIENDLY, taskOwner, e, true));
-        for (Entity friendly : nearbyFriendlies){
-            if (friendly instanceof EntityCreature){
+        for (Entity friendly : nearbyFriendlies) {
+            if (friendly instanceof EntityCreature) {
                 if (Targeting.isValidTarget(Targeting.TargetType.ENEMY, friendly, taskOwner.getRevengeTarget(),
-                        true)){
+                        true)) {
                     ((EntityCreature) friendly).setAttackTarget(taskOwner.getRevengeTarget());
                 }
             }

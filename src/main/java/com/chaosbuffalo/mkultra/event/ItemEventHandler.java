@@ -5,11 +5,13 @@ import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.effects.SpellTriggers;
 import com.chaosbuffalo.mkultra.item.ItemHelper;
-import com.chaosbuffalo.mkultra.utils.ItemUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemArmor;
+import net.minecraft.item.ItemShield;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -40,9 +42,9 @@ public class ItemEventHandler {
         }
     }
 
-    public static boolean isNoShieldItem(Item item){
-        for (ShieldRestrictionEntry entry : NO_SHIELD_ITEMS){
-            if (entry.matches(item)){
+    public static boolean isNoShieldItem(Item item) {
+        for (ShieldRestrictionEntry entry : NO_SHIELD_ITEMS) {
+            if (entry.matches(item)) {
                 return true;
             }
         }
@@ -53,7 +55,7 @@ public class ItemEventHandler {
         ItemStack main = player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND);
         ItemStack off = player.getItemStackFromSlot(EntityEquipmentSlot.OFFHAND);
 
-        if (isNoShieldItem(main.getItem()) && off.getItem() instanceof ItemShield){
+        if (isNoShieldItem(main.getItem()) && off.getItem() instanceof ItemShield) {
             ItemHelper.unequip(player, EntityEquipmentSlot.OFFHAND);
         }
     }
@@ -88,7 +90,7 @@ public class ItemEventHandler {
 
         EntityPlayerMP player = (EntityPlayerMP) event.getEntityLiving();
 
-        if (!MKConfig.cheats.BIG_HANDS_MODE){
+        if (!MKConfig.cheats.BIG_HANDS_MODE) {
             checkShieldRestriction(player);
         }
 
@@ -108,7 +110,7 @@ public class ItemEventHandler {
 
         public final int priority;
 
-        public ShieldRestrictionEntry(Class<? extends Item> itemClass, int priorityIn){
+        public ShieldRestrictionEntry(Class<? extends Item> itemClass, int priorityIn) {
             item = itemClass;
             priority = priorityIn;
         }
@@ -118,7 +120,7 @@ public class ItemEventHandler {
             return o.priority - priority;
         }
 
-        private boolean matches(Item obj){
+        private boolean matches(Item obj) {
             return item.isInstance(obj);
         }
 

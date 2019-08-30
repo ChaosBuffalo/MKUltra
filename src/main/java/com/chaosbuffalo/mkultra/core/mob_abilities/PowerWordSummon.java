@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 
 public class PowerWordSummon extends MobAbility {
 
-    public PowerWordSummon(){
+    public PowerWordSummon() {
         super(MKUltra.MODID, "mob_ability.power_word_summon");
     }
 
@@ -37,7 +37,7 @@ public class PowerWordSummon extends MobAbility {
     }
 
     @Override
-    public int getCastTime(){
+    public int getCastTime() {
         return GameConstants.TICKS_PER_SECOND * 2;
     }
 

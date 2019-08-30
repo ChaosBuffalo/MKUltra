@@ -80,7 +80,7 @@ public class ArmorClass {
     }
 
     private static class AllowAllArmorClass extends ArmorClass {
-        public AllowAllArmorClass(ResourceLocation location){
+        public AllowAllArmorClass(ResourceLocation location) {
             super(location);
         }
 

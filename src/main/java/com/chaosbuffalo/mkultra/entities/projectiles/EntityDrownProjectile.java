@@ -8,7 +8,6 @@ import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.mkultra.utils.EnvironmentUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -29,7 +28,7 @@ public class EntityDrownProjectile extends EntityBaseProjectile {
         this.setDeathTime(40);
     }
 
-    public EntityDrownProjectile(World worldIn, EntityLivingBase throwerIn, double offset){
+    public EntityDrownProjectile(World worldIn, EntityLivingBase throwerIn, double offset) {
         super(worldIn, throwerIn, offset);
         this.setDeathTime(40);
     }
@@ -69,7 +68,7 @@ public class EntityDrownProjectile extends EntityBaseProjectile {
                             new Vec3d(0., 1.0, 0.0)),
                     entity.dimension, result.hitVec.x,
                     result.hitVec.y, result.hitVec.z, 50.0f);
-            switch (result.typeOfHit){
+            switch (result.typeOfHit) {
                 case BLOCK:
                     EnvironmentUtils.putOutFires(entity.getEntityWorld(), result.getBlockPos(), new Vec3i(10, 10, 10));
                     break;

@@ -21,13 +21,12 @@ public class RandomCollection<E> {
         return map.ceilingEntry(value).getValue();
     }
 
-    public Collection<E> getValues(){
+    public Collection<E> getValues() {
         return map.values();
     }
 
 
-
-    public int size(){
+    public int size() {
         return map.size();
     }
 }

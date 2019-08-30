@@ -38,7 +38,7 @@ public class MKDamageSource extends EntityDamageSourceIndirect {
         return abilityId.equals(AbilityMagicDamage.INDIRECT_MAGIC_DMG_ABILITY_ID);
     }
 
-    public boolean isHolyDamage(){
+    public boolean isHolyDamage() {
         return abilityId.equals(HolyDamagePotion.HOLY_DMG_ABILITY_ID);
     }
 
@@ -54,7 +54,7 @@ public class MKDamageSource extends EntityDamageSourceIndirect {
     }
 
     public static DamageSource causeIndirectMobMagicDamage(ResourceLocation abilityId, Entity source,
-                                                        @Nullable Entity indirectEntityIn) {
+                                                           @Nullable Entity indirectEntityIn) {
         return new MKDamageSource(abilityId, MOB_ABILITY_DAMAGE_TYPE, source, indirectEntityIn)
                 .setDamageBypassesArmor()
                 .setMagicDamage();
@@ -68,12 +68,12 @@ public class MKDamageSource extends EntityDamageSourceIndirect {
                 .setMagicDamage();
     }
 
-    public DamageSource setIgnoreAttackTriggers(){
+    public DamageSource setIgnoreAttackTriggers() {
         this.ignoreTriggerOnAttackEntity = true;
         return this;
     }
 
-    public boolean ignoreAttackEntityTrigger(){
+    public boolean ignoreAttackEntityTrigger() {
         return ignoreTriggerOnAttackEntity;
     }
 

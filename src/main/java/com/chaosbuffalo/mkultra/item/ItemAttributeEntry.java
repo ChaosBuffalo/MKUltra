@@ -11,7 +11,7 @@ public class ItemAttributeEntry {
     public final int operation;
     public final RangedAttribute attr;
 
-    public ItemAttributeEntry(double amount, int operation, RangedAttribute attr){
+    public ItemAttributeEntry(double amount, int operation, RangedAttribute attr) {
         this.amount = amount;
         this.operation = operation;
         this.attr = attr;

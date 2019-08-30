@@ -42,7 +42,7 @@ public class EntityGeyserProjectile extends EntityBaseProjectile {
         return true;
     }
 
-    private boolean doEffect(EntityLivingBase caster, int amplifier, float baseDamage, float damageScale){
+    private boolean doEffect(EntityLivingBase caster, int amplifier, float baseDamage, float damageScale) {
         if (!this.world.isRemote && caster != null) {
             SpellCast geyser = GeyserPotion.Create(caster, baseDamage, damageScale);
 
@@ -74,7 +74,7 @@ public class EntityGeyserProjectile extends EntityBaseProjectile {
     @Override
     protected boolean onImpact(EntityLivingBase caster, RayTraceResult result, int amplifier) {
         if (!this.world.isRemote && caster != null) {
-            switch (result.typeOfHit){
+            switch (result.typeOfHit) {
                 case BLOCK:
                     return false;
                 case ENTITY:

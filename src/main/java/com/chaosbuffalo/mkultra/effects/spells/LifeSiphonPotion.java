@@ -4,9 +4,9 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerFormulas;
-import com.chaosbuffalo.mkultra.effects.passives.PassiveAbilityPotionBase;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellTriggers;
+import com.chaosbuffalo.mkultra.effects.passives.PassiveAbilityPotionBase;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
@@ -36,10 +36,10 @@ public class LifeSiphonPotion extends PassiveAbilityPotionBase {
         SpellTriggers.PLAYER_KILL_ENTITY.register(this, this::onPlayerKillEntity);
     }
 
-    public void onPlayerKillEntity(LivingDeathEvent event, DamageSource source, EntityPlayer player){
+    public void onPlayerKillEntity(LivingDeathEvent event, DamageSource source, EntityPlayer player) {
         IPlayerData pData = MKUPlayerData.get(player);
-        if (pData != null){
-            if (SpellTriggers.isMeleeDamage(source)){
+        if (pData != null) {
+            if (SpellTriggers.isMeleeDamage(source)) {
                 float healAmount = PlayerFormulas.applyHealBonus(pData, 4.0f);
                 player.heal(healAmount);
             }

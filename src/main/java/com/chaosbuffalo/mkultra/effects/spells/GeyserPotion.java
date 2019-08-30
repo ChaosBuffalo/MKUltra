@@ -63,8 +63,8 @@ public class GeyserPotion extends SpellPotionBase {
             target.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, baseDuration, amplifier, false, true));
         }
         IMobData mobData = MKUMobData.get(target);
-        if (mobData != null){
-            if (!mobData.isBoss()){
+        if (mobData != null) {
+            if (!mobData.isBoss()) {
                 target.addVelocity(0.0, amplifier * 1.5f, 0.0);
             }
         } else {

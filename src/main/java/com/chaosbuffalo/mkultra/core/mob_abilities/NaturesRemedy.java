@@ -2,8 +2,8 @@ package com.chaosbuffalo.mkultra.core.mob_abilities;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.MobAbility;
 import com.chaosbuffalo.mkultra.core.IMobData;
+import com.chaosbuffalo.mkultra.core.MobAbility;
 import com.chaosbuffalo.mkultra.effects.spells.NaturesRemedyPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
@@ -19,7 +19,7 @@ public class NaturesRemedy extends MobAbility {
     public static final float HEAL_THRESHOLD = .75f;
 
 
-    public NaturesRemedy(){
+    public NaturesRemedy() {
         super(MKUltra.MODID, "mob_ability.natures_remedy");
     }
 
@@ -34,7 +34,7 @@ public class NaturesRemedy extends MobAbility {
     }
 
     @Override
-    public boolean canSelfCast(){
+    public boolean canSelfCast() {
         return true;
     }
 
@@ -48,18 +48,18 @@ public class NaturesRemedy extends MobAbility {
         return Targeting.TargetType.FRIENDLY;
     }
 
-    public int getDuration(){
+    public int getDuration() {
         return 10 * GameConstants.TICKS_PER_SECOND;
     }
 
     @Override
-    public Potion getEffectPotion(){
+    public Potion getEffectPotion() {
         return NaturesRemedyPotion.INSTANCE;
     }
 
     @Override
-    public boolean shouldCast(EntityLivingBase caster, EntityLivingBase target){
-        if (target.getHealth() >= target.getMaxHealth() * HEAL_THRESHOLD){
+    public boolean shouldCast(EntityLivingBase caster, EntityLivingBase target) {
+        if (target.getHealth() >= target.getMaxHealth() * HEAL_THRESHOLD) {
             return false;
         }
         return super.shouldCast(caster, target);

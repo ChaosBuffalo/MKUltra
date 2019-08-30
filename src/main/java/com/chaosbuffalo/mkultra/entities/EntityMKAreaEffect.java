@@ -116,7 +116,7 @@ public class EntityMKAreaEffect extends Entity {
         this.effects.add(new EffectEntry(effect, targetType, excludeCaster));
     }
 
-    public void setNoRender(){
+    public void setNoRender() {
         this.getDataManager().set(PARTICLE, -1);
     }
 
@@ -171,7 +171,7 @@ public class EntityMKAreaEffect extends Entity {
                 this.setDead();
                 return;
             }
-            if (getOwner() == null){
+            if (getOwner() == null) {
                 this.setDead();
                 return;
             }

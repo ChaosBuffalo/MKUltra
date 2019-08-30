@@ -2,18 +2,12 @@ package com.chaosbuffalo.mkultra.effects.spells;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
-import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerAttributes;
 import com.chaosbuffalo.mkultra.effects.PassiveEffect;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
-import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
 import com.chaosbuffalo.mkultra.effects.SpellTriggers;
-import com.chaosbuffalo.mkultra.party.PartyManager;
-import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -24,7 +18,6 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
 /**
@@ -64,7 +57,7 @@ public class SkinLikeWoodPotion extends PassiveEffect {
 
     private void playerHurtPreScale(LivingHurtEvent event, DamageSource source, EntityPlayer livingTarget, IPlayerData targetData) {
 
-        if (livingTarget.isPotionActive(SkinLikeWoodPotion.INSTANCE)){
+        if (livingTarget.isPotionActive(SkinLikeWoodPotion.INSTANCE)) {
             if (!targetData.consumeMana(1)) {
                 livingTarget.removePotionEffect(SkinLikeWoodPotion.INSTANCE);
             }

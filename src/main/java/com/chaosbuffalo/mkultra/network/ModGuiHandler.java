@@ -1,8 +1,8 @@
 package com.chaosbuffalo.mkultra.network;
 
 import com.chaosbuffalo.mkultra.client.gui.*;
-import com.chaosbuffalo.mkultra.init.ModItems;
 import com.chaosbuffalo.mkultra.core.IClassProvider;
+import com.chaosbuffalo.mkultra.init.ModItems;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.tiles.TileEntityMKSpawner;
 import com.chaosbuffalo.mkultra.tiles.TileEntityNPCSpawner;
@@ -35,22 +35,22 @@ public class ModGuiHandler implements IGuiHandler {
 
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        if (ID == PIPE_CONTAINER_SCREEN){
+        if (ID == PIPE_CONTAINER_SCREEN) {
             ItemStack main_hand = player.getHeldItemMainhand();
             ItemStack off_hand = player.getHeldItemOffhand();
             ItemStack selected = null;
-            if (main_hand.getItem() == ModItems.pipe){
+            if (main_hand.getItem() == ModItems.pipe) {
                 selected = main_hand;
-            } else if (off_hand.getItem() == ModItems.pipe){
+            } else if (off_hand.getItem() == ModItems.pipe) {
                 selected = off_hand;
             }
-            if (selected != null){
+            if (selected != null) {
                 IItemHandler itemHandler = selected.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-                if (itemHandler != null){
+                if (itemHandler != null) {
                     return new PipeContainer(itemHandler, player);
                 }
             }
-        } else if (ID == NPC_SPAWNER_EQUIPMENT_SCREEN){
+        } else if (ID == NPC_SPAWNER_EQUIPMENT_SCREEN) {
             BlockPos pos = new BlockPos(x, y, z);
             TileEntity te = world.getTileEntity(pos);
             if (te instanceof TileEntityNPCSpawner) {
@@ -76,35 +76,35 @@ public class ModGuiHandler implements IGuiHandler {
             return new ChooseClassScreen.FromItem(true, false);
         } else if (ID == PARTY_INVITE_SCREEN) {
             return new PartyInviteScreen();
-        } else if (ID == PIPE_CONTAINER_SCREEN){
+        } else if (ID == PIPE_CONTAINER_SCREEN) {
             ItemStack main_hand = player.getHeldItemMainhand();
             ItemStack off_hand = player.getHeldItemOffhand();
             ItemStack selected = null;
-            if (main_hand.getItem() == ModItems.pipe){
+            if (main_hand.getItem() == ModItems.pipe) {
                 selected = main_hand;
-            } else if (off_hand.getItem() == ModItems.pipe){
+            } else if (off_hand.getItem() == ModItems.pipe) {
                 selected = off_hand;
             }
-            if (selected != null){
+            if (selected != null) {
                 IItemHandler itemHandler = selected.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-                if (itemHandler != null){
+                if (itemHandler != null) {
                     return new PipeGui(itemHandler, player);
                 }
             }
-        }  else if (ID == MK_SPAWNER_SCREEN){
+        } else if (ID == MK_SPAWNER_SCREEN) {
             TileEntity entity = world.getTileEntity(new BlockPos(x, y, z));
-            if (entity instanceof TileEntityMKSpawner){
-                TileEntityMKSpawner mkSpawner = (TileEntityMKSpawner)entity;
+            if (entity instanceof TileEntityMKSpawner) {
+                TileEntityMKSpawner mkSpawner = (TileEntityMKSpawner) entity;
                 return new MKSpawnerGui(mkSpawner);
             }
-        } else if (ID == NPC_SPAWNER_EQUIPMENT_SCREEN){
+        } else if (ID == NPC_SPAWNER_EQUIPMENT_SCREEN) {
             BlockPos pos = new BlockPos(x, y, z);
             TileEntity te = world.getTileEntity(pos);
             if (te instanceof TileEntityNPCSpawner) {
                 TileEntityNPCSpawner containerTileEntity = (TileEntityNPCSpawner) te;
                 return new NPCSpawnerEquipmentGUI(containerTileEntity, new NPCEquipmentContainer(containerTileEntity, player));
             }
-        } else if (ID == LEARN_CLASS_FROM_TILE_ENTITY_SCREEN){
+        } else if (ID == LEARN_CLASS_FROM_TILE_ENTITY_SCREEN) {
             BlockPos pos = new BlockPos(x, y, z);
             TileEntity te = world.getTileEntity(pos);
             Log.info("Trying to open class screen");
@@ -114,7 +114,7 @@ public class ModGuiHandler implements IGuiHandler {
             if (provider == null)
                 return null;
             return new ChooseClassScreen.FromTE(te, true, true);
-        } else if (ID == TALENT_SCREEN){
+        } else if (ID == TALENT_SCREEN) {
             BlockPos pos = new BlockPos(x, y, z);
             TileEntity te = world.getTileEntity(pos);
             if (te instanceof TileEntityNPCSpawner) {

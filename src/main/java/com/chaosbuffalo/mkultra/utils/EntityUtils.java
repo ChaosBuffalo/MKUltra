@@ -1,13 +1,9 @@
 package com.chaosbuffalo.mkultra.utils;
 
-import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.core.stats.CriticalStats;
 import com.chaosbuffalo.mkultra.entities.projectiles.EntityBaseProjectile;
-import com.chaosbuffalo.mkultra.log.Log;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.entity.projectile.EntitySpectralArrow;
 import net.minecraft.entity.projectile.EntityThrowable;
@@ -25,7 +21,7 @@ public class EntityUtils {
     private static final double LARGE_VOLUME = 3.0 * .6 * .6 * 1.8;
     public static CriticalStats<Entity> ENTITY_CRIT = new CriticalStats<>(DEFAULT_CRIT_RATE, DEFAULT_CRIT_DAMAGE);
 
-    public static void addCriticalStats(Class<? extends Entity> entityIn, int priority, float criticalChance, float damageMultiplier){
+    public static void addCriticalStats(Class<? extends Entity> entityIn, int priority, float criticalChance, float damageMultiplier) {
         ENTITY_CRIT.addCriticalStats(entityIn, priority, criticalChance, damageMultiplier);
     }
 
@@ -36,18 +32,18 @@ public class EntityUtils {
         addCriticalStats(EntityThrowable.class, 0, .05f, 2.0f);
     }
 
-    public static double calculateBoundingBoxVolume(EntityLivingBase entityIn){
+    public static double calculateBoundingBoxVolume(EntityLivingBase entityIn) {
         AxisAlignedBB box = entityIn.getEntityBoundingBox();
         return (box.maxX - box.minX) * (box.maxY - box.minY) * (box.maxZ - box.minZ);
     }
 
-    public static boolean isLargeEntity(EntityLivingBase entityIn){
+    public static boolean isLargeEntity(EntityLivingBase entityIn) {
         double vol = calculateBoundingBoxVolume(entityIn);
         return vol >= LARGE_VOLUME;
     }
 
-    public static double getDrag(EntityBaseProjectile projectile){
-        if (projectile.isInWater()){
+    public static double getDrag(EntityBaseProjectile projectile) {
+        if (projectile.isInWater()) {
             return projectile.getWaterDrag();
         } else {
             return projectile.getFlightDrag();
@@ -64,7 +60,7 @@ public class EntityUtils {
     }
 
     public static void shootProjectileAtTarget(EntityBaseProjectile projectile, EntityLivingBase target,
-                                               float speed, float accuracy){
+                                               float speed, float accuracy) {
 
         double distance = projectile.getPositionVector().distanceTo(target.getPositionVector());
         double drag = getDrag(projectile);
@@ -72,12 +68,12 @@ public class EntityUtils {
         double gravityOffset = 0.0;
         float gravity = projectile.getGravityVelocity();
         // WARNING BIG BRAIN ALGORITHM, ACCOUNTS FOR GRAVITY-ISH
-        for (int i = 0; i < travelTimeInTicks; i++){
+        for (int i = 0; i < travelTimeInTicks; i++) {
             int multiplier = ((i / 10) * 2) + 2;
             gravityOffset += gravity * multiplier;
         }
         double d1 = target.posX - projectile.posX;
-        double d2 =  (target.posY + gravityOffset + (target.getEyeHeight() / 2.0)) - projectile.posY;
+        double d2 = (target.posY + gravityOffset + (target.getEyeHeight() / 2.0)) - projectile.posY;
         double d3 = target.posZ - projectile.posZ;
         projectile.shoot(d1, d2, d3, speed, accuracy);
     }

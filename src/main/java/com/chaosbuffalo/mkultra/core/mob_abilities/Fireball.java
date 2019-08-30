@@ -2,8 +2,8 @@ package com.chaosbuffalo.mkultra.core.mob_abilities;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.MobAbility;
 import com.chaosbuffalo.mkultra.core.IMobData;
+import com.chaosbuffalo.mkultra.core.MobAbility;
 import com.chaosbuffalo.mkultra.entities.projectiles.EntityMobFireballProjectile;
 import com.chaosbuffalo.mkultra.utils.EntityUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
@@ -34,7 +34,7 @@ public class Fireball extends MobAbility {
     }
 
     @Override
-    public float getDistance(){
+    public float getDistance() {
         return 20.0f;
     }
 

@@ -14,12 +14,12 @@ public class CriticalStats<T> {
         this.defaultDamage = defaultDamage;
     }
 
-    public void addCriticalStats(Class<? extends T> objClass, int priority, float criticalChance, float damageMultiplier){
+    public void addCriticalStats(Class<? extends T> objClass, int priority, float criticalChance, float damageMultiplier) {
         criticalEntries.add(new CriticalEntry(objClass, priority, criticalChance, damageMultiplier));
         Collections.sort(criticalEntries);
     }
 
-    private boolean objectMatches(CriticalEntry stat, T obj){
+    private boolean objectMatches(CriticalEntry stat, T obj) {
         Class<? extends T> entityClass = stat.entity;
         return entityClass.isInstance(obj);
     }
@@ -28,20 +28,20 @@ public class CriticalStats<T> {
         if (obj == null) {
             return defaultRate;
         }
-        for (CriticalEntry stat : criticalEntries){
-            if (objectMatches(stat, obj)){
+        for (CriticalEntry stat : criticalEntries) {
+            if (objectMatches(stat, obj)) {
                 return stat.chance;
             }
         }
         return defaultRate;
     }
 
-    public float getDamage(T obj){
+    public float getDamage(T obj) {
         if (obj == null) {
             return defaultDamage;
         }
-        for (CriticalEntry stat : criticalEntries){
-            if (objectMatches(stat, obj)){
+        for (CriticalEntry stat : criticalEntries) {
+            if (objectMatches(stat, obj)) {
                 return stat.damageMultiplier;
             }
         }
@@ -59,7 +59,7 @@ public class CriticalStats<T> {
         final float chance;
         final float damageMultiplier;
 
-        CriticalEntry(Class<? extends T> entityClass, int priorityIn, float chanceIn, float damageMult){
+        CriticalEntry(Class<? extends T> entityClass, int priorityIn, float chanceIn, float damageMult) {
             entity = entityClass;
             priority = priorityIn;
             chance = chanceIn;

@@ -37,7 +37,7 @@ public class TalentButton extends MKButton {
     public final TalentRecord record;
 
     public TalentButton(int index, String line, TalentRecord record,
-                        int x, int y){
+                        int x, int y) {
         super(x, y, WIDTH, HEIGHT, record.getNode().getTalent().getTalentName());
         this.index = index;
         this.line = line;
@@ -46,7 +46,7 @@ public class TalentButton extends MKButton {
         BaseTalent baseTalent = record.getNode().getTalent();
         tooltip.add(baseTalent.getTalentName());
         tooltip.add(baseTalent.getTalentTypeName());
-        if (record.getNode() instanceof AttributeTalentNode){
+        if (record.getNode() instanceof AttributeTalentNode) {
             AttributeTalentNode attrNode = (AttributeTalentNode) record.getNode();
             tooltip.add(attrNode.getRangedTalent().getTalentDescription(attrNode.getPerRank(),
                     record.getRank() * attrNode.getPerRank()));
@@ -57,8 +57,8 @@ public class TalentButton extends MKButton {
 
 
     @Override
-    public boolean isInBounds(int x, int y){
-        if (this.skipBoundsCheck){
+    public boolean isInBounds(int x, int y) {
+        if (this.skipBoundsCheck) {
             return true;
         }
         return x >= this.getX() + 20 &&
@@ -68,32 +68,32 @@ public class TalentButton extends MKButton {
     }
 
     @Override
-    public void draw(Minecraft minecraft, int x, int y, int width, int height, int mouseX, int mouseY, float partialTicks){
+    public void draw(Minecraft minecraft, int x, int y, int width, int height, int mouseX, int mouseY, float partialTicks) {
         if (this.isVisible()) {
             FontRenderer fontrenderer = minecraft.fontRenderer;
             minecraft.getTextureManager().bindTexture(TALENT_SLOT_GRAPHIC);
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             GlStateManager.enableBlend();
-            Gui.drawModalRectWithCustomSizedTexture(this.getX() + SLOT_X_OFFSET ,
+            Gui.drawModalRectWithCustomSizedTexture(this.getX() + SLOT_X_OFFSET,
                     this.getY() + SLOT_Y_OFFSET,
                     0, 0,
                     SLOT_WIDTH, SLOT_HEIGHT, SLOT_WIDTH, SLOT_HEIGHT);
             ResourceLocation icon;
-            if (record.getRank() > 0){
+            if (record.getRank() > 0) {
                 icon = record.getNode().getTalent().getFilledIcon();
             } else {
                 icon = record.getNode().getTalent().getIcon();
             }
             minecraft.getTextureManager().bindTexture(icon);
-            Gui.drawModalRectWithCustomSizedTexture(this.getX() + SLOT_X_OFFSET ,
+            Gui.drawModalRectWithCustomSizedTexture(this.getX() + SLOT_X_OFFSET,
                     this.getY() + SLOT_Y_OFFSET,
                     0, 0,
                     SLOT_WIDTH, SLOT_HEIGHT, SLOT_WIDTH, SLOT_HEIGHT);
-            if (record.getRank() == record.getNode().getMaxRanks()){
+            if (record.getRank() == record.getNode().getMaxRanks()) {
                 minecraft.getTextureManager().bindTexture(TALENT_SLOT_OVERLAY);
                 Gui.drawModalRectWithCustomSizedTexture(
-                        this.getX() + SLOT_X_OFFSET - OVERLAY_WIDTH/2,
-                        this.getY() + SLOT_Y_OFFSET - OVERLAY_HEIGHT/2,
+                        this.getX() + SLOT_X_OFFSET - OVERLAY_WIDTH / 2,
+                        this.getY() + SLOT_Y_OFFSET - OVERLAY_HEIGHT / 2,
                         0, 0,
                         SLOT_WIDTH + OVERLAY_WIDTH,
                         SLOT_HEIGHT + OVERLAY_HEIGHT,
@@ -116,8 +116,8 @@ public class TalentButton extends MKButton {
                     this.getY() + SLOT_Y_OFFSET + SLOT_HEIGHT + OVERLAY_HEIGHT + TEXT_OFFSET
                             + fontrenderer.FONT_HEIGHT + 2,
                     textColor);
-            if (isHovered()){
-                if (getScreen() != null){
+            if (isHovered()) {
+                if (getScreen() != null) {
                     screen.addHoveringText(new HoveringTextInstruction(tooltip,
                             getParentCoords(new Vec2d(mouseX, mouseY))));
                 }

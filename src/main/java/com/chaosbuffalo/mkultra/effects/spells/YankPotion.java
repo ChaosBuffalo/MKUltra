@@ -3,9 +3,9 @@ package com.chaosbuffalo.mkultra.effects.spells;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IMobData;
 import com.chaosbuffalo.mkultra.core.MKUMobData;
+import com.chaosbuffalo.mkultra.core.abilities.Yank;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
-import com.chaosbuffalo.mkultra.core.abilities.Yank;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -31,7 +31,7 @@ public class YankPotion extends SpellPotionBase {
         return INSTANCE.newSpellCast(source).setTarget(target);
     }
 
-    public static SpellCast Create(Entity source){
+    public static SpellCast Create(Entity source) {
         return INSTANCE.newSpellCast(source);
     }
 
@@ -62,8 +62,8 @@ public class YankPotion extends SpellPotionBase {
             return;
         }
         IMobData mobData = MKUMobData.get(target);
-        if (mobData != null){
-            if (mobData.isBoss()){
+        if (mobData != null) {
+            if (mobData.isBoss()) {
                 return;
             }
         }

@@ -1,7 +1,9 @@
 package com.chaosbuffalo.mkultra.init;
 
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.blocks.*;
+import com.chaosbuffalo.mkultra.blocks.MKSpawnerBlock;
+import com.chaosbuffalo.mkultra.blocks.NPCSpawnerBlock;
+import com.chaosbuffalo.mkultra.blocks.XpTableBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;

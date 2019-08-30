@@ -2,9 +2,9 @@ package com.chaosbuffalo.mkultra.core.abilities;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKDamageSource;
+import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.effects.spells.CurePotion;
 import com.chaosbuffalo.mkultra.effects.spells.NaturesRemedyPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
@@ -71,17 +71,17 @@ public class ExplosiveGrowth extends PlayerAbility {
         List<EntityLivingBase> entityHit = getTargetsInLine(entity, from, to, true, 1.0f);
         float damage = BASE_DAMAGE + DAMAGE_SCALE * level;
 
-        for (EntityLivingBase entHit : entityHit){
+        for (EntityLivingBase entHit : entityHit) {
 
-            if (Targeting.isValidTarget(Targeting.TargetType.ENEMY, entity, entHit, true)){
+            if (Targeting.isValidTarget(Targeting.TargetType.ENEMY, entity, entHit, true)) {
                 entHit.attackEntityFrom(MKDamageSource.fromMeleeSkill(getAbilityId(), entity, entity), damage);
-            } else if (Targeting.isValidTarget(Targeting.TargetType.FRIENDLY, entity, entHit, false)){
+            } else if (Targeting.isValidTarget(Targeting.TargetType.FRIENDLY, entity, entHit, false)) {
                 entHit.addPotionEffect(CurePotion.Create(entity).setTarget(entHit).toPotionEffect(level));
                 entHit.addPotionEffect(
                         NaturesRemedyPotion.Create(
                                 entity, entHit, NaturesRemedy.BASE_VALUE, NaturesRemedy.VALUE_SCALE)
-                        .toPotionEffect((NaturesRemedy.BASE_DURATION + NaturesRemedy.DURATION_SCALE * level)
-                                * GameConstants.TICKS_PER_SECOND, level));
+                                .toPotionEffect((NaturesRemedy.BASE_DURATION + NaturesRemedy.DURATION_SCALE * level)
+                                        * GameConstants.TICKS_PER_SECOND, level));
             }
             MKUltra.packetHandler.sendToAllAround(
                     new ParticleEffectSpawnPacket(
@@ -95,8 +95,7 @@ public class ExplosiveGrowth extends PlayerAbility {
         }
 
         RayTraceResult blockHit = RayTraceUtils.rayTraceBlocks(entity.getEntityWorld(), from, to, false);
-        if (blockHit != null && blockHit.typeOfHit == RayTraceResult.Type.BLOCK)
-        {
+        if (blockHit != null && blockHit.typeOfHit == RayTraceResult.Type.BLOCK) {
             to = blockHit.hitVec;
         }
         entity.addPotionEffect(CurePotion.Create(entity).setTarget(entity).toPotionEffect(level));

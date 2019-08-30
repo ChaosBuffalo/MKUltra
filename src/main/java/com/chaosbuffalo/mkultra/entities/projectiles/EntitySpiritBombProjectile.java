@@ -45,7 +45,7 @@ public class EntitySpiritBombProjectile extends EntityBaseProjectile {
     }
 
     @Override
-    protected boolean onImpact(EntityLivingBase entity, RayTraceResult result, int amplifier){
+    protected boolean onImpact(EntityLivingBase entity, RayTraceResult result, int amplifier) {
         if (!this.world.isRemote && entity != null) {
             MKUltra.packetHandler.sendToAllAround(
                     new ParticleEffectSpawnPacket(
@@ -56,11 +56,11 @@ public class EntitySpiritBombProjectile extends EntityBaseProjectile {
                             new Vec3d(0., 1.0, 0.0)),
                     entity.dimension, result.hitVec.x,
                     result.hitVec.y, result.hitVec.z, 50.0f);
-            switch (result.typeOfHit){
+            switch (result.typeOfHit) {
                 case BLOCK:
                     break;
                 case ENTITY:
-                    if (Targeting.isValidTarget(getTargetType(), entity, result.entityHit, shouldExcludeCaster())){
+                    if (Targeting.isValidTarget(getTargetType(), entity, result.entityHit, shouldExcludeCaster())) {
                         this.motionX = 0.0;
                         this.motionY = 0.0;
                         this.motionZ = 0.0;
@@ -87,7 +87,7 @@ public class EntitySpiritBombProjectile extends EntityBaseProjectile {
         super(worldIn, x, y, z);
     }
 
-    private boolean doEffect(EntityLivingBase caster, int amplifier){
+    private boolean doEffect(EntityLivingBase caster, int amplifier) {
         if (!this.world.isRemote && caster != null) {
             SpellCast damage = AbilityMagicDamage.Create(caster, SpiritBomb.BASE, SpiritBomb.SCALE);
             AreaEffectBuilder.Create(caster, this)

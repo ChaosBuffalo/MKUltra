@@ -1,10 +1,12 @@
 package com.chaosbuffalo.mkultra.core;
 
 import com.chaosbuffalo.mkultra.GameConstants;
-import com.chaosbuffalo.mkultra.core.talents.*;
+import com.chaosbuffalo.mkultra.core.talents.BaseTalent;
+import com.chaosbuffalo.mkultra.core.talents.RangedAttributeTalent;
+import com.chaosbuffalo.mkultra.core.talents.TalentTree;
+import com.chaosbuffalo.mkultra.core.talents.TalentTreeRecord;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.google.common.collect.Maps;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.attributes.AbstractAttributeMap;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttribute;
@@ -18,7 +20,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
-import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.*;
 
@@ -80,7 +81,7 @@ public class PlayerClassInfo {
 
     boolean checkTalentTotals() {
         int spent = getTotalSpentPoints();
-        if (getTotalTalentPoints() - spent != getUnspentTalentPoints()){
+        if (getTotalTalentPoints() - spent != getUnspentTalentPoints()) {
             unspentTalentPoints = getTotalTalentPoints() - spent;
             return true;
         }
@@ -111,8 +112,8 @@ public class PlayerClassInfo {
 
     public boolean addPassiveToSlot(ResourceLocation loc, int slotIndex) {
         if (canAddPassiveToSlot(loc, slotIndex)) {
-            for (int i = 0; i < GameConstants.MAX_PASSIVES; i++){
-                if (!loc.equals(MKURegistry.INVALID_ABILITY) && i != slotIndex && loc.equals(loadedPassives[i])){
+            for (int i = 0; i < GameConstants.MAX_PASSIVES; i++) {
+                if (!loc.equals(MKURegistry.INVALID_ABILITY) && i != slotIndex && loc.equals(loadedPassives[i])) {
                     loadedPassives[i] = loadedPassives[slotIndex];
                 }
             }
@@ -158,7 +159,7 @@ public class PlayerClassInfo {
     }
 
     public boolean hasTrainedPassive(ResourceLocation loc) {
-        if (loc.equals(MKURegistry.INVALID_ABILITY)){
+        if (loc.equals(MKURegistry.INVALID_ABILITY)) {
             return true;
         }
         HashSet<PlayerPassiveAbility> abilities = getPassiveAbilitiesFromTalents();

@@ -34,7 +34,7 @@ public class GraspingRoots extends MobAbility {
     }
 
     @Override
-    public float getDistance(){
+    public float getDistance() {
         return 15.0f;
     }
 

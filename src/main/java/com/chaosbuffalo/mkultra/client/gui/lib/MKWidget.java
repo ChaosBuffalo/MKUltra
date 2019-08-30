@@ -30,11 +30,11 @@ public class MKWidget extends Gui {
     public MKScreen screen;
 
 
-    public MKWidget(int x, int y){
+    public MKWidget(int x, int y) {
         this(x, y, 200, 20);
     }
 
-    public MKWidget(int x, int y, int width, int height){
+    public MKWidget(int x, int y, int width, int height) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -54,49 +54,49 @@ public class MKWidget extends Gui {
         longHoverTicks = UIConstants.DEFAULT_LONG_HOVER_TICKS;
     }
 
-    public void setScreen(MKScreen screen){
+    public void setScreen(MKScreen screen) {
         this.screen = screen;
-        for (MKWidget child : children){
+        for (MKWidget child : children) {
             child.setScreen(screen);
         }
     }
 
-    public MKWidget setLongHoverTime(int newTime){
+    public MKWidget setLongHoverTime(int newTime) {
         longHoverTicks = newTime;
         return this;
     }
 
-    public int getLongHoverTicks(){
+    public int getLongHoverTicks() {
         return longHoverTicks;
     }
 
     @Nullable
-    public MKScreen getScreen(){
+    public MKScreen getScreen() {
         return this.screen;
     }
 
-    public MKWidget setSizeHintWidth(float ratio){
+    public MKWidget setSizeHintWidth(float ratio) {
         this.sizeHintWidth = ratio;
         return this;
     }
 
-    public MKWidget setSizeHintHeight(float ratio){
+    public MKWidget setSizeHintHeight(float ratio) {
         this.sizeHintHeight = ratio;
         return this;
     }
 
-    public MKWidget setPosHintX(float ratio){
+    public MKWidget setPosHintX(float ratio) {
         this.posHintX = ratio;
         return this;
     }
 
-    public MKWidget setPosHintY(float ratio){
+    public MKWidget setPosHintY(float ratio) {
         this.posHintY = ratio;
         return this;
     }
 
-    public Vec2d getParentCoords(Vec2d pos){
-        if (parent == null){
+    public Vec2d getParentCoords(Vec2d pos) {
+        if (parent == null) {
             return pos;
         } else {
             return parent.getParentCoords(pos);
@@ -104,84 +104,84 @@ public class MKWidget extends Gui {
     }
 
 
-    public MKWidget setParent(MKWidget parent){
+    public MKWidget setParent(MKWidget parent) {
         this.parent = parent;
         return this;
     }
 
-    public MKWidget setHeight(int newHeight){
+    public MKWidget setHeight(int newHeight) {
         this.height = newHeight;
         return this;
     }
 
-    public MKWidget setWidth(int newWidth){
+    public MKWidget setWidth(int newWidth) {
         this.width = newWidth;
         return this;
     }
 
-    public MKWidget setX(int newX){
+    public MKWidget setX(int newX) {
         this.x = newX;
         return this;
     }
 
-    public MKWidget setY(int newY){
+    public MKWidget setY(int newY) {
         this.y = newY;
         return this;
     }
 
-    public int getWidth(){
+    public int getWidth() {
         return width;
     }
 
-    public int getHeight(){
+    public int getHeight() {
         return height;
     }
 
-    public int getX(){
+    public int getX() {
         return x;
     }
 
-    public int getY(){
+    public int getY() {
         return y;
     }
 
-    public float getPosHintX(){
+    public float getPosHintX() {
         return posHintX;
     }
 
-    public float getPosHintY(){
+    public float getPosHintY() {
         return posHintY;
     }
 
-    public float getSizeHintWidth(){
+    public float getSizeHintWidth() {
         return sizeHintWidth;
     }
 
-    public float getSizeHintHeight(){
+    public float getSizeHintHeight() {
         return sizeHintHeight;
     }
 
     @Nullable
-    public MKWidget getParent(){
+    public MKWidget getParent() {
         return parent;
     }
 
-    public boolean onMouseScrollWheel(Minecraft minecraft, int mouseX, int mouseY, int direction){
+    public boolean onMouseScrollWheel(Minecraft minecraft, int mouseX, int mouseY, int direction) {
         return false;
     }
 
-    public boolean mouseScrollWheel(Minecraft minecraft, int mouseX, int mouseY, int direction){
-        if (!this.isEnabled() || !this.isVisible() || !this.isInBounds(mouseX, mouseY)){
+    public boolean mouseScrollWheel(Minecraft minecraft, int mouseX, int mouseY, int direction) {
+        if (!this.isEnabled() || !this.isVisible() || !this.isInBounds(mouseX, mouseY)) {
             return false;
         }
         Iterator<MKWidget> it = children.descendingIterator();
-        while (it.hasNext()){
+        while (it.hasNext()) {
             MKWidget child = it.next();
-            if (child.mouseScrollWheel(minecraft, mouseX, mouseY, direction)){
+            if (child.mouseScrollWheel(minecraft, mouseX, mouseY, direction)) {
                 return true;
             }
         }
-        if (onMouseScrollWheel(minecraft, mouseX, mouseY, direction)){
+        if (onMouseScrollWheel(minecraft, mouseX, mouseY, direction)) {
             return true;
         }
         return false;
@@ -189,63 +189,63 @@ public class MKWidget extends Gui {
 
     public boolean mouseDragged(Minecraft minecraft, int mouseX, int mouseY, int mouseButton) {
         Iterator<MKWidget> it = children.descendingIterator();
-        while (it.hasNext()){
+        while (it.hasNext()) {
             MKWidget child = it.next();
-            if (child.mouseDragged(minecraft, mouseX, mouseY, mouseButton)){
+            if (child.mouseDragged(minecraft, mouseX, mouseY, mouseButton)) {
                 return true;
             }
         }
-        if (onMouseDragged(minecraft, mouseX, mouseY, mouseButton)){
+        if (onMouseDragged(minecraft, mouseX, mouseY, mouseButton)) {
             return true;
         }
         return false;
     }
 
-    public boolean onMouseDragged(Minecraft minecraft, int mouseX, int mouseY, int mouseButton){
+    public boolean onMouseDragged(Minecraft minecraft, int mouseX, int mouseY, int mouseButton) {
         return false;
     }
 
     public boolean mouseReleased(int mouseX, int mouseY, int mouseButton) {
         Iterator<MKWidget> it = children.descendingIterator();
-        while (it.hasNext()){
+        while (it.hasNext()) {
             MKWidget child = it.next();
-            if (child.mouseReleased(mouseX, mouseY, mouseButton)){
+            if (child.mouseReleased(mouseX, mouseY, mouseButton)) {
                 return true;
             }
         }
-        if (onMouseRelease(mouseX, mouseY, mouseButton)){
+        if (onMouseRelease(mouseX, mouseY, mouseButton)) {
             return true;
         }
         return false;
     }
 
-    public boolean onMouseRelease(int mouseX, int mouseY, int mouseButton){
+    public boolean onMouseRelease(int mouseX, int mouseY, int mouseButton) {
         return false;
     }
 
     public MKWidget mousePressed(Minecraft minecraft, int mouseX, int mouseY, int mouseButton) {
-        if (!this.isEnabled() || !this.isVisible() || !this.isInBounds(mouseX, mouseY)){
+        if (!this.isEnabled() || !this.isVisible() || !this.isInBounds(mouseX, mouseY)) {
             return null;
         }
         Iterator<MKWidget> it = children.descendingIterator();
-        while (it.hasNext()){
+        while (it.hasNext()) {
             MKWidget child = it.next();
-            if (child.mousePressed(minecraft, mouseX, mouseY, mouseButton) != null){
+            if (child.mousePressed(minecraft, mouseX, mouseY, mouseButton) != null) {
                 return child;
             }
         }
-        if (onMousePressed(minecraft, mouseX, mouseY, mouseButton)){
+        if (onMousePressed(minecraft, mouseX, mouseY, mouseButton)) {
             return this;
         }
         return null;
     }
 
-    public boolean onMousePressed(Minecraft minecraft, int mouseX, int mouseY, int mouseButton){
+    public boolean onMousePressed(Minecraft minecraft, int mouseX, int mouseY, int mouseButton) {
         return false;
     }
 
-    public boolean isInBounds(int x, int y){
-        if (this.skipBoundsCheck){
+    public boolean isInBounds(int x, int y) {
+        if (this.skipBoundsCheck) {
             return true;
         }
         return x >= this.x && y >= this.y && x < this.x + this.width && y < this.y + this.height;
@@ -255,33 +255,37 @@ public class MKWidget extends Gui {
         return this.hovered;
     }
 
-    public void setHovered(boolean value){
+    public void setHovered(boolean value) {
         this.hovered = value;
     }
 
-    public boolean isVisible() { return this.visible; }
+    public boolean isVisible() {
+        return this.visible;
+    }
 
-    public MKWidget setVisible(boolean value){
+    public MKWidget setVisible(boolean value) {
         this.visible = value;
         return this;
     }
 
-    public boolean isEnabled() { return this.enabled; }
+    public boolean isEnabled() {
+        return this.enabled;
+    }
 
-    public MKWidget setEnabled(boolean value){
+    public MKWidget setEnabled(boolean value) {
         this.enabled = value;
         return this;
     }
 
-    public boolean addWidget(MKWidget widget){
+    public boolean addWidget(MKWidget widget) {
         widget.setParent(this);
         widget.setScreen(getScreen());
         this.children.add(widget);
         return true;
     }
 
-    public void removeWidget(MKWidget widget){
-        if (widget.getParent() != null && widget.getParent().id.equals(this.id)){
+    public void removeWidget(MKWidget widget) {
+        if (widget.getParent() != null && widget.getParent().id.equals(this.id)) {
             children.removeIf((x) -> x.id.equals(widget.id));
             widget.setParent(null);
             widget.setScreen(null);
@@ -293,13 +297,13 @@ public class MKWidget extends Gui {
     }
 
     public void longHoverDraw(Minecraft mc, int x, int y, int width, int height,
-                              int mouseX, int mouseY, float partialTicks){
+                              int mouseX, int mouseY, float partialTicks) {
 
     }
 
-    public void handleHoverDetection(int mouseX, int mouseY, float partialTicks){
+    public void handleHoverDetection(int mouseX, int mouseY, float partialTicks) {
         boolean hovered = checkHovered(mouseX, mouseY);
-        if (hovered){
+        if (hovered) {
             setHoveredTicks(getHoveredTicks() + partialTicks);
         } else {
             setHoveredTicks(0);
@@ -308,21 +312,21 @@ public class MKWidget extends Gui {
     }
 
     public void handleLongHoverDraw(Minecraft mc, int x, int y, int width, int height,
-                                    int mouseX, int mouseY, float partialTicks){
-        if (isHovered() && getHoveredTicks() > getLongHoverTicks()){
+                                    int mouseX, int mouseY, float partialTicks) {
+        if (isHovered() && getHoveredTicks() > getLongHoverTicks()) {
             longHoverDraw(mc, x, y, width, height, mouseX, mouseY, partialTicks);
         }
     }
 
-    public float getHoveredTicks(){
+    public float getHoveredTicks() {
         return hoveredTicks;
     }
 
-    public void setHoveredTicks(float value){
+    public void setHoveredTicks(float value) {
         hoveredTicks = value;
     }
 
-    public boolean checkHovered(int mouseX, int mouseY){
+    public boolean checkHovered(int mouseX, int mouseY) {
         return isVisible() && isEnabled() && isInBounds(mouseX, mouseY);
     }
 
@@ -330,35 +334,35 @@ public class MKWidget extends Gui {
 
     }
 
-    public void postDraw(Minecraft mc, int x, int y, int width, int height, int mouseX, int mouseY, float partialTicks){
+    public void postDraw(Minecraft mc, int x, int y, int width, int height, int mouseX, int mouseY, float partialTicks) {
 
     }
 
-    public void clearWidgets(){
-        for (MKWidget widget : children){
+    public void clearWidgets() {
+        for (MKWidget widget : children) {
             widget.setParent(null);
         }
         children.clear();
     }
 
-    public int getRight(){
+    public int getRight() {
         return getX() + getWidth();
     }
 
-    public int getTop(){
+    public int getTop() {
         return getY();
     }
 
-    public int getLeft(){
+    public int getLeft() {
         return getX();
     }
 
-    public int getBottom(){
+    public int getBottom() {
         return getY() + getHeight();
     }
 
 
-    public void drawWidget(Minecraft mc, int mouseX, int mouseY, float partialTicks){
+    public void drawWidget(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
         handleHoverDetection(mouseX, mouseY, partialTicks);
         int x = getX();
         int y = getY();
@@ -366,8 +370,8 @@ public class MKWidget extends Gui {
         int height = getHeight();
         preDraw(mc, x, y, width, height, mouseX, mouseY, partialTicks);
         draw(mc, x, y, width, height, mouseX, mouseY, partialTicks);
-        for (MKWidget child : children){
-            if (child.isVisible()){
+        for (MKWidget child : children) {
+            if (child.isVisible()) {
                 child.drawWidget(mc, mouseX, mouseY, partialTicks);
             }
         }

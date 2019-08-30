@@ -20,7 +20,7 @@ public class Heal extends MobAbility {
 
     public static final float HEAL_THRESHOLD = .5f;
 
-    public Heal(){
+    public Heal() {
         super(MKUltra.MODID, "mob_ability.heal");
     }
 
@@ -35,7 +35,7 @@ public class Heal extends MobAbility {
     }
 
     @Override
-    public boolean canSelfCast(){
+    public boolean canSelfCast() {
         return true;
     }
 
@@ -50,8 +50,8 @@ public class Heal extends MobAbility {
     }
 
     @Override
-    public boolean shouldCast(EntityLivingBase caster, EntityLivingBase target){
-        if (target.getHealth() >= target.getMaxHealth() * HEAL_THRESHOLD){
+    public boolean shouldCast(EntityLivingBase caster, EntityLivingBase target) {
+        if (target.getHealth() >= target.getMaxHealth() * HEAL_THRESHOLD) {
             return false;
         }
         return super.shouldCast(caster, target);

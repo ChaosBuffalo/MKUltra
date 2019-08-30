@@ -2,8 +2,8 @@ package com.chaosbuffalo.mkultra.core.abilities;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
+import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.PlayerFormulas;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
@@ -70,13 +70,13 @@ public class PracticedHunter extends PlayerAbility {
                 FOOD_SATURATION + level * FOOD_SATURATION_SCALE);
         Vec3d lookVec = entity.getLookVec();
         MKUltra.packetHandler.sendToAllAround(
-        new ParticleEffectSpawnPacket(
-        EnumParticleTypes.VILLAGER_ANGRY.getParticleID(),
-        ParticleEffects.DIRECTED_SPOUT, 60, 1,
-        entity.posX, entity.posY + 1.0,
-        entity.posZ, 1.0, 1.0, 1.0, 1.0,
-        lookVec),
-        entity.dimension, entity.posX,
-        entity.posY, entity.posZ, 50.0f);
+                new ParticleEffectSpawnPacket(
+                        EnumParticleTypes.VILLAGER_ANGRY.getParticleID(),
+                        ParticleEffects.DIRECTED_SPOUT, 60, 1,
+                        entity.posX, entity.posY + 1.0,
+                        entity.posZ, 1.0, 1.0, 1.0, 1.0,
+                        lookVec),
+                entity.dimension, entity.posX,
+                entity.posY, entity.posZ, 50.0f);
     }
 }

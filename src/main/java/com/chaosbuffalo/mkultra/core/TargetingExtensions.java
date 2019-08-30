@@ -9,20 +9,20 @@ import java.util.function.BiFunction;
 
 public class TargetingExtensions {
 
-    public static void init(){
+    public static void init() {
         BiFunction<Entity, Entity, Boolean> isMobSameFaction = (entity, other) -> {
             if (entity instanceof EntityLivingBase && other instanceof EntityLivingBase &&
-                    !(other instanceof EntityPlayer)){
+                    !(other instanceof EntityPlayer)) {
                 IMobData mobData = MKUMobData.get((EntityLivingBase) entity);
-                if (mobData != null){
-                    return mobData.isSameFaction((EntityLivingBase)other) || (mobData.isFactionPlayerFriendly()
+                if (mobData != null) {
+                    return mobData.isSameFaction((EntityLivingBase) other) || (mobData.isFactionPlayerFriendly()
                             && Targeting.isFriendlyWithPlayers(other));
                 } else {
                     return false;
                 }
-            } else if (entity instanceof EntityLivingBase && other instanceof EntityPlayer){
+            } else if (entity instanceof EntityLivingBase && other instanceof EntityPlayer) {
                 IMobData mobData = MKUMobData.get((EntityLivingBase) entity);
-                if (mobData != null){
+                if (mobData != null) {
                     return mobData.isFactionPlayerFriendly();
                 } else {
                     return false;

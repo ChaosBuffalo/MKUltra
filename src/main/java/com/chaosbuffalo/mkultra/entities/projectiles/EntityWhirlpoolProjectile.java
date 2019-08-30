@@ -31,7 +31,7 @@ public class EntityWhirlpoolProjectile extends EntityBaseProjectile {
         this.setDeathTime(80);
     }
 
-    public EntityWhirlpoolProjectile(World worldIn, EntityLivingBase throwerIn, double offset){
+    public EntityWhirlpoolProjectile(World worldIn, EntityLivingBase throwerIn, double offset) {
         super(worldIn, throwerIn, offset);
         this.setDeathTime(80);
     }
@@ -61,7 +61,7 @@ public class EntityWhirlpoolProjectile extends EntityBaseProjectile {
                     .period(20)
                     .color(39935).radius(3.0f, true)
                     .spawn();
-            switch (result.typeOfHit){
+            switch (result.typeOfHit) {
                 case BLOCK:
                     EnvironmentUtils.putOutFires(caster.getEntityWorld(), result.getBlockPos(), new Vec3i(16, 8, 16));
                     break;

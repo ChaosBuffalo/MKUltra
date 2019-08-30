@@ -5,7 +5,6 @@ import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKDamageSource;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.effects.SpellTriggers;
-import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.network.packets.PlayerLeftClickEmptyPacket;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -19,7 +18,6 @@ import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
 
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber
@@ -69,9 +67,9 @@ public class CombatEventHandler {
 
         DamageSource dmgSource = event.getSource();
         Entity source = dmgSource.getTrueSource();
-        if (dmgSource instanceof MKDamageSource){
+        if (dmgSource instanceof MKDamageSource) {
             MKDamageSource mkSource = (MKDamageSource) dmgSource;
-            if (mkSource.ignoreAttackEntityTrigger()){
+            if (mkSource.ignoreAttackEntityTrigger()) {
                 return;
             }
         }
@@ -91,8 +89,8 @@ public class CombatEventHandler {
     }
 
     @SubscribeEvent
-    public static void onLeftClickEmpty(PlayerInteractEvent.LeftClickEmpty event){
-        if (!event.getEntityPlayer().world.isRemote){
+    public static void onLeftClickEmpty(PlayerInteractEvent.LeftClickEmpty event) {
+        if (!event.getEntityPlayer().world.isRemote) {
             SpellTriggers.EMPTY_LEFT_CLICK.onEmptyLeftClick(event.getEntityPlayer(), event);
         } else {
             MKUltra.packetHandler.sendToServer(new PlayerLeftClickEmptyPacket());
@@ -101,10 +99,10 @@ public class CombatEventHandler {
     }
 
     @SubscribeEvent
-    public static void onEntityDeath(LivingDeathEvent event){
-        if (event.getSource().getTrueSource() instanceof EntityPlayer){
+    public static void onEntityDeath(LivingDeathEvent event) {
+        if (event.getSource().getTrueSource() instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) event.getSource().getTrueSource();
-            if (player.world.isRemote){
+            if (player.world.isRemote) {
                 return;
             }
             SpellTriggers.PLAYER_KILL_ENTITY.onEntityDeath(event, event.getSource(), player);

@@ -1,6 +1,5 @@
 package com.chaosbuffalo.mkultra.spawn;
 
-import com.chaosbuffalo.mkultra.log.Log;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -12,13 +11,13 @@ import java.util.function.BiConsumer;
 public class AIModifiers {
 
     public static BiConsumer<EntityLivingBase, AIModifier> REMOVE_AI = (entity, modifier) -> {
-        if (entity instanceof EntityLiving){
+        if (entity instanceof EntityLiving) {
             EntityLiving entLiv = (EntityLiving) entity;
             HashSet<Class<? extends EntityAIBase>> actions = new HashSet<>();
             HashSet<Class<? extends EntityAIBase>> targetActions = new HashSet<>();
-            for (BehaviorChoice choice : modifier.behaviorChoices){
-                if (modifier.level >= choice.minLevel){
-                    switch (choice.getTaskType()){
+            for (BehaviorChoice choice : modifier.behaviorChoices) {
+                if (modifier.level >= choice.minLevel) {
+                    switch (choice.getTaskType()) {
                         case TASK:
                             actions.add(choice.getAIClass());
                             break;
@@ -28,32 +27,32 @@ public class AIModifiers {
                     }
                 }
             }
-            if (actions.size() > 0){
+            if (actions.size() > 0) {
                 HashSet<EntityAITasks.EntityAITaskEntry> toRemove = new HashSet<>();
-                for (EntityAITasks.EntityAITaskEntry task : entLiv.tasks.taskEntries){
+                for (EntityAITasks.EntityAITaskEntry task : entLiv.tasks.taskEntries) {
 //                    Log.info("Checking for AI task %s", task.action.getClass().toString());
-                    for (Class<? extends EntityAIBase> action : actions){
-                        if (action.isAssignableFrom(task.action.getClass())){
+                    for (Class<? extends EntityAIBase> action : actions) {
+                        if (action.isAssignableFrom(task.action.getClass())) {
 //                            Log.info("task found in actions to remove");
                             toRemove.add(task);
                         }
                     }
                 }
-                for (EntityAITasks.EntityAITaskEntry entry : toRemove){
+                for (EntityAITasks.EntityAITaskEntry entry : toRemove) {
 //                    Log.info("Remove AI task %s", entry.getClass().toString());
                     entLiv.tasks.removeTask(entry.action);
                 }
             }
-            if (targetActions.size() > 0){
+            if (targetActions.size() > 0) {
                 HashSet<EntityAITasks.EntityAITaskEntry> toRemove = new HashSet<>();
-                for (EntityAITasks.EntityAITaskEntry task : entLiv.targetTasks.taskEntries){
-                    for (Class<? extends EntityAIBase> action : targetActions){
-                        if (action.isAssignableFrom(task.action.getClass())){
+                for (EntityAITasks.EntityAITaskEntry task : entLiv.targetTasks.taskEntries) {
+                    for (Class<? extends EntityAIBase> action : targetActions) {
+                        if (action.isAssignableFrom(task.action.getClass())) {
                             toRemove.add(task);
                         }
                     }
                 }
-                for (EntityAITasks.EntityAITaskEntry entry : toRemove){
+                for (EntityAITasks.EntityAITaskEntry entry : toRemove) {
                     entLiv.targetTasks.removeTask(entry.action);
                 }
             }
@@ -62,40 +61,40 @@ public class AIModifiers {
     };
 
     public static BiConsumer<EntityLivingBase, AIModifier> REMOVE_ALL_TASKS = (entity, modifier) -> {
-        if (entity instanceof EntityLiving){
+        if (entity instanceof EntityLiving) {
             EntityLiving entLiv = (EntityLiving) entity;
             HashSet<EntityAITasks.EntityAITaskEntry> toRemove = new HashSet<>();
-            for (EntityAITasks.EntityAITaskEntry task : entLiv.tasks.taskEntries){
+            for (EntityAITasks.EntityAITaskEntry task : entLiv.tasks.taskEntries) {
                 toRemove.add(task);
             }
-            for (EntityAITasks.EntityAITaskEntry entry : toRemove){
+            for (EntityAITasks.EntityAITaskEntry entry : toRemove) {
                 entLiv.tasks.removeTask(entry.action);
             }
         }
     };
 
     public static BiConsumer<EntityLivingBase, AIModifier> REMOVE_ALL_TARGET_TASKS = (entity, modifier) -> {
-        if (entity instanceof EntityLiving){
+        if (entity instanceof EntityLiving) {
             EntityLiving entLiv = (EntityLiving) entity;
             HashSet<EntityAITasks.EntityAITaskEntry> toRemove = new HashSet<>();
-            for (EntityAITasks.EntityAITaskEntry task : entLiv.targetTasks.taskEntries){
+            for (EntityAITasks.EntityAITaskEntry task : entLiv.targetTasks.taskEntries) {
                 toRemove.add(task);
             }
-            for (EntityAITasks.EntityAITaskEntry entry : toRemove){
+            for (EntityAITasks.EntityAITaskEntry entry : toRemove) {
                 entLiv.targetTasks.removeTask(entry.action);
             }
         }
     };
 
     public static BiConsumer<EntityLivingBase, AIModifier> ADD_TASKS = (entity, modifier) -> {
-        if (entity instanceof EntityLiving){
+        if (entity instanceof EntityLiving) {
             EntityLiving entLiv = (EntityLiving) entity;
-            for (BehaviorChoice choice: modifier.behaviorChoices){
-                if (modifier.level >= choice.minLevel){
+            for (BehaviorChoice choice : modifier.behaviorChoices) {
+                if (modifier.level >= choice.minLevel) {
                     EntityAIBase toAdd = choice.getTask(entLiv);
-                    if (toAdd != null){
+                    if (toAdd != null) {
 //                        Log.info("Adding %s to entity %s", choice.getTaskType().name(), entity.toString());
-                        switch (choice.getTaskType()){
+                        switch (choice.getTaskType()) {
                             case TARGET_TASK:
                                 entLiv.targetTasks.addTask(choice.getTaskPriority(), toAdd);
                                 break;

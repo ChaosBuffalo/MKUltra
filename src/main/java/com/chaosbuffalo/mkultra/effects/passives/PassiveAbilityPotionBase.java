@@ -2,14 +2,11 @@ package com.chaosbuffalo.mkultra.effects.passives;
 
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
-import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.potion.PotionEffect;
-
-import javax.annotation.Nonnull;
 
 
 public class PassiveAbilityPotionBase extends SpellPotionBase {

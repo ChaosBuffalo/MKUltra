@@ -1,9 +1,9 @@
 package com.chaosbuffalo.mkultra.item;
 
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.core.IClassProvider;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
-import com.chaosbuffalo.mkultra.core.IClassProvider;
 import com.chaosbuffalo.mkultra.core.MKURegistry;
 import com.chaosbuffalo.mkultra.network.ModGuiHandler;
 import net.minecraft.entity.player.EntityPlayer;

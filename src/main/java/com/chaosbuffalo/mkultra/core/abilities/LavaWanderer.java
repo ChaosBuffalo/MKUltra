@@ -2,12 +2,12 @@ package com.chaosbuffalo.mkultra.core.abilities;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.core.IPlayerData;
+import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.PlayerFormulas;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.ParticlePotion;
-import com.chaosbuffalo.mkultra.core.PlayerAbility;
-import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
@@ -26,7 +26,7 @@ public class LavaWanderer extends PlayerAbility {
     }
 
     @Override
-    public int getCooldown(int currentRank){
+    public int getCooldown(int currentRank) {
         return 30;
     }
 
@@ -36,7 +36,7 @@ public class LavaWanderer extends PlayerAbility {
     }
 
     @Override
-    public float getManaCost(int currentRank){
+    public float getManaCost(int currentRank) {
         return 5 + 5 * currentRank;
     }
 

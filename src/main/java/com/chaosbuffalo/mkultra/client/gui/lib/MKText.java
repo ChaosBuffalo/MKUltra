@@ -2,7 +2,6 @@ package com.chaosbuffalo.mkultra.client.gui.lib;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.GlStateManager;
 
 public class MKText extends MKWidget {
 
@@ -21,25 +20,25 @@ public class MKText extends MKWidget {
         this.isMultiline = false;
     }
 
-    public int getFontHeight(){
+    public int getFontHeight() {
         return fontRenderer.FONT_HEIGHT;
     }
 
-    public int getColor(){
+    public int getColor() {
         return color;
     }
 
-    public MKText setColor(int i){
+    public MKText setColor(int i) {
         this.color = i;
         return this;
     }
 
     public void draw(Minecraft mc, int x, int y, int width, int height, int mouseX, int mouseY, float partialTicks) {
-        if (isCentered()){
+        if (isCentered()) {
             this.drawCenteredString(this.fontRenderer, this.getText(),
                     this.getX() + this.getWidth() / 2,
                     this.getY() + this.getHeight() / 2, color);
-        } else if (isMultiline()){
+        } else if (isMultiline()) {
             fontRenderer.drawSplitString(this.getText(), this.getX(), this.getY(), this.getWidth(), this.color);
         } else {
             fontRenderer.drawString(this.getText(), this.getX(), this.getY(), this.color);
@@ -47,43 +46,43 @@ public class MKText extends MKWidget {
 
     }
 
-    public MKText setIsCentered(boolean isCentered){
+    public MKText setIsCentered(boolean isCentered) {
         this.isCentered = true;
         return this;
     }
 
-    public boolean isCentered(){
+    public boolean isCentered() {
         return isCentered;
     }
 
-    public MKText setText(String text){
+    public MKText setText(String text) {
         this.text = text;
         updateLabel();
         return this;
     }
 
-    public String getText(){
+    public String getText() {
         return text;
     }
 
-    public MKText setMultiline(boolean multiline){
+    public MKText setMultiline(boolean multiline) {
         this.isMultiline = multiline;
         updateLabel();
         return this;
     }
 
-    public boolean isMultiline(){
+    public boolean isMultiline() {
         return isMultiline;
     }
 
-    public MKWidget setWidth(int width){
+    public MKWidget setWidth(int width) {
         super.setWidth(width);
         updateLabel();
         return this;
     }
 
-    private void updateLabel(){
-        if (isMultiline()){
+    private void updateLabel() {
+        if (isMultiline()) {
             setHeight(fontRenderer.getWordWrappedHeight(getText(), getWidth()));
         } else {
             setHeight(fontRenderer.FONT_HEIGHT);

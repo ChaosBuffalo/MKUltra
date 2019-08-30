@@ -20,7 +20,7 @@ import net.minecraftforge.fml.relauncher.Side;
 public class GuiEventHandler {
 
 
-    private static void doArmorClassTooltip(ItemTooltipEvent event){
+    private static void doArmorClassTooltip(ItemTooltipEvent event) {
         ArmorClass armorClass = ArmorClass.getArmorClassForArmorMat(
                 ((ItemArmor) event.getItemStack().getItem()).getArmorMaterial());
         event.getToolTip().add(String.format("%s: %s", I18n.format("mkultra.ui_msg.armor_class"),
@@ -32,41 +32,41 @@ public class GuiEventHandler {
 
     }
 
-    private static void doSmokeableTooltip(ItemTooltipEvent event){
+    private static void doSmokeableTooltip(ItemTooltipEvent event) {
         event.getToolTip().add("Smokeable");
     }
 
-    private static void doCritTooltip(ItemTooltipEvent event){
+    private static void doCritTooltip(ItemTooltipEvent event) {
         ItemStack inHand = event.getItemStack();
         float crit_multiplier = ItemUtils.getCritDamageForItem(inHand);
         float crit_chance = ItemUtils.getCritChanceForItem(inHand);
         String tooltip = String.format(
                 "%s: %s%%, %s: %sx",
                 I18n.format(String.format("%s.%s.name", MKUltra.MODID, "item_stats.crit_chance")),
-                Integer.toString((int)(crit_chance*100)),
+                Integer.toString((int) (crit_chance * 100)),
                 I18n.format(String.format("%s.%s.name", MKUltra.MODID, "item_stats.crit_damage")),
                 Float.toString(crit_multiplier)
-                );
+        );
         event.getToolTip().add(tooltip);
     }
 
-    private static void doNoShieldTooltip(ItemTooltipEvent event){
+    private static void doNoShieldTooltip(ItemTooltipEvent event) {
         event.getToolTip().add("Cannot Equip Shield");
     }
 
     @SuppressWarnings("unused")
     @SubscribeEvent
-    public static void onItemTooltipEvent(ItemTooltipEvent event){
+    public static void onItemTooltipEvent(ItemTooltipEvent event) {
         if (!MKConfig.cheats.TOUGH_GUY_MODE && event.getItemStack().getItem() instanceof ItemArmor) {
             doArmorClassTooltip(event);
         }
-        if (ItemUtils.CRIT.hasChance(event.getItemStack().getItem())){
+        if (ItemUtils.CRIT.hasChance(event.getItemStack().getItem())) {
             doCritTooltip(event);
         }
-        if (!MKConfig.cheats.BIG_HANDS_MODE && ItemEventHandler.isNoShieldItem(event.getItemStack().getItem())){
+        if (!MKConfig.cheats.BIG_HANDS_MODE && ItemEventHandler.isNoShieldItem(event.getItemStack().getItem())) {
             doNoShieldTooltip(event);
         }
-        if (SmokeUtils.isSmokeable(event.getItemStack())){
+        if (SmokeUtils.isSmokeable(event.getItemStack())) {
             doSmokeableTooltip(event);
         }
     }

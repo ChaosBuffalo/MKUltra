@@ -1,13 +1,11 @@
 package com.chaosbuffalo.mkultra.core.talents;
 
-import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.*;
+import com.chaosbuffalo.mkultra.core.PlayerClassInfo;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistryEntry;
@@ -55,8 +53,8 @@ public class BaseTalent extends IForgeRegistryEntry.Impl<BaseTalent> {
     }
 
     @SideOnly(Side.CLIENT)
-    public String getTalentTypeName(){
-        return TextFormatting.GOLD +I18n.format(String.format("%s.talent_type.%s.name",
+    public String getTalentTypeName() {
+        return TextFormatting.GOLD + I18n.format(String.format("%s.talent_type.%s.name",
                 MKUltra.MODID, getTalentType().toString().toLowerCase()));
     }
 

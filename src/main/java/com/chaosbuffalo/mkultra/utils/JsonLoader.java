@@ -25,12 +25,12 @@ public class JsonLoader {
     private static Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
 
     public static <E extends IForgeRegistry> void loadModsForType(String subFolder, String configLocation,
-                                           String assetsLocation,
-                                           TriConsumer<ResourceLocation, JsonObject, E> registerFunc,
-                                           E register) {
+                                                                  String assetsLocation,
+                                                                  TriConsumer<ResourceLocation, JsonObject, E> registerFunc,
+                                                                  E register) {
         ModContainer old = Loader.instance().activeModContainer();
         Loader.instance().getActiveModList().forEach(mod -> {
-            if (mod.getModId().matches(".*[/\n\r\t\0\f`?*<>|\":].*")){
+            if (mod.getModId().matches(".*[/\n\r\t\0\f`?*<>|\":].*")) {
                 Log.info("Skipping %s because it contains invalid characters.", mod.getModId());
                 return;
             }
@@ -43,7 +43,7 @@ public class JsonLoader {
 
     public static <E extends IForgeRegistry> void loadJsonConfigs(ModContainer mod, String subFolder, String baseDir,
                                                                   TriConsumer<ResourceLocation, JsonObject, E> registerFunc,
-                                                                  E registry){
+                                                                  E registry) {
 
         String path = MKUltra.config_loc + File.separator + baseDir + File.separator + mod.getModId() + File.separator + subFolder;
         Log.info("Looking in %s for assets.", path);

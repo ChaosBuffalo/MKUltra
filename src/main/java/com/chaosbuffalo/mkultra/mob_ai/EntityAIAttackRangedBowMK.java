@@ -72,7 +72,7 @@ public class EntityAIAttackRangedBowMK<T extends EntityMobBase & IRangedAttackMo
                 --this.seeTime;
             }
 
-            if (dist2 <= (double)this.maxAttackDistance && this.seeTime >= 20) {
+            if (dist2 <= (double) this.maxAttackDistance && this.seeTime >= 20) {
                 this.entity.getNavigator().clearPath();
                 ++this.strafingTime;
             } else {
@@ -81,19 +81,19 @@ public class EntityAIAttackRangedBowMK<T extends EntityMobBase & IRangedAttackMo
             }
 
             if (this.strafingTime >= 20) {
-                if ((double)this.entity.getRNG().nextFloat() < 0.3D) {
+                if ((double) this.entity.getRNG().nextFloat() < 0.3D) {
                     this.strafingClockwise = !this.strafingClockwise;
                 }
-                if ((double)this.entity.getRNG().nextFloat() < 0.3D) {
+                if ((double) this.entity.getRNG().nextFloat() < 0.3D) {
                     this.strafingBackwards = !this.strafingBackwards;
                 }
                 this.strafingTime = 0;
             }
 
             if (this.strafingTime > -1) {
-                if (dist2 > (double)(this.maxAttackDistance * 0.75F)) {
+                if (dist2 > (double) (this.maxAttackDistance * 0.75F)) {
                     this.strafingBackwards = false;
-                } else if (dist2 < (double)(this.maxAttackDistance * 0.25F)) {
+                } else if (dist2 < (double) (this.maxAttackDistance * 0.25F)) {
                     this.strafingBackwards = true;
                 }
 

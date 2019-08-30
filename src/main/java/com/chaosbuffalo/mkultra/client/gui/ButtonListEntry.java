@@ -16,7 +16,7 @@ public class ButtonListEntry<E> implements GuiListExtended.IGuiListEntry {
     private Minecraft client;
 
     public ButtonListEntry(E entry, BiConsumer<E, Integer> handler, int listId,
-                           Function<E, String> getHumanReadable, Minecraft mc){
+                           Function<E, String> getHumanReadable, Minecraft mc) {
         this.entry = entry;
         this.handler = handler;
         this.listId = listId;

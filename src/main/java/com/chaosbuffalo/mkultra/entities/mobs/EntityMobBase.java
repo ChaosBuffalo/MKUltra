@@ -7,13 +7,13 @@ import com.chaosbuffalo.mkultra.core.MKUMobData;
 import com.chaosbuffalo.mkultra.core.MobData;
 import com.chaosbuffalo.mkultra.mob_ai.*;
 import com.chaosbuffalo.mkultra.network.ModGuiHandler;
-import com.chaosbuffalo.mkultra.network.packets.OpenLearnClassTileEntityPacket;
 import com.chaosbuffalo.mkultra.tiles.TileEntityNPCSpawner;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
+import net.minecraft.entity.ai.EntityAILookIdle;
+import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -65,12 +65,13 @@ public class EntityMobBase extends EntityCreature implements IMob, IRangedAttack
         doStrafeOnSpells = false;
         this.setSize(0.6F, 1.99F);
         this.setCombatTask();
-        for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()){
+        for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
             setDropChance(slot, 0.0f);
         }
     }
 
-    public void setupMKMobData(IMobData mobData) {}
+    public void setupMKMobData(IMobData mobData) {
+    }
 
     @Override
     protected void initEntityAI() {
@@ -130,17 +131,17 @@ public class EntityMobBase extends EntityCreature implements IMob, IRangedAttack
 
     @Override
     public boolean attackEntityAsMob(Entity target) {
-        float damage = (float)this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
+        float damage = (float) this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
         int i = 0;
         if (target instanceof EntityLivingBase) {
             damage += EnchantmentHelper.getModifierForCreature(this.getHeldItemMainhand(),
-                    ((EntityLivingBase)target).getCreatureAttribute());
+                    ((EntityLivingBase) target).getCreatureAttribute());
             i += EnchantmentHelper.getKnockbackModifier(this);
         }
         boolean didAttack = target.attackEntityFrom(DamageSource.causeMobDamage(this), damage);
         if (didAttack) {
             if (i > 0 && target instanceof EntityLivingBase) {
-                ((EntityLivingBase)target).knockBack(this, (float)i * 0.5F, (double) MathHelper.sin(this.rotationYaw * 0.017453292F), (double)(-MathHelper.cos(this.rotationYaw * 0.017453292F)));
+                ((EntityLivingBase) target).knockBack(this, (float) i * 0.5F, (double) MathHelper.sin(this.rotationYaw * 0.017453292F), (double) (-MathHelper.cos(this.rotationYaw * 0.017453292F)));
                 this.motionX *= 0.6D;
                 this.motionZ *= 0.6D;
             }
@@ -151,14 +152,14 @@ public class EntityMobBase extends EntityCreature implements IMob, IRangedAttack
             }
 
             if (target instanceof EntityPlayer) {
-                EntityPlayer entityplayer = (EntityPlayer)target;
+                EntityPlayer entityplayer = (EntityPlayer) target;
                 ItemStack itemstack = this.getHeldItemMainhand();
                 ItemStack itemstack1 = entityplayer.isHandActive() ? entityplayer.getActiveItemStack() : ItemStack.EMPTY;
                 if (!itemstack.isEmpty() && !itemstack1.isEmpty() && itemstack.getItem().canDisableShield(itemstack, itemstack1, entityplayer, this) && itemstack1.getItem().isShield(itemstack1, entityplayer)) {
-                    float f1 = 0.25F + (float)EnchantmentHelper.getEfficiencyModifier(this) * 0.05F;
+                    float f1 = 0.25F + (float) EnchantmentHelper.getEfficiencyModifier(this) * 0.05F;
                     if (this.rand.nextFloat() < f1) {
                         entityplayer.getCooldownTracker().setCooldown(itemstack1.getItem(), 100);
-                        this.world.setEntityState(entityplayer, (byte)30);
+                        this.world.setEntityState(entityplayer, (byte) 30);
                     }
                 }
             }
@@ -213,11 +214,11 @@ public class EntityMobBase extends EntityCreature implements IMob, IRangedAttack
     public void attackEntityWithRangedAttack(EntityLivingBase target, float damage) {
         EntityArrow arrow = this.getArrow(damage);
         double xDist = target.posX - this.posX;
-        double yDist = target.getEntityBoundingBox().minY + (double)(target.height / 4.0F) - arrow.posY;
+        double yDist = target.getEntityBoundingBox().minY + (double) (target.height / 4.0F) - arrow.posY;
         double zDist = target.posZ - this.posZ;
-        double dist = (double)MathHelper.sqrt(xDist * xDist + zDist * zDist);
+        double dist = (double) MathHelper.sqrt(xDist * xDist + zDist * zDist);
         arrow.shoot(xDist, yDist + dist * 0.20000000298023224D, zDist, 1.6F,
-                (float)(14 - this.world.getDifficulty().getId() * 4));
+                (float) (14 - this.world.getDifficulty().getId() * 4));
         this.playSound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F,
                 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
         this.world.spawnEntity(arrow);
@@ -282,7 +283,9 @@ public class EntityMobBase extends EntityCreature implements IMob, IRangedAttack
         this.playSound(this.getStepSound(), 0.15F, 1.0F);
     }
 
-    protected SoundEvent getStepSound() { return SoundEvents.BLOCK_GRASS_STEP; }
+    protected SoundEvent getStepSound() {
+        return SoundEvents.BLOCK_GRASS_STEP;
+    }
 
     @Override
     public EnumCreatureAttribute getCreatureAttribute() {
@@ -317,7 +320,7 @@ public class EntityMobBase extends EntityCreature implements IMob, IRangedAttack
     }
 
     @Nullable
-    public IMessage getInteractionPacket(EntityPlayer player, TileEntity spawner, BlockPos spawnPoint){
+    public IMessage getInteractionPacket(EntityPlayer player, TileEntity spawner, BlockPos spawnPoint) {
         return null;
     }
 
@@ -325,7 +328,7 @@ public class EntityMobBase extends EntityCreature implements IMob, IRangedAttack
     public void updateRidden() {
         super.updateRidden();
         if (this.getRidingEntity() instanceof EntityCreature) {
-            EntityCreature mount = (EntityCreature)this.getRidingEntity();
+            EntityCreature mount = (EntityCreature) this.getRidingEntity();
             this.renderYawOffset = mount.renderYawOffset;
         }
     }

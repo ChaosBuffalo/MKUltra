@@ -2,9 +2,9 @@ package com.chaosbuffalo.mkultra.core.abilities;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKDamageSource;
+import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.effects.spells.WhirlpoolPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
@@ -76,12 +76,12 @@ public class WaveDash extends PlayerAbility {
         EnvironmentUtils.putOutFiresInLine(theWorld, from.subtract(perpVec), to.subtract(perpVec));
 
         List<EntityLivingBase> entityHit = getTargetsInLine(entity, from, to, true, .75f);
-        for (EntityLivingBase entHit : entityHit){
+        for (EntityLivingBase entHit : entityHit) {
             if (entHit == null) {
                 continue;
             }
 
-            if (entHit.isPotionActive(WhirlpoolPotion.INSTANCE)){
+            if (entHit.isPotionActive(WhirlpoolPotion.INSTANCE)) {
                 damage = damage * 2.0f;
             }
             entHit.attackEntityFrom(MKDamageSource.fromMeleeSkill(getAbilityId(), entity, entity), damage);
@@ -101,8 +101,7 @@ public class WaveDash extends PlayerAbility {
         }
 
         RayTraceResult blockHit = RayTraceUtils.rayTraceBlocks(entity.getEntityWorld(), from, to, false);
-        if (blockHit != null && blockHit.typeOfHit == RayTraceResult.Type.BLOCK)
-        {
+        if (blockHit != null && blockHit.typeOfHit == RayTraceResult.Type.BLOCK) {
             to = blockHit.hitVec;
         }
         entity.setPositionAndUpdate(to.x, to.y, to.z);

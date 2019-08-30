@@ -1,4 +1,3 @@
-
 package com.chaosbuffalo.mkultra.network.packets;
 
 import com.chaosbuffalo.mkultra.core.*;

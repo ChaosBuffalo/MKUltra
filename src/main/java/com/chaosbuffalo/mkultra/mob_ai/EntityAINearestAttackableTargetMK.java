@@ -2,7 +2,6 @@ package com.chaosbuffalo.mkultra.mob_ai;
 
 import com.chaosbuffalo.mkultra.core.IMobData;
 import com.chaosbuffalo.mkultra.core.MKUMobData;
-import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
@@ -34,8 +33,8 @@ public class EntityAINearestAttackableTargetMK extends EntityAITarget {
     }
 
     @Override
-    protected double getTargetDistance(){
-        if (target != null){
+    protected double getTargetDistance() {
+        if (target != null) {
             IAttributeInstance iattributeinstance = this.taskOwner.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE);
             return iattributeinstance == null ? 16.0D : iattributeinstance.getAttributeValue();
         } else {
@@ -48,7 +47,7 @@ public class EntityAINearestAttackableTargetMK extends EntityAITarget {
         return this.taskOwner.getEntityBoundingBox().grow(distance, distance, distance);
     }
 
-    public int compareDistance(Entity a, Entity b){
+    public int compareDistance(Entity a, Entity b) {
         double aDist = taskOwner.getDistanceSq(a);
         double bDist = taskOwner.getDistanceSq(b);
         if (aDist < bDist) {
@@ -71,9 +70,9 @@ public class EntityAINearestAttackableTargetMK extends EntityAITarget {
 ////                Log.info("Entity ID: %d, Class: %s", entity.getEntityId(), entity.getClass().toString());
 ////            }
 //            Log.info("Done with potential targets");
-            if (list.size() > 0){
+            if (list.size() > 0) {
                 Entity min = Collections.min(list, this::compareDistance);
-                if (min instanceof EntityLivingBase){
+                if (min instanceof EntityLivingBase) {
                     target = (EntityLivingBase) min;
                     return true;
                 } else {

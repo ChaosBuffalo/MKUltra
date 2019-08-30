@@ -37,7 +37,7 @@ public class MileysInspiringBangerzPotion extends SongEffect {
     }
 
     @Override
-    public AreaEffectBuilder prepareAreaEffect(EntityPlayer source, IPlayerData playerData, int level, AreaEffectBuilder builder){
+    public AreaEffectBuilder prepareAreaEffect(EntityPlayer source, IPlayerData playerData, int level, AreaEffectBuilder builder) {
         int duration = PlayerFormulas.applyBuffDurationBonus(playerData, PERIOD);
         builder.spellCast(ShieldingPotion.Create(source), duration, level, Targeting.TargetType.FRIENDLY);
         builder.effect(new PotionEffect(MobEffects.RESISTANCE, duration, level), Targeting.TargetType.FRIENDLY);
@@ -51,7 +51,9 @@ public class MileysInspiringBangerzPotion extends SongEffect {
     }
 
     @Override
-    public EnumParticleTypes getSongParticle() { return EnumParticleTypes.SPELL; }
+    public EnumParticleTypes getSongParticle() {
+        return EnumParticleTypes.SPELL;
+    }
 
     @Override
     public ResourceLocation getIconTexture() {

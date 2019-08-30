@@ -19,7 +19,7 @@ public class WildToxinTouch extends MobAbility {
     float BASE_DAMAGE = 2.0f;
     float DAMAGE_SCALE = 3.0f;
 
-    public WildToxinTouch(){
+    public WildToxinTouch() {
         super(MKUltra.MODID, "mob_ability.wild_toxin_touch");
     }
 
@@ -39,7 +39,7 @@ public class WildToxinTouch extends MobAbility {
     }
 
     @Override
-    public int getCastTime(){
+    public int getCastTime() {
         return GameConstants.TICKS_PER_SECOND;
     }
 

@@ -19,9 +19,13 @@ public abstract class SongApplicator extends SongPotionBase {
         super(period, false, isBadEffectIn, liquidColorIn);
     }
 
-    public Set<PotionEffect> getPotionsToApply(Entity source, int level) { return new HashSet<>(); }
+    public Set<PotionEffect> getPotionsToApply(Entity source, int level) {
+        return new HashSet<>();
+    }
 
-    public Set<SpellCast> getSpellCasts(Entity source) { return new HashSet<>(); }
+    public Set<SpellCast> getSpellCasts(Entity source) {
+        return new HashSet<>();
+    }
 
     @Override
     public void doEffect(Entity source, Entity indirectSource, EntityLivingBase target, int amplifier, SpellCast cast) {

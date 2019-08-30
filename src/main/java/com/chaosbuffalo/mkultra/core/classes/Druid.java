@@ -13,6 +13,7 @@ public class Druid extends PlayerClass {
     public static ResourceLocation ID = new ResourceLocation(MKUltra.MODID, "class.druid");
 
     public static final List<PlayerAbility> abilities = new ArrayList<>(5);
+
     static {
         abilities.add(new BallLightning());
         abilities.add(new FlameBlade());
@@ -36,32 +37,32 @@ public class Druid extends PlayerClass {
     }
 
     @Override
-    public int getHealthPerLevel(){
+    public int getHealthPerLevel() {
         return 2;
     }
 
     @Override
-    public int getBaseHealth(){
+    public int getBaseHealth() {
         return 18;
     }
 
     @Override
-    public float getBaseManaRegen(){
+    public float getBaseManaRegen() {
         return 1;
     }
 
     @Override
-    public float getManaRegenPerLevel(){
+    public float getManaRegenPerLevel() {
         return 0.2f;
     }
 
     @Override
-    public int getBaseMana(){
+    public int getBaseMana() {
         return 15;
     }
 
     @Override
-    public int getManaPerLevel(){
+    public int getManaPerLevel() {
         return 1;
     }
 

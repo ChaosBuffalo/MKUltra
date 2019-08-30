@@ -10,18 +10,22 @@ public class PartyData {
     private UUID invitingUUID;
     private String invitingName;
 
-    public PartyData(){
+    public PartyData() {
     }
 
-    public String getInvitingName() { return this.invitingName; }
+    public String getInvitingName() {
+        return this.invitingName;
+    }
 
-    public void setInvitingName(String name){ this.invitingName = name; }
+    public void setInvitingName(String name) {
+        this.invitingName = name;
+    }
 
-    public UUID getInvitingUUID(){
+    public UUID getInvitingUUID() {
         return this.invitingUUID;
     }
 
-    public void setInvitingUUID(UUID uuid){
+    public void setInvitingUUID(UUID uuid) {
         this.invitingUUID = uuid;
     }
 }

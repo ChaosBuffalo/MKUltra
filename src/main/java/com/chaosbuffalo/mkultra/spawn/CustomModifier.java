@@ -10,11 +10,11 @@ public class CustomModifier {
 
     private final BiConsumer<EntityLivingBase, CustomModifier> applier;
 
-    public CustomModifier(BiConsumer<EntityLivingBase, CustomModifier> applierIn){
+    public CustomModifier(BiConsumer<EntityLivingBase, CustomModifier> applierIn) {
         this.applier = applierIn;
     }
 
-    public void apply(EntityLivingBase entity, int level, int maxLevel){
+    public void apply(EntityLivingBase entity, int level, int maxLevel) {
         this.level = level;
         this.maxLevel = maxLevel;
         this.applier.accept(entity, this);

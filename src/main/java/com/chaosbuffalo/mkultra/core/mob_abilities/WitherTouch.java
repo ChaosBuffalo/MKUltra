@@ -20,7 +20,7 @@ public class WitherTouch extends MobAbility {
     float BASE_DAMAGE = .5f;
     float DAMAGE_SCALE = .5f;
 
-    public WitherTouch(){
+    public WitherTouch() {
         super(MKUltra.MODID, "mob_ability.wither_touch");
     }
 
@@ -40,7 +40,7 @@ public class WitherTouch extends MobAbility {
     }
 
     @Override
-    public int getCastTime(){
+    public int getCastTime() {
         return GameConstants.TICKS_PER_SECOND;
     }
 

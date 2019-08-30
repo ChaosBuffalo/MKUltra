@@ -18,7 +18,7 @@ public class ItemOption extends IForgeRegistryEntry.Impl<ItemOption> {
 
     public ItemOption(ResourceLocation name,
                       BiConsumer<EntityLivingBase, ItemChoice> func,
-                      ItemChoice... choices){
+                      ItemChoice... choices) {
         setRegistryName(name);
         this.applyFunc = func;
         this.choices = new HashSet<>();
@@ -29,13 +29,13 @@ public class ItemOption extends IForgeRegistryEntry.Impl<ItemOption> {
         this.level = level;
         this.maxLevel = maxLevel;
         RandomCollection<ItemChoice> current_choices = new RandomCollection<>();
-        for (ItemChoice choice : choices){
-            if (level >= choice.minLevel){
+        for (ItemChoice choice : choices) {
+            if (level >= choice.minLevel) {
                 current_choices.add(choice.weight, choice);
             }
         }
-        if (current_choices.size() > 0){
-            this.applyFunc.accept(entity,  current_choices.next());
+        if (current_choices.size() > 0) {
+            this.applyFunc.accept(entity, current_choices.next());
         }
 
     }

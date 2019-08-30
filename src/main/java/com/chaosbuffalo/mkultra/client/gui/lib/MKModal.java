@@ -16,32 +16,32 @@ public class MKModal extends MKWidget {
         closeOnClickOutsideContent = true;
     }
 
-    public MKModal setBackgroundColor(int color){
+    public MKModal setBackgroundColor(int color) {
         backgroundColor = color;
         return this;
     }
 
-    public MKModal setCloseOnClickOutside(boolean value){
+    public MKModal setCloseOnClickOutside(boolean value) {
         closeOnClickOutsideContent = value;
         return this;
     }
 
-    public boolean shouldCloseOnClickOutside(){
+    public boolean shouldCloseOnClickOutside() {
         return closeOnClickOutsideContent;
     }
 
-    public MKModal setOnCloseCallback(Runnable callback){
+    public MKModal setOnCloseCallback(Runnable callback) {
         onCloseCallback = callback;
         return this;
     }
 
-    public Runnable getOnCloseCallback(){
+    public Runnable getOnCloseCallback() {
         return onCloseCallback;
     }
 
     @Override
     public boolean onMousePressed(Minecraft minecraft, int mouseX, int mouseY, int mouseButton) {
-        if (getScreen() != null && shouldCloseOnClickOutside()){
+        if (getScreen() != null && shouldCloseOnClickOutside()) {
             getScreen().closeModal(this);
             return true;
         }
@@ -49,23 +49,23 @@ public class MKModal extends MKWidget {
 
     }
 
-    public int getBackgroundColor(){
+    public int getBackgroundColor() {
         return backgroundColor;
     }
 
-    public MKModal setDoBackground(boolean value){
+    public MKModal setDoBackground(boolean value) {
         doBackground = value;
         return this;
     }
 
-    public boolean shouldDoBackground(){
+    public boolean shouldDoBackground() {
         return doBackground;
     }
 
     @Override
     public void preDraw(Minecraft mc, int x, int y, int width, int height, int mouseX, int mouseY, float partialTicks) {
         super.preDraw(mc, x, y, width, height, mouseX, mouseY, partialTicks);
-        if (shouldDoBackground()){
+        if (shouldDoBackground()) {
             drawRect(getX(), getY(), getWidth(), getHeight(), getBackgroundColor());
         }
 

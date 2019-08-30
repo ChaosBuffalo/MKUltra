@@ -1,9 +1,9 @@
 package com.chaosbuffalo.mkultra.spawn;
-import com.chaosbuffalo.mkultra.log.Log;
+
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIBase;
+
 import javax.annotation.Nullable;
-import java.util.function.BiFunction;
 
 
 public class BehaviorChoice {
@@ -11,41 +11,43 @@ public class BehaviorChoice {
     private Class<? extends EntityAIBase> aiClass;
     private AIGenerator aiProvider;
     private int taskPriority;
+
     public enum TaskType {
         TARGET_TASK,
         TASK
     }
+
     private TaskType taskType;
 
-    public BehaviorChoice(Class<? extends EntityAIBase> aiClass, int minLevel, TaskType type){
+    public BehaviorChoice(Class<? extends EntityAIBase> aiClass, int minLevel, TaskType type) {
         this.aiClass = aiClass;
         this.minLevel = minLevel;
         this.taskType = type;
     }
 
     public BehaviorChoice(AIGenerator generator, int minLevel,
-                          int taskPriority, TaskType type){
+                          int taskPriority, TaskType type) {
         this.minLevel = minLevel;
         this.aiProvider = generator;
         this.taskPriority = taskPriority;
         this.taskType = type;
     }
 
-    public TaskType getTaskType(){
+    public TaskType getTaskType() {
         return taskType;
     }
 
     @Nullable
-    public Class<? extends EntityAIBase> getAIClass(){
+    public Class<? extends EntityAIBase> getAIClass() {
         return aiClass;
     }
 
-    public int getTaskPriority(){
+    public int getTaskPriority() {
         return taskPriority;
     }
 
     @Nullable
-    public EntityAIBase getTask(EntityLiving entity){
+    public EntityAIBase getTask(EntityLiving entity) {
         if (aiProvider == null) {
             return null;
         } else {

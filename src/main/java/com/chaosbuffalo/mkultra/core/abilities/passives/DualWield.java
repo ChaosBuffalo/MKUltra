@@ -10,7 +10,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Mod.EventBusSubscriber(modid = MKUltra.MODID)
-public class DualWield  extends PlayerPassiveAbility {
+public class DualWield extends PlayerPassiveAbility {
 
     public static final DualWield INSTANCE = new DualWield();
 

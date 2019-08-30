@@ -2,8 +2,8 @@ package com.chaosbuffalo.mkultra.core.abilities;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
+import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.PlayerFormulas;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
@@ -60,7 +60,7 @@ public class SpiritOfWolf extends PlayerAbility {
 
         int level = pData.getAbilityRank(getAbilityId());
         EntityLivingBase targetEntity = getSingleLivingTargetOrSelf(entity, getDistance(level), true);
-        
+
         pData.startAbility(this);
 
         int duration = GameConstants.TICKS_PER_SECOND * 60 * (BASE_DURATION + DURATION_SCALE * level);

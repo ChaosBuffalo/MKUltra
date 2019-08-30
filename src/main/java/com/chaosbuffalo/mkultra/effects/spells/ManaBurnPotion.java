@@ -57,11 +57,11 @@ public class ManaBurnPotion extends SpellPeriodicPotionBase {
         float damage = cast.getScaledValue(amplifier);
         target.attackEntityFrom(MKDamageSource.causeIndirectMagicDamage(ManaBurn.MANA_BURN_ID,
                 source, indirectSource), damage);
-        if (target instanceof EntityPlayer){
+        if (target instanceof EntityPlayer) {
             EntityPlayer playerTarget = (EntityPlayer) target;
             IPlayerData data = MKUPlayerData.get(playerTarget);
-            if (data != null){
-                data.setMana(Math.max(0, data.getMana() - (int)damage));
+            if (data != null) {
+                data.setMana(Math.max(0, data.getMana() - (int) damage));
             }
         }
 

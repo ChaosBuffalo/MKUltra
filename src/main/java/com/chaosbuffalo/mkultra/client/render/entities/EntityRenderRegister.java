@@ -5,7 +5,6 @@ import com.chaosbuffalo.mkultra.entities.mobs.EntityOrbMother;
 import com.chaosbuffalo.mkultra.entities.mobs.EntityRanger;
 import com.chaosbuffalo.mkultra.entities.projectiles.*;
 import com.chaosbuffalo.mkultra.init.ModItems;
-import net.minecraft.client.renderer.entity.Render;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 
 /**

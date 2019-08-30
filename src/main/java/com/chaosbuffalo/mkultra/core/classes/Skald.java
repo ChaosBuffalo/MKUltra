@@ -13,6 +13,7 @@ public class Skald extends PlayerClass {
     public static ResourceLocation TOGGLE_GROUP = new ResourceLocation(MKUltra.MODID, "toggle_group.skald");
 
     public static final List<PlayerAbility> abilities = new ArrayList<>(5);
+
     static {
         abilities.add(new NotoriousDOT());
         abilities.add(new KanyeCutter());
@@ -36,32 +37,32 @@ public class Skald extends PlayerClass {
     }
 
     @Override
-    public int getHealthPerLevel(){
+    public int getHealthPerLevel() {
         return 1;
     }
 
     @Override
-    public int getBaseHealth(){
+    public int getBaseHealth() {
         return 26;
     }
 
     @Override
-    public float getBaseManaRegen(){
+    public float getBaseManaRegen() {
         return 1;
     }
 
     @Override
-    public float getManaRegenPerLevel(){
+    public float getManaRegenPerLevel() {
         return 0.2f;
     }
 
     @Override
-    public int getBaseMana(){
+    public int getBaseMana() {
         return 10;
     }
 
     @Override
-    public int getManaPerLevel(){
+    public int getManaPerLevel() {
         return 2;
     }
 

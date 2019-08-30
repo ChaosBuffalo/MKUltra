@@ -2,9 +2,9 @@ package com.chaosbuffalo.mkultra.core.mob_abilities;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.MobAbility;
 import com.chaosbuffalo.mkultra.core.IMobData;
 import com.chaosbuffalo.mkultra.core.MKDamageSource;
+import com.chaosbuffalo.mkultra.core.MobAbility;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.mkultra.utils.RayTraceUtils;
@@ -22,7 +22,7 @@ public class ShadowDash extends MobAbility {
     float BASE_DAMAGE = 2f;
     float DAMAGE_SCALE = 1f;
 
-    public ShadowDash(){
+    public ShadowDash() {
         super(MKUltra.MODID, "mob_ability.shadow_dash");
     }
 
@@ -42,7 +42,7 @@ public class ShadowDash extends MobAbility {
     }
 
     @Override
-    public int getCastTime(){
+    public int getCastTime() {
         return GameConstants.TICKS_PER_SECOND / 2;
     }
 
@@ -60,7 +60,7 @@ public class ShadowDash extends MobAbility {
             target.attackEntityFrom(MKDamageSource.fromMeleeSkill(getAbilityId(), entity, entity),
                     BASE_DAMAGE + DAMAGE_SCALE * level);
             entity.addPotionEffect(new PotionEffect(MobEffects.INVISIBILITY,
-                    GameConstants.TICKS_PER_SECOND * (level+1)));
+                    GameConstants.TICKS_PER_SECOND * (level + 1)));
             Vec3d lookVec = entity.getLookVec();
             MKUltra.packetHandler.sendToAllAround(
                     new ParticleEffectSpawnPacket(
@@ -76,7 +76,7 @@ public class ShadowDash extends MobAbility {
             Vec3d teleLoc = target.getPositionVector().add(new Vec3d(movementVec.x, 0.0, movementVec.z));
             RayTraceResult colTrace = RayTraceUtils.rayTraceBlocks(theWorld, target.getPositionVector(),
                     teleLoc, false);
-            if (colTrace != null && colTrace.typeOfHit == RayTraceResult.Type.BLOCK){
+            if (colTrace != null && colTrace.typeOfHit == RayTraceResult.Type.BLOCK) {
                 teleLoc = colTrace.hitVec;
             }
             Vec3d lookDelta = teleLoc.subtract(target.getPositionVector().add(new Vec3d(0.0f, .5f, 0.0f))).normalize();
@@ -86,8 +86,8 @@ public class ShadowDash extends MobAbility {
             yaw = yaw * 180.0 / Math.PI;
             yaw += 90f;
             // Unfortunately setRotation is protected so we have to set these directly.
-            entity.rotationYaw = (float)yaw;
-            entity.rotationPitch = (float)pitch;
+            entity.rotationYaw = (float) yaw;
+            entity.rotationPitch = (float) pitch;
             entity.setPositionAndUpdate(teleLoc.x, teleLoc.y, teleLoc.z);
             entity.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 3 * GameConstants.TICKS_PER_SECOND, 5));
         }

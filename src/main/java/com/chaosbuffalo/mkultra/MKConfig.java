@@ -15,10 +15,7 @@ import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 import java.io.File;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Config(modid = MKUltra.MODID, category = "gameplay")
@@ -234,16 +231,16 @@ public class MKConfig {
         return Arrays.stream(gameplay.BANNED_CLASSES).noneMatch(s -> s.equalsIgnoreCase(classId.toString()));
     }
 
-    public static ItemArmor.ArmorMaterial findArmorMat(String armorMat){
-        for (ItemArmor.ArmorMaterial material : ItemArmor.ArmorMaterial.values()){
-            if (getArmorName(material).equals(armorMat)){
+    public static ItemArmor.ArmorMaterial findArmorMat(String armorMat) {
+        for (ItemArmor.ArmorMaterial material : ItemArmor.ArmorMaterial.values()) {
+            if (getArmorName(material).equals(armorMat)) {
                 return material;
             }
         }
         return null;
     }
 
-    public static void registerArmorFromName(String name, ArmorClass armorclass){
+    public static void registerArmorFromName(String name, ArmorClass armorclass) {
         ItemArmor.ArmorMaterial mat = findArmorMat(name);
         if (mat != null) {
             Log.info("Registering %s for Armor Class: %s", name,
@@ -258,22 +255,22 @@ public class MKConfig {
         return ReflectionHelper.getPrivateValue(ItemArmor.ArmorMaterial.class, mat, "name", "field_179243_f", "f");
     }
 
-    public static void registerArmors(){
+    public static void registerArmors() {
         Arrays.stream(armor.ROBES_ARMOR).forEach((x) -> registerArmorFromName(x, ArmorClass.ROBES));
         Arrays.stream(armor.LIGHT_ARMOR).forEach((x) -> registerArmorFromName(x, ArmorClass.LIGHT));
         Arrays.stream(armor.MEDIUM_ARMOR).forEach((x) -> registerArmorFromName(x, ArmorClass.MEDIUM));
         Arrays.stream(armor.HEAVY_ARMOR).forEach((x) -> registerArmorFromName(x, ArmorClass.HEAVY));
     }
 
-    public static void setupAttackSpeedWhitelist(){
+    public static void setupAttackSpeedWhitelist() {
         MobUtils.mobsToAddAttackSpeed.clear();
-        for (String name : gameplay.ATTACK_SPEED_ON_MOBS){
+        for (String name : gameplay.ATTACK_SPEED_ON_MOBS) {
             MobUtils.mobsToAddAttackSpeed.add(new ResourceLocation(name));
         }
     }
 
 
-    public static void setMaxHealthMax(){
+    public static void setMaxHealthMax() {
         RangedAttribute attr = (RangedAttribute) SharedMonsterAttributes.MAX_HEALTH;
         final Field maxValueMaxHealth;
         try {

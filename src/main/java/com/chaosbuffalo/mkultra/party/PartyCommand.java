@@ -40,8 +40,7 @@ public class PartyCommand extends CommandTreeBase {
         return true;
     }
 
-    private static class InviteCommand extends CommandBase
-    {
+    private static class InviteCommand extends CommandBase {
         @Override
         public void execute(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, @Nonnull String[] args) throws CommandException {
             if (args.length == 0) {
@@ -59,28 +58,24 @@ public class PartyCommand extends CommandTreeBase {
         }
 
         @Override
-        public boolean isUsernameIndex(String[] args, int index)
-        {
+        public boolean isUsernameIndex(String[] args, int index) {
             return index > 0;
         }
 
         @Nonnull
         @Override
-        public String getName()
-        {
+        public String getName() {
             return "invite";
         }
 
         @Nonnull
         @Override
-        public String getUsage(@Nonnull ICommandSender sender)
-        {
+        public String getUsage(@Nonnull ICommandSender sender) {
             return "/party invite <player name>";
         }
     }
 
-    private static class LeaveCommand extends CommandBase
-    {
+    private static class LeaveCommand extends CommandBase {
         @Override
         public void execute(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, @Nonnull String[] args) throws CommandException {
             EntityPlayer self = getCommandSenderAsPlayer(sender);
@@ -88,8 +83,7 @@ public class PartyCommand extends CommandTreeBase {
             if (self.getTeam() != null) {
                 PartyManager.removePlayerFromParty(self);
                 message = "You left the party";
-            }
-            else {
+            } else {
                 message = "You are not in a party!";
             }
 
@@ -106,8 +100,7 @@ public class PartyCommand extends CommandTreeBase {
          */
         @Nonnull
         @Override
-        public String getName()
-        {
+        public String getName() {
             return "leave";
         }
 
@@ -116,14 +109,12 @@ public class PartyCommand extends CommandTreeBase {
          */
         @Nonnull
         @Override
-        public String getUsage(@Nonnull ICommandSender sender)
-        {
+        public String getUsage(@Nonnull ICommandSender sender) {
             return "/party leave";
         }
     }
 
-    private static class InfoCommand extends CommandBase
-    {
+    private static class InfoCommand extends CommandBase {
         @Override
         public void execute(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, @Nonnull String[] args) throws CommandException {
             EntityPlayer self = getCommandSenderAsPlayer(sender);
@@ -135,8 +126,7 @@ public class PartyCommand extends CommandTreeBase {
 
                 message = String.format("Members: %s", String.join(", ", team.getMembershipCollection()));
                 self.sendMessage(new TextComponentString(message));
-            }
-            else {
+            } else {
                 String message = "You are not in a party!";
                 self.sendMessage(new TextComponentString(message));
             }
@@ -152,8 +142,7 @@ public class PartyCommand extends CommandTreeBase {
          */
         @Nonnull
         @Override
-        public String getName()
-        {
+        public String getName() {
             return "info";
         }
 
@@ -162,8 +151,7 @@ public class PartyCommand extends CommandTreeBase {
          */
         @Nonnull
         @Override
-        public String getUsage(@Nonnull ICommandSender sender)
-        {
+        public String getUsage(@Nonnull ICommandSender sender) {
             return "/party info";
         }
     }

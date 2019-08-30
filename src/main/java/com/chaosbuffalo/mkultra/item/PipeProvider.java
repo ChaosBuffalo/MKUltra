@@ -13,35 +13,35 @@ import net.minecraftforge.items.ItemStackHandler;
  */
 public class PipeProvider implements ICapabilityProvider, ICapabilitySerializable<NBTTagCompound> {
 
-private final ItemStackHandler inventory;
+    private final ItemStackHandler inventory;
 
-public PipeProvider() {
-        inventory = new ItemStackHandler( 1 );
-        }
+    public PipeProvider() {
+        inventory = new ItemStackHandler(1);
+    }
 
-@Override
-public NBTTagCompound serializeNBT() {
+    @Override
+    public NBTTagCompound serializeNBT() {
         return inventory.serializeNBT();
-        }
+    }
 
-@Override
-public void deserializeNBT(NBTTagCompound nbt) {
+    @Override
+    public void deserializeNBT(NBTTagCompound nbt) {
         inventory.deserializeNBT(nbt);
-        }
+    }
 
-@Override
-public boolean hasCapability(Capability<?> capability, EnumFacing facing ) {
-        if( capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ) {
-        return true;
+    @Override
+    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            return true;
         }
         return false;
-        }
+    }
 
-@Override
-public <T> T getCapability( Capability<T> capability, EnumFacing facing ) {
-        if( capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ) {
-        return (T) inventory;
+    @Override
+    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            return (T) inventory;
         }
         return null;
-        }
-        }
+    }
+}

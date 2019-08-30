@@ -38,7 +38,7 @@ public class Whirlpool extends MobAbility {
     }
 
     @Override
-    public float getDistance(){
+    public float getDistance() {
         return 6.0f;
     }
 

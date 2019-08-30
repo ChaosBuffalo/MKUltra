@@ -19,6 +19,7 @@ public class Ranger extends PlayerClass {
     private static ClientData clientData = new ClientData();
 
     public static final List<PlayerAbility> abilities = new ArrayList<>(5);
+
     static {
         abilities.add(new PracticedHunter());
         abilities.add(new FairyFire());
@@ -42,32 +43,32 @@ public class Ranger extends PlayerClass {
     }
 
     @Override
-    public int getHealthPerLevel(){
+    public int getHealthPerLevel() {
         return 2;
     }
 
     @Override
-    public int getBaseHealth(){
+    public int getBaseHealth() {
         return 20;
     }
 
     @Override
-    public float getBaseManaRegen(){
+    public float getBaseManaRegen() {
         return 1;
     }
 
     @Override
-    public float getManaRegenPerLevel(){
+    public float getManaRegenPerLevel() {
         return 0.2f;
     }
 
     @Override
-    public int getBaseMana(){
+    public int getBaseMana() {
         return 10;
     }
 
     @Override
-    public int getManaPerLevel(){
+    public int getManaPerLevel() {
         return 2;
     }
 

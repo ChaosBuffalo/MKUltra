@@ -11,9 +11,6 @@
 package com.chaosbuffalo.mkultra.utils;
 
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3i;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
 /**
@@ -23,23 +20,23 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
  */
 public class ServerUtils {
 
-	/**
-	 * Returns the instance of MinecraftServer.
-	 *
-	 * @return The instance of MinecraftServer.
-	 */
-	public static MinecraftServer mc() {
-		return FMLCommonHandler.instance().getMinecraftServerInstance();
-	}
+    /**
+     * Returns the instance of MinecraftServer.
+     *
+     * @return The instance of MinecraftServer.
+     */
+    public static MinecraftServer mc() {
+        return FMLCommonHandler.instance().getMinecraftServerInstance();
+    }
 
-	/**
-	 * Adds a task to the Minecraft server task queue. Should be used when
-	 * processing packets, as they are executed in another thread.
-	 *
-	 * @param task the task to schedule.
-	 */
-	public static void addScheduledTask(Runnable task) {
-		mc().addScheduledTask(task);
-	}
+    /**
+     * Adds a task to the Minecraft server task queue. Should be used when
+     * processing packets, as they are executed in another thread.
+     *
+     * @param task the task to schedule.
+     */
+    public static void addScheduledTask(Runnable task) {
+        mc().addScheduledTask(task);
+    }
 
 }

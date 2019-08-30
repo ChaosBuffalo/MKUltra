@@ -58,8 +58,8 @@ public class HeavingSeasPotion extends SpellPotionBase {
         target.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, duration, amplifier, false, true));
         target.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, duration, amplifier, false, true));
         IMobData mobData = MKUMobData.get(target);
-        if (mobData != null){
-            if (!mobData.isBoss()){
+        if (mobData != null) {
+            if (!mobData.isBoss()) {
                 target.addVelocity(0.0, amplifier * 1.25f, 0.0);
             }
         } else {

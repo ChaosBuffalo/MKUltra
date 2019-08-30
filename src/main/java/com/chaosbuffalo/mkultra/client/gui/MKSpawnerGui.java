@@ -29,8 +29,9 @@ public class MKSpawnerGui extends GuiScreen {
         SET_MOB_GROUP,
         SET_SPAWN_LIST
     }
+
     private static final Function<ResourceLocation, String> getResourceName = ResourceLocation::toString;
-    private static final Function<String, String> getMobGroupName = (x)-> x;
+    private static final Function<String, String> getMobGroupName = (x) -> x;
 
     // lists
     private static final int FACTION_LIST = 0;
@@ -54,7 +55,7 @@ public class MKSpawnerGui extends GuiScreen {
     private ButtonList<String> mobGroupList;
     private ButtonList<ResourceLocation> spawnListList;
 
-    public MKSpawnerGui(TileEntityMKSpawner spawner){
+    public MKSpawnerGui(TileEntityMKSpawner spawner) {
         this.spawner = spawner;
         this.spawnTime = spawner.getSpawnTimeSeconds();
         this.factionName = spawner.getFactionName();
@@ -106,9 +107,9 @@ public class MKSpawnerGui extends GuiScreen {
         upButton.drawButton(mc, mouseX, mouseY, partialTicks);
         downButton.drawButton(mc, mouseX, mouseY, partialTicks);
         syncButton.drawButton(mc, mouseX, mouseY, partialTicks);
-        switch (screenMode){
+        switch (screenMode) {
             case SET_FACTION:
-                if (factionList == null){
+                if (factionList == null) {
                     ArrayList<ResourceLocation> factions = new ArrayList<>(MKURegistry.REGISTRY_MOB_FACTIONS.getKeys());
                     factionList = new ButtonList<>(
                             factions, this::handleFactionListButtonClicked, FACTION_LIST, getResourceName, mc, 200,
@@ -119,12 +120,12 @@ public class MKSpawnerGui extends GuiScreen {
                 break;
             case SET_MOB_GROUP:
                 MobFaction currentFaction = MKURegistry.getFaction(factionName);
-                if (mobGroupList == null && currentFaction != null){
+                if (mobGroupList == null && currentFaction != null) {
                     ArrayList<String> groups = new ArrayList<>();
                     Set<String> mobGroups = currentFaction.getMobGroups();
-                    if (mobGroups != null){
-                        for (String group : mobGroups){
-                            if (group != null && !currentFaction.isSpawnListEmpty(group)){
+                    if (mobGroups != null) {
+                        for (String group : mobGroups) {
+                            if (group != null && !currentFaction.isSpawnListEmpty(group)) {
                                 Log.info("Adding group %s", group);
                                 groups.add(group);
                             }
@@ -135,19 +136,19 @@ public class MKSpawnerGui extends GuiScreen {
                             groups, this::handleMobGroupButton, MOB_GROUP_LIST, getMobGroupName, mc, 200,
                             140, yPos + 4 + (titleHeight * 7), panelHeight,
                             22, xPos + 28);
-                } else if (mobGroupList != null){
+                } else if (mobGroupList != null) {
                     mobGroupList.drawScreen(mouseX, mouseY, partialTicks);
                 }
                 break;
             case SET_SPAWN_LIST:
                 currentFaction = MKURegistry.getFaction(factionName);
                 String currentGroup = mobGroup;
-                if (spawnListList == null && currentFaction != null && currentGroup != null){
+                if (spawnListList == null && currentFaction != null && currentGroup != null) {
                     Collection<SpawnList> spawnLists = currentFaction.getSpawnListsForGroup(currentGroup);
                     ArrayList<ResourceLocation> spawnListNames = new ArrayList<>();
-                    if (spawnLists != null){
-                        for (SpawnList list : spawnLists){
-                            if (list != null){
+                    if (spawnLists != null) {
+                        for (SpawnList list : spawnLists) {
+                            if (list != null) {
                                 Log.info("Adding spawn list %s", list.getRegistryName().toString());
                                 spawnListNames.add(list.getRegistryName());
                             }
@@ -158,7 +159,7 @@ public class MKSpawnerGui extends GuiScreen {
                             getResourceName, mc, 200,
                             140, yPos + 4 + (titleHeight * 7), panelHeight,
                             22, xPos + 28);
-                } else if (spawnListList != null){
+                } else if (spawnListList != null) {
                     spawnListList.drawScreen(mouseX, mouseY, partialTicks);
                 }
                 break;
@@ -181,8 +182,8 @@ public class MKSpawnerGui extends GuiScreen {
 
     }
 
-    public void handleMobGroupButton(String group, int list){
-        switch (list){
+    public void handleMobGroupButton(String group, int list) {
+        switch (list) {
             case MOB_GROUP_LIST:
                 mobGroup = group;
                 screenMode = Modes.DEFAULT;
@@ -194,7 +195,7 @@ public class MKSpawnerGui extends GuiScreen {
     }
 
     public void handleFactionListButtonClicked(ResourceLocation result, int list) {
-        switch (list){
+        switch (list) {
             case FACTION_LIST:
                 factionName = result;
                 screenMode = Modes.DEFAULT;
@@ -207,8 +208,8 @@ public class MKSpawnerGui extends GuiScreen {
         }
     }
 
-    public void handleSpawnListButtonClicked(ResourceLocation result, int list){
-        switch (list){
+    public void handleSpawnListButtonClicked(ResourceLocation result, int list) {
+        switch (list) {
             case SPAWN_LIST_LIST:
                 spawnListName = result;
                 screenMode = Modes.DEFAULT;
@@ -220,34 +221,32 @@ public class MKSpawnerGui extends GuiScreen {
     }
 
     @Override
-    public void handleMouseInput() throws IOException
-    {
+    public void handleMouseInput() throws IOException {
         int mouseX = Mouse.getEventX() * this.width / this.mc.displayWidth;
         int mouseY = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
 
         super.handleMouseInput();
-        if (screenMode == Modes.SET_FACTION && this.factionList != null){
+        if (screenMode == Modes.SET_FACTION && this.factionList != null) {
             this.factionList.handleMouseInput();
         }
-        if (screenMode == Modes.SET_MOB_GROUP && this.mobGroupList != null){
+        if (screenMode == Modes.SET_MOB_GROUP && this.mobGroupList != null) {
             this.mobGroupList.handleMouseInput();
         }
-        if (screenMode == Modes.SET_SPAWN_LIST && this.spawnListList != null){
+        if (screenMode == Modes.SET_SPAWN_LIST && this.spawnListList != null) {
             this.spawnListList.handleMouseInput();
         }
 
     }
 
-    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException
-    {
+    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         super.mouseClicked(mouseX, mouseY, mouseButton);
-        if (screenMode == Modes.SET_FACTION && this.factionList != null){
+        if (screenMode == Modes.SET_FACTION && this.factionList != null) {
             this.factionList.mouseClicked(mouseX, mouseY, mouseButton);
         }
-        if (screenMode == Modes.SET_MOB_GROUP && this.mobGroupList != null){
+        if (screenMode == Modes.SET_MOB_GROUP && this.mobGroupList != null) {
             this.mobGroupList.mouseClicked(mouseX, mouseY, mouseButton);
         }
-        if (screenMode == Modes.SET_SPAWN_LIST && this.spawnListList != null){
+        if (screenMode == Modes.SET_SPAWN_LIST && this.spawnListList != null) {
             this.spawnListList.mouseClicked(mouseX, mouseY, mouseButton);
         }
     }
@@ -255,32 +254,31 @@ public class MKSpawnerGui extends GuiScreen {
     /**
      * Called when a mouse button is released.
      */
-    protected void mouseReleased(int mouseX, int mouseY, int state)
-    {
+    protected void mouseReleased(int mouseX, int mouseY, int state) {
         super.mouseReleased(mouseX, mouseY, state);
-        if (screenMode == Modes.SET_FACTION && this.factionList != null){
+        if (screenMode == Modes.SET_FACTION && this.factionList != null) {
             this.factionList.mouseReleased(mouseX, mouseY, state);
         }
-        if (screenMode == Modes.SET_MOB_GROUP && this.mobGroupList != null){
+        if (screenMode == Modes.SET_MOB_GROUP && this.mobGroupList != null) {
             this.mobGroupList.mouseReleased(mouseX, mouseY, state);
         }
-        if (screenMode == Modes.SET_SPAWN_LIST && this.spawnListList != null){
+        if (screenMode == Modes.SET_SPAWN_LIST && this.spawnListList != null) {
             this.spawnListList.mouseReleased(mouseX, mouseY, state);
         }
     }
 
     @Override
     protected void actionPerformed(GuiButton button) {
-        switch (button.id){
+        switch (button.id) {
             case UP_SECONDS:
-                if (isShiftKeyDown()){
+                if (isShiftKeyDown()) {
                     spawnTime += 30;
                 } else {
                     spawnTime++;
                 }
                 break;
             case DOWN_SECONDS:
-                if (isShiftKeyDown()){
+                if (isShiftKeyDown()) {
                     spawnTime -= 30;
                 } else {
                     spawnTime--;

@@ -3,8 +3,9 @@ package com.chaosbuffalo.mkultra.tiles;
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.client.gui.NPCEquipmentContainer;
-import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.core.IClassProvider;
+import com.chaosbuffalo.mkultra.core.IMobData;
+import com.chaosbuffalo.mkultra.core.MKUMobData;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -52,33 +53,33 @@ public class TileEntityNPCSpawner extends TileEntity implements ITickable, IClas
         }
     };
 
-    public TileEntityNPCSpawner(){
+    public TileEntityNPCSpawner() {
         internalTickInterval = TICK_INTERVAL;
         npcName = new ResourceLocation(MKUltra.MODID, "ranger");
         reset();
     }
 
-    public ResourceLocation getItemToDrop(){
+    public ResourceLocation getItemToDrop() {
         return itemToDrop;
     }
 
-    public void handleContentsChanged(int slot){
+    public void handleContentsChanged(int slot) {
         markDirty();
         ItemStack newItem = itemStackHandler.getStackInSlot(slot);
         EntityEquipmentSlot slotType = NPCEquipmentContainer.slotTypes.get(slot);
-        if (currentMob != -1){
+        if (currentMob != -1) {
             Entity mob = getWorld().getEntityByID(currentMob);
-            if (mob != null){
+            if (mob != null) {
                 mob.setItemStackToSlot(slotType, newItem);
             }
         }
     }
 
-    public void setNPCName(ResourceLocation npcName){
+    public void setNPCName(ResourceLocation npcName) {
         this.npcName = npcName;
     }
 
-    private void reset(){
+    private void reset() {
         ticksBeforeSpawn = 120 * GameConstants.TICKS_PER_SECOND;
         currentMob = -1;
         tickCount = ticksBeforeSpawn;
@@ -86,25 +87,25 @@ public class TileEntityNPCSpawner extends TileEntity implements ITickable, IClas
         active = false;
     }
 
-    private List<EntityPlayer> getPlayersAround(){
+    private List<EntityPlayer> getPlayersAround() {
         double halfRange = RANGE / 2.0;
-        double x1 = (double)this.pos.getX() - halfRange;
-        double y1 = (double)this.pos.getY() - halfRange;
-        double z1 = (double)this.pos.getZ() - halfRange;
-        double x2 = (double)this.pos.getX() + halfRange;
-        double y2 = (double)this.pos.getY() + halfRange;
-        double z2 = (double)this.pos.getZ() + halfRange;
+        double x1 = (double) this.pos.getX() - halfRange;
+        double y1 = (double) this.pos.getY() - halfRange;
+        double z1 = (double) this.pos.getZ() - halfRange;
+        double x2 = (double) this.pos.getX() + halfRange;
+        double y2 = (double) this.pos.getY() + halfRange;
+        double z2 = (double) this.pos.getZ() + halfRange;
         AxisAlignedBB scanBox = new AxisAlignedBB(x1, y1, z1, x2, y2, z2);
         return getWorld().getEntitiesWithinAABB(EntityPlayer.class, scanBox);
     }
 
-    public int getSpawnTimeSeconds(){
+    public int getSpawnTimeSeconds() {
         return ticksBeforeSpawn / GameConstants.TICKS_PER_SECOND;
     }
 
-    public void cleanupMob(){
+    public void cleanupMob() {
         Entity mob = getWorld().getEntityByID(currentMob);
-        if (mob != null){
+        if (mob != null) {
             mob.setDead();
         }
         currentMob = -1;
@@ -112,33 +113,32 @@ public class TileEntityNPCSpawner extends TileEntity implements ITickable, IClas
 
 
     @Override
-    public void update()
-    {
-        if (!getWorld().isRemote){
+    public void update() {
+        if (!getWorld().isRemote) {
             tickCount++;
-            if (tickCount % internalTickInterval == 0){
+            if (tickCount % internalTickInterval == 0) {
                 List<EntityPlayer> players = getPlayersAround();
-                if (players.size() > 0){
-                    if (!active){
+                if (players.size() > 0) {
+                    if (!active) {
                         active = true;
                         tickCount = ticksBeforeSpawn;
                         internalTickInterval = TICK_INTERVAL;
                         ticksSincePlayer = 0;
                     }
-                    if (currentMob != -1){
+                    if (currentMob != -1) {
                         Entity entity = getWorld().getEntityByID(currentMob);
-                        if (entity == null){
+                        if (entity == null) {
                             currentMob = -1;
                             // we reset to 1 instead of 0 because otherwise we would trigger 2 ticks in a row
                             // everytime we reset
                             tickCount = 1;
                         }
-                    } else if (tickCount >= ticksBeforeSpawn){
+                    } else if (tickCount >= ticksBeforeSpawn) {
                         spawnEntity(getWorld());
                     }
                 } else {
                     ticksSincePlayer++;
-                    if (ticksSincePlayer >= CLEANUP_THRESHOLD && currentMob != -1){
+                    if (ticksSincePlayer >= CLEANUP_THRESHOLD && currentMob != -1) {
                         cleanupMob();
                         active = false;
                         internalTickInterval = SLEEP_TICK_INTERVAL;
@@ -149,8 +149,7 @@ public class TileEntityNPCSpawner extends TileEntity implements ITickable, IClas
     }
 
     @Override
-    public NBTTagCompound getUpdateTag()
-    {
+    public NBTTagCompound getUpdateTag() {
         return this.writeToNBT(new NBTTagCompound());
     }
 
@@ -169,18 +168,18 @@ public class TileEntityNPCSpawner extends TileEntity implements ITickable, IClas
     public NBTTagCompound writeToNBT(NBTTagCompound tagRoot) {
         tagRoot.setInteger("ticksBeforeSpawn", ticksBeforeSpawn);
         tagRoot.setString("mobName", npcName.toString());
-        if (itemToDrop != null){
+        if (itemToDrop != null) {
             tagRoot.setString("itemToDrop", itemToDrop.toString());
         }
         tagRoot.setTag("items", itemStackHandler.serializeNBT());
         return super.writeToNBT(tagRoot);
     }
 
-    public NBTTagCompound serializeForItem(){
+    public NBTTagCompound serializeForItem() {
         NBTTagCompound tagRoot = new NBTTagCompound();
         tagRoot.setInteger("ticksBeforeSpawn", ticksBeforeSpawn);
         tagRoot.setString("mobName", npcName.toString());
-        if (itemToDrop != null){
+        if (itemToDrop != null) {
             tagRoot.setString("itemToDrop", itemToDrop.toString());
         }
         tagRoot.setTag("items", itemStackHandler.serializeNBT());
@@ -189,34 +188,34 @@ public class TileEntityNPCSpawner extends TileEntity implements ITickable, IClas
 
     @Override
     public void readFromNBT(NBTTagCompound tagRoot) {
-        if (tagRoot.hasKey("ticksBeforeSpawn")){
+        if (tagRoot.hasKey("ticksBeforeSpawn")) {
             ticksBeforeSpawn = tagRoot.getInteger("ticksBeforeSpawn");
             tickCount = ticksBeforeSpawn;
         }
         if (tagRoot.hasKey("items")) {
             itemStackHandler.deserializeNBT((NBTTagCompound) tagRoot.getTag("items"));
         }
-        if (tagRoot.hasKey("mobName")){
+        if (tagRoot.hasKey("mobName")) {
             npcName = new ResourceLocation(tagRoot.getString("mobName"));
         }
-        if (tagRoot.hasKey("itemToDrop")){
+        if (tagRoot.hasKey("itemToDrop")) {
             itemToDrop = new ResourceLocation(tagRoot.getString("itemToDrop"));
         }
         super.readFromNBT(tagRoot);
     }
 
-    public void readFromNBTItem(NBTTagCompound tagRoot){
-        if (tagRoot.hasKey("ticksBeforeSpawn")){
+    public void readFromNBTItem(NBTTagCompound tagRoot) {
+        if (tagRoot.hasKey("ticksBeforeSpawn")) {
             ticksBeforeSpawn = tagRoot.getInteger("ticksBeforeSpawn");
             tickCount = ticksBeforeSpawn;
         }
         if (tagRoot.hasKey("items")) {
             itemStackHandler.deserializeNBT((NBTTagCompound) tagRoot.getTag("items"));
         }
-        if (tagRoot.hasKey("mobName")){
+        if (tagRoot.hasKey("mobName")) {
             npcName = new ResourceLocation(tagRoot.getString("mobName"));
         }
-        if (tagRoot.hasKey("itemToDrop")){
+        if (tagRoot.hasKey("itemToDrop")) {
             itemToDrop = new ResourceLocation(tagRoot.getString("itemToDrop"));
         }
     }
@@ -232,11 +231,11 @@ public class TileEntityNPCSpawner extends TileEntity implements ITickable, IClas
     private EntityLivingBase getEntity(World theWorld) {
         Class<? extends Entity> mobClass = EntityList.getClass(npcName);
 //        Log.info("Got class for %s, %s", npcName.toString(), mobClass.toString());
-        if (mobClass != null){
+        if (mobClass != null) {
             try {
                 Constructor<?> ctor = mobClass.getConstructor(World.class);
                 Object object = ctor.newInstance(theWorld);
-                return (EntityLivingBase)object;
+                return (EntityLivingBase) object;
             } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
                 e.printStackTrace();
             }
@@ -252,16 +251,16 @@ public class TileEntityNPCSpawner extends TileEntity implements ITickable, IClas
         return super.getCapability(capability, facing);
     }
 
-    private void spawnEntity(World theWorld){
-        if (npcName != null){
+    private void spawnEntity(World theWorld) {
+        if (npcName != null) {
 //            Log.info("Trying spawn entity");
             EntityLivingBase entity = getEntity(theWorld);
-            if (entity == null){
+            if (entity == null) {
 //                Log.info("Get entity returned null");
                 return;
             }
             IMobData mobData = MKUMobData.get(entity);
-            if (mobData == null){
+            if (mobData == null) {
 //                Log.info("Mob data empty");
                 return;
             }
@@ -274,7 +273,7 @@ public class TileEntityNPCSpawner extends TileEntity implements ITickable, IClas
             entity.setHealth(entity.getMaxHealth());
 //            Log.info("Spawning entity at %s", getPos().toString());
             int index = 0;
-            for (EntityEquipmentSlot slot : NPCEquipmentContainer.slotTypes){
+            for (EntityEquipmentSlot slot : NPCEquipmentContainer.slotTypes) {
                 ItemStack toEquip = itemStackHandler.getStackInSlot(index);
                 entity.setItemStackToSlot(slot, toEquip);
                 index++;

@@ -42,16 +42,16 @@ public class SpellTriggers {
                 source.getDamageType().equals("player"));
     }
 
-    public static boolean isMeleeDamage(DamageSource source){
-        return isPlayerPhysicalDamage(source)||
+    public static boolean isMeleeDamage(DamageSource source) {
+        return isPlayerPhysicalDamage(source) ||
                 (source instanceof MKDamageSource && ((MKDamageSource) source).isMeleeAbility());
     }
 
-    public static boolean isMislabeledThrowable(DamageSource source){
+    public static boolean isMislabeledThrowable(DamageSource source) {
         return source.getImmediateSource() instanceof IThrowableEntity;
     }
 
-    public static boolean isProjectileDamage(DamageSource source){
+    public static boolean isProjectileDamage(DamageSource source) {
         return source.isProjectile();
     }
 
@@ -82,11 +82,11 @@ public class SpellTriggers {
             void apply(LivingDeathEvent event, DamageSource source, EntityPlayer player);
         }
 
-        public static void register(SpellPotionBase potion, PlayerKillEntityTrigger trigger){
+        public static void register(SpellPotionBase potion, PlayerKillEntityTrigger trigger) {
             killTriggers.put(potion, trigger);
         }
 
-        public static void onEntityDeath(LivingDeathEvent event, DamageSource source, EntityPlayer entity){
+        public static void onEntityDeath(LivingDeathEvent event, DamageSource source, EntityPlayer entity) {
             killTriggers.forEach((spellPotionBase, trigger) -> {
                 PotionEffect effect = entity.getActivePotionEffect(spellPotionBase);
                 if (effect != null) {
@@ -104,11 +104,11 @@ public class SpellTriggers {
             void apply(LivingEquipmentChangeEvent event, IPlayerData data, EntityPlayer player);
         }
 
-        public static void register(SpellPotionBase potion, PlayerEquipmentChangeTrigger trigger){
+        public static void register(SpellPotionBase potion, PlayerEquipmentChangeTrigger trigger) {
             triggers.put(potion, trigger);
         }
 
-        public static void onEquipmentChange(LivingEquipmentChangeEvent event, IPlayerData data, EntityPlayer player){
+        public static void onEquipmentChange(LivingEquipmentChangeEvent event, IPlayerData data, EntityPlayer player) {
             triggers.forEach((spellPotionBase, trigger) -> {
                 PotionEffect effect = player.getActivePotionEffect(spellPotionBase);
                 if (effect != null) {
@@ -190,7 +190,7 @@ public class SpellTriggers {
 
             // If this is a weapon swing
             if (isPlayerPhysicalDamage(source)) {
-                if (isMislabeledThrowable(source)){
+                if (isMislabeledThrowable(source)) {
                     handleProjectile(event, source, livingTarget, playerSource, sourceData);
                 } else {
                     handleMelee(event, source, livingTarget, playerSource, sourceData, true);
@@ -198,7 +198,7 @@ public class SpellTriggers {
 
             }
 
-            if (isProjectileDamage(source)){
+            if (isProjectileDamage(source)) {
                 handleProjectile(event, source, livingTarget, playerSource, sourceData);
             }
 
@@ -213,7 +213,7 @@ public class SpellTriggers {
                                         IPlayerData sourceData, MKDamageSource mkSource) {
 
             float spellCritchance = sourceData.getSpellCritChance();
-            if (mkSource.isHolyDamage()){
+            if (mkSource.isHolyDamage()) {
                 spellCritchance *= 2.0f;
             }
             if (checkCrit(playerSource, spellCritchance)) {
@@ -224,7 +224,7 @@ public class SpellTriggers {
                 if (mkSource.isIndirectMagic()) {
                     packet = new CritMessagePacket(livingTarget.getEntityId(), playerSource.getUniqueID(),
                             newDamage, CritMessagePacket.CritType.INDIRECT_MAGIC_CRIT);
-                } else if (mkSource.isHolyDamage()){
+                } else if (mkSource.isHolyDamage()) {
                     packet = new CritMessagePacket(livingTarget.getEntityId(), playerSource.getUniqueID(),
                             newDamage, CritMessagePacket.CritType.HOLY_DAMAGE_CRIT);
                 } else {
@@ -240,11 +240,10 @@ public class SpellTriggers {
         }
 
         private static void handleProjectile(LivingHurtEvent event, DamageSource source, EntityLivingBase livingTarget,
-                                             EntityPlayerMP playerSource, IPlayerData sourceData)
-        {
+                                             EntityPlayerMP playerSource, IPlayerData sourceData) {
             if (source.getImmediateSource() != null &&
-                checkCrit(playerSource, PlayerFormulas.getRangedCritChanceForEntity(sourceData,
-                        playerSource, source.getImmediateSource()))){
+                    checkCrit(playerSource, PlayerFormulas.getRangedCritChanceForEntity(sourceData,
+                            playerSource, source.getImmediateSource()))) {
                 float damageMultiplier = EntityUtils.ENTITY_CRIT.getDamage(source.getImmediateSource());
                 if (livingTarget.isGlowing()) {
                     damageMultiplier += 1.0f;
@@ -262,7 +261,7 @@ public class SpellTriggers {
             ItemStack mainHand = playerSource.getHeldItemMainhand();
             float critChance = PlayerFormulas.getMeleeCritChanceForItem(sourceData, playerSource, mainHand);
             critChance += sourceData.getMeleeCritChance();
-            if (!isDirect){
+            if (!isDirect) {
                 IAttributeInstance atkDmg = playerSource.getAttributeMap().getAttributeInstance(
                         SharedMonsterAttributes.ATTACK_DAMAGE);
                 event.setAmount((float) (event.getAmount() +
@@ -308,11 +307,11 @@ public class SpellTriggers {
 
         private static Map<SpellPotionBase, EmptyLeftClickTrigger> emptyLeftClickTriggers = Maps.newLinkedHashMap();
 
-        public static void register(SpellPotionBase potion, EmptyLeftClickTrigger trigger){
+        public static void register(SpellPotionBase potion, EmptyLeftClickTrigger trigger) {
             emptyLeftClickTriggers.put(potion, trigger);
         }
 
-        public static void onEmptyLeftClick(EntityPlayer player, PlayerInteractEvent.LeftClickEmpty event){
+        public static void onEmptyLeftClick(EntityPlayer player, PlayerInteractEvent.LeftClickEmpty event) {
             emptyLeftClickTriggers.forEach((spellPotionBase, trigger) -> {
                 PotionEffect effect = player.getActivePotionEffect(spellPotionBase);
                 if (effect != null) {

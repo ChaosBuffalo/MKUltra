@@ -15,7 +15,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class NPCSpawnerIcon extends Item{
+public class NPCSpawnerIcon extends Item {
     private ResourceLocation mobName;
 
     public NPCSpawnerIcon(String unlocalizedName, ResourceLocation mobName) {
@@ -30,8 +30,7 @@ public class NPCSpawnerIcon extends Item{
     public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos blockPos, EnumHand hand, EnumFacing facing, float p_onItemUse_6_, float p_onItemUse_7_, float p_onItemUse_8_) {
         ItemStack stack = player.getHeldItem(hand);
         NBTTagCompound nbt;
-        if (stack.hasTagCompound())
-        {
+        if (stack.hasTagCompound()) {
             nbt = stack.getTagCompound();
         } else {
             nbt = new NBTTagCompound();
@@ -40,7 +39,7 @@ public class NPCSpawnerIcon extends Item{
         }
         world.setBlockState(blockPos.up(), ModBlocks.npcSpawnerBlock.getDefaultState());
         TileEntity tileEntity = world.getTileEntity(blockPos.up());
-        if (tileEntity instanceof TileEntityNPCSpawner){
+        if (tileEntity instanceof TileEntityNPCSpawner) {
             TileEntityNPCSpawner npcSpawner = (TileEntityNPCSpawner) tileEntity;
             npcSpawner.readFromNBTItem(nbt);
         }

@@ -259,7 +259,7 @@ public abstract class EntityBaseProjectile extends Entity implements IProjectile
         } else {
             ++this.ticksInAir;
             if (this.getDoAirProc() && this.ticksInAir == this.getAirProcTime()) {
-                if (this.onAirProc(this.getThrower(), this.getAmplifier())){
+                if (this.onAirProc(this.getThrower(), this.getAmplifier())) {
                     this.setDead();
                 }
             }
@@ -383,7 +383,7 @@ public abstract class EntityBaseProjectile extends Entity implements IProjectile
 
         if (entity != null) {
             blockTrace = new RayTraceResult(entity);
-        } else if (blockTrace != null && blockTrace.typeOfHit == RayTraceResult.Type.ENTITY){
+        } else if (blockTrace != null && blockTrace.typeOfHit == RayTraceResult.Type.ENTITY) {
             // handle the case where we hit an entity but all returned invalid
             return null;
         }

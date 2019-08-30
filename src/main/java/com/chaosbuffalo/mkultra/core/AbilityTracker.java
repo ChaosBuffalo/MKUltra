@@ -106,8 +106,7 @@ public class AbilityTracker {
     public static AbilityTracker getTracker(EntityPlayer player) {
         if (player instanceof EntityPlayerMP) {
             return new AbilityTrackerServer((EntityPlayerMP) player);
-        }
-        else {
+        } else {
             return new AbilityTracker();
         }
     }

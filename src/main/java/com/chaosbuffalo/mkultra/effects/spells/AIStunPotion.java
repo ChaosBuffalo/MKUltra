@@ -34,7 +34,7 @@ public class AIStunPotion extends PassiveEffect {
     @Override
     public void onPotionAdd(SpellCast cast, EntityLivingBase target, AbstractAttributeMap attributes, int amplifier) {
         super.onPotionAdd(cast, target, attributes, amplifier);
-        if (target instanceof EntityLiving){
+        if (target instanceof EntityLiving) {
             EntityLiving entLiv = (EntityLiving) target;
             entLiv.setNoAI(true);
         }
@@ -43,7 +43,7 @@ public class AIStunPotion extends PassiveEffect {
     @Override
     public void onPotionRemove(SpellCast cast, EntityLivingBase target, AbstractAttributeMap attributes, int amplifier) {
         super.onPotionRemove(cast, target, attributes, amplifier);
-        if (target instanceof EntityLiving){
+        if (target instanceof EntityLiving) {
             EntityLiving entLiv = (EntityLiving) target;
             entLiv.setNoAI(false);
         }

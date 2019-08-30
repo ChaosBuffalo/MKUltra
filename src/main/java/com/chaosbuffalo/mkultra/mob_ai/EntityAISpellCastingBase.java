@@ -5,10 +5,12 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IMobData;
 import com.chaosbuffalo.mkultra.core.MobAbilityTracker;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
-import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -51,18 +53,18 @@ public class EntityAISpellCastingBase extends EntityAIBase {
         this.attemptingCastTicks = 0;
     }
 
-    public EntityAISpellCastingBase setStrafeRange(float rangeStart, float rangeEnd){
+    public EntityAISpellCastingBase setStrafeRange(float rangeStart, float rangeEnd) {
         strafeRangeStart = rangeStart;
         strafeRangeEnd = rangeEnd;
         return this;
     }
 
-    public EntityAISpellCastingBase setStrafe(boolean doStrafe){
+    public EntityAISpellCastingBase setStrafe(boolean doStrafe) {
         this.doStrafe = doStrafe;
         return this;
     }
 
-    public boolean isInRange(Entity entity, MobAbilityTracker tracker){
+    public boolean isInRange(Entity entity, MobAbilityTracker tracker) {
         double d0 = this.entity.getDistanceSq(entity.posX, entity.getEntityBoundingBox().minY, entity.posZ);
         double d1 = tracker.getAbility().getDistance();
         return d0 <= d1 * d1;
@@ -77,7 +79,7 @@ public class EntityAISpellCastingBase extends EntityAIBase {
         return entity.getEntityBoundingBox().grow(distance, distance, distance);
     }
 
-    public int compareDistance(Entity a, Entity b){
+    public int compareDistance(Entity a, Entity b) {
         double aDist = entity.getDistanceSq(a);
         double bDist = entity.getDistanceSq(b);
         if (aDist < bDist) {
@@ -87,7 +89,7 @@ public class EntityAISpellCastingBase extends EntityAIBase {
         }
     }
 
-    public int compareHealth(Entity a, Entity b){
+    public int compareHealth(Entity a, Entity b) {
         float aVal = entity.getHealth();
         float bVal = entity.getHealth();
         if (aVal < bVal) {
@@ -97,14 +99,14 @@ public class EntityAISpellCastingBase extends EntityAIBase {
         }
     }
 
-    List<Entity> getEntitiesInRange(double distance, boolean excludeCaster, Targeting.TargetType type){
+    List<Entity> getEntitiesInRange(double distance, boolean excludeCaster, Targeting.TargetType type) {
         List<Entity> list = entity.world.getEntitiesWithinAABB(EntityLivingBase.class,
                 getTargetableArea(distance),
                 e -> Targeting.isValidTarget(type, entity, e, excludeCaster));
         return list;
     }
 
-    public void doStrafeBehavior(EntityLiving entLiv, boolean canSee, double d0, double maxDistance){
+    public void doStrafeBehavior(EntityLiving entLiv, boolean canSee, double d0, double maxDistance) {
         if (canSee) {
             ++this.seeTime;
         } else {
@@ -147,10 +149,10 @@ public class EntityAISpellCastingBase extends EntityAIBase {
 
 
     @Override
-    public void startExecuting(){
+    public void startExecuting() {
         super.startExecuting();
-        if (entity instanceof IRangedAttackMob){
-            ((IRangedAttackMob)this.entity).setSwingingArms(true);
+        if (entity instanceof IRangedAttackMob) {
+            ((IRangedAttackMob) this.entity).setSwingingArms(true);
         }
     }
 
@@ -162,37 +164,37 @@ public class EntityAISpellCastingBase extends EntityAIBase {
         targetEntity = null;
         attemptingCastTicks = 0;
         canCast = false;
-        if (entity instanceof IRangedAttackMob){
-            ((IRangedAttackMob)this.entity).setSwingingArms(false);
+        if (entity instanceof IRangedAttackMob) {
+            ((IRangedAttackMob) this.entity).setSwingingArms(false);
         }
     }
 
     @Override
     public boolean shouldContinueExecuting() {
-        if (targetEntity == null){
+        if (targetEntity == null) {
             return false;
         }
-        if (!(entity instanceof EntityLiving)){
+        if (!(entity instanceof EntityLiving)) {
             return false;
         }
-        if (targetEntity.isDead){
+        if (targetEntity.isDead) {
             return false;
         }
-        if (!Targeting.isValidTarget(desiredTargetType, entity, targetEntity, false)){
+        if (!Targeting.isValidTarget(desiredTargetType, entity, targetEntity, false)) {
             return false;
         }
-        if (attemptingCastTicks >= CAST_TIME_MAX){
+        if (attemptingCastTicks >= CAST_TIME_MAX) {
             return false;
         }
-        return (currentAbility != null && !currentAbility.isAbilityOnCooldown() || !((EntityLiving)entity).getNavigator().noPath());
+        return (currentAbility != null && !currentAbility.isAbilityOnCooldown() || !((EntityLiving) entity).getNavigator().noPath());
     }
 
 
     @Override
     public void updateTask() {
 //        Log.info("In update task spell casting %s", entity.toString());
-        if (entity instanceof EntityLiving){
-            EntityLiving entLiv = (EntityLiving)entity;
+        if (entity instanceof EntityLiving) {
+            EntityLiving entLiv = (EntityLiving) entity;
             if (targetEntity != null && currentAbility != null) {
 //                Log.info("Target is %s, ability: %s, cooldown is: %d", targetEntity.toString(), currentAbility.getAbility().getAbilityId().toString(), currentAbility.getCooldown());
                 double d0 = this.entity.getDistanceSq(targetEntity.posX,
@@ -203,7 +205,7 @@ public class EntityAISpellCastingBase extends EntityAIBase {
                 if (canSee != hasSeen) {
                     this.seeTime = 0;
                 }
-                if (doStrafe){
+                if (doStrafe) {
                     doStrafeBehavior(entLiv, canSee, d0, maxDistance);
                 }
                 if (canCast) {
@@ -215,22 +217,22 @@ public class EntityAISpellCastingBase extends EntityAIBase {
                         castTime = cooldown;
                         canCast = false;
                         attemptingCastTicks = 0;
-                        if (entity instanceof IRangedAttackMob){
-                            ((IRangedAttackMob)this.entity).setSwingingArms(true);
+                        if (entity instanceof IRangedAttackMob) {
+                            ((IRangedAttackMob) this.entity).setSwingingArms(true);
                         }
                         currentAbility = null;
                     }
                 } else if (--this.castTime <= 0 && this.seeTime >= -60) {
-                    if (currentAbility.isEngageTimeGreaterThanCastTime(-1*castTime)){
+                    if (currentAbility.isEngageTimeGreaterThanCastTime(-1 * castTime)) {
                         canCast = true;
-                        if (entity instanceof IRangedAttackMob){
-                            ((IRangedAttackMob)this.entity).setSwingingArms(true);
+                        if (entity instanceof IRangedAttackMob) {
+                            ((IRangedAttackMob) this.entity).setSwingingArms(true);
                         }
                     } else {
                         Vec3d lookVec = entLiv.getLookVec();
 
                         int particleId;
-                        switch (currentAbility.getAbility().getAbilityType()){
+                        switch (currentAbility.getAbility().getAbilityType()) {
                             case ATTACK:
                                 particleId = EnumParticleTypes.SPELL_WITCH.getParticleID();
                                 break;

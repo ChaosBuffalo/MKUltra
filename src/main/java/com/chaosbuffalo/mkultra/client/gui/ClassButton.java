@@ -9,7 +9,7 @@ public class ClassButton extends GuiButton {
 
     public final int classInteger;
 
-    public ClassButton(int classIntegerIn, int buttonId, int x, int y, int widthIn, int heightIn, String buttonText){
+    public ClassButton(int classIntegerIn, int buttonId, int x, int y, int widthIn, int heightIn, String buttonText) {
         super(buttonId, x, y, widthIn, heightIn, buttonText);
         classInteger = classIntegerIn;
     }

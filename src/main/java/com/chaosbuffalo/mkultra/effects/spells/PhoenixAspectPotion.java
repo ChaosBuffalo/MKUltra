@@ -4,12 +4,9 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.PlayerAttributes;
 import com.chaosbuffalo.mkultra.effects.PassiveEffect;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
-import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
-import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.attributes.AbstractAttributeMap;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.play.server.SPacketPlayerAbilities;
 import net.minecraft.potion.Potion;
@@ -29,8 +26,7 @@ public class PhoenixAspectPotion extends PassiveEffect {
             .registerPotionAttributeModifier(PlayerAttributes.COOLDOWN, MODIFIER_ID.toString(),
                     0.33, PlayerAttributes.OP_SCALE_MULTIPLICATIVE)
             .registerPotionAttributeModifier(PlayerAttributes.MANA_REGEN, MODIFIER_ID.toString(),
-                    1.0f, PlayerAttributes.OP_INCREMENT)
-            ;
+                    1.0f, PlayerAttributes.OP_INCREMENT);
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {

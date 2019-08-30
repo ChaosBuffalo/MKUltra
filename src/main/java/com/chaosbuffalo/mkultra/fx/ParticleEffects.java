@@ -54,7 +54,7 @@ public class ParticleEffects {
             ret[5] = 0;
         } else if (motionType == SPHERE_MOTION) {
             //Uses data to determine number of layers in sphere
-            if (data == 0){
+            if (data == 0) {
                 data = 1;
             }
             int layerCount = count / data;

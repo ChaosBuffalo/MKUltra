@@ -61,7 +61,7 @@ public class ModTalents {
     @GameRegistry.ObjectHolder("talent.movement_speed")
     public static RangedAttributeTalent movementSpeed;
 
-    public static void postInitJsonRegisistation(){
+    public static void postInitJsonRegisistation() {
         ModContainer old = Loader.instance().activeModContainer();
         JsonLoader.loadModsForType("mk_talents" + File.separator + "trees",
                 "mk_overrides", "assets",
@@ -70,7 +70,7 @@ public class ModTalents {
     }
 
     public static void loadTalentTree(ResourceLocation name, JsonObject obj,
-                                     IForgeRegistry<TalentTree> registry) {
+                                      IForgeRegistry<TalentTree> registry) {
         name = new ResourceLocation(name.getNamespace(), "talent_tree." + name.getPath());
         String[] keys = {"version", "lines"};
         if (!JsonLoader.checkKeysExist(obj, keys)) {
@@ -79,29 +79,29 @@ public class ModTalents {
         int version = obj.get("version").getAsInt();
         TalentTree tree = new TalentTree(name, version);
         JsonArray lineEles = obj.get("lines").getAsJsonArray();
-        for (JsonElement lineEle : lineEles){
+        for (JsonElement lineEle : lineEles) {
             String[] lineKeys = {"name", "talents"};
             JsonObject lineObj = lineEle.getAsJsonObject();
-            if (!JsonLoader.checkKeysExist(lineObj, lineKeys)){
+            if (!JsonLoader.checkKeysExist(lineObj, lineKeys)) {
                 continue;
             }
             String lineName = lineObj.get("name").getAsString();
             ArrayList<TalentNode> talentLine = new ArrayList<>();
             JsonArray talentEles = lineObj.get("talents").getAsJsonArray();
-            for (JsonElement talentEle : talentEles){
+            for (JsonElement talentEle : talentEles) {
                 String[] talentKeys = {"name", "max_points"};
                 JsonObject talentObj = talentEle.getAsJsonObject();
-                if (!JsonLoader.checkKeysExist(talentObj, talentKeys)){
+                if (!JsonLoader.checkKeysExist(talentObj, talentKeys)) {
                     continue;
                 }
                 ResourceLocation talentName = new ResourceLocation(talentObj.get("name").getAsString());
                 int maxPoints = talentObj.get("max_points").getAsInt();
                 BaseTalent talent = MKURegistry.getTalent(talentName);
-                if (talent != null){
-                    switch (talent.getTalentType()){
+                if (talent != null) {
+                    switch (talent.getTalentType()) {
                         case ATTRIBUTE:
                             String[] attrKeys = {"value"};
-                            if (!JsonLoader.checkKeysExist(talentObj, attrKeys)){
+                            if (!JsonLoader.checkKeysExist(talentObj, attrKeys)) {
                                 Log.info("Skipping attribute missing extra keys.");
                                 break;
                             }
@@ -124,7 +124,7 @@ public class ModTalents {
             tree.addLine(lineName, talentLine);
         }
         Log.info("Registering Talent Tree: %s", name.toString());
-        if (registry instanceof IForgeRegistryModifiable){
+        if (registry instanceof IForgeRegistryModifiable) {
             IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) registry;
             modRegistry.remove(name);
         }
@@ -132,7 +132,7 @@ public class ModTalents {
     }
 
     @SubscribeEvent
-    public static void registerTalents(RegistryEvent.Register<BaseTalent> event){
+    public static void registerTalents(RegistryEvent.Register<BaseTalent> event) {
         RangedAttributeTalent magicArmor = new RangedAttributeTalent(
                 new ResourceLocation(MKUltra.MODID, "talent.magic_armor"),
                 PlayerAttributes.MAGIC_ARMOR,

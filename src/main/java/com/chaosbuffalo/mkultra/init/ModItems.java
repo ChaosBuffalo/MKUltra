@@ -6,7 +6,9 @@ import com.chaosbuffalo.mkultra.item.*;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemArmor;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
@@ -75,8 +77,6 @@ public final class ModItems {
     public static Item rangerIcon;
 
 
-
-
     public static ItemArmor.ArmorMaterial CHAINMAT = EnumHelper.addArmorMaterial(
             "mkultra_chain",
             "mkultra:chainmail", 30,
@@ -91,14 +91,10 @@ public final class ModItems {
             new int[]{2, 3, 2, 1}, 2, null, 0);
 
 
-
     public static ItemArmor.ArmorMaterial IRON_THREADED_MAT = EnumHelper.addArmorMaterial(
             "mkultra_iron_threaded",
             "mkultra:iron_threaded", 45,
             new int[]{1, 2, 2, 1}, 20, null, 0);
-
-
-
 
 
     // can't be public because this is an ObjectHolder

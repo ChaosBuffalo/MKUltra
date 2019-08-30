@@ -2,7 +2,9 @@ package com.chaosbuffalo.mkultra.core.mob_abilities;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.*;
+import com.chaosbuffalo.mkultra.core.IMobData;
+import com.chaosbuffalo.mkultra.core.MKDamageSource;
+import com.chaosbuffalo.mkultra.core.MobAbility;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
@@ -19,7 +21,7 @@ public class HungerLeech extends MobAbility {
     float HUNGER_LEECH_BASE = 1.0f;
     float HUNGER_LEECH_SCALE = .5f;
 
-    public HungerLeech(){
+    public HungerLeech() {
         super(MKUltra.MODID, "mob_ability.hunger_leech");
     }
 
@@ -39,7 +41,7 @@ public class HungerLeech extends MobAbility {
     }
 
     @Override
-    public int getCastTime(){
+    public int getCastTime() {
         return 2 * GameConstants.TICKS_PER_SECOND;
     }
 
@@ -54,7 +56,7 @@ public class HungerLeech extends MobAbility {
             int level = data.getMobLevel();
             target.attackEntityFrom(MKDamageSource.causeIndirectMobMagicDamage(getAbilityId(), entity, entity),
                     BASE_DAMAGE + DAMAGE_SCALE * level);
-            if (target instanceof EntityPlayer){
+            if (target instanceof EntityPlayer) {
                 EntityPlayer playerTarget = (EntityPlayer) target;
                 playerTarget.getFoodStats().setFoodLevel(playerTarget.getFoodStats().getFoodLevel()
                         - Math.round(HUNGER_LEECH_BASE + HUNGER_LEECH_SCALE * level));
