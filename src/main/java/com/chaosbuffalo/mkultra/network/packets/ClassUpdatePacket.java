@@ -11,6 +11,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class ClassUpdatePacket implements IMessage {
@@ -27,10 +28,9 @@ public class ClassUpdatePacket implements IMessage {
         fullUpdate = true;
     }
 
-    public ClassUpdatePacket(Collection<PlayerClassInfo> knownClasses, boolean fullUpdateIn) {
-        classes = new ArrayList<>(1);
-        classes.addAll(knownClasses);
-        fullUpdate = fullUpdateIn;
+    public ClassUpdatePacket(PlayerClassInfo info) {
+        classes = Collections.singletonList(info);
+        fullUpdate = false;
     }
 
     @Override

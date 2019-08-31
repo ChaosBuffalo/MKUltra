@@ -11,23 +11,21 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.Collections;
 
 public class AbilityUpdatePacket implements IMessage {
 
-    private List<PlayerAbilityInfo> skills;
+    private Collection<PlayerAbilityInfo> skills;
 
     public AbilityUpdatePacket() {
     }
 
     public AbilityUpdatePacket(PlayerAbilityInfo abilityInfo) {
-        skills = new ArrayList<>(1);
-        skills.add(abilityInfo);
+        skills = Collections.singletonList(abilityInfo);
     }
 
     public AbilityUpdatePacket(Collection<PlayerAbilityInfo> knownSkills) {
-        skills = new ArrayList<>(1);
-        skills.addAll(knownSkills);
+        skills = Collections.unmodifiableCollection(knownSkills);
     }
 
     @Override
