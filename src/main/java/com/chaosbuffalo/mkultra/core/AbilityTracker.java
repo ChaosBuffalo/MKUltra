@@ -74,7 +74,7 @@ public class AbilityTracker {
     protected void notifyOnRemove(PlayerAbilityInfo info) {
     }
 
-    class Cooldown {
+    static class Cooldown {
         final int createTicks;
         final int expireTicks;
 

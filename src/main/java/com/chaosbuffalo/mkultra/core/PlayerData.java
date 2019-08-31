@@ -359,7 +359,7 @@ public class PlayerData implements IPlayerData {
         }
         activeClass.applyAttributesModifiersToPlayer(player);
         // Since this can be called early, don't try to apply potions before being added to the world
-        if (player.addedToChunk) {
+        if (player.isAddedToWorld()) {
             refreshPassiveTalents(activeClass);
         } else {
             setRefreshPassiveTalents();
@@ -710,9 +710,8 @@ public class PlayerData implements IPlayerData {
                 if (info.downgrade())
                     ranks += 1;
         } else {
-            if (info.isCurrentlyKnown())
-                if (info.downgrade())
-                    ranks += 1;
+            if (info.downgrade())
+                ranks += 1;
         }
 
         if (refundPoint) {
@@ -921,9 +920,6 @@ public class PlayerData implements IPlayerData {
         sendBulkAbilityUpdate();
         sendBulkClassUpdate();
         updateActiveAbilities();
-    }
-
-    public void onRespawn() {
     }
 
     public void onJoinWorld() {

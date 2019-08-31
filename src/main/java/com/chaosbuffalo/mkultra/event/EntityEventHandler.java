@@ -218,7 +218,6 @@ public class EntityEventHandler {
         }
 
         newData.clone(e.getOriginal());
-        newData.onRespawn();
     }
 
     @SubscribeEvent

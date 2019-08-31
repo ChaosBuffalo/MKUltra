@@ -147,7 +147,6 @@ public interface IPlayerData {
 
     void setArbitraryCooldown(ResourceLocation loc, int cooldown);
 
-    @Nullable
     int getArbitraryCooldown(ResourceLocation loc);
 
     boolean hasArbitraryCooldown(ResourceLocation loc);
