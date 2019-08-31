@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.core;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 
 public class PlayerAbilityInfo {
@@ -66,5 +67,17 @@ public class PlayerAbilityInfo {
         id = new ResourceLocation(tag.getString("id"));
         rank = tag.getInteger("level");
         cooldown = tag.getInteger("cooldown");
+    }
+
+    public void serializeUpdate(PacketBuffer pb) {
+        pb.writeResourceLocation(id);
+        pb.writeInt(rank);
+    }
+
+    public static PlayerAbilityInfo deserializeUpdate(PacketBuffer pb) {
+        ResourceLocation id = pb.readResourceLocation();
+        PlayerAbilityInfo info = new PlayerAbilityInfo(id);
+        info.rank = pb.readInt();
+        return info;
     }
 }
