@@ -11,23 +11,21 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.Collections;
 
 public class AbilityUpdatePacket implements IMessage {
 
-    private List<PlayerAbilityInfo> skills;
+    private Collection<PlayerAbilityInfo> skills;
 
     public AbilityUpdatePacket() {
     }
 
     public AbilityUpdatePacket(PlayerAbilityInfo abilityInfo) {
-        skills = new ArrayList<>(1);
-        skills.add(abilityInfo);
+        skills = Collections.singletonList(abilityInfo);
     }
 
     public AbilityUpdatePacket(Collection<PlayerAbilityInfo> knownSkills) {
-        skills = new ArrayList<>(1);
-        skills.addAll(knownSkills);
+        skills = Collections.unmodifiableCollection(knownSkills);
     }
 
     @Override
@@ -37,7 +35,7 @@ public class AbilityUpdatePacket implements IMessage {
         skills = new ArrayList<>(count);
 
         for (int i = 0; i < count; i++) {
-            PlayerAbilityInfo info = new PlayerAbilityInfo(pb.readResourceLocation(), pb.readVarInt());
+            PlayerAbilityInfo info = PlayerAbilityInfo.deserializeUpdate(pb);
             skills.add(info);
         }
     }
@@ -48,8 +46,7 @@ public class AbilityUpdatePacket implements IMessage {
         pb.writeVarInt(skills.size());
 
         for (PlayerAbilityInfo info : skills) {
-            pb.writeResourceLocation(info.getId());
-            pb.writeVarInt(info.getRank());
+            info.serializeUpdate(pb);
         }
     }
 

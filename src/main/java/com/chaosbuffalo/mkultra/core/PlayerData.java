@@ -985,9 +985,7 @@ public class PlayerData implements IPlayerData {
         if (isServerSide()) {
             PlayerClassInfo activeClass = getActiveClass();
             if (activeClass != null) {
-                ArrayList<PlayerClassInfo> infos = new ArrayList<>();
-                infos.add(getActiveClass());
-                MKUltra.packetHandler.sendTo(new ClassUpdatePacket(infos, false), (EntityPlayerMP) player);
+                MKUltra.packetHandler.sendTo(new ClassUpdatePacket(activeClass), (EntityPlayerMP) player);
             }
         }
     }
