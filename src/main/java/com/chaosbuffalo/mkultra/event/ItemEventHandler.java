@@ -75,10 +75,12 @@ public class ItemEventHandler {
         if (playerData == null)
             return;
 
-        checkEquipmentSlot(player, playerData, EntityEquipmentSlot.HEAD);
-        checkEquipmentSlot(player, playerData, EntityEquipmentSlot.CHEST);
-        checkEquipmentSlot(player, playerData, EntityEquipmentSlot.LEGS);
-        checkEquipmentSlot(player, playerData, EntityEquipmentSlot.FEET);
+        if (!MKConfig.cheats.TOUGH_GUY_MODE){
+            checkEquipmentSlot(player, playerData, EntityEquipmentSlot.HEAD);
+            checkEquipmentSlot(player, playerData, EntityEquipmentSlot.CHEST);
+            checkEquipmentSlot(player, playerData, EntityEquipmentSlot.LEGS);
+            checkEquipmentSlot(player, playerData, EntityEquipmentSlot.FEET);
+        }
     }
 
 
