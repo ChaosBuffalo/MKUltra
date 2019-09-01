@@ -33,6 +33,9 @@ public class ItemEventHandler {
     }
 
     private static void checkBlockedArmor(EntityPlayerMP player, ItemStack armor, IPlayerData playerClass, EntityEquipmentSlot slot) {
+        if (MKConfig.cheats.TOUGH_GUY_MODE)
+            return;
+
         if (!(armor.getItem() instanceof ItemArmor))
             return;
 
@@ -52,6 +55,9 @@ public class ItemEventHandler {
     }
 
     private static void checkShieldRestriction(EntityPlayerMP player) {
+        if (MKConfig.cheats.BIG_HANDS_MODE)
+            return;
+
         ItemStack main = player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND);
         ItemStack off = player.getItemStackFromSlot(EntityEquipmentSlot.OFFHAND);
 
@@ -90,9 +96,7 @@ public class ItemEventHandler {
 
         EntityPlayerMP player = (EntityPlayerMP) event.getEntityLiving();
 
-        if (!MKConfig.cheats.BIG_HANDS_MODE) {
-            checkShieldRestriction(player);
-        }
+        checkShieldRestriction(player);
 
         IPlayerData playerData = MKUPlayerData.get(player);
         if (playerData == null)
@@ -100,7 +104,7 @@ public class ItemEventHandler {
 
         SpellTriggers.PLAYER_EQUIPMENT_CHANGE.onEquipmentChange(event, playerData, player);
 
-        if (!MKConfig.cheats.TOUGH_GUY_MODE && event.getSlot().getSlotType() == EntityEquipmentSlot.Type.ARMOR) {
+        if (event.getSlot().getSlotType() == EntityEquipmentSlot.Type.ARMOR) {
             checkBlockedArmor(player, event.getTo(), playerData, event.getSlot());
         }
     }
