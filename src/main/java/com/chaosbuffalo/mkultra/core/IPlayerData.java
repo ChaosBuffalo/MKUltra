@@ -65,11 +65,7 @@ public interface IPlayerData {
         return false;
     }
 
-    void setTotalMana(float totalMana);
-
     float getTotalMana();
-
-    void setTotalHealth(float totalHealth);
 
     float getTotalHealth();
 

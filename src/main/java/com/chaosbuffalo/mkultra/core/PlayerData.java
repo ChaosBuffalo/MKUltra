@@ -443,8 +443,7 @@ public class PlayerData implements IPlayerData {
         }
     }
 
-    @Override
-    public void setTotalHealth(float maxHealth) {
+    private void setTotalHealth(float maxHealth) {
         this.player.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(maxHealth);
     }
 
@@ -455,6 +454,7 @@ public class PlayerData implements IPlayerData {
 
     @Override
     public void setHealth(float health) {
+        health = MathHelper.clamp(health, 0, getTotalHealth());
         this.player.setHealth(health);
     }
 
@@ -860,8 +860,7 @@ public class PlayerData implements IPlayerData {
         return (float) player.getEntityAttribute(PlayerAttributes.MANA_REGEN).getBaseValue();
     }
 
-    @Override
-    public void setTotalMana(float totalMana) {
+    private void setTotalMana(float totalMana) {
         player.getEntityAttribute(PlayerAttributes.MAX_MANA).setBaseValue(totalMana);
     }
 
