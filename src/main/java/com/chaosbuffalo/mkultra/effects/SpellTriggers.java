@@ -260,7 +260,6 @@ public class SpellTriggers {
                                         EntityPlayerMP playerSource, IPlayerData sourceData, boolean isDirect) {
             ItemStack mainHand = playerSource.getHeldItemMainhand();
             float critChance = PlayerFormulas.getMeleeCritChanceForItem(sourceData, playerSource, mainHand);
-            critChance += sourceData.getMeleeCritChance();
             if (!isDirect) {
                 IAttributeInstance atkDmg = playerSource.getAttributeMap().getAttributeInstance(
                         SharedMonsterAttributes.ATTACK_DAMAGE);
