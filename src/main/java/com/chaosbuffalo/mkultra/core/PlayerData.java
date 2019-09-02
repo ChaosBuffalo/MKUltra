@@ -34,6 +34,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Constants;
@@ -430,7 +431,7 @@ public class PlayerData implements IPlayerData {
             int newTotalHealth = playerClass.getBaseHealth() + (level * playerClass.getHealthPerLevel());
             float newManaRegen = playerClass.getBaseManaRegen() + (level * playerClass.getManaRegenPerLevel());
             setTotalMana(newTotalMana);
-            setMana(Math.min(newTotalMana, getMana()));
+            setMana(getMana()); // Refresh after changing total mana
             setTotalHealth(newTotalHealth);
             setHealth(Math.min(newTotalHealth, this.player.getHealth()));
             setManaRegen(newManaRegen);
@@ -875,6 +876,7 @@ public class PlayerData implements IPlayerData {
 
     @Override
     public void setMana(float mana) {
+        mana = MathHelper.clamp(mana, 0, getTotalMana());
         privateData.set(MANA, mana);
     }
 
@@ -884,6 +886,9 @@ public class PlayerData implements IPlayerData {
     }
 
     private void updateMana() {
+        if (getMana() > getTotalMana())
+            setMana(getTotalMana());
+
         if (this.getManaRegenRate() == 0.0f) {
             return;
         }
@@ -891,7 +896,7 @@ public class PlayerData implements IPlayerData {
         float i_regen = 3.0f / this.getManaRegenRate();
         if (regenTime >= i_regen) {
             if (this.getMana() < this.getTotalMana()) {
-                this.setMana(this.getMana() + 1);
+                addMana(1);
             }
             regenTime -= i_regen;
         }
@@ -1096,16 +1101,16 @@ public class PlayerData implements IPlayerData {
 
     @Override
     public void deserialize(NBTTagCompound nbt) {
+        if (nbt.hasKey("totalMana")) {
+            setTotalMana(nbt.getFloat("totalMana"));
+        }
         if (nbt.hasKey("mana")) {
             setMana(nbt.getFloat("mana"));
         }
-        if (nbt.hasKey("manaRegenRate", 3)) {
+        if (nbt.hasKey("manaRegenRate")) {
             setManaRegen(nbt.getFloat("manaRegenRate"));
         }
-        if (nbt.hasKey("totalMana", 3)) {
-            setTotalMana(nbt.getFloat("totalMana"));
-        }
-        if (nbt.hasKey("healthRegenRate", 3)) {
+        if (nbt.hasKey("healthRegenRate")) {
             setHealthRegen(nbt.getFloat("healthRegenRate"));
         }
         deserializeSkills(nbt);

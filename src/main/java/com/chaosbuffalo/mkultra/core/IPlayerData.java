@@ -53,6 +53,10 @@ public interface IPlayerData {
 
     float getMana();
 
+    default void addMana(float amount) {
+        setMana(getMana() + amount);
+    }
+
     default boolean consumeMana(float amount) {
         if (getMana() >= amount) {
             setMana(getMana() - amount);

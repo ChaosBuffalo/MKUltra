@@ -58,8 +58,8 @@ public class ManaLeech extends MobAbility {
                 EntityPlayer playerTarget = (EntityPlayer) target;
                 IPlayerData pData = MKUPlayerData.get(playerTarget);
                 if (pData != null) {
-                    pData.setMana(
-                            Math.max(0, pData.getMana() - Math.round(MANA_LEECH_BASE + MANA_LEECH_SCALE * level)));
+                    float amount = Math.round(MANA_LEECH_BASE + MANA_LEECH_SCALE * level);
+                    pData.addMana(-amount);
                 }
             }
             Vec3d lookVec = entity.getLookVec();
