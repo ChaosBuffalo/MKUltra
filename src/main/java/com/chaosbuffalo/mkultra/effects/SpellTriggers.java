@@ -290,9 +290,9 @@ public class SpellTriggers {
         MKUltra.packetHandler.sendToAllAround(
                 new ParticleEffectSpawnPacket(
                         EnumParticleTypes.CRIT_MAGIC.getParticleID(),
-                        ParticleEffects.SPHERE_MOTION, 30, 6,
+                        ParticleEffects.SPHERE_MOTION, 12, 4,
                         livingTarget.posX, livingTarget.posY + 1.0f,
-                        livingTarget.posZ, .5f, .5f, .5f, 1.5,
+                        livingTarget.posZ, .5f, .5f, .5f, 0.2,
                         lookVec),
                 livingTarget, 25.0f);
     }
