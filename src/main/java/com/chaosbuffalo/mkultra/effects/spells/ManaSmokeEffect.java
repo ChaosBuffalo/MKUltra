@@ -25,7 +25,7 @@ import java.util.UUID;
 @Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class ManaSmokeEffect extends PassiveEffect {
 
-    private static final double AMOUNT = 10.0;
+    private static final double AMOUNT = 5.0;
     public static final UUID MODIFIER_ID = UUID.fromString("faa79ab5-d8c6-4737-8a28-01a00af63cf0");
     public static final ManaSmokeEffect INSTANCE = (ManaSmokeEffect) (new ManaSmokeEffect()
             .registerPotionAttributeModifier(PlayerAttributes.MAX_MANA,
