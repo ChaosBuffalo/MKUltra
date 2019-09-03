@@ -53,6 +53,10 @@ public interface IPlayerData {
 
     float getMana();
 
+    default void addMana(float amount) {
+        setMana(getMana() + amount);
+    }
+
     default boolean consumeMana(float amount) {
         if (getMana() >= amount) {
             setMana(getMana() - amount);
@@ -61,11 +65,7 @@ public interface IPlayerData {
         return false;
     }
 
-    void setTotalMana(float totalMana);
-
     float getTotalMana();
-
-    void setTotalHealth(float totalHealth);
 
     float getTotalHealth();
 

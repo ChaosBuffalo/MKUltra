@@ -40,7 +40,7 @@ public class SoulDrainPotion extends PassiveAbilityPotionBase {
         IPlayerData pData = MKUPlayerData.get(player);
         if (pData != null) {
             if (SpellTriggers.isMKUltraAbilityDamage(source)) {
-                pData.setMana(Math.min(pData.getMana() + 4, pData.getTotalMana()));
+                pData.addMana(4);
             }
         }
     }

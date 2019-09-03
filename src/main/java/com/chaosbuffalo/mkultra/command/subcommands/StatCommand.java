@@ -21,14 +21,19 @@ public class StatCommand extends CommandTreeBase {
 
     public StatCommand() {
         addSubcommand(new HealthStat());
+        addSubcommand(new AttrStat("maxhealth", SharedMonsterAttributes.MAX_HEALTH));
         addSubcommand(new ManaStat());
-        addSubcommand(new ManaRegenStat());
-        addSubcommand(new MeleeCritStat());
-        addSubcommand(new SpellCritStat());
-        addSubcommand(new CooldownReductionStat());
-        addSubcommand(new ArmorStat());
-        addSubcommand(new HealBonusStat());
-        addSubcommand(new BuffDurationStat());
+        addSubcommand(new AttrStat("maxmana", PlayerAttributes.MAX_MANA));
+        addSubcommand(new AttrStat("manaregen", PlayerAttributes.MANA_REGEN));
+        addSubcommand(new AttrStat("healthregen", PlayerAttributes.HEALTH_REGEN));
+        addSubcommand(new AttrStat("mcrit", PlayerAttributes.MELEE_CRIT));
+        addSubcommand(new AttrStat("mdamage", PlayerAttributes.MELEE_CRITICAL_DAMAGE));
+        addSubcommand(new AttrStat("scrit", PlayerAttributes.SPELL_CRIT));
+        addSubcommand(new AttrStat("sdamage", PlayerAttributes.SPELL_CRITICAL_DAMAGE));
+        addSubcommand(new AttrStat("cdr", PlayerAttributes.COOLDOWN));
+        addSubcommand(new AttrStat("armor", SharedMonsterAttributes.ARMOR));
+        addSubcommand(new AttrStat("healbonus", PlayerAttributes.HEAL_BONUS));
+        addSubcommand(new AttrStat("buffduration", PlayerAttributes.BUFF_DURATION));
         addSubcommand(new CommandTreeHelp(this)); // MUST be last
     }
 
@@ -50,7 +55,7 @@ public class StatCommand extends CommandTreeBase {
         return "/mk stat";
     }
 
-    abstract class SingleStat extends CommandTreeBase {
+    static abstract class SingleStat extends CommandTreeBase {
         @Override
         public final void execute(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, String[] args) throws CommandException {
             EntityPlayerMP player = getCommandSenderAsPlayer(sender);
@@ -85,18 +90,15 @@ public class StatCommand extends CommandTreeBase {
         protected abstract void subExecute(EntityPlayerMP sender, IPlayerData data, String[] args) throws CommandException;
     }
 
-    class HealthStat extends SingleStat {
+    static class HealthStat extends SingleStat {
 
         @Override
         protected void subExecute(EntityPlayerMP sender, IPlayerData data, String[] args) throws CommandException {
             String message;
             if (args.length == 0) {
-                message = String.format("You have %f/%f health", data.getHealth(), data.getTotalHealth());
+                message = String.format("You have %f / %f health", data.getHealth(), data.getTotalHealth());
             } else {
-                float health = (float) parseDouble(args[0]);
-                if (health > data.getTotalHealth()) {
-                    data.setTotalHealth(health);
-                }
+                float health = (float) parseDouble(args[0], 0, data.getTotalHealth());
                 data.setHealth(health);
                 message = String.format("Health set to %f", health);
             }
@@ -109,20 +111,17 @@ public class StatCommand extends CommandTreeBase {
         }
     }
 
-    class ManaStat extends SingleStat {
+    static class ManaStat extends SingleStat {
 
         @Override
         protected void subExecute(EntityPlayerMP sender, IPlayerData data, String[] args) throws CommandException {
             String message;
             if (args.length == 0) {
-                message = String.format("You have %d/%d mana", data.getMana(), data.getTotalMana());
+                message = String.format("You have %f / %f mana", data.getMana(), data.getTotalMana());
             } else {
-                int mana = parseInt(args[0]);
-                if (mana > data.getTotalMana()) {
-                    data.setTotalMana(mana);
-                }
+                float mana = (float) parseDouble(args[0], 0, data.getTotalMana());
                 data.setMana(mana);
-                message = String.format("Mana set to %d", mana);
+                message = String.format("Mana set to %f", mana);
             }
             sender.sendMessage(new TextComponentString(message));
         }
@@ -133,7 +132,7 @@ public class StatCommand extends CommandTreeBase {
         }
     }
 
-    abstract class AttrStat extends SingleStat {
+    static class AttrStat extends SingleStat {
         IAttribute attr;
         String name;
 
@@ -150,48 +149,6 @@ public class StatCommand extends CommandTreeBase {
         @Override
         public String getName() {
             return name;
-        }
-    }
-
-    class ManaRegenStat extends AttrStat {
-        protected ManaRegenStat() {
-            super("manaregen", PlayerAttributes.MANA_REGEN);
-        }
-    }
-
-    class MeleeCritStat extends AttrStat {
-        protected MeleeCritStat() {
-            super("mcrit", PlayerAttributes.MELEE_CRIT);
-        }
-    }
-
-    class SpellCritStat extends AttrStat {
-        protected SpellCritStat() {
-            super("scrit", PlayerAttributes.SPELL_CRIT);
-        }
-    }
-
-    class CooldownReductionStat extends AttrStat {
-        protected CooldownReductionStat() {
-            super("cdr", PlayerAttributes.COOLDOWN);
-        }
-    }
-
-    class ArmorStat extends AttrStat {
-        protected ArmorStat() {
-            super("armor", SharedMonsterAttributes.ARMOR);
-        }
-    }
-
-    class HealBonusStat extends AttrStat {
-        protected HealBonusStat() {
-            super("healbonus", PlayerAttributes.HEAL_BONUS);
-        }
-    }
-
-    class BuffDurationStat extends AttrStat {
-        protected BuffDurationStat() {
-            super("buffduration", PlayerAttributes.BUFF_DURATION);
         }
     }
 }

@@ -61,7 +61,7 @@ public class ManaBurnPotion extends SpellPeriodicPotionBase {
             EntityPlayer playerTarget = (EntityPlayer) target;
             IPlayerData data = MKUPlayerData.get(playerTarget);
             if (data != null) {
-                data.setMana(Math.max(0, data.getMana() - (int) damage));
+                data.addMana(-damage);
             }
         }
 
