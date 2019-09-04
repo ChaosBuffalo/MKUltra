@@ -267,7 +267,7 @@ public class MKConfig {
         ResourceLocation itemName = new ResourceLocation(name);
         Item item = Item.REGISTRY.getObject(itemName);
         if (item instanceof ItemArmor){
-            Log.info("Registering %s for Armor Class: %s", name,
+            Log.info("Registering Item: %s for Armor Class: %s", name,
                     armorClass.getLocation().toString());
             armorClass.registerItem((ItemArmor) item);
         } else {
