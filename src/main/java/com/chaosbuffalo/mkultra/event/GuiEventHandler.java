@@ -21,8 +21,7 @@ public class GuiEventHandler {
 
 
     private static void doArmorClassTooltip(ItemTooltipEvent event) {
-        ArmorClass armorClass = ArmorClass.getArmorClassForArmorMat(
-                ((ItemArmor) event.getItemStack().getItem()).getArmorMaterial());
+        ArmorClass armorClass = ArmorClass.getArmorClassForArmorItem(((ItemArmor) event.getItemStack().getItem()));
         event.getToolTip().add(String.format("%s: %s", I18n.format("mkultra.ui_msg.armor_class"),
                 armorClass.getName()));
         if (MKConfig.display.SHOW_ARMOR_MAT) {

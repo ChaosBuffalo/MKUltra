@@ -8,6 +8,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Set;
 
 public class ArmorClass {
@@ -31,6 +33,16 @@ public class ArmorClass {
     private ArmorClass ancestor;
     private ArmorClass next;
     private final Set<ItemArmor> itemOverrides = Sets.newHashSet();
+
+    private static final ArrayList<ArmorClass> CHECK_ORDER = new ArrayList<>();
+
+
+    static {
+        CHECK_ORDER.add(ROBES);
+        CHECK_ORDER.add(LIGHT);
+        CHECK_ORDER.add(MEDIUM);
+        CHECK_ORDER.add(HEAVY);
+    }
 
     public ArmorClass(ResourceLocation location) {
         this.location = location;
@@ -63,6 +75,15 @@ public class ArmorClass {
         }
     }
 
+    public static ArmorClass getArmorClassForArmorItem(ItemArmor item){
+        for (ArmorClass armorClass : CHECK_ORDER){
+              if (armorClass.itemIsOverriden(item)){
+                  return armorClass;
+              }
+        }
+        return getArmorClassForArmorMat(item.getArmorMaterial());
+    }
+
     public ArmorClass getSuccessor() {
         if (next != null)
             return next;
@@ -71,6 +92,10 @@ public class ArmorClass {
 
     public boolean canWear(ItemArmor item){
         return canWearItem(item) || canWearMaterial(item.getArmorMaterial());
+    }
+
+    public boolean itemIsOverriden(ItemArmor item){
+        return itemOverrides.contains(item);
     }
 
     public boolean canWearItem(ItemArmor item){
