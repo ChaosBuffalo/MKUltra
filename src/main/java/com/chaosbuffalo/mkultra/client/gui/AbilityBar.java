@@ -19,7 +19,8 @@ import org.lwjgl.opengl.GL11;
 public class AbilityBar extends Gui {
     private static final int SLOT_COUNT = GameConstants.ACTION_BAR_SIZE;
 
-    private static final ResourceLocation barTexture = new ResourceLocation(MKUltra.MODID, "textures/gui/abilitybar.png");
+    private static final ResourceLocation barTexture = new ResourceLocation(MKUltra.MODID,
+            "textures/gui/abilitybar.png");
     private static final int SLOT_WIDTH = 19;
     private static final int SLOT_HEIGHT = 20;
     private static final int MANA_START_U = 21;
@@ -70,7 +71,8 @@ public class AbilityBar extends Gui {
         for (int i = 0; i < data.getMana(); i++) {
             int manaX = manaCellWidth * (i % maxManaPerRow);
             int manaY = (i / maxManaPerRow) * manaCellRowSize;
-            this.drawTexturedModalRect(manaStartX + manaX, manaStartY + manaY,
+            this.drawTexturedModalRect(manaStartX + manaX,
+                    manaStartY + manaY,
                     MANA_START_U, MANA_START_V,
                     MANA_CELL_WIDTH, MANA_CELL_HEIGHT);
         }
@@ -83,7 +85,8 @@ public class AbilityBar extends Gui {
         int xOffset = 0;
         int yOffset = getBarStartY();
         for (int i = 0; i < SLOT_COUNT; i++) {
-            this.drawTexturedModalRect(xOffset, yOffset + i * SLOT_HEIGHT, 0, 0, SLOT_WIDTH, SLOT_HEIGHT);
+            this.drawTexturedModalRect(xOffset, yOffset + i * SLOT_HEIGHT,
+                    0, 0, SLOT_WIDTH, SLOT_HEIGHT);
         }
     }
 
@@ -115,7 +118,8 @@ public class AbilityBar extends Gui {
             mc.getTextureManager().bindTexture(ability.getAbilityIcon());
             Gui.drawModalRectWithCustomSizedTexture(slotAbilityOffsetX,
                     barStartY + slotAbilityOffsetY + (i * SLOT_HEIGHT),
-                    0, 0, ABILITY_ICON_SIZE, ABILITY_ICON_SIZE, ABILITY_ICON_SIZE, ABILITY_ICON_SIZE);
+                    0, 0,
+                    ABILITY_ICON_SIZE, ABILITY_ICON_SIZE, ABILITY_ICON_SIZE, ABILITY_ICON_SIZE);
 
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             float cooldownFactor = data.getCooldownPercent(ability, partialTicks);
@@ -133,7 +137,8 @@ public class AbilityBar extends Gui {
                 mc.getTextureManager().bindTexture(COOLDOWN_ICON);
                 Gui.drawModalRectWithCustomSizedTexture(slotAbilityOffsetX,
                         barStartY + slotAbilityOffsetY + (i * SLOT_HEIGHT),
-                        0, 0, ABILITY_ICON_SIZE, coolDownHeight, ABILITY_ICON_SIZE, coolDownHeight);
+                        0, 0,
+                        ABILITY_ICON_SIZE, coolDownHeight, ABILITY_ICON_SIZE, coolDownHeight);
             }
 
             if (ability instanceof PlayerToggleAbility) {
@@ -141,7 +146,8 @@ public class AbilityBar extends Gui {
                     mc.getTextureManager().bindTexture(TOGGLE_EFFECT);
                     Gui.drawModalRectWithCustomSizedTexture(slotAbilityOffsetX,
                             barStartY + slotAbilityOffsetY + (i * SLOT_HEIGHT),
-                            0, 0, ABILITY_ICON_SIZE, ABILITY_ICON_SIZE, ABILITY_ICON_SIZE, ABILITY_ICON_SIZE);
+                            0, 0,
+                            ABILITY_ICON_SIZE, ABILITY_ICON_SIZE, ABILITY_ICON_SIZE, ABILITY_ICON_SIZE);
                 }
             }
         }

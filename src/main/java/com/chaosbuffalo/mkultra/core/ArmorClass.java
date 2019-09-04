@@ -30,6 +30,7 @@ public class ArmorClass {
     private final Set<ItemArmor.ArmorMaterial> materials = Sets.newHashSet();
     private ArmorClass ancestor;
     private ArmorClass next;
+    private final Set<ItemArmor> itemOverrides = Sets.newHashSet();
 
     public ArmorClass(ResourceLocation location) {
         this.location = location;
@@ -44,8 +45,8 @@ public class ArmorClass {
         return location;
     }
 
-    public boolean canWear(ItemArmor.ArmorMaterial material) {
-        return materials.contains(material) || (ancestor != null && ancestor.canWear(material));
+    public boolean canWearMaterial(ItemArmor.ArmorMaterial material) {
+        return materials.contains(material) || (ancestor != null && ancestor.canWearMaterial(material));
     }
 
     public static ArmorClass getArmorClassForArmorMat(ItemArmor.ArmorMaterial material) {
@@ -68,9 +69,22 @@ public class ArmorClass {
         return this;
     }
 
+    public boolean canWear(ItemArmor item){
+        return canWearItem(item) || canWearMaterial(item.getArmorMaterial());
+    }
+
+    public boolean canWearItem(ItemArmor item){
+        return itemOverrides.contains(item) || (ancestor != null && ancestor.canWearItem(item));
+    }
+
     protected ArmorClass inherit(ArmorClass armorClass) {
         armorClass.next = this;
         ancestor = armorClass;
+        return this;
+    }
+
+    public ArmorClass registerItem(ItemArmor item){
+        itemOverrides.add(item);
         return this;
     }
 
@@ -85,7 +99,7 @@ public class ArmorClass {
         }
 
         @Override
-        public boolean canWear(ItemArmor.ArmorMaterial material) {
+        public boolean canWearMaterial(ItemArmor.ArmorMaterial material) {
             return true;
         }
     }

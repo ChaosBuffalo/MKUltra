@@ -40,7 +40,7 @@ public class ItemEventHandler {
             return;
 
         ItemArmor armorItem = (ItemArmor) armor.getItem();
-        if (!playerClass.canWearArmorMaterial(armorItem.getArmorMaterial())) {
+        if (!playerClass.canWearArmor(armorItem)) {
             ItemHelper.unequip(player, slot);
         }
     }
