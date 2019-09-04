@@ -115,7 +115,7 @@ public interface IPlayerData {
 
     void deserialize(NBTTagCompound tag);
 
-    boolean canWearArmorMaterial(ItemArmor.ArmorMaterial material);
+    boolean canWearArmor(ItemArmor item);
 
     boolean spendTalentPoint(ResourceLocation talentTree, String line, int index);
 

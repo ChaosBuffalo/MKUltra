@@ -7,6 +7,7 @@ import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.utils.MobUtils;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.RangedAttribute;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Config;
@@ -60,6 +61,9 @@ public class MKConfig {
                 "SPECIAL",
         };
 
+        @Config.Comment("Armor item names to add to the Robes Armor Class")
+        public String[] ROBES_ITEM_OVERRIDES = {};
+
         @Config.Comment("Armor Materials for Light Armor Class")
         public String[] LIGHT_ARMOR = {
                 "leather",
@@ -77,6 +81,9 @@ public class MKConfig {
                 "slimy_bone",
                 "THAUMIUM"
         };
+
+        @Config.Comment("Armor item names to add to the Light Armor Class")
+        public String[] LIGHT_ITEM_OVERRIDES = {};
 
 
         @Config.Comment("Armor Materials for Medium Armor Class")
@@ -100,6 +107,9 @@ public class MKConfig {
                 "syrmorite",
                 "VOID"
         };
+
+        @Config.Comment("Armor item names to add to the Medium Armor Class")
+        public String[] MEDIUM_ITEM_OVERRIDES = {};
 
         @Config.Comment("Armor Materials for Heavy Armor Class")
         public String[] HEAVY_ARMOR = {
@@ -126,8 +136,10 @@ public class MKConfig {
                 "valonite",
                 "legend",
                 "FORTRESS",
-
         };
+
+        @Config.Comment("Armor item names to add to the Heavy Armor Class")
+        public String[] HEAVY_ITEM_OVERRIDES = {};
     }
 
     public static class Cheats {
@@ -251,15 +263,32 @@ public class MKConfig {
         }
     }
 
+    public static void registerArmorFromItemName(String name, ArmorClass armorClass){
+        ResourceLocation itemName = new ResourceLocation(name);
+        Item item = Item.REGISTRY.getObject(itemName);
+        if (item instanceof ItemArmor){
+            Log.info("Registering Item: %s for Armor Class: %s", name,
+                    armorClass.getLocation().toString());
+            armorClass.registerItem((ItemArmor) item);
+        } else {
+            Log.info("Failed to find armor with id or the found item is not an ItemArmor, %s", name);
+        }
+
+    }
+
     private static String getArmorName(ItemArmor.ArmorMaterial mat) {
         return ReflectionHelper.getPrivateValue(ItemArmor.ArmorMaterial.class, mat, "name", "field_179243_f", "f");
     }
 
     public static void registerArmors() {
         Arrays.stream(armor.ROBES_ARMOR).forEach((x) -> registerArmorFromName(x, ArmorClass.ROBES));
+        Arrays.stream(armor.ROBES_ITEM_OVERRIDES).forEach((x) -> registerArmorFromItemName(x, ArmorClass.ROBES));
         Arrays.stream(armor.LIGHT_ARMOR).forEach((x) -> registerArmorFromName(x, ArmorClass.LIGHT));
+        Arrays.stream(armor.LIGHT_ITEM_OVERRIDES).forEach((x) -> registerArmorFromItemName(x, ArmorClass.LIGHT));
         Arrays.stream(armor.MEDIUM_ARMOR).forEach((x) -> registerArmorFromName(x, ArmorClass.MEDIUM));
+        Arrays.stream(armor.MEDIUM_ITEM_OVERRIDES).forEach((x) -> registerArmorFromItemName(x, ArmorClass.MEDIUM));
         Arrays.stream(armor.HEAVY_ARMOR).forEach((x) -> registerArmorFromName(x, ArmorClass.HEAVY));
+        Arrays.stream(armor.HEAVY_ITEM_OVERRIDES).forEach((x) -> registerArmorFromItemName(x, ArmorClass.HEAVY));
     }
 
     public static void setupAttackSpeedWhitelist() {

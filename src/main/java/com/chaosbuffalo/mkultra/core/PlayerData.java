@@ -1332,12 +1332,13 @@ public class PlayerData implements IPlayerData {
         return player.isPotionActive(ArmorTrainingPotion.INSTANCE) ? ac.getSuccessor() : ac;
     }
 
-    public boolean canWearArmorMaterial(ItemArmor.ArmorMaterial material) {
+    @Override
+    public boolean canWearArmor(ItemArmor item) {
         ArmorClass effective = getArmorClass();
         // If no class, default to vanilla behaviour of wearing anything
         // Then check the current class if it's allowed
         // Then check for special exceptions granted by other means
-        return effective == null || effective.canWear(material);
+        return effective == null || effective.canWear(item);
     }
 
     @Override

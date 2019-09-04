@@ -8,7 +8,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.Set;
+import java.util.*;
 
 public class ArmorClass {
     public static final ArmorClass ROBES = new ArmorClass(new ResourceLocation(MKUltra.MODID, "armor_class.robes"));
@@ -16,23 +16,46 @@ public class ArmorClass {
     public static final ArmorClass MEDIUM = new ArmorClass(new ResourceLocation(MKUltra.MODID, "armor_class.medium")).inherit(LIGHT);
     public static final ArmorClass HEAVY = new ArmorClass(new ResourceLocation(MKUltra.MODID, "armor_class.heavy")).inherit(MEDIUM);
     public static final ArmorClass ALL = new AllowAllArmorClass(new ResourceLocation(MKUltra.MODID, "armor_class.all")).inherit(HEAVY);
-    public static final ArmorClass NOT_CLASSIFIED = new ArmorClass(new ResourceLocation(MKUltra.MODID, "armor_class.undefined"));
+    private static final ArmorClass NOT_CLASSIFIED = new ArmorClass(new ResourceLocation(MKUltra.MODID, "armor_class.undefined"));
+    private static final List<ArmorClass> CHECK_ORDER = Arrays.asList(ROBES, LIGHT, MEDIUM, HEAVY);
 
     private final ResourceLocation location;
-
-    public static void clearArmorClasses() {
-        HEAVY.materials.clear();
-        MEDIUM.materials.clear();
-        LIGHT.materials.clear();
-        ROBES.materials.clear();
-    }
-
     private final Set<ItemArmor.ArmorMaterial> materials = Sets.newHashSet();
     private ArmorClass ancestor;
     private ArmorClass next;
+    private final Set<ItemArmor> itemOverrides = Sets.newHashSet();
+
+    public static void clearArmorClasses() {
+        ROBES.clear();
+        LIGHT.clear();
+        MEDIUM.clear();
+        HEAVY.clear();
+    }
+
+    private static ArmorClass getArmorClassForMaterial(ItemArmor.ArmorMaterial material) {
+        for (ArmorClass armorClass : CHECK_ORDER) {
+            if (armorClass.hasMaterial(material))
+                return armorClass;
+        }
+        return NOT_CLASSIFIED;
+    }
+
+    public static ArmorClass getArmorClassForArmorItem(ItemArmor item) {
+        for (ArmorClass armorClass : CHECK_ORDER) {
+            if (armorClass.hasItemOverride(item)) {
+                return armorClass;
+            }
+        }
+        return getArmorClassForMaterial(item.getArmorMaterial());
+    }
 
     public ArmorClass(ResourceLocation location) {
         this.location = location;
+    }
+
+    private void clear() {
+        materials.clear();
+        itemOverrides.clear();
     }
 
     @SideOnly(Side.CLIENT)
@@ -44,22 +67,12 @@ public class ArmorClass {
         return location;
     }
 
-    public boolean canWear(ItemArmor.ArmorMaterial material) {
-        return materials.contains(material) || (ancestor != null && ancestor.canWear(material));
+    private boolean hasMaterial(ItemArmor.ArmorMaterial material) {
+        return materials.contains(material);
     }
 
-    public static ArmorClass getArmorClassForArmorMat(ItemArmor.ArmorMaterial material) {
-        if (ROBES.materials.contains(material)) {
-            return ROBES;
-        } else if (LIGHT.materials.contains(material)) {
-            return LIGHT;
-        } else if (MEDIUM.materials.contains(material)) {
-            return MEDIUM;
-        } else if (HEAVY.materials.contains(material)) {
-            return HEAVY;
-        } else {
-            return NOT_CLASSIFIED;
-        }
+    private boolean canWearMaterial(ItemArmor.ArmorMaterial material) {
+        return hasMaterial(material) || (ancestor != null && ancestor.canWearMaterial(material));
     }
 
     public ArmorClass getSuccessor() {
@@ -68,9 +81,26 @@ public class ArmorClass {
         return this;
     }
 
-    protected ArmorClass inherit(ArmorClass armorClass) {
+    public boolean canWear(ItemArmor item) {
+        return canWearItem(item) || canWearMaterial(item.getArmorMaterial());
+    }
+
+    private boolean hasItemOverride(ItemArmor item) {
+        return itemOverrides.contains(item);
+    }
+
+    private boolean canWearItem(ItemArmor item) {
+        return hasItemOverride(item) || (ancestor != null && ancestor.canWearItem(item));
+    }
+
+    ArmorClass inherit(ArmorClass armorClass) {
         armorClass.next = this;
         ancestor = armorClass;
+        return this;
+    }
+
+    public ArmorClass registerItem(ItemArmor item) {
+        itemOverrides.add(item);
         return this;
     }
 
@@ -80,12 +110,12 @@ public class ArmorClass {
     }
 
     private static class AllowAllArmorClass extends ArmorClass {
-        public AllowAllArmorClass(ResourceLocation location) {
+        AllowAllArmorClass(ResourceLocation location) {
             super(location);
         }
 
         @Override
-        public boolean canWear(ItemArmor.ArmorMaterial material) {
+        public boolean canWear(ItemArmor armor) {
             return true;
         }
     }
