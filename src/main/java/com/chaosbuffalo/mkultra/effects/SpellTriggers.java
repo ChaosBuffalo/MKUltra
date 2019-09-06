@@ -59,7 +59,6 @@ public class SpellTriggers {
     public static class FALL {
         private static List<FallTrigger> fallTriggers = Lists.newArrayList();
 
-
         @FunctionalInterface
         public interface FallTrigger {
             void apply(LivingHurtEvent event, DamageSource source, EntityLivingBase entity);
@@ -70,7 +69,10 @@ public class SpellTriggers {
         }
 
         public static void onLivingFall(LivingHurtEvent event, DamageSource source, EntityLivingBase entity) {
+            if (!startTrigger(entity))
+                return;
             fallTriggers.forEach(f -> f.apply(event, source, entity));
+            endTrigger(entity);
         }
     }
 
@@ -87,12 +89,15 @@ public class SpellTriggers {
         }
 
         public static void onEntityDeath(LivingDeathEvent event, DamageSource source, EntityPlayer entity) {
+            if (!startTrigger(entity))
+                return;
             killTriggers.forEach((spellPotionBase, trigger) -> {
                 PotionEffect effect = entity.getActivePotionEffect(spellPotionBase);
                 if (effect != null) {
                     trigger.apply(event, source, entity);
                 }
             });
+            endTrigger(entity);
         }
     }
 
@@ -109,12 +114,15 @@ public class SpellTriggers {
         }
 
         public static void onEquipmentChange(LivingEquipmentChangeEvent event, IPlayerData data, EntityPlayer player) {
+            if (!startTrigger(player))
+                return;
             triggers.forEach((spellPotionBase, trigger) -> {
                 PotionEffect effect = player.getActivePotionEffect(spellPotionBase);
                 if (effect != null) {
                     trigger.apply(event, data, player);
                 }
             });
+            endTrigger(player);
         }
     }
 
@@ -136,6 +144,8 @@ public class SpellTriggers {
         }
 
         public static void onEntityHurtPlayer(LivingHurtEvent event, DamageSource source, EntityPlayer livingTarget, IPlayerData targetData) {
+            if (!startTrigger(livingTarget))
+                return;
             entityHurtPlayerPreTriggers.forEach(f -> f.apply(event, source, livingTarget, targetData));
 
             if (source.isMagicDamage()) {
@@ -145,6 +155,7 @@ public class SpellTriggers {
             }
 
             entityHurtPlayerPostTriggers.forEach(f -> f.apply(event, source, livingTarget, targetData));
+            endTrigger(livingTarget);
         }
     }
 
@@ -202,7 +213,10 @@ public class SpellTriggers {
                 handleProjectile(event, source, livingTarget, playerSource, sourceData);
             }
 
+            if (!startTrigger(playerSource))
+                return;
             playerHurtEntityPostTriggers.forEach(f -> f.apply(event, source, livingTarget, playerSource, sourceData));
+            endTrigger(playerSource);
         }
 
         private static boolean checkCrit(EntityPlayerMP player, float chance) {
@@ -236,7 +250,10 @@ public class SpellTriggers {
                 sendCritPacket(livingTarget, playerSource, packet);
             }
 
+            if (!startTrigger(playerSource))
+                return;
             playerHurtEntityMagicTriggers.forEach(f -> f.apply(event, mkSource, livingTarget, playerSource, sourceData));
+            endTrigger(playerSource);
         }
 
         private static void handleProjectile(LivingHurtEvent event, DamageSource source, EntityLivingBase livingTarget,
@@ -278,7 +295,11 @@ public class SpellTriggers {
                 sendCritPacket(livingTarget, playerSource,
                         new CritMessagePacket(livingTarget.getEntityId(), playerSource.getUniqueID(), newDamage, type));
             }
+
+            if (startTrigger(playerSource))
+                return;
             playerHurtEntityMeleeTriggers.forEach(f -> f.apply(event, source, livingTarget, playerSource, sourceData));
+            endTrigger(playerSource);
         }
     }
 
@@ -311,15 +332,36 @@ public class SpellTriggers {
         }
 
         public static void onEmptyLeftClick(EntityPlayer player, PlayerInteractEvent.LeftClickEmpty event) {
+            if (!startTrigger(player))
+                return;
             emptyLeftClickTriggers.forEach((spellPotionBase, trigger) -> {
                 PotionEffect effect = player.getActivePotionEffect(spellPotionBase);
                 if (effect != null) {
                     trigger.apply(event, player, effect);
                 }
             });
+            endTrigger(player);
         }
     }
 
+    private static boolean startTrigger(Entity source) {
+        if (source instanceof EntityPlayer) {
+            PlayerData data = (PlayerData) MKUPlayerData.get((EntityPlayer) source);
+            if (data == null || data.isInSpellTriggerCallback())
+                return false;
+            data.setInSpellTriggerCallback(true);
+        }
+        return true;
+    }
+
+    private static void endTrigger(Entity source) {
+        if (source instanceof EntityPlayer) {
+            PlayerData data = (PlayerData) MKUPlayerData.get((EntityPlayer) source);
+            if (data == null)
+                return;
+            data.setInSpellTriggerCallback(false);
+        }
+    }
 
     public static class ATTACK_ENTITY {
 
@@ -335,12 +377,15 @@ public class SpellTriggers {
         }
 
         public static void onAttackEntity(EntityLivingBase attacker, Entity target) {
+            if (!startTrigger(attacker))
+                return;
             attackEntityTriggers.forEach((spellPotionBase, attackEntityTrigger) -> {
                 PotionEffect effect = attacker.getActivePotionEffect(spellPotionBase);
                 if (effect != null) {
                     attackEntityTrigger.apply(attacker, target, effect);
                 }
             });
+            endTrigger(attacker);
         }
     }
 
@@ -357,12 +402,15 @@ public class SpellTriggers {
         }
 
         public static void onAttackEntity(EntityLivingBase attacker, Entity target) {
+            if (!startTrigger(attacker))
+                return;
             attackEntityTriggers.forEach((spellPotionBase, attackEntityTrigger) -> {
                 PotionEffect effect = attacker.getActivePotionEffect(spellPotionBase);
                 if (effect != null) {
                     attackEntityTrigger.apply(attacker, target, effect);
                 }
             });
+            endTrigger(attacker);
         }
     }
 
@@ -379,11 +427,14 @@ public class SpellTriggers {
         }
 
         public static void onEntityDeath(LivingDeathEvent event, DamageSource source, EntityPlayer entity) {
+            if (!startTrigger(entity))
+                return;
             killTriggers.forEach((spellPotionBase, trigger) -> {
                 if (entity.isPotionActive(spellPotionBase)) {
                     trigger.apply(event, source, entity);
                 }
             });
+            endTrigger(entity);
         }
     }
 }
