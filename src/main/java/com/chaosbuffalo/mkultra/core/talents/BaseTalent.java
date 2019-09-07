@@ -47,7 +47,7 @@ public class BaseTalent extends IForgeRegistryEntry.Impl<BaseTalent> {
     }
 
     @SideOnly(Side.CLIENT)
-    public String getTalentDescription() {
+    public String getTalentDescription(TalentRecord record) {
         return TextFormatting.GRAY + I18n.format(String.format("%s.%s.description",
                 getRegistryName().getNamespace(), getRegistryName().getPath()));
     }
