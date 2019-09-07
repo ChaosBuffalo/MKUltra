@@ -8,7 +8,11 @@ import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.entity.projectile.EntitySpectralArrow;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.entity.projectile.EntityTippedArrow;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by Jacob on 7/27/2018.
@@ -21,8 +25,18 @@ public class EntityUtils {
     private static final double LARGE_VOLUME = 3.0 * .6 * .6 * 1.8;
     public static CriticalStats<Entity> ENTITY_CRIT = new CriticalStats<>(DEFAULT_CRIT_RATE, DEFAULT_CRIT_DAMAGE);
 
+    public static final Set<ResourceLocation> DISABLED_MOBS = new HashSet<>();
+
     public static void addCriticalStats(Class<? extends Entity> entityIn, int priority, float criticalChance, float damageMultiplier) {
         ENTITY_CRIT.addCriticalStats(entityIn, priority, criticalChance, damageMultiplier);
+    }
+
+    public static void addDisabledMob(ResourceLocation name){
+        DISABLED_MOBS.add(name);
+    }
+
+    public static void clearDisabledMobs(){
+        DISABLED_MOBS.clear();
     }
 
     static {

@@ -7,6 +7,7 @@ import com.chaosbuffalo.mkultra.init.ModSpawn;
 import com.chaosbuffalo.mkultra.spawn.DefaultSpawnIndex;
 import com.chaosbuffalo.mkultra.spawn.MobDefinition;
 import com.chaosbuffalo.mkultra.spawn.SpawnList;
+import com.chaosbuffalo.mkultra.utils.EntityUtils;
 import com.chaosbuffalo.mkultra.utils.MobUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -53,6 +54,11 @@ public class EntityEventHandler {
                 data.onJoinWorld();
             }
         } else if (event.getEntity() instanceof EntityLivingBase && !event.getWorld().isRemote) {
+            ResourceLocation entityId = EntityList.getKey(event.getEntity());
+            if (EntityUtils.DISABLED_MOBS.contains(entityId)){
+                event.setCanceled(true);
+                return;
+            }
             handleMobJoinWorld(event);
         }
     }
