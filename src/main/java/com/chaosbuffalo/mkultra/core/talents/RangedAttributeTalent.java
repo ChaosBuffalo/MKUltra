@@ -21,15 +21,11 @@ public class RangedAttributeTalent extends BaseTalent {
     private boolean renderAsPercentage;
 
     public RangedAttributeTalent(ResourceLocation name, RangedAttribute attr, UUID id) {
-        this(name, attr, id, false);
-    }
-
-    public RangedAttributeTalent(ResourceLocation name, RangedAttribute attr, UUID id, boolean renderAsPercentage) {
         super(name, TalentType.ATTRIBUTE);
         this.id = id;
         this.attr = attr;
         this.op = PlayerAttributes.OP_INCREMENT;
-        this.renderAsPercentage = renderAsPercentage;
+        this.renderAsPercentage = false;
     }
 
     public RangedAttribute getAttribute() {
@@ -46,6 +42,11 @@ public class RangedAttributeTalent extends BaseTalent {
 
     public RangedAttributeTalent setOp(int value) {
         op = value;
+        return this;
+    }
+
+    public RangedAttributeTalent setDisplayAsPercentage(boolean usePercentage) {
+        renderAsPercentage = usePercentage;
         return this;
     }
 
