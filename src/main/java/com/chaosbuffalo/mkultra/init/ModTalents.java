@@ -61,7 +61,7 @@ public class ModTalents {
     @GameRegistry.ObjectHolder("talent.movement_speed")
     public static RangedAttributeTalent movementSpeed;
 
-    public static void postInitJsonRegisistation() {
+    public static void postInitJsonRegistration() {
         ModContainer old = Loader.instance().activeModContainer();
         JsonLoader.loadModsForType("mk_talents" + File.separator + "trees",
                 "mk_overrides", "assets",

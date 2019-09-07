@@ -86,8 +86,8 @@ public class MKUltra {
                 Log.info(String.format("Registering fire: %s", key.toString()));
             }
         });
-        ModSpawn.postInitJsonRegisistation();
-        ModTalents.postInitJsonRegisistation();
+        ModSpawn.postInitJsonRegistration();
+        ModTalents.postInitJsonRegistration();
         ClassLists.initFromConfig();
         proxy.postInit(e);
     }
