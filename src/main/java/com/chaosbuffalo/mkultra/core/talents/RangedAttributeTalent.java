@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.core.talents;
 
 import com.chaosbuffalo.mkultra.core.PlayerAttributes;
 import com.chaosbuffalo.mkultra.core.PlayerClassInfo;
+import com.chaosbuffalo.mkultra.log.Log;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.RangedAttribute;
@@ -20,15 +21,11 @@ public class RangedAttributeTalent extends BaseTalent {
     private boolean renderAsPercentage;
 
     public RangedAttributeTalent(ResourceLocation name, RangedAttribute attr, UUID id) {
-        this(name, attr, id, false);
-    }
-
-    public RangedAttributeTalent(ResourceLocation name, RangedAttribute attr, UUID id, boolean renderAsPercentage) {
         super(name, TalentType.ATTRIBUTE);
         this.id = id;
         this.attr = attr;
         this.op = PlayerAttributes.OP_INCREMENT;
-        this.renderAsPercentage = renderAsPercentage;
+        this.renderAsPercentage = false;
     }
 
     public RangedAttribute getAttribute() {
@@ -48,8 +45,28 @@ public class RangedAttributeTalent extends BaseTalent {
         return this;
     }
 
+    public RangedAttributeTalent setDisplayAsPercentage(boolean usePercentage) {
+        renderAsPercentage = usePercentage;
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("RangedAttributeTalent[%s, %s, %d]", attr.getName(), id.toString(), op);
+    }
+
+    @Override
     @SideOnly(Side.CLIENT)
-    public String getTalentDescription(double perRank, double currentValue) {
+    public String getTalentDescription(TalentRecord record) {
+        double perRank = 0;
+        double currentValue = 0;
+        if (record.getNode() instanceof AttributeTalentNode) {
+            AttributeTalentNode attrNode = (AttributeTalentNode) record.getNode();
+            perRank = attrNode.getPerRank();
+            currentValue = record.getRank() * perRank;
+        } else {
+            Log.error("Trying to create a tooltip for %s but the node was not an AttributeTalentNode!", toString());
+        }
         String amount;
         String totalAmount;
         if (renderAsPercentage) {

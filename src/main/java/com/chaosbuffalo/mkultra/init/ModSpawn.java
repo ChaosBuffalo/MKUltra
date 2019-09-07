@@ -69,7 +69,7 @@ public class ModSpawn {
         }
     }
 
-    public static void postInitJsonRegisistation() {
+    public static void postInitJsonRegistration() {
         ModContainer old = Loader.instance().activeModContainer();
         JsonLoader.loadModsForType("mk_spawn" + File.separator + "attributes",
                 "mk_overrides", "assets",
