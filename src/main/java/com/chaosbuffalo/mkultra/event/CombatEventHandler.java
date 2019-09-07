@@ -2,7 +2,6 @@ package com.chaosbuffalo.mkultra.event;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
-import com.chaosbuffalo.mkultra.core.MKDamageSource;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.effects.SpellTriggers;
 import com.chaosbuffalo.mkultra.network.packets.PlayerLeftClickEmptyPacket;
@@ -67,12 +66,6 @@ public class CombatEventHandler {
 
         DamageSource dmgSource = event.getSource();
         Entity source = dmgSource.getTrueSource();
-        if (dmgSource instanceof MKDamageSource) {
-            MKDamageSource mkSource = (MKDamageSource) dmgSource;
-            if (mkSource.ignoreAttackEntityTrigger()) {
-                return;
-            }
-        }
         if (source instanceof EntityLivingBase) {
             SpellTriggers.ATTACK_ENTITY.onAttackEntity((EntityLivingBase) source, target);
         }
