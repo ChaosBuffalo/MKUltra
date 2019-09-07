@@ -12,7 +12,7 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -263,10 +263,10 @@ public class MKConfig {
         }
     }
 
-    public static void registerArmorFromItemName(String name, ArmorClass armorClass){
+    public static void registerArmorFromItemName(String name, ArmorClass armorClass) {
         ResourceLocation itemName = new ResourceLocation(name);
         Item item = Item.REGISTRY.getObject(itemName);
-        if (item instanceof ItemArmor){
+        if (item instanceof ItemArmor) {
             Log.info("Registering Item: %s for Armor Class: %s", name,
                     armorClass.getLocation().toString());
             armorClass.registerItem((ItemArmor) item);
@@ -277,7 +277,7 @@ public class MKConfig {
     }
 
     private static String getArmorName(ItemArmor.ArmorMaterial mat) {
-        return ReflectionHelper.getPrivateValue(ItemArmor.ArmorMaterial.class, mat, "name", "field_179243_f", "f");
+        return ObfuscationReflectionHelper.getPrivateValue(ItemArmor.ArmorMaterial.class, mat, "field_179243_f"); // name
     }
 
     public static void registerArmors() {
@@ -317,6 +317,4 @@ public class MKConfig {
             e1.printStackTrace();
         }
     }
-
-
 }

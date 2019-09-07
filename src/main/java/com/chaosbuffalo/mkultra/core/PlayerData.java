@@ -73,6 +73,7 @@ public class PlayerData implements IPlayerData {
     private EnumHandSide originalMainHand;
     private boolean isDualWielding;
     private int ticksSinceLastSwing;
+    private boolean inSpellTriggerCallback;
     private final static int DUAL_WIELD_TIMEOUT = 25;
 
 
@@ -1383,5 +1384,13 @@ public class PlayerData implements IPlayerData {
 
             sender.sendMessage(new TextComponentString(msg));
         }
+    }
+
+    public void setInSpellTriggerCallback(boolean enable) {
+        inSpellTriggerCallback = enable;
+    }
+
+    public boolean isInSpellTriggerCallback() {
+        return inSpellTriggerCallback;
     }
 }
