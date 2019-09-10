@@ -666,10 +666,13 @@ public class PlayerData implements IPlayerData {
         if (classInfo == null) {
             return false;
         }
-
+        PlayerAbility ability = MKURegistry.getAbility(abilityId);
+        if (ability == null){
+            return false;
+        }
         PlayerAbilityInfo info = getAbilityInfo(abilityId);
         if (info == null) {
-            info = new PlayerAbilityInfo(abilityId);
+            info = ability.createAbilityInfo();
         }
 
         if (consumePoint) {
@@ -685,7 +688,6 @@ public class PlayerData implements IPlayerData {
         classInfo.addToSpendOrder(abilityId);
 
         if (abilityTracker.hasCooldown(info)) {
-            PlayerAbility ability = MKURegistry.getAbility(abilityId);
             int newMaxCooldown = getAbilityCooldown(ability);
             int current = abilityTracker.getCooldownTicks(info);
             setCooldown(info.getId(), Math.min(current, newMaxCooldown));
@@ -811,13 +813,15 @@ public class PlayerData implements IPlayerData {
     private void updateCastTime(){
         if (isCasting()){
             int currentCastTime = getCastTicks();
-            PlayerAbility ability = MKURegistry.getAbility(getCastingAbility());
+            ResourceLocation loc = getCastingAbility();
+            PlayerAbility ability = MKURegistry.getAbility(loc);
             if (ability != null){
                 ability.continueCast(player, this, player.getEntityWorld(), currentCastTime);
                 if (currentCastTime > 0){
                     setCastTicks(currentCastTime - 1);
                 } else {
                     ability.endCast(player, this, player.getEntityWorld());
+                    completeAbility(ability, getAbilityInfo(loc));
                     privateData.set(CURRENT_CAST, MKURegistry.INVALID_ABILITY.toString());
                 }
             }
@@ -843,11 +847,7 @@ public class PlayerData implements IPlayerData {
         return false;
     }
 
-    @Override
-    public void startAbility(PlayerAbility ability) {
-        PlayerAbilityInfo info = getAbilityInfo(ability.getAbilityId());
-        if (info == null || !info.isCurrentlyKnown())
-            return;
+    void completeAbility(PlayerAbility ability, PlayerAbilityInfo info){
         ItemStack heldItem = this.player.getHeldItem(EnumHand.OFF_HAND);
         if (heldItem.getItem() instanceof ManaRegenIdol) {
             ItemHelper.damageStack(player, heldItem, 1);
@@ -856,19 +856,30 @@ public class PlayerData implements IPlayerData {
         if (mainHandItem.getItem() instanceof ManaRegenIdol) {
             ItemHelper.damageStack(player, mainHandItem, 1);
         }
-        float manaCost = PlayerFormulas.applyManaCostReduction(this, ability.getManaCost(info.getRank()));
-        setMana(getMana() - manaCost);
-
         int cooldown = ability.getCooldownTicks(info.getRank());
         cooldown = PlayerFormulas.applyCooldownReduction(this, cooldown);
         setCooldown(info.getId(), cooldown);
+    }
+
+    @Override
+    public void startAbility(PlayerAbility ability) {
+        PlayerAbilityInfo info = getAbilityInfo(ability.getAbilityId());
+        if (info == null || !info.isCurrentlyKnown() || isCasting())
+            return;
+
+        float manaCost = PlayerFormulas.applyManaCostReduction(this, ability.getManaCost(info.getRank()));
+        setMana(getMana() - manaCost);
+
         int castTime = ability.getCastTime(info.getRank());
         if (castTime > 0){
             startCast(ability.getAbilityId(), castTime);
+        } else {
+            completeAbility(ability, info);
         }
     }
 
-    private PlayerAbilityInfo getAbilityInfo(ResourceLocation abilityId) {
+    @Override
+    public PlayerAbilityInfo getAbilityInfo(ResourceLocation abilityId) {
         return abilityInfoMap.get(abilityId);
     }
 
@@ -1096,7 +1107,11 @@ public class PlayerData implements IPlayerData {
             abilityInfoMap = new HashMap<>(skills.tagCount());
             for (int i = 0; i < skills.tagCount(); i++) {
                 NBTTagCompound sk = skills.getCompoundTagAt(i);
-                PlayerAbilityInfo info = new PlayerAbilityInfo(new ResourceLocation(sk.getString("id")));
+                PlayerAbility ability = MKURegistry.getAbility(new ResourceLocation(sk.getString("id")));
+                if (ability == null){
+                    continue;
+                }
+                PlayerAbilityInfo info = ability.createAbilityInfo();
                 info.deserialize(sk);
 
                 abilityTracker.setCooldown(info, info.getCooldown());

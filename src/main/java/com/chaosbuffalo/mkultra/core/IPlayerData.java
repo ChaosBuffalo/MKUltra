@@ -41,6 +41,8 @@ public interface IPlayerData {
 
     void startAbility(PlayerAbility ability);
 
+    PlayerAbilityInfo getAbilityInfo(ResourceLocation abilityId);
+
     void setManaRegen(float manaRegenRate);
 
     float getHealthRegenRate();

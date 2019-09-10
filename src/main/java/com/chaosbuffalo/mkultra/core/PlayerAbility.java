@@ -1,6 +1,7 @@
 package com.chaosbuffalo.mkultra.core;
 
 import com.chaosbuffalo.mkultra.GameConstants;
+import com.chaosbuffalo.mkultra.spawn.ItemOption;
 import com.chaosbuffalo.mkultra.utils.RayTraceUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.client.resources.I18n;
@@ -15,10 +16,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public abstract class PlayerAbility extends IForgeRegistryEntry.Impl<PlayerAbility> {
+public abstract class PlayerAbility  extends IForgeRegistryEntry.Impl<PlayerAbility> {
 
     public enum AbilityType {
         Active,
@@ -40,6 +42,20 @@ public abstract class PlayerAbility extends IForgeRegistryEntry.Impl<PlayerAbili
 
     public ResourceLocation getAbilityId() {
         return abilityId;
+    }
+
+    public PlayerAbilityInfo createAbilityInfo(){
+        return new PlayerAbilityInfo(getAbilityId());
+    }
+
+    @Nullable
+    public <T extends PlayerAbilityInfo> T getAbilityInfo(IPlayerData data, Class<T> clazz){
+        PlayerAbilityInfo info = data.getAbilityInfo(getAbilityId());
+        if (clazz.isInstance(info)){
+            return (T) data.getAbilityInfo(getAbilityId());
+        } else {
+            return null;
+        }
     }
 
     @SideOnly(Side.CLIENT)
@@ -95,7 +111,7 @@ public abstract class PlayerAbility extends IForgeRegistryEntry.Impl<PlayerAbili
     }
 
     public boolean meetsRequirements(IPlayerData player) {
-        return player.getMana() >=
+        return !player.isCasting() && player.getMana() >=
                 PlayerFormulas.applyManaCostReduction(player, getManaCost(player.getAbilityRank(abilityId))) &&
                 player.getCurrentAbilityCooldown(abilityId) == 0;
     }
