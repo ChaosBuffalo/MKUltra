@@ -16,12 +16,12 @@ public class AbilityTracker {
     private int ticks;
     private final Map<ResourceLocation, Cooldown> cooldowns = Maps.newHashMap();
 
-    public boolean hasCooldown(ResourceLocation info) {
-        return getCooldownTicks(info) > 0;
+    public boolean hasCooldown(ResourceLocation id) {
+        return getCooldownTicks(id) > 0;
     }
 
-    public float getCooldown(ResourceLocation itemIn, float partialTicks) {
-        Cooldown cd = this.cooldowns.get(itemIn);
+    public float getCooldown(ResourceLocation id, float partialTicks) {
+        Cooldown cd = this.cooldowns.get(id);
 
         if (cd != null) {
             float totalCooldown = (float) (cd.expireTicks - cd.createTicks);
@@ -32,8 +32,8 @@ public class AbilityTracker {
         }
     }
 
-    public int getCooldownTicks(ResourceLocation itemIn) {
-        Cooldown cd = this.cooldowns.get(itemIn);
+    public int getCooldownTicks(ResourceLocation id) {
+        Cooldown cd = this.cooldowns.get(id);
 
         if (cd != null) {
             return Math.max(0, cd.expireTicks - this.ticks);
@@ -59,20 +59,20 @@ public class AbilityTracker {
         }
     }
 
-    public void setCooldown(ResourceLocation info, int ticksIn) {
-        this.cooldowns.put(info, new Cooldown(this.ticks, this.ticks + ticksIn));
-        this.notifyOnSet(info, ticksIn);
+    public void setCooldown(ResourceLocation id, int ticksIn) {
+        this.cooldowns.put(id, new Cooldown(this.ticks, this.ticks + ticksIn));
+        this.notifyOnSet(id, ticksIn);
     }
 
-    public void removeCooldown(ResourceLocation info) {
-        this.cooldowns.remove(info);
-        this.notifyOnRemove(info);
+    public void removeCooldown(ResourceLocation id) {
+        this.cooldowns.remove(id);
+        this.notifyOnRemove(id);
     }
 
-    protected void notifyOnSet(ResourceLocation info, int ticksIn) {
+    protected void notifyOnSet(ResourceLocation id, int ticksIn) {
     }
 
-    protected void notifyOnRemove(ResourceLocation info) {
+    protected void notifyOnRemove(ResourceLocation id) {
     }
 
     static class Cooldown {
@@ -94,15 +94,15 @@ public class AbilityTracker {
         }
 
         @Override
-        protected void notifyOnSet(ResourceLocation itemIn, int ticksIn) {
-            super.notifyOnSet(itemIn, ticksIn);
-            MKUltra.packetHandler.sendTo(new AbilityCooldownPacket(itemIn, ticksIn), player);
+        protected void notifyOnSet(ResourceLocation id, int ticksIn) {
+            super.notifyOnSet(id, ticksIn);
+            MKUltra.packetHandler.sendTo(new AbilityCooldownPacket(id, ticksIn), player);
         }
 
         @Override
-        protected void notifyOnRemove(ResourceLocation itemIn) {
-            super.notifyOnRemove(itemIn);
-            MKUltra.packetHandler.sendTo(new AbilityCooldownPacket(itemIn, 0), player);
+        protected void notifyOnRemove(ResourceLocation id) {
+            super.notifyOnRemove(id);
+            MKUltra.packetHandler.sendTo(new AbilityCooldownPacket(id, 0), player);
         }
     }
 
