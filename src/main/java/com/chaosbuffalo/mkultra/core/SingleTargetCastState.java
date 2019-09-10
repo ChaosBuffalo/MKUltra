@@ -1,20 +1,19 @@
 package com.chaosbuffalo.mkultra.core;
 
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nullable;
 
-public class SingleTargetAbilityInfo extends PlayerAbilityInfo {
+public class SingleTargetCastState extends CastState {
 
     private EntityLivingBase target;
 
-    public SingleTargetAbilityInfo(ResourceLocation abilityId) {
-        super(abilityId);
+    public SingleTargetCastState(int castTime){
+        super(castTime);
     }
 
-    public SingleTargetAbilityInfo(ResourceLocation abilityId, int rank) {
-        super(abilityId, rank);
+    public boolean hasTarget(){
+        return getTarget() != null && getTarget().isEntityAlive();
     }
 
     @Nullable

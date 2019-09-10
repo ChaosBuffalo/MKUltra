@@ -83,6 +83,7 @@ public class PlayerData implements IPlayerData {
     private int ticksSinceLastSwing;
     private boolean inSpellTriggerCallback;
     private final static int DUAL_WIELD_TIMEOUT = 25;
+    private CastState currentCastState;
 
 
     public PlayerData(EntityPlayer player) {
@@ -94,6 +95,7 @@ public class PlayerData implements IPlayerData {
         originalMainHand = player.getPrimaryHand();
         abilityTracker = AbilityTracker.getTracker(player);
         privateData = player.getDataManager();
+        currentCastState = null;
         setupWatcher();
         player.getAttributeMap().registerAttribute(PlayerAttributes.MAX_MANA);
         player.getAttributeMap().registerAttribute(PlayerAttributes.MANA_REGEN);
@@ -805,9 +807,10 @@ public class PlayerData implements IPlayerData {
     }
 
     @Override
-    public void startCast(ResourceLocation ability, int castTime) {
-        privateData.set(CURRENT_CAST, ability.toString());
+    public void startCast(PlayerAbility ability, int castTime) {
+        privateData.set(CURRENT_CAST, ability.getAbilityId().toString());
         setCastTicks(castTime);
+        currentCastState = ability.createCastState(castTime);
     }
 
     private void updateCastTime(){
@@ -816,14 +819,16 @@ public class PlayerData implements IPlayerData {
             ResourceLocation loc = getCastingAbility();
             PlayerAbility ability = MKURegistry.getAbility(loc);
             if (ability != null){
-                ability.continueCast(player, this, player.getEntityWorld(), currentCastTime);
+                ability.continueCast(player, this, player.getEntityWorld(), currentCastTime, currentCastState);
                 if (currentCastTime > 0){
                     setCastTicks(currentCastTime - 1);
                 } else {
-                    ability.endCast(player, this, player.getEntityWorld());
+                    ability.endCast(player, this, player.getEntityWorld(), currentCastState);
                     completeAbility(ability, getAbilityInfo(loc));
                     privateData.set(CURRENT_CAST, MKURegistry.INVALID_ABILITY.toString());
                 }
+            } else {
+                privateData.set(CURRENT_CAST, MKURegistry.INVALID_ABILITY.toString());
             }
         }
 
@@ -859,24 +864,29 @@ public class PlayerData implements IPlayerData {
         int cooldown = ability.getCooldownTicks(info.getRank());
         cooldown = PlayerFormulas.applyCooldownReduction(this, cooldown);
         setCooldown(info.getId(), cooldown);
+        currentCastState = null;
     }
 
+    @Nullable
     @Override
-    public void startAbility(PlayerAbility ability) {
+    public CastState startAbility(PlayerAbility ability) {
         PlayerAbilityInfo info = getAbilityInfo(ability.getAbilityId());
         if (info == null || !info.isCurrentlyKnown() || isCasting())
-            return;
+            return null;
 
         float manaCost = PlayerFormulas.applyManaCostReduction(this, ability.getManaCost(info.getRank()));
         setMana(getMana() - manaCost);
 
         int castTime = ability.getCastTime(info.getRank());
         if (castTime > 0){
-            startCast(ability.getAbilityId(), castTime);
+            startCast(ability, castTime);
+            return currentCastState;
         } else {
             completeAbility(ability, info);
         }
+        return null;
     }
+
 
     @Override
     public PlayerAbilityInfo getAbilityInfo(ResourceLocation abilityId) {

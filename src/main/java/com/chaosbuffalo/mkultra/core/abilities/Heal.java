@@ -2,15 +2,13 @@ package com.chaosbuffalo.mkultra.core.abilities;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.IPlayerData;
-import com.chaosbuffalo.mkultra.core.PlayerAbility;
-import com.chaosbuffalo.mkultra.core.PlayerAbilityInfo;
-import com.chaosbuffalo.mkultra.core.SingleTargetAbilityInfo;
+import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.ClericHealPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkultra.utils.AbilityUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -35,23 +33,29 @@ public class Heal extends PlayerAbility {
     }
 
     @Override
+    public CastState createCastState(int castTime) {
+        return new SingleTargetCastState(castTime);
+    }
+
+    @Override
     public Targeting.TargetType getTargetType() {
         return Targeting.TargetType.FRIENDLY;
     }
 
     @Override
-    public void endCast(EntityPlayer entity, IPlayerData data, World theWorld) {
-        super.endCast(entity, data, theWorld);
+    public void endCast(EntityPlayer entity, IPlayerData data, World theWorld, CastState castState) {
+        super.endCast(entity, data, theWorld, castState);
         Log.info("End cast of heal");
-        SingleTargetAbilityInfo info = getAbilityInfo(data, SingleTargetAbilityInfo.class);
-        if (info == null){
+
+        SingleTargetCastState singleTargetState = AbilityUtils.getCastStateAsType(castState, SingleTargetCastState.class);
+        PlayerAbilityInfo info = data.getAbilityInfo(getAbilityId());
+        if (singleTargetState == null || info == null){
             return;
         }
-        EntityLivingBase target = info.getTarget();
-        if (target != null){
+        if (singleTargetState.hasTarget()){
+            EntityLivingBase target = singleTargetState.getTarget();
             SpellCast heal = ClericHealPotion.Create(entity, BASE_VALUE, VALUE_SCALE).setTarget(target);
             target.addPotionEffect(heal.toPotionEffect(info.getRank()));
-            info.setTarget(null);
             Vec3d lookVec = entity.getLookVec();
             MKUltra.packetHandler.sendToAllAround(
                     new ParticleEffectSpawnPacket(
@@ -64,11 +68,6 @@ public class Heal extends PlayerAbility {
                     target.posY, target.posZ, 50.0f);
         }
 
-    }
-
-    @Override
-    public PlayerAbilityInfo createAbilityInfo() {
-        return new SingleTargetAbilityInfo(getAbilityId());
     }
 
     @Override
@@ -106,13 +105,12 @@ public class Heal extends PlayerAbility {
 
         int level = pData.getAbilityRank(getAbilityId());
         EntityLivingBase targetEntity = getSingleLivingTargetOrSelf(entity, getDistance(level), true);
-        SingleTargetAbilityInfo info = getAbilityInfo(pData, SingleTargetAbilityInfo.class);
-        if (info == null){
-            return;
+        CastState state = pData.startAbility(this);
+        SingleTargetCastState singleTargetState = AbilityUtils.getCastStateAsType(state, SingleTargetCastState.class);
+        if (singleTargetState != null){
+            singleTargetState.setTarget(targetEntity);
         }
-        pData.startAbility(this);
         Log.info("Start cast of heal");
-        info.setTarget(targetEntity);
     }
 }
 

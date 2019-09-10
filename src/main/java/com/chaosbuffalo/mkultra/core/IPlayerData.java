@@ -39,7 +39,8 @@ public interface IPlayerData {
 
     float getCooldownPercent(PlayerAbility ability, float partialTicks);
 
-    void startAbility(PlayerAbility ability);
+    @Nullable
+    CastState startAbility(PlayerAbility ability);
 
     PlayerAbilityInfo getAbilityInfo(ResourceLocation abilityId);
 
@@ -171,5 +172,5 @@ public interface IPlayerData {
 
     ResourceLocation getCastingAbility();
 
-    void startCast(ResourceLocation ability, int castTime);
+    void startCast(PlayerAbility ability, int castTime);
 }

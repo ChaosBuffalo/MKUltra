@@ -1,11 +1,12 @@
 package com.chaosbuffalo.mkultra.utils;
 
-import com.chaosbuffalo.mkultra.core.IMobData;
-import com.chaosbuffalo.mkultra.core.MKUMobData;
+import com.chaosbuffalo.mkultra.core.*;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
 
 public class AbilityUtils {
 
@@ -26,4 +27,14 @@ public class AbilityUtils {
         }
         targetEntity.setPositionAndUpdate(teleLoc.x, teleLoc.y, teleLoc.z);
     }
+
+    @Nullable
+    public static <T extends CastState> T getCastStateAsType(CastState state, Class<T> clazz){
+        if (clazz.isInstance(state)){
+            return (T) state;
+        } else {
+            return null;
+        }
+    }
+
 }
