@@ -16,12 +16,12 @@ public class AbilityTracker {
     private int ticks;
     private final Map<ResourceLocation, Cooldown> cooldowns = Maps.newHashMap();
 
-    public boolean hasCooldown(PlayerAbilityInfo info) {
+    public boolean hasCooldown(ResourceLocation info) {
         return getCooldownTicks(info) > 0;
     }
 
-    public float getCooldown(PlayerAbilityInfo itemIn, float partialTicks) {
-        Cooldown cd = this.cooldowns.get(itemIn.getId());
+    public float getCooldown(ResourceLocation itemIn, float partialTicks) {
+        Cooldown cd = this.cooldowns.get(itemIn);
 
         if (cd != null) {
             float totalCooldown = (float) (cd.expireTicks - cd.createTicks);
@@ -32,8 +32,8 @@ public class AbilityTracker {
         }
     }
 
-    public int getCooldownTicks(PlayerAbilityInfo itemIn) {
-        Cooldown cd = this.cooldowns.get(itemIn.getId());
+    public int getCooldownTicks(ResourceLocation itemIn) {
+        Cooldown cd = this.cooldowns.get(itemIn);
 
         if (cd != null) {
             return Math.max(0, cd.expireTicks - this.ticks);
@@ -59,14 +59,14 @@ public class AbilityTracker {
         }
     }
 
-    public void setCooldown(PlayerAbilityInfo info, int ticksIn) {
-        this.cooldowns.put(info.getId(), new Cooldown(this.ticks, this.ticks + ticksIn));
-        this.notifyOnSet(info.getId(), ticksIn);
+    public void setCooldown(ResourceLocation info, int ticksIn) {
+        this.cooldowns.put(info, new Cooldown(this.ticks, this.ticks + ticksIn));
+        this.notifyOnSet(info, ticksIn);
     }
 
-    public void removeCooldown(PlayerAbilityInfo info) {
-        this.cooldowns.remove(info.getId());
-        this.notifyOnRemove(info.getId());
+    public void removeCooldown(ResourceLocation info) {
+        this.cooldowns.remove(info);
+        this.notifyOnRemove(info);
     }
 
     protected void notifyOnSet(ResourceLocation info, int ticksIn) {

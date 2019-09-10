@@ -643,7 +643,7 @@ public class PlayerData implements IPlayerData {
     @Override
     public int getCurrentAbilityCooldown(ResourceLocation abilityId) {
         PlayerAbilityInfo abilityInfo = getAbilityInfo(abilityId);
-        return abilityInfo != null ? abilityTracker.getCooldownTicks(abilityInfo) : GameConstants.ACTION_BAR_INVALID_COOLDOWN;
+        return abilityInfo != null ? abilityTracker.getCooldownTicks(abilityId) : GameConstants.ACTION_BAR_INVALID_COOLDOWN;
     }
 
     @Override
@@ -691,9 +691,9 @@ public class PlayerData implements IPlayerData {
         info.upgrade();
         classInfo.addToSpendOrder(abilityId);
 
-        if (abilityTracker.hasCooldown(info)) {
+        if (abilityTracker.hasCooldown(abilityId)) {
             int newMaxCooldown = getAbilityCooldown(ability);
-            int current = abilityTracker.getCooldownTicks(info);
+            int current = abilityTracker.getCooldownTicks(abilityId);
             setCooldown(info.getId(), Math.min(current, newMaxCooldown));
         }
 
@@ -916,8 +916,8 @@ public class PlayerData implements IPlayerData {
         ResourceLocation id = valid ? abilityInfo.getId() : MKURegistry.INVALID_ABILITY;
         setAbilityInSlot(index, id);
 
-        if (abilityTracker.hasCooldown(abilityInfo)) {
-            int cd = abilityTracker.getCooldownTicks(abilityInfo);
+        if (abilityTracker.hasCooldown(abilityId)) {
+            int cd = abilityTracker.getCooldownTicks(abilityId);
             setCooldown(abilityId, cd);
         }
     }
@@ -1119,7 +1119,7 @@ public class PlayerData implements IPlayerData {
         NBTTagList allSkills = new NBTTagList();
         for (PlayerAbilityInfo info : abilityInfoMap.values()) {
             NBTTagCompound sk = new NBTTagCompound();
-            info.setCooldownTicks(abilityTracker.getCooldownTicks(info));
+            info.setCooldownTicks(abilityTracker.getCooldownTicks(info.getId()));
             info.serialize(sk);
             allSkills.appendTag(sk);
         }
@@ -1139,7 +1139,7 @@ public class PlayerData implements IPlayerData {
                 PlayerAbilityInfo info = ability.createAbilityInfo();
                 info.deserialize(sk);
 
-                abilityTracker.setCooldown(info, info.getCooldown());
+                abilityTracker.setCooldown(info.getId(), info.getCooldown());
 
                 abilityInfoMap.put(info.getId(), info);
             }
@@ -1449,9 +1449,9 @@ public class PlayerData implements IPlayerData {
             return false;
 
         if (cooldownTicks > 0) {
-            abilityTracker.setCooldown(info, cooldownTicks);
+            abilityTracker.setCooldown(info.getId(), cooldownTicks);
         } else {
-            abilityTracker.removeCooldown(info);
+            abilityTracker.removeCooldown(info.getId());
         }
         return true;
     }
@@ -1459,7 +1459,7 @@ public class PlayerData implements IPlayerData {
     @Override
     public float getCooldownPercent(PlayerAbility ability, float partialTicks) {
         PlayerAbilityInfo info = getAbilityInfo(ability.getAbilityId());
-        return info != null ? abilityTracker.getCooldown(info, partialTicks) : 0.0f;
+        return info != null ? abilityTracker.getCooldown(ability.getAbilityId(), partialTicks) : 0.0f;
     }
 
     public void debugResetAllCooldowns() {
@@ -1476,10 +1476,11 @@ public class PlayerData implements IPlayerData {
         sender.sendMessage(new TextComponentString(msg));
         for (PlayerAbilityInfo info : abilityInfoMap.values()) {
             PlayerAbility ability = MKURegistry.getAbility(info.getId());
+            ResourceLocation abilityId = info.getId();
             if (ability != null) {
-                msg = String.format("%s: %d / %d", ability.getAbilityName(), abilityTracker.getCooldownTicks(info), getAbilityCooldown(ability));
+                msg = String.format("%s: %d / %d", ability.getAbilityName(), abilityTracker.getCooldownTicks(abilityId), getAbilityCooldown(ability));
             } else {
-                msg = String.format("%s: %d / %d", info.getId(), abilityTracker.getCooldownTicks(info), info.getCooldown());
+                msg = String.format("%s: %d / %d", abilityId.toString(), abilityTracker.getCooldownTicks(abilityId), info.getCooldown());
             }
 
             sender.sendMessage(new TextComponentString(msg));
