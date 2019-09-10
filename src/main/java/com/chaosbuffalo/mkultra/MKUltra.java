@@ -86,6 +86,7 @@ public class MKUltra {
                 Log.info(String.format("Registering fire: %s", key.toString()));
             }
         });
+        MKConfig.registerDisabledMobs();
         ModSpawn.postInitJsonRegistration();
         ModTalents.postInitJsonRegistration();
         ClassLists.initFromConfig();

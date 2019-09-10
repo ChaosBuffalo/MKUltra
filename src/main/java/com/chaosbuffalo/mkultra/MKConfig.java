@@ -4,6 +4,7 @@ import com.chaosbuffalo.mkultra.core.ArmorClass;
 import com.chaosbuffalo.mkultra.core.ClassLists;
 import com.chaosbuffalo.mkultra.core.classes.*;
 import com.chaosbuffalo.mkultra.log.Log;
+import com.chaosbuffalo.mkultra.utils.EntityUtils;
 import com.chaosbuffalo.mkultra.utils.MobUtils;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.RangedAttribute;
@@ -191,10 +192,17 @@ public class MKConfig {
         @Config.Comment("Adjusts the default maximum health in minecraft for entities")
         public double MAX_ENTITY_HEALTH = 4096.0;
 
+        @Config.Name("NPC Attack Speed Recipients")
         @Config.Comment("These mobs will have attack speed added to their mob states, for use with the mob definition system.")
         public String[] ATTACK_SPEED_ON_MOBS = {
                 "minecraft:skeleton",
                 "minecraft:zombie"
+        };
+
+        @Config.Name("Disabled Entities")
+        @Config.Comment("Prevents the listed entities from spawning, useful for working with buggy mods.")
+        public String[] DISABLED_ENTITIES = {
+
         };
     }
 
@@ -289,6 +297,10 @@ public class MKConfig {
         Arrays.stream(armor.MEDIUM_ITEM_OVERRIDES).forEach((x) -> registerArmorFromItemName(x, ArmorClass.MEDIUM));
         Arrays.stream(armor.HEAVY_ARMOR).forEach((x) -> registerArmorFromName(x, ArmorClass.HEAVY));
         Arrays.stream(armor.HEAVY_ITEM_OVERRIDES).forEach((x) -> registerArmorFromItemName(x, ArmorClass.HEAVY));
+    }
+
+    public static void registerDisabledMobs(){
+        Arrays.stream(gameplay.DISABLED_ENTITIES).forEach((x) -> EntityUtils.addDisabledMob(new ResourceLocation(x)));
     }
 
     public static void setupAttackSpeedWhitelist() {
