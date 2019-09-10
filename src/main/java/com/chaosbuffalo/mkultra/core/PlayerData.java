@@ -341,14 +341,12 @@ public class PlayerData implements IPlayerData {
 
     @Override
     public void setArbitraryCooldown(ResourceLocation loc, int cooldown) {
-        PlayerAbilityInfo info = new PlayerAbilityInfo(loc);
-        abilityInfoMap.put(loc, info);
         setCooldown(loc, cooldown);
     }
 
     @Override
     public int getArbitraryCooldown(ResourceLocation loc) {
-        return getCurrentAbilityCooldown(loc);
+        return abilityTracker.getCooldownTicks(loc);
     }
 
     @Override
@@ -670,7 +668,7 @@ public class PlayerData implements IPlayerData {
             return false;
         }
         PlayerAbility ability = MKURegistry.getAbility(abilityId);
-        if (ability == null){
+        if (ability == null) {
             return false;
         }
         PlayerAbilityInfo info = getAbilityInfo(abilityId);
@@ -815,25 +813,25 @@ public class PlayerData implements IPlayerData {
     }
 
     @SideOnly(Side.CLIENT)
-    private void updateCastTimeClient(){
-        if (isCasting()){
+    private void updateCastTimeClient() {
+        if (isCasting()) {
             int currentCastTime = getCastTicks();
             ResourceLocation loc = getCastingAbility();
             PlayerAbility ability = MKURegistry.getAbility(loc);
-            if (ability != null){
+            if (ability != null) {
                 ability.continueCastClient(player, this, player.getEntityWorld(), currentCastTime);
             }
         }
     }
 
-    private void updateCastTime(){
-        if (isCasting()){
+    private void updateCastTime() {
+        if (isCasting()) {
             int currentCastTime = getCastTicks();
             ResourceLocation loc = getCastingAbility();
             PlayerAbility ability = MKURegistry.getAbility(loc);
-            if (ability != null){
+            if (ability != null) {
                 ability.continueCast(player, this, player.getEntityWorld(), currentCastTime, currentCastState);
-                if (currentCastTime > 0){
+                if (currentCastTime > 0) {
                     setCastTicks(currentCastTime - 1);
                 } else {
                     ability.endCast(player, this, player.getEntityWorld(), currentCastState);
@@ -866,7 +864,7 @@ public class PlayerData implements IPlayerData {
     }
 
 
-    void completeAbility(PlayerAbility ability, PlayerAbilityInfo info){
+    void completeAbility(PlayerAbility ability, PlayerAbilityInfo info) {
         ItemStack heldItem = this.player.getHeldItem(EnumHand.OFF_HAND);
         if (heldItem.getItem() instanceof ManaRegenIdol) {
             ItemHelper.damageStack(player, heldItem, 1);
@@ -892,7 +890,7 @@ public class PlayerData implements IPlayerData {
         setMana(getMana() - manaCost);
 
         int castTime = ability.getCastTime(info.getRank());
-        if (castTime > 0){
+        if (castTime > 0) {
             startCast(ability, castTime);
             return currentCastState;
         } else {
@@ -1131,7 +1129,7 @@ public class PlayerData implements IPlayerData {
             for (int i = 0; i < skills.tagCount(); i++) {
                 NBTTagCompound sk = skills.getCompoundTagAt(i);
                 PlayerAbility ability = MKURegistry.getAbility(new ResourceLocation(sk.getString("id")));
-                if (ability == null){
+                if (ability == null) {
                     continue;
                 }
                 PlayerAbilityInfo info = ability.createAbilityInfo();
@@ -1461,35 +1459,27 @@ public class PlayerData implements IPlayerData {
     }
 
     public void debugResetAllCooldowns() {
-        for (PlayerAbilityInfo info : abilityInfoMap.values()) {
-            setCooldown(info.getId(), 0);
-        }
-
+        abilityTracker.removeAll();
         updateActiveAbilities();
     }
 
     public void debugDumpAllAbilities(ICommandSender sender) {
-
         String msg = "All active cooldowns:";
         sender.sendMessage(new TextComponentString(msg));
-        for (PlayerAbilityInfo info : abilityInfoMap.values()) {
-            ResourceLocation abilityId = info.getId();
-            int current = abilityTracker.getCooldownTicks(abilityId);
-            if (current > 0) {
-                PlayerAbility ability = MKURegistry.getAbility(abilityId);
-                String name;
-                int max;
-                if (ability != null) {
-                    name = ability.getAbilityName();
-                    max = getAbilityCooldown(ability);
-                } else {
-                    name = abilityId.toString();
-                    max = abilityTracker.getMaxCooldownTicks(abilityId);
-                }
-                msg = String.format("%s: %d / %d", name, current, max);
-                sender.sendMessage(new TextComponentString(msg));
+        abilityTracker.iterateActive((abilityId, current) -> {
+            String name;
+            int max;
+            PlayerAbility ability = MKURegistry.getAbility(abilityId);
+            if (ability != null) {
+                name = ability.getAbilityName();
+                max = getAbilityCooldown(ability);
+            } else {
+                name = abilityId.toString();
+                max = abilityTracker.getMaxCooldownTicks(abilityId);
             }
-        }
+            String line = String.format("%s: %d / %d", name, current, max);
+            sender.sendMessage(new TextComponentString(line));
+        });
     }
 
     public void setInSpellTriggerCallback(boolean enable) {

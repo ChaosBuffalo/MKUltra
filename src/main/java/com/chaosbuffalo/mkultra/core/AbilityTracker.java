@@ -11,6 +11,7 @@ import net.minecraft.util.math.MathHelper;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 public class AbilityTracker {
 
@@ -88,14 +89,7 @@ public class AbilityTracker {
 
     public void serialize(NBTTagCompound nbt) {
         NBTTagCompound root = new NBTTagCompound();
-
-        for (ResourceLocation id : cooldowns.keySet()) {
-            int cd = getCooldownTicks(id);
-            if (cd > 0) {
-                root.setInteger(id.toString(), getCooldownTicks(id));
-            }
-        }
-
+        iterateActive((id, cd) -> root.setInteger(id.toString(), cd));
         nbt.setTag("cooldowns", root);
     }
 
@@ -105,6 +99,24 @@ public class AbilityTracker {
             for (String key : root.getKeySet()) {
                 setCooldown(new ResourceLocation(key), root.getInteger(key));
             }
+        }
+    }
+
+    void iterateActive(BiConsumer<ResourceLocation, Integer> consumer) {
+        for (ResourceLocation id : cooldowns.keySet()) {
+            int cd = getCooldownTicks(id);
+            if (cd > 0) {
+                consumer.accept(id, cd);
+            }
+        }
+    }
+
+    void removeAll() {
+        Iterator<Map.Entry<ResourceLocation, Cooldown>> iterator = this.cooldowns.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<ResourceLocation, Cooldown> entry = iterator.next();
+            iterator.remove();
+            this.notifyOnRemove(entry.getKey());
         }
     }
 
