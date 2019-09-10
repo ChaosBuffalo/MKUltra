@@ -5,6 +5,7 @@ import com.chaosbuffalo.mkultra.network.packets.AbilityCooldownPacket;
 import com.google.common.collect.Maps;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 
 import java.util.Iterator;
@@ -13,14 +14,14 @@ import java.util.Map;
 public class AbilityTracker {
 
     private int ticks;
-    private final Map<PlayerAbilityInfo, Cooldown> cooldowns = Maps.newHashMap();
+    private final Map<ResourceLocation, Cooldown> cooldowns = Maps.newHashMap();
 
     public boolean hasCooldown(PlayerAbilityInfo info) {
         return getCooldownTicks(info) > 0;
     }
 
     public float getCooldown(PlayerAbilityInfo itemIn, float partialTicks) {
-        Cooldown cd = this.cooldowns.get(itemIn);
+        Cooldown cd = this.cooldowns.get(itemIn.getId());
 
         if (cd != null) {
             float totalCooldown = (float) (cd.expireTicks - cd.createTicks);
@@ -32,7 +33,7 @@ public class AbilityTracker {
     }
 
     public int getCooldownTicks(PlayerAbilityInfo itemIn) {
-        Cooldown cd = this.cooldowns.get(itemIn);
+        Cooldown cd = this.cooldowns.get(itemIn.getId());
 
         if (cd != null) {
             return Math.max(0, cd.expireTicks - this.ticks);
@@ -45,10 +46,10 @@ public class AbilityTracker {
         ticks++;
 
         if (!this.cooldowns.isEmpty()) {
-            Iterator<Map.Entry<PlayerAbilityInfo, Cooldown>> iterator = this.cooldowns.entrySet().iterator();
+            Iterator<Map.Entry<ResourceLocation, Cooldown>> iterator = this.cooldowns.entrySet().iterator();
 
             while (iterator.hasNext()) {
-                Map.Entry<PlayerAbilityInfo, Cooldown> entry = iterator.next();
+                Map.Entry<ResourceLocation, Cooldown> entry = iterator.next();
 
                 if (entry.getValue().expireTicks <= this.ticks) {
                     iterator.remove();
@@ -59,19 +60,19 @@ public class AbilityTracker {
     }
 
     public void setCooldown(PlayerAbilityInfo info, int ticksIn) {
-        this.cooldowns.put(info, new Cooldown(this.ticks, this.ticks + ticksIn));
-        this.notifyOnSet(info, ticksIn);
+        this.cooldowns.put(info.getId(), new Cooldown(this.ticks, this.ticks + ticksIn));
+        this.notifyOnSet(info.getId(), ticksIn);
     }
 
     public void removeCooldown(PlayerAbilityInfo info) {
-        this.cooldowns.remove(info);
-        this.notifyOnRemove(info);
+        this.cooldowns.remove(info.getId());
+        this.notifyOnRemove(info.getId());
     }
 
-    protected void notifyOnSet(PlayerAbilityInfo info, int ticksIn) {
+    protected void notifyOnSet(ResourceLocation info, int ticksIn) {
     }
 
-    protected void notifyOnRemove(PlayerAbilityInfo info) {
+    protected void notifyOnRemove(ResourceLocation info) {
     }
 
     static class Cooldown {
@@ -92,14 +93,16 @@ public class AbilityTracker {
             this.player = player;
         }
 
-        protected void notifyOnSet(PlayerAbilityInfo itemIn, int ticksIn) {
+        @Override
+        protected void notifyOnSet(ResourceLocation itemIn, int ticksIn) {
             super.notifyOnSet(itemIn, ticksIn);
-            MKUltra.packetHandler.sendTo(new AbilityCooldownPacket(itemIn.getId(), ticksIn), player);
+            MKUltra.packetHandler.sendTo(new AbilityCooldownPacket(itemIn, ticksIn), player);
         }
 
-        protected void notifyOnRemove(PlayerAbilityInfo itemIn) {
+        @Override
+        protected void notifyOnRemove(ResourceLocation itemIn) {
             super.notifyOnRemove(itemIn);
-            MKUltra.packetHandler.sendTo(new AbilityCooldownPacket(itemIn.getId(), 0), player);
+            MKUltra.packetHandler.sendTo(new AbilityCooldownPacket(itemIn, 0), player);
         }
     }
 
