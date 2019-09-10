@@ -58,6 +58,10 @@ public abstract class PlayerAbility extends IForgeRegistryEntry.Impl<PlayerAbili
     }
 
 
+    public int getCastTime(int currentRank){
+        return 0;
+    }
+
     public float getDistance(int currentRank) {
         return 1.0f;
     }
@@ -97,6 +101,10 @@ public abstract class PlayerAbility extends IForgeRegistryEntry.Impl<PlayerAbili
     }
 
     public abstract void execute(EntityPlayer entity, IPlayerData data, World theWorld);
+
+    public void continueCast(EntityPlayer entity, IPlayerData data, World theWorld, int castTimeLeft) {}
+
+    public void endCast(EntityPlayer entity, IPlayerData data, World theWorld){}
 
     protected EntityLivingBase getSingleLivingTarget(EntityLivingBase caster, float distance) {
         return getSingleLivingTarget(caster, distance, true);

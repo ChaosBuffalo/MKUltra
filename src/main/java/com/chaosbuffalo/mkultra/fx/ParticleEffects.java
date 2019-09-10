@@ -14,6 +14,11 @@ public class ParticleEffects {
     public static int SPHERE_MOTION = 2;
     public static int DIRECTED_SPOUT = 3;
 
+    public static void spawnParticle(int particleID, double speed, Vec3d position, Vec3d heading, World world){
+        Vec3d motion = heading.scale(speed);
+        world.spawnParticle(EnumParticleTypes.getParticleFromId(particleID),
+                position.x, position.y, position.z, motion.x, motion.y, motion.z);
+    }
 
     public static void spawnParticleEffect(int particleID, int motionType, int data,
                                            double speed, int count,

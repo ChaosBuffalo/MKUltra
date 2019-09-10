@@ -160,4 +160,14 @@ public interface IPlayerData {
     void clearToggleGroupAbility(ResourceLocation groupId);
 
     void setToggleGroupAbility(ResourceLocation groupId, PlayerToggleAbility ability);
+
+    boolean isCasting();
+
+    int getCastTicks();
+
+    void setCastTicks(int value);
+
+    ResourceLocation getCastingAbility();
+
+    void startCast(ResourceLocation ability, int castTime);
 }

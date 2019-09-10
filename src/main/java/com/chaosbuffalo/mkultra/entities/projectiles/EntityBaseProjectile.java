@@ -42,6 +42,7 @@ public abstract class EntityBaseProjectile extends Entity implements IProjectile
     private int groundProcTime;
     private boolean doGroundProc;
     private int amplifier;
+    private int graphicalEffectTickInterval;
 
     public EntityBaseProjectile(World worldIn) {
         super(worldIn);
@@ -55,6 +56,13 @@ public abstract class EntityBaseProjectile extends Entity implements IProjectile
         this.setAirProcTime(20);
         this.setDoAirProc(false);
         this.setAmplifier(0);
+        graphicalEffectTickInterval = 5;
+        setup();
+
+
+    }
+
+    public void setup(){
 
     }
 
@@ -87,6 +95,19 @@ public abstract class EntityBaseProjectile extends Entity implements IProjectile
 
     public int getAmplifier() {
         return this.amplifier;
+    }
+
+    public int getGraphicalEffectTickInterval() {
+        return this.graphicalEffectTickInterval;
+    }
+
+    public void setGraphicalEffectTickInterval(int value){
+        graphicalEffectTickInterval = value;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void clientGraphicalUpdate() {
+
     }
 
     public void setAmplifier(int newVal) {
@@ -220,6 +241,10 @@ public abstract class EntityBaseProjectile extends Entity implements IProjectile
         }
     }
 
+    public boolean isInGround(){
+        return inGround;
+    }
+
     /**
      * Called to onTick the entity's position/logic.
      */
@@ -238,7 +263,9 @@ public abstract class EntityBaseProjectile extends Entity implements IProjectile
 
         BlockPos blockpos = new BlockPos(this.posX, this.posY, this.posZ);
         IBlockState iblockstate = this.world.getBlockState(blockpos);
-
+        if (world.isRemote && ticksExisted % graphicalEffectTickInterval == 0){
+            clientGraphicalUpdate();
+        }
         if (this.inGround) {
             if (iblockstate.getBlock() == this.inTile) {
                 ++this.ticksInGround;
@@ -283,8 +310,9 @@ public abstract class EntityBaseProjectile extends Entity implements IProjectile
                         BlockPos blockposOfHit = trace.getBlockPos();
 
                         AxisAlignedBB axisalignedbb = iblockstate.getCollisionBoundingBox(this.world, blockposOfHit);
+                        Vec3d loc = getPositionVector().add(0, height/10, 0);
                         if (axisalignedbb != Block.NULL_AABB &&
-                                axisalignedbb.offset(blockposOfHit).contains(new Vec3d(this.posX, this.posY, this.posZ))) {
+                                axisalignedbb.offset(blockposOfHit).contains(loc)) {
                             this.inGround = true;
                             this.inTile = hitState.getBlock();
                             this.motionX = 0.0;
@@ -441,8 +469,7 @@ public abstract class EntityBaseProjectile extends Entity implements IProjectile
     protected boolean canPassThroughBlock(Block block) {
         return block instanceof BlockBush ||
                 block instanceof BlockReed ||
-                block instanceof BlockLeaves ||
-                block instanceof BlockGrass;
+                block instanceof BlockLeaves;
     }
 
 

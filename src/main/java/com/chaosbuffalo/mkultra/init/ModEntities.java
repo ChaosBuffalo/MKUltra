@@ -72,5 +72,8 @@ public class ModEntities {
         register(evt, new ResourceLocation(MKUltra.MODID, "orb_mother"),
                 EntityOrbMother.class, "EntityOrbMother", 14, 64,
                 1, true);
+        register(evt, new ResourceLocation(MKUltra.MODID, "meteor_projectile"),
+                EntityMeteorProjectile.class, "EntityMeteorProjectile", 15, 64,
+                1, true);
     }
 }

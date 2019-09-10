@@ -40,5 +40,7 @@ public class EntityRenderRegister {
                 new RenderRanger());
         RenderingRegistry.registerEntityRenderingHandler(EntityOrbMother.class,
                 new RenderOrbMother());
+        RenderingRegistry.registerEntityRenderingHandler(EntityMeteorProjectile.class,
+                new RenderMeteor());
     }
 }
