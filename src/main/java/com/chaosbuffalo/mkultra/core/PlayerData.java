@@ -342,7 +342,6 @@ public class PlayerData implements IPlayerData {
     @Override
     public void setArbitraryCooldown(ResourceLocation loc, int cooldown) {
         PlayerAbilityInfo info = new PlayerAbilityInfo(loc);
-        info.setCooldownTicks(cooldown);
         abilityInfoMap.put(loc, info);
         setCooldown(loc, cooldown);
     }
@@ -1119,7 +1118,6 @@ public class PlayerData implements IPlayerData {
         NBTTagList allSkills = new NBTTagList();
         for (PlayerAbilityInfo info : abilityInfoMap.values()) {
             NBTTagCompound sk = new NBTTagCompound();
-            info.setCooldownTicks(abilityTracker.getCooldownTicks(info.getId()));
             info.serialize(sk);
             allSkills.appendTag(sk);
         }
@@ -1138,8 +1136,6 @@ public class PlayerData implements IPlayerData {
                 }
                 PlayerAbilityInfo info = ability.createAbilityInfo();
                 info.deserialize(sk);
-
-                abilityTracker.setCooldown(info.getId(), info.getCooldown());
 
                 abilityInfoMap.put(info.getId(), info);
             }
@@ -1195,6 +1191,7 @@ public class PlayerData implements IPlayerData {
         nbt.setFloat("manaRegenRate", getBaseManaRegenRate());
         nbt.setFloat("totalMana", getBaseTotalMana());
         nbt.setFloat("healthRegenRate", getBaseHealthRegenRate());
+        abilityTracker.serialize(nbt);
         serializeSkills(nbt);
         serializeClasses(nbt);
     }
@@ -1213,6 +1210,7 @@ public class PlayerData implements IPlayerData {
         if (nbt.hasKey("healthRegenRate")) {
             setHealthRegen(nbt.getFloat("healthRegenRate"));
         }
+        abilityTracker.deserialize(nbt);
         deserializeSkills(nbt);
         deserializeClasses(nbt);
     }
@@ -1472,18 +1470,25 @@ public class PlayerData implements IPlayerData {
 
     public void debugDumpAllAbilities(ICommandSender sender) {
 
-        String msg = "All Abilities:";
+        String msg = "All active cooldowns:";
         sender.sendMessage(new TextComponentString(msg));
         for (PlayerAbilityInfo info : abilityInfoMap.values()) {
-            PlayerAbility ability = MKURegistry.getAbility(info.getId());
             ResourceLocation abilityId = info.getId();
-            if (ability != null) {
-                msg = String.format("%s: %d / %d", ability.getAbilityName(), abilityTracker.getCooldownTicks(abilityId), getAbilityCooldown(ability));
-            } else {
-                msg = String.format("%s: %d / %d", abilityId.toString(), abilityTracker.getCooldownTicks(abilityId), info.getCooldown());
+            int current = abilityTracker.getCooldownTicks(abilityId);
+            if (current > 0) {
+                PlayerAbility ability = MKURegistry.getAbility(abilityId);
+                String name;
+                int max;
+                if (ability != null) {
+                    name = ability.getAbilityName();
+                    max = getAbilityCooldown(ability);
+                } else {
+                    name = abilityId.toString();
+                    max = abilityTracker.getMaxCooldownTicks(abilityId);
+                }
+                msg = String.format("%s: %d / %d", name, current, max);
+                sender.sendMessage(new TextComponentString(msg));
             }
-
-            sender.sendMessage(new TextComponentString(msg));
         }
     }
 

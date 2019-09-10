@@ -5,6 +5,7 @@ import com.chaosbuffalo.mkultra.network.packets.AbilityCooldownPacket;
 import com.google.common.collect.Maps;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 
@@ -42,6 +43,16 @@ public class AbilityTracker {
         }
     }
 
+    public int getMaxCooldownTicks(ResourceLocation id) {
+        Cooldown cd = this.cooldowns.get(id);
+
+        if (cd != null) {
+            return Math.max(0, cd.expireTicks - cd.createTicks);
+        } else {
+            return 0;
+        }
+    }
+
     public void tick() {
         ticks++;
 
@@ -73,6 +84,28 @@ public class AbilityTracker {
     }
 
     protected void notifyOnRemove(ResourceLocation id) {
+    }
+
+    public void serialize(NBTTagCompound nbt) {
+        NBTTagCompound root = new NBTTagCompound();
+
+        for (ResourceLocation id : cooldowns.keySet()) {
+            int cd = getCooldownTicks(id);
+            if (cd > 0) {
+                root.setInteger(id.toString(), getCooldownTicks(id));
+            }
+        }
+
+        nbt.setTag("cooldowns", root);
+    }
+
+    public void deserialize(NBTTagCompound nbt) {
+        if (nbt.hasKey("cooldowns")) {
+            NBTTagCompound root = nbt.getCompoundTag("cooldowns");
+            for (String key : root.getKeySet()) {
+                setCooldown(new ResourceLocation(key), root.getInteger(key));
+            }
+        }
     }
 
     static class Cooldown {
