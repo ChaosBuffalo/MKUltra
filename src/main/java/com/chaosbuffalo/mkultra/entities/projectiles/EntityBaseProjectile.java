@@ -441,8 +441,7 @@ public abstract class EntityBaseProjectile extends Entity implements IProjectile
     protected boolean canPassThroughBlock(Block block) {
         return block instanceof BlockBush ||
                 block instanceof BlockReed ||
-                block instanceof BlockLeaves ||
-                block instanceof BlockGrass;
+                block instanceof BlockLeaves;
     }
 
 
