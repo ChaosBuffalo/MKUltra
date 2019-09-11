@@ -542,33 +542,13 @@ public class PlayerData implements IPlayerData {
     }
 
     @Override
-    public void setSpellCritChance(float critChance) {
-        player.getEntityAttribute(PlayerAttributes.SPELL_CRIT).setBaseValue(critChance);
-    }
-
-    @Override
     public float getSpellCritDamage() {
         return (float) player.getEntityAttribute(PlayerAttributes.SPELL_CRITICAL_DAMAGE).getAttributeValue();
     }
 
     @Override
-    public void setSpellCritDamage(float critDamage) {
-        player.getEntityAttribute(PlayerAttributes.SPELL_CRITICAL_DAMAGE).setBaseValue(critDamage);
-    }
-
-    @Override
-    public void setMeleeCritChance(float critChance) {
-        player.getEntityAttribute(PlayerAttributes.MELEE_CRIT).setBaseValue(critChance);
-    }
-
-    @Override
     public float getMeleeCritDamage() {
         return (float) player.getEntityAttribute(PlayerAttributes.MELEE_CRITICAL_DAMAGE).getAttributeValue();
-    }
-
-    @Override
-    public void setMeleeCritDamage(float critDamage) {
-        player.getEntityAttribute(PlayerAttributes.MELEE_CRITICAL_DAMAGE).setBaseValue(critDamage);
     }
 
     @Override
