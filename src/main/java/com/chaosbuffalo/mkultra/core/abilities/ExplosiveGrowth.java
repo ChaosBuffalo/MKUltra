@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.core.abilities;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.core.CastState;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKDamageSource;
 import com.chaosbuffalo.mkultra.core.PlayerAbility;
@@ -60,9 +61,15 @@ public class ExplosiveGrowth extends PlayerAbility {
     }
 
     @Override
-    public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
-        int level = pData.getAbilityRank(getAbilityId());
-        pData.startAbility(this);
+    public int getCastTime(int currentRank) {
+        return GameConstants.TICKS_PER_SECOND / currentRank;
+    }
+
+    @Override
+    public void endCast(EntityPlayer entity, IPlayerData data, World theWorld, CastState state) {
+        super.endCast(entity, data, theWorld, state);
+        int level = data.getAbilityRank(getAbilityId());
+
         Vec3d look = entity.getLookVec().scale(getDistance(level));
         Vec3d from = entity.getPositionVector().add(0, entity.getEyeHeight(), 0);
         Vec3d to = from.add(look);
@@ -115,6 +122,11 @@ public class ExplosiveGrowth extends PlayerAbility {
                 entity.dimension, entity.posX,
                 entity.posY, entity.posZ, 50.0f);
 
+    }
+
+    @Override
+    public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
+        pData.startAbility(this);
     }
 }
 

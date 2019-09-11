@@ -1,6 +1,8 @@
 package com.chaosbuffalo.mkultra.core.abilities;
 
+import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.core.CastState;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.entities.projectiles.EntityFairyFireProjectile;
@@ -46,10 +48,14 @@ public class FairyFire extends PlayerAbility {
     }
 
     @Override
-    public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
+    public int getCastTime(int currentRank) {
+        return GameConstants.TICKS_PER_SECOND / (2 * currentRank);
+    }
 
-        int level = pData.getAbilityRank(getAbilityId());
-        pData.startAbility(this);
+    @Override
+    public void endCast(EntityPlayer entity, IPlayerData data, World theWorld, CastState state) {
+        super.endCast(entity, data, theWorld, state);
+        int level = data.getAbilityRank(getAbilityId());
         EntityFairyFireProjectile projectile = new EntityFairyFireProjectile(theWorld, entity);
         projectile.setAmplifier(level);
         projectile.shoot(entity, entity.rotationPitch, entity.rotationYaw, 0.0F, PROJECTILE_SPEED,
@@ -66,5 +72,10 @@ public class FairyFire extends PlayerAbility {
                         lookVec),
                 entity.dimension, entity.posX,
                 entity.posY, entity.posZ, 50.0f);
+    }
+
+    @Override
+    public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
+        pData.startAbility(this);
     }
 }

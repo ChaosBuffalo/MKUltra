@@ -2,11 +2,11 @@ package com.chaosbuffalo.mkultra.core.abilities;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.IPlayerData;
-import com.chaosbuffalo.mkultra.core.PlayerAbility;
+import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.effects.spells.WarpCursePotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkultra.utils.AbilityUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -51,18 +51,28 @@ public class WarpCurse extends PlayerAbility {
     }
 
     @Override
-    public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
-        int level = pData.getAbilityRank(getAbilityId());
-        EntityLivingBase targetEntity = getSingleLivingTarget(entity, getDistance(level));
-        if (targetEntity != null) {
-            pData.startAbility(this);
+    public int getCastTime(int currentRank) {
+        return (int) (GameConstants.TICKS_PER_SECOND * 1.5f) / currentRank;
+    }
 
+    @Override
+    public void endCast(EntityPlayer entity, IPlayerData data, World theWorld, CastState state) {
+        super.endCast(entity, data, theWorld, state);
+        SingleTargetCastState singleTargetState = AbilityUtils.getCastStateAsType(state, SingleTargetCastState.class);
+        PlayerAbilityInfo info = data.getAbilityInfo(getAbilityId());
+        if (singleTargetState == null || info == null){
+            return;
+        }
+        if (singleTargetState.hasTarget()){
+            EntityLivingBase targetEntity = singleTargetState.getTarget();
+            int level = info.getRank();
             targetEntity.addPotionEffect(WarpCursePotion.Create(entity)
                     .setTarget(targetEntity)
                     .toPotionEffect(GameConstants.TICKS_PER_SECOND * level * 4, level));
             targetEntity.addPotionEffect(
                     new PotionEffect(MobEffects.SLOWNESS,
-                            GameConstants.TICKS_PER_SECOND * level * 4, level, false, true));
+                            GameConstants.TICKS_PER_SECOND * level * 4, level,
+                            false, true));
 
             Vec3d lookVec = entity.getLookVec();
             MKUltra.packetHandler.sendToAllAround(
@@ -74,6 +84,26 @@ public class WarpCurse extends PlayerAbility {
                             lookVec),
                     entity.dimension, targetEntity.posX,
                     targetEntity.posY, targetEntity.posZ, 50.0f);
+
+        }
+    }
+
+    @Override
+    public CastState createCastState(int castTime) {
+        return new SingleTargetCastState(castTime);
+    }
+
+    @Override
+    public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
+        int level = pData.getAbilityRank(getAbilityId());
+        EntityLivingBase targetEntity = getSingleLivingTarget(entity, getDistance(level));
+        if (targetEntity != null) {
+            CastState castState = pData.startAbility(this);
+            SingleTargetCastState singleTargetState = AbilityUtils.getCastStateAsType(castState,
+                    SingleTargetCastState.class);
+            if (singleTargetState != null){
+                singleTargetState.setTarget(targetEntity);
+            }
         }
     }
 }

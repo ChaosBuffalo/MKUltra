@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.core.abilities;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.core.CastState;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
@@ -20,7 +21,7 @@ import net.minecraft.world.World;
 
 public class KPDarkWail extends PlayerAbility {
 
-    public static float BASE_DAMAGE = 6.0f;
+    public static float BASE_DAMAGE = 8.0f;
     public static float DAMAGE_SCALE = 2.0f;
     public static int DURATION_BASE = 4;
     public static int DURATION_SCALE = 2;
@@ -55,10 +56,14 @@ public class KPDarkWail extends PlayerAbility {
     }
 
     @Override
-    public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
-        pData.startAbility(this);
+    public int getCastTime(int currentRank) {
+        return GameConstants.TICKS_PER_SECOND / currentRank;
+    }
 
-        int level = pData.getAbilityRank(getAbilityId());
+    @Override
+    public void endCast(EntityPlayer entity, IPlayerData data, World theWorld, CastState state) {
+        super.endCast(entity, data, theWorld, state);
+        int level = data.getAbilityRank(getAbilityId());
 
         // What to do for each target hit
         SpellCast damage = AbilityMagicDamage.Create(entity, BASE_DAMAGE, DAMAGE_SCALE);
@@ -88,5 +93,11 @@ public class KPDarkWail extends PlayerAbility {
                         entity.posZ, 1.0, 1.0, 1.0, 2.0,
                         lookVec),
                 entity, 50.0f);
+    }
+
+    @Override
+    public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
+        pData.startAbility(this);
+
     }
 }
