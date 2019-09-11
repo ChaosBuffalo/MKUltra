@@ -60,6 +60,8 @@ public class PlayerData implements IPlayerData {
     private final static DataParameter<String> CURRENT_CAST = EntityDataManager.createKey(
             EntityPlayer.class, DataSerializers.STRING);
 
+    private final static String INVALID_ABILITY_STRING = MKURegistry.INVALID_ABILITY.toString();
+
     static {
         ACTION_BAR_ABILITY_ID = new DataParameter[GameConstants.ACTION_BAR_SIZE];
         for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
@@ -118,9 +120,9 @@ public class PlayerData implements IPlayerData {
         privateData.register(CLASS_ID, MKURegistry.INVALID_CLASS.toString());
         privateData.register(LEVEL, 0);
         privateData.register(CAST_TICKS, 0);
-        privateData.register(CURRENT_CAST, MKURegistry.INVALID_ABILITY.toString());
+        privateData.register(CURRENT_CAST, INVALID_ABILITY_STRING);
         for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
-            privateData.register(ACTION_BAR_ABILITY_ID[i], MKURegistry.INVALID_ABILITY.toString());
+            privateData.register(ACTION_BAR_ABILITY_ID[i], INVALID_ABILITY_STRING);
         }
     }
 
@@ -813,6 +815,18 @@ public class PlayerData implements IPlayerData {
         currentCastState = ability.createCastState(castTime);
     }
 
+    @SideOnly(Side.CLIENT)
+    private void updateCastTimeClient(){
+        if (isCasting()){
+            int currentCastTime = getCastTicks();
+            ResourceLocation loc = getCastingAbility();
+            PlayerAbility ability = MKURegistry.getAbility(loc);
+            if (ability != null){
+                ability.continueCastClient(player, this, player.getEntityWorld(), currentCastTime);
+            }
+        }
+    }
+
     private void updateCastTime(){
         if (isCasting()){
             int currentCastTime = getCastTicks();
@@ -823,12 +837,11 @@ public class PlayerData implements IPlayerData {
                 if (currentCastTime > 0){
                     setCastTicks(currentCastTime - 1);
                 } else {
-                    ability.endCast(player, this, player.getEntityWorld(), currentCastState);
                     completeAbility(ability, getAbilityInfo(loc));
-                    privateData.set(CURRENT_CAST, MKURegistry.INVALID_ABILITY.toString());
+                    privateData.set(CURRENT_CAST, INVALID_ABILITY_STRING);
                 }
             } else {
-                privateData.set(CURRENT_CAST, MKURegistry.INVALID_ABILITY.toString());
+                privateData.set(CURRENT_CAST, INVALID_ABILITY_STRING);
             }
         }
 
@@ -853,6 +866,7 @@ public class PlayerData implements IPlayerData {
     }
 
     void completeAbility(PlayerAbility ability, PlayerAbilityInfo info){
+        ability.endCast(player, this, player.getEntityWorld(), currentCastState);
         ItemStack heldItem = this.player.getHeldItem(EnumHand.OFF_HAND);
         if (heldItem.getItem() instanceof ManaRegenIdol) {
             ItemHelper.damageStack(player, heldItem, 1);

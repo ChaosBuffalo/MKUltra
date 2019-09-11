@@ -8,9 +8,9 @@ import net.minecraft.item.ItemStack;
 
 public class PlayerFormulas {
 
-    public static float scaleMagicDamage(IPlayerData playerData, float originalDamage) {
+    public static float scaleMagicDamage(IPlayerData playerData, float originalDamage, float modifierScaling) {
         float mod = playerData.getMagicDamageBonus();
-        return originalDamage + mod;
+        return originalDamage + mod * modifierScaling;
     }
 
     public static float applyMagicArmor(IPlayerData playerData, float originalDamage) {

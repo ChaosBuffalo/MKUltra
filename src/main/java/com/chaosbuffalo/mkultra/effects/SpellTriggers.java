@@ -184,7 +184,12 @@ public class SpellTriggers {
 
         public static void onPlayerHurtEntity(LivingHurtEvent event, DamageSource source, EntityLivingBase livingTarget, EntityPlayerMP playerSource, IPlayerData sourceData) {
             if (source.isMagicDamage()) {
-                float newDamage = PlayerFormulas.scaleMagicDamage(sourceData, event.getAmount());
+                float scaleFactor = 1.0f;
+                if (isMKUltraAbilityDamage(source)){
+                    MKDamageSource mkSource = (MKDamageSource) source;
+                    scaleFactor = mkSource.getModifierScaling();
+                }
+                float newDamage = PlayerFormulas.scaleMagicDamage(sourceData, event.getAmount(), scaleFactor);
                 event.setAmount(newDamage);
             }
 
@@ -280,8 +285,13 @@ public class SpellTriggers {
             if (!isDirect) {
                 IAttributeInstance atkDmg = playerSource.getAttributeMap().getAttributeInstance(
                         SharedMonsterAttributes.ATTACK_DAMAGE);
+                double amount = atkDmg.getAttributeValue();
+                if (isMKUltraAbilityDamage(source)){
+                    MKDamageSource mkSource = (MKDamageSource) source;
+                    amount *= mkSource.getModifierScaling();
+                }
                 event.setAmount((float) (event.getAmount() +
-                        atkDmg.getAttributeValue() * playerSource.world.rand.nextDouble()));
+                        amount * playerSource.world.rand.nextDouble()));
             }
             if (checkCrit(playerSource, critChance)) {
                 float critMultiplier = ItemUtils.getCritDamageForItem(mainHand);

@@ -20,6 +20,7 @@ public class MKDamageSource extends EntityDamageSourceIndirect {
     private static String MELEE_ABILITY_DMG_TYPE = "mkUltraMeleeAbility";
 
     private final ResourceLocation abilityId;
+    private float modifierScaling;
 
     public ResourceLocation getAbilityId() {
         return abilityId;
@@ -29,6 +30,16 @@ public class MKDamageSource extends EntityDamageSourceIndirect {
                           Entity source, @Nullable Entity indirectEntityIn) {
         super(damageTypeIn, source, indirectEntityIn);
         this.abilityId = abilityId;
+        this.modifierScaling = 1.0f;
+    }
+
+    public float getModifierScaling(){
+        return modifierScaling;
+    }
+
+    public MKDamageSource setModifierScaling(float value){
+        modifierScaling = value;
+        return this;
     }
 
     public boolean isIndirectMagic() {
@@ -50,6 +61,14 @@ public class MKDamageSource extends EntityDamageSourceIndirect {
                 .setMagicDamage();
     }
 
+    public static DamageSource causeIndirectMagicDamage(ResourceLocation abilityId, Entity source,
+                                                        @Nullable Entity indirectEntityIn, float modifierScaling) {
+        return new MKDamageSource(abilityId, ABILITY_DMG_TYPE, source, indirectEntityIn)
+                .setModifierScaling(modifierScaling)
+                .setDamageBypassesArmor()
+                .setMagicDamage();
+    }
+
     public static DamageSource causeIndirectMobMagicDamage(ResourceLocation abilityId, Entity source,
                                                            @Nullable Entity indirectEntityIn) {
         return new MKDamageSource(abilityId, MOB_ABILITY_DAMAGE_TYPE, source, indirectEntityIn)
@@ -60,5 +79,11 @@ public class MKDamageSource extends EntityDamageSourceIndirect {
     public static DamageSource fromMeleeSkill(ResourceLocation abilityId, Entity source,
                                               @Nullable Entity indirectEntityIn) {
         return new MKDamageSource(abilityId, MELEE_ABILITY_DMG_TYPE, source, indirectEntityIn);
+    }
+
+    public static DamageSource fromMeleeSkill(ResourceLocation abilityId, Entity source,
+                                              @Nullable Entity indirectEntityIn, float modifierScaling){
+        return new MKDamageSource(abilityId, MELEE_ABILITY_DMG_TYPE, source, indirectEntityIn)
+                .setModifierScaling(modifierScaling);
     }
 }

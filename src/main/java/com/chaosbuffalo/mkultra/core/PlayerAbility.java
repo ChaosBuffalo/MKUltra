@@ -59,6 +59,11 @@ public abstract class PlayerAbility extends IForgeRegistryEntry.Impl<PlayerAbili
     }
 
     @SideOnly(Side.CLIENT)
+    public void continueCastClient(EntityPlayer entity, IPlayerData data, World theWorld, int castTimeLeft){
+
+    }
+
+    @SideOnly(Side.CLIENT)
     public String getAbilityName() {
         return I18n.format(String.format("%s.%s.name", abilityId.getNamespace(), abilityId.getPath()));
     }

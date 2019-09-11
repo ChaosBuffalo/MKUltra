@@ -97,7 +97,7 @@ public class Heal extends PlayerAbility {
 
     @Override
     public int getCastTime(int currentRank) {
-        return GameConstants.TICKS_PER_SECOND / 2;
+        return GameConstants.TICKS_PER_SECOND / 4;
     }
 
     @Override
@@ -110,7 +110,6 @@ public class Heal extends PlayerAbility {
         if (singleTargetState != null){
             singleTargetState.setTarget(targetEntity);
         }
-        Log.info("Start cast of heal");
     }
 }
 

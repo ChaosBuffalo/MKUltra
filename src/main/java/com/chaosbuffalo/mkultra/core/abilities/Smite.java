@@ -2,11 +2,11 @@ package com.chaosbuffalo.mkultra.core.abilities;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.IPlayerData;
-import com.chaosbuffalo.mkultra.core.PlayerAbility;
+import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.effects.spells.SmitePotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkultra.utils.AbilityUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,8 +18,8 @@ import net.minecraft.world.World;
 
 public class Smite extends PlayerAbility {
 
-    public static float BASE_DAMAGE = 4.0f;
-    public static float DAMAGE_SCALE = 2.0f;
+    public static float BASE_DAMAGE = 6.0f;
+    public static float DAMAGE_SCALE = 4.0f;
 
     public Smite() {
         super(MKUltra.MODID, "ability.smite");
@@ -51,17 +51,27 @@ public class Smite extends PlayerAbility {
     }
 
     @Override
-    public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
-        int level = pData.getAbilityRank(getAbilityId());
+    public int getCastTime(int currentRank) {
+        return GameConstants.TICKS_PER_SECOND / currentRank;
+    }
 
-        EntityLivingBase targetEntity = getSingleLivingTarget(entity, getDistance(level));
-        if (targetEntity != null) {
-            pData.startAbility(this);
-
-            targetEntity.addPotionEffect(SmitePotion.Create(entity, targetEntity, BASE_DAMAGE, DAMAGE_SCALE).toPotionEffect(level));
+    @Override
+    public void endCast(EntityPlayer entity, IPlayerData data, World theWorld, CastState state) {
+        super.endCast(entity, data, theWorld, state);
+        SingleTargetCastState singleTargetState = AbilityUtils.getCastStateAsType(state, SingleTargetCastState.class);
+        PlayerAbilityInfo info = data.getAbilityInfo(getAbilityId());
+        if (singleTargetState == null || info == null){
+            return;
+        }
+        if (singleTargetState.hasTarget()){
+            EntityLivingBase targetEntity = singleTargetState.getTarget();
+            int level = info.getRank();
+            targetEntity.addPotionEffect(SmitePotion.Create(entity, targetEntity,
+                    BASE_DAMAGE, DAMAGE_SCALE).toPotionEffect(level));
             targetEntity.addPotionEffect(
                     new PotionEffect(MobEffects.SLOWNESS,
-                            GameConstants.TICKS_PER_SECOND * level, 100, false, true));
+                            GameConstants.TICKS_PER_SECOND * level,
+                            100, false, true));
 
             Vec3d lookVec = entity.getLookVec();
             MKUltra.packetHandler.sendToAllAround(
@@ -73,6 +83,26 @@ public class Smite extends PlayerAbility {
                             lookVec),
                     entity.dimension, targetEntity.posX,
                     targetEntity.posY, targetEntity.posZ, 50.0f);
+        }
+    }
+
+    @Override
+    public CastState createCastState(int castTime) {
+        return new SingleTargetCastState(castTime);
+    }
+
+    @Override
+    public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
+        int level = pData.getAbilityRank(getAbilityId());
+
+        EntityLivingBase targetEntity = getSingleLivingTarget(entity, getDistance(level));
+        if (targetEntity != null) {
+            CastState state = pData.startAbility(this);
+            SingleTargetCastState singleTargetState = AbilityUtils.getCastStateAsType(state,
+                    SingleTargetCastState.class);
+            if (singleTargetState != null) {
+                singleTargetState.setTarget(targetEntity);
+            }
         }
     }
 }

@@ -15,6 +15,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class AbilityMagicDamage extends SpellPotionBase {
+    public static final String SCALING_CONTRIBUTION = "instant_indirect_magic_damage.scaling_contribution";
 
     public static ResourceLocation INDIRECT_MAGIC_DMG_ABILITY_ID = new ResourceLocation(
             MKUltra.MODID, "ability.instant_indirect_magic_damage");
@@ -28,6 +29,11 @@ public class AbilityMagicDamage extends SpellPotionBase {
 
     public static SpellCast Create(Entity source, float baseDamage, float scaling) {
         return INSTANCE.newSpellCast(source).setScalingParameters(baseDamage, scaling);
+    }
+
+    public static SpellCast Create(Entity source, float baseDamage, float scaling, float modifierScaling) {
+        return INSTANCE.newSpellCast(source).setScalingParameters(baseDamage, scaling)
+                .setFloat(SCALING_CONTRIBUTION, modifierScaling);
     }
 
     private AbilityMagicDamage() {
@@ -44,6 +50,6 @@ public class AbilityMagicDamage extends SpellPotionBase {
     public void doEffect(Entity applier, Entity caster, EntityLivingBase target, int amplifier, SpellCast cast) {
         float damage = cast.getScaledValue(amplifier);
         target.attackEntityFrom(MKDamageSource.causeIndirectMagicDamage(INDIRECT_MAGIC_DMG_ABILITY_ID,
-                applier, caster), damage);
+                applier, caster, cast.getFloat(SCALING_CONTRIBUTION, 1.0f)), damage);
     }
 }
