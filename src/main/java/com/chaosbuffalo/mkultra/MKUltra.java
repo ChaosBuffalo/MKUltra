@@ -29,7 +29,7 @@ import java.io.File;
 
 
 @Mod(modid = MKUltra.MODID, name = MKUltra.MODNAME, version = MKUltra.VERSION,
-        dependencies = "required-after:targeting_api;")
+        dependencies = "required-after:forge@[14.23.5.2838,);required-after:targeting_api;")
 public class MKUltra {
     public static final String MODID = "mkultra";
     public static final String VERSION = "@VERSION@";
