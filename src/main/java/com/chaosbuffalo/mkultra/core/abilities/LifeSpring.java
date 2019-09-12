@@ -53,7 +53,7 @@ public class LifeSpring extends PlayerAbility {
 
     @Override
     public int getCastTime(int currentRank) {
-        return GameConstants.TICKS_PER_SECOND * 2;
+        return GameConstants.TICKS_PER_SECOND * 2 - 5  * currentRank;
     }
 
     @Override

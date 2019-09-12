@@ -1,6 +1,8 @@
 package com.chaosbuffalo.mkultra.core.abilities;
 
+import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.core.CastState;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
@@ -50,17 +52,23 @@ public class FlameWave extends PlayerAbility {
     }
 
     @Override
-    public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
-        pData.startAbility(this);
+    public int getCastTime(int currentRank) {
+        return GameConstants.TICKS_PER_SECOND / 2 * currentRank;
+    }
 
-        int level = pData.getAbilityRank(getAbilityId());
+    @Override
+    public void endCast(EntityPlayer entity, IPlayerData data, World theWorld, CastState state) {
+        super.endCast(entity, data, theWorld, state);
+        int level = data.getAbilityRank(getAbilityId());
 
         // What to do for each target hit
         SpellCast flames = FlameWavePotion.Create(entity, BASE_DAMAGE, DAMAGE_SCALE);
         SpellCast particles = ParticlePotion.Create(entity,
                 EnumParticleTypes.LAVA.getParticleID(),
-                ParticleEffects.SPHERE_MOTION, false, new Vec3d(1.0, 1.0, 1.0),
-                new Vec3d(0.0, 1.0, 0.0), 40, 5, 1.0);
+                ParticleEffects.SPHERE_MOTION, false,
+                new Vec3d(1.0, 1.0, 1.0),
+                new Vec3d(0.0, 1.0, 0.0),
+                40, 5, 1.0);
 
         AreaEffectBuilder.Create(entity, entity)
                 .spellCast(flames, level, getTargetType())
@@ -79,5 +87,10 @@ public class FlameWave extends PlayerAbility {
                         entity.posZ, 1.0, 1.0, 1.0, 2.5f,
                         lookVec),
                 entity, 50.0f);
+    }
+
+    @Override
+    public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
+        pData.startAbility(this);
     }
 }

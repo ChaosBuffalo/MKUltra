@@ -837,6 +837,7 @@ public class PlayerData implements IPlayerData {
                 if (currentCastTime > 0){
                     setCastTicks(currentCastTime - 1);
                 } else {
+                    ability.endCast(player, this, player.getEntityWorld(), currentCastState);
                     completeAbility(ability, getAbilityInfo(loc));
                     privateData.set(CURRENT_CAST, INVALID_ABILITY_STRING);
                 }
@@ -865,8 +866,8 @@ public class PlayerData implements IPlayerData {
         return false;
     }
 
+
     void completeAbility(PlayerAbility ability, PlayerAbilityInfo info){
-        ability.endCast(player, this, player.getEntityWorld(), currentCastState);
         ItemStack heldItem = this.player.getHeldItem(EnumHand.OFF_HAND);
         if (heldItem.getItem() instanceof ManaRegenIdol) {
             ItemHelper.damageStack(player, heldItem, 1);

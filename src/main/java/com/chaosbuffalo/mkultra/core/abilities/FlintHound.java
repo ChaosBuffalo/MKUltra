@@ -1,6 +1,8 @@
 package com.chaosbuffalo.mkultra.core.abilities;
 
+import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.core.CastState;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
@@ -43,10 +45,14 @@ public class FlintHound extends PlayerAbility {
     }
 
     @Override
-    public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
-        pData.startAbility(this);
+    public int getCastTime(int currentRank) {
+        return GameConstants.TICKS_PER_SECOND * 5;
+    }
 
-        int level = pData.getAbilityRank(getAbilityId());
+    @Override
+    public void endCast(EntityPlayer entity, IPlayerData data, World theWorld, CastState state) {
+        super.endCast(entity, data, theWorld, state);
+        int level = data.getAbilityRank(getAbilityId());
         int count = level * COUNT_PER_LEVEL;
 
         ItemStack stack = new ItemStack(Items.FLINT, count);
@@ -63,6 +69,11 @@ public class FlintHound extends PlayerAbility {
                         entity.posZ, 1.0, 1.0, 1.0, 1.0,
                         lookVec),
                 entity, 50.0f);
+    }
+
+    @Override
+    public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
+        pData.startAbility(this);
     }
 }
 

@@ -48,14 +48,14 @@ public class Heal extends PlayerAbility {
         Log.info("End cast of heal");
 
         SingleTargetCastState singleTargetState = AbilityUtils.getCastStateAsType(castState, SingleTargetCastState.class);
-        PlayerAbilityInfo info = data.getAbilityInfo(getAbilityId());
-        if (singleTargetState == null || info == null){
+        if (singleTargetState == null){
             return;
         }
         if (singleTargetState.hasTarget()){
+            int level = data.getAbilityRank(getAbilityId());
             EntityLivingBase target = singleTargetState.getTarget();
             SpellCast heal = ClericHealPotion.Create(entity, BASE_VALUE, VALUE_SCALE).setTarget(target);
-            target.addPotionEffect(heal.toPotionEffect(info.getRank()));
+            target.addPotionEffect(heal.toPotionEffect(level));
             Vec3d lookVec = entity.getLookVec();
             MKUltra.packetHandler.sendToAllAround(
                     new ParticleEffectSpawnPacket(

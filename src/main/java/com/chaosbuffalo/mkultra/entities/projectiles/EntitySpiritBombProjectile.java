@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.entities.projectiles;
 
+import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.abilities.SpiritBomb;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
@@ -27,10 +28,10 @@ public class EntitySpiritBombProjectile extends EntityBaseProjectile {
         super(worldIn, throwerIn);
 
         this.setDeathTime(60);
-        this.setAirProcTime(40);
+        this.setAirProcTime(GameConstants.TICKS_PER_SECOND);
         this.setDoAirProc(true);
         this.setDoGroundProc(true);
-        this.setGroundProcTime(40);
+        this.setGroundProcTime(GameConstants.TICKS_PER_SECOND);
         this.setSize(.15f, .15f);
     }
 

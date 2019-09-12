@@ -60,12 +60,11 @@ public class KanyeCutter extends PlayerAbility {
     public void endCast(EntityPlayer entity, IPlayerData data, World theWorld, CastState state) {
         super.endCast(entity, data, theWorld, state);
         SingleTargetCastState singleTargetState = AbilityUtils.getCastStateAsType(state, SingleTargetCastState.class);
-        PlayerAbilityInfo info = data.getAbilityInfo(getAbilityId());
-        if (singleTargetState == null || info == null){
+        if (singleTargetState == null){
             return;
         }
         if (singleTargetState.hasTarget()){
-            int level = info.getRank();
+            int level = data.getAbilityRank(getAbilityId());
             EntityLivingBase targetEntity = singleTargetState.getTarget();
             if (isValidTarget(entity, targetEntity)) {
                 targetEntity.addPotionEffect(new PotionEffect(MobEffects.WITHER, GameConstants.TICKS_PER_SECOND * 3, level));

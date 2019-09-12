@@ -54,7 +54,7 @@ public class WarpCursePotion extends SpellPeriodicPotionBase {
     public void doEffect(Entity source, Entity indirectSource, EntityLivingBase target, int amplifier, SpellCast cast) {
         Vec3d playerOrigin = target.getPositionVector();
         target.attackEntityFrom(MKDamageSource.causeIndirectMagicDamage(
-                new WarpCurse().getAbilityId(), source, indirectSource), amplifier * 3.0f);
+                new WarpCurse().getAbilityId(), source, indirectSource, 0.7f), amplifier * 3.0f);
 
         if (AbilityUtils.canTeleportEntity(target)) {
             double nextX = playerOrigin.x + (target.getRNG().nextInt(amplifier * 6) - target.getRNG().nextInt(amplifier * 6));

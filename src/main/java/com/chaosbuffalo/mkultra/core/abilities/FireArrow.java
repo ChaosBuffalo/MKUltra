@@ -1,6 +1,8 @@
 package com.chaosbuffalo.mkultra.core.abilities;
 
+import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.core.CastState;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.effects.spells.FireArrowPotion;
@@ -49,7 +51,14 @@ public class FireArrow extends PlayerAbility {
     }
 
     @Override
-    public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
+    public int getCastTime(int currentRank) {
+        return GameConstants.TICKS_PER_SECOND / 4;
+    }
+
+    @Override
+    public void endCast(EntityPlayer entity, IPlayerData data, World theWorld, CastState state) {
+        super.endCast(entity, data, theWorld, state);
+        int level = data.getAbilityRank(getAbilityId());
         ItemStack mainHand = entity.getHeldItemMainhand();
         if (mainHand.isEmpty())
             return;
@@ -61,13 +70,11 @@ public class FireArrow extends PlayerAbility {
         ItemStack ammo = weapon.findAmmo(entity);
         if (ammo.isEmpty())
             return;
-
-        int level = pData.getAbilityRank(getAbilityId());
-        pData.startAbility(this);
         EntityArrow entityarrow = weapon.createAmmoEntity(theWorld, ammo, entity);
         SpellCastArrow arrow = new SpellCastArrow(theWorld, entity);
         weapon.applyEffects(arrow, mainHand, ammo);
-        arrow.shoot(entity, entity.rotationPitch, entity.rotationYaw, 0.0F, 3.0F, 1.0F);
+        arrow.shoot(entity, entity.rotationPitch, entity.rotationYaw, 0.0F,
+                3.0F, 1.0F);
         arrow.setDamage(entityarrow.getDamage() + BASE_ARROW_DAMAGE + level * SCALE_ARROW_DAMAGE);
         arrow.addSpellCast(FireArrowPotion.Create(entity, BASE_DAMAGE, DAMAGE_SCALE, 10.0f), 1);
         arrow.pickupStatus = EntityArrow.PickupStatus.DISALLOWED;
@@ -85,5 +92,22 @@ public class FireArrow extends PlayerAbility {
                         lookVec),
                 entity.dimension, entity.posX,
                 entity.posY, entity.posZ, 50.0f);
+
+    }
+
+    @Override
+    public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
+        ItemStack mainHand = entity.getHeldItemMainhand();
+        if (mainHand.isEmpty())
+            return;
+
+        RangedWeaponry.IRangedWeapon weapon = RangedWeaponry.findWeapon(mainHand);
+        if (weapon == null)
+            return;
+
+        ItemStack ammo = weapon.findAmmo(entity);
+        if (ammo.isEmpty())
+            return;
+        pData.startAbility(this);
     }
 }

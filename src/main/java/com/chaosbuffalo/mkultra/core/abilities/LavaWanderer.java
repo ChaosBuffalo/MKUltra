@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.core.abilities;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.core.CastState;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.PlayerFormulas;
@@ -51,13 +52,17 @@ public class LavaWanderer extends PlayerAbility {
     }
 
     @Override
-    public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
-        pData.startAbility(this);
+    public int getCastTime(int currentRank) {
+        return GameConstants.TICKS_PER_SECOND * (4 - currentRank);
+    }
 
-        int level = pData.getAbilityRank(getAbilityId());
+    @Override
+    public void endCast(EntityPlayer entity, IPlayerData data, World theWorld, CastState state) {
+        super.endCast(entity, data, theWorld, state);
+        int level = data.getAbilityRank(getAbilityId());
 
         int duration = GameConstants.TICKS_PER_SECOND * DURATION_PER_LEVEL * level;
-        duration = PlayerFormulas.applyBuffDurationBonus(pData, duration);
+        duration = PlayerFormulas.applyBuffDurationBonus(data, duration);
         PotionEffect fireResist = new PotionEffect(MobEffects.FIRE_RESISTANCE,
                 duration,
                 level, false, true);
@@ -88,5 +93,10 @@ public class LavaWanderer extends PlayerAbility {
                         entity.posZ, 1.0, 1.0, 1.0, 1.0,
                         lookVec),
                 entity, 50.0f);
+    }
+
+    @Override
+    public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
+        pData.startAbility(this);
     }
 }
