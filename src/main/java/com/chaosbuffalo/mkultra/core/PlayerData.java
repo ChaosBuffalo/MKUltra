@@ -1284,10 +1284,6 @@ public class PlayerData implements IPlayerData {
 
     @Override
     public boolean learnClass(IClassProvider provider, ResourceLocation classId) {
-        return learnClass(provider, classId, true);
-    }
-
-    public boolean learnClass(IClassProvider provider, ResourceLocation classId, boolean enforceChecks) {
         if (isClassKnown(classId)) {
             // Class was already known
             return true;
@@ -1297,7 +1293,7 @@ public class PlayerData implements IPlayerData {
         if (playerClass == null)
             return false;
 
-        if (enforceChecks && !provider.teachesClass(playerClass))
+        if (!provider.teachesClass(playerClass))
             return false;
 
         PlayerClassInfo info = new PlayerClassInfo(classId);
