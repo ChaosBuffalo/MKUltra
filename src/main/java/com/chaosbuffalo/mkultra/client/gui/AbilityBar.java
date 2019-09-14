@@ -97,7 +97,7 @@ public class AbilityBar extends Gui {
         GlStateManager.pushMatrix();
         GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
         this.drawTexturedModalRect(castStartX, castStartY, 26,
-                21, barSize, 2);
+                21, barSize, 3);
         GlStateManager.popMatrix();
 
     }

@@ -53,7 +53,7 @@ public class WhirlwindBlades extends PlayerAbility {
 
     @Override
     public int getCastTime(int currentRank) {
-        return currentRank * GameConstants.TICKS_PER_SECOND;
+        return currentRank * GameConstants.TICKS_PER_SECOND * 3;
     }
 
     @Override
@@ -64,7 +64,7 @@ public class WhirlwindBlades extends PlayerAbility {
             int level = data.getAbilityRank(getAbilityId());
             int totalDuration = getCastTime(level);
             int count = (totalDuration - castTimeLeft) / tickSpeed;
-            float baseAmount = level > 1 ? 0.2f : 0.3f;
+            float baseAmount = level > 1 ? 0.10f : 0.15f;
             float scaling = count * baseAmount;
             // What to do for each target hit
             SpellCast damage = AbilityMeleeDamage.Create(entity, BASE_DAMAGE, DAMAGE_SCALE, scaling);
@@ -73,7 +73,7 @@ public class WhirlwindBlades extends PlayerAbility {
                     ParticleEffects.CIRCLE_MOTION, false,
                     new Vec3d(1.0, 1.0, 1.0),
                     new Vec3d(0.0, 1.0, 0.0),
-                    20, 0, 1.0);
+                    4, 0, 1.0);
 
 
             AreaEffectBuilder.Create(entity, entity)
@@ -88,7 +88,7 @@ public class WhirlwindBlades extends PlayerAbility {
             MKUltra.packetHandler.sendToAllAround(
                     new ParticleEffectSpawnPacket(
                             EnumParticleTypes.SWEEP_ATTACK.getParticleID(),
-                            ParticleEffects.SPHERE_MOTION, 20, 5,
+                            ParticleEffects.SPHERE_MOTION, 16, 4,
                             entity.posX, entity.posY + 1.0,
                             entity.posZ, 1.0, 1.0, 1.0, 1.5,
                             lookVec),

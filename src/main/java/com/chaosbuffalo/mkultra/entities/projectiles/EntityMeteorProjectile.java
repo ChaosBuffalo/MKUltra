@@ -2,12 +2,17 @@ package com.chaosbuffalo.mkultra.entities.projectiles;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.core.abilities.Meteor;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
+import com.chaosbuffalo.mkultra.effects.spells.AIStunPotion;
+import com.chaosbuffalo.mkultra.effects.spells.MeteorEffectPotion;
 import com.chaosbuffalo.mkultra.effects.spells.MobFireballEffectPotion;
+import com.chaosbuffalo.mkultra.effects.spells.ParticlePotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
+import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
@@ -20,12 +25,26 @@ public class EntityMeteorProjectile extends EntityBaseProjectile {
         super(worldIn);
     }
 
+    private boolean shouldPassThrough;
+
     @Override
     public void setup() {
         super.setup();
         this.setDeathTime(GameConstants.TICKS_PER_SECOND * 5);
         this.setSize(0.3f, 0.3f);
         setGraphicalEffectTickInterval(1);
+        shouldPassThrough = true;
+        this.setDoAirProc(true);
+        this.setDoGroundProc(true);
+        this.setGroundProcTime(GameConstants.TICKS_PER_SECOND / 2);
+        this.setAirProcTime(GameConstants.TICKS_PER_SECOND / 2);
+    }
+
+    @Override
+    protected boolean onAirProc(EntityLivingBase caster, int amplifier) {
+        shouldPassThrough = false;
+        setDoAirProc(false);
+        return super.onAirProc(caster, amplifier);
     }
 
     public EntityMeteorProjectile(World worldIn, EntityLivingBase throwerIn) {
@@ -37,11 +56,44 @@ public class EntityMeteorProjectile extends EntityBaseProjectile {
     }
 
     @Override
+    protected boolean canPassThroughBlock(Block block) {
+        return shouldPassThrough || super.canPassThroughBlock(block);
+    }
+
+    @Override
     public void clientGraphicalUpdate() {
         super.clientGraphicalUpdate();
         Vec3d motion = new Vec3d(0, 0, 0);
         ParticleEffects.spawnParticle(EnumParticleTypes.FLAME.ordinal(), 0.0, getPositionVector(), motion, world);
         ParticleEffects.spawnParticle(EnumParticleTypes.SMOKE_LARGE.ordinal(), 0.0, getPositionVector(), motion, world);
+    }
+
+    @Override
+    protected boolean onGroundProc(EntityLivingBase caster, int amplifier) {
+        doEffect(caster, amplifier);
+        return true;
+    }
+
+    private void doEffect(EntityLivingBase caster, int level){
+        SpellCast damage = MeteorEffectPotion.Create(caster, Meteor.BASE_DAMAGE, Meteor.DAMAGE_SCALE);
+        SpellCast stunPotion = AIStunPotion.Create(caster);
+        SpellCast particlePotion = ParticlePotion.Create(caster,
+                EnumParticleTypes.LAVA.getParticleID(),
+                ParticleEffects.SPHERE_MOTION, false,
+                new Vec3d(1.0, 1.0, 1.0),
+                new Vec3d(0.0, 1.0, 0.0),
+                8, 4, 0.1);
+
+
+        AreaEffectBuilder.Create(caster, this)
+                .spellCast(damage, level, getTargetType())
+                .spellCast(particlePotion, level, getTargetType())
+                .spellCast(stunPotion, GameConstants.TICKS_PER_SECOND * level,
+                        1, getTargetType())
+                .instant()
+                .disableParticle()
+                .radius(3, true)
+                .spawn();
     }
 
     @Override
@@ -51,41 +103,12 @@ public class EntityMeteorProjectile extends EntityBaseProjectile {
             // No client code
             return false;
         }
+        if (result.typeOfHit == RayTraceResult.Type.ENTITY){
+            doEffect(entity, level);
+            return true;
+        }
 
-//        if (entity != null && result.entityHit instanceof EntityLivingBase) {
-//            EntityLivingBase targetEntity = (EntityLivingBase) result.entityHit;
-//            SpellCast projectileEffect = MobFireballEffectPotion.Create(entity, 4.0f, .75f);
-//
-//
-//            AreaEffectBuilder.Create(entity, this)
-//                    .spellCast(projectileEffect, level, Targeting.TargetType.ENEMY)
-//                    .instant()
-//                    .color(16737330).radius(2.0f, true)
-//                    .spawn();
-//
-//            Vec3d lookVec = entity.getLookVec();
-//            MKUltra.packetHandler.sendToAllAround(
-//                    new ParticleEffectSpawnPacket(
-//                            EnumParticleTypes.DRIP_LAVA.getParticleID(),
-//                            ParticleEffects.SPHERE_MOTION, 20, 4,
-//                            targetEntity.posX, targetEntity.posY + 1.0,
-//                            targetEntity.posZ, 0.25f, 0.25f, 0.25f, 0.25f,
-//                            lookVec),
-//                    entity.dimension, targetEntity.posX,
-//                    targetEntity.posY, targetEntity.posZ, 50.0f);
-//            return true;
-//        } else if (entity != null) {
-//            MKUltra.packetHandler.sendToAllAround(
-//                    new ParticleEffectSpawnPacket(
-//                            EnumParticleTypes.FIREWORKS_SPARK.getParticleID(),
-//                            ParticleEffects.SPHERE_MOTION, 15, 3,
-//                            result.hitVec.x, result.hitVec.y + 1.0,
-//                            result.hitVec.z, 0.25f, 0.25f, 0.25f, 0.25f,
-//                            new Vec3d(0., 1.0, 0.0)),
-//                    entity.dimension, result.hitVec.x,
-//                    result.hitVec.y, result.hitVec.z, 50.0f);
-//            return true;
-//        }
+
         return false;
     }
 

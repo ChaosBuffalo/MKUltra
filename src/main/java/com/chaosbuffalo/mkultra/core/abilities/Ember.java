@@ -53,9 +53,6 @@ public class Ember extends PlayerAbility {
     @Override
     public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
         int level = pData.getAbilityRank(getAbilityId());
-        EntityMeteorProjectile proj = new EntityMeteorProjectile(theWorld, entity);
-        proj.shoot(entity, entity.rotationPitch, entity.rotationYaw, 0.0F, 0.5f, 1.0f);
-        theWorld.spawnEntity(proj);
         EntityLivingBase targetEntity = getSingleLivingTarget(entity, getDistance(level));
         if (targetEntity != null) {
             pData.startAbility(this);

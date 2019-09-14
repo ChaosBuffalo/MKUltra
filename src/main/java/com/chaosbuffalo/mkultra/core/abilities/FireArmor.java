@@ -78,7 +78,7 @@ public class FireArmor extends PlayerAbility {
                 ParticleEffects.CIRCLE_PILLAR_MOTION, false,
                 new Vec3d(1.0, 1.0, 1.0),
                 new Vec3d(0.0, 1.0, 0.0),
-                40, 5, 1.0);
+                40, 5, .1f);
 
         AreaEffectBuilder.Create(entity, entity)
                 .effect(absorbEffect, getTargetType())
@@ -95,7 +95,7 @@ public class FireArmor extends PlayerAbility {
                         EnumParticleTypes.FLAME.getParticleID(),
                         ParticleEffects.CIRCLE_MOTION, 50, 0,
                         entity.posX, entity.posY + 1.0,
-                        entity.posZ, 1.0, 1.0, 1.0, 1.0f,
+                        entity.posZ, 1.0, 1.0, 1.0, .1f,
                         lookVec),
                 entity, 50.0f);
     }

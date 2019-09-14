@@ -38,7 +38,6 @@ public class Drown extends PlayerAbility {
         return 2 + currentRank;
     }
 
-
     @Override
     public int getRequiredLevel(int currentRank) {
         return currentRank * 2;
@@ -74,7 +73,6 @@ public class Drown extends PlayerAbility {
     @Override
     public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
         pData.startAbility(this);
-
     }
 }
 
