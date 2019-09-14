@@ -1,5 +1,7 @@
 package com.chaosbuffalo.mkultra.core;
 
+import com.chaosbuffalo.mkultra.MKUltra;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -21,6 +23,13 @@ public interface IClassProvider {
         return ClassLists.getOrCreate(getIdentity()).getClasses();
     }
 
+    default boolean meetsRequirements(EntityPlayer player, PlayerClass playerClass) {
+        return teachesClass(playerClass);
+    }
+
+    default void onProviderUse(EntityPlayer player, PlayerClass playerClass) {
+    }
+
     static IClassProvider getProvider(ItemStack stack) {
         if (stack.isEmpty())
             return null;
@@ -37,4 +46,27 @@ public interface IClassProvider {
         }
         return null;
     }
+
+    IClassProvider TEACH_ALL = new IClassProvider() {
+        @Override
+        public ResourceLocation getIdentity() {
+            return new ResourceLocation(MKUltra.MODID, "provider.all");
+        }
+
+        @Override
+        public String getClassSelectionText() {
+            return "Select your next class";
+        }
+
+        @Override
+        public boolean teachesClass(PlayerClass playerClass) {
+            return true;
+        }
+
+        @Nonnull
+        @Override
+        public List<ResourceLocation> getClasses() {
+            return MKURegistry.getAllClasses();
+        }
+    };
 }

@@ -1,16 +1,12 @@
 package com.chaosbuffalo.mkultra.network.packets;
 
 import com.chaosbuffalo.mkultra.core.*;
-import com.chaosbuffalo.mkultra.item.DiamondDust;
-import com.chaosbuffalo.mkultra.item.ItemHelper;
+import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.network.MessageHandler;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -85,6 +81,11 @@ public class ClassLearnPacket implements IMessage {
             return null;
         }
 
+        boolean isPlayerRestricted(EntityPlayer player) {
+            // Make sure the player is an OP if they want to bypass checks
+            return !player.canUseCommand(2, "");
+        }
+
         @Override
         public void handleServerMessage(final EntityPlayer player,
                                         final ClassLearnPacket msg) {
@@ -96,37 +97,31 @@ public class ClassLearnPacket implements IMessage {
             if (baseClass == null)
                 return;
 
-            boolean canSwitch;
-            // Make sure the player is an OP if they want to bypass checks
-            if (!player.canUseCommand(2, "")) {
+            if (isPlayerRestricted(player)) {
                 msg.enforceChecks = true;
             }
 
-            IClassProvider provider = getProvider(player, msg);
-            if (msg.enforceChecks && provider == null)
-                return;
-
-            if (msg.learn) {
-                canSwitch = data.learnClass(provider, msg.classId, msg.enforceChecks);
-                if (msg.source == LearnSource.ITEM && canSwitch && msg.enforceChecks) {
-                    ItemStack heldItem = player.getHeldItem(EnumHand.MAIN_HAND);
-                    ItemHelper.damageStack(player, heldItem, 1);
-                }
-            } else {
+            IClassProvider provider = msg.enforceChecks ? getProvider(player, msg) : IClassProvider.TEACH_ALL;
+            if (provider == null) {
                 if (msg.enforceChecks) {
-                    // switching. need to consume item
-                    ItemStack dust = player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND);
-                    if (!(dust.getItem() instanceof DiamondDust)) {
-                        return;
-                    } else {
-                        canSwitch = ItemHelper.shrinkStack(player, dust, 1);
-                    }
+                    Log.error("Player %s tried to learn class %s with a null class provider!", player, msg.classId);
+                    return;
                 } else {
-                    canSwitch = true;
+                    provider = IClassProvider.TEACH_ALL;
                 }
             }
 
-            if (canSwitch) {
+            if (msg.enforceChecks && !provider.meetsRequirements(player, baseClass))
+                return;
+
+            boolean canActivate = true;
+            if (msg.learn) {
+                canActivate = data.learnClass(provider, msg.classId);
+            }
+            if (canActivate) {
+                if (msg.enforceChecks) {
+                    provider.onProviderUse(player, baseClass);
+                }
                 data.activateClass(msg.classId);
             }
         }

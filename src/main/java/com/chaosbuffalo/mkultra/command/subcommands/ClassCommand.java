@@ -174,7 +174,7 @@ public class ClassCommand extends CommandTreeBase {
                 sender.sendMessage(new TextComponentString("Opening class switch GUI"));
                 MKUltra.packetHandler.sendTo(new ForceOpenClientGUIPacket(ModGuiHandler.LEARN_CLASS_SCREEN_ADMIN), player);
             } else {
-                ((PlayerData) data).learnClass(null, newClassId, false);
+                data.learnClass(IClassProvider.TEACH_ALL, newClassId);
             }
         }
 

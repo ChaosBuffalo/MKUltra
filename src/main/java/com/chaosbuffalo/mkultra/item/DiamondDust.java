@@ -1,10 +1,7 @@
 package com.chaosbuffalo.mkultra.item;
 
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.IClassProvider;
-import com.chaosbuffalo.mkultra.core.IPlayerData;
-import com.chaosbuffalo.mkultra.core.MKUPlayerData;
-import com.chaosbuffalo.mkultra.core.MKURegistry;
+import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.network.ModGuiHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -53,5 +50,19 @@ public class DiamondDust extends Item implements IClassProvider {
     @Override
     public List<ResourceLocation> getClasses() {
         return MKURegistry.getAllClasses();
+    }
+
+    @Override
+    public boolean meetsRequirements(EntityPlayer player, PlayerClass playerClass) {
+        ItemStack heldItem = player.getHeldItemMainhand();
+        if (heldItem.isEmpty())
+            return false;
+        return heldItem.getItem() instanceof DiamondDust;
+    }
+
+    @Override
+    public void onProviderUse(EntityPlayer player, PlayerClass playerClass) {
+        ItemStack dust = player.getHeldItemMainhand();
+        ItemHelper.shrinkStack(player, dust, 1);
     }
 }
