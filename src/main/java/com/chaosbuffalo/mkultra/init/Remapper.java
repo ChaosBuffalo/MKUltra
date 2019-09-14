@@ -149,12 +149,6 @@ public class Remapper {
                     entry.ignore();
                     continue;
                 }
-
-
-            } else if (entry.key.getNamespace().equals("minekampf")) {
-                Log.info("Removing old MK Item %s", entry.key.toString());
-                entry.ignore();
-                continue;
             }
 
             if (itemReplacements.containsKey(entry.key)) {
@@ -173,11 +167,6 @@ public class Remapper {
     @SubscribeEvent
     public static void missingBlockMapping(RegistryEvent.MissingMappings<Block> event) {
         for (RegistryEvent.MissingMappings.Mapping<Block> entry : event.getAllMappings()) {
-            if (entry.key.getNamespace().equals("minekampf")) {
-                Log.info("Removing old MK Block %s", entry.key.toString());
-                entry.ignore();
-                continue;
-            }
 
             if (blockReplacements.containsKey(entry.key)) {
                 ResourceLocation newKey = blockReplacements.get(entry.key);
