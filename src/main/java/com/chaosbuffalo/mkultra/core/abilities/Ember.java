@@ -4,6 +4,7 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKDamageSource;
 import com.chaosbuffalo.mkultra.core.PlayerAbility;
+import com.chaosbuffalo.mkultra.entities.projectiles.EntityMeteorProjectile;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
@@ -52,7 +53,9 @@ public class Ember extends PlayerAbility {
     @Override
     public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
         int level = pData.getAbilityRank(getAbilityId());
-
+        EntityMeteorProjectile proj = new EntityMeteorProjectile(theWorld, entity);
+        proj.shoot(entity, entity.rotationPitch, entity.rotationYaw, 0.0F, 0.5f, 1.0f);
+        theWorld.spawnEntity(proj);
         EntityLivingBase targetEntity = getSingleLivingTarget(entity, getDistance(level));
         if (targetEntity != null) {
             pData.startAbility(this);

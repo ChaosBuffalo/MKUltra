@@ -1,6 +1,8 @@
 package com.chaosbuffalo.mkultra.core.abilities;
 
+import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.core.CastState;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.entities.projectiles.EntityCleansingSeedProjectile;
@@ -45,16 +47,26 @@ public class CleansingSeed extends PlayerAbility {
         return 4 + currentRank * 2;
     }
 
-    @Override
-    public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
 
-        int level = pData.getAbilityRank(getAbilityId());
-        pData.startAbility(this);
+    @Override
+    public int getCastTime(int currentRank) {
+        return GameConstants.TICKS_PER_SECOND - 5 * (currentRank - 1);
+    }
+
+    @Override
+    public void endCast(EntityPlayer entity, IPlayerData data, World theWorld, CastState state) {
+        super.endCast(entity, data, theWorld, state);
+        int level = data.getAbilityRank(getAbilityId());
         EntityCleansingSeedProjectile ballP = new EntityCleansingSeedProjectile(theWorld, entity);
         ballP.setAmplifier(level);
         ballP.shoot(entity, entity.rotationPitch, entity.rotationYaw, 0.0F, PROJECTILE_SPEED,
                 PROJECTILE_INACCURACY);
         theWorld.spawnEntity(ballP);
+    }
+
+    @Override
+    public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
+        pData.startAbility(this);
     }
 }
 

@@ -16,6 +16,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class AbilityMeleeDamage extends SpellPotionBase {
 
+    public static final String WEAPON_CONTRIBUTION = "instant_indirect_damage.weapon_contribution";
+
     public static ResourceLocation INDIRECT_DMG_ABILITY_ID = new ResourceLocation(
             MKUltra.MODID, "ability.instant_indirect_damage");
 
@@ -28,6 +30,11 @@ public class AbilityMeleeDamage extends SpellPotionBase {
 
     public static SpellCast Create(Entity source, float baseDamage, float scaling) {
         return INSTANCE.newSpellCast(source).setScalingParameters(baseDamage, scaling);
+    }
+
+    public static SpellCast Create(Entity source, float baseDamage, float scaling, float weaponDamageContribution) {
+        return INSTANCE.newSpellCast(source).setScalingParameters(baseDamage, scaling)
+                .setFloat(WEAPON_CONTRIBUTION, weaponDamageContribution);
     }
 
     private AbilityMeleeDamage() {
@@ -45,6 +52,7 @@ public class AbilityMeleeDamage extends SpellPotionBase {
 
         float damage = cast.getScaledValue(amplifier);
 
-        target.attackEntityFrom(MKDamageSource.fromMeleeSkill(INDIRECT_DMG_ABILITY_ID, applier, caster), damage);
+        target.attackEntityFrom(MKDamageSource.fromMeleeSkill(INDIRECT_DMG_ABILITY_ID, applier, caster,
+                cast.getFloat(WEAPON_CONTRIBUTION, 1.0f)), damage);
     }
 }

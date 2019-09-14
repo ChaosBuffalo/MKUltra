@@ -1,6 +1,7 @@
 package com.chaosbuffalo.mkultra.core;
 
 import com.chaosbuffalo.mkultra.GameConstants;
+import com.chaosbuffalo.mkultra.spawn.ItemOption;
 import com.chaosbuffalo.mkultra.utils.RayTraceUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.client.resources.I18n;
@@ -15,6 +16,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -42,6 +44,25 @@ public abstract class PlayerAbility extends IForgeRegistryEntry.Impl<PlayerAbili
         return abilityId;
     }
 
+    public PlayerAbilityInfo createAbilityInfo(){
+        return new PlayerAbilityInfo(getAbilityId());
+    }
+
+    @Nullable
+    public <T extends PlayerAbilityInfo> T getAbilityInfo(IPlayerData data, Class<T> clazz){
+        PlayerAbilityInfo info = data.getAbilityInfo(getAbilityId());
+        if (clazz.isInstance(info)){
+            return (T) data.getAbilityInfo(getAbilityId());
+        } else {
+            return null;
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void continueCastClient(EntityPlayer entity, IPlayerData data, World theWorld, int castTimeLeft){
+
+    }
+
     @SideOnly(Side.CLIENT)
     public String getAbilityName() {
         return I18n.format(String.format("%s.%s.name", abilityId.getNamespace(), abilityId.getPath()));
@@ -57,6 +78,13 @@ public abstract class PlayerAbility extends IForgeRegistryEntry.Impl<PlayerAbili
         return new ResourceLocation(abilityId.getNamespace(), String.format("textures/class/abilities/%s.png", abilityId.getPath().split(Pattern.quote("."))[1]));
     }
 
+    public CastState createCastState(int castTime){
+        return new CastState(castTime);
+    }
+
+    public int getCastTime(int currentRank){
+        return 0;
+    }
 
     public float getDistance(int currentRank) {
         return 1.0f;
@@ -91,12 +119,16 @@ public abstract class PlayerAbility extends IForgeRegistryEntry.Impl<PlayerAbili
     }
 
     public boolean meetsRequirements(IPlayerData player) {
-        return player.getMana() >=
+        return !player.isCasting() && player.getMana() >=
                 PlayerFormulas.applyManaCostReduction(player, getManaCost(player.getAbilityRank(abilityId))) &&
                 player.getCurrentAbilityCooldown(abilityId) == 0;
     }
 
     public abstract void execute(EntityPlayer entity, IPlayerData data, World theWorld);
+
+    public void continueCast(EntityPlayer entity, IPlayerData data, World theWorld, int castTimeLeft, CastState state) {}
+
+    public void endCast(EntityPlayer entity, IPlayerData data, World theWorld, CastState state){}
 
     protected EntityLivingBase getSingleLivingTarget(EntityLivingBase caster, float distance) {
         return getSingleLivingTarget(caster, distance, true);

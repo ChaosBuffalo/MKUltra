@@ -39,7 +39,10 @@ public interface IPlayerData {
 
     float getCooldownPercent(PlayerAbility ability, float partialTicks);
 
-    void startAbility(PlayerAbility ability);
+    @Nullable
+    CastState startAbility(PlayerAbility ability);
+
+    PlayerAbilityInfo getAbilityInfo(ResourceLocation abilityId);
 
     void setManaRegen(float manaRegenRate);
 
@@ -160,4 +163,14 @@ public interface IPlayerData {
     void clearToggleGroupAbility(ResourceLocation groupId);
 
     void setToggleGroupAbility(ResourceLocation groupId, PlayerToggleAbility ability);
+
+    boolean isCasting();
+
+    int getCastTicks();
+
+    void setCastTicks(int value);
+
+    ResourceLocation getCastingAbility();
+
+    void startCast(PlayerAbility ability, int castTime);
 }

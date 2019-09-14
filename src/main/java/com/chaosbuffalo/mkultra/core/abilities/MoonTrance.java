@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.core.abilities;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.core.CastState;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.PlayerFormulas;
@@ -41,7 +42,7 @@ public class MoonTrance extends PlayerAbility {
 
     @Override
     public float getManaCost(int currentRank) {
-        return 10 + currentRank * 3;
+        return 8 + currentRank * 3;
     }
 
     @Override
@@ -55,19 +56,25 @@ public class MoonTrance extends PlayerAbility {
     }
 
     @Override
-    public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
-        pData.startAbility(this);
+    public int getCastTime(int currentRank) {
+        return GameConstants.TICKS_PER_SECOND * 3 - (5 * currentRank);
+    }
 
-        int level = pData.getAbilityRank(getAbilityId());
+    @Override
+    public void endCast(EntityPlayer entity, IPlayerData data, World theWorld, CastState state) {
+        super.endCast(entity, data, theWorld, state);
+        int level = data.getAbilityRank(getAbilityId());
 
         // What to do for each target hit
         int duration = (BASE_DURATION + DURATION_SCALE * level) * GameConstants.TICKS_PER_SECOND;
-        duration = PlayerFormulas.applyBuffDurationBonus(pData, duration);
+        duration = PlayerFormulas.applyBuffDurationBonus(data, duration);
         SpellCast effect = MoonTrancePotion.Create(entity);
         SpellCast particlePotion = ParticlePotion.Create(entity,
                 EnumParticleTypes.SPELL_MOB.getParticleID(),
-                ParticleEffects.SPHERE_MOTION, false, new Vec3d(1.0, 1.5, 1.0),
-                new Vec3d(0.0, 1.0, 0.0), 40, 5, 1.0);
+                ParticleEffects.SPHERE_MOTION, false,
+                new Vec3d(1.0, 1.5, 1.0),
+                new Vec3d(0.0, 1.0, 0.0),
+                40, 5, 1.0);
 
         AreaEffectBuilder.Create(entity, entity)
                 .spellCast(effect, duration, level, getTargetType())
@@ -86,5 +93,10 @@ public class MoonTrance extends PlayerAbility {
                         entity.posZ, 1.0, 1.0, 1.0, 1.0f,
                         lookVec),
                 entity, 50.0f);
+    }
+
+    @Override
+    public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
+        pData.startAbility(this);
     }
 }

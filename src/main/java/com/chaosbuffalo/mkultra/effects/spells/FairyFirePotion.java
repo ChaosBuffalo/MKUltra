@@ -61,7 +61,8 @@ public class FairyFirePotion extends SpellPeriodicPotionBase {
 
     @Override
     public void doEffect(Entity source, Entity indirectSource, EntityLivingBase target, int amplifier, SpellCast cast) {
-        target.attackEntityFrom(MKDamageSource.causeIndirectMagicDamage(new FairyFire().getAbilityId(), source, indirectSource), amplifier * 1.0f);
+        target.attackEntityFrom(MKDamageSource.causeIndirectMagicDamage(new FairyFire().getAbilityId(), source,
+                indirectSource, 0.6f), amplifier * 1.0f);
         MKUltra.packetHandler.sendToAllAround(
                 new ParticleEffectSpawnPacket(
                         EnumParticleTypes.SPELL_INSTANT.getParticleID(),
