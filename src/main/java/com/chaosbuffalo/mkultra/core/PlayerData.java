@@ -1442,6 +1442,8 @@ public class PlayerData implements IPlayerData {
         return effective == null || effective.canWear(item);
     }
 
+
+
     @Override
     public boolean setCooldown(ResourceLocation abilityId, int cooldownTicks) {
         PlayerAbilityInfo info = getAbilityInfo(abilityId);
@@ -1454,6 +1456,11 @@ public class PlayerData implements IPlayerData {
             abilityTracker.removeCooldown(info);
         }
         return true;
+    }
+
+    @Override
+    public void addToAllCooldowns(int cooldownTicks) {
+
     }
 
     @Override

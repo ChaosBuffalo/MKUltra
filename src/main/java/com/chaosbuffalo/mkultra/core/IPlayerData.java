@@ -37,6 +37,8 @@ public interface IPlayerData {
 
     boolean setCooldown(ResourceLocation abilityId, int cooldownTicks);
 
+    void addToAllCooldowns(int cooldownTicks);
+
     float getCooldownPercent(PlayerAbility ability, float partialTicks);
 
     @Nullable
