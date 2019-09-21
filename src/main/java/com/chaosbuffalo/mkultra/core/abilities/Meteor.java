@@ -45,7 +45,7 @@ public class Meteor extends PlayerAbility {
 
     @Override
     public int getCooldown(int currentRank) {
-        return 40 - 10 * currentRank;
+        return 35 - 10 * currentRank;
     }
 
     @Override
@@ -55,7 +55,7 @@ public class Meteor extends PlayerAbility {
 
     @Override
     public float getManaCost(int currentRank) {
-        return 8 + 2 * currentRank;
+        return 10 + 2 * currentRank;
     }
 
     @Override

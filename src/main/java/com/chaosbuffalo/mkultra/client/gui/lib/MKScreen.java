@@ -94,6 +94,9 @@ public class MKScreen extends GuiScreen {
     @Override
     public void onResize(Minecraft minecraft, int width, int height) {
         super.onResize(minecraft, width, height);
+        for (MKModal modal : modals){
+            closeModal(modal);
+        }
         flagNeedSetup();
     }
 
