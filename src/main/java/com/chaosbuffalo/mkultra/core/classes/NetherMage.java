@@ -18,7 +18,7 @@ public class NetherMage extends PlayerClass {
         abilities.add(new WarpCurse());
         abilities.add(new FlameWave());
         abilities.add(new FireArmor());
-        abilities.add(new HealingRain());
+        abilities.add(new Ignite());
     }
 
     public NetherMage() {

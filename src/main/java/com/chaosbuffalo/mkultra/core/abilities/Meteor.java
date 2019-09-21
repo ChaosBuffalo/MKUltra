@@ -76,7 +76,7 @@ public class Meteor extends PlayerAbility {
     @Override
     public void continueCast(EntityPlayer entity, IPlayerData data, World theWorld, int castTimeLeft, CastState state) {
         super.continueCast(entity, data, theWorld, castTimeLeft, state);
-        int tickSpeed = 6;
+        int tickSpeed = 4;
         if (castTimeLeft % tickSpeed == 0){
 
             EntityMeteorProjectile proj = new EntityMeteorProjectile(theWorld, entity);

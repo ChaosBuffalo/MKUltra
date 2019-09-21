@@ -172,6 +172,12 @@ public class TalentTreeRecord {
         return count;
     }
 
+    public HashSet<UltimateAbilityTalent> getUltimatesWithPoints(){
+        HashSet<UltimateAbilityTalent> talents = new HashSet<>();
+        iterateKnownTalents(UltimateAbilityTalent.class, BaseTalent.TalentType.ULTIMATE, (r, t) -> talents.add(t));
+        return talents;
+    }
+
     public HashSet<PassiveAbilityTalent> getPassivesWithPoints() {
         HashSet<PassiveAbilityTalent> talents = new HashSet<>();
         iterateKnownTalents(PassiveAbilityTalent.class, BaseTalent.TalentType.PASSIVE, (r, t) -> talents.add(t));

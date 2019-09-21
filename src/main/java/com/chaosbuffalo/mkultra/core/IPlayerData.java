@@ -142,11 +142,23 @@ public interface IPlayerData {
     List<ResourceLocation> getActivePassives();
 
     @Nullable
+    List<ResourceLocation> getActiveUltimates();
+
+    @Nullable
     HashSet<PlayerPassiveAbility> getLearnedPassives();
+
+    @Nullable
+    HashSet<PlayerAbility> getLearnedUltimates();
 
     boolean canActivatePassiveForSlot(ResourceLocation loc, int slotIndex);
 
     boolean activatePassiveForSlot(ResourceLocation loc, int slotIndex);
+
+    boolean canActivateUltimateForSlot(ResourceLocation loc, int slotIndex);
+
+    boolean activateUltimateForSlot(ResourceLocation loc, int slotIndex);
+
+    boolean hasUltimates();
 
     boolean isDualWielding();
 

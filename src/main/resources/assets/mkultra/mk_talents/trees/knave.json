@@ -82,6 +82,10 @@
           "name": "mkultra:talent.melee_crit_damage",
           "max_points": 5,
           "value": 0.1
+        },
+        {
+          "name": "mkultra:talent.backstab",
+          "max_points": 1
         }
       ]
     },

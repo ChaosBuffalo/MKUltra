@@ -92,7 +92,7 @@ public class EntityMeteorProjectile extends EntityBaseProjectile {
                         1, getTargetType())
                 .instant()
                 .disableParticle()
-                .radius(3, true)
+                .radius(4, true)
                 .spawn();
     }
 

@@ -41,6 +41,7 @@ public class PlayerClassScreen extends MKScreen {
     private int DESCRIPTION_WIDTH = ABILITY_SCROLL_WIDTH - 36;
     private MKWidget passivePanel;
     private MKWidget mainRoot;
+    private MKWidget ultimatePanel;
 
     private static final ArrayList<IAttribute> STAT_PANEL_ATTRIBUTES = new ArrayList<>();
 
@@ -74,6 +75,9 @@ public class PlayerClassScreen extends MKScreen {
         if (passivePanel != null) {
             mainRoot.removeWidget(passivePanel);
         }
+        if (ultimatePanel != null){
+            mainRoot.removeWidget(ultimatePanel);
+        }
         int xPos = width / 2 - PANEL_WIDTH / 2;
         int yPos = height / 2 - PANEL_HEIGHT / 2;
         IPlayerData pData = MKUPlayerData.get(this.mc.player);
@@ -82,8 +86,17 @@ public class PlayerClassScreen extends MKScreen {
         MKWidget passiveTray = drawPassivePanel(pData, xPos + STAT_PANEL_START_X,
                 yPos + STAT_PANEL_START_Y + STAT_PANEL_HEIGHT + 4);
         passivePanel = passiveTray;
+        int passiveTrayHeight = 0;
         if (passiveTray != null) {
+            passiveTrayHeight = passiveTray.getHeight();
             mainRoot.addWidget(passiveTray);
+        }
+
+        MKWidget ultTray = drawUltimatePanel(pData, xPos + STAT_PANEL_START_X,
+                yPos + STAT_PANEL_START_Y + STAT_PANEL_HEIGHT + 4 + passiveTrayHeight + 4);
+        ultimatePanel = ultTray;
+        if (ultTray != null){
+            mainRoot.addWidget(ultTray);
         }
     }
 
@@ -220,8 +233,16 @@ public class PlayerClassScreen extends MKScreen {
         MKWidget passiveTray = drawPassivePanel(pData, xPos + STAT_PANEL_START_X,
                 yPos + STAT_PANEL_START_Y + STAT_PANEL_HEIGHT + 4);
         passivePanel = passiveTray;
+        int passiveTrayHeight = 0;
         if (passiveTray != null) {
+            passiveTrayHeight = passiveTray.getHeight();
             mainRoot.addWidget(passiveTray);
+        }
+        MKWidget ultTray = drawUltimatePanel(pData, xPos + STAT_PANEL_START_X,
+                yPos + STAT_PANEL_START_Y + STAT_PANEL_HEIGHT + 4 + passiveTrayHeight);
+        ultimatePanel = ultTray;
+        if (ultTray != null){
+            mainRoot.addWidget(ultTray);
         }
         setState("main");
     }
@@ -272,6 +293,40 @@ public class PlayerClassScreen extends MKScreen {
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
+    private MKWidget drawUltimatePanel(IPlayerData pData, int xPos, int yPos){
+        List<ResourceLocation> ultimates = pData.getActiveUltimates();
+        if (ultimates == null) {
+            return null;
+        } else {
+            MKWidget root = new MKWidget(xPos, yPos, STAT_PANEL_WIDTH,
+                    UIConstants.TEXT_HEIGHT);
+            MKText title = new MKText(fontRenderer, I18n.format("mkultra.ui_msg.ultimates")).setColor(16777215);
+            title.setX(xPos).setY(yPos).setWidth(STAT_PANEL_WIDTH);
+            title.setIsCentered(true);
+            root.addWidget(title);
+            MKStackLayoutVertical layout = new MKStackLayoutVertical(xPos,
+                    yPos + UIConstants.TEXT_HEIGHT, STAT_PANEL_WIDTH);
+            layout.doSetWidth(true).setMarginTop(4);
+            root.addWidget(layout);
+            int count = 0;
+            for (ResourceLocation ultimate : ultimates) {
+                PlayerAbilityButton button;
+                if (ultimate.equals(MKURegistry.INVALID_ABILITY)) {
+                    button = new PlayerAbilityButton(null,
+                            PlayerAbilityButton.AbilityType.ULTIMATE, pData, count, 0, 0);
+                } else {
+                    PlayerAbility ability = MKURegistry.getAbility(ultimate);
+                    button = new PlayerAbilityButton(ability,
+                            PlayerAbilityButton.AbilityType.ULTIMATE, pData, count, 0, 0);
+                }
+                count++;
+                layout.addWidget(button);
+            }
+            root.setHeight(layout.getHeight() + UIConstants.TEXT_HEIGHT + 4);
+            return root;
+        }
+    }
+
     private MKWidget drawPassivePanel(IPlayerData pData, int xPos, int yPos) {
         List<ResourceLocation> passives = pData.getActivePassives();
         if (passives == null) {
@@ -289,17 +344,14 @@ public class PlayerClassScreen extends MKScreen {
             root.addWidget(layout);
             int passiveCount = 0;
             for (ResourceLocation passive : passives) {
-                PassiveAbilityButton button;
+                PlayerAbilityButton button;
                 if (passive.equals(MKURegistry.INVALID_ABILITY)) {
-                    button = new PassiveAbilityButton(null, pData, passiveCount, 0, 0);
+                    button = new PlayerAbilityButton(null,
+                            PlayerAbilityButton.AbilityType.PASSIVE, pData, passiveCount, 0, 0);
                 } else {
                     PlayerAbility ability = MKURegistry.getAbility(passive);
-                    if (ability instanceof PlayerPassiveAbility) {
-                        button = new PassiveAbilityButton((PlayerPassiveAbility) ability,
-                                pData, passiveCount, 0, 0);
-                    } else {
-                        button = new PassiveAbilityButton(null, pData, passiveCount, 0, 0);
-                    }
+                    button = new PlayerAbilityButton(ability,
+                            PlayerAbilityButton.AbilityType.PASSIVE, pData, passiveCount, 0, 0);
                 }
                 passiveCount++;
                 layout.addWidget(button);

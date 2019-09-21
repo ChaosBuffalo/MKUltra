@@ -29,7 +29,8 @@ public class PassiveAbilityTalent extends BaseTalent {
 
         int slot = classInfo.getPassiveSlot(getAbility().getAbilityId());
         if (slot != GameConstants.PASSIVE_INVALID_SLOT) {
-            classInfo.clearPassiveSlot(slot);
+
+            classInfo.clearUltimateSlot(slot);
         }
 
         return true;

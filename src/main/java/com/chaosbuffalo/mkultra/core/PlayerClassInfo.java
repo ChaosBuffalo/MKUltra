@@ -33,6 +33,7 @@ public class PlayerClassInfo {
     private ResourceLocation[] hotbar;
     private Deque<ResourceLocation> spendOrder;
     private ResourceLocation[] loadedPassives;
+    private ResourceLocation[] loadedUltimates;
 
     public PlayerClassInfo(ResourceLocation classId) {
         this.classId = classId;
@@ -42,6 +43,8 @@ public class PlayerClassInfo {
         this.unspentTalentPoints = 0;
         loadedPassives = new ResourceLocation[GameConstants.MAX_PASSIVES];
         Arrays.fill(loadedPassives, MKURegistry.INVALID_ABILITY);
+        loadedUltimates = new ResourceLocation[GameConstants.MAX_ULTIMATES];
+        Arrays.fill(loadedUltimates, MKURegistry.INVALID_ABILITY);
         hotbar = new ResourceLocation[GameConstants.ACTION_BAR_SIZE];
         Arrays.fill(hotbar, MKURegistry.INVALID_ABILITY);
         spendOrder = new ArrayDeque<>(GameConstants.MAX_CLASS_LEVEL);
@@ -110,6 +113,10 @@ public class PlayerClassInfo {
         }
     }
 
+    public boolean hasUltimate(){
+        return getUltimateAbilitiesFromTalents().size() > 0;
+    }
+
     public boolean addPassiveToSlot(ResourceLocation loc, int slotIndex) {
         if (canAddPassiveToSlot(loc, slotIndex)) {
             for (int i = 0; i < GameConstants.MAX_PASSIVES; i++) {
@@ -123,6 +130,25 @@ public class PlayerClassInfo {
         return false;
     }
 
+    public boolean addUltimateToSlot(ResourceLocation loc, int slotIndex){
+        if (canAddUltimateToSlot(loc, slotIndex)){
+            loadedUltimates[slotIndex] = loc;
+            return true;
+        }
+        return false;
+    }
+
+    public int getUltimateSlot(ResourceLocation loc){
+        for (int i = 0; i < GameConstants.MAX_ULTIMATES; i++) {
+            if (loc.equals(loadedUltimates[i])) {
+                return i;
+            }
+        }
+
+        return GameConstants.ULTIMATE_INVALID_SLOT;
+    }
+
+
     public int getPassiveSlot(ResourceLocation loc) {
         for (int i = 0; i < GameConstants.MAX_PASSIVES; i++) {
             if (loc.equals(loadedPassives[i])) {
@@ -132,6 +158,8 @@ public class PlayerClassInfo {
 
         return GameConstants.PASSIVE_INVALID_SLOT;
     }
+
+    public void clearUltimateSlot(int slotIndex){ loadedUltimates[slotIndex] = MKURegistry.INVALID_ABILITY; }
 
     public void clearPassiveSlot(int slotIndex) {
         loadedPassives[slotIndex] = MKURegistry.INVALID_ABILITY;
@@ -144,8 +172,29 @@ public class PlayerClassInfo {
         return loadedPassives[slotIndex];
     }
 
+    public ResourceLocation getUltimateForSlot(int slotIndex){
+        if (slotIndex >= GameConstants.MAX_ULTIMATES){
+            return MKURegistry.INVALID_ABILITY;
+        }
+        return loadedUltimates[slotIndex];
+    }
+
+    public boolean canAddUltimateToSlot(ResourceLocation loc, int slotIndex){
+        return slotIndex < GameConstants.MAX_ULTIMATES && hasTrainedUltimate(loc);
+    }
+
     public boolean canAddPassiveToSlot(ResourceLocation loc, int slotIndex) {
         return slotIndex < GameConstants.MAX_PASSIVES && hasTrainedPassive(loc);
+    }
+
+    public HashSet<PlayerAbility> getUltimateAbilitiesFromTalents(){
+        HashSet<PlayerAbility> abilities = new HashSet<>();
+        for (TalentTreeRecord rec: talentTrees.values()){
+            if (rec.hasPointsInTree()){
+                rec.getUltimatesWithPoints().forEach(talent -> abilities.add(talent.getAbility()));
+            }
+        }
+        return abilities;
     }
 
     public HashSet<PlayerPassiveAbility> getPassiveAbilitiesFromTalents() {
@@ -156,6 +205,15 @@ public class PlayerClassInfo {
             }
         }
         return abilities;
+    }
+
+    public boolean hasTrainedUltimate(ResourceLocation loc){
+        if (loc.equals(MKURegistry.INVALID_ABILITY)){
+            return true;
+        }
+        HashSet<PlayerAbility> abilities = getUltimateAbilitiesFromTalents();
+        PlayerAbility ability = MKURegistry.getAbility(loc);
+        return ability != null && abilities.contains(ability);
     }
 
     public boolean hasTrainedPassive(ResourceLocation loc) {
@@ -274,6 +332,7 @@ public class PlayerClassInfo {
         tag.setInteger("unspentTalentPoints", unspentTalentPoints);
         tag.setInteger("totalTalentPoints", totalTalentPoints);
         writeNBTAbilityArray(tag, "loadedPassives", Arrays.asList(loadedPassives), GameConstants.MAX_PASSIVES);
+        writeNBTAbilityArray(tag, "loadedUltimates", Arrays.asList(loadedUltimates), GameConstants.MAX_ULTIMATES);
         writeTalentTrees(tag);
     }
 
@@ -283,11 +342,18 @@ public class PlayerClassInfo {
         if (tag.hasKey("loadedPassives")) {
             setLoadedPassives(parseNBTAbilityArray(tag, "loadedPassives", GameConstants.MAX_PASSIVES));
         }
+        if (tag.hasKey("loadedUltimates")){
+            setLoadedUltimates(parseNBTAbilityArray(tag, "loadedUltimates", GameConstants.MAX_ULTIMATES));
+        }
         parseTalentTrees(tag);
     }
 
     public ResourceLocation[] getActivePassives() {
         return loadedPassives;
+    }
+
+    public ResourceLocation[] getActiveUltimates(){
+        return loadedUltimates;
     }
 
     public ResourceLocation[] getActiveAbilities() {
@@ -349,6 +415,10 @@ public class PlayerClassInfo {
         } else {
             return false;
         }
+    }
+
+    void setLoadedUltimates(ResourceLocation[] ultimates){
+        this.loadedUltimates = ultimates;
     }
 
     void setLoadedPassives(ResourceLocation[] passives) {

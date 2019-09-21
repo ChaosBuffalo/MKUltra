@@ -335,3 +335,8 @@ mkultra.ability.guardian_angel.description=Absorbs a killing blow and grants inv
 effect.guardian_angel_invulnerability=Invulnerability
 effect.holy_damage=Holy Damage
 
+
+mkultra.ui_msg.clear_ultimate_slot=Clear Slot
+mkultra.ui_msg.learn_ultimate_prompt=Right click to slot an ultimate
+mkultra.ui_msg.no_ultimates=You do not know any ultimate abilities
+mkultra.ui_msg.ultimates=Ultimate

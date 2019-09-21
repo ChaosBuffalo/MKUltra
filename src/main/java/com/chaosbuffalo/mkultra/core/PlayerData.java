@@ -76,7 +76,7 @@ public class PlayerData implements IPlayerData {
     private float healthRegenTime;
     private AbilityTracker abilityTracker;
     private Map<ResourceLocation, PlayerClassInfo> knownClasses = new HashMap<>();
-    private Map<ResourceLocation, PlayerAbilityInfo> abilityInfoMap = new HashMap<>(5);
+    private Map<ResourceLocation, PlayerAbilityInfo> abilityInfoMap = new HashMap<>(GameConstants.ACTION_BAR_SIZE);
     private Map<ResourceLocation, PlayerToggleAbility> activeToggleMap = new HashMap<>();
     private boolean needPassiveTalentRefresh;
     private boolean talentPassivesUnlocked;
@@ -276,12 +276,32 @@ public class PlayerData implements IPlayerData {
         return null;
     }
 
+    @Nullable
+    @Override
+    public List<ResourceLocation> getActiveUltimates() {
+        PlayerClassInfo activeClass = getActiveClass();
+        if (activeClass != null) {
+            return Arrays.asList(activeClass.getActiveUltimates());
+        }
+        return null;
+    }
+
     @Override
     @Nullable
     public HashSet<PlayerPassiveAbility> getLearnedPassives() {
         PlayerClassInfo activeClass = getActiveClass();
         if (activeClass != null) {
             return activeClass.getPassiveAbilitiesFromTalents();
+        }
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public HashSet<PlayerAbility> getLearnedUltimates() {
+        PlayerClassInfo activeClass = getActiveClass();
+        if (activeClass != null) {
+            return activeClass.getUltimateAbilitiesFromTalents();
         }
         return null;
     }
@@ -303,6 +323,51 @@ public class PlayerData implements IPlayerData {
             setRefreshPassiveTalents();
             sendCurrentClassUpdate();
             return didWork;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean canActivateUltimateForSlot(ResourceLocation loc, int slotIndex) {
+        PlayerClassInfo activeClass = getActiveClass();
+        if (activeClass != null) {
+            return activeClass.canAddUltimateToSlot(loc, slotIndex);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean activateUltimateForSlot(ResourceLocation loc, int slotIndex) {
+        PlayerClassInfo activeClass = getActiveClass();
+        if (activeClass != null) {
+            ResourceLocation currentAbility = activeClass.getUltimateForSlot(slotIndex);
+            if (loc.equals(MKURegistry.INVALID_ABILITY) && !currentAbility.equals(MKURegistry.INVALID_ABILITY)){
+                unlearnAbility(currentAbility, false, true);
+                activeClass.clearUltimateSlot(slotIndex);
+                sendCurrentClassUpdate();
+                return true;
+            } else {
+                if (!currentAbility.equals(MKURegistry.INVALID_ABILITY)){
+                    activeClass.clearUltimateSlot(slotIndex);
+                    unlearnAbility(currentAbility, false, true);
+                }
+                boolean didWork = activeClass.addUltimateToSlot(loc, slotIndex);
+                if (didWork){
+                    learnAbility(loc, false);
+                }
+                sendCurrentClassUpdate();
+                return didWork;
+            }
+        }
+        return false;
+    }
+
+
+    @Override
+    public boolean hasUltimates() {
+        PlayerClassInfo activeClass = getActiveClass();
+        if (activeClass != null) {
+            return activeClass.hasUltimate();
         }
         return false;
     }
@@ -683,10 +748,10 @@ public class PlayerData implements IPlayerData {
             } else {
                 return false;
             }
+            classInfo.addToSpendOrder(abilityId);
         }
 
         info.upgrade();
-        classInfo.addToSpendOrder(abilityId);
 
         if (abilityTracker.hasCooldown(abilityId)) {
             int newMaxCooldown = getAbilityCooldown(ability);
@@ -1452,7 +1517,9 @@ public class PlayerData implements IPlayerData {
 
     @Override
     public void addToAllCooldowns(int cooldownTicks) {
-
+        abilityTracker.iterateActive((loc, ticks) -> {
+            abilityTracker.setCooldown(loc, ticks + cooldownTicks);
+        });
     }
 
     @Override

@@ -10,20 +10,35 @@ import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.ClericHealPotion;
 import com.chaosbuffalo.mkultra.effects.spells.ParticlePotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+
+@Mod.EventBusSubscriber
 public class HealingRain extends PlayerAbility {
+
+    public static final HealingRain INSTANCE = new HealingRain();
 
     public static float BASE_AMOUNT= 2.0f;
     public static float AMOUNT_SCALE = 1.0f;
 
     public HealingRain() {
         super(MKUltra.MODID, "ability.healing_rain");
+    }
+
+    @SubscribeEvent
+    public static void register(RegistryEvent.Register<PlayerAbility> event) {
+        Log.info(INSTANCE.toString());
+        INSTANCE.setRegistryName(INSTANCE.getAbilityId());
+        event.getRegistry().register(INSTANCE);
     }
 
     @Override

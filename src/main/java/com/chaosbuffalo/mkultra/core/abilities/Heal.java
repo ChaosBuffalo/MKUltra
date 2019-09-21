@@ -102,7 +102,6 @@ public class Heal extends PlayerAbility {
 
     @Override
     public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
-
         int level = pData.getAbilityRank(getAbilityId());
         EntityLivingBase targetEntity = getSingleLivingTargetOrSelf(entity, getDistance(level), true);
         CastState state = pData.startAbility(this);
