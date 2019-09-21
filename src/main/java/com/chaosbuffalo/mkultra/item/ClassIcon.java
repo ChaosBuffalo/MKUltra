@@ -4,6 +4,7 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IClassProvider;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
+import com.chaosbuffalo.mkultra.core.PlayerClass;
 import com.chaosbuffalo.mkultra.network.ModGuiHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -54,4 +55,20 @@ public class ClassIcon extends Item implements IClassProvider {
         return iconText;
     }
 
+    @Override
+    public boolean meetsRequirements(EntityPlayer player, PlayerClass playerClass) {
+        ItemStack heldItem = player.getHeldItemMainhand();
+        if (heldItem.isEmpty())
+            return false;
+        if (heldItem.getItem() instanceof ClassIcon) {
+            return teachesClass(playerClass);
+        }
+        return false;
+    }
+
+    @Override
+    public void onProviderUse(EntityPlayer player, PlayerClass playerClass) {
+        ItemStack heldItem = player.getHeldItemMainhand();
+        ItemHelper.damageStack(player, heldItem, 1);
+    }
 }
