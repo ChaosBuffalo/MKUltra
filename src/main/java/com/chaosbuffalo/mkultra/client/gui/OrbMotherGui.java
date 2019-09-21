@@ -5,7 +5,7 @@ import com.chaosbuffalo.mkultra.client.gui.lib.*;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.core.MKURegistry;
-import com.chaosbuffalo.mkultra.core.events.client.PlayerDataUpdateEvent;
+import com.chaosbuffalo.mkultra.core.events.PlayerClassEvent;
 import com.chaosbuffalo.mkultra.core.talents.TalentRecord;
 import com.chaosbuffalo.mkultra.core.talents.TalentTreeRecord;
 import com.chaosbuffalo.mkultra.network.packets.AddRemoveTalentPointPacket;
@@ -42,7 +42,9 @@ public class OrbMotherGui extends MKScreen {
     }
 
     @SubscribeEvent
-    public void handlePlayerDataUpdate(PlayerDataUpdateEvent event) {
+    public void handlePlayerDataUpdate(PlayerClassEvent.Updated event) {
+        if (!event.isCurrentClass())
+            return;
         this.flagNeedSetup();
     }
 

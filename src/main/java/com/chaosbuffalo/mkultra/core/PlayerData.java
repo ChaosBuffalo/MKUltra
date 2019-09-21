@@ -4,7 +4,6 @@ import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.events.PlayerAbilityCastEvent;
 import com.chaosbuffalo.mkultra.core.events.PlayerClassEvent;
-import com.chaosbuffalo.mkultra.core.events.client.PlayerDataUpdateEvent;
 import com.chaosbuffalo.mkultra.core.talents.PassiveAbilityTalent;
 import com.chaosbuffalo.mkultra.core.talents.RangedAttributeTalent;
 import com.chaosbuffalo.mkultra.core.talents.TalentTreeRecord;
@@ -650,7 +649,7 @@ public class PlayerData implements IPlayerData {
         int currentLevel = getLevel();
         privateData.set(LEVEL, level);
         updatePlayerStats(false);
-        MinecraftForge.EVENT_BUS.post(new PlayerClassEvent.LevelChanged(player, this, currentLevel, level));
+        MinecraftForge.EVENT_BUS.post(new PlayerClassEvent.LevelChanged(player, this, getActiveClass(), currentLevel, level));
     }
 
     private void setActiveAbilities(ResourceLocation[] abilities) {
@@ -1137,6 +1136,7 @@ public class PlayerData implements IPlayerData {
         if (isServerSide()) {
             PlayerClassInfo activeClass = getActiveClass();
             if (activeClass != null) {
+                MinecraftForge.EVENT_BUS.post(new PlayerClassEvent.Updated(player, this, activeClass));
                 MKUltra.packetHandler.sendTo(new ClassUpdatePacket(activeClass), (EntityPlayerMP) player);
             }
         }
@@ -1155,14 +1155,17 @@ public class PlayerData implements IPlayerData {
     public void clientBulkKnownClassUpdate(List<PlayerClassInfo> info, boolean isFullUpdate) {
         if (isFullUpdate) {
             knownClasses.clear();
-            info.forEach(ci -> knownClasses.put(ci.getClassId(), ci));
+            info.forEach(ci -> {
+                knownClasses.put(ci.getClassId(), ci);
+                MinecraftForge.EVENT_BUS.post(new PlayerClassEvent.Updated(player, this, ci));
+            });
         } else {
             info.forEach(ci -> {
                 knownClasses.remove(ci.getClassId());
                 knownClasses.put(ci.getClassId(), ci);
+                MinecraftForge.EVENT_BUS.post(new PlayerClassEvent.Updated(player, this, ci));
             });
         }
-        MinecraftForge.EVENT_BUS.post(new PlayerDataUpdateEvent());
     }
 
     private void serializeSkills(NBTTagCompound tag) {
@@ -1349,6 +1352,7 @@ public class PlayerData implements IPlayerData {
         PlayerClassInfo info = new PlayerClassInfo(classId);
         knownClasses.put(classId, info);
         sendBulkClassUpdate();
+        MinecraftForge.EVENT_BUS.post(new PlayerClassEvent.Learned(player, this, info));
 
         // Learned class
         return true;
@@ -1363,7 +1367,7 @@ public class PlayerData implements IPlayerData {
         if (getClassId().compareTo(classId) == 0)
             activateClass(MKURegistry.INVALID_CLASS);
 
-        knownClasses.remove(classId);
+        PlayerClassInfo info = knownClasses.remove(classId);
 
         // Unlearn all abilities offered by this class
         PlayerClass bc = MKURegistry.getClass(classId);
@@ -1372,6 +1376,7 @@ public class PlayerData implements IPlayerData {
         }
 
         sendBulkClassUpdate();
+        MinecraftForge.EVENT_BUS.post(new PlayerClassEvent.Removed(player, this, info));
     }
 
     private boolean isClassKnown(ResourceLocation classId) {
@@ -1465,8 +1470,8 @@ public class PlayerData implements IPlayerData {
         checkTalentTotals();
         sendCurrentClassUpdate();
 
-        if (classId.compareTo(oldClassId) != 0) {
-            MinecraftForge.EVENT_BUS.post(new PlayerClassEvent.ClassChanged(player, this, oldClassId));
+        if (!classId.equals(oldClassId)) {
+            MinecraftForge.EVENT_BUS.post(new PlayerClassEvent.ClassChanged(player, this, getActiveClass(), oldClassId));
         }
     }
 

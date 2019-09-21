@@ -8,7 +8,7 @@ public class PlayerDataEvent extends Event {
     private EntityPlayer player;
     private IPlayerData data;
 
-    public PlayerDataEvent(EntityPlayer player, IPlayerData data) {
+    protected PlayerDataEvent(EntityPlayer player, IPlayerData data) {
         this.player = player;
         this.data = data;
     }
