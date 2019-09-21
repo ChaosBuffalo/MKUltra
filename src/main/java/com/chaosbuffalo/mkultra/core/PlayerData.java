@@ -2,7 +2,8 @@ package com.chaosbuffalo.mkultra.core;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.events.PlayerAbilityCastCompletedEvent;
+import com.chaosbuffalo.mkultra.core.events.PlayerAbilityCastEvent;
+import com.chaosbuffalo.mkultra.core.events.PlayerClassEvent;
 import com.chaosbuffalo.mkultra.core.events.client.PlayerDataUpdateEvent;
 import com.chaosbuffalo.mkultra.core.talents.PassiveAbilityTalent;
 import com.chaosbuffalo.mkultra.core.talents.RangedAttributeTalent;
@@ -646,8 +647,10 @@ public class PlayerData implements IPlayerData {
     }
 
     private void setLevel(int level) {
+        int currentLevel = getLevel();
         privateData.set(LEVEL, level);
         updatePlayerStats(false);
+        MinecraftForge.EVENT_BUS.post(new PlayerClassEvent.LevelChanged(player, this, currentLevel, level));
     }
 
     private void setActiveAbilities(ResourceLocation[] abilities) {
@@ -922,7 +925,7 @@ public class PlayerData implements IPlayerData {
         cooldown = PlayerFormulas.applyCooldownReduction(this, cooldown);
         setCooldown(info.getId(), cooldown);
         currentCastState = null;
-        MinecraftForge.EVENT_BUS.post(new PlayerAbilityCastCompletedEvent(player, this, info));
+        MinecraftForge.EVENT_BUS.post(new PlayerAbilityCastEvent.Completed(player, this, info));
     }
 
     @Nullable
@@ -1429,6 +1432,7 @@ public class PlayerData implements IPlayerData {
         int unspent;
         ResourceLocation[] hotbar;
 
+        ResourceLocation oldClassId = getClassId();
         saveCurrentClass();
         deactivateCurrentToggleAbilities();
 
@@ -1455,6 +1459,10 @@ public class PlayerData implements IPlayerData {
         updateTalents();
         checkTalentTotals();
         sendCurrentClassUpdate();
+
+        if (classId.compareTo(oldClassId) != 0) {
+            MinecraftForge.EVENT_BUS.post(new PlayerClassEvent.ClassChanged(player, this, oldClassId));
+        }
     }
 
     @Override

@@ -2,7 +2,7 @@ package com.chaosbuffalo.mkultra.item;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.PlayerAttributes;
-import com.chaosbuffalo.mkultra.core.events.PlayerAbilityCastCompletedEvent;
+import com.chaosbuffalo.mkultra.core.events.PlayerAbilityCastEvent;
 import com.google.common.collect.Multimap;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
@@ -102,7 +102,7 @@ public class ManaRegenIdol extends Item {
     }
 
     @SubscribeEvent
-    public static void onPlayerCompletedAbility(PlayerAbilityCastCompletedEvent event) {
+    public static void onPlayerCompletedAbility(PlayerAbilityCastEvent.Completed event) {
         EntityPlayer player = event.getPlayer();
         for (EnumHand hand : EnumHand.values()) {
             ItemStack heldItem = player.getHeldItem(hand);
