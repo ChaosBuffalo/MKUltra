@@ -907,10 +907,15 @@ public class PlayerData implements IPlayerData {
         if (abilityId.compareTo(MKURegistry.INVALID_ABILITY) == 0)
             return false;
 
+        PlayerAbilityInfo info = getAbilityInfo(abilityId);
+        if (info == null || !info.isCurrentlyKnown())
+            return false;
+
         if (getCurrentAbilityCooldown(abilityId) == 0) {
 
             PlayerAbility ability = MKURegistry.getAbility(abilityId);
-            if (ability != null && ability.meetsRequirements(this)) {
+            if (ability != null && ability.meetsRequirements(this)
+                    && !MinecraftForge.EVENT_BUS.post(new PlayerAbilityCastEvent.Starting(player, this, ability, info))) {
                 ability.execute(player, this, player.getEntityWorld());
                 return true;
             }
@@ -925,7 +930,7 @@ public class PlayerData implements IPlayerData {
         cooldown = PlayerFormulas.applyCooldownReduction(this, cooldown);
         setCooldown(info.getId(), cooldown);
         currentCastState = null;
-        MinecraftForge.EVENT_BUS.post(new PlayerAbilityCastEvent.Completed(player, this, info));
+        MinecraftForge.EVENT_BUS.post(new PlayerAbilityCastEvent.Completed(player, this, ability, info));
     }
 
     @Nullable
