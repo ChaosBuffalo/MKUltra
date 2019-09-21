@@ -7,6 +7,7 @@ import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.entities.projectiles.EntityMeteorProjectile;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.player.EntityPlayer;
@@ -30,14 +31,14 @@ public class Meteor extends PlayerAbility {
     private static int SUMMON_HEIGHT = 5;
     private static float VELOCITY = .1f;
     private static float INACCURACY = .05f;
-    public static ResourceLocation NAME = new ResourceLocation(MKUltra.MODID, "ability.meteor");
 
     public Meteor() {
-        super(NAME);
+        super(MKUltra.MODID, "ability.meteor");
     }
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<PlayerAbility> event) {
+        Log.info(INSTANCE.toString());
         INSTANCE.setRegistryName(INSTANCE.getAbilityId());
         event.getRegistry().register(INSTANCE);
     }

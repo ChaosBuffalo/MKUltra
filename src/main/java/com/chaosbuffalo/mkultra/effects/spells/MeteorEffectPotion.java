@@ -43,7 +43,7 @@ public class MeteorEffectPotion extends SpellPotionBase {
 
         float damage = cast.getScaledValue(amplifier);
         target.setFire(2);
-        target.attackEntityFrom(MKDamageSource.causeIndirectMagicDamage(Meteor.NAME, applier, caster,
+        target.attackEntityFrom(MKDamageSource.causeIndirectMagicDamage(Meteor.INSTANCE.getAbilityId(), applier, caster,
                 SCALING), damage);
     }
 }
