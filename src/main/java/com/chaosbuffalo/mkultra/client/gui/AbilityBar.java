@@ -189,7 +189,9 @@ public class AbilityBar extends Gui {
             return;
 
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        int slotCount = data.hasUltimates() ? GameConstants.ACTION_BAR_SIZE : GameConstants.NO_ULT_ACTION_BAR_SIZE;
+        ResourceLocation loc = data.getAbilityInSlot(GameConstants.ACTION_BAR_SIZE -1);
+        int slotCount = data.hasUltimates() || !loc.equals(MKURegistry.INVALID_ABILITY) ?
+                GameConstants.ACTION_BAR_SIZE : GameConstants.NO_ULT_ACTION_BAR_SIZE;
         drawMana(data);
         drawCastBar(data);
         drawBarSlots(slotCount);
