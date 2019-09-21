@@ -414,16 +414,6 @@ public class PlayerData implements IPlayerData {
         return abilityTracker.getCooldownTicks(loc);
     }
 
-    @Override
-    public boolean hasArbitraryCooldown(ResourceLocation loc) {
-        return getArbitraryCooldown(loc) != GameConstants.ACTION_BAR_INVALID_COOLDOWN;
-    }
-
-    @Override
-    public boolean isArbitraryOnCooldown(ResourceLocation loc) {
-        return getArbitraryCooldown(loc) > 0;
-    }
-
     private void updateTalents() {
         removeTalents();
         if (!hasChosenClass()) {
@@ -870,11 +860,10 @@ public class PlayerData implements IPlayerData {
         return new ResourceLocation(privateData.get(CURRENT_CAST));
     }
 
-    @Override
-    public void startCast(PlayerAbility ability, int castTime) {
+    private CastState startCast(PlayerAbility ability, int castTime) {
         privateData.set(CURRENT_CAST, ability.getAbilityId().toString());
         setCastTicks(castTime);
-        currentCastState = ability.createCastState(castTime);
+        return ability.createCastState(castTime);
     }
 
     @SideOnly(Side.CLIENT)
@@ -956,7 +945,7 @@ public class PlayerData implements IPlayerData {
 
         int castTime = ability.getCastTime(info.getRank());
         if (castTime > 0) {
-            startCast(ability, castTime);
+            currentCastState = startCast(ability, castTime);
             return currentCastState;
         } else {
             completeAbility(ability, info);

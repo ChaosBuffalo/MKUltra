@@ -166,9 +166,9 @@ public interface IPlayerData {
 
     int getArbitraryCooldown(ResourceLocation loc);
 
-    boolean hasArbitraryCooldown(ResourceLocation loc);
-
-    boolean isArbitraryOnCooldown(ResourceLocation loc);
+    default boolean isArbitraryOnCooldown(ResourceLocation loc) {
+        return getArbitraryCooldown(loc) > 0;
+    }
 
     ArmorClass getArmorClass();
 
@@ -185,6 +185,4 @@ public interface IPlayerData {
     void setCastTicks(int value);
 
     ResourceLocation getCastingAbility();
-
-    void startCast(PlayerAbility ability, int castTime);
 }
