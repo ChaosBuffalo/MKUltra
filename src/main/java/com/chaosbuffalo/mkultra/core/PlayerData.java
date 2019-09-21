@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.core;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.core.events.PlayerAbilityCastCompletedEvent;
 import com.chaosbuffalo.mkultra.core.events.client.PlayerDataUpdateEvent;
 import com.chaosbuffalo.mkultra.core.talents.PassiveAbilityTalent;
 import com.chaosbuffalo.mkultra.core.talents.RangedAttributeTalent;
@@ -11,8 +12,6 @@ import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
 import com.chaosbuffalo.mkultra.effects.passives.PassiveAbilityPotionBase;
 import com.chaosbuffalo.mkultra.effects.spells.ArmorTrainingPotion;
 import com.chaosbuffalo.mkultra.event.ItemEventHandler;
-import com.chaosbuffalo.mkultra.item.ItemHelper;
-import com.chaosbuffalo.mkultra.item.ManaRegenIdol;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.network.packets.AbilityUpdatePacket;
 import com.chaosbuffalo.mkultra.network.packets.ClassUpdatePacket;
@@ -918,19 +917,12 @@ public class PlayerData implements IPlayerData {
     }
 
 
-    void completeAbility(PlayerAbility ability, PlayerAbilityInfo info) {
-        ItemStack heldItem = this.player.getHeldItem(EnumHand.OFF_HAND);
-        if (heldItem.getItem() instanceof ManaRegenIdol) {
-            ItemHelper.damageStack(player, heldItem, 1);
-        }
-        ItemStack mainHandItem = this.player.getHeldItem(EnumHand.MAIN_HAND);
-        if (mainHandItem.getItem() instanceof ManaRegenIdol) {
-            ItemHelper.damageStack(player, mainHandItem, 1);
-        }
+    private void completeAbility(PlayerAbility ability, PlayerAbilityInfo info) {
         int cooldown = ability.getCooldownTicks(info.getRank());
         cooldown = PlayerFormulas.applyCooldownReduction(this, cooldown);
         setCooldown(info.getId(), cooldown);
         currentCastState = null;
+        MinecraftForge.EVENT_BUS.post(new PlayerAbilityCastCompletedEvent(player, this, info));
     }
 
     @Nullable

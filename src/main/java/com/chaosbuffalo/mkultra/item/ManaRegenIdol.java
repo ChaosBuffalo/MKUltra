@@ -2,14 +2,20 @@ package com.chaosbuffalo.mkultra.item;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.PlayerAttributes;
+import com.chaosbuffalo.mkultra.core.events.PlayerAbilityCastCompletedEvent;
 import com.google.common.collect.Multimap;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.UUID;
 
+@Mod.EventBusSubscriber
 public class ManaRegenIdol extends Item {
 
     private final float regen_amount;
@@ -93,5 +99,16 @@ public class ManaRegenIdol extends Item {
         }
 
         return mods;
+    }
+
+    @SubscribeEvent
+    public static void onPlayerCompletedAbility(PlayerAbilityCastCompletedEvent event) {
+        EntityPlayer player = event.getPlayer();
+        for (EnumHand hand : EnumHand.values()) {
+            ItemStack heldItem = player.getHeldItem(hand);
+            if (heldItem.getItem() instanceof ManaRegenIdol) {
+                ItemHelper.damageStack(player, heldItem, 1);
+            }
+        }
     }
 }
