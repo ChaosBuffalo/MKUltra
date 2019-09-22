@@ -73,13 +73,13 @@ public class PlayerAbilityButton extends MKButton {
                 if (getScreen() != null) {
                     getScreen().addHoveringText(new HoveringTextInstruction(
                             I18n.format("mkultra.ui_msg.no_passives"),
-                            getParentCoords(new Vec2d(mouseX, mouseY))));
+                            getParentCoords(new Vec2i(mouseX, mouseY))));
                 }
             } else if (ability == null) {
                 if (getScreen() != null) {
                     getScreen().addHoveringText(new HoveringTextInstruction(
                             I18n.format("mkultra.ui_msg.learn_passive_prompt"),
-                            getParentCoords(new Vec2d(mouseX, mouseY))));
+                            getParentCoords(new Vec2i(mouseX, mouseY))));
                 }
             }
         } else if (type == AbilityType.ULTIMATE){
@@ -88,13 +88,13 @@ public class PlayerAbilityButton extends MKButton {
                 if (getScreen() != null) {
                     getScreen().addHoveringText(new HoveringTextInstruction(
                             I18n.format("mkultra.ui_msg.no_ultimates"),
-                            getParentCoords(new Vec2d(mouseX, mouseY))));
+                            getParentCoords(new Vec2i(mouseX, mouseY))));
                 }
             } else if (ability == null) {
                 if (getScreen() != null) {
                     getScreen().addHoveringText(new HoveringTextInstruction(
                             I18n.format("mkultra.ui_msg.learn_ultimate_prompt"),
-                            getParentCoords(new Vec2d(mouseX, mouseY))));
+                            getParentCoords(new Vec2i(mouseX, mouseY))));
                 }
             }
         }
@@ -250,7 +250,7 @@ public class PlayerAbilityButton extends MKButton {
                 if (isHovered()) {
                     if (getScreen() != null) {
                         getScreen().addHoveringText(new HoveringTextInstruction(tooltip,
-                                getParentCoords(new Vec2d(mouseX, mouseY))));
+                                getParentCoords(new Vec2i(mouseX, mouseY))));
                     }
                     name = TextFormatting.DARK_GREEN + ability.getAbilityName();
                 } else {

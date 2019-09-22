@@ -3,6 +3,8 @@ package com.chaosbuffalo.mkultra.core.abilities;
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.*;
+import com.chaosbuffalo.mkultra.core.abilities.cast_states.CastState;
+import com.chaosbuffalo.mkultra.core.abilities.cast_states.SingleTargetCastState;
 import com.chaosbuffalo.mkultra.effects.spells.WarpCursePotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;

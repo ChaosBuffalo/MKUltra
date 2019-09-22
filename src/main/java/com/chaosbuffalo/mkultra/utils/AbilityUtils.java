@@ -1,6 +1,7 @@
 package com.chaosbuffalo.mkultra.utils;
 
 import com.chaosbuffalo.mkultra.core.*;
+import com.chaosbuffalo.mkultra.core.abilities.cast_states.CastState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;

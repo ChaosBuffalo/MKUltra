@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.core;
 
+import com.chaosbuffalo.mkultra.core.abilities.cast_states.CastState;
 import com.chaosbuffalo.mkultra.core.talents.TalentTreeRecord;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.nbt.NBTTagCompound;
