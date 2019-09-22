@@ -34,7 +34,9 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
@@ -1496,14 +1498,14 @@ public class PlayerData implements IPlayerData {
             int max;
             PlayerAbility ability = MKURegistry.getAbility(abilityId);
             if (ability != null) {
-                name = ability.getAbilityName();
+                name = String.format("%s.%s.name", abilityId.getNamespace(), abilityId.getPath());
                 max = getAbilityCooldown(ability);
             } else {
                 name = abilityId.toString();
                 max = abilityTracker.getMaxCooldownTicks(abilityId);
             }
-            String line = String.format("%s: %d / %d", name, current, max);
-            sender.sendMessage(new TextComponentString(line));
+            ITextComponent line = new TextComponentTranslation(name).appendText(String.format(": %d / %d", current, max));
+            sender.sendMessage(line);
         });
     }
 

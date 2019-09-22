@@ -12,7 +12,8 @@ public class MathUtils {
     }
 
     public static boolean isBehind(Entity target, Entity source){
+        Vec3d forward = Vec3d.fromPitchYaw(target.rotationPitch, target.rotationYaw);
         Vec3d facing = target.getPositionVector().subtract(source.getPositionVector()).normalize();
-        return facing.dotProduct(target.getForward()) > 0;
+        return facing.dotProduct(forward) > 0;
     }
 }
