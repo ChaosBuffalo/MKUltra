@@ -2,7 +2,8 @@ package com.chaosbuffalo.mkultra.core;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.events.client.PlayerDataUpdateEvent;
+import com.chaosbuffalo.mkultra.core.events.PlayerAbilityCastEvent;
+import com.chaosbuffalo.mkultra.core.events.PlayerClassEvent;
 import com.chaosbuffalo.mkultra.core.talents.PassiveAbilityTalent;
 import com.chaosbuffalo.mkultra.core.talents.RangedAttributeTalent;
 import com.chaosbuffalo.mkultra.core.talents.TalentTreeRecord;
@@ -11,8 +12,6 @@ import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
 import com.chaosbuffalo.mkultra.effects.passives.PassiveAbilityPotionBase;
 import com.chaosbuffalo.mkultra.effects.spells.ArmorTrainingPotion;
 import com.chaosbuffalo.mkultra.event.ItemEventHandler;
-import com.chaosbuffalo.mkultra.item.ItemHelper;
-import com.chaosbuffalo.mkultra.item.ManaRegenIdol;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.network.packets.AbilityUpdatePacket;
 import com.chaosbuffalo.mkultra.network.packets.ClassUpdatePacket;
@@ -414,16 +413,6 @@ public class PlayerData implements IPlayerData {
         return abilityTracker.getCooldownTicks(loc);
     }
 
-    @Override
-    public boolean hasArbitraryCooldown(ResourceLocation loc) {
-        return getArbitraryCooldown(loc) != GameConstants.ACTION_BAR_INVALID_COOLDOWN;
-    }
-
-    @Override
-    public boolean isArbitraryOnCooldown(ResourceLocation loc) {
-        return getArbitraryCooldown(loc) > 0;
-    }
-
     private void updateTalents() {
         removeTalents();
         if (!hasChosenClass()) {
@@ -657,8 +646,10 @@ public class PlayerData implements IPlayerData {
     }
 
     private void setLevel(int level) {
+        int currentLevel = getLevel();
         privateData.set(LEVEL, level);
         updatePlayerStats(false);
+        MinecraftForge.EVENT_BUS.post(new PlayerClassEvent.LevelChanged(player, this, getActiveClass(), currentLevel, level));
     }
 
     private void setActiveAbilities(ResourceLocation[] abilities) {
@@ -870,11 +861,10 @@ public class PlayerData implements IPlayerData {
         return new ResourceLocation(privateData.get(CURRENT_CAST));
     }
 
-    @Override
-    public void startCast(PlayerAbility ability, int castTime) {
+    private CastState startCast(PlayerAbility ability, int castTime) {
         privateData.set(CURRENT_CAST, ability.getAbilityId().toString());
         setCastTicks(castTime);
-        currentCastState = ability.createCastState(castTime);
+        return ability.createCastState(castTime);
     }
 
     @SideOnly(Side.CLIENT)
@@ -916,10 +906,15 @@ public class PlayerData implements IPlayerData {
         if (abilityId.compareTo(MKURegistry.INVALID_ABILITY) == 0)
             return false;
 
+        PlayerAbilityInfo info = getAbilityInfo(abilityId);
+        if (info == null || !info.isCurrentlyKnown())
+            return false;
+
         if (getCurrentAbilityCooldown(abilityId) == 0) {
 
             PlayerAbility ability = MKURegistry.getAbility(abilityId);
-            if (ability != null && ability.meetsRequirements(this)) {
+            if (ability != null && ability.meetsRequirements(this)
+                    && !MinecraftForge.EVENT_BUS.post(new PlayerAbilityCastEvent.Starting(player, this, ability, info))) {
                 ability.execute(player, this, player.getEntityWorld());
                 return true;
             }
@@ -929,19 +924,12 @@ public class PlayerData implements IPlayerData {
     }
 
 
-    void completeAbility(PlayerAbility ability, PlayerAbilityInfo info) {
-        ItemStack heldItem = this.player.getHeldItem(EnumHand.OFF_HAND);
-        if (heldItem.getItem() instanceof ManaRegenIdol) {
-            ItemHelper.damageStack(player, heldItem, 1);
-        }
-        ItemStack mainHandItem = this.player.getHeldItem(EnumHand.MAIN_HAND);
-        if (mainHandItem.getItem() instanceof ManaRegenIdol) {
-            ItemHelper.damageStack(player, mainHandItem, 1);
-        }
+    private void completeAbility(PlayerAbility ability, PlayerAbilityInfo info) {
         int cooldown = ability.getCooldownTicks(info.getRank());
         cooldown = PlayerFormulas.applyCooldownReduction(this, cooldown);
         setCooldown(info.getId(), cooldown);
         currentCastState = null;
+        MinecraftForge.EVENT_BUS.post(new PlayerAbilityCastEvent.Completed(player, this, ability, info));
     }
 
     @Nullable
@@ -956,7 +944,7 @@ public class PlayerData implements IPlayerData {
 
         int castTime = ability.getCastTime(info.getRank());
         if (castTime > 0) {
-            startCast(ability, castTime);
+            currentCastState = startCast(ability, castTime);
             return currentCastState;
         } else {
             completeAbility(ability, info);
@@ -1148,6 +1136,7 @@ public class PlayerData implements IPlayerData {
         if (isServerSide()) {
             PlayerClassInfo activeClass = getActiveClass();
             if (activeClass != null) {
+                MinecraftForge.EVENT_BUS.post(new PlayerClassEvent.Updated(player, this, activeClass));
                 MKUltra.packetHandler.sendTo(new ClassUpdatePacket(activeClass), (EntityPlayerMP) player);
             }
         }
@@ -1166,14 +1155,17 @@ public class PlayerData implements IPlayerData {
     public void clientBulkKnownClassUpdate(List<PlayerClassInfo> info, boolean isFullUpdate) {
         if (isFullUpdate) {
             knownClasses.clear();
-            info.forEach(ci -> knownClasses.put(ci.getClassId(), ci));
+            info.forEach(ci -> {
+                knownClasses.put(ci.getClassId(), ci);
+                MinecraftForge.EVENT_BUS.post(new PlayerClassEvent.Updated(player, this, ci));
+            });
         } else {
             info.forEach(ci -> {
                 knownClasses.remove(ci.getClassId());
                 knownClasses.put(ci.getClassId(), ci);
+                MinecraftForge.EVENT_BUS.post(new PlayerClassEvent.Updated(player, this, ci));
             });
         }
-        MinecraftForge.EVENT_BUS.post(new PlayerDataUpdateEvent());
     }
 
     private void serializeSkills(NBTTagCompound tag) {
@@ -1360,6 +1352,7 @@ public class PlayerData implements IPlayerData {
         PlayerClassInfo info = new PlayerClassInfo(classId);
         knownClasses.put(classId, info);
         sendBulkClassUpdate();
+        MinecraftForge.EVENT_BUS.post(new PlayerClassEvent.Learned(player, this, info));
 
         // Learned class
         return true;
@@ -1374,7 +1367,7 @@ public class PlayerData implements IPlayerData {
         if (getClassId().compareTo(classId) == 0)
             activateClass(MKURegistry.INVALID_CLASS);
 
-        knownClasses.remove(classId);
+        PlayerClassInfo info = knownClasses.remove(classId);
 
         // Unlearn all abilities offered by this class
         PlayerClass bc = MKURegistry.getClass(classId);
@@ -1383,6 +1376,7 @@ public class PlayerData implements IPlayerData {
         }
 
         sendBulkClassUpdate();
+        MinecraftForge.EVENT_BUS.post(new PlayerClassEvent.Removed(player, this, info));
     }
 
     private boolean isClassKnown(ResourceLocation classId) {
@@ -1448,6 +1442,7 @@ public class PlayerData implements IPlayerData {
         int unspent;
         ResourceLocation[] hotbar;
 
+        ResourceLocation oldClassId = getClassId();
         saveCurrentClass();
         deactivateCurrentToggleAbilities();
 
@@ -1474,6 +1469,10 @@ public class PlayerData implements IPlayerData {
         updateTalents();
         checkTalentTotals();
         sendCurrentClassUpdate();
+
+        if (!classId.equals(oldClassId)) {
+            MinecraftForge.EVENT_BUS.post(new PlayerClassEvent.ClassChanged(player, this, getActiveClass(), oldClassId));
+        }
     }
 
     @Override

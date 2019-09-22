@@ -4,7 +4,7 @@ import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.client.gui.lib.*;
 import com.chaosbuffalo.mkultra.core.*;
-import com.chaosbuffalo.mkultra.core.events.client.PlayerDataUpdateEvent;
+import com.chaosbuffalo.mkultra.core.events.PlayerClassEvent;
 import com.chaosbuffalo.mkultra.network.packets.LevelAbilityPacket;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
@@ -73,7 +73,9 @@ public class PlayerClassScreen extends MKScreen {
     }
 
     @SubscribeEvent
-    public void handlePlayerDataUpdate(PlayerDataUpdateEvent event) {
+    public void handlePlayerDataUpdate(PlayerClassEvent.Updated event) {
+        if (!event.isCurrentClass())
+            return;
         if (passivePanel != null) {
             mainRoot.removeWidget(passivePanel);
         }
