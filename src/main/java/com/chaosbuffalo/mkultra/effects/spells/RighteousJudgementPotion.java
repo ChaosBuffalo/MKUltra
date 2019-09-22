@@ -58,7 +58,7 @@ public class RighteousJudgementPotion extends SpellPeriodicPotionBase {
     @Override
     public void doEffect(Entity source, Entity indirectSource, EntityLivingBase target, int amplifier, SpellCast cast) {
         target.attackEntityFrom(MKDamageSource.causeIndirectMagicDamage(RighteousJudgement.INSTANCE.getAbilityId(),
-                source, indirectSource, 0.85f), amplifier * 3.0f);
+                source, indirectSource, 0.85f), amplifier * 1.0f);
         MKUltra.packetHandler.sendToAllAround(
                 new ParticleEffectSpawnPacket(
                         EnumParticleTypes.CRIT_MAGIC.getParticleID(),
