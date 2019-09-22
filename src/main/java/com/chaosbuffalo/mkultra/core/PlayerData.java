@@ -998,14 +998,6 @@ public class PlayerData implements IPlayerData {
         return (float) player.getEntityAttribute(PlayerAttributes.MANA_REGEN).getAttributeValue();
     }
 
-    private float getBaseHealthRegenRate() {
-        return (float) player.getEntityAttribute(PlayerAttributes.HEALTH_REGEN).getBaseValue();
-    }
-
-    private float getBaseManaRegenRate() {
-        return (float) player.getEntityAttribute(PlayerAttributes.MANA_REGEN).getBaseValue();
-    }
-
     private void setTotalMana(float totalMana) {
         player.getEntityAttribute(PlayerAttributes.MAX_MANA).setBaseValue(totalMana);
     }
@@ -1013,10 +1005,6 @@ public class PlayerData implements IPlayerData {
     @Override
     public float getTotalMana() {
         return (float) player.getEntityAttribute(PlayerAttributes.MAX_MANA).getAttributeValue();
-    }
-
-    private float getBaseTotalMana() {
-        return (float) player.getEntityAttribute(PlayerAttributes.MAX_MANA).getBaseValue();
     }
 
     @Override
@@ -1243,9 +1231,6 @@ public class PlayerData implements IPlayerData {
     @Override
     public void serialize(NBTTagCompound nbt) {
         nbt.setFloat("mana", getMana());
-        nbt.setFloat("manaRegenRate", getBaseManaRegenRate());
-        nbt.setFloat("totalMana", getBaseTotalMana());
-        nbt.setFloat("healthRegenRate", getBaseHealthRegenRate());
         abilityTracker.serialize(nbt);
         serializeSkills(nbt);
         serializeClasses(nbt);
@@ -1253,17 +1238,8 @@ public class PlayerData implements IPlayerData {
 
     @Override
     public void deserialize(NBTTagCompound nbt) {
-        if (nbt.hasKey("totalMana")) {
-            setTotalMana(nbt.getFloat("totalMana"));
-        }
         if (nbt.hasKey("mana")) {
             setMana(nbt.getFloat("mana"));
-        }
-        if (nbt.hasKey("manaRegenRate")) {
-            setManaRegen(nbt.getFloat("manaRegenRate"));
-        }
-        if (nbt.hasKey("healthRegenRate")) {
-            setHealthRegen(nbt.getFloat("healthRegenRate"));
         }
         abilityTracker.deserialize(nbt);
         deserializeSkills(nbt);
