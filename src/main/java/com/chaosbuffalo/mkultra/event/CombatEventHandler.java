@@ -90,7 +90,7 @@ public class CombatEventHandler {
     }
 
     @SubscribeEvent
-    public static void onLeftClickEmpty(ServerSideLeftClickEmpty event) {
+    public static void onLeftClickEmptyServer(ServerSideLeftClickEmpty event) {
         if (!event.getEntityPlayer().world.isRemote) {
             SpellTriggers.EMPTY_LEFT_CLICK.onEmptyLeftClick(event.getEntityPlayer(), event);
         }
