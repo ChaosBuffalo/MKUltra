@@ -598,7 +598,7 @@ public class PlayerData implements IPlayerData {
 
     @Override
     public boolean hasChosenClass() {
-        return this.getClassId().compareTo(MKURegistry.INVALID_CLASS) != 0;
+        return !getClassId().equals(MKURegistry.INVALID_CLASS);
     }
 
     @Override
@@ -674,7 +674,7 @@ public class PlayerData implements IPlayerData {
 
     private int getCurrentSlotForAbility(ResourceLocation abilityId) {
         for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
-            if (getAbilityInSlot(i).compareTo(abilityId) == 0) {
+            if (getAbilityInSlot(i).equals(abilityId)) {
                 return i;
             }
         }
@@ -903,7 +903,7 @@ public class PlayerData implements IPlayerData {
     @Override
     public boolean executeHotBarAbility(int slotIndex) {
         ResourceLocation abilityId = getAbilityInSlot(slotIndex);
-        if (abilityId.compareTo(MKURegistry.INVALID_ABILITY) == 0)
+        if (abilityId.equals(MKURegistry.INVALID_ABILITY))
             return false;
 
         PlayerAbilityInfo info = getAbilityInfo(abilityId);
@@ -1287,7 +1287,7 @@ public class PlayerData implements IPlayerData {
         for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
             ResourceLocation abilityId = getAbilityInSlot(i);
 
-            if (abilityId.compareTo(MKURegistry.INVALID_ABILITY) == 0)
+            if (abilityId.equals(MKURegistry.INVALID_ABILITY))
                 continue;
 
             PlayerAbilityInfo info = getAbilityInfo(abilityId);
@@ -1310,7 +1310,7 @@ public class PlayerData implements IPlayerData {
                 setUnspentPoints(curUnspent - 1);
             } else {
                 ResourceLocation lastAbility = getLastUpgradedAbility();
-                if (lastAbility.compareTo(MKURegistry.INVALID_ABILITY) != 0) {
+                if (!lastAbility.equals(MKURegistry.INVALID_ABILITY)) {
                     unlearnAbility(lastAbility, false, false);
                 }
             }
@@ -1364,7 +1364,7 @@ public class PlayerData implements IPlayerData {
         }
 
         // If it's the active class, switch to no class first
-        if (getClassId().compareTo(classId) == 0)
+        if (getClassId().equals(classId))
             activateClass(MKURegistry.INVALID_CLASS);
 
         PlayerClassInfo info = knownClasses.remove(classId);
@@ -1446,7 +1446,7 @@ public class PlayerData implements IPlayerData {
         saveCurrentClass();
         deactivateCurrentToggleAbilities();
 
-        if (classId.compareTo(MKURegistry.INVALID_CLASS) == 0 || !isClassKnown(classId)) {
+        if (classId.equals(MKURegistry.INVALID_CLASS) || !isClassKnown(classId)) {
             // Switching to no class
 
             classId = MKURegistry.INVALID_CLASS;
