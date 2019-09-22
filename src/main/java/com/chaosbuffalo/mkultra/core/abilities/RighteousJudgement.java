@@ -40,7 +40,7 @@ public class RighteousJudgement extends PlayerAbility {
 
     @Override
     public int getCooldown(int currentRank) {
-        return 40;
+        return 60;
     }
 
     @Override
@@ -73,7 +73,7 @@ public class RighteousJudgement extends PlayerAbility {
         super.endCast(entity, data, theWorld, state);
         int level = data.getAbilityRank(getAbilityId());
 
-        int duration = 20;
+        int duration = 16;
         duration *= GameConstants.TICKS_PER_SECOND;
 
         SpellCast judgementPotion = RighteousJudgementPotion.Create(entity);

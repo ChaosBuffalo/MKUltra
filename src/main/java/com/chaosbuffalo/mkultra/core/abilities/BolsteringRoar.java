@@ -37,7 +37,7 @@ public class BolsteringRoar extends PlayerAbility {
 
     @Override
     public int getCooldown(int currentRank) {
-        return 30;
+        return 75;
     }
 
     @Override
@@ -66,7 +66,7 @@ public class BolsteringRoar extends PlayerAbility {
 
         int level = pData.getAbilityRank(getAbilityId());
 
-        int duration = 12;
+        int duration = 20;
         duration *= GameConstants.TICKS_PER_SECOND;
         duration = PlayerFormulas.applyBuffDurationBonus(pData, duration);
 
