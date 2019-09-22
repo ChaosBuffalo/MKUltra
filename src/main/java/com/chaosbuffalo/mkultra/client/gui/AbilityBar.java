@@ -126,7 +126,7 @@ public class AbilityBar extends Gui {
 
         for (int i = 0; i < slotCount; i++) {
             ResourceLocation abilityId = data.getAbilityInSlot(i);
-            if (abilityId.compareTo(MKURegistry.INVALID_ABILITY) == 0)
+            if (abilityId.equals(MKURegistry.INVALID_ABILITY))
                 continue;
 
             PlayerAbility ability = MKURegistry.getAbility(abilityId);

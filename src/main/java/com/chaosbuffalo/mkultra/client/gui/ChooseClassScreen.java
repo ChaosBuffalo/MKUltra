@@ -117,7 +117,7 @@ public abstract class ChooseClassScreen extends GuiScreen {
                 button.enabled = !knownClasses.contains(classId);
             } else {
                 // Only allow selecting classes other than the current
-                button.enabled = classId.compareTo(data.getClassId()) != 0;
+                button.enabled = !classId.equals(data.getClassId());
             }
             button.drawButton(this.mc, mouseX, mouseY, partialTicks);
             this.buttonList.add(button);
