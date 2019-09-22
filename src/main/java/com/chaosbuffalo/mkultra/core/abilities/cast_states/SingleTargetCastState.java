@@ -1,4 +1,4 @@
-package com.chaosbuffalo.mkultra.core;
+package com.chaosbuffalo.mkultra.core.abilities.cast_states;
 
 import net.minecraft.entity.EntityLivingBase;
 

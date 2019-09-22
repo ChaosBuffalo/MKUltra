@@ -1,16 +1,13 @@
 package com.chaosbuffalo.mkultra.entities.projectiles;
 
 import com.chaosbuffalo.mkultra.GameConstants;
-import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.abilities.Meteor;
+import com.chaosbuffalo.mkultra.core.abilities.ultimates.Meteor;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.AIStunPotion;
 import com.chaosbuffalo.mkultra.effects.spells.MeteorEffectPotion;
-import com.chaosbuffalo.mkultra.effects.spells.MobFireballEffectPotion;
 import com.chaosbuffalo.mkultra.effects.spells.ParticlePotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
-import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;

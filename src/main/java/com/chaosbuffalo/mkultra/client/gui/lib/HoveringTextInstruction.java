@@ -8,15 +8,15 @@ import java.util.ArrayList;
 public class HoveringTextInstruction {
 
     public ArrayList<String> texts;
-    public Vec2d mousePos;
+    public Vec2i mousePos;
 
-    public HoveringTextInstruction(ArrayList<String> texts, Vec2d mousePos) {
+    public HoveringTextInstruction(ArrayList<String> texts, Vec2i mousePos) {
         this.texts = texts;
         this.mousePos = mousePos;
     }
 
     public HoveringTextInstruction(ArrayList<String> texts, int x, int y) {
-        this(texts, new Vec2d(x, y));
+        this(texts, new Vec2i(x, y));
     }
 
     public HoveringTextInstruction(String text, int x, int y) {
@@ -24,7 +24,7 @@ public class HoveringTextInstruction {
         texts.add(text);
     }
 
-    public HoveringTextInstruction(String text, Vec2d mousePos) {
+    public HoveringTextInstruction(String text, Vec2i mousePos) {
         this(new ArrayList<>(), mousePos);
         texts.add(text);
     }

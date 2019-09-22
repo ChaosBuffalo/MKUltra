@@ -1,14 +1,15 @@
-package com.chaosbuffalo.mkultra.core.abilities;
+package com.chaosbuffalo.mkultra.core.abilities.ultimates;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.core.abilities.cast_states.CastState;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerAbility;
-import com.chaosbuffalo.mkultra.core.PlayerFormulas;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
-import com.chaosbuffalo.mkultra.effects.spells.BolsteringRoarPotion;
+import com.chaosbuffalo.mkultra.effects.spells.AIStunPotion;
 import com.chaosbuffalo.mkultra.effects.spells.ParticlePotion;
+import com.chaosbuffalo.mkultra.effects.spells.RighteousJudgementPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
@@ -21,12 +22,12 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Mod.EventBusSubscriber
-public class BolsteringRoar extends PlayerAbility {
+public class RighteousJudgement extends PlayerAbility {
 
-    public static final BolsteringRoar INSTANCE = new BolsteringRoar();
+    public static final RighteousJudgement INSTANCE = new RighteousJudgement();
 
-    public BolsteringRoar() {
-        super(MKUltra.MODID, "ability.bolstering_roar");
+    public RighteousJudgement() {
+        super(MKUltra.MODID, "ability.righteous_judgement");
     }
 
     @SubscribeEvent
@@ -37,22 +38,22 @@ public class BolsteringRoar extends PlayerAbility {
 
     @Override
     public int getCooldown(int currentRank) {
-        return 75;
+        return 60;
     }
 
     @Override
     public Targeting.TargetType getTargetType() {
-        return Targeting.TargetType.FRIENDLY;
+        return Targeting.TargetType.ENEMY;
     }
 
     @Override
     public float getManaCost(int currentRank) {
-        return 12 + 2 * currentRank;
+        return 15 + 2 * currentRank;
     }
 
     @Override
     public float getDistance(int currentRank) {
-        return 10.0f + (currentRank * 5.0f);
+        return 8.0f;
     }
 
     @Override
@@ -61,24 +62,31 @@ public class BolsteringRoar extends PlayerAbility {
     }
 
     @Override
-    public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
-        pData.startAbility(this);
+    public int getCastTime(int currentRank) {
+        return GameConstants.TICKS_PER_SECOND * 2 * currentRank;
+    }
 
-        int level = pData.getAbilityRank(getAbilityId());
+    @Override
+    public void endCast(EntityPlayer entity, IPlayerData data, World theWorld, CastState state) {
+        super.endCast(entity, data, theWorld, state);
+        int level = data.getAbilityRank(getAbilityId());
 
-        int duration = 20;
+        int duration = 16;
         duration *= GameConstants.TICKS_PER_SECOND;
-        duration = PlayerFormulas.applyBuffDurationBonus(pData, duration);
 
-        SpellCast roar = BolsteringRoarPotion.Create(entity);
+        SpellCast judgementPotion = RighteousJudgementPotion.Create(entity);
         SpellCast particlePotion = ParticlePotion.Create(entity,
-                EnumParticleTypes.CRIT.getParticleID(),
-                ParticleEffects.SPHERE_MOTION, false, new Vec3d(1.0, 1.0, 1.0),
-                new Vec3d(0.0, 1.0, 0.0), 50, 5, 0.1);
+                EnumParticleTypes.FLAME.getParticleID(),
+                ParticleEffects.CIRCLE_PILLAR_MOTION, false,
+                new Vec3d(1.0, 1.0, 1.0),
+                new Vec3d(0.0, 1.0, 0.0),
+                50, 5, 0.25);
+        SpellCast stunPotion = AIStunPotion.Create(entity);
 
         AreaEffectBuilder.Create(entity, entity)
-                .spellCast(roar, duration, level, getTargetType())
+                .spellCast(judgementPotion, duration, level, getTargetType())
                 .spellCast(particlePotion, 0, getTargetType())
+                .spellCast(stunPotion, GameConstants.TICKS_PER_SECOND * 2, 1, getTargetType())
                 .instant()
                 .disableParticle()
                 .radius(getDistance(level), true)
@@ -87,10 +95,16 @@ public class BolsteringRoar extends PlayerAbility {
         Vec3d lookVec = entity.getLookVec();
         MKUltra.packetHandler.sendToAllAround(
                 new ParticleEffectSpawnPacket(
-                        EnumParticleTypes.CRIT.getParticleID(),
+                        EnumParticleTypes.FLAME.getParticleID(),
                         ParticleEffects.SPHERE_MOTION, 50, 5,
                         entity.posX, entity.posY + 1.0,
                         entity.posZ, 1.0, 1.0, 1.0, 0.1,
                         lookVec), entity, 50.0f);
     }
+
+    @Override
+    public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
+        pData.startAbility(this);
+    }
 }
+

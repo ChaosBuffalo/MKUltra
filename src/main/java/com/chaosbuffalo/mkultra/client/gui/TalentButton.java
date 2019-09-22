@@ -3,8 +3,7 @@ package com.chaosbuffalo.mkultra.client.gui;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.client.gui.lib.HoveringTextInstruction;
 import com.chaosbuffalo.mkultra.client.gui.lib.MKButton;
-import com.chaosbuffalo.mkultra.client.gui.lib.Vec2d;
-import com.chaosbuffalo.mkultra.core.talents.AttributeTalentNode;
+import com.chaosbuffalo.mkultra.client.gui.lib.Vec2i;
 import com.chaosbuffalo.mkultra.core.talents.BaseTalent;
 import com.chaosbuffalo.mkultra.core.talents.TalentRecord;
 import net.minecraft.client.Minecraft;
@@ -113,7 +112,7 @@ public class TalentButton extends MKButton {
             if (isHovered()) {
                 if (getScreen() != null) {
                     screen.addHoveringText(new HoveringTextInstruction(tooltip,
-                            getParentCoords(new Vec2d(mouseX, mouseY))));
+                            getParentCoords(new Vec2i(mouseX, mouseY))));
                 }
             }
         }

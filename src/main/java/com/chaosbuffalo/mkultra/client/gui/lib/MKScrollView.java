@@ -237,7 +237,7 @@ public class MKScrollView extends MKWidget {
     }
 
     @Override
-    public Vec2d getParentCoords(Vec2d pos) {
+    public Vec2i getParentCoords(Vec2i pos) {
         if (parent == null) {
             return pos.add(offsetX, offsetY);
         } else {

@@ -1,19 +1,20 @@
-package com.chaosbuffalo.mkultra.core.abilities;
+package com.chaosbuffalo.mkultra.core.abilities.ultimates;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.CastState;
+import com.chaosbuffalo.mkultra.core.abilities.cast_states.CastState;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerAbility;
-import com.chaosbuffalo.mkultra.entities.projectiles.EntityMeteorProjectile;
+import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
+import com.chaosbuffalo.mkultra.effects.SpellCast;
+import com.chaosbuffalo.mkultra.effects.spells.ClericHealPotion;
+import com.chaosbuffalo.mkultra.effects.spells.ParticlePotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.event.RegistryEvent;
@@ -22,18 +23,15 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 
 @Mod.EventBusSubscriber
-public class Meteor extends PlayerAbility {
+public class HealingRain extends PlayerAbility {
 
-    public static final Meteor INSTANCE = new Meteor();
-    public static float BASE_DAMAGE = 10.0f;
-    public static float DAMAGE_SCALE = 5.0f;
-    private static int SUMMON_RANGE = 3;
-    private static int SUMMON_HEIGHT = 5;
-    private static float VELOCITY = .1f;
-    private static float INACCURACY = .05f;
+    public static final HealingRain INSTANCE = new HealingRain();
 
-    public Meteor() {
-        super(MKUltra.MODID, "ability.meteor");
+    public static float BASE_AMOUNT= 2.0f;
+    public static float AMOUNT_SCALE = 1.0f;
+
+    public HealingRain() {
+        super(MKUltra.MODID, "ability.healing_rain");
     }
 
     @SubscribeEvent
@@ -45,22 +43,22 @@ public class Meteor extends PlayerAbility {
 
     @Override
     public int getCooldown(int currentRank) {
-        return 35 - 10 * currentRank;
+        return 25 - 5 * currentRank;
     }
 
     @Override
     public Targeting.TargetType getTargetType() {
-        return Targeting.TargetType.ENEMY;
+        return Targeting.TargetType.FRIENDLY;
     }
 
     @Override
     public float getManaCost(int currentRank) {
-        return 10 + 2 * currentRank;
+        return 8 + 2 * currentRank;
     }
 
     @Override
     public float getDistance(int currentRank) {
-        return 2 * SUMMON_RANGE;
+        return 5.0f + currentRank * 1.0f;
     }
 
     @Override
@@ -70,32 +68,39 @@ public class Meteor extends PlayerAbility {
 
     @Override
     public int getCastTime(int currentRank) {
-        return GameConstants.TICKS_PER_SECOND * 4;
+        return currentRank * GameConstants.TICKS_PER_SECOND * 2;
     }
 
     @Override
     public void continueCast(EntityPlayer entity, IPlayerData data, World theWorld, int castTimeLeft, CastState state) {
         super.continueCast(entity, data, theWorld, castTimeLeft, state);
-        int tickSpeed = 4;
+        int tickSpeed = 5;
         if (castTimeLeft % tickSpeed == 0){
+            int level = data.getAbilityRank(getAbilityId());
+            SpellCast heal = ClericHealPotion.Create(entity, BASE_AMOUNT, AMOUNT_SCALE);
+            SpellCast particlePotion = ParticlePotion.Create(entity,
+                    EnumParticleTypes.WATER_BUBBLE.getParticleID(),
+                    ParticleEffects.CIRCLE_MOTION, false,
+                    new Vec3d(1.0, 1.0, 1.0),
+                    new Vec3d(0.0, 1.0, 0.0),
+                    10, 0, 1.0);
 
-            EntityMeteorProjectile proj = new EntityMeteorProjectile(theWorld, entity);
-            BlockPos pos = entity.getPosition();
-            int randX = theWorld.rand.nextInt(SUMMON_RANGE * 2) - SUMMON_RANGE;
-            int randZ = theWorld.rand.nextInt(SUMMON_RANGE * 2) - SUMMON_RANGE;
-            proj.setPosition(pos.getX() + randX, pos.getY() + SUMMON_HEIGHT,
-                    pos.getZ() + randZ);
-            proj.shoot(pos.getX(), pos.getY(), pos.getZ(), VELOCITY, INACCURACY);
-            theWorld.spawnEntity(proj);
-
+            float dist = getDistance(level);
+            AreaEffectBuilder.Create(entity, entity)
+                    .spellCast(heal, level, getTargetType())
+                    .spellCast(particlePotion, level, getTargetType())
+                    .instant()
+                    .color(16409620).radius(getDistance(level), true)
+                    .disableParticle()
+                    .spawn();
 
             Vec3d lookVec = entity.getLookVec();
             MKUltra.packetHandler.sendToAllAround(
                     new ParticleEffectSpawnPacket(
-                            EnumParticleTypes.FLAME.getParticleID(),
-                            ParticleEffects.SPHERE_MOTION, 8, 4,
-                            entity.posX, entity.posY + 1.0,
-                            entity.posZ, 1.0, 1.0, 1.0, 0.1,
+                            EnumParticleTypes.WATER_DROP.getParticleID(),
+                            ParticleEffects.RAIN_EFFECT, 30, 4,
+                            entity.posX, entity.posY + 3.0,
+                            entity.posZ, dist, 0.5, dist, 1.0,
                             lookVec),
                     entity, 50.0f);
         }
