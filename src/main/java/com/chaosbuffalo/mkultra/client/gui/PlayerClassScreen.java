@@ -15,6 +15,8 @@ import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -72,8 +74,12 @@ public class PlayerClassScreen extends MKScreen {
         super();
     }
 
+    @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void handlePlayerDataUpdate(PlayerClassEvent.Updated event) {
+        // This event will cause UI updates, so it must only run on the client
+        if (!event.getPlayer().getEntityWorld().isRemote)
+            return;
         if (!event.isCurrentClass())
             return;
         if (passivePanel != null) {
