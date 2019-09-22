@@ -128,10 +128,7 @@ public class Meteor extends PlayerAbility {
                 vec3dCastState.setLocation(from.add(look));
             } else {
                 vec3dCastState.setLocation(lookingAt.hitVec);
-                Log.info("Looking at is: %s", lookingAt.toString());
             }
-
-
         }
 
     }
