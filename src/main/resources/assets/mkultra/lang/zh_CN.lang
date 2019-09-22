@@ -212,3 +212,8 @@ effect.mana_regen_smoke=法力恢复烟
 effect.mana_smoke=法力之烟
 effect.health_regen_smoke=生命恢复烟
 
+
+mkultra.ui_msg.clear_ultimate_slot=Clear ultimate
+mkultra.ui_msg.learn_ultimate_prompt=Right click to slot an ultimate
+mkultra.ui_msg.no_ultimates=You do not know any ultimate abilities
+mkultra.ui_msg.ultimates=Ultimates

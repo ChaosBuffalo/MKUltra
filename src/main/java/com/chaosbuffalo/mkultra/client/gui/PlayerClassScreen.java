@@ -18,6 +18,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -41,6 +43,7 @@ public class PlayerClassScreen extends MKScreen {
     private int DESCRIPTION_WIDTH = ABILITY_SCROLL_WIDTH - 36;
     private MKWidget passivePanel;
     private MKWidget mainRoot;
+    private MKWidget ultimatePanel;
 
     private static final ArrayList<IAttribute> STAT_PANEL_ATTRIBUTES = new ArrayList<>();
 
@@ -74,6 +77,9 @@ public class PlayerClassScreen extends MKScreen {
         if (passivePanel != null) {
             mainRoot.removeWidget(passivePanel);
         }
+        if (ultimatePanel != null){
+            mainRoot.removeWidget(ultimatePanel);
+        }
         int xPos = width / 2 - PANEL_WIDTH / 2;
         int yPos = height / 2 - PANEL_HEIGHT / 2;
         IPlayerData pData = MKUPlayerData.get(this.mc.player);
@@ -82,9 +88,98 @@ public class PlayerClassScreen extends MKScreen {
         MKWidget passiveTray = drawPassivePanel(pData, xPos + STAT_PANEL_START_X,
                 yPos + STAT_PANEL_START_Y + STAT_PANEL_HEIGHT + 4);
         passivePanel = passiveTray;
+        int passiveTrayHeight = 0;
         if (passiveTray != null) {
+            passiveTrayHeight = passiveTray.getHeight();
             mainRoot.addWidget(passiveTray);
         }
+
+        MKWidget ultTray = drawUltimatePanel(pData, xPos + STAT_PANEL_START_X,
+                yPos + STAT_PANEL_START_Y + STAT_PANEL_HEIGHT + 4 + passiveTrayHeight + 4);
+        ultimatePanel = ultTray;
+        if (ultTray != null){
+            mainRoot.addWidget(ultTray);
+        }
+    }
+
+    public int drawAbility(PlayerAbility ability, IPlayerData pData, MKWidget abilityList, int abilityHeight,
+                           int index, boolean doLevelUp){
+        int panelX = 10;
+        MKImage iconSlot = new MKImage(
+                panelX, abilityHeight,
+                ICON_SLOT_WIDTH, ICON_SLOT_HEIGHT,
+                GuiTextures.CLASS_BACKGROUND_GRAPHIC)
+                .setTexWidth(BACKGROUND_WIDTH).setTexHeight(BACKGROUND_HEIGHT)
+                .setTexU(X_POS_ICON_SLOT_TEX).setTexV(Y_POS_ICON_SLOT_TEX);
+        abilityList.addWidget(iconSlot);
+        MKImage abilityIcon = new MKImage(panelX + 2, abilityHeight + 2, 16, 16,
+                ability.getAbilityIcon());
+        abilityList.addWidget(abilityIcon);
+        int level = pData.getAbilityRank(ability.getAbilityId());
+        int displayLevel = Math.max(1, level); // Don't show the stats for a 0-level spell
+        String name;
+        if (level > 0) {
+            name = String.format("%s %d", ability.getAbilityName(), level);
+        } else {
+            name = ability.getAbilityName();
+        }
+        MKText nameWid = new MKText(mc.fontRenderer, name);
+        nameWid.setX(panelX + 22).setY(abilityHeight + (mc.fontRenderer.FONT_HEIGHT + 4) / 2);
+        MKText manaCost = new MKText(mc.fontRenderer, String.format("Mana: %.2f", ability.getManaCost(displayLevel)));
+        manaCost.setX(panelX).setY(abilityHeight + (mc.fontRenderer.FONT_HEIGHT + 2) * 2);
+        manaCost.setColor(4934475);
+        MKText cooldown = new MKText(mc.fontRenderer, String.format("Cooldown: %.2f",
+                (float) pData.getCooldownForLevel(ability, displayLevel) / (float) GameConstants.TICKS_PER_SECOND));
+        cooldown.setX(panelX).setY(abilityHeight + (mc.fontRenderer.FONT_HEIGHT + 2) * 3);
+        cooldown.setColor(4934475);
+        MKText reqLev = new MKText(mc.fontRenderer, "Req. Level: " + ability.getRequiredLevel(level));
+        reqLev.setX(panelX).setY(abilityHeight + (mc.fontRenderer.FONT_HEIGHT + 2) * 4);
+        reqLev.setColor(4934475);
+        MKText description = new MKText(mc.fontRenderer, ability.getAbilityDescription());
+        description.setMultiline(true).setWidth(DESCRIPTION_WIDTH).setX(panelX)
+                .setY(abilityHeight + (mc.fontRenderer.FONT_HEIGHT + 2) * 5);
+        description.setColor(2631720);
+        abilityList.addWidget(nameWid);
+        abilityList.addWidget(manaCost);
+        abilityList.addWidget(cooldown);
+        abilityList.addWidget(reqLev);
+        abilityList.addWidget(description);
+        if (doLevelUp){
+            MKButton upButton = new MKButton(panelX + DESCRIPTION_WIDTH + 2,
+                    abilityHeight + (mc.fontRenderer.FONT_HEIGHT + 2) * 2,
+                    20, 20, "+");
+            upButton.setPressedCallback((MKButton button, Integer buttonType) -> pressUpButton(
+                    button, buttonType, index));
+            abilityList.addWidget(upButton);
+            MKButton downButton = new MKButton(panelX + DESCRIPTION_WIDTH + 2,
+                    abilityHeight + (mc.fontRenderer.FONT_HEIGHT + 2) * 2 + 24,
+                    20, 20, "-");
+            downButton.setPressedCallback((MKButton button, Integer buttonType) -> pressDownButton(
+                    button, buttonType, index));
+            abilityList.addWidget(downButton);
+            addPreDrawRunnable(() -> {
+                int lvl = pData.getAbilityRank(ability.getAbilityId());
+                upButton.setEnabled(pData.getUnspentPoints() > 0 &&
+                        pData.getLevel() >= ability.getRequiredLevel(lvl) && lvl < ability.getMaxRank());
+                downButton.setEnabled(lvl > 0);
+            });
+        }
+        addPreDrawRunnable(() -> {
+            int lvl = pData.getAbilityRank(ability.getAbilityId());
+            int displayLvl = Math.max(1, lvl); // Don't show the stats for a 0-level spell
+            String newName;
+            if (lvl > 0) {
+                newName = String.format("%s %d", ability.getAbilityName(), lvl);
+            } else {
+                newName = ability.getAbilityName();
+            }
+            nameWid.setText(newName);
+            manaCost.setText(String.format("Mana: %.2f", ability.getManaCost(displayLvl)));
+            cooldown.setText(String.format("Cooldown: %.2f",
+                    (float) pData.getCooldownForLevel(ability, displayLvl) / (float) GameConstants.TICKS_PER_SECOND));
+            reqLev.setText("Req. Level: " + Math.max(1, ability.getRequiredLevel(lvl)));
+        });
+        return description.getY() + description.getHeight() + 12;
     }
 
     @Override
@@ -133,84 +228,24 @@ public class PlayerClassScreen extends MKScreen {
                 scaledRes.getScaleFactor(), true);
         MKWidget abilityList = new MKWidget(0, 0);
         int abilityHeight = 0;
-        for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
+        int lastIndex = 0;
+        for (int i = 0; i < GameConstants.NO_ULT_ACTION_BAR_SIZE; i++) {
             PlayerAbility ability = playerClass.getOfferedAbilityBySlot(i);
             if (ability == null)
                 continue;
-            int panelX = 10;
-            int panelY = abilityHeight;
-            int abilityIndex = i;
-            MKImage iconSlot = new MKImage(
-                    panelX, panelY,
-                    ICON_SLOT_WIDTH, ICON_SLOT_HEIGHT,
-                    GuiTextures.CLASS_BACKGROUND_GRAPHIC)
-                    .setTexWidth(BACKGROUND_WIDTH).setTexHeight(BACKGROUND_HEIGHT)
-                    .setTexU(X_POS_ICON_SLOT_TEX).setTexV(Y_POS_ICON_SLOT_TEX);
-            abilityList.addWidget(iconSlot);
-            MKImage abilityIcon = new MKImage(panelX + 2, panelY + 2, 16, 16,
-                    ability.getAbilityIcon());
-            abilityList.addWidget(abilityIcon);
-            int level = pData.getAbilityRank(ability.getAbilityId());
-            int displayLevel = Math.max(1, level); // Don't show the stats for a 0-level spell
-            String name;
-            if (level > 0) {
-                name = String.format("%s %d", ability.getAbilityName(), level);
-            } else {
-                name = ability.getAbilityName();
-            }
-            MKText nameWid = new MKText(mc.fontRenderer, name);
-            nameWid.setX(panelX + 22).setY(panelY + (mc.fontRenderer.FONT_HEIGHT + 4) / 2);
-            MKText manaCost = new MKText(mc.fontRenderer, String.format("Mana: %.2f", ability.getManaCost(displayLevel)));
-            manaCost.setX(panelX).setY(panelY + (mc.fontRenderer.FONT_HEIGHT + 2) * 2);
-            manaCost.setColor(4934475);
-            MKText cooldown = new MKText(mc.fontRenderer, String.format("Cooldown: %.2f",
-                    (float) pData.getCooldownForLevel(ability, displayLevel) / (float) GameConstants.TICKS_PER_SECOND));
-            cooldown.setX(panelX).setY(panelY + (mc.fontRenderer.FONT_HEIGHT + 2) * 3);
-            cooldown.setColor(4934475);
-            MKText reqLev = new MKText(mc.fontRenderer, "Req. Level: " + ability.getRequiredLevel(level));
-            reqLev.setX(panelX).setY(panelY + (mc.fontRenderer.FONT_HEIGHT + 2) * 4);
-            reqLev.setColor(4934475);
-            MKText description = new MKText(mc.fontRenderer, ability.getAbilityDescription());
-            description.setMultiline(true).setWidth(DESCRIPTION_WIDTH).setX(panelX)
-                    .setY(panelY + (mc.fontRenderer.FONT_HEIGHT + 2) * 5);
-            description.setColor(2631720);
-            abilityList.addWidget(nameWid);
-            abilityList.addWidget(manaCost);
-            abilityList.addWidget(cooldown);
-            abilityList.addWidget(reqLev);
-            abilityList.addWidget(description);
-            MKButton upButton = new MKButton(panelX + DESCRIPTION_WIDTH + 2,
-                    panelY + (mc.fontRenderer.FONT_HEIGHT + 2) * 2,
-                    20, 20, "+");
-            upButton.setPressedCallback((MKButton button, Integer buttonType) -> pressUpButton(
-                    button, buttonType, abilityIndex));
-            abilityList.addWidget(upButton);
-            MKButton downButton = new MKButton(panelX + DESCRIPTION_WIDTH + 2,
-                    panelY + (mc.fontRenderer.FONT_HEIGHT + 2) * 2 + 24,
-                    20, 20, "-");
-            downButton.setPressedCallback((MKButton button, Integer buttonType) -> pressDownButton(
-                    button, buttonType, abilityIndex));
-            abilityList.addWidget(downButton);
-            addPreDrawRunnable(() -> {
-                int lvl = pData.getAbilityRank(ability.getAbilityId());
-                int displayLvl = Math.max(1, lvl); // Don't show the stats for a 0-level spell
-                String newName;
-                if (lvl > 0) {
-                    newName = String.format("%s %d", ability.getAbilityName(), lvl);
-                } else {
-                    newName = ability.getAbilityName();
-                }
-                nameWid.setText(newName);
-                manaCost.setText(String.format("Mana: %.2f", ability.getManaCost(displayLvl)));
-                cooldown.setText(String.format("Cooldown: %.2f",
-                        (float) pData.getCooldownForLevel(ability, displayLvl) / (float) GameConstants.TICKS_PER_SECOND));
-                reqLev.setText("Req. Level: " + Math.max(1, ability.getRequiredLevel(lvl)));
-                upButton.setEnabled(pData.getUnspentPoints() > 0 &&
-                        pData.getLevel() >= ability.getRequiredLevel(lvl) && lvl < ability.getMaxRank());
-                downButton.setEnabled(lvl > 0);
-            });
-            abilityHeight = description.getY() + description.getHeight() + 12;
+            abilityHeight = drawAbility(ability, pData, abilityList, abilityHeight, i, true);
+            lastIndex += 1;
         }
+        HashSet<PlayerAbility> learnedUlts = pData.getLearnedUltimates();
+        if (learnedUlts != null){
+            List<PlayerAbility> ultimates = new ArrayList<>(pData.getLearnedUltimates());
+            ultimates.sort((a1, a2) -> a1.getAbilityName().compareToIgnoreCase(a2.getAbilityName()));
+            for (PlayerAbility ult : ultimates){
+                abilityHeight = drawAbility(ult, pData, abilityList, abilityHeight, lastIndex, false);
+                lastIndex += 1;
+            }
+        }
+
         abilityList.setWidth(ABILITY_SCROLL_WIDTH);
         abilityList.setHeight(abilityHeight);
         abilityScrollView.addWidget(abilityList);
@@ -220,8 +255,16 @@ public class PlayerClassScreen extends MKScreen {
         MKWidget passiveTray = drawPassivePanel(pData, xPos + STAT_PANEL_START_X,
                 yPos + STAT_PANEL_START_Y + STAT_PANEL_HEIGHT + 4);
         passivePanel = passiveTray;
+        int passiveTrayHeight = 0;
         if (passiveTray != null) {
+            passiveTrayHeight = passiveTray.getHeight();
             mainRoot.addWidget(passiveTray);
+        }
+        MKWidget ultTray = drawUltimatePanel(pData, xPos + STAT_PANEL_START_X,
+                yPos + STAT_PANEL_START_Y + STAT_PANEL_HEIGHT + 4 + passiveTrayHeight);
+        ultimatePanel = ultTray;
+        if (ultTray != null){
+            mainRoot.addWidget(ultTray);
         }
         setState("main");
     }
@@ -272,6 +315,40 @@ public class PlayerClassScreen extends MKScreen {
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
+    private MKWidget drawUltimatePanel(IPlayerData pData, int xPos, int yPos){
+        List<ResourceLocation> ultimates = pData.getActiveUltimates();
+        if (ultimates == null) {
+            return null;
+        } else {
+            MKWidget root = new MKWidget(xPos, yPos, STAT_PANEL_WIDTH,
+                    UIConstants.TEXT_HEIGHT);
+            MKText title = new MKText(fontRenderer, I18n.format("mkultra.ui_msg.ultimates")).setColor(16777215);
+            title.setX(xPos).setY(yPos).setWidth(STAT_PANEL_WIDTH);
+            title.setIsCentered(true);
+            root.addWidget(title);
+            MKStackLayoutVertical layout = new MKStackLayoutVertical(xPos,
+                    yPos + UIConstants.TEXT_HEIGHT, STAT_PANEL_WIDTH);
+            layout.doSetWidth(true).setMarginTop(4);
+            root.addWidget(layout);
+            int count = 0;
+            for (ResourceLocation ultimate : ultimates) {
+                PlayerAbilityButton button;
+                if (ultimate.equals(MKURegistry.INVALID_ABILITY)) {
+                    button = new PlayerAbilityButton(null,
+                            PlayerAbilityButton.AbilityType.ULTIMATE, pData, count, 0, 0);
+                } else {
+                    PlayerAbility ability = MKURegistry.getAbility(ultimate);
+                    button = new PlayerAbilityButton(ability,
+                            PlayerAbilityButton.AbilityType.ULTIMATE, pData, count, 0, 0);
+                }
+                count++;
+                layout.addWidget(button);
+            }
+            root.setHeight(layout.getHeight() + UIConstants.TEXT_HEIGHT + 4);
+            return root;
+        }
+    }
+
     private MKWidget drawPassivePanel(IPlayerData pData, int xPos, int yPos) {
         List<ResourceLocation> passives = pData.getActivePassives();
         if (passives == null) {
@@ -289,17 +366,14 @@ public class PlayerClassScreen extends MKScreen {
             root.addWidget(layout);
             int passiveCount = 0;
             for (ResourceLocation passive : passives) {
-                PassiveAbilityButton button;
+                PlayerAbilityButton button;
                 if (passive.equals(MKURegistry.INVALID_ABILITY)) {
-                    button = new PassiveAbilityButton(null, pData, passiveCount, 0, 0);
+                    button = new PlayerAbilityButton(null,
+                            PlayerAbilityButton.AbilityType.PASSIVE, pData, passiveCount, 0, 0);
                 } else {
                     PlayerAbility ability = MKURegistry.getAbility(passive);
-                    if (ability instanceof PlayerPassiveAbility) {
-                        button = new PassiveAbilityButton((PlayerPassiveAbility) ability,
-                                pData, passiveCount, 0, 0);
-                    } else {
-                        button = new PassiveAbilityButton(null, pData, passiveCount, 0, 0);
-                    }
+                    button = new PlayerAbilityButton(ability,
+                            PlayerAbilityButton.AbilityType.PASSIVE, pData, passiveCount, 0, 0);
                 }
                 passiveCount++;
                 layout.addWidget(button);

@@ -3,6 +3,7 @@ package com.chaosbuffalo.mkultra.init;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.MKURegistry;
 import com.chaosbuffalo.mkultra.core.PlayerAttributes;
+import com.chaosbuffalo.mkultra.core.abilities.*;
 import com.chaosbuffalo.mkultra.core.abilities.passives.*;
 import com.chaosbuffalo.mkultra.core.talents.*;
 import com.chaosbuffalo.mkultra.log.Log;
@@ -110,6 +111,7 @@ public class ModTalents {
                             talentLine.add(attrNode);
                             break;
                         case PASSIVE:
+                        case ULTIMATE:
                             TalentNode node = new TalentNode(talent, maxPoints);
                             talentLine.add(node);
                             break;
@@ -258,5 +260,30 @@ public class ModTalents {
                 new ResourceLocation(MKUltra.MODID, "talent.guardian_angel"),
                 GuardianAngel.INSTANCE);
         event.getRegistry().register(guardianAngel);
+
+        UltimateAbilityTalent meteor = new UltimateAbilityTalent(
+                new ResourceLocation(MKUltra.MODID, "talent.meteor"),
+                Meteor.INSTANCE);
+        event.getRegistry().register(meteor);
+
+        UltimateAbilityTalent backstab = new UltimateAbilityTalent(
+                new ResourceLocation(MKUltra.MODID, "talent.backstab"),
+                Backstab.INSTANCE);
+        event.getRegistry().register(backstab);
+
+        UltimateAbilityTalent healingRain = new UltimateAbilityTalent(
+                new ResourceLocation(MKUltra.MODID, "talent.healing_rain"),
+                HealingRain.INSTANCE);
+        event.getRegistry().register(healingRain);
+
+        UltimateAbilityTalent bolsteringRoar = new UltimateAbilityTalent(
+                new ResourceLocation(MKUltra.MODID, "talent.bolstering_roar"),
+                BolsteringRoar.INSTANCE);
+        event.getRegistry().register(bolsteringRoar);
+
+        UltimateAbilityTalent righteousJudgement = new UltimateAbilityTalent(
+                new ResourceLocation(MKUltra.MODID, "talent.righteous_judgement"),
+                RighteousJudgement.INSTANCE);
+        event.getRegistry().register(righteousJudgement);
     }
 }

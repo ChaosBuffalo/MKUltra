@@ -47,10 +47,10 @@ public class AbilityBar extends Gui {
         this.mc = mc;
     }
 
-    private int getBarStartY() {
+    private int getBarStartY(int slotCount) {
         ScaledResolution scaledresolution = new ScaledResolution(this.mc);
         int height = scaledresolution.getScaledHeight();
-        int barStart = height / 2 - (SLOT_COUNT * SLOT_HEIGHT) / 2;
+        int barStart = height / 2 - (slotCount * SLOT_HEIGHT) / 2;
         return Math.max(barStart, MIN_BAR_START_Y);
     }
 
@@ -97,34 +97,34 @@ public class AbilityBar extends Gui {
         GlStateManager.pushMatrix();
         GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
         this.drawTexturedModalRect(castStartX, castStartY, 26,
-                21, barSize, 2);
+                21, barSize, 3);
         GlStateManager.popMatrix();
 
     }
 
-    private void drawBarSlots() {
+    private void drawBarSlots(int slotCount) {
         this.mc.renderEngine.bindTexture(barTexture);
         GL11.glDisable(GL11.GL_LIGHTING);
 
         int xOffset = 0;
-        int yOffset = getBarStartY();
-        for (int i = 0; i < SLOT_COUNT; i++) {
+        int yOffset = getBarStartY(slotCount);
+        for (int i = 0; i < slotCount; i++) {
             this.drawTexturedModalRect(xOffset, yOffset + i * SLOT_HEIGHT,
                     0, 0, SLOT_WIDTH, SLOT_HEIGHT);
         }
     }
 
-    private void drawAbilities(IPlayerData data, float partialTicks) {
+    private void drawAbilities(IPlayerData data, int slotCount, float partialTicks) {
         GL11.glDisable(GL11.GL_LIGHTING);
 
         final int slotAbilityOffsetX = 1;
         final int slotAbilityOffsetY = 2;
 
-        int barStartY = getBarStartY();
+        int barStartY = getBarStartY(slotCount);
 
         float globalCooldown = ClientKeyHandler.getGlobalCooldown();
 
-        for (int i = 0; i < SLOT_COUNT; i++) {
+        for (int i = 0; i < slotCount; i++) {
             ResourceLocation abilityId = data.getAbilityInSlot(i);
             if (abilityId.compareTo(MKURegistry.INVALID_ABILITY) == 0)
                 continue;
@@ -189,10 +189,12 @@ public class AbilityBar extends Gui {
             return;
 
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-
+        ResourceLocation loc = data.getAbilityInSlot(GameConstants.ACTION_BAR_SIZE -1);
+        int slotCount = data.hasUltimates() || !loc.equals(MKURegistry.INVALID_ABILITY) ?
+                GameConstants.ACTION_BAR_SIZE : GameConstants.NO_ULT_ACTION_BAR_SIZE;
         drawMana(data);
         drawCastBar(data);
-        drawBarSlots();
-        drawAbilities(data, event.getPartialTicks());
+        drawBarSlots(slotCount);
+        drawAbilities(data, slotCount, event.getPartialTicks());
     }
 }

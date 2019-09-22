@@ -212,3 +212,8 @@ effect.hellfire_smoke=Hellfire Smoke
 effect.mana_regen_smoke=Mana Regen Smoke
 effect.mana_smoke=Mana Smoke
 effect.health_regen_smoke=Health Regen Smoke
+
+mkultra.ui_msg.clear_ultimate_slot=Clear ultimate
+mkultra.ui_msg.learn_ultimate_prompt=Right click to slot an ultimate
+mkultra.ui_msg.no_ultimates=You do not know any ultimate abilities
+mkultra.ui_msg.ultimates=Ultimates

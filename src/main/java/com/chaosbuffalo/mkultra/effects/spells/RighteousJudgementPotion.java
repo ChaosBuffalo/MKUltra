@@ -2,7 +2,9 @@ package com.chaosbuffalo.mkultra.effects.spells;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.MKDamageSource;
+import com.chaosbuffalo.mkultra.core.PlayerAttributes;
 import com.chaosbuffalo.mkultra.core.abilities.Drown;
+import com.chaosbuffalo.mkultra.core.abilities.RighteousJudgement;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellPeriodicPotionBase;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
@@ -10,6 +12,7 @@ import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
@@ -17,11 +20,16 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@Mod.EventBusSubscriber(modid = MKUltra.MODID)
-public class DrownPotion extends SpellPeriodicPotionBase {
-    private static final int DEFAULT_PERIOD = 10;
+import java.util.UUID;
 
-    public static final DrownPotion INSTANCE = new DrownPotion();
+@Mod.EventBusSubscriber(modid = MKUltra.MODID)
+public class RighteousJudgementPotion extends SpellPeriodicPotionBase {
+    private static final int DEFAULT_PERIOD = 10;
+    public static final UUID MODIFIER_ID = UUID.fromString("0e93dde9-a8e8-4780-8aec-5e4f71214a1d");
+
+    public static final RighteousJudgementPotion INSTANCE = (RighteousJudgementPotion) new RighteousJudgementPotion()
+            .registerPotionAttributeModifier(SharedMonsterAttributes.MOVEMENT_SPEED, MODIFIER_ID.toString(),
+                    -0.4, PlayerAttributes.OP_SCALE_MULTIPLICATIVE);
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {
@@ -32,14 +40,14 @@ public class DrownPotion extends SpellPeriodicPotionBase {
         return INSTANCE.newSpellCast(source);
     }
 
-    private DrownPotion() {
+    private RighteousJudgementPotion() {
         super(DEFAULT_PERIOD, true, 4393423);
-        setPotionName("effect.drown");
+        setPotionName("effect.righteous_judgement");
     }
 
     @Override
     public ResourceLocation getIconTexture() {
-        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/drown.png");
+        return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/righteous_judgement.png");
     }
 
     @Override
@@ -49,16 +57,17 @@ public class DrownPotion extends SpellPeriodicPotionBase {
 
     @Override
     public void doEffect(Entity source, Entity indirectSource, EntityLivingBase target, int amplifier, SpellCast cast) {
-        target.attackEntityFrom(MKDamageSource.causeIndirectMagicDamage(new Drown().getAbilityId(),
-                source, indirectSource, 0.7f), amplifier * 2.0f);
+        target.attackEntityFrom(MKDamageSource.causeIndirectMagicDamage(RighteousJudgement.INSTANCE.getAbilityId(),
+                source, indirectSource, 0.85f), amplifier * 3.0f);
         MKUltra.packetHandler.sendToAllAround(
                 new ParticleEffectSpawnPacket(
-                        EnumParticleTypes.WATER_BUBBLE.getParticleID(),
+                        EnumParticleTypes.CRIT_MAGIC.getParticleID(),
                         ParticleEffects.CIRCLE_MOTION, 35, 10,
                         target.posX, target.posY + 1.0f,
-                        target.posZ, .75, 1.0, .75, 0.2,
+                        target.posZ, .75, 1.0, .75, 0.35,
                         target.getLookVec()),
                 target.dimension, target.posX,
                 target.posY, target.posZ, 50.0f);
     }
 }
+

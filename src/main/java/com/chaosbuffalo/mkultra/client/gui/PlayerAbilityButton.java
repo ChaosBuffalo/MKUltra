@@ -4,8 +4,10 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.client.gui.lib.*;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKURegistry;
+import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.PlayerPassiveAbility;
 import com.chaosbuffalo.mkultra.network.packets.ActivatePassivePacket;
+import com.chaosbuffalo.mkultra.network.packets.ActivateUltimatePacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
@@ -17,7 +19,7 @@ import net.minecraft.util.text.TextFormatting;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-public class PassiveAbilityButton extends MKButton {
+public class PlayerAbilityButton extends MKButton {
     private static int X_POS_TALENT_SLOT_TEX = 22;
     private static int Y_POS_TALENT_SLOT_TEX = 259;
     private static int TALENT_SLOT_WIDTH = 20;
@@ -34,20 +36,28 @@ public class PassiveAbilityButton extends MKButton {
     private static int ICON_X_OFFSET = SLOT_X_OFFSET + (TALENT_SLOT_WIDTH - ICON_WIDTH) / 2;
     private static int ICON_Y_OFFSET = SLOT_Y_OFFSET + (TALENT_SLOT_HEIGHT - ICON_HEIGHT) / 2;
 
+    public enum AbilityType {
+        PASSIVE,
+        ULTIMATE
+    }
+
+    private final AbilityType type;
+
     private ArrayList<String> tooltip;
 
-    public final PlayerPassiveAbility ability;
+    public final PlayerAbility ability;
     public final IPlayerData playerData;
     private MKModal dropdown;
     private boolean isDropdownOpen;
     private int slotIndex;
 
-    public PassiveAbilityButton(PlayerPassiveAbility ability, IPlayerData data, int slotIndex, int x, int y) {
+    public PlayerAbilityButton(PlayerAbility ability, AbilityType type, IPlayerData data, int slotIndex, int x, int y) {
         super(x, y, WIDTH, HEIGHT, "");
         this.ability = ability;
         this.playerData = data;
         this.tooltip = new ArrayList<>();
         isDropdownOpen = false;
+        this.type = type;
         this.slotIndex = slotIndex;
         if (ability != null) {
             tooltip.add(ability.getAbilityName());
@@ -57,18 +67,35 @@ public class PassiveAbilityButton extends MKButton {
 
     @Override
     public void longHoverDraw(Minecraft mc, int x, int y, int width, int height, int mouseX, int mouseY, float partialTicks) {
-        HashSet<PlayerPassiveAbility> learned = playerData.getLearnedPassives();
-        if (learned == null || learned.size() == 0) {
-            if (getScreen() != null) {
-                getScreen().addHoveringText(new HoveringTextInstruction(
-                        I18n.format("mkultra.ui_msg.no_passives"),
-                        getParentCoords(new Vec2d(mouseX, mouseY))));
+        if (type == AbilityType.PASSIVE){
+            HashSet<PlayerPassiveAbility> learned = playerData.getLearnedPassives();
+            if (learned == null || learned.size() == 0) {
+                if (getScreen() != null) {
+                    getScreen().addHoveringText(new HoveringTextInstruction(
+                            I18n.format("mkultra.ui_msg.no_passives"),
+                            getParentCoords(new Vec2d(mouseX, mouseY))));
+                }
+            } else if (ability == null) {
+                if (getScreen() != null) {
+                    getScreen().addHoveringText(new HoveringTextInstruction(
+                            I18n.format("mkultra.ui_msg.learn_passive_prompt"),
+                            getParentCoords(new Vec2d(mouseX, mouseY))));
+                }
             }
-        } else if (ability == null) {
-            if (getScreen() != null) {
-                getScreen().addHoveringText(new HoveringTextInstruction(
-                        I18n.format("mkultra.ui_msg.learn_passive_prompt"),
-                        getParentCoords(new Vec2d(mouseX, mouseY))));
+        } else if (type == AbilityType.ULTIMATE){
+            HashSet<PlayerAbility> learned = playerData.getLearnedUltimates();
+            if (learned == null || learned.size() == 0) {
+                if (getScreen() != null) {
+                    getScreen().addHoveringText(new HoveringTextInstruction(
+                            I18n.format("mkultra.ui_msg.no_ultimates"),
+                            getParentCoords(new Vec2d(mouseX, mouseY))));
+                }
+            } else if (ability == null) {
+                if (getScreen() != null) {
+                    getScreen().addHoveringText(new HoveringTextInstruction(
+                            I18n.format("mkultra.ui_msg.learn_ultimate_prompt"),
+                            getParentCoords(new Vec2d(mouseX, mouseY))));
+                }
             }
         }
     }
@@ -86,10 +113,6 @@ public class PassiveAbilityButton extends MKButton {
 
 
     public MKModal getDropdown(int mouseX, int mouseY) {
-        HashSet<PlayerPassiveAbility> learned = playerData.getLearnedPassives();
-        if (learned == null || learned.size() == 0) {
-            return null;
-        }
         MKModal dropdownModal = new MKModal();
         MKScrollView scrollView = new MKScrollView(mouseX - DROP_DOWN_WIDTH / 2, mouseY, DROP_DOWN_WIDTH, DROPDOWN_HEIGHT, true);
         scrollView.setToTop();
@@ -99,24 +122,15 @@ public class PassiveAbilityButton extends MKButton {
         layout.setPaddingTop(1).setPaddingBot(1).setMarginTop(2).setMarginBot(2);
         layout.doSetWidth(true);
         scrollView.addWidget(layout);
-        MKButton emptyButton = new MKButton(I18n.format("mkultra.ui_msg.clear_passive_slot"));
-        emptyButton.setPressedCallback((MKButton btn, Integer buttonType) -> {
-            if (playerData.canActivatePassiveForSlot(MKURegistry.INVALID_ABILITY, slotIndex)) {
-                MKUltra.packetHandler.sendToServer(new ActivatePassivePacket(MKURegistry.INVALID_ABILITY, slotIndex));
+        if (type == AbilityType.PASSIVE){
+            HashSet<PlayerPassiveAbility> learned = playerData.getLearnedPassives();
+            if (learned == null || learned.size() == 0) {
+                return null;
             }
-            MKScreen screen = getScreen();
-            if (screen != null) {
-                screen.closeModal(this.dropdown);
-            }
-            return true;
-        });
-        layout.addWidget(emptyButton);
-        for (PlayerPassiveAbility ability : learned) {
-            MKButton button = new MKButton(ability.getAbilityName());
-            layout.addWidget(button);
-            button.setPressedCallback((MKButton btn, Integer buttonType) -> {
-                if (playerData.canActivatePassiveForSlot(ability.getAbilityId(), slotIndex)) {
-                    MKUltra.packetHandler.sendToServer(new ActivatePassivePacket(ability.getAbilityId(), slotIndex));
+            MKButton emptyButton = new MKButton(I18n.format("mkultra.ui_msg.clear_passive_slot"));
+            emptyButton.setPressedCallback((MKButton btn, Integer buttonType) -> {
+                if (playerData.canActivatePassiveForSlot(MKURegistry.INVALID_ABILITY, slotIndex)) {
+                    MKUltra.packetHandler.sendToServer(new ActivatePassivePacket(MKURegistry.INVALID_ABILITY, slotIndex));
                 }
                 MKScreen screen = getScreen();
                 if (screen != null) {
@@ -124,6 +138,52 @@ public class PassiveAbilityButton extends MKButton {
                 }
                 return true;
             });
+            layout.addWidget(emptyButton);
+            for (PlayerPassiveAbility ability : learned) {
+                MKButton button = new MKButton(ability.getAbilityName());
+                layout.addWidget(button);
+                button.setPressedCallback((MKButton btn, Integer buttonType) -> {
+                    if (playerData.canActivatePassiveForSlot(ability.getAbilityId(), slotIndex)) {
+                        MKUltra.packetHandler.sendToServer(new ActivatePassivePacket(ability.getAbilityId(), slotIndex));
+                    }
+                    MKScreen screen = getScreen();
+                    if (screen != null) {
+                        screen.closeModal(this.dropdown);
+                    }
+                    return true;
+                });
+            }
+        } else if (type == AbilityType.ULTIMATE){
+            HashSet<PlayerAbility> learned = playerData.getLearnedUltimates();
+            if (learned == null || learned.size() == 0) {
+                return null;
+            }
+            MKButton emptyButton = new MKButton(I18n.format("mkultra.ui_msg.clear_ultimate_slot"));
+            emptyButton.setPressedCallback((MKButton btn, Integer buttonType) -> {
+                if (playerData.canActivateUltimateForSlot(MKURegistry.INVALID_ABILITY, slotIndex)) {
+                    MKUltra.packetHandler.sendToServer(new ActivateUltimatePacket(MKURegistry.INVALID_ABILITY, slotIndex));
+                }
+                MKScreen screen = getScreen();
+                if (screen != null) {
+                    screen.closeModal(this.dropdown);
+                }
+                return true;
+            });
+            layout.addWidget(emptyButton);
+            for (PlayerAbility ability : learned) {
+                MKButton button = new MKButton(ability.getAbilityName());
+                layout.addWidget(button);
+                button.setPressedCallback((MKButton btn, Integer buttonType) -> {
+                    if (playerData.canActivateUltimateForSlot(ability.getAbilityId(), slotIndex)) {
+                        MKUltra.packetHandler.sendToServer(new ActivateUltimatePacket(ability.getAbilityId(), slotIndex));
+                    }
+                    MKScreen screen = getScreen();
+                    if (screen != null) {
+                        screen.closeModal(this.dropdown);
+                    }
+                    return true;
+                });
+            }
         }
         scrollView.centerContentX();
         dropdownModal.setOnCloseCallback(() ->

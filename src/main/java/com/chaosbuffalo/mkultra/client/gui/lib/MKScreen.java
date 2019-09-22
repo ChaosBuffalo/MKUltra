@@ -94,6 +94,9 @@ public class MKScreen extends GuiScreen {
     @Override
     public void onResize(Minecraft minecraft, int width, int height) {
         super.onResize(minecraft, width, height);
+        for (MKModal modal : modals){
+            closeModal(modal);
+        }
         flagNeedSetup();
     }
 
@@ -293,7 +296,7 @@ public class MKScreen extends GuiScreen {
     protected void mouseReleased(int mouseX, int mouseY, int mouseButton) {
         if (selectedWidgets.get(mouseButton) != null) {
             MKWidget selected = selectedWidgets.get(mouseButton);
-            selectedWidgets.remove(mouseY);
+            selectedWidgets.remove(mouseButton);
             if (selected.mouseReleased(mouseX, mouseY, mouseButton)) {
                 return;
             }

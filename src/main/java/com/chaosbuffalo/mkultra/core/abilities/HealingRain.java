@@ -7,23 +7,38 @@ import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
-import com.chaosbuffalo.mkultra.effects.spells.AbilityMeleeDamage;
+import com.chaosbuffalo.mkultra.effects.spells.ClericHealPotion;
 import com.chaosbuffalo.mkultra.effects.spells.ParticlePotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-public class WhirlwindBlades extends PlayerAbility {
 
-    public static float BASE_DAMAGE = 2.0f;
-    public static float DAMAGE_SCALE = 1.0f;
+@Mod.EventBusSubscriber
+public class HealingRain extends PlayerAbility {
 
-    public WhirlwindBlades() {
-        super(MKUltra.MODID, "ability.whirlwind_blades");
+    public static final HealingRain INSTANCE = new HealingRain();
+
+    public static float BASE_AMOUNT= 2.0f;
+    public static float AMOUNT_SCALE = 1.0f;
+
+    public HealingRain() {
+        super(MKUltra.MODID, "ability.healing_rain");
+    }
+
+    @SubscribeEvent
+    public static void register(RegistryEvent.Register<PlayerAbility> event) {
+        Log.info(INSTANCE.toString());
+        INSTANCE.setRegistryName(INSTANCE.getAbilityId());
+        event.getRegistry().register(INSTANCE);
     }
 
     @Override
@@ -33,64 +48,59 @@ public class WhirlwindBlades extends PlayerAbility {
 
     @Override
     public Targeting.TargetType getTargetType() {
-        return Targeting.TargetType.ENEMY;
+        return Targeting.TargetType.FRIENDLY;
     }
 
     @Override
     public float getManaCost(int currentRank) {
-        return 4 + 2 * currentRank;
+        return 8 + 2 * currentRank;
     }
 
     @Override
     public float getDistance(int currentRank) {
-        return 3.0f + currentRank * 1.0f;
+        return 5.0f + currentRank * 1.0f;
     }
 
     @Override
     public int getRequiredLevel(int currentRank) {
-        return 6 + currentRank * 2;
+        return 1;
     }
 
     @Override
     public int getCastTime(int currentRank) {
-        return currentRank * GameConstants.TICKS_PER_SECOND * 3;
+        return currentRank * GameConstants.TICKS_PER_SECOND * 2;
     }
 
     @Override
     public void continueCast(EntityPlayer entity, IPlayerData data, World theWorld, int castTimeLeft, CastState state) {
         super.continueCast(entity, data, theWorld, castTimeLeft, state);
-        int tickSpeed = 6;
+        int tickSpeed = 5;
         if (castTimeLeft % tickSpeed == 0){
             int level = data.getAbilityRank(getAbilityId());
-            int totalDuration = getCastTime(level);
-            int count = (totalDuration - castTimeLeft) / tickSpeed;
-            float baseAmount = level > 1 ? 0.10f : 0.15f;
-            float scaling = count * baseAmount;
-            // What to do for each target hit
-            SpellCast damage = AbilityMeleeDamage.Create(entity, BASE_DAMAGE, DAMAGE_SCALE, scaling);
+            SpellCast heal = ClericHealPotion.Create(entity, BASE_AMOUNT, AMOUNT_SCALE);
             SpellCast particlePotion = ParticlePotion.Create(entity,
-                    EnumParticleTypes.SWEEP_ATTACK.getParticleID(),
+                    EnumParticleTypes.WATER_BUBBLE.getParticleID(),
                     ParticleEffects.CIRCLE_MOTION, false,
                     new Vec3d(1.0, 1.0, 1.0),
                     new Vec3d(0.0, 1.0, 0.0),
-                    4, 0, 1.0);
+                    10, 0, 1.0);
 
-
+            float dist = getDistance(level);
             AreaEffectBuilder.Create(entity, entity)
-                    .spellCast(damage, level, getTargetType())
+                    .spellCast(heal, level, getTargetType())
                     .spellCast(particlePotion, level, getTargetType())
                     .instant()
                     .color(16409620).radius(getDistance(level), true)
-                    .particle(EnumParticleTypes.CRIT)
+                    .disableParticle()
                     .spawn();
 
             Vec3d lookVec = entity.getLookVec();
             MKUltra.packetHandler.sendToAllAround(
                     new ParticleEffectSpawnPacket(
-                            EnumParticleTypes.SWEEP_ATTACK.getParticleID(),
-                            ParticleEffects.SPHERE_MOTION, 16, 4,
-                            entity.posX, entity.posY + 1.0,
-                            entity.posZ, 1.0, 1.0, 1.0, 1.5,
+                            EnumParticleTypes.WATER_DROP.getParticleID(),
+                            ParticleEffects.RAIN_EFFECT, 30, 4,
+                            entity.posX, entity.posY + 3.0,
+                            entity.posZ, dist, 0.5, dist, 1.0,
                             lookVec),
                     entity, 50.0f);
         }

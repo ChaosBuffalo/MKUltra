@@ -13,6 +13,7 @@ public class ParticleEffects {
     public static int CIRCLE_PILLAR_MOTION = 1;
     public static int SPHERE_MOTION = 2;
     public static int DIRECTED_SPOUT = 3;
+    public static int RAIN_EFFECT = 4;
 
     public static void spawnParticle(int particleID, double speed, Vec3d position, Vec3d heading, World world){
         Vec3d motion = heading.scale(speed);
@@ -91,11 +92,25 @@ public class ParticleEffects {
             ret[3] = heading.x * speed * data;
             ret[4] = heading.y * speed * data;
             ret[5] = heading.z * speed * data;
+        } else if (motionType == RAIN_EFFECT){
+            Vec3d posVec = new Vec3d(getRandomInRadiusRange(position.x, radii.x),
+                    getRandomInRadiusRange(position.y, radii.y),
+                    getRandomInRadiusRange(position.z, radii.z));
+            Vec3d towards = new Vec3d(posVec.x, posVec.y - 1.0, posVec.z);
+            Vec3d diffVec = towards.subtract(posVec);
+            ret[0] = posVec.x;
+            ret[1] = posVec.y;
+            ret[2] = posVec.z;
+            ret[3] = diffVec.x * speed;
+            ret[4] = diffVec.y * speed;
+            ret[5] = diffVec.z * speed;
         }
 
         return ret;
 
     }
+
+
 
     private static double getRandomInRadiusRange(double coord, double radius) {
         return coord + ((Math.random() - 0.5) * 2.0) * radius;

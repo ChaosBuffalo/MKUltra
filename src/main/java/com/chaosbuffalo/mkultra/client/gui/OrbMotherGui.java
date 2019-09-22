@@ -22,6 +22,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 public class OrbMotherGui extends MKScreen {
 
@@ -154,6 +155,7 @@ public class OrbMotherGui extends MKScreen {
         svTreeList.addWidget(layout);
         layout.setPaddingBot(2).setPaddingTop(2).setMarginTop(4);
         ArrayList<ResourceLocation> treeLocs = new ArrayList<>(MKURegistry.REGISTRY_TALENT_TREES.getKeys());
+        treeLocs.sort(ResourceLocation::compareTo);
         for (ResourceLocation loc : treeLocs) {
             MKButton locButton = new MKButton(I18n.format(String.format("%s.%s.name",
                     loc.getNamespace(), loc.getPath())));
