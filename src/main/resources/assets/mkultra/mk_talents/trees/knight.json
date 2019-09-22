@@ -82,6 +82,10 @@
           "name": "mkultra:talent.mana_regen",
           "max_points": 2,
           "value": 0.25
+        },
+        {
+          "name": "mkultra:talent.righteous_judgement",
+          "max_points": 1
         }
       ]
     },

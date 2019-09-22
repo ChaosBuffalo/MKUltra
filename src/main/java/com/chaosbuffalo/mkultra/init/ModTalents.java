@@ -3,9 +3,7 @@ package com.chaosbuffalo.mkultra.init;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.MKURegistry;
 import com.chaosbuffalo.mkultra.core.PlayerAttributes;
-import com.chaosbuffalo.mkultra.core.abilities.Backstab;
-import com.chaosbuffalo.mkultra.core.abilities.HealingRain;
-import com.chaosbuffalo.mkultra.core.abilities.Meteor;
+import com.chaosbuffalo.mkultra.core.abilities.*;
 import com.chaosbuffalo.mkultra.core.abilities.passives.*;
 import com.chaosbuffalo.mkultra.core.talents.*;
 import com.chaosbuffalo.mkultra.log.Log;
@@ -277,5 +275,15 @@ public class ModTalents {
                 new ResourceLocation(MKUltra.MODID, "talent.healing_rain"),
                 HealingRain.INSTANCE);
         event.getRegistry().register(healingRain);
+
+        UltimateAbilityTalent bolsteringRoar = new UltimateAbilityTalent(
+                new ResourceLocation(MKUltra.MODID, "talent.bolstering_roar"),
+                BolsteringRoar.INSTANCE);
+        event.getRegistry().register(bolsteringRoar);
+
+        UltimateAbilityTalent righteousJudgement = new UltimateAbilityTalent(
+                new ResourceLocation(MKUltra.MODID, "talent.righteous_judgement"),
+                RighteousJudgement.INSTANCE);
+        event.getRegistry().register(righteousJudgement);
     }
 }

@@ -77,6 +77,10 @@
           "name": "mkultra:talent.melee_crit_damage",
           "max_points": 3,
           "value": 0.1
+        },
+        {
+          "name": "mkultra:talent.bolstering_roar",
+          "max_points": 1
         }
       ]
     },

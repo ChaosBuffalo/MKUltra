@@ -296,7 +296,7 @@ public class MKScreen extends GuiScreen {
     protected void mouseReleased(int mouseX, int mouseY, int mouseButton) {
         if (selectedWidgets.get(mouseButton) != null) {
             MKWidget selected = selectedWidgets.get(mouseButton);
-            selectedWidgets.remove(mouseY);
+            selectedWidgets.remove(mouseButton);
             if (selected.mouseReleased(mouseX, mouseY, mouseButton)) {
                 return;
             }

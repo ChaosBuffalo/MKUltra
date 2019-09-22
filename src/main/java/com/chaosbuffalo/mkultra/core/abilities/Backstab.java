@@ -5,11 +5,6 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKDamageSource;
 import com.chaosbuffalo.mkultra.core.PlayerAbility;
-import com.chaosbuffalo.mkultra.core.PlayerFormulas;
-import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
-import com.chaosbuffalo.mkultra.effects.SpellCast;
-import com.chaosbuffalo.mkultra.effects.spells.ParticlePotion;
-import com.chaosbuffalo.mkultra.effects.spells.SlayingEdgePotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
@@ -38,14 +33,13 @@ public class Backstab extends PlayerAbility {
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<PlayerAbility> event) {
-        Log.info(INSTANCE.toString());
         INSTANCE.setRegistryName(INSTANCE.getAbilityId());
         event.getRegistry().register(INSTANCE);
     }
 
     @Override
     public int getCooldown(int currentRank) {
-        return 20 - 2 * currentRank;
+        return 20 - 4 * currentRank;
     }
 
     @Override
@@ -78,12 +72,15 @@ public class Backstab extends PlayerAbility {
             boolean isBehind = MathUtils.isBehind(targetEntity, entity);
             float damage = BASE_DAMAGE + DAMAGE_SCALE * level;
             if (!isBehind){
-                damage = damage / 2.0f;
+                targetEntity.attackEntityFrom(
+                        MKDamageSource.fromMeleeSkill(getAbilityId(), entity, entity, 0.75f),
+                        damage / 2.0f);
             } else {
-                pData.addToAllCooldowns(-GameConstants.TICKS_PER_SECOND);
+                pData.addToAllCooldowns(-GameConstants.TICKS_PER_SECOND * 2);
+                targetEntity.attackEntityFrom(
+                        MKDamageSource.fromMeleeSkill(getAbilityId(), entity, entity, 1.25f), damage);
             }
-            targetEntity.attackEntityFrom(
-                    MKDamageSource.fromMeleeSkill(getAbilityId(), entity, entity), damage);
+
             Vec3d lookVec = entity.getLookVec();
             MKUltra.packetHandler.sendToAllAround(
                     new ParticleEffectSpawnPacket(
