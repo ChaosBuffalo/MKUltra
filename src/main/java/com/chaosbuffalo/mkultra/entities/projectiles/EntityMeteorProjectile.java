@@ -34,7 +34,7 @@ public class EntityMeteorProjectile extends EntityBaseProjectile {
         this.setDoAirProc(true);
         this.setDoGroundProc(true);
         this.setGroundProcTime(GameConstants.TICKS_PER_SECOND / 2);
-        this.setAirProcTime(GameConstants.TICKS_PER_SECOND / 2);
+        this.setAirProcTime(GameConstants.TICKS_PER_SECOND * 3 / 4);
     }
 
     @Override
