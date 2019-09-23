@@ -46,6 +46,10 @@ public class Meteor extends PlayerAbility {
         event.getRegistry().register(INSTANCE);
     }
 
+    public AbilityType getType() {
+        return AbilityType.Ultimate;
+    }
+
     @Override
     public int getCooldown(int currentRank) {
         return 35 - 10 * currentRank;

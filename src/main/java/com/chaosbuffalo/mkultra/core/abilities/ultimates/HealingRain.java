@@ -36,9 +36,12 @@ public class HealingRain extends PlayerAbility {
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<PlayerAbility> event) {
-        Log.info(INSTANCE.toString());
         INSTANCE.setRegistryName(INSTANCE.getAbilityId());
         event.getRegistry().register(INSTANCE);
+    }
+
+    public AbilityType getType() {
+        return AbilityType.Ultimate;
     }
 
     @Override
