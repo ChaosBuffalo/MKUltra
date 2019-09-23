@@ -51,7 +51,6 @@ public class DualWieldPotion extends PassiveAbilityPotionBase {
     }
 
     public void onLeftClickEmpty(ServerSideLeftClickEmpty event, EntityPlayer player, PotionEffect effect) {
-        Log.info("In left click empty dual wield");
         if (ItemUtils.isSuitableOffhandWeapon(player.getHeldItemOffhand())) {
             PlayerData pData = (PlayerData) MKUPlayerData.get(player);
             if (pData == null) {
@@ -70,7 +69,6 @@ public class DualWieldPotion extends PassiveAbilityPotionBase {
                 if (pData == null) {
                     return;
                 }
-                Log.info("Performing dual wield swing %s", player.getPrimaryHand().toString());
                 pData.performDualWieldSequence();
             }
         }

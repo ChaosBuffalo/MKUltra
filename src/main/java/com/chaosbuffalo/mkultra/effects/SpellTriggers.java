@@ -414,7 +414,6 @@ public class SpellTriggers {
 
         public static void onAttackEntity(EntityLivingBase attacker, Entity target) {
             if (!startTrigger(attacker)){
-                Log.info("Blocking attack trigger");
                 return;
             }
             attackEntityTriggers.forEach((spellPotionBase, attackEntityTrigger) -> {
