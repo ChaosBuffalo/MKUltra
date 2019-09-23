@@ -314,7 +314,7 @@ public class SpellTriggers {
                         new CritMessagePacket(livingTarget.getEntityId(), playerSource.getUniqueID(), newDamage, type));
             }
 
-            if (startTrigger(playerSource, MELEE_TAG))
+            if (!startTrigger(playerSource, MELEE_TAG))
                 return;
             playerHurtEntityMeleeTriggers.forEach(f -> f.apply(event, source, livingTarget, playerSource, sourceData));
             endTrigger(playerSource, MELEE_TAG);
