@@ -413,8 +413,10 @@ public class SpellTriggers {
         }
 
         public static void onAttackEntity(EntityLivingBase attacker, Entity target) {
-            if (!startTrigger(attacker))
+            if (!startTrigger(attacker)){
+                Log.info("Blocking attack trigger");
                 return;
+            }
             attackEntityTriggers.forEach((spellPotionBase, attackEntityTrigger) -> {
                 PotionEffect effect = attacker.getActivePotionEffect(spellPotionBase);
                 if (effect != null) {

@@ -5,6 +5,7 @@ import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.core.events.ServerSideLeftClickEmpty;
 import com.chaosbuffalo.mkultra.effects.SpellTriggers;
+import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.network.packets.PlayerLeftClickEmptyPacket;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -84,6 +85,7 @@ public class CombatEventHandler {
 
     @SubscribeEvent
     public static void onLeftClickEmpty(PlayerInteractEvent.LeftClickEmpty event) {
+        Log.info("Left click empty event");
         if (event.getEntityPlayer().world.isRemote) {
             MKUltra.packetHandler.sendToServer(new PlayerLeftClickEmptyPacket());
         }
@@ -91,6 +93,7 @@ public class CombatEventHandler {
 
     @SubscribeEvent
     public static void onLeftClickEmptyServer(ServerSideLeftClickEmpty event) {
+        Log.info("Left click empty server event");
         if (!event.getEntityPlayer().world.isRemote) {
             SpellTriggers.EMPTY_LEFT_CLICK.onEmptyLeftClick(event.getEntityPlayer(), event);
         }

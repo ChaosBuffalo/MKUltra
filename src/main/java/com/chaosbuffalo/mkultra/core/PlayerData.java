@@ -383,6 +383,7 @@ public class PlayerData implements IPlayerData {
     }
 
     public void performDualWieldSequence() {
+        Log.info("Is dual wielding %b", isDualWielding);
         if (!isDualWielding) {
             isDualWielding = true;
             originalMainHand = player.getPrimaryHand();
@@ -394,6 +395,7 @@ public class PlayerData implements IPlayerData {
 
     public void endDualWieldSequence() {
         if (isDualWielding) {
+            Log.info("Ending dual wield seq");
             if (player.getPrimaryHand() != originalMainHand) {
                 swapHands();
             }
