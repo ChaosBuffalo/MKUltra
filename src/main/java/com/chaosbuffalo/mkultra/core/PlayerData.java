@@ -85,9 +85,9 @@ public class PlayerData implements IPlayerData {
     private EnumHandSide originalMainHand;
     private boolean isDualWielding;
     private int ticksSinceLastSwing;
-    private boolean inSpellTriggerCallback;
     private final static int DUAL_WIELD_TIMEOUT = 25;
     private CastState currentCastState;
+    private Set<String> activeSpellTriggers;
 
 
     public PlayerData(EntityPlayer player) {
@@ -100,6 +100,7 @@ public class PlayerData implements IPlayerData {
         abilityTracker = AbilityTracker.getTracker(player);
         privateData = player.getDataManager();
         currentCastState = null;
+        activeSpellTriggers = new HashSet<>();
         setupWatcher();
         player.getAttributeMap().registerAttribute(PlayerAttributes.MAX_MANA);
         player.getAttributeMap().registerAttribute(PlayerAttributes.MANA_REGEN);
@@ -1510,11 +1511,16 @@ public class PlayerData implements IPlayerData {
         });
     }
 
-    public void setInSpellTriggerCallback(boolean enable) {
-        inSpellTriggerCallback = enable;
+    public void setInSpellTriggerCallback(String tag, boolean enable) {
+        if (enable) {
+            activeSpellTriggers.add(tag);
+        }
+        else {
+            activeSpellTriggers.remove(tag);
+        }
     }
 
-    public boolean isInSpellTriggerCallback() {
-        return inSpellTriggerCallback;
+    public boolean isInSpellTriggerCallback(String tag) {
+        return activeSpellTriggers.contains(tag);
     }
 }
