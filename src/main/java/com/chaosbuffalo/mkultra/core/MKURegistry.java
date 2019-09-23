@@ -1,6 +1,7 @@
 package com.chaosbuffalo.mkultra.core;
 
 
+import com.chaosbuffalo.mkultra.MKConfig;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.talents.BaseTalent;
 import com.chaosbuffalo.mkultra.core.talents.PassiveAbilityTalent;
@@ -48,7 +49,7 @@ public class MKURegistry {
 
     @Nullable
     public static PlayerClass getClass(ResourceLocation classId) {
-        return REGISTRY_CLASSES.getValue(classId);
+        return MKConfig.isClassEnabled(classId) ? REGISTRY_CLASSES.getValue(classId) : null;
     }
 
     @Nullable
@@ -127,12 +128,15 @@ public class MKURegistry {
 
     public static List<ResourceLocation> getValidClasses(Collection<ResourceLocation> classes) {
         return REGISTRY_CLASSES.getKeys().stream()
+                .filter(MKConfig::isClassEnabled)
                 .filter(classes::contains)
                 .collect(Collectors.toList());
     }
 
     public static List<ResourceLocation> getAllClasses() {
-        return new ArrayList<>(REGISTRY_CLASSES.getKeys());
+        return REGISTRY_CLASSES.getKeys().stream()
+                .filter(MKConfig::isClassEnabled)
+                .collect(Collectors.toList());
     }
 
     public static String getClassName(ResourceLocation classId) {

@@ -172,9 +172,6 @@ public class MKConfig {
     }
 
     public static class Gameplay {
-        @Config.Name("Banned Classes")
-        @Config.Comment("These classes are not allowed to be used")
-        public String[] BANNED_CLASSES = new String[0];
 
         @Config.Name("Healing hurts Undead")
         @Config.Comment("Set to true if you want heals to damage undead")
@@ -227,6 +224,11 @@ public class MKConfig {
                 ClassLists.classesToString(new ResourceLocation(MKUltra.MODID, "provider.ranger"),
                         Ranger.ID),
         };
+
+        @Config.Name("Banned Classes")
+        @Config.Comment("These classes are not allowed to be used")
+        @Config.RequiresMcRestart
+        public String[] BANNED_CLASSES = new String[0];
     }
 
     public static void init(File configFile) {
@@ -248,7 +250,7 @@ public class MKConfig {
 
 
     public static boolean isClassEnabled(ResourceLocation classId) {
-        return Arrays.stream(gameplay.BANNED_CLASSES).noneMatch(s -> s.equalsIgnoreCase(classId.toString()));
+        return Arrays.stream(classConfig.BANNED_CLASSES).noneMatch(s -> s.equalsIgnoreCase(classId.toString()));
     }
 
     public static ItemArmor.ArmorMaterial findArmorMat(String armorMat) {

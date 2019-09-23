@@ -25,7 +25,9 @@ public class ClassLists {
             ResourceLocation[] classes = stringToClasses(parts[1]);
 
             ClassList list = getOrCreate(id);
-            Arrays.stream(classes).forEach(list::addClass);
+            Arrays.stream(classes)
+                    .filter(MKConfig::isClassEnabled)
+                    .forEach(list::addClass);
         }
     }
 
