@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.effects.spells;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.abilities.FlameBlade;
+import com.chaosbuffalo.mkultra.core.events.ServerSideLeftClickEmpty;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.PassiveEffect;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
@@ -49,7 +50,7 @@ public class FlameBladePotion extends PassiveEffect {
         return new ResourceLocation(MKUltra.MODID, "textures/class/abilities/flame_blade.png");
     }
 
-    public void onEmptyLeftClick(PlayerInteractEvent.LeftClickEmpty event, EntityPlayer player, PotionEffect effect) {
+    public void onEmptyLeftClick(ServerSideLeftClickEmpty event, EntityPlayer player, PotionEffect effect) {
         if (player.isPotionActive(PhoenixAspectPotion.INSTANCE)) {
             World world = player.getEntityWorld();
             EntityFlameBladeProjectile flamep = new EntityFlameBladeProjectile(world, player);

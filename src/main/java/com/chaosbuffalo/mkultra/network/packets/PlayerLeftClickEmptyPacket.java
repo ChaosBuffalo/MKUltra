@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.network.packets;
 
+import com.chaosbuffalo.mkultra.core.events.ServerSideLeftClickEmpty;
 import com.chaosbuffalo.mkultra.network.MessageHandler;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,7 +25,7 @@ public class PlayerLeftClickEmptyPacket implements IMessage {
 
         @Override
         public void handleServerMessage(final EntityPlayer player, PlayerLeftClickEmptyPacket msg) {
-            MinecraftForge.EVENT_BUS.post(new PlayerInteractEvent.LeftClickEmpty(player));
+            MinecraftForge.EVENT_BUS.post(new ServerSideLeftClickEmpty(player));
         }
     }
 }

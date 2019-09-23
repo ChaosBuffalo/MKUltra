@@ -4,9 +4,11 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerAttributes;
 import com.chaosbuffalo.mkultra.core.PlayerData;
+import com.chaosbuffalo.mkultra.core.events.ServerSideLeftClickEmpty;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellTriggers;
 import com.chaosbuffalo.mkultra.effects.passives.PassiveAbilityPotionBase;
+import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.utils.ItemUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -48,7 +50,7 @@ public class DualWieldPotion extends PassiveAbilityPotionBase {
         SpellTriggers.EMPTY_LEFT_CLICK.register(this, this::onLeftClickEmpty);
     }
 
-    public void onLeftClickEmpty(PlayerInteractEvent.LeftClickEmpty event, EntityPlayer player, PotionEffect effect) {
+    public void onLeftClickEmpty(ServerSideLeftClickEmpty event, EntityPlayer player, PotionEffect effect) {
         if (ItemUtils.isSuitableOffhandWeapon(player.getHeldItemOffhand())) {
             PlayerData pData = (PlayerData) MKUPlayerData.get(player);
             if (pData == null) {
@@ -67,7 +69,6 @@ public class DualWieldPotion extends PassiveAbilityPotionBase {
                 if (pData == null) {
                     return;
                 }
-
                 pData.performDualWieldSequence();
             }
         }

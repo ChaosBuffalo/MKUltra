@@ -394,10 +394,10 @@ public class PlayerData implements IPlayerData {
 
     public void endDualWieldSequence() {
         if (isDualWielding) {
-            isDualWielding = false;
             if (player.getPrimaryHand() != originalMainHand) {
                 swapHands();
             }
+            isDualWielding = false;
         }
     }
 

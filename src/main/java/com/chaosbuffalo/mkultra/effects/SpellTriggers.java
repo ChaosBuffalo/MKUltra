@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.effects;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.*;
+import com.chaosbuffalo.mkultra.core.events.ServerSideLeftClickEmpty;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.network.packets.CritMessagePacket;
@@ -332,7 +333,7 @@ public class SpellTriggers {
 
         @FunctionalInterface
         public interface EmptyLeftClickTrigger {
-            void apply(PlayerInteractEvent.LeftClickEmpty event, EntityPlayer player, PotionEffect effect);
+            void apply(ServerSideLeftClickEmpty event, EntityPlayer player, PotionEffect effect);
         }
 
         private static Map<SpellPotionBase, EmptyLeftClickTrigger> emptyLeftClickTriggers = Maps.newLinkedHashMap();
@@ -341,7 +342,7 @@ public class SpellTriggers {
             emptyLeftClickTriggers.put(potion, trigger);
         }
 
-        public static void onEmptyLeftClick(EntityPlayer player, PlayerInteractEvent.LeftClickEmpty event) {
+        public static void onEmptyLeftClick(EntityPlayer player, ServerSideLeftClickEmpty event) {
             if (!startTrigger(player))
                 return;
             emptyLeftClickTriggers.forEach((spellPotionBase, trigger) -> {
@@ -412,8 +413,9 @@ public class SpellTriggers {
         }
 
         public static void onAttackEntity(EntityLivingBase attacker, Entity target) {
-            if (!startTrigger(attacker))
+            if (!startTrigger(attacker)){
                 return;
+            }
             attackEntityTriggers.forEach((spellPotionBase, attackEntityTrigger) -> {
                 PotionEffect effect = attacker.getActivePotionEffect(spellPotionBase);
                 if (effect != null) {
