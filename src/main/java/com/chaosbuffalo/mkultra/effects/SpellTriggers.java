@@ -58,6 +58,7 @@ public class SpellTriggers {
 
 
     public static class FALL {
+        private static final String TAG = FALL.class.getName();
         private static List<FallTrigger> fallTriggers = Lists.newArrayList();
 
         @FunctionalInterface
@@ -70,14 +71,15 @@ public class SpellTriggers {
         }
 
         public static void onLivingFall(LivingHurtEvent event, DamageSource source, EntityLivingBase entity) {
-            if (!startTrigger(entity))
+            if (!startTrigger(entity, TAG))
                 return;
             fallTriggers.forEach(f -> f.apply(event, source, entity));
-            endTrigger(entity);
+            endTrigger(entity, TAG);
         }
     }
 
     public static class PLAYER_KILL_ENTITY {
+        private static final String TAG = PLAYER_KILL_ENTITY.class.getName();
         private static Map<SpellPotionBase, PlayerKillEntityTrigger> killTriggers = Maps.newLinkedHashMap();
 
         @FunctionalInterface
@@ -90,7 +92,7 @@ public class SpellTriggers {
         }
 
         public static void onEntityDeath(LivingDeathEvent event, DamageSource source, EntityPlayer entity) {
-            if (!startTrigger(entity))
+            if (!startTrigger(entity, TAG))
                 return;
             killTriggers.forEach((spellPotionBase, trigger) -> {
                 PotionEffect effect = entity.getActivePotionEffect(spellPotionBase);
@@ -98,11 +100,12 @@ public class SpellTriggers {
                     trigger.apply(event, source, entity);
                 }
             });
-            endTrigger(entity);
+            endTrigger(entity, TAG);
         }
     }
 
     public static class PLAYER_EQUIPMENT_CHANGE {
+        private static final String TAG = PLAYER_EQUIPMENT_CHANGE.class.getName();
         private static Map<SpellPotionBase, PlayerEquipmentChangeTrigger> triggers = Maps.newLinkedHashMap();
 
         @FunctionalInterface
@@ -115,7 +118,7 @@ public class SpellTriggers {
         }
 
         public static void onEquipmentChange(LivingEquipmentChangeEvent event, IPlayerData data, EntityPlayer player) {
-            if (!startTrigger(player))
+            if (!startTrigger(player, TAG))
                 return;
             triggers.forEach((spellPotionBase, trigger) -> {
                 PotionEffect effect = player.getActivePotionEffect(spellPotionBase);
@@ -123,7 +126,7 @@ public class SpellTriggers {
                     trigger.apply(event, data, player);
                 }
             });
-            endTrigger(player);
+            endTrigger(player, TAG);
         }
     }
 
@@ -133,6 +136,7 @@ public class SpellTriggers {
             void apply(LivingHurtEvent event, DamageSource source, EntityPlayer livingTarget, IPlayerData targetData);
         }
 
+        private static final String TAG = ENTITY_HURT_PLAYER.class.getName();
         private static List<EntityHurtPlayerTrigger> entityHurtPlayerPreTriggers = Lists.newArrayList();
         private static List<EntityHurtPlayerTrigger> entityHurtPlayerPostTriggers = Lists.newArrayList();
 
@@ -145,7 +149,7 @@ public class SpellTriggers {
         }
 
         public static void onEntityHurtPlayer(LivingHurtEvent event, DamageSource source, EntityPlayer livingTarget, IPlayerData targetData) {
-            if (!startTrigger(livingTarget))
+            if (!startTrigger(livingTarget, TAG))
                 return;
             entityHurtPlayerPreTriggers.forEach(f -> f.apply(event, source, livingTarget, targetData));
 
@@ -156,7 +160,7 @@ public class SpellTriggers {
             }
 
             entityHurtPlayerPostTriggers.forEach(f -> f.apply(event, source, livingTarget, targetData));
-            endTrigger(livingTarget);
+            endTrigger(livingTarget, TAG);
         }
     }
 
@@ -167,6 +171,9 @@ public class SpellTriggers {
             void apply(LivingHurtEvent event, DamageSource source, EntityLivingBase livingTarget, EntityPlayerMP playerSource, IPlayerData sourceData);
         }
 
+        private static final String MELEE_TAG = "PLAYER_HURT_ENTITY.melee";
+        private static final String MAGIC_TAG = "PLAYER_HURT_ENTITY.magic";
+        private static final String POST_TAG = "PLAYER_HURT_ENTITY.post";
         private static List<PlayerHurtEntityTrigger> playerHurtEntityMeleeTriggers = Lists.newArrayList();
         private static List<PlayerHurtEntityTrigger> playerHurtEntityMagicTriggers = Lists.newArrayList();
         private static List<PlayerHurtEntityTrigger> playerHurtEntityPostTriggers = Lists.newArrayList();
@@ -219,10 +226,10 @@ public class SpellTriggers {
                 handleProjectile(event, source, livingTarget, playerSource, sourceData);
             }
 
-            if (!startTrigger(playerSource))
+            if (!startTrigger(playerSource, POST_TAG))
                 return;
             playerHurtEntityPostTriggers.forEach(f -> f.apply(event, source, livingTarget, playerSource, sourceData));
-            endTrigger(playerSource);
+            endTrigger(playerSource, POST_TAG);
         }
 
         private static boolean checkCrit(EntityPlayerMP player, float chance) {
@@ -256,10 +263,10 @@ public class SpellTriggers {
                 sendCritPacket(livingTarget, playerSource, packet);
             }
 
-            if (!startTrigger(playerSource))
+            if (!startTrigger(playerSource, MAGIC_TAG))
                 return;
             playerHurtEntityMagicTriggers.forEach(f -> f.apply(event, mkSource, livingTarget, playerSource, sourceData));
-            endTrigger(playerSource);
+            endTrigger(playerSource, MAGIC_TAG);
         }
 
         private static void handleProjectile(LivingHurtEvent event, DamageSource source, EntityLivingBase livingTarget,
@@ -307,10 +314,10 @@ public class SpellTriggers {
                         new CritMessagePacket(livingTarget.getEntityId(), playerSource.getUniqueID(), newDamage, type));
             }
 
-            if (startTrigger(playerSource))
+            if (startTrigger(playerSource, MELEE_TAG))
                 return;
             playerHurtEntityMeleeTriggers.forEach(f -> f.apply(event, source, livingTarget, playerSource, sourceData));
-            endTrigger(playerSource);
+            endTrigger(playerSource, MELEE_TAG);
         }
     }
 
@@ -336,6 +343,7 @@ public class SpellTriggers {
             void apply(ServerSideLeftClickEmpty event, EntityPlayer player, PotionEffect effect);
         }
 
+        private static final String TAG = EMPTY_LEFT_CLICK.class.getName();
         private static Map<SpellPotionBase, EmptyLeftClickTrigger> emptyLeftClickTriggers = Maps.newLinkedHashMap();
 
         public static void register(SpellPotionBase potion, EmptyLeftClickTrigger trigger) {
@@ -343,7 +351,7 @@ public class SpellTriggers {
         }
 
         public static void onEmptyLeftClick(EntityPlayer player, ServerSideLeftClickEmpty event) {
-            if (!startTrigger(player))
+            if (!startTrigger(player, TAG))
                 return;
             emptyLeftClickTriggers.forEach((spellPotionBase, trigger) -> {
                 PotionEffect effect = player.getActivePotionEffect(spellPotionBase);
@@ -351,26 +359,30 @@ public class SpellTriggers {
                     trigger.apply(event, player, effect);
                 }
             });
-            endTrigger(player);
+            endTrigger(player, TAG);
         }
     }
 
-    private static boolean startTrigger(Entity source) {
+    private static boolean startTrigger(Entity source, String tag) {
         if (source instanceof EntityPlayer) {
+//            Log.info("startTrigger - %s", tag);
             PlayerData data = (PlayerData) MKUPlayerData.get((EntityPlayer) source);
-            if (data == null || data.isInSpellTriggerCallback())
+            if (data == null || data.isInSpellTriggerCallback(tag)) {
+//                Log.info("startTrigger - BLOCKING %s", tag);
                 return false;
-            data.setInSpellTriggerCallback(true);
+            }
+            data.setInSpellTriggerCallback(tag, true);
         }
         return true;
     }
 
-    private static void endTrigger(Entity source) {
+    private static void endTrigger(Entity source, String tag) {
         if (source instanceof EntityPlayer) {
+//            Log.info("endTrigger - %s", tag);
             PlayerData data = (PlayerData) MKUPlayerData.get((EntityPlayer) source);
             if (data == null)
                 return;
-            data.setInSpellTriggerCallback(false);
+            data.setInSpellTriggerCallback(tag, false);
         }
     }
 
@@ -381,6 +393,7 @@ public class SpellTriggers {
             void apply(EntityLivingBase player, Entity target, PotionEffect effect);
         }
 
+        private static final String TAG = ATTACK_ENTITY.class.getName();
         private static Map<SpellPotionBase, AttackEntityTrigger> attackEntityTriggers = Maps.newLinkedHashMap();
 
         public static void register(SpellPotionBase potion, AttackEntityTrigger trigger) {
@@ -388,7 +401,7 @@ public class SpellTriggers {
         }
 
         public static void onAttackEntity(EntityLivingBase attacker, Entity target) {
-            if (!startTrigger(attacker))
+            if (!startTrigger(attacker, TAG))
                 return;
             attackEntityTriggers.forEach((spellPotionBase, attackEntityTrigger) -> {
                 PotionEffect effect = attacker.getActivePotionEffect(spellPotionBase);
@@ -396,7 +409,7 @@ public class SpellTriggers {
                     attackEntityTrigger.apply(attacker, target, effect);
                 }
             });
-            endTrigger(attacker);
+            endTrigger(attacker, TAG);
         }
     }
 
@@ -406,6 +419,7 @@ public class SpellTriggers {
             void apply(EntityLivingBase player, Entity target, PotionEffect effect);
         }
 
+        private static final String TAG = PLAYER_ATTACK_ENTITY.class.getName();
         private static Map<SpellPotionBase, PlayerAttackEntityTrigger> attackEntityTriggers = Maps.newLinkedHashMap();
 
         public static void register(SpellPotionBase potion, PlayerAttackEntityTrigger trigger) {
@@ -413,16 +427,15 @@ public class SpellTriggers {
         }
 
         public static void onAttackEntity(EntityLivingBase attacker, Entity target) {
-            if (!startTrigger(attacker)){
+            if (!startTrigger(attacker, TAG))
                 return;
-            }
             attackEntityTriggers.forEach((spellPotionBase, attackEntityTrigger) -> {
                 PotionEffect effect = attacker.getActivePotionEffect(spellPotionBase);
                 if (effect != null) {
                     attackEntityTrigger.apply(attacker, target, effect);
                 }
             });
-            endTrigger(attacker);
+            endTrigger(attacker, TAG);
         }
     }
 
@@ -432,6 +445,7 @@ public class SpellTriggers {
             void apply(LivingDeathEvent event, DamageSource source, EntityPlayer player);
         }
 
+        private static final String TAG = PLAYER_DEATH.class.getName();
         private static Map<SpellPotionBase, PlayerKillEntityTrigger> killTriggers = Maps.newLinkedHashMap();
 
         public static void register(SpellPotionBase potion, PlayerKillEntityTrigger trigger) {
@@ -439,14 +453,14 @@ public class SpellTriggers {
         }
 
         public static void onEntityDeath(LivingDeathEvent event, DamageSource source, EntityPlayer entity) {
-            if (!startTrigger(entity))
+            if (!startTrigger(entity, TAG))
                 return;
             killTriggers.forEach((spellPotionBase, trigger) -> {
                 if (entity.isPotionActive(spellPotionBase)) {
                     trigger.apply(event, source, entity);
                 }
             });
-            endTrigger(entity);
+            endTrigger(entity, TAG);
         }
     }
 }
