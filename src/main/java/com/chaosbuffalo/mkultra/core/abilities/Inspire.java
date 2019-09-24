@@ -58,7 +58,7 @@ public class Inspire extends PlayerAbility {
         super.endCast(entity, data, theWorld, state);
         int level = data.getAbilityRank(getAbilityId());
 
-        int duration = 900;
+        int duration = GameConstants.TICKS_PER_SECOND * 15;
         duration = PlayerFormulas.applyBuffDurationBonus(data, duration);
 
         PotionEffect hasteEffect = new PotionEffect(MobEffects.HASTE, duration, level, false, true);

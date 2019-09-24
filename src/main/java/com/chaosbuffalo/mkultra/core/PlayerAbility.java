@@ -2,12 +2,17 @@ package com.chaosbuffalo.mkultra.core;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.core.abilities.cast_states.CastState;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.utils.RayTraceUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.ISound;
+import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -58,9 +63,12 @@ public abstract class PlayerAbility extends IForgeRegistryEntry.Impl<PlayerAbili
         }
     }
 
+    public SoundEvent getCastingSoundEvent(){
+        return ModSounds.casting_general;
+    }
+
     @SideOnly(Side.CLIENT)
     public void continueCastClient(EntityPlayer entity, IPlayerData data, World theWorld, int castTimeLeft){
-
     }
 
     @SideOnly(Side.CLIENT)
@@ -123,6 +131,7 @@ public abstract class PlayerAbility extends IForgeRegistryEntry.Impl<PlayerAbili
                 PlayerFormulas.applyManaCostReduction(player, getManaCost(player.getAbilityRank(abilityId))) &&
                 player.getCurrentAbilityCooldown(abilityId) == 0;
     }
+
 
     public abstract void execute(EntityPlayer entity, IPlayerData data, World theWorld);
 

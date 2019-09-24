@@ -1,0 +1,11 @@
+{
+  "casting_general": {
+    "category": "player",
+    "subtitle": "mkultra.subtitle.casting_general",
+    "sounds": [ {
+        "name": "mkultra:casting/general_loop",
+        "stream": true
+        }
+    ]
+  }
+}

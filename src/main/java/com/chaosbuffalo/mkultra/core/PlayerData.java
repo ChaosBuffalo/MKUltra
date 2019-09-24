@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.core;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.client.audio.MovingSoundCasting;
 import com.chaosbuffalo.mkultra.core.abilities.cast_states.CastState;
 import com.chaosbuffalo.mkultra.core.events.PlayerAbilityCastEvent;
 import com.chaosbuffalo.mkultra.core.events.PlayerClassEvent;
@@ -18,6 +19,7 @@ import com.chaosbuffalo.mkultra.network.packets.AbilityUpdatePacket;
 import com.chaosbuffalo.mkultra.network.packets.ClassUpdatePacket;
 import com.chaosbuffalo.mkultra.network.packets.PlayerSyncRequestPacket;
 import com.google.common.collect.Lists;
+import net.minecraft.client.Minecraft;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AbstractAttributeMap;
@@ -34,6 +36,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
@@ -88,7 +91,8 @@ public class PlayerData implements IPlayerData {
     private final static int DUAL_WIELD_TIMEOUT = 25;
     private CastState currentCastState;
     private Set<String> activeSpellTriggers;
-
+    private boolean lastUpdateIsCasting;
+    private MovingSoundCasting castingSound;
 
     public PlayerData(EntityPlayer player) {
         this.player = player;
@@ -100,6 +104,7 @@ public class PlayerData implements IPlayerData {
         abilityTracker = AbilityTracker.getTracker(player);
         privateData = player.getDataManager();
         currentCastState = null;
+        lastUpdateIsCasting = false;
         activeSpellTriggers = new HashSet<>();
         setupWatcher();
         player.getAttributeMap().registerAttribute(PlayerAttributes.MAX_MANA);
@@ -859,8 +864,23 @@ public class PlayerData implements IPlayerData {
             PlayerAbility ability = MKURegistry.getAbility(loc);
             if (ability != null) {
                 ability.continueCastClient(player, this, player.getEntityWorld(), currentCastTime);
+                if (!lastUpdateIsCasting){
+                    Log.info("Playing cast sound");
+                    MovingSoundCasting sound = new MovingSoundCasting(player, ability.getCastingSoundEvent(),
+                            SoundCategory.PLAYERS);
+                    castingSound = sound;
+                    Minecraft.getMinecraft().getSoundHandler().playSound(sound);
+                }
+            }
+        } else {
+            if (lastUpdateIsCasting && castingSound != null){
+                Minecraft.getMinecraft().getSoundHandler().stopSound(castingSound);
+                castingSound = null;
+                Log.info("Stopping cast sound");
             }
         }
+
+        lastUpdateIsCasting = isCasting();
     }
 
     private void updateCastTime() {
@@ -1071,8 +1091,10 @@ public class PlayerData implements IPlayerData {
 
     public void onTick() {
         abilityTracker.tick();
-        if (!isServerSide())
+        if (!isServerSide()){
+            updateCastTimeClient();
             return;
+        }
         if (needPassiveTalentRefresh) {
             PlayerClassInfo info = getActiveClass();
             if (info != null) {
