@@ -15,6 +15,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 
 @Mod.EventBusSubscriber(modid = MKUltra.MODID)
@@ -71,7 +72,7 @@ public class SoundPotion extends SpellPotionBase {
     public void doEffect(Entity applier, Entity caster,
                          EntityLivingBase target, int amplifier, SpellCast cast) {
 
-        SoundEvent event = ModSounds.getFromSoundMap(cast.getResourceLocation("soundEvent"));
+        SoundEvent event = ForgeRegistries.SOUND_EVENTS.getValue(cast.getResourceLocation("soundEvent"));
         if (event != null){
             AbilityUtils.playSoundAtServerEntity(target, event, SoundCategory.values()[cast.getInt("category")],
                     cast.getFloat("volume"), cast.getFloat("pitch"));

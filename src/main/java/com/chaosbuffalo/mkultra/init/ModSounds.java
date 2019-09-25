@@ -33,20 +33,8 @@ public class ModSounds {
     @GameRegistry.ObjectHolder("spell_thunder_8")
     public static SoundEvent spell_thunder_8;
 
-    private static HashMap<ResourceLocation, SoundEvent> locToSoundMap = new HashMap<>();
-
-    public static void addToSoundMap(SoundEvent sound){
-        locToSoundMap.put(sound.getRegistryName(), sound);
-    }
-
-    @Nullable
-    public static SoundEvent getFromSoundMap(ResourceLocation loc){
-        return locToSoundMap.get(loc);
-    }
-
     public static void registerSound(RegistryEvent.Register<SoundEvent> evt, SoundEvent event){
         event.setRegistryName(event.getSoundName());
-        addToSoundMap(event);
         evt.getRegistry().register(event);
     }
 
