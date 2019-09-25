@@ -10,11 +10,15 @@ import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.FlameBladePotion;
 import com.chaosbuffalo.mkultra.effects.spells.ParticlePotion;
+import com.chaosbuffalo.mkultra.effects.spells.SoundPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -35,6 +39,16 @@ public class FlameBlade extends PlayerAbility {
     @Override
     public int getCooldown(int currentRank) {
         return 18 + currentRank * 5;
+    }
+
+    @Override
+    public SoundEvent getSpellCompleteSoundEvent() {
+        return ModSounds.spell_fire_3;
+    }
+
+    @Override
+    public SoundEvent getCastingSoundEvent() {
+        return ModSounds.casting_fire_loop_2;
     }
 
     @Override
@@ -78,9 +92,12 @@ public class FlameBlade extends PlayerAbility {
                 new Vec3d(0.0, 1.0, 0.0),
                 40, 5, 1.0);
 
+        SpellCast soundPotion = SoundPotion.Create(entity, ModSounds.spell_fire_7, SoundCategory.PLAYERS);
+
         AreaEffectBuilder.Create(entity, entity)
                 .spellCast(effect, duration, level, getTargetType())
                 .spellCast(particlePotion, level, getTargetType())
+                .spellCast(soundPotion, level, getTargetType())
                 .instant()
                 .particle(EnumParticleTypes.FIREWORKS_SPARK)
                 .color(16737330).radius(getDistance(level), true)

@@ -2,7 +2,10 @@ package com.chaosbuffalo.mkultra.utils;
 
 import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.core.abilities.cast_states.CastState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -18,6 +21,15 @@ public class AbilityUtils {
             return !EntityUtils.isLargeEntity(entity);
         }
         return !EntityUtils.isLargeEntity(entity) && !mobData.isBoss();
+    }
+
+    public static void playSoundAtServerEntity(Entity entity, SoundEvent event, SoundCategory cat){
+        playSoundAtServerEntity(entity, event, cat, 1.0f, 1.0f);
+    }
+
+    public static void playSoundAtServerEntity(Entity entity, SoundEvent event, SoundCategory cat, float volume, float pitch){
+        entity.world.playSound(null, entity.posX, entity.posY, entity.posZ, event,
+                cat, volume, pitch);
     }
 
     public static void safeTeleportEntity(World theWorld, EntityLivingBase targetEntity, Vec3d teleLoc) {

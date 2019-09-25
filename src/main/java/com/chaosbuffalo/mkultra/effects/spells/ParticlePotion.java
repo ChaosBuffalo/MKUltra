@@ -5,6 +5,8 @@ import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
+import net.minecraft.client.audio.SoundManager;
+import net.minecraft.client.audio.SoundRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
@@ -78,7 +80,6 @@ public class ParticlePotion extends SpellPotionBase {
         if (!cast.getBoolean("includeSelf") && target.equals(caster)) {
             return;
         }
-
         MKUltra.packetHandler.sendToAllAround(
                 new ParticleEffectSpawnPacket(
                         cast.getInt("particleId"),

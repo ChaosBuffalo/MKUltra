@@ -9,14 +9,18 @@ import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellTriggers;
 import com.chaosbuffalo.mkultra.entities.projectiles.EntityFlameBladeProjectile;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
+import com.chaosbuffalo.mkultra.utils.AbilityUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.ai.attributes.AbstractAttributeMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.event.RegistryEvent;
@@ -60,6 +64,7 @@ public class FlameBladePotion extends PassiveEffect {
             world.spawnEntity(flamep);
         }
     }
+
 
     private void onAttackEntity(EntityLivingBase player, Entity target, PotionEffect potion) {
         SpellCast flames = FlameBladeEffectPotion.Create(player, FlameBlade.BASE_DAMAGE, FlameBlade.DAMAGE_SCALE);

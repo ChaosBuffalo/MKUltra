@@ -18,6 +18,7 @@ import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.network.packets.AbilityUpdatePacket;
 import com.chaosbuffalo.mkultra.network.packets.ClassUpdatePacket;
 import com.chaosbuffalo.mkultra.network.packets.PlayerSyncRequestPacket;
+import com.chaosbuffalo.mkultra.utils.AbilityUtils;
 import com.google.common.collect.Lists;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.ICommandSender;
@@ -933,6 +934,8 @@ public class PlayerData implements IPlayerData {
         cooldown = PlayerFormulas.applyCooldownReduction(this, cooldown);
         setCooldown(info.getId(), cooldown);
         currentCastState = null;
+        AbilityUtils.playSoundAtServerEntity(player, ability.getSpellCompleteSoundEvent(),
+                SoundCategory.PLAYERS);
         MinecraftForge.EVENT_BUS.post(new PlayerAbilityCastEvent.Completed(player, this, ability, info));
     }
 

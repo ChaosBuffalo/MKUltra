@@ -6,8 +6,10 @@ import com.chaosbuffalo.mkultra.core.abilities.cast_states.CastState;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.entities.projectiles.EntityBallLightningProjectile;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 
 public class BallLightning extends PlayerAbility {
@@ -31,7 +33,12 @@ public class BallLightning extends PlayerAbility {
 
     @Override
     public float getManaCost(int currentRank) {
-        return 1 + 2 * currentRank;
+        return 2 + 2 * currentRank;
+    }
+
+    @Override
+    public SoundEvent getSpellCompleteSoundEvent() {
+        return ModSounds.spell_thunder_8;
     }
 
     @Override

@@ -9,6 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -66,6 +67,8 @@ public abstract class PlayerAbility extends IForgeRegistryEntry.Impl<PlayerAbili
     public SoundEvent getCastingSoundEvent(){
         return ModSounds.casting_general;
     }
+
+    public SoundEvent getSpellCompleteSoundEvent(){ return ModSounds.spell_cast_3; }
 
     @SideOnly(Side.CLIENT)
     public void continueCastClient(EntityPlayer entity, IPlayerData data, World theWorld, int castTimeLeft){

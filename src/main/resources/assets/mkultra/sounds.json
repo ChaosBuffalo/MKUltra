@@ -1,11 +1,68 @@
 {
-  "casting_general": {
-    "category": "player",
-    "subtitle": "mkultra.subtitle.casting_general",
-    "sounds": [ {
-        "name": "mkultra:casting/general_loop",
-        "stream": true
-        }
-    ]
-  }
+    "casting_general": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.casting_general",
+        "sounds": [ {
+            "name": "mkultra:casting/general_loop",
+            "stream": true
+            }
+        ]
+    },
+   "casting_fire_loop_2": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.casting_fire_loop_2",
+        "sounds": [ {
+            "name": "mkultra:casting/fire_loop_2",
+            "stream": true
+            }
+        ]
+    },
+    "spell_cast_3": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast_3",
+        "sounds": [ {
+            "name": "mkultra:spells/cast_3"
+            }
+        ]
+    },
+    "spell_fire_3": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_fire_3",
+        "sounds": [ {
+            "name": "mkultra:spells/fire_3"
+            }
+        ]
+    },
+    "spell_fire_7": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_fire_7",
+        "sounds": [ {
+            "name": "mkultra:spells/fire_7"
+            }
+        ]
+    },
+    "spell_thunder_1": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_thunder_1",
+        "sounds": [ {
+            "name": "mkultra:spells/thunder_1"
+            }
+        ]
+    },
+    "spell_thunder_3": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_thunder_3",
+        "sounds": [ {
+            "name": "mkultra:spells/thunder_3"
+            }
+        ]
+    },
+    "spell_thunder_8": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_thunder_8",
+        "sounds": [ {
+            "name": "mkultra:spells/thunder_8"
+            }
+        ]
+    }
 }
