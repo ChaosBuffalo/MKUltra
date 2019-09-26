@@ -1224,12 +1224,12 @@ public class PlayerData implements IPlayerData {
 
     @Override
     public void deserialize(NBTTagCompound nbt) {
-        if (nbt.hasKey("mana")) {
-            setMana(nbt.getFloat("mana"));
-        }
         abilityTracker.deserialize(nbt);
         deserializeSkills(nbt);
         deserializeClasses(nbt);
+        if (nbt.hasKey("mana")) {
+            setMana(nbt.getFloat("mana"));
+        }
     }
 
     public void clone(EntityPlayer previous) {
