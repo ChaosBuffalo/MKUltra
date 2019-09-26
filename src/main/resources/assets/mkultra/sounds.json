@@ -8,18 +8,45 @@
             }
         ]
     },
-   "casting_fire_loop_2": {
+   "casting_fire": {
         "category": "player",
-        "subtitle": "mkultra.subtitle.casting_fire_loop_2",
+        "subtitle": "mkultra.subtitle.casting_fire",
         "sounds": [ {
-            "name": "mkultra:casting/fire_loop_2",
+            "name": "mkultra:casting/fire_loop",
+            "stream": true
+            }
+        ]
+    },
+    "casting_holy": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.casting_holy",
+        "sounds": [ {
+            "name": "mkultra:casting/holy_loop",
+            "stream": true
+            }
+        ]
+    },
+    "casting_shadow": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.casting_shadow",
+        "sounds": [ {
+            "name": "mkultra:casting/shadow_loop",
+            "stream": true
+            }
+        ]
+    },
+    "casting_water": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.casting_water",
+        "sounds": [ {
+            "name": "mkultra:casting/water_loop",
             "stream": true
             }
         ]
     },
     "spell_cast_3": {
         "category": "player",
-        "subtitle": "mkultra.subtitle.spell_cast_3",
+        "subtitle": "mkultra.subtitle.spell_cast",
         "sounds": [ {
             "name": "mkultra:spells/cast_3"
             }
@@ -27,7 +54,7 @@
     },
     "spell_fire_3": {
         "category": "player",
-        "subtitle": "mkultra.subtitle.spell_fire_3",
+        "subtitle": "mkultra.subtitle.spell_cast",
         "sounds": [ {
             "name": "mkultra:spells/fire_3"
             }
@@ -35,7 +62,7 @@
     },
     "spell_fire_7": {
         "category": "player",
-        "subtitle": "mkultra.subtitle.spell_fire_7",
+        "subtitle": "mkultra.subtitle.spell_cast",
         "sounds": [ {
             "name": "mkultra:spells/fire_7"
             }
@@ -43,7 +70,7 @@
     },
     "spell_thunder_1": {
         "category": "player",
-        "subtitle": "mkultra.subtitle.spell_thunder_1",
+        "subtitle": "mkultra.subtitle.spell_cast",
         "sounds": [ {
             "name": "mkultra:spells/thunder_1"
             }
@@ -51,7 +78,7 @@
     },
     "spell_thunder_3": {
         "category": "player",
-        "subtitle": "mkultra.subtitle.spell_thunder_3",
+        "subtitle": "mkultra.subtitle.spell_cast",
         "sounds": [ {
             "name": "mkultra:spells/thunder_3"
             }
@@ -59,9 +86,121 @@
     },
     "spell_thunder_8": {
         "category": "player",
-        "subtitle": "mkultra.subtitle.spell_thunder_8",
+        "subtitle": "mkultra.subtitle.spell_cast",
         "sounds": [ {
             "name": "mkultra:spells/thunder_8"
+            }
+        ]
+    },
+    "spell_heal_7": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/heal_7"
+            }
+        ]
+    },
+    "spell_buff_4": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/buff_4"
+            }
+        ]
+    },
+    "spell_wind_4": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/wind_4"
+            }
+        ]
+    },
+    "bow_arrow_2": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.bow_shot",
+        "sounds": [ {
+            "name": "mkultra:spells/bow_arrow_2"
+            }
+        ]
+    },
+    "spell_fire_5": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/fire_5"
+            }
+        ]
+    },
+     "spell_negative_effect_2": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/negative_effect_2"
+            }
+        ]
+    },
+    "bow_arrow_1": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.bow_shot",
+        "sounds": [ {
+            "name": "mkultra:spells/bow_arrow_1"
+            }
+        ]
+    },
+    "bow_arrow_3": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.bow_shot",
+        "sounds": [ {
+            "name": "mkultra:spells/bow_arrow_3"
+            }
+        ]
+    },
+    "spell_punch_6": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/punch_6"
+            }
+        ]
+    },
+    "spell_wind_5": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/wind_5"
+            }
+        ]
+    },
+    "spell_shadow_3": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/shadow_3"
+            }
+        ]
+    },
+    "spell_buff_6": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/buff_6"
+            }
+        ]
+    },
+    "spell_buff_8": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/buff_8"
+            }
+        ]
+    },
+    "spell_holy_4": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/holy_4"
             }
         ]
     }

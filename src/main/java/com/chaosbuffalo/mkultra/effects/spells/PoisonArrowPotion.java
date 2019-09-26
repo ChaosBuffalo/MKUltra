@@ -6,6 +6,7 @@ import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -13,6 +14,7 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -55,6 +57,8 @@ public class PoisonArrowPotion extends SpellPotionBase {
                 .effect(new PotionEffect(MobEffects.POISON, 9 * GameConstants.TICKS_PER_SECOND, amplifier, false, true), getTargetType())
                 .effect(new PotionEffect(MobEffects.SLOWNESS, 9 * GameConstants.TICKS_PER_SECOND, amplifier + 2, false, true), getTargetType())
                 .spellCast(particlePotion, amplifier, getTargetType())
+                .spellCast(SoundPotion.Create(source, ModSounds.spell_negative_effect_2, SoundCategory.PLAYERS),
+                        1 , getTargetType())
                 .instant()
                 .particle(EnumParticleTypes.SLIME)
                 .color(16737305).radius(cast.getFloat("range"), true)

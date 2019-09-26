@@ -866,9 +866,10 @@ public class PlayerData implements IPlayerData {
             if (ability != null) {
                 ability.continueCastClient(player, this, player.getEntityWorld(), currentCastTime);
                 if (!lastUpdateIsCasting){
+                    int castTime = ability.getCastTime(getAbilityRank(loc));
                     Log.info("Playing cast sound");
                     MovingSoundCasting sound = new MovingSoundCasting(player, ability.getCastingSoundEvent(),
-                            SoundCategory.PLAYERS);
+                            SoundCategory.PLAYERS, castTime);
                     castingSound = sound;
                     Minecraft.getMinecraft().getSoundHandler().playSound(sound);
                 }

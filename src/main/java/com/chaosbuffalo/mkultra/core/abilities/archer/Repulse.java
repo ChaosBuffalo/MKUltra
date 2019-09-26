@@ -1,4 +1,4 @@
-package com.chaosbuffalo.mkultra.core.abilities;
+package com.chaosbuffalo.mkultra.core.abilities.archer;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
@@ -6,11 +6,15 @@ import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.RepulsePotion;
+import com.chaosbuffalo.mkultra.effects.spells.SoundPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -44,6 +48,16 @@ public class Repulse extends PlayerAbility {
     }
 
     @Override
+    public SoundEvent getCastingSoundEvent() {
+        return ModSounds.casting_shadow;
+    }
+
+    @Override
+    public SoundEvent getSpellCompleteSoundEvent() {
+        return ModSounds.spell_shadow_3;
+    }
+
+    @Override
     public int getRequiredLevel(int currentRank) {
         return 4 + currentRank * 2;
     }
@@ -59,6 +73,8 @@ public class Repulse extends PlayerAbility {
 
         AreaEffectBuilder.Create(entity, entity)
                 .spellCast(repulse, level, getTargetType())
+                .spellCast(SoundPotion.Create(entity, ModSounds.spell_wind_5, SoundCategory.PLAYERS),
+                        1, getTargetType())
                 .instant()
                 .color(16409620).radius(getDistance(level), true)
                 .spawn();

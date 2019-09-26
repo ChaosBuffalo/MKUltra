@@ -1,4 +1,4 @@
-package com.chaosbuffalo.mkultra.core.abilities;
+package com.chaosbuffalo.mkultra.core.abilities.druid;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
@@ -8,29 +8,47 @@ import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.PlayerFormulas;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
-import com.chaosbuffalo.mkultra.effects.spells.FeatherFallPotion;
+import com.chaosbuffalo.mkultra.effects.spells.FlameBladePotion;
 import com.chaosbuffalo.mkultra.effects.spells.ParticlePotion;
-import com.chaosbuffalo.mkultra.effects.spells.PhoenixAspectPotion;
+import com.chaosbuffalo.mkultra.effects.spells.SoundPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class PhoenixAspect extends PlayerAbility {
+public class FlameBlade extends PlayerAbility {
 
-    public static int BASE_DURATION = 60;
-    public static int DURATION_SCALE = 60;
+    public static int BASE_DURATION = 10;
+    public static int DURATION_SCALE = 5;
+    public static float BASE_DAMAGE = 1.0f;
+    public static float DAMAGE_SCALE = 1.0f;
 
-    public PhoenixAspect() {
-        super(MKUltra.MODID, "ability.phoenix_aspect");
+    public static float PROJECTILE_SPEED = 1.0f;
+    public static float PROJECTILE_INACCURACY = 0.5f;
+
+    public FlameBlade() {
+        super(MKUltra.MODID, "ability.flame_blade");
     }
 
     @Override
     public int getCooldown(int currentRank) {
-        return 500 - currentRank * 100;
+        return 18 + currentRank * 5;
+    }
+
+    @Override
+    public SoundEvent getSpellCompleteSoundEvent() {
+        return ModSounds.spell_fire_3;
+    }
+
+    @Override
+    public SoundEvent getCastingSoundEvent() {
+        return ModSounds.casting_fire;
     }
 
     @Override
@@ -40,7 +58,7 @@ public class PhoenixAspect extends PlayerAbility {
 
     @Override
     public float getManaCost(int currentRank) {
-        return 10 + currentRank * 5;
+        return 2 + currentRank * 4;
     }
 
     @Override
@@ -50,12 +68,12 @@ public class PhoenixAspect extends PlayerAbility {
 
     @Override
     public int getRequiredLevel(int currentRank) {
-        return 6 + currentRank * 2;
+        return currentRank * 2;
     }
 
     @Override
     public int getCastTime(int currentRank) {
-        return GameConstants.TICKS_PER_SECOND * 5;
+        return GameConstants.TICKS_PER_SECOND - 5 * (currentRank - 1);
     }
 
     @Override
@@ -66,26 +84,31 @@ public class PhoenixAspect extends PlayerAbility {
         // What to do for each target hit
         int duration = (BASE_DURATION + DURATION_SCALE * level) * GameConstants.TICKS_PER_SECOND;
         duration = PlayerFormulas.applyBuffDurationBonus(data, duration);
-        SpellCast effect = PhoenixAspectPotion.Create(entity);
-        SpellCast feather = FeatherFallPotion.Create(entity);
+        SpellCast effect = FlameBladePotion.Create(entity);
         SpellCast particlePotion = ParticlePotion.Create(entity,
-                EnumParticleTypes.FIREWORKS_SPARK.getParticleID(),
-                ParticleEffects.DIRECTED_SPOUT, false, new Vec3d(1.0, 1.5, 1.0),
-                new Vec3d(0.0, 1.0, 0.0), 40, 5, 1.0);
+                EnumParticleTypes.DRIP_LAVA.getParticleID(),
+                ParticleEffects.DIRECTED_SPOUT, false,
+                new Vec3d(1.0, 1.5, 1.0),
+                new Vec3d(0.0, 1.0, 0.0),
+                40, 5, 1.0);
+
+        SpellCast soundPotion = SoundPotion.Create(entity, ModSounds.spell_fire_7,
+                SoundCategory.PLAYERS);
 
         AreaEffectBuilder.Create(entity, entity)
                 .spellCast(effect, duration, level, getTargetType())
-                .spellCast(feather, duration + 10 * GameConstants.TICKS_PER_SECOND, level, getTargetType())
                 .spellCast(particlePotion, level, getTargetType())
+                .spellCast(soundPotion, level, getTargetType())
                 .instant()
                 .particle(EnumParticleTypes.FIREWORKS_SPARK)
-                .color(65480).radius(getDistance(level), true)
+                .color(16737330).radius(getDistance(level), true)
                 .spawn();
+
 
         Vec3d lookVec = entity.getLookVec();
         MKUltra.packetHandler.sendToAllAround(
                 new ParticleEffectSpawnPacket(
-                        EnumParticleTypes.FIREWORKS_SPARK.getParticleID(),
+                        EnumParticleTypes.DRIP_LAVA.getParticleID(),
                         ParticleEffects.CIRCLE_MOTION, 50, 0,
                         entity.posX, entity.posY + 1.5,
                         entity.posZ, 1.0, 1.0, 1.0, 1.0f,

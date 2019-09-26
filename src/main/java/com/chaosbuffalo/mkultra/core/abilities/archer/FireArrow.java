@@ -1,38 +1,41 @@
-package com.chaosbuffalo.mkultra.core.abilities;
+package com.chaosbuffalo.mkultra.core.abilities.archer;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.abilities.cast_states.CastState;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerAbility;
-import com.chaosbuffalo.mkultra.effects.spells.PoisonArrowPotion;
+import com.chaosbuffalo.mkultra.effects.spells.FireArrowPotion;
+import com.chaosbuffalo.mkultra.effects.spells.SoundPotion;
 import com.chaosbuffalo.mkultra.entities.projectiles.SpellCastArrow;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.item.RangedWeaponry;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class PoisonArrow extends PlayerAbility {
-    public static float BASE_ARROW_DAMAGE = 4.0f;
+public class FireArrow extends PlayerAbility {
+
+    public static float BASE_ARROW_DAMAGE = 2.0f;
     public static float SCALE_ARROW_DAMAGE = 2.0f;
-    public static float BASE_DAMAGE = 2.0f;
+    public static float BASE_DAMAGE = 1.0f;
     public static float DAMAGE_SCALE = 1.0f;
 
-    public PoisonArrow() {
-        super(MKUltra.MODID, "ability.poison_arrow");
+    public FireArrow() {
+        super(MKUltra.MODID, "ability.fire_arrow");
     }
 
     @Override
     public int getCooldown(int currentRank) {
-        return 10 - currentRank * 2;
+        return 5 - currentRank;
     }
 
     @Override
@@ -42,13 +45,22 @@ public class PoisonArrow extends PlayerAbility {
 
     @Override
     public float getManaCost(int currentRank) {
-        return 8 - currentRank * 2;
+        return 5 - currentRank;
     }
 
+    @Override
+    public SoundEvent getCastingSoundEvent() {
+        return ModSounds.casting_fire;
+    }
+
+    @Override
+    public SoundEvent getSpellCompleteSoundEvent() {
+        return ModSounds.bow_arrow_2;
+    }
 
     @Override
     public int getRequiredLevel(int currentRank) {
-        return 4 + currentRank * 2;
+        return currentRank * 2;
     }
 
     @Override
@@ -59,6 +71,7 @@ public class PoisonArrow extends PlayerAbility {
     @Override
     public void endCast(EntityPlayer entity, IPlayerData data, World theWorld, CastState state) {
         super.endCast(entity, data, theWorld, state);
+        int level = data.getAbilityRank(getAbilityId());
         ItemStack mainHand = entity.getHeldItemMainhand();
         if (mainHand.isEmpty())
             return;
@@ -70,17 +83,14 @@ public class PoisonArrow extends PlayerAbility {
         ItemStack ammo = weapon.findAmmo(entity);
         if (ammo.isEmpty())
             return;
-        int level = data.getAbilityRank(getAbilityId());
         EntityArrow entityarrow = weapon.createAmmoEntity(theWorld, ammo, entity);
         SpellCastArrow arrow = new SpellCastArrow(theWorld, entity);
         weapon.applyEffects(arrow, mainHand, ammo);
-        arrow.shoot(entity, entity.rotationPitch, entity.rotationYaw, 0.0F, 3.0F, 1.0F);
+        arrow.shoot(entity, entity.rotationPitch, entity.rotationYaw, 0.0F,
+                3.0F, 1.0F);
         arrow.setDamage(entityarrow.getDamage() + BASE_ARROW_DAMAGE + level * SCALE_ARROW_DAMAGE);
-        arrow.addEffect(new PotionEffect(MobEffects.POISON, 9 * GameConstants.TICKS_PER_SECOND, level, false, true));
-        arrow.addEffect(new PotionEffect(MobEffects.SLOWNESS, 9 * GameConstants.TICKS_PER_SECOND, level + 2, false, true));
-        if (level == 2) {
-            arrow.addSpellCast(PoisonArrowPotion.Create(entity, 10.0f), level);
-        }
+        arrow.addSpellCast(FireArrowPotion.Create(entity, BASE_DAMAGE, DAMAGE_SCALE, 10.0f), 1);
+        arrow.addSpellCast(SoundPotion.Create(entity, ModSounds.spell_fire_5, SoundCategory.PLAYERS), 1);
         arrow.pickupStatus = EntityArrow.PickupStatus.DISALLOWED;
         theWorld.spawnEntity(arrow);
 
@@ -89,13 +99,14 @@ public class PoisonArrow extends PlayerAbility {
         Vec3d lookVec = entity.getLookVec();
         MKUltra.packetHandler.sendToAllAround(
                 new ParticleEffectSpawnPacket(
-                        EnumParticleTypes.SLIME.getParticleID(),
+                        EnumParticleTypes.LAVA.getParticleID(),
                         ParticleEffects.CIRCLE_PILLAR_MOTION, 40, 10,
                         entity.posX, entity.posY + 0.05,
-                        entity.posZ, 1.0, 1.0, 1.0, 1.5,
+                        entity.posZ, 1.0, 1.0, 1.0, 0.5,
                         lookVec),
                 entity.dimension, entity.posX,
                 entity.posY, entity.posZ, 50.0f);
+
     }
 
     @Override
@@ -111,7 +122,6 @@ public class PoisonArrow extends PlayerAbility {
         ItemStack ammo = weapon.findAmmo(entity);
         if (ammo.isEmpty())
             return;
-
         pData.startAbility(this);
     }
 }

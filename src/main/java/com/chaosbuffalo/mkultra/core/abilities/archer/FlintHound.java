@@ -1,4 +1,4 @@
-package com.chaosbuffalo.mkultra.core.abilities;
+package com.chaosbuffalo.mkultra.core.abilities.archer;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
@@ -6,12 +6,14 @@ import com.chaosbuffalo.mkultra.core.abilities.cast_states.CastState;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -37,6 +39,11 @@ public class FlintHound extends PlayerAbility {
     @Override
     public float getManaCost(int currentRank) {
         return 10;
+    }
+
+    @Override
+    public SoundEvent getSpellCompleteSoundEvent() {
+        return ModSounds.spell_buff_6;
     }
 
     @Override

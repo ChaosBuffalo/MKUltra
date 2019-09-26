@@ -1,4 +1,4 @@
-package com.chaosbuffalo.mkultra.core.abilities;
+package com.chaosbuffalo.mkultra.core.abilities.druid;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;

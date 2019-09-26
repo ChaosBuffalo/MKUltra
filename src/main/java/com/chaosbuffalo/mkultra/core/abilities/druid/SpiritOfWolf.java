@@ -1,4 +1,4 @@
-package com.chaosbuffalo.mkultra.core.abilities;
+package com.chaosbuffalo.mkultra.core.abilities.druid;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
@@ -6,6 +6,7 @@ import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.core.abilities.cast_states.CastState;
 import com.chaosbuffalo.mkultra.core.abilities.cast_states.SingleTargetCastState;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.mkultra.utils.AbilityUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
@@ -14,6 +15,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -57,6 +60,11 @@ public class SpiritOfWolf extends PlayerAbility {
     }
 
     @Override
+    public SoundEvent getSpellCompleteSoundEvent() {
+        return ModSounds.spell_buff_4;
+    }
+
+    @Override
     public int getCastTime(int currentRank) {
         return GameConstants.TICKS_PER_SECOND;
     }
@@ -79,7 +87,8 @@ public class SpiritOfWolf extends PlayerAbility {
         duration = PlayerFormulas.applyBuffDurationBonus(data, duration);
         PotionEffect addSpeed = new PotionEffect(MobEffects.SPEED, duration, level - 1);
         targetEntity.addPotionEffect(addSpeed);
-
+        AbilityUtils.playSoundAtServerEntity(targetEntity,
+                ModSounds.spell_wind_4, SoundCategory.PLAYERS);
         Vec3d lookVec = entity.getLookVec();
         MKUltra.packetHandler.sendToAllAround(
                 new ParticleEffectSpawnPacket(
