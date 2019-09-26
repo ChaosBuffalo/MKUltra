@@ -818,7 +818,9 @@ public class PlayerData implements IPlayerData {
     @Override
     public void setToggleGroupAbility(ResourceLocation groupId, PlayerToggleAbility ability) {
         PlayerToggleAbility current = getActiveToggleGroupAbility(ability.getToggleGroupId());
-        if (current != null) {
+        // This can also be called when rebuilding the activeToggleMap after transferring dimensions and in that case
+        // ability will be the same as current
+        if (current != null && current != ability) {
             current.removeEffect(player, this, player.getEntityWorld());
             setCooldown(current.getAbilityId(), getAbilityCooldown(current));
         }
