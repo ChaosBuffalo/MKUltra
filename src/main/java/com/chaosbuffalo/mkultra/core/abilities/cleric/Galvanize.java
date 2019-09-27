@@ -1,4 +1,4 @@
-package com.chaosbuffalo.mkultra.core.abilities;
+package com.chaosbuffalo.mkultra.core.abilities.cleric;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
@@ -7,13 +7,18 @@ import com.chaosbuffalo.mkultra.core.PlayerFormulas;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.CurePotion;
+import com.chaosbuffalo.mkultra.effects.spells.SoundPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkultra.utils.AbilityUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -49,6 +54,11 @@ public class Galvanize extends PlayerAbility {
     }
 
     @Override
+    public SoundEvent getSpellCompleteSoundEvent() {
+        return ModSounds.spell_heal_1;
+    }
+
+    @Override
     public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
 
         pData.startAbility(this);
@@ -59,10 +69,11 @@ public class Galvanize extends PlayerAbility {
         duration = PlayerFormulas.applyBuffDurationBonus(pData, duration);
         PotionEffect jump = new PotionEffect(MobEffects.JUMP_BOOST, duration, level - 1, false, true);
         SpellCast cure = CurePotion.Create(entity);
-
         AreaEffectBuilder.Create(entity, entity)
                 .spellCast(cure, level, getTargetType())
                 .effect(jump, getTargetType())
+                .spellCast(SoundPotion.Create(entity, ModSounds.spell_buff_5, SoundCategory.PLAYERS),
+                        1, getTargetType())
                 .instant().color(1048370).radius(getDistance(level), true)
                 .spawn();
 

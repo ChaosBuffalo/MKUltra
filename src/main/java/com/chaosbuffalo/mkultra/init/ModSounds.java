@@ -25,6 +25,8 @@ public class ModSounds {
     public static SoundEvent casting_water;
     @GameRegistry.ObjectHolder("spell_cast_3")
     public static SoundEvent spell_cast_3;
+    @GameRegistry.ObjectHolder("spell_cast_12")
+    public static SoundEvent spell_cast_12;
     @GameRegistry.ObjectHolder("spell_fire_3")
     public static SoundEvent spell_fire_3;
     @GameRegistry.ObjectHolder("spell_fire_7")
@@ -35,6 +37,10 @@ public class ModSounds {
     public static SoundEvent spell_thunder_3;
     @GameRegistry.ObjectHolder("spell_thunder_8")
     public static SoundEvent spell_thunder_8;
+    @GameRegistry.ObjectHolder("spell_heal_1")
+    public static SoundEvent spell_heal_1;
+    @GameRegistry.ObjectHolder("spell_heal_3")
+    public static SoundEvent spell_heal_3;
     @GameRegistry.ObjectHolder("spell_heal_7")
     public static SoundEvent spell_heal_7;
     @GameRegistry.ObjectHolder("spell_buff_4")
@@ -43,8 +49,16 @@ public class ModSounds {
     public static SoundEvent spell_wind_4;
     @GameRegistry.ObjectHolder("spell_wind_5")
     public static SoundEvent spell_wind_5;
+    @GameRegistry.ObjectHolder("spell_holy_2")
+    public static SoundEvent spell_holy_2;
     @GameRegistry.ObjectHolder("spell_holy_4")
     public static SoundEvent spell_holy_4;
+    @GameRegistry.ObjectHolder("spell_holy_5")
+    public static SoundEvent spell_holy_5;
+    @GameRegistry.ObjectHolder("spell_holy_8")
+    public static SoundEvent spell_holy_8;
+    @GameRegistry.ObjectHolder("spell_buff_5")
+    public static SoundEvent spell_buff_5;
     @GameRegistry.ObjectHolder("spell_buff_8")
     public static SoundEvent spell_buff_8;
     @GameRegistry.ObjectHolder("bow_arrow_1")
@@ -63,6 +77,12 @@ public class ModSounds {
     public static SoundEvent spell_shadow_3;
     @GameRegistry.ObjectHolder("spell_buff_6")
     public static SoundEvent spell_buff_6;
+    @GameRegistry.ObjectHolder("spell_magic_whoosh_2")
+    public static SoundEvent spell_magic_whoosh_2;
+    @GameRegistry.ObjectHolder("spell_magic_whoosh_3")
+    public static SoundEvent spell_magic_whoosh_3;
+    @GameRegistry.ObjectHolder("spell_magic_whoosh_4")
+    public static SoundEvent spell_magic_whoosh_4;
 
     public static void registerSound(RegistryEvent.Register<SoundEvent> evt, SoundEvent event){
         event.setRegistryName(event.getSoundName());
@@ -81,17 +101,24 @@ public class ModSounds {
         registerSound(evt, createSound("casting_shadow"));
         registerSound(evt, createSound("casting_holy"));
         registerSound(evt, createSound("spell_cast_3"));
+        registerSound(evt, createSound("spell_cast_12"));
         registerSound(evt, createSound("spell_fire_3"));
         registerSound(evt, createSound("spell_fire_7"));
         registerSound(evt, createSound("spell_thunder_1"));
         registerSound(evt, createSound("spell_thunder_3"));
         registerSound(evt, createSound("spell_thunder_8"));
+        registerSound(evt, createSound("spell_heal_1"));
+        registerSound(evt, createSound("spell_heal_3"));
         registerSound(evt, createSound("spell_heal_7"));
         registerSound(evt, createSound("spell_buff_4"));
         registerSound(evt, createSound("spell_buff_6"));
         registerSound(evt, createSound("spell_wind_4"));
         registerSound(evt, createSound("spell_wind_5"));
+        registerSound(evt, createSound("spell_holy_2"));
         registerSound(evt, createSound("spell_holy_4"));
+        registerSound(evt, createSound("spell_holy_5"));
+        registerSound(evt, createSound("spell_holy_8"));
+        registerSound(evt, createSound("spell_buff_5"));
         registerSound(evt, createSound("spell_buff_8"));
         registerSound(evt, createSound("bow_arrow_1"));
         registerSound(evt, createSound("bow_arrow_2"));
@@ -100,5 +127,8 @@ public class ModSounds {
         registerSound(evt, createSound("spell_negative_effect_2"));
         registerSound(evt, createSound("spell_punch_6"));
         registerSound(evt, createSound("spell_shadow_3"));
+        registerSound(evt, createSound("spell_magic_whoosh_2"));
+        registerSound(evt, createSound("spell_magic_whoosh_3"));
+        registerSound(evt, createSound("spell_magic_whoosh_4"));
     }
 }

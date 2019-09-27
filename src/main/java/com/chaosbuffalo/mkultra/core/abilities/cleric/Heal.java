@@ -1,4 +1,4 @@
-package com.chaosbuffalo.mkultra.core.abilities;
+package com.chaosbuffalo.mkultra.core.abilities.cleric;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
@@ -8,6 +8,7 @@ import com.chaosbuffalo.mkultra.core.abilities.cast_states.SingleTargetCastState
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.ClericHealPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.mkultra.utils.AbilityUtils;
@@ -15,6 +16,8 @@ import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -43,6 +46,16 @@ public class Heal extends PlayerAbility {
     }
 
     @Override
+    public SoundEvent getCastingSoundEvent() {
+        return ModSounds.casting_holy;
+    }
+
+    @Override
+    public SoundEvent getSpellCompleteSoundEvent() {
+        return ModSounds.spell_holy_5;
+    }
+
+    @Override
     public void endCast(EntityPlayer entity, IPlayerData data, World theWorld, CastState castState) {
         super.endCast(entity, data, theWorld, castState);
         Log.info("End cast of heal");
@@ -57,6 +70,7 @@ public class Heal extends PlayerAbility {
             SpellCast heal = ClericHealPotion.Create(entity, BASE_VALUE, VALUE_SCALE).setTarget(target);
             target.addPotionEffect(heal.toPotionEffect(level));
             Vec3d lookVec = entity.getLookVec();
+            AbilityUtils.playSoundAtServerEntity(target, ModSounds.spell_heal_3, SoundCategory.PLAYERS);
             MKUltra.packetHandler.sendToAllAround(
                     new ParticleEffectSpawnPacket(
                             EnumParticleTypes.VILLAGER_HAPPY.getParticleID(),

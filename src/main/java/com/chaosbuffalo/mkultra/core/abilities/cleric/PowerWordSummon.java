@@ -1,4 +1,4 @@
-package com.chaosbuffalo.mkultra.core.abilities;
+package com.chaosbuffalo.mkultra.core.abilities.cleric;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
@@ -7,6 +7,7 @@ import com.chaosbuffalo.mkultra.core.abilities.cast_states.CastState;
 import com.chaosbuffalo.mkultra.core.abilities.cast_states.SingleTargetCastState;
 import com.chaosbuffalo.mkultra.effects.spells.WarpTargetPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.mkultra.utils.AbilityUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
@@ -15,6 +16,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -60,6 +63,11 @@ public class PowerWordSummon extends PlayerAbility {
     }
 
     @Override
+    public SoundEvent getSpellCompleteSoundEvent() {
+        return ModSounds.spell_magic_whoosh_3;
+    }
+
+    @Override
     public void endCast(EntityPlayer entity, IPlayerData data, World theWorld, CastState state) {
         super.endCast(entity, data, theWorld, state);
         SingleTargetCastState singleTargetState = AbilityUtils.getCastStateAsType(state,
@@ -75,6 +83,7 @@ public class PowerWordSummon extends PlayerAbility {
                         (4 + level) * GameConstants.TICKS_PER_SECOND, 100, false, true));
 
         Vec3d lookVec = entity.getLookVec();
+        AbilityUtils.playSoundAtServerEntity(targetEntity, ModSounds.spell_magic_whoosh_4, SoundCategory.PLAYERS);
         MKUltra.packetHandler.sendToAllAround(
                 new ParticleEffectSpawnPacket(
                         EnumParticleTypes.SPELL_MOB.getParticleID(),

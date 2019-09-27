@@ -1,4 +1,4 @@
-package com.chaosbuffalo.mkultra.core.abilities;
+package com.chaosbuffalo.mkultra.core.abilities.cleric;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
@@ -7,13 +7,17 @@ import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.PlayerFormulas;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
+import com.chaosbuffalo.mkultra.effects.spells.SoundPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -49,6 +53,16 @@ public class Inspire extends PlayerAbility {
     }
 
     @Override
+    public SoundEvent getCastingSoundEvent() {
+        return ModSounds.casting_holy;
+    }
+
+    @Override
+    public SoundEvent getSpellCompleteSoundEvent() {
+        return ModSounds.spell_cast_12;
+    }
+
+    @Override
     public int getCastTime(int currentRank) {
         return GameConstants.TICKS_PER_SECOND * 2 / currentRank;
     }
@@ -64,9 +78,12 @@ public class Inspire extends PlayerAbility {
         PotionEffect hasteEffect = new PotionEffect(MobEffects.HASTE, duration, level, false, true);
         PotionEffect regenEffect = new PotionEffect(MobEffects.REGENERATION, duration, level + 1, false, true);
 
+
         AreaEffectBuilder.Create(entity, entity)
                 .effect(hasteEffect, Targeting.TargetType.FRIENDLY)
                 .effect(regenEffect, Targeting.TargetType.FRIENDLY)
+                .spellCast(SoundPotion.Create(entity, ModSounds.spell_holy_8, SoundCategory.PLAYERS),
+                        1, getTargetType())
                 .instant().color(1034415).radius(getDistance(level), true)
                 .particle(EnumParticleTypes.VILLAGER_HAPPY)
                 .spawn();

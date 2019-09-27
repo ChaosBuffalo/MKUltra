@@ -180,6 +180,14 @@
             }
         ]
     },
+    "spell_buff_5": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/buff_5"
+            }
+        ]
+    },
     "spell_buff_6": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
@@ -196,11 +204,75 @@
             }
         ]
     },
+    "spell_holy_2": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/holy_2"
+            }
+        ]
+    },
     "spell_holy_4": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
         "sounds": [ {
             "name": "mkultra:spells/holy_4"
+            }
+        ]
+    },
+    "spell_holy_5": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/holy_5"
+            }
+        ]
+    },
+    "spell_holy_8": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/holy_8"
+            }
+        ]
+    },
+    "spell_heal_3": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/heal_3"
+            }
+        ]
+    },
+    "spell_magic_whoosh_2": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/magic_whoosh_2"
+            }
+        ]
+    },
+    "spell_magic_whoosh_3": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/magic_whoosh_3"
+            }
+        ]
+    },
+    "spell_magic_whoosh_4": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/magic_whoosh_4"
+            }
+        ]
+    },
+    "spell_cast_12": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/cast_12"
             }
         ]
     }
