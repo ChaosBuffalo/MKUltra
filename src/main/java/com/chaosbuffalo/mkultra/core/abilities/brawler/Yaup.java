@@ -1,4 +1,4 @@
-package com.chaosbuffalo.mkultra.core.abilities;
+package com.chaosbuffalo.mkultra.core.abilities.brawler;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
@@ -9,13 +9,17 @@ import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.CriticalChancePotion;
 import com.chaosbuffalo.mkultra.effects.spells.ParticlePotion;
+import com.chaosbuffalo.mkultra.effects.spells.SoundPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -46,6 +50,11 @@ public class Yaup extends PlayerAbility {
     }
 
     @Override
+    public SoundEvent getSpellCompleteSoundEvent() {
+        return ModSounds.spell_holy_1;
+    }
+
+    @Override
     public int getRequiredLevel(int currentRank) {
         return 4 + currentRank * 2;
     }
@@ -70,6 +79,8 @@ public class Yaup extends PlayerAbility {
         AreaEffectBuilder.Create(entity, entity)
                 .effect(hasteEffect, getTargetType())
                 .effect(damageEffect, getTargetType())
+                .spellCast(SoundPotion.Create(entity, ModSounds.spell_buff_attack_4, SoundCategory.PLAYERS),
+                        1, getTargetType())
                 .spellCast(CriticalChancePotion.Create(entity), level + 1, Targeting.TargetType.SELF)
                 .spellCast(particlePotion, 0, getTargetType())
                 .instant().color(16751360).radius(getDistance(level), true)

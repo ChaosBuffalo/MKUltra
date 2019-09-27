@@ -49,6 +49,8 @@ public class ModSounds {
     public static SoundEvent spell_wind_4;
     @GameRegistry.ObjectHolder("spell_wind_5")
     public static SoundEvent spell_wind_5;
+    @GameRegistry.ObjectHolder("spell_holy_1")
+    public static SoundEvent spell_holy_1;
     @GameRegistry.ObjectHolder("spell_holy_2")
     public static SoundEvent spell_holy_2;
     @GameRegistry.ObjectHolder("spell_holy_4")
@@ -71,8 +73,12 @@ public class ModSounds {
     public static SoundEvent spell_fire_5;
     @GameRegistry.ObjectHolder("spell_negative_effect_2")
     public static SoundEvent spell_negative_effect_2;
+    @GameRegistry.ObjectHolder("spell_negative_effect_7")
+    public static SoundEvent spell_negative_effect_7;
     @GameRegistry.ObjectHolder("spell_punch_6")
     public static SoundEvent spell_punch_6;
+    @GameRegistry.ObjectHolder("spell_shadow_2")
+    public static SoundEvent spell_shadow_2;
     @GameRegistry.ObjectHolder("spell_shadow_3")
     public static SoundEvent spell_shadow_3;
     @GameRegistry.ObjectHolder("spell_buff_6")
@@ -83,6 +89,18 @@ public class ModSounds {
     public static SoundEvent spell_magic_whoosh_3;
     @GameRegistry.ObjectHolder("spell_magic_whoosh_4")
     public static SoundEvent spell_magic_whoosh_4;
+    @GameRegistry.ObjectHolder("spell_shout_1")
+    public static SoundEvent spell_shout_1;
+    @GameRegistry.ObjectHolder("spell_whirldwind_1")
+    public static SoundEvent spell_whirlwind_1;
+    @GameRegistry.ObjectHolder("spell_grab_1")
+    public static SoundEvent spell_grab_1;
+    @GameRegistry.ObjectHolder("spell_grab_2")
+    public static SoundEvent spell_grab_2;
+    @GameRegistry.ObjectHolder("spell_buff_attack_4")
+    public static SoundEvent spell_buff_attack_4;
+
+
 
     public static void registerSound(RegistryEvent.Register<SoundEvent> evt, SoundEvent event){
         event.setRegistryName(event.getSoundName());
@@ -114,6 +132,7 @@ public class ModSounds {
         registerSound(evt, createSound("spell_buff_6"));
         registerSound(evt, createSound("spell_wind_4"));
         registerSound(evt, createSound("spell_wind_5"));
+        registerSound(evt, createSound("spell_holy_1"));
         registerSound(evt, createSound("spell_holy_2"));
         registerSound(evt, createSound("spell_holy_4"));
         registerSound(evt, createSound("spell_holy_5"));
@@ -125,10 +144,17 @@ public class ModSounds {
         registerSound(evt, createSound("bow_arrow_3"));
         registerSound(evt, createSound("spell_fire_5"));
         registerSound(evt, createSound("spell_negative_effect_2"));
+        registerSound(evt, createSound("spell_negative_effect_7"));
         registerSound(evt, createSound("spell_punch_6"));
+        registerSound(evt, createSound("spell_shadow_2"));
         registerSound(evt, createSound("spell_shadow_3"));
         registerSound(evt, createSound("spell_magic_whoosh_2"));
         registerSound(evt, createSound("spell_magic_whoosh_3"));
         registerSound(evt, createSound("spell_magic_whoosh_4"));
-    }
+        registerSound(evt, createSound("spell_shout_1"));
+        registerSound(evt, createSound("spell_whirlwind_1"));
+        registerSound(evt, createSound("spell_grab_1"));
+        registerSound(evt, createSound("spell_grab_2"));
+        registerSound(evt, createSound("spell_buff_attack_4"));
+}
 }

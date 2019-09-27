@@ -1,4 +1,4 @@
-package com.chaosbuffalo.mkultra.core.abilities;
+package com.chaosbuffalo.mkultra.core.abilities.brawler;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
@@ -9,11 +9,15 @@ import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.AbilityMeleeDamage;
 import com.chaosbuffalo.mkultra.effects.spells.ParticlePotion;
+import com.chaosbuffalo.mkultra.effects.spells.SoundPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -52,6 +56,11 @@ public class WhirlwindBlades extends PlayerAbility {
     }
 
     @Override
+    public SoundEvent getCastingSoundEvent() {
+        return ModSounds.spell_whirlwind_1;
+    }
+
+    @Override
     public int getCastTime(int currentRank) {
         return currentRank * GameConstants.TICKS_PER_SECOND * 3;
     }
@@ -79,6 +88,8 @@ public class WhirlwindBlades extends PlayerAbility {
             AreaEffectBuilder.Create(entity, entity)
                     .spellCast(damage, level, getTargetType())
                     .spellCast(particlePotion, level, getTargetType())
+                    .spellCast(SoundPotion.Create(entity, ModSounds.spell_shadow_2, SoundCategory.PLAYERS),
+                            1, getTargetType())
                     .instant()
                     .color(16409620).radius(getDistance(level), true)
                     .particle(EnumParticleTypes.CRIT)

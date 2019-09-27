@@ -132,11 +132,19 @@
             }
         ]
     },
-     "spell_negative_effect_2": {
+    "spell_negative_effect_2": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
         "sounds": [ {
             "name": "mkultra:spells/negative_effect_2"
+            }
+        ]
+    },
+    "spell_negative_effect_7": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/negative_effect_7"
             }
         ]
     },
@@ -201,6 +209,14 @@
         "subtitle": "mkultra.subtitle.spell_cast",
         "sounds": [ {
             "name": "mkultra:spells/buff_8"
+            }
+        ]
+    },
+    "spell_holy_1": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/holy_1"
             }
         ]
     },
@@ -273,6 +289,46 @@
         "subtitle": "mkultra.subtitle.spell_cast",
         "sounds": [ {
             "name": "mkultra:spells/cast_12"
+            }
+        ]
+    },
+    "spell_shout_1": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/shout_1"
+            }
+        ]
+    },
+    "spell_whirlwind_1": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/whirlwind_1"
+            }
+        ]
+    },
+    "spell_grab_1": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/grab_1"
+            }
+        ]
+    },
+    "spell_grab_2": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/grab_2"
+            }
+        ]
+    },
+    "spell_buff_attack_4": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/buff_attack_4"
             }
         ]
     }

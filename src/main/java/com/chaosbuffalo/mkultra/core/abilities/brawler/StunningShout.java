@@ -1,4 +1,4 @@
-package com.chaosbuffalo.mkultra.core.abilities;
+package com.chaosbuffalo.mkultra.core.abilities.brawler;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
@@ -7,7 +7,9 @@ import com.chaosbuffalo.mkultra.core.MKDamageSource;
 import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.effects.spells.AIStunPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkultra.utils.AbilityUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -15,6 +17,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -48,6 +52,11 @@ public class StunningShout extends PlayerAbility {
     }
 
     @Override
+    public SoundEvent getSpellCompleteSoundEvent() {
+        return ModSounds.spell_shout_1;
+    }
+
+    @Override
     public int getRequiredLevel(int currentRank) {
         return 4 + currentRank * 2;
     }
@@ -64,6 +73,9 @@ public class StunningShout extends PlayerAbility {
         for (Entity ent : getTargetsInLine(entity, from, to, true, 2.5f)) {
             if (ent instanceof EntityLivingBase) {
                 EntityLivingBase targetEntity = (EntityLivingBase) ent;
+                float randomPitch = theWorld.rand.nextFloat() * .2f - .1f;
+                AbilityUtils.playSoundAtServerEntity(targetEntity, ModSounds.spell_shout_1,
+                        SoundCategory.PLAYERS, 1.0f, randomPitch);
                 targetEntity.addPotionEffect(
                         new PotionEffect(MobEffects.SLOWNESS,
                                 level * GameConstants.TICKS_PER_SECOND,
