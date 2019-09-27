@@ -388,7 +388,7 @@ public class ModSpawn {
                 choices.add(choice);
             }
         }
-        ItemOption option = new ItemOption(name, assigner, choices.toArray(new ItemChoice[0]));
+        ItemOption option = new ItemOption(name, assigner, choices);
         if (registry instanceof IForgeRegistryModifiable) {
             IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) registry;
             modRegistry.remove(name);
@@ -459,7 +459,7 @@ public class ModSpawn {
             MobChoice mobChoice = new MobChoice(definition, jsonObject.get("weight").getAsDouble());
             choices.add(mobChoice);
         }
-        SpawnList spawnList = new SpawnList(name).withOptions(choices.toArray(new MobChoice[0]));
+        SpawnList spawnList = new SpawnList(name).withOptions(choices);
         if (registry instanceof IForgeRegistryModifiable) {
             IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) registry;
             modRegistry.remove(name);
@@ -496,7 +496,7 @@ public class ModSpawn {
                         Log.info("Error finding attribute range for: %s", attributeName);
                     }
                 }
-                definition.withAttributeRanges(ranges.toArray(new AttributeRange[0]));
+                definition.withAttributeRanges(ranges);
             }
             if (obj.has("item_options")) {
                 JsonArray item_options = obj.get("item_options").getAsJsonArray();
@@ -510,7 +510,7 @@ public class ModSpawn {
                         Log.info("Error finding ItemOption for: %s", option_name);
                     }
                 }
-                definition.withItemOptions(options.toArray(new ItemOption[0]));
+                definition.withItemOptions(options);
             }
             if (obj.has("abilities")) {
                 JsonArray json_options = obj.get("abilities").getAsJsonArray();
@@ -524,7 +524,7 @@ public class ModSpawn {
                         Log.info("Error finding MobAbility for: %s", option_name);
                     }
                 }
-                definition.withAbilities(options.toArray(new MobAbility[0]));
+                definition.withAbilities(options);
             }
             if (obj.has("ai_modifiers")) {
                 JsonArray json_options = obj.get("ai_modifiers").getAsJsonArray();
@@ -538,7 +538,7 @@ public class ModSpawn {
                         Log.info("Error finding AI Modifier for: %s", option_name);
                     }
                 }
-                definition.withAIModifiers(options.toArray(new AIModifier[0]));
+                definition.withAIModifiers(options);
             }
             if (obj.has("name")) {
                 String mobName = obj.get("name").getAsString();
@@ -574,7 +574,7 @@ public class ModSpawn {
                     }
                     modifiers.add(mod);
                 }
-                definition.withCustomModifiers(modifiers.toArray(new CustomModifier[0]));
+                definition.withCustomModifiers(modifiers);
             }
             if (obj.has("default_spawn_weight")) {
                 double weight = obj.get("default_spawn_weight").getAsDouble();
@@ -631,7 +631,7 @@ public class ModSpawn {
                     choices.add(choice);
                 }
                 Log.debug("registering add task %s", name);
-                AIModifier ai_modifier = new AIModifier(name, modifier, choices.toArray(new BehaviorChoice[0]));
+                AIModifier ai_modifier = new AIModifier(name, modifier, choices);
                 if (registry instanceof IForgeRegistryModifiable) {
                     IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) registry;
                     modRegistry.remove(name);
@@ -680,8 +680,7 @@ public class ModSpawn {
                     }
                 }
                 Log.debug("registering remove task %s", name);
-                AIModifier remove_task = new AIModifier(name, AIModifiers.REMOVE_AI,
-                        choices.toArray(new BehaviorChoice[0]));
+                AIModifier remove_task = new AIModifier(name, AIModifiers.REMOVE_AI, choices);
                 if (registry instanceof IForgeRegistryModifiable) {
                     IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) registry;
                     modRegistry.remove(name);

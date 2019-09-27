@@ -5,7 +5,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collection;
 import java.util.function.BiConsumer;
 
 public class AIModifier extends IForgeRegistryEntry.Impl<AIModifier> {
@@ -15,14 +15,18 @@ public class AIModifier extends IForgeRegistryEntry.Impl<AIModifier> {
     public int maxLevel;
     public final ArrayList<BehaviorChoice> behaviorChoices;
 
-
     public AIModifier(ResourceLocation name,
-                      BiConsumer<EntityLivingBase, AIModifier> applyFunc,
-                      BehaviorChoice... behaviors) {
+                      BiConsumer<EntityLivingBase, AIModifier> applyFunc) {
         setRegistryName(name);
         this.applyFunc = applyFunc;
         behaviorChoices = new ArrayList<>();
-        behaviorChoices.addAll(Arrays.asList(behaviors));
+    }
+
+    public AIModifier(ResourceLocation name,
+                      BiConsumer<EntityLivingBase, AIModifier> applyFunc,
+                      Collection<BehaviorChoice> behaviors) {
+        this(name, applyFunc);
+        behaviorChoices.addAll(behaviors);
     }
 
     public void apply(EntityLivingBase entity, int level, int maxLevel) {

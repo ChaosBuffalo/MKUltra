@@ -5,7 +5,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
-import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.function.BiConsumer;
 
@@ -18,11 +18,11 @@ public class ItemOption extends IForgeRegistryEntry.Impl<ItemOption> {
 
     public ItemOption(ResourceLocation name,
                       BiConsumer<EntityLivingBase, ItemChoice> func,
-                      ItemChoice... choices) {
+                      Collection<ItemChoice> choices) {
         setRegistryName(name);
         this.applyFunc = func;
         this.choices = new HashSet<>();
-        this.choices.addAll(Arrays.asList(choices));
+        this.choices.addAll(choices);
     }
 
     public void apply(EntityLivingBase entity, int level, int maxLevel) {
@@ -37,8 +37,5 @@ public class ItemOption extends IForgeRegistryEntry.Impl<ItemOption> {
         if (current_choices.size() > 0) {
             this.applyFunc.accept(entity, current_choices.next());
         }
-
     }
-
-
 }

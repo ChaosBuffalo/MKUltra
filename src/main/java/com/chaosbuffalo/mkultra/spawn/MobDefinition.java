@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 
 
@@ -50,8 +50,8 @@ public class MobDefinition extends IForgeRegistryEntry.Impl<MobDefinition> {
         return EntityList.getKey(entityClass);
     }
 
-    public MobDefinition withAttributeRanges(AttributeRange... ranges) {
-        attributeRanges.addAll(Arrays.asList(ranges));
+    public MobDefinition withAttributeRanges(Collection<AttributeRange> ranges) {
+        attributeRanges.addAll(ranges);
         return this;
     }
 
@@ -79,8 +79,8 @@ public class MobDefinition extends IForgeRegistryEntry.Impl<MobDefinition> {
         additionalLootTable = table;
     }
 
-    public MobDefinition withCustomModifiers(CustomModifier... modifiers) {
-        customModifiers.addAll(Arrays.asList(modifiers));
+    public MobDefinition withCustomModifiers(Collection<CustomModifier> modifiers) {
+        customModifiers.addAll(modifiers);
         return this;
     }
 
@@ -89,18 +89,18 @@ public class MobDefinition extends IForgeRegistryEntry.Impl<MobDefinition> {
         return this;
     }
 
-    public MobDefinition withAbilities(MobAbility... abilities) {
-        mobAbilities.addAll(Arrays.asList(abilities));
+    public MobDefinition withAbilities(Collection<MobAbility> abilities) {
+        mobAbilities.addAll(abilities);
         return this;
     }
 
-    public MobDefinition withItemOptions(ItemOption... options) {
-        itemOptions.addAll(Arrays.asList(options));
+    public MobDefinition withItemOptions(Collection<ItemOption> options) {
+        itemOptions.addAll(options);
         return this;
     }
 
-    public MobDefinition withAIModifiers(AIModifier... modifiers) {
-        aiModifiers.addAll(Arrays.asList(modifiers));
+    public MobDefinition withAIModifiers(Collection<AIModifier> modifiers) {
+        aiModifiers.addAll(modifiers);
         return this;
     }
 
