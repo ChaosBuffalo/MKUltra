@@ -1,4 +1,4 @@
-package com.chaosbuffalo.mkultra.core.abilities;
+package com.chaosbuffalo.mkultra.core.abilities.wave_knight;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
@@ -7,7 +7,9 @@ import com.chaosbuffalo.mkultra.core.MKDamageSource;
 import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.effects.spells.WhirlpoolPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkultra.utils.AbilityUtils;
 import com.chaosbuffalo.mkultra.utils.EnvironmentUtils;
 import com.chaosbuffalo.mkultra.utils.RayTraceUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
@@ -16,10 +18,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 /**
@@ -60,6 +65,12 @@ public class WaveDash extends PlayerAbility {
         return currentRank * 2;
     }
 
+    @Nullable
+    @Override
+    public SoundEvent getSpellCompleteSoundEvent() {
+        return ModSounds.spell_water_1;
+    }
+
     @Override
     public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
         int level = pData.getAbilityRank(getAbilityId());
@@ -89,7 +100,7 @@ public class WaveDash extends PlayerAbility {
 
             entHit.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 2 * GameConstants.TICKS_PER_SECOND * level, level, false, true));
             entHit.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 2 * GameConstants.TICKS_PER_SECOND * level, 100, false, true));
-
+            AbilityUtils.playSoundAtServerEntity(entity, ModSounds.spell_debuff_2, SoundCategory.PLAYERS);
             MKUltra.packetHandler.sendToAllAround(
                     new ParticleEffectSpawnPacket(
                             EnumParticleTypes.WATER_BUBBLE.getParticleID(),

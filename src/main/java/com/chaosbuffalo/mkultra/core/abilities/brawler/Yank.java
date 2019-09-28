@@ -17,6 +17,8 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+
 public class Yank extends PlayerAbility {
 
     public static float BASE_FORCE = 1.0f;
@@ -51,6 +53,7 @@ public class Yank extends PlayerAbility {
         return currentRank * 2;
     }
 
+    @Nullable
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
         return ModSounds.spell_grab_2;

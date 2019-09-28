@@ -17,6 +17,8 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+
 /**
  * Created by Jacob on 5/20/2018.
  */
@@ -57,6 +59,7 @@ public class PracticedHunter extends PlayerAbility {
         return currentRank * 2;
     }
 
+    @Nullable
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
         return ModSounds.spell_cast_2;

@@ -12,6 +12,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+
 public class BallLightning extends PlayerAbility {
 
     public static float PROJECTILE_SPEED = 1.0f;
@@ -36,6 +38,7 @@ public class BallLightning extends PlayerAbility {
         return 2 + 2 * currentRank;
     }
 
+    @Nullable
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
         return ModSounds.spell_thunder_8;

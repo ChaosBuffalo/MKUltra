@@ -21,6 +21,8 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+
 public class Heal extends PlayerAbility {
 
     public static float BASE_VALUE = 5.0f;
@@ -50,6 +52,7 @@ public class Heal extends PlayerAbility {
         return ModSounds.casting_holy;
     }
 
+    @Nullable
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
         return ModSounds.spell_holy_5;

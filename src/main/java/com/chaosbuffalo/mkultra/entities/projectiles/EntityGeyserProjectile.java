@@ -5,11 +5,14 @@ import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.GeyserPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkultra.utils.AbilityUtils;
 import com.chaosbuffalo.mkultra.utils.EnvironmentUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
@@ -45,7 +48,7 @@ public class EntityGeyserProjectile extends EntityBaseProjectile {
     private boolean doEffect(EntityLivingBase caster, int amplifier, float baseDamage, float damageScale) {
         if (!this.world.isRemote && caster != null) {
             SpellCast geyser = GeyserPotion.Create(caster, baseDamage, damageScale);
-
+            AbilityUtils.playSoundAtServerEntity(this, ModSounds.spell_water_9, SoundCategory.PLAYERS);
             AreaEffectBuilder.Create(caster, this)
                     .spellCast(geyser, amplifier, Targeting.TargetType.ALL)
                     .instant()

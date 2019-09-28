@@ -1,4 +1,4 @@
-package com.chaosbuffalo.mkultra.core.abilities;
+package com.chaosbuffalo.mkultra.core.abilities.wet_wizard;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
@@ -9,14 +9,20 @@ import com.chaosbuffalo.mkultra.core.PlayerFormulas;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.ParticlePotion;
+import com.chaosbuffalo.mkultra.effects.spells.SoundPotion;
 import com.chaosbuffalo.mkultra.effects.spells.UndertowPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
 
 public class Undertow extends PlayerAbility {
 
@@ -53,6 +59,17 @@ public class Undertow extends PlayerAbility {
     }
 
     @Override
+    public SoundEvent getCastingSoundEvent() {
+        return ModSounds.casting_water;
+    }
+
+    @Nullable
+    @Override
+    public SoundEvent getSpellCompleteSoundEvent() {
+        return ModSounds.spell_buff_attack_4;
+    }
+
+    @Override
     public int getCastTime(int currentRank) {
         return GameConstants.TICKS_PER_SECOND / currentRank;
     }
@@ -75,6 +92,8 @@ public class Undertow extends PlayerAbility {
         AreaEffectBuilder.Create(entity, entity)
                 .spellCast(undertow, duration, level, getTargetType())
                 .spellCast(particlePotion, level, getTargetType())
+                .spellCast(SoundPotion.Create(entity, ModSounds.spell_water_4, SoundCategory.PLAYERS),
+                        1, getTargetType())
                 .instant()
                 .particle(EnumParticleTypes.DRIP_WATER)
                 .color(65480).radius(getDistance(level), true)

@@ -19,6 +19,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.items.ItemHandlerHelper;
 
+import javax.annotation.Nullable;
+
 public class GoldenOpportunity extends PlayerAbility {
     private static final int MIN_LEVEL_FOR_IRON = 2;
 
@@ -51,6 +53,7 @@ public class GoldenOpportunity extends PlayerAbility {
         return GameConstants.TICKS_PER_SECOND * (6 - currentRank);
     }
 
+    @Nullable
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
         return ModSounds.spell_magic_whoosh_2;

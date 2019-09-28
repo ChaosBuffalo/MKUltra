@@ -21,6 +21,8 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+
 public class WarpCurse extends PlayerAbility {
 
     public static float BASE_DAMAGE = 4.0f;
@@ -60,6 +62,7 @@ public class WarpCurse extends PlayerAbility {
         return ModSounds.casting_shadow;
     }
 
+    @Nullable
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
         return ModSounds.spell_dark_15;

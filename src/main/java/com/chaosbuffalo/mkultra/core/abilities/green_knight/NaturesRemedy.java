@@ -21,6 +21,8 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+
 /**
  * Created by Jacob on 7/28/2018.
  */
@@ -65,6 +67,7 @@ public class NaturesRemedy extends PlayerAbility {
         return currentRank * 2;
     }
 
+    @Nullable
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
         return ModSounds.spell_cast_5;

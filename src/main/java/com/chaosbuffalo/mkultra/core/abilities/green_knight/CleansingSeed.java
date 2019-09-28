@@ -12,6 +12,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+
 /**
  * Created by Jacob on 7/28/2018.
  */
@@ -50,6 +52,7 @@ public class CleansingSeed extends PlayerAbility {
     }
 
 
+    @Nullable
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
         return ModSounds.spell_cast_6;

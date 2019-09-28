@@ -18,6 +18,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.items.ItemHandlerHelper;
 
+import javax.annotation.Nullable;
+
 public class FlintHound extends PlayerAbility {
 
     private static final int COUNT_PER_LEVEL = 8;
@@ -41,6 +43,7 @@ public class FlintHound extends PlayerAbility {
         return 10;
     }
 
+    @Nullable
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
         return ModSounds.spell_buff_6;

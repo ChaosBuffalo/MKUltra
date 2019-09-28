@@ -20,6 +20,8 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+
 public class SpiritOfWolf extends PlayerAbility {
 
     public static int BASE_DURATION = 0;
@@ -59,6 +61,7 @@ public class SpiritOfWolf extends PlayerAbility {
         return 4 + currentRank * 2;
     }
 
+    @Nullable
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
         return ModSounds.spell_buff_4;

@@ -18,6 +18,8 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+
 public class Ember extends PlayerAbility {
 
     public static float BASE_DAMAGE = 6.0f;
@@ -59,6 +61,7 @@ public class Ember extends PlayerAbility {
         return new SingleTargetCastState(castTime);
     }
 
+    @Nullable
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
         return ModSounds.spell_cast_7;

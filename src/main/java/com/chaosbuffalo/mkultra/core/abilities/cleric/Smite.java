@@ -21,6 +21,8 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+
 public class Smite extends PlayerAbility {
 
     public static float BASE_DAMAGE = 6.0f;
@@ -60,6 +62,7 @@ public class Smite extends PlayerAbility {
         return ModSounds.casting_shadow;
     }
 
+    @Nullable
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
         return ModSounds.spell_magic_whoosh_2;

@@ -21,6 +21,8 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+
 public class PowerWordSummon extends PlayerAbility {
 
     public PowerWordSummon() {
@@ -62,6 +64,7 @@ public class PowerWordSummon extends PlayerAbility {
         return new SingleTargetCastState(castTime);
     }
 
+    @Nullable
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
         return ModSounds.spell_magic_whoosh_3;

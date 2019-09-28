@@ -22,6 +22,8 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+
 public class Galvanize extends PlayerAbility {
 
     public Galvanize() {
@@ -53,6 +55,7 @@ public class Galvanize extends PlayerAbility {
         return 4 + currentRank * 2;
     }
 
+    @Nullable
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
         return ModSounds.spell_heal_1;

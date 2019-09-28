@@ -18,6 +18,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.items.ItemHandlerHelper;
 
+import javax.annotation.Nullable;
+
 public class PierceTheHeavens extends PlayerAbility {
     private static final int COUNT_PER_LEVEL = 4;
 
@@ -50,6 +52,7 @@ public class PierceTheHeavens extends PlayerAbility {
         return GameConstants.TICKS_PER_SECOND * (6 - currentRank);
     }
 
+    @Nullable
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
         return ModSounds.spell_earth_7;

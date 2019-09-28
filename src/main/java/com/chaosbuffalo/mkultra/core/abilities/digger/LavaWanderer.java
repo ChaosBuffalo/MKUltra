@@ -23,6 +23,8 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+
 public class LavaWanderer extends PlayerAbility {
     private static final int DURATION_PER_LEVEL = 20;
 
@@ -60,6 +62,7 @@ public class LavaWanderer extends PlayerAbility {
         return ModSounds.casting_fire;
     }
 
+    @Nullable
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
         return ModSounds.spell_fire_1;

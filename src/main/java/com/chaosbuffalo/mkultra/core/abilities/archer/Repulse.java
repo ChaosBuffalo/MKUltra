@@ -18,6 +18,8 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+
 public class Repulse extends PlayerAbility {
 
     public static float BASE_FORCE = 2.0f;
@@ -52,6 +54,7 @@ public class Repulse extends PlayerAbility {
         return ModSounds.casting_shadow;
     }
 
+    @Nullable
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
         return ModSounds.spell_shadow_3;

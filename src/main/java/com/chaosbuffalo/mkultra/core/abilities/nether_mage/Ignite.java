@@ -22,6 +22,8 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+
 
 public class Ignite extends PlayerAbility {
 
@@ -57,6 +59,7 @@ public class Ignite extends PlayerAbility {
         return 6 + currentRank * 2;
     }
 
+    @Nullable
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
         return ModSounds.spell_dark_13;

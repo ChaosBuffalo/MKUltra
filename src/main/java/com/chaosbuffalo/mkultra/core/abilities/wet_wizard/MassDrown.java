@@ -1,4 +1,4 @@
-package com.chaosbuffalo.mkultra.core.abilities;
+package com.chaosbuffalo.mkultra.core.abilities.wet_wizard;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
@@ -55,9 +55,10 @@ public class MassDrown extends PlayerAbility {
 
             // If the target does not have Drown already, this is an AoE of level 1 drown.
             // If the target does have Drown then this is an AoE Drown equal to the level of MassDrown
+            // + 1
             int effectiveLevel = 1;
             if (targetEntity.isPotionActive(DrownPotion.INSTANCE)) {
-                effectiveLevel = level;
+                effectiveLevel = level + 1;
             }
 
             pData.startAbility(this);
@@ -66,7 +67,7 @@ public class MassDrown extends PlayerAbility {
             AreaEffectBuilder.Create(entity, targetEntity)
                     .instant()
                     .spellCast(drown, 20 * 3, effectiveLevel, getTargetType())
-                    .color(65480).radius(5.0f + 2.0f * effectiveLevel, true)
+                    .color(65480).radius(5.0f + 2.0f * level, true)
                     .spawn();
             Vec3d lookVec = entity.getLookVec();
             MKUltra.packetHandler.sendToAllAround(

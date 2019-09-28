@@ -24,6 +24,8 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+
 /**
  * Created by Jacob on 6/23/2018.
  */
@@ -61,6 +63,7 @@ public class SlayingEdge extends PlayerAbility {
         return 6 + currentRank * 2;
     }
 
+    @Nullable
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
         return ModSounds.spell_shadow_8;

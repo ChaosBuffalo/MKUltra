@@ -22,6 +22,8 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+
 public class FlameBlade extends PlayerAbility {
 
     public static int BASE_DURATION = 10;
@@ -41,6 +43,7 @@ public class FlameBlade extends PlayerAbility {
         return 18 + currentRank * 5;
     }
 
+    @Nullable
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
         return ModSounds.spell_fire_3;

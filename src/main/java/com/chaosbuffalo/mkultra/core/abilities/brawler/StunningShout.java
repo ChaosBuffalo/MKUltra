@@ -22,6 +22,8 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+
 public class StunningShout extends PlayerAbility {
 
     public static final float DAMAGE_BASE = 2.0f;
@@ -51,6 +53,7 @@ public class StunningShout extends PlayerAbility {
         return 10.0f;
     }
 
+    @Nullable
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
         return ModSounds.spell_shout_1;

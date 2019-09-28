@@ -188,6 +188,38 @@
             }
         ]
     },
+    "spell_buff_shield_3": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/buff_shield_3"
+            }
+        ]
+    },
+    "spell_buff_shield_4": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/buff_shield_4"
+            }
+        ]
+    },
+    "spell_buff_1": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/buff_1"
+            }
+        ]
+    },
+    "spell_buff_3": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/buff_3"
+            }
+        ]
+    },
     "spell_buff_4": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
@@ -217,6 +249,14 @@
         "subtitle": "mkultra.subtitle.spell_cast",
         "sounds": [ {
             "name": "mkultra:spells/fire_5"
+            }
+        ]
+    },
+    "spell_negative_effect_1": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/negative_effect_1"
             }
         ]
     },
@@ -268,6 +308,14 @@
             }
         ]
     },
+    "spell_shadow_2": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/shadow_2"
+            }
+        ]
+    },
     "spell_shadow_3": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
@@ -297,6 +345,30 @@
         "subtitle": "mkultra.subtitle.spell_cast",
         "sounds": [ {
             "name": "mkultra:spells/shadow_8"
+            }
+        ]
+    },
+    "spell_shadow_9": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/shadow_9"
+            }
+        ]
+    },
+    "spell_shadow_10": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/shadow_10"
+            }
+        ]
+    },
+    "spell_shadow_11": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/shadow_11"
             }
         ]
     },
@@ -377,6 +449,22 @@
         "subtitle": "mkultra.subtitle.spell_cast",
         "sounds": [ {
             "name": "mkultra:spells/holy_8"
+            }
+        ]
+    },
+    "spell_heal_1": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/heal_1"
+            }
+        ]
+    },
+    "spell_heal_2": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/heal_2"
             }
         ]
     },
@@ -516,11 +604,35 @@
             }
         ]
     },
+    "spell_water_1": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/water_1"
+            }
+        ]
+    },
     "spell_water_2": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
         "sounds": [ {
             "name": "mkultra:spells/water_2"
+            }
+        ]
+    },
+    "spell_water_4": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/water_4"
+            }
+        ]
+    },
+    "spell_water_5": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/water_5"
             }
         ]
     },
@@ -532,11 +644,27 @@
             }
         ]
     },
+    "spell_water_7": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/water_7"
+            }
+        ]
+    },
     "spell_water_8": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
         "sounds": [ {
             "name": "mkultra:spells/water_8"
+            }
+        ]
+    },
+    "spell_water_9": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/water_9"
             }
         ]
     },
@@ -596,6 +724,14 @@
             }
         ]
     },
+    "spell_dark_14": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/dark_14"
+            }
+        ]
+    },
     "spell_dark_15": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
@@ -612,11 +748,35 @@
             }
         ]
     },
+    "spell_debuff_1": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/debuff_1"
+            }
+        ]
+    },
+    "spell_debuff_2": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/debuff_2"
+            }
+        ]
+    },
     "spell_debuff_4": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
         "sounds": [ {
             "name": "mkultra:spells/debuff_4"
+            }
+        ]
+    },
+    "spell_scream_1": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/scream_1"
             }
         ]
     }

@@ -17,6 +17,8 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+
 public class FuriousBrooding extends PlayerAbility {
 
     public FuriousBrooding() {
@@ -43,6 +45,7 @@ public class FuriousBrooding extends PlayerAbility {
         return 1.0f;
     }
 
+    @Nullable
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
         return ModSounds.spell_negative_effect_7;

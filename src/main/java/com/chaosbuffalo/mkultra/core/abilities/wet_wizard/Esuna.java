@@ -1,4 +1,4 @@
-package com.chaosbuffalo.mkultra.core.abilities;
+package com.chaosbuffalo.mkultra.core.abilities.wet_wizard;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
@@ -10,13 +10,19 @@ import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.CurePotion;
 import com.chaosbuffalo.mkultra.effects.spells.EsunaPotion;
+import com.chaosbuffalo.mkultra.effects.spells.SoundPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
 
 public class Esuna extends PlayerAbility {
 
@@ -56,6 +62,17 @@ public class Esuna extends PlayerAbility {
     }
 
     @Override
+    public SoundEvent getCastingSoundEvent() {
+        return ModSounds.casting_holy;
+    }
+
+    @Nullable
+    @Override
+    public SoundEvent getSpellCompleteSoundEvent() {
+        return ModSounds.spell_buff_1;
+    }
+
+    @Override
     public void endCast(EntityPlayer entity, IPlayerData data, World theWorld, CastState state) {
         super.endCast(entity, data, theWorld, state);
         int level = data.getAbilityRank(getAbilityId());
@@ -68,6 +85,8 @@ public class Esuna extends PlayerAbility {
         AreaEffectBuilder.Create(entity, entity)
                 .spellCast(esuna, esunaDuration, level, getTargetType())
                 .spellCast(cure, level, getTargetType())
+                .spellCast(SoundPotion.Create(entity, ModSounds.spell_heal_2, SoundCategory.PLAYERS),
+                        1, getTargetType())
                 .instant()
                 .color(65480).radius(getDistance(level), true)
                 .spawn();

@@ -1,4 +1,4 @@
-package com.chaosbuffalo.mkultra.core.abilities;
+package com.chaosbuffalo.mkultra.core.abilities.skald;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
@@ -6,6 +6,7 @@ import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.core.abilities.cast_states.CastState;
 import com.chaosbuffalo.mkultra.core.abilities.cast_states.SingleTargetCastState;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.mkultra.utils.AbilityUtils;
 import com.chaosbuffalo.mkultra.utils.RayTraceUtils;
@@ -15,9 +16,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
 
 public class KanyeCutter extends PlayerAbility {
 
@@ -54,6 +59,17 @@ public class KanyeCutter extends PlayerAbility {
     }
 
     @Override
+    public SoundEvent getCastingSoundEvent() {
+        return ModSounds.casting_shadow;
+    }
+
+    @Nullable
+    @Override
+    public SoundEvent getSpellCompleteSoundEvent() {
+        return ModSounds.spell_shadow_10;
+    }
+
+    @Override
     public int getCastTime(int currentRank) {
         return GameConstants.TICKS_PER_SECOND / (2 * currentRank);
     }
@@ -72,6 +88,7 @@ public class KanyeCutter extends PlayerAbility {
                 targetEntity.addPotionEffect(new PotionEffect(MobEffects.WITHER, GameConstants.TICKS_PER_SECOND * 3, level));
                 targetEntity.attackEntityFrom(MKDamageSource.fromMeleeSkill(getAbilityId(), entity, entity),
                         BASE_DAMAGE + DAMAGE_SCALE * level);
+                AbilityUtils.playSoundAtServerEntity(targetEntity, ModSounds.spell_shadow_8, SoundCategory.PLAYERS);
             }
 
             Vec3d position = entity.getPositionVector();
@@ -96,7 +113,7 @@ public class KanyeCutter extends PlayerAbility {
             entity.setPositionAndUpdate(teleLoc.x, teleLoc.y, teleLoc.z);
             entity.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE,
                     3 * GameConstants.TICKS_PER_SECOND, 5));
-
+            AbilityUtils.playSoundAtServerEntity(entity, ModSounds.spell_shadow_11, SoundCategory.PLAYERS);
             Vec3d lookVec = entity.getLookVec();
             MKUltra.packetHandler.sendToAllAround(
                     new ParticleEffectSpawnPacket(

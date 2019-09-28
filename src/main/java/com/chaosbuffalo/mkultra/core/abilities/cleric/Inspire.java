@@ -21,6 +21,8 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+
 public class Inspire extends PlayerAbility {
 
     public Inspire() {
@@ -57,6 +59,7 @@ public class Inspire extends PlayerAbility {
         return ModSounds.casting_holy;
     }
 
+    @Nullable
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
         return ModSounds.spell_cast_12;

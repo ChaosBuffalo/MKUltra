@@ -23,6 +23,8 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+
 public class FireArmor extends PlayerAbility {
 
     public static int BASE_DURATION = 60;
@@ -57,6 +59,7 @@ public class FireArmor extends PlayerAbility {
         return 4 + currentRank * 2;
     }
 
+    @Nullable
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
         return ModSounds.spell_buff_5;

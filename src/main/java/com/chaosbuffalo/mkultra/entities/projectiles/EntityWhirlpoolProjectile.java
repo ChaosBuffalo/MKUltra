@@ -4,14 +4,18 @@ import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
+import com.chaosbuffalo.mkultra.effects.spells.SoundPotion;
 import com.chaosbuffalo.mkultra.effects.spells.WhirlpoolPotion;
 import com.chaosbuffalo.mkultra.effects.spells.YankPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkultra.utils.AbilityUtils;
 import com.chaosbuffalo.mkultra.utils.EnvironmentUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
@@ -52,6 +56,7 @@ public class EntityWhirlpoolProjectile extends EntityBaseProjectile {
             SpellCast yank = YankPotion.Create(caster);
             SpellCast whirlpool = WhirlpoolPotion.Create(caster);
 //            SpellCast damagePotion = AbilityMagicDamage.Create(caster, 2.0f, 2.0f);
+            AbilityUtils.playSoundAtServerEntity(this, ModSounds.spell_water_5, SoundCategory.PLAYERS);
             AreaEffectBuilder.Create(caster, this)
                     .spellCast(yank, amplifier - 1, Targeting.TargetType.ENEMY)
                     .spellCast(whirlpool, GameConstants.TICKS_PER_SECOND * 2 * amplifier,

@@ -22,6 +22,8 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+
 public class LifeSpring extends PlayerAbility {
     public static float BASE = 4.0f;
     public static float SCALE = 2.0f;
@@ -55,6 +57,7 @@ public class LifeSpring extends PlayerAbility {
         return 4 + currentRank * 2;
     }
 
+    @Nullable
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
         return ModSounds.spell_heal_7;

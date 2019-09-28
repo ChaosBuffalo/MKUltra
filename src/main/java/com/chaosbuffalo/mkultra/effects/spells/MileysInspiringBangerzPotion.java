@@ -7,6 +7,8 @@ import com.chaosbuffalo.mkultra.core.PlayerFormulas;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.songs.SongEffect;
+import com.chaosbuffalo.mkultra.init.ModSounds;
+import com.chaosbuffalo.mkultra.utils.AbilityUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,6 +17,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -39,6 +42,7 @@ public class MileysInspiringBangerzPotion extends SongEffect {
     @Override
     public AreaEffectBuilder prepareAreaEffect(EntityPlayer source, IPlayerData playerData, int level, AreaEffectBuilder builder) {
         int duration = PlayerFormulas.applyBuffDurationBonus(playerData, PERIOD);
+//        AbilityUtils.playSoundAtServerEntity(source, ModSounds.spell_buff_shield_4, SoundCategory.PLAYERS);
         builder.spellCast(ShieldingPotion.Create(source), duration, level, Targeting.TargetType.FRIENDLY);
         builder.effect(new PotionEffect(MobEffects.RESISTANCE, duration, level), Targeting.TargetType.FRIENDLY);
         builder.effect(new PotionEffect(MobEffects.REGENERATION, duration, level), Targeting.TargetType.FRIENDLY);

@@ -1,4 +1,4 @@
-package com.chaosbuffalo.mkultra.core.abilities;
+package com.chaosbuffalo.mkultra.core.abilities.wave_knight;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
@@ -9,14 +9,20 @@ import com.chaosbuffalo.mkultra.core.PlayerFormulas;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.ParticlePotion;
+import com.chaosbuffalo.mkultra.effects.spells.SoundPotion;
 import com.chaosbuffalo.mkultra.effects.spells.UnderwayPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
 
 /**
  * Created by Jacob on 3/25/2018.
@@ -60,6 +66,12 @@ public class Underway extends PlayerAbility {
         return GameConstants.TICKS_PER_SECOND;
     }
 
+    @Nullable
+    @Override
+    public SoundEvent getSpellCompleteSoundEvent() {
+        return ModSounds.spell_buff_3;
+    }
+
     @Override
     public void endCast(EntityPlayer entity, IPlayerData data, World theWorld, CastState state) {
         super.endCast(entity, data, theWorld, state);
@@ -77,6 +89,8 @@ public class Underway extends PlayerAbility {
         AreaEffectBuilder.Create(entity, entity)
                 .spellCast(effect, duration, level, getTargetType())
                 .spellCast(particlePotion, level, getTargetType())
+                .spellCast(SoundPotion.Create(entity, ModSounds.spell_water_4, SoundCategory.PLAYERS),
+                        1, getTargetType())
                 .instant()
                 .particle(EnumParticleTypes.WATER_SPLASH)
                 .color(13147120).radius(getDistance(level), true)

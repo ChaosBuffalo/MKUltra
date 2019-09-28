@@ -20,6 +20,8 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+
 /**
  * Created by Jacob on 3/24/2018.
  */
@@ -52,6 +54,7 @@ public class CrescentSlash extends PlayerAbility {
         return 7.0f + currentRank * 2.0f;
     }
 
+    @Nullable
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
         return ModSounds.spell_shadow_5;
