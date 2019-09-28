@@ -1,4 +1,4 @@
-package com.chaosbuffalo.mkultra.core.abilities;
+package com.chaosbuffalo.mkultra.core.abilities.ranger;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
@@ -10,12 +10,17 @@ import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.ParticlePotion;
 import com.chaosbuffalo.mkultra.effects.spells.SlayingEdgePotion;
+import com.chaosbuffalo.mkultra.effects.spells.SoundPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkultra.utils.AbilityUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -57,6 +62,11 @@ public class SlayingEdge extends PlayerAbility {
     }
 
     @Override
+    public SoundEvent getSpellCompleteSoundEvent() {
+        return ModSounds.spell_shadow_8;
+    }
+
+    @Override
     public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
         int level = pData.getAbilityRank(getAbilityId());
 
@@ -66,6 +76,7 @@ public class SlayingEdge extends PlayerAbility {
             targetEntity.attackEntityFrom(
                     MKDamageSource.fromMeleeSkill(getAbilityId(), entity, entity),
                     BASE_DAMAGE + DAMAGE_SCALE * level);
+            AbilityUtils.playSoundAtServerEntity(targetEntity, ModSounds.spell_shadow_8, SoundCategory.PLAYERS);
             if (!targetEntity.isEntityAlive()) {
                 SpellCast slaying_edge = SlayingEdgePotion.Create(entity);
                 SpellCast particlePotion = ParticlePotion.Create(entity,
@@ -78,6 +89,8 @@ public class SlayingEdge extends PlayerAbility {
                 AreaEffectBuilder.Create(entity, entity)
                         .spellCast(slaying_edge, duration, level, Targeting.TargetType.FRIENDLY)
                         .spellCast(particlePotion, 0, Targeting.TargetType.FRIENDLY)
+                        .spellCast(SoundPotion.Create(entity, ModSounds.spell_shadow_8, SoundCategory.PLAYERS),
+                                1, Targeting.TargetType.FRIENDLY)
                         .instant().color(10158335).radius(getDistance(level), true)
                         .spawn();
             }

@@ -1,4 +1,4 @@
-package com.chaosbuffalo.mkultra.core.abilities;
+package com.chaosbuffalo.mkultra.core.abilities.green_knight;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
@@ -8,12 +8,16 @@ import com.chaosbuffalo.mkultra.core.PlayerFormulas;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.NaturesRemedyPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkultra.utils.AbilityUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -61,6 +65,10 @@ public class NaturesRemedy extends PlayerAbility {
         return currentRank * 2;
     }
 
+    @Override
+    public SoundEvent getSpellCompleteSoundEvent() {
+        return ModSounds.spell_cast_5;
+    }
 
     @Override
     public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
@@ -69,13 +77,13 @@ public class NaturesRemedy extends PlayerAbility {
         EntityLivingBase targetEntity = getSingleLivingTargetOrSelf(entity, getDistance(level), true);
 
         pData.startAbility(this);
-        Log.info(String.format("Adding natures remedy to %s", targetEntity.getName()));
 
         int duration = (BASE_DURATION + level * DURATION_SCALE) * GameConstants.TICKS_PER_SECOND;
         duration = PlayerFormulas.applyBuffDurationBonus(pData, duration);
         SpellCast heal = NaturesRemedyPotion.Create(entity, targetEntity, BASE_VALUE, VALUE_SCALE);
         targetEntity.addPotionEffect(heal.toPotionEffect(duration, level));
-
+        AbilityUtils.playSoundAtServerEntity(targetEntity, ModSounds.spell_heal_8,
+                SoundCategory.PLAYERS);
         Vec3d lookVec = entity.getLookVec();
         MKUltra.packetHandler.sendToAllAround(
                 new ParticleEffectSpawnPacket(

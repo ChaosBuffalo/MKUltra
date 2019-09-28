@@ -68,6 +68,7 @@ public abstract class PlayerAbility extends IForgeRegistryEntry.Impl<PlayerAbili
         return ModSounds.casting_general;
     }
 
+    @Nullable
     public SoundEvent getSpellCompleteSoundEvent(){ return ModSounds.spell_cast_3; }
 
     @SideOnly(Side.CLIENT)

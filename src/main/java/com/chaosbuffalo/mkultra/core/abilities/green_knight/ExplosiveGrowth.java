@@ -1,4 +1,4 @@
-package com.chaosbuffalo.mkultra.core.abilities;
+package com.chaosbuffalo.mkultra.core.abilities.green_knight;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
@@ -9,12 +9,16 @@ import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.effects.spells.CurePotion;
 import com.chaosbuffalo.mkultra.effects.spells.NaturesRemedyPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkultra.utils.AbilityUtils;
 import com.chaosbuffalo.mkultra.utils.RayTraceUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -61,8 +65,18 @@ public class ExplosiveGrowth extends PlayerAbility {
     }
 
     @Override
+    public SoundEvent getCastingSoundEvent() {
+        return ModSounds.casting_shadow;
+    }
+
+    @Override
+    public SoundEvent getSpellCompleteSoundEvent() {
+        return ModSounds.spell_earth_8;
+    }
+
+    @Override
     public int getCastTime(int currentRank) {
-        return GameConstants.TICKS_PER_SECOND / currentRank;
+        return GameConstants.TICKS_PER_SECOND / 2 * currentRank;
     }
 
     @Override
@@ -82,6 +96,7 @@ public class ExplosiveGrowth extends PlayerAbility {
 
             if (Targeting.isValidTarget(Targeting.TargetType.ENEMY, entity, entHit, true)) {
                 entHit.attackEntityFrom(MKDamageSource.fromMeleeSkill(getAbilityId(), entity, entity), damage);
+                AbilityUtils.playSoundAtServerEntity(entHit, ModSounds.spell_earth_1, SoundCategory.PLAYERS);
             } else if (Targeting.isValidTarget(Targeting.TargetType.FRIENDLY, entity, entHit, false)) {
                 entHit.addPotionEffect(CurePotion.Create(entity).setTarget(entHit).toPotionEffect(level));
                 entHit.addPotionEffect(
@@ -89,6 +104,7 @@ public class ExplosiveGrowth extends PlayerAbility {
                                 entity, entHit, NaturesRemedy.BASE_VALUE, NaturesRemedy.VALUE_SCALE)
                                 .toPotionEffect((NaturesRemedy.BASE_DURATION + NaturesRemedy.DURATION_SCALE * level)
                                         * GameConstants.TICKS_PER_SECOND, level));
+                AbilityUtils.playSoundAtServerEntity(entHit, ModSounds.spell_earth_6, SoundCategory.PLAYERS);
             }
             MKUltra.packetHandler.sendToAllAround(
                     new ParticleEffectSpawnPacket(

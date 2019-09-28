@@ -1,4 +1,4 @@
-package com.chaosbuffalo.mkultra.core.abilities;
+package com.chaosbuffalo.mkultra.core.abilities.nether_mage;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
@@ -8,12 +8,17 @@ import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.IgnitePotion;
 import com.chaosbuffalo.mkultra.effects.spells.ParticlePotion;
+import com.chaosbuffalo.mkultra.effects.spells.SoundPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkultra.utils.AbilityUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -53,6 +58,16 @@ public class Ignite extends PlayerAbility {
     }
 
     @Override
+    public SoundEvent getSpellCompleteSoundEvent() {
+        return ModSounds.spell_dark_13;
+    }
+
+    @Override
+    public SoundEvent getCastingSoundEvent() {
+        return ModSounds.casting_fire;
+    }
+
+    @Override
     public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
         int level = pData.getAbilityRank(getAbilityId());
 
@@ -61,7 +76,7 @@ public class Ignite extends PlayerAbility {
             pData.startAbility(this);
 
             targetEntity.attackEntityFrom(MKDamageSource.causeIndirectMagicDamage(getAbilityId(), entity, entity), BASE_DAMAGE + level * DAMAGE_SCALE);
-
+            AbilityUtils.playSoundAtServerEntity(targetEntity, ModSounds.spell_fire_4, SoundCategory.PLAYERS);
             if (targetEntity.isBurning()) {
                 SpellCast ignite = IgnitePotion.Create(entity, BASE_DAMAGE, DAMAGE_SCALE);
                 SpellCast particle = ParticlePotion.Create(entity,
@@ -72,6 +87,8 @@ public class Ignite extends PlayerAbility {
                 AreaEffectBuilder.Create(entity, entity)
                         .spellCast(ignite, level, getTargetType())
                         .spellCast(particle, level, getTargetType())
+                        .spellCast(SoundPotion.Create(entity, ModSounds.spell_fire_8, SoundCategory.PLAYERS),
+                                1, getTargetType())
                         .instant()
                         .color(16737305).radius(getDistance(level), true)
                         .particle(EnumParticleTypes.FLAME)

@@ -5,7 +5,7 @@ import com.chaosbuffalo.mkultra.core.ArmorClass;
 import com.chaosbuffalo.mkultra.core.IClassClientData;
 import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.PlayerClass;
-import com.chaosbuffalo.mkultra.core.abilities.*;
+import com.chaosbuffalo.mkultra.core.abilities.ranger.*;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.ArrayList;

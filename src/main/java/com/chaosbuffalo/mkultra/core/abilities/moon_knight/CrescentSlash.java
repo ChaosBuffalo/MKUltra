@@ -1,4 +1,4 @@
-package com.chaosbuffalo.mkultra.core.abilities;
+package com.chaosbuffalo.mkultra.core.abilities.moon_knight;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
@@ -7,12 +7,16 @@ import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.AbilityMeleeDamage;
 import com.chaosbuffalo.mkultra.effects.spells.ParticlePotion;
+import com.chaosbuffalo.mkultra.effects.spells.SoundPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -49,6 +53,11 @@ public class CrescentSlash extends PlayerAbility {
     }
 
     @Override
+    public SoundEvent getSpellCompleteSoundEvent() {
+        return ModSounds.spell_shadow_5;
+    }
+
+    @Override
     public int getRequiredLevel(int currentRank) {
         return currentRank * 2;
     }
@@ -71,6 +80,8 @@ public class CrescentSlash extends PlayerAbility {
             AreaEffectBuilder.Create(entity, targetEntity)
                     .spellCast(damage, level, getTargetType())
                     .spellCast(particlePotion, level, getTargetType())
+                    .spellCast(SoundPotion.Create(entity, ModSounds.spell_shadow_3, SoundCategory.PLAYERS),
+                            1, getTargetType())
                     .instant()
                     .color(16409620).radius(5.0f, true)
                     .particle(EnumParticleTypes.CRIT)

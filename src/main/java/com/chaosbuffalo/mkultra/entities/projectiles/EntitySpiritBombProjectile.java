@@ -2,15 +2,18 @@ package com.chaosbuffalo.mkultra.entities.projectiles;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.abilities.SpiritBomb;
+import com.chaosbuffalo.mkultra.core.abilities.green_knight.SpiritBomb;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.AbilityMagicDamage;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkultra.utils.AbilityUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -48,6 +51,7 @@ public class EntitySpiritBombProjectile extends EntityBaseProjectile {
     @Override
     protected boolean onImpact(EntityLivingBase entity, RayTraceResult result, int amplifier) {
         if (!this.world.isRemote && entity != null) {
+            AbilityUtils.playSoundAtServerEntity(this, ModSounds.spell_thunder_3, SoundCategory.PLAYERS);
             MKUltra.packetHandler.sendToAllAround(
                     new ParticleEffectSpawnPacket(
                             EnumParticleTypes.SPELL_MOB_AMBIENT.getParticleID(),
@@ -96,6 +100,7 @@ public class EntitySpiritBombProjectile extends EntityBaseProjectile {
                     .instant()
                     .color(65535).radius(4.0f, true)
                     .spawn();
+            AbilityUtils.playSoundAtServerEntity(this, ModSounds.spell_magic_explosion, SoundCategory.PLAYERS);
             MKUltra.packetHandler.sendToAllAround(
                     new ParticleEffectSpawnPacket(
                             EnumParticleTypes.SLIME.getParticleID(),

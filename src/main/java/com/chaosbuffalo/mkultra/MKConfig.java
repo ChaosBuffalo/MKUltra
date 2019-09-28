@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra;
 
 import com.chaosbuffalo.mkultra.core.ArmorClass;
 import com.chaosbuffalo.mkultra.core.ClassLists;
+import com.chaosbuffalo.mkultra.core.classes.NetherMage;
 import com.chaosbuffalo.mkultra.core.classes.*;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.utils.EntityUtils;

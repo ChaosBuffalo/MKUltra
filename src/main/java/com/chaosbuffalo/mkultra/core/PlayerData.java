@@ -34,10 +34,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumHandSide;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
@@ -935,8 +932,10 @@ public class PlayerData implements IPlayerData {
         cooldown = PlayerFormulas.applyCooldownReduction(this, cooldown);
         setCooldown(info.getId(), cooldown);
         currentCastState = null;
-        AbilityUtils.playSoundAtServerEntity(player, ability.getSpellCompleteSoundEvent(),
-                SoundCategory.PLAYERS);
+        SoundEvent sound = ability.getSpellCompleteSoundEvent();
+        if (sound != null){
+            AbilityUtils.playSoundAtServerEntity(player, sound, SoundCategory.PLAYERS);
+        }
         MinecraftForge.EVENT_BUS.post(new PlayerAbilityCastEvent.Completed(player, this, ability, info));
     }
 
