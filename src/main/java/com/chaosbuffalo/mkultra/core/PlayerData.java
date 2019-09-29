@@ -709,6 +709,15 @@ public class PlayerData implements IPlayerData {
         return abilityInfo != null ? abilityInfo.getRank() : GameConstants.ABILITY_INVALID_RANK;
     }
 
+    @SideOnly(Side.CLIENT)
+    private int getAbilityRankForClient(ResourceLocation abilityId) {
+        int slot = getCurrentSlotForAbility(abilityId);
+        if (slot != GameConstants.ACTION_BAR_INVALID_SLOT) {
+            return privateData.get(ACTION_BAR_ABILITY_RANK[slot]);
+        }
+        return GameConstants.ABILITY_INVALID_RANK;
+    }
+
     @Override
     public boolean learnAbility(ResourceLocation abilityId, boolean consumePoint) {
         PlayerClassInfo classInfo = getActiveClass();
@@ -872,7 +881,7 @@ public class PlayerData implements IPlayerData {
             if (ability != null) {
                 ability.continueCastClient(player, this, player.getEntityWorld(), currentCastTime);
                 if (!lastUpdateIsCasting){
-                    int castTime = ability.getCastTime(getAbilityRank(loc));
+                    int castTime = ability.getCastTime(getAbilityRankForClient(loc));
                     Log.info("Playing cast sound");
                     MovingSoundCasting sound = new MovingSoundCasting(player, ability.getCastingSoundEvent(),
                             SoundCategory.PLAYERS, castTime);
