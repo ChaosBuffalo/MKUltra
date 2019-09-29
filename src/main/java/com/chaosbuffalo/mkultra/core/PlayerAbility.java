@@ -64,6 +64,7 @@ public abstract class PlayerAbility extends IForgeRegistryEntry.Impl<PlayerAbili
         }
     }
 
+    @Nullable
     public SoundEvent getCastingSoundEvent(){
         return ModSounds.casting_general;
     }

@@ -28,6 +28,9 @@ public class AbilityUtils {
     }
 
     public static void playSoundAtServerEntity(Entity entity, SoundEvent event, SoundCategory cat, float volume, float pitch){
+        if (event == null){
+            return;
+        }
         entity.world.playSound(null, entity.posX, entity.posY, entity.posZ, event,
                 cat, volume, pitch);
     }
