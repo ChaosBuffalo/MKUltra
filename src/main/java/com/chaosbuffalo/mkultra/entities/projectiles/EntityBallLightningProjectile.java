@@ -5,10 +5,13 @@ import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.BallLightningPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkultra.utils.AbilityUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -53,6 +56,7 @@ public class EntityBallLightningProjectile extends EntityBaseProjectile {
                     .spawn();
 
             Vec3d lookVec = entity.getLookVec();
+            AbilityUtils.playSoundAtServerEntity(this, ModSounds.spell_thunder_1, SoundCategory.PLAYERS);
             MKUltra.packetHandler.sendToAllAround(
                     new ParticleEffectSpawnPacket(
                             EnumParticleTypes.FIREWORKS_SPARK.getParticleID(),
@@ -63,6 +67,7 @@ public class EntityBallLightningProjectile extends EntityBaseProjectile {
                     entity.dimension, targetEntity.posX,
                     targetEntity.posY, targetEntity.posZ, 50.0f);
         } else if (entity != null) {
+            AbilityUtils.playSoundAtServerEntity(this, ModSounds.spell_thunder_1, SoundCategory.PLAYERS);
             MKUltra.packetHandler.sendToAllAround(
                     new ParticleEffectSpawnPacket(
                             EnumParticleTypes.FIREWORKS_SPARK.getParticleID(),
@@ -90,9 +95,10 @@ public class EntityBallLightningProjectile extends EntityBaseProjectile {
 
     @Override
     protected boolean onAirProc(EntityLivingBase caster, int amplifier) {
-        if (!this.world.isRemote && caster != null) {
+        if (!world.isRemote && caster != null) {
             SpellCast ballLightning = BallLightningPotion.Create(caster, 4.0f, 4.0f);
-            this.setTicksInAir(0);
+            setTicksInAir(0);
+            AbilityUtils.playSoundAtServerEntity(this, ModSounds.spell_thunder_3, SoundCategory.PLAYERS);
             MKUltra.packetHandler.sendToAllAround(
                     new ParticleEffectSpawnPacket(
                             EnumParticleTypes.FIREWORKS_SPARK.getParticleID(),

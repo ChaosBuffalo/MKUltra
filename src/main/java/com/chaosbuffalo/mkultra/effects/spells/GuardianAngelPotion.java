@@ -7,12 +7,15 @@ import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellTriggers;
 import com.chaosbuffalo.mkultra.effects.passives.PassiveAbilityPotionBase;
+import com.chaosbuffalo.mkultra.init.ModSounds;
+import com.chaosbuffalo.mkultra.utils.AbilityUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -52,6 +55,7 @@ public class GuardianAngelPotion extends PassiveAbilityPotionBase {
             if (!pData.isArbitraryOnCooldown(TIMER_NAME)) {
                 player.setHealth(1.0f);
                 event.setCanceled(true);
+                AbilityUtils.playSoundAtServerEntity(player, ModSounds.spell_heal_9, SoundCategory.PLAYERS);
                 player.addPotionEffect(GuardianAngelInvulnerabilityPotion.Create(player).setTarget(player).toPotionEffect(INVULN_DURATION, 1));
                 pData.setArbitraryCooldown(TIMER_NAME, TIMER_COOLDOWN);
             }

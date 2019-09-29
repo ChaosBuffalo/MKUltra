@@ -2,7 +2,7 @@ package com.chaosbuffalo.mkultra.core.classes;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.*;
-import com.chaosbuffalo.mkultra.core.abilities.*;
+import com.chaosbuffalo.mkultra.core.abilities.wet_wizard.*;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.ArrayList;

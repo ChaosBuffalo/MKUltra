@@ -11,6 +11,8 @@ import com.chaosbuffalo.mkultra.core.PlayerFormulas;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.songs.SongEffect;
+import com.chaosbuffalo.mkultra.init.ModSounds;
+import com.chaosbuffalo.mkultra.utils.AbilityUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,6 +21,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -42,6 +45,7 @@ public class SwiftsRodeoHBPotion extends SongEffect {
     public AreaEffectBuilder prepareAreaEffect(EntityPlayer source, IPlayerData playerData, int level, AreaEffectBuilder builder) {
         int duration = PlayerFormulas.applyBuffDurationBonus(playerData, PERIOD);
         builder.effect(new PotionEffect(MobEffects.SPEED, duration, level), Targeting.TargetType.FRIENDLY);
+//        AbilityUtils.playSoundAtServerEntity(source, ModSounds.spell_buff_4, SoundCategory.PLAYERS);
         return builder;
     }
 

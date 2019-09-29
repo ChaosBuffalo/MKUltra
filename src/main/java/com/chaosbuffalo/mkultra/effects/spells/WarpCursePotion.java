@@ -2,10 +2,11 @@ package com.chaosbuffalo.mkultra.effects.spells;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.MKDamageSource;
-import com.chaosbuffalo.mkultra.core.abilities.WarpCurse;
+import com.chaosbuffalo.mkultra.core.abilities.nether_mage.WarpCurse;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.SpellPeriodicPotionBase;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.mkultra.utils.AbilityUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
@@ -14,6 +15,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -57,10 +59,12 @@ public class WarpCursePotion extends SpellPeriodicPotionBase {
                 new WarpCurse().getAbilityId(), source, indirectSource, 0.7f), amplifier * 3.0f);
 
         if (AbilityUtils.canTeleportEntity(target)) {
+            AbilityUtils.playSoundAtServerEntity(target, ModSounds.spell_fire_5, SoundCategory.PLAYERS);
             double nextX = playerOrigin.x + (target.getRNG().nextInt(amplifier * 6) - target.getRNG().nextInt(amplifier * 6));
             double nextY = playerOrigin.y + 5.0;
             double nextZ = playerOrigin.z + (target.getRNG().nextInt(amplifier * 6) - target.getRNG().nextInt(amplifier * 6));
             AbilityUtils.safeTeleportEntity(target.world, target, new Vec3d(nextX, nextY, nextZ));
+
         }
 
         MKUltra.packetHandler.sendToAllAround(

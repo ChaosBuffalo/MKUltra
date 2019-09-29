@@ -3,16 +3,19 @@ package com.chaosbuffalo.mkultra.effects.spells;
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
-import com.chaosbuffalo.mkultra.core.abilities.NotoriousDOT;
+import com.chaosbuffalo.mkultra.core.abilities.skald.NotoriousDOT;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.songs.SongEffect;
+import com.chaosbuffalo.mkultra.init.ModSounds;
+import com.chaosbuffalo.mkultra.utils.AbilityUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -40,6 +43,7 @@ public class NotoriousDOTPotion extends SongEffect {
         builder.spellCast(AbilityMagicDamage.Create(
                 source, NotoriousDOT.BASE_DAMAGE, NotoriousDOT.DAMAGE_SCALE, 0.6f),
                 level, Targeting.TargetType.ENEMY);
+//        AbilityUtils.playSoundAtServerEntity(source, ModSounds.spell_shadow_9, SoundCategory.PLAYERS);
         return builder;
     }
 

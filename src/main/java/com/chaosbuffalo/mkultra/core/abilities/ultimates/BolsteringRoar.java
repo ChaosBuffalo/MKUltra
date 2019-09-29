@@ -9,16 +9,22 @@ import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.BolsteringRoarPotion;
 import com.chaosbuffalo.mkultra.effects.spells.ParticlePotion;
+import com.chaosbuffalo.mkultra.effects.spells.SoundPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
+import javax.annotation.Nullable;
 
 @Mod.EventBusSubscriber
 public class BolsteringRoar extends PlayerAbility {
@@ -60,6 +66,12 @@ public class BolsteringRoar extends PlayerAbility {
         return 1;
     }
 
+    @Nullable
+    @Override
+    public SoundEvent getSpellCompleteSoundEvent() {
+        return ModSounds.spell_buff_attack_3;
+    }
+
     @Override
     public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
         pData.startAbility(this);
@@ -79,6 +91,8 @@ public class BolsteringRoar extends PlayerAbility {
         AreaEffectBuilder.Create(entity, entity)
                 .spellCast(roar, duration, level, getTargetType())
                 .spellCast(particlePotion, 0, getTargetType())
+                .spellCast(SoundPotion.Create(entity, ModSounds.spell_buff_7, SoundCategory.PLAYERS),
+                        1, getTargetType())
                 .instant()
                 .disableParticle()
                 .radius(getDistance(level), true)

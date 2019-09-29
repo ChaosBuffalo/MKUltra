@@ -7,11 +7,15 @@ import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.AIStunPotion;
 import com.chaosbuffalo.mkultra.effects.spells.MeteorEffectPotion;
 import com.chaosbuffalo.mkultra.effects.spells.ParticlePotion;
+import com.chaosbuffalo.mkultra.effects.spells.SoundPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
+import com.chaosbuffalo.mkultra.utils.AbilityUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -82,6 +86,7 @@ public class EntityMeteorProjectile extends EntityBaseProjectile {
                 8, 4, 0.1);
 
 
+        AbilityUtils.playSoundAtServerEntity(this, ModSounds.spell_fire_4, SoundCategory.PLAYERS);
         AreaEffectBuilder.Create(caster, this)
                 .spellCast(damage, level, getTargetType())
                 .spellCast(particlePotion, level, getTargetType())

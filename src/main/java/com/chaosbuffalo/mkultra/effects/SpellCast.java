@@ -5,8 +5,11 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+import javax.annotation.Resource;
 import java.lang.ref.WeakReference;
 import java.util.UUID;
 
@@ -99,6 +102,16 @@ public class SpellCast {
     public SpellCast setBoolean(String name, boolean value) {
         data.setBoolean(name, value);
         return this;
+    }
+
+    public SpellCast setResourceLocation(String name, ResourceLocation loc){
+        data.setString(name, loc.toString());
+        return this;
+    }
+
+    @Nullable
+    public ResourceLocation getResourceLocation(String name){
+        return new ResourceLocation(data.getString(name));
     }
 
     public boolean getBoolean(String name) {

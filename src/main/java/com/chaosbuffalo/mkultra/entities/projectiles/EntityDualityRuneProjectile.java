@@ -5,11 +5,14 @@ import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.AbilityMagicDamage;
 import com.chaosbuffalo.mkultra.effects.spells.ClericHealPotion;
+import com.chaosbuffalo.mkultra.effects.spells.SoundPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -52,6 +55,8 @@ public class EntityDualityRuneProjectile extends EntityBaseProjectile {
             AreaEffectBuilder.Create(caster, this)
                     .spellCast(heal, amplifier, Targeting.TargetType.FRIENDLY)
                     .spellCast(damage, amplifier, Targeting.TargetType.ENEMY)
+                    .spellCast(SoundPotion.Create(caster, ModSounds.spell_shadow_6, SoundCategory.PLAYERS), 1,
+                            Targeting.TargetType.ALL)
                     .instant()
                     .color(39935).radius(4.0f, true)
                     .spawn();

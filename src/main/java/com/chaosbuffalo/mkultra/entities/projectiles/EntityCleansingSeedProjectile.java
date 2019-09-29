@@ -2,14 +2,17 @@ package com.chaosbuffalo.mkultra.entities.projectiles;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.MKDamageSource;
-import com.chaosbuffalo.mkultra.core.abilities.CleansingSeed;
+import com.chaosbuffalo.mkultra.core.abilities.green_knight.CleansingSeed;
 import com.chaosbuffalo.mkultra.effects.spells.CurePotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkultra.utils.AbilityUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -45,17 +48,19 @@ public class EntityCleansingSeedProjectile extends EntityBaseProjectile {
             // No client code
             return false;
         }
-
+        AbilityUtils.playSoundAtServerEntity(this, ModSounds.spell_water_6, SoundCategory.PLAYERS);
         if (entity instanceof EntityPlayer && result.entityHit instanceof EntityLivingBase) {
             EntityLivingBase targetEntity = (EntityLivingBase) result.entityHit;
 
             if (Targeting.isValidTarget(Targeting.TargetType.FRIENDLY, getThrower(), targetEntity, false)) {
                 targetEntity.addPotionEffect(CurePotion.Create(entity).setTarget(targetEntity)
                         .toPotionEffect(level));
+                AbilityUtils.playSoundAtServerEntity(targetEntity, ModSounds.spell_water_2, SoundCategory.PLAYERS);
             } else if (Targeting.isValidTarget(Targeting.TargetType.ENEMY, getThrower(), targetEntity, true)) {
                 targetEntity.attackEntityFrom(MKDamageSource.causeIndirectMagicDamage(
                         CleansingSeed.INSTANCE.getAbilityId(), this, getThrower()),
                         CleansingSeed.BASE_DAMAGE + level * CleansingSeed.DAMAGE_SCALE);
+                AbilityUtils.playSoundAtServerEntity(targetEntity, ModSounds.spell_water_8, SoundCategory.PLAYERS);
             }
         }
         if (entity != null) {
