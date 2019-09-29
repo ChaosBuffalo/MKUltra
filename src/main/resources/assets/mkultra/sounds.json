@@ -44,6 +44,15 @@
             }
         ]
     },
+    "casting_rain": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.casting_water",
+        "sounds": [ {
+            "name": "mkultra:casting/rain_loop",
+            "stream": true
+            }
+        ]
+    },
     "spell_cast_2": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
@@ -81,6 +90,14 @@
         "subtitle": "mkultra.subtitle.spell_cast",
         "sounds": [ {
             "name": "mkultra:spells/cast_7"
+            }
+        ]
+    },
+    "spell_cast_10": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/cast_10"
             }
         ]
     },
@@ -185,6 +202,14 @@
         "subtitle": "mkultra.subtitle.spell_cast",
         "sounds": [ {
             "name": "mkultra:spells/heal_8"
+            }
+        ]
+    },
+    "spell_heal_9": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/heal_9"
             }
         ]
     },
@@ -452,6 +477,14 @@
             }
         ]
     },
+    "spell_holy_9": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/holy_9"
+            }
+        ]
+    },
     "spell_heal_1": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
@@ -553,6 +586,14 @@
         "subtitle": "mkultra.subtitle.spell_cast",
         "sounds": [ {
             "name": "mkultra:spells/buff_attack_2"
+            }
+        ]
+    },
+    "spell_buff_attack_3": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/buff_attack_3"
             }
         ]
     },
@@ -681,6 +722,22 @@
         "subtitle": "mkultra.subtitle.spell_cast",
         "sounds": [ {
             "name": "mkultra:spells/dark_3"
+            }
+        ]
+    },
+    "spell_dark_4": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/dark_4"
+            }
+        ]
+    },
+    "spell_dark_5": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.spell_cast",
+        "sounds": [ {
+            "name": "mkultra:spells/dark_5"
             }
         ]
     },

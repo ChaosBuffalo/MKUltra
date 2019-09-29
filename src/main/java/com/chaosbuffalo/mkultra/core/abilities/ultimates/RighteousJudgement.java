@@ -10,16 +10,22 @@ import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.AIStunPotion;
 import com.chaosbuffalo.mkultra.effects.spells.ParticlePotion;
 import com.chaosbuffalo.mkultra.effects.spells.RighteousJudgementPotion;
+import com.chaosbuffalo.mkultra.effects.spells.SoundPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
+import javax.annotation.Nullable;
 
 @Mod.EventBusSubscriber
 public class RighteousJudgement extends PlayerAbility {
@@ -62,6 +68,17 @@ public class RighteousJudgement extends PlayerAbility {
     }
 
     @Override
+    public SoundEvent getCastingSoundEvent() {
+        return ModSounds.casting_holy;
+    }
+
+    @Nullable
+    @Override
+    public SoundEvent getSpellCompleteSoundEvent() {
+        return ModSounds.spell_holy_9;
+    }
+
+    @Override
     public int getCastTime(int currentRank) {
         return GameConstants.TICKS_PER_SECOND * 2 * currentRank;
     }
@@ -86,6 +103,8 @@ public class RighteousJudgement extends PlayerAbility {
         AreaEffectBuilder.Create(entity, entity)
                 .spellCast(judgementPotion, duration, level, getTargetType())
                 .spellCast(particlePotion, 0, getTargetType())
+                .spellCast(SoundPotion.Create(entity, ModSounds.spell_fire_7, SoundCategory.PLAYERS),
+                        1, getTargetType())
                 .spellCast(stunPotion, GameConstants.TICKS_PER_SECOND * 2, 1, getTargetType())
                 .instant()
                 .disableParticle()

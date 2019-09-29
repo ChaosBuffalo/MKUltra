@@ -6,17 +6,23 @@ import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKDamageSource;
 import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkultra.utils.AbilityUtils;
 import com.chaosbuffalo.mkultra.utils.MathUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
+import javax.annotation.Nullable;
 
 @Mod.EventBusSubscriber
 public class Backstab extends PlayerAbility {
@@ -61,6 +67,12 @@ public class Backstab extends PlayerAbility {
         return 1;
     }
 
+    @Nullable
+    @Override
+    public SoundEvent getSpellCompleteSoundEvent() {
+        return ModSounds.spell_cast_10;
+    }
+
     @Override
     public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
         int level = pData.getAbilityRank(getAbilityId());
@@ -79,6 +91,7 @@ public class Backstab extends PlayerAbility {
                 targetEntity.attackEntityFrom(
                         MKDamageSource.fromMeleeSkill(getAbilityId(), entity, entity, 1.25f), damage);
             }
+            AbilityUtils.playSoundAtServerEntity(targetEntity, ModSounds.spell_shadow_8, SoundCategory.PLAYERS);
 
             Vec3d lookVec = entity.getLookVec();
             MKUltra.packetHandler.sendToAllAround(

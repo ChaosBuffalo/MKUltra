@@ -7,6 +7,7 @@ import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.passives.AuraPassiveBase;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -14,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -61,6 +63,8 @@ public class HolyAuraPotion extends AuraPassiveBase {
             AreaEffectBuilder builder = AreaEffectBuilder.Create(player, player)
                     .instant()
                     .disableParticle()
+                    .spellCast(SoundPotion.Create(source, ModSounds.spell_fire_6, SoundCategory.PLAYERS),
+                            1, Targeting.TargetType.ENEMY)
                     .spellCast(HolyDamagePotion.Create(player, 4.0f, 4.0f),
                             1, Targeting.TargetType.ENEMY)
                     .radius(getNegativeDistance(amplifier), true);

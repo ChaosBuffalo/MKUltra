@@ -23,6 +23,8 @@ public class ModSounds {
     public static SoundEvent casting_holy;
     @GameRegistry.ObjectHolder("casting_water")
     public static SoundEvent casting_water;
+    @GameRegistry.ObjectHolder("casting_rain")
+    public static SoundEvent casting_rain;
     @GameRegistry.ObjectHolder("spell_cast_2")
     public static SoundEvent spell_cast_2;
     @GameRegistry.ObjectHolder("spell_cast_3")
@@ -33,6 +35,8 @@ public class ModSounds {
     public static SoundEvent spell_cast_6;
     @GameRegistry.ObjectHolder("spell_cast_7")
     public static SoundEvent spell_cast_7;
+    @GameRegistry.ObjectHolder("spell_cast_10")
+    public static SoundEvent spell_cast_10;
     @GameRegistry.ObjectHolder("spell_cast_11")
     public static SoundEvent spell_cast_11;
     @GameRegistry.ObjectHolder("spell_cast_12")
@@ -57,6 +61,8 @@ public class ModSounds {
     public static SoundEvent spell_heal_7;
     @GameRegistry.ObjectHolder("spell_heal_8")
     public static SoundEvent spell_heal_8;
+    @GameRegistry.ObjectHolder("spell_heal_9")
+    public static SoundEvent spell_heal_9;
     @GameRegistry.ObjectHolder("spell_buff_4")
     public static SoundEvent spell_buff_4;
     @GameRegistry.ObjectHolder("spell_wind_4")
@@ -75,6 +81,8 @@ public class ModSounds {
     public static SoundEvent spell_holy_5;
     @GameRegistry.ObjectHolder("spell_holy_8")
     public static SoundEvent spell_holy_8;
+    @GameRegistry.ObjectHolder("spell_holy_9")
+    public static SoundEvent spell_holy_9;
     @GameRegistry.ObjectHolder("spell_buff_shield_3")
     public static SoundEvent spell_buff_shield_3;
     @GameRegistry.ObjectHolder("spell_buff_shield_4")
@@ -151,6 +159,8 @@ public class ModSounds {
     public static SoundEvent spell_grab_2;
     @GameRegistry.ObjectHolder("spell_buff_attack_2")
     public static SoundEvent spell_buff_attack_2;
+    @GameRegistry.ObjectHolder("spell_buff_attack_3")
+    public static SoundEvent spell_buff_attack_3;
     @GameRegistry.ObjectHolder("spell_buff_attack_4")
     public static SoundEvent spell_buff_attack_4;
     @GameRegistry.ObjectHolder("spell_earth_1")
@@ -183,6 +193,10 @@ public class ModSounds {
     public static SoundEvent spell_dark_1;
     @GameRegistry.ObjectHolder("spell_dark_3")
     public static SoundEvent spell_dark_3;
+    @GameRegistry.ObjectHolder("spell_dark_4")
+    public static SoundEvent spell_dark_4;
+    @GameRegistry.ObjectHolder("spell_dark_5")
+    public static SoundEvent spell_dark_5;
     @GameRegistry.ObjectHolder("spell_dark_7")
     public static SoundEvent spell_dark_7;
     @GameRegistry.ObjectHolder("spell_dark_8")
@@ -225,11 +239,13 @@ public class ModSounds {
         registerSound(evt, createSound("casting_water"));
         registerSound(evt, createSound("casting_shadow"));
         registerSound(evt, createSound("casting_holy"));
+        registerSound(evt, createSound("casting_rain"));
         registerSound(evt, createSound("spell_cast_2"));
         registerSound(evt, createSound("spell_cast_3"));
         registerSound(evt, createSound("spell_cast_5"));
         registerSound(evt, createSound("spell_cast_6"));
         registerSound(evt, createSound("spell_cast_7"));
+        registerSound(evt, createSound("spell_cast_10"));
         registerSound(evt, createSound("spell_cast_11"));
         registerSound(evt, createSound("spell_cast_12"));
         registerSound(evt, createSound("spell_fire_1"));
@@ -246,6 +262,7 @@ public class ModSounds {
         registerSound(evt, createSound("spell_heal_3"));
         registerSound(evt, createSound("spell_heal_7"));
         registerSound(evt, createSound("spell_heal_8"));
+        registerSound(evt, createSound("spell_heal_9"));
         registerSound(evt, createSound("spell_buff_4"));
         registerSound(evt, createSound("spell_buff_6"));
         registerSound(evt, createSound("spell_buff_7"));
@@ -256,6 +273,7 @@ public class ModSounds {
         registerSound(evt, createSound("spell_holy_4"));
         registerSound(evt, createSound("spell_holy_5"));
         registerSound(evt, createSound("spell_holy_8"));
+        registerSound(evt, createSound("spell_holy_9"));
         registerSound(evt, createSound("spell_buff_shield_3"));
         registerSound(evt, createSound("spell_buff_shield_4"));
         registerSound(evt, createSound("spell_buff_1"));
@@ -288,6 +306,7 @@ public class ModSounds {
         registerSound(evt, createSound("spell_grab_1"));
         registerSound(evt, createSound("spell_grab_2"));
         registerSound(evt, createSound("spell_buff_attack_2"));
+        registerSound(evt, createSound("spell_buff_attack_3"));
         registerSound(evt, createSound("spell_buff_attack_4"));
         registerSound(evt, createSound("spell_earth_1"));
         registerSound(evt, createSound("spell_earth_6"));
@@ -304,6 +323,8 @@ public class ModSounds {
         registerSound(evt, createSound("spell_water_9"));
         registerSound(evt, createSound("spell_dark_1"));
         registerSound(evt, createSound("spell_dark_3"));
+        registerSound(evt, createSound("spell_dark_4"));
+        registerSound(evt, createSound("spell_dark_5"));
         registerSound(evt, createSound("spell_dark_7"));
         registerSound(evt, createSound("spell_dark_8"));
         registerSound(evt, createSound("spell_dark_9"));
