@@ -151,7 +151,7 @@ public class ModSounds {
     public static SoundEvent spell_magic_whoosh_4;
     @GameRegistry.ObjectHolder("spell_shout_1")
     public static SoundEvent spell_shout_1;
-    @GameRegistry.ObjectHolder("spell_whirldwind_1")
+    @GameRegistry.ObjectHolder("spell_whirlwind_1")
     public static SoundEvent spell_whirlwind_1;
     @GameRegistry.ObjectHolder("spell_grab_1")
     public static SoundEvent spell_grab_1;

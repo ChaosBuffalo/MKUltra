@@ -883,10 +883,13 @@ public class PlayerData implements IPlayerData {
                 if (!lastUpdateIsCasting){
                     int castTime = ability.getCastTime(getAbilityRankForClient(loc));
                     Log.info("Playing cast sound");
-                    MovingSoundCasting sound = new MovingSoundCasting(player, ability.getCastingSoundEvent(),
-                            SoundCategory.PLAYERS, castTime);
-                    castingSound = sound;
-                    Minecraft.getMinecraft().getSoundHandler().playSound(sound);
+                    SoundEvent event = ability.getCastingSoundEvent();
+                    if (event != null){
+                        MovingSoundCasting sound = new MovingSoundCasting(player, event,
+                                SoundCategory.PLAYERS, castTime);
+                        castingSound = sound;
+                        Minecraft.getMinecraft().getSoundHandler().playSound(sound);
+                    }
                 }
             }
         } else {
