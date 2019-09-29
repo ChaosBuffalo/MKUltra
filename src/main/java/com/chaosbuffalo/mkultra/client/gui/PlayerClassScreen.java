@@ -156,14 +156,12 @@ public class PlayerClassScreen extends MKScreen {
             MKButton upButton = new MKButton(panelX + DESCRIPTION_WIDTH + 2,
                     abilityHeight + (mc.fontRenderer.FONT_HEIGHT + 2) * 2,
                     20, 20, "+");
-            upButton.setPressedCallback((MKButton button, Integer buttonType) -> pressUpButton(
-                    button, buttonType, index));
+            upButton.setPressedCallback((button, buttonType) -> pressUpDownButton(ability, true));
             abilityList.addWidget(upButton);
             MKButton downButton = new MKButton(panelX + DESCRIPTION_WIDTH + 2,
                     abilityHeight + (mc.fontRenderer.FONT_HEIGHT + 2) * 2 + 24,
                     20, 20, "-");
-            downButton.setPressedCallback((MKButton button, Integer buttonType) -> pressDownButton(
-                    button, buttonType, index));
+            downButton.setPressedCallback((button, buttonType) -> pressUpDownButton(ability, false));
             abilityList.addWidget(downButton);
             addPreDrawRunnable(() -> {
                 int lvl = pData.getAbilityRank(ability.getAbilityId());
@@ -277,36 +275,10 @@ public class PlayerClassScreen extends MKScreen {
         setState("main");
     }
 
-    public Boolean pressUpButton(MKButton button, Integer mouseButton, int abilityIndex) {
-        IPlayerData pData = MKUPlayerData.get(mc.player);
-        if (pData == null)
-            return true;
-        PlayerClass playerClass = MKURegistry.getClass(pData.getClassId());
-        if (playerClass == null)
-            return true;
-        PlayerAbility ability = playerClass.getOfferedAbilityBySlot(
-                abilityIndex % GameConstants.ACTION_BAR_SIZE);
-        if (ability == null)
-            return true;
-        MKUltra.packetHandler.sendToServer(new LevelAbilityPacket(ability.getAbilityId(), true));
+    private boolean pressUpDownButton(PlayerAbility ability, boolean up) {
+        MKUltra.packetHandler.sendToServer(new LevelAbilityPacket(ability.getAbilityId(), up));
         return true;
     }
-
-    public Boolean pressDownButton(MKButton button, Integer mouseButton, int abilityIndex) {
-        IPlayerData pData = MKUPlayerData.get(mc.player);
-        if (pData == null)
-            return true;
-        PlayerClass playerClass = MKURegistry.getClass(pData.getClassId());
-        if (playerClass == null)
-            return true;
-        PlayerAbility ability = playerClass.getOfferedAbilityBySlot(
-                abilityIndex % GameConstants.ACTION_BAR_SIZE);
-        if (ability == null)
-            return true;
-        MKUltra.packetHandler.sendToServer(new LevelAbilityPacket(ability.getAbilityId(), false));
-        return true;
-    }
-
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
