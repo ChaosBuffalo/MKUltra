@@ -32,25 +32,14 @@ public class CorePlugin {
     @SuppressWarnings("unused")
     @SubscribeEvent
     public static void registerClasses(RegistryEvent.Register<PlayerClass> event) {
-        BUILTIN_CLASSES.forEach(c -> {
-            if (MKConfig.isClassEnabled(c.getClassId())) {
-                c.setRegistryName(c.getClassId());
-                event.getRegistry().register(c);
-            }
-
-        });
+        BUILTIN_CLASSES.forEach(c -> event.getRegistry().register(c.setRegistryName(c.getClassId())));
     }
 
     @SuppressWarnings("unused")
     @SubscribeEvent
     public static void registerAbilities(RegistryEvent.Register<PlayerAbility> event) {
-        BUILTIN_CLASSES.forEach(bc -> {
-            if (MKConfig.isClassEnabled(bc.getClassId())) {
-                bc.getAbilities().forEach(a -> {
-                    a.setRegistryName(a.getAbilityId());
-                    event.getRegistry().register(a);
-                });
-            }
-        });
+        BUILTIN_CLASSES.stream()
+                .flatMap(pc -> pc.getAbilities().stream())
+                .forEach(a -> event.getRegistry().register(a.setRegistryName(a.getAbilityId())));
     }
 }

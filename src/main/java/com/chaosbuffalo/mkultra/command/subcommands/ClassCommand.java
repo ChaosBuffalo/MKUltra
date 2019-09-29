@@ -23,6 +23,7 @@ public class ClassCommand extends CommandTreeBase {
         addSubcommand(new Learn());
         addSubcommand(new Unlearn());
         addSubcommand(new UnlearnAll());
+        addSubcommand(new List());
         addSubcommand(new CommandTreeHelp(this)); // MUST be last
     }
 
@@ -277,6 +278,45 @@ public class ClassCommand extends CommandTreeBase {
         @Override
         public String getUsage(ICommandSender sender) {
             return "commands.mk.class.unlearnall";
+        }
+
+        @Override
+        public boolean isUsernameIndex(String[] args, int index) {
+            return args.length > 0 && index == 0;
+        }
+    }
+
+    static class List extends MKClassCommand {
+
+        @Override
+        public void execute(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, String[] args) throws CommandException {
+            EntityPlayerMP player = null;
+
+            if (args.length == 0) {
+                player = getCommandSenderAsPlayer(sender);
+            }
+            if (args.length >= 1) {
+                player = getPlayer(server, sender, args[0]);
+            }
+
+            IPlayerData data = MKUPlayerData.get(player);
+            if (data == null)
+                return;
+
+            sender.sendMessage(new TextComponentString("Known Classes:"));
+            for (ResourceLocation classId : data.getKnownClasses()) {
+                sender.sendMessage(new TextComponentString(classId.toString()));
+            }
+        }
+
+        @Override
+        public String getName() {
+            return "list";
+        }
+
+        @Override
+        public String getUsage(ICommandSender sender) {
+            return "commands.mk.class.list";
         }
 
         @Override

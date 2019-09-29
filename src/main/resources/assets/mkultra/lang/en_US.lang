@@ -361,3 +361,4 @@ mkultra.talent.righteous_judgement.name=Righteous Judgement
 mkultra.talent.righteous_judgement.description=DoTs and slows all surrounding enemies for 20 seconds. Stuns them for 2 seconds.
 mkultra.ability.righteous_judgement.name=Righteous Judgement
 mkultra.ability.righteous_judgement.description=DoTs and slows all surrounding enemies for 20 seconds. Stuns them for 2 seconds.
+commands.mk.class.list=list [player]
