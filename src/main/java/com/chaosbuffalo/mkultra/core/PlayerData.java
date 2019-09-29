@@ -58,6 +58,7 @@ public class PlayerData implements IPlayerData {
     private final static DataParameter<String> CLASS_ID = EntityDataManager.createKey(
             EntityPlayer.class, DataSerializers.STRING);
     private final static DataParameter<String>[] ACTION_BAR_ABILITY_ID;
+    private final static DataParameter<Integer>[] ACTION_BAR_ABILITY_RANK;
     private final static DataParameter<Integer> CAST_TICKS = EntityDataManager.createKey(
             EntityPlayer.class, DataSerializers.VARINT);
     private final static DataParameter<String> CURRENT_CAST = EntityDataManager.createKey(
@@ -69,6 +70,10 @@ public class PlayerData implements IPlayerData {
         ACTION_BAR_ABILITY_ID = new DataParameter[GameConstants.ACTION_BAR_SIZE];
         for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
             ACTION_BAR_ABILITY_ID[i] = EntityDataManager.createKey(EntityPlayer.class, DataSerializers.STRING);
+        }
+        ACTION_BAR_ABILITY_RANK = new DataParameter[GameConstants.ACTION_BAR_SIZE];
+        for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
+            ACTION_BAR_ABILITY_RANK[i] = EntityDataManager.createKey(EntityPlayer.class, DataSerializers.VARINT);
         }
     }
 
@@ -129,6 +134,7 @@ public class PlayerData implements IPlayerData {
         privateData.register(CURRENT_CAST, INVALID_ABILITY_STRING);
         for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
             privateData.register(ACTION_BAR_ABILITY_ID[i], INVALID_ABILITY_STRING);
+            privateData.register(ACTION_BAR_ABILITY_RANK[i], GameConstants.ABILITY_INVALID_RANK);
         }
     }
 
@@ -141,6 +147,7 @@ public class PlayerData implements IPlayerData {
         privateData.setDirty(CURRENT_CAST);
         for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
             privateData.setDirty(ACTION_BAR_ABILITY_ID[i]);
+            privateData.setDirty(ACTION_BAR_ABILITY_RANK[i]);
         }
     }
 
@@ -702,6 +709,15 @@ public class PlayerData implements IPlayerData {
         return abilityInfo != null ? abilityInfo.getRank() : GameConstants.ABILITY_INVALID_RANK;
     }
 
+    @SideOnly(Side.CLIENT)
+    private int getAbilityRankForClient(ResourceLocation abilityId) {
+        int slot = getCurrentSlotForAbility(abilityId);
+        if (slot != GameConstants.ACTION_BAR_INVALID_SLOT) {
+            return privateData.get(ACTION_BAR_ABILITY_RANK[slot]);
+        }
+        return GameConstants.ABILITY_INVALID_RANK;
+    }
+
     @Override
     public boolean learnAbility(ResourceLocation abilityId, boolean consumePoint) {
         PlayerClassInfo classInfo = getActiveClass();
@@ -865,7 +881,7 @@ public class PlayerData implements IPlayerData {
             if (ability != null) {
                 ability.continueCastClient(player, this, player.getEntityWorld(), currentCastTime);
                 if (!lastUpdateIsCasting){
-                    int castTime = ability.getCastTime(getAbilityRank(loc));
+                    int castTime = ability.getCastTime(getAbilityRankForClient(loc));
                     Log.info("Playing cast sound");
                     MovingSoundCasting sound = new MovingSoundCasting(player, ability.getCastingSoundEvent(),
                             SoundCategory.PLAYERS, castTime);
@@ -973,7 +989,10 @@ public class PlayerData implements IPlayerData {
 
         boolean valid = abilityInfo != null && abilityInfo.isCurrentlyKnown();
         ResourceLocation id = valid ? abilityInfo.getId() : MKURegistry.INVALID_ABILITY;
+        int rank = valid ? abilityInfo.getRank() : GameConstants.ABILITY_INVALID_RANK;
+
         setAbilityInSlot(index, id);
+        privateData.set(ACTION_BAR_ABILITY_RANK[index], rank);
 
         if (abilityTracker.hasCooldown(abilityId)) {
             int cd = abilityTracker.getCooldownTicks(abilityId);
