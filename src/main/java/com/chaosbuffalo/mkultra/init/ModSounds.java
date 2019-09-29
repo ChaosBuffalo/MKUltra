@@ -224,12 +224,14 @@ public class ModSounds {
 
 
     public static void registerSound(RegistryEvent.Register<SoundEvent> evt, SoundEvent event){
-        event.setRegistryName(event.getSoundName());
         evt.getRegistry().register(event);
     }
 
     public static SoundEvent createSound(String name){
-        return new SoundEvent(new ResourceLocation(MKUltra.MODID, name));
+        ResourceLocation r_name = new ResourceLocation(MKUltra.MODID, name);
+        SoundEvent event = new SoundEvent(r_name);
+        event.setRegistryName(r_name);
+        return event;
     }
 
     @SubscribeEvent
