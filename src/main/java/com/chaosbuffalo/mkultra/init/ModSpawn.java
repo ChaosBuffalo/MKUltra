@@ -664,7 +664,6 @@ public class ModSpawn {
                         return;
                     }
                     try {
-                        Log.info("Trying to get %s", jsonObject.get("task_class"));
                         Class taskClass = Class.forName(jsonObject.get("task_class").getAsString());
                         if (EntityAIBase.class.isAssignableFrom(taskClass)) {
                             BehaviorChoice choice = new BehaviorChoice(

@@ -61,7 +61,6 @@ public class Heal extends PlayerAbility {
     @Override
     public void endCast(EntityPlayer entity, IPlayerData data, World theWorld, CastState castState) {
         super.endCast(entity, data, theWorld, castState);
-        Log.info("End cast of heal");
 
         SingleTargetCastState singleTargetState = AbilityUtils.getCastStateAsType(castState, SingleTargetCastState.class);
         if (singleTargetState == null){

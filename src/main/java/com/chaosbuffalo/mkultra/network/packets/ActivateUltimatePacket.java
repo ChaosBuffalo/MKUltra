@@ -47,11 +47,7 @@ public class ActivateUltimatePacket implements IMessage {
 
             IPlayerData data = MKUPlayerData.get(player);
             if (data != null) {
-                Log.info("activating ultimate, %s, %d", msg.loc.toString(), msg.slotIndex);
-                if (data.activateUltimateForSlot(msg.loc, msg.slotIndex)) {
-                    Log.info("ultimate learned");
-                }
-
+                data.activateUltimateForSlot(msg.loc, msg.slotIndex);
             }
         }
     }
