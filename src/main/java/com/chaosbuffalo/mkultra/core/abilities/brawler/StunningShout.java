@@ -76,9 +76,9 @@ public class StunningShout extends PlayerAbility {
         for (Entity ent : getTargetsInLine(entity, from, to, true, 2.5f)) {
             if (ent instanceof EntityLivingBase) {
                 EntityLivingBase targetEntity = (EntityLivingBase) ent;
-                float randomPitch = theWorld.rand.nextFloat() * .2f - .1f;
-                AbilityUtils.playSoundAtServerEntity(targetEntity, ModSounds.spell_shout_1,
-                        SoundCategory.PLAYERS, 1.0f, randomPitch);
+//                float randomPitch = theWorld.rand.nextFloat() * .2f - .1f;
+//                AbilityUtils.playSoundAtServerEntity(targetEntity, ModSounds.spell_shout_1,
+//                        SoundCategory.PLAYERS, 1.0f, randomPitch);
                 targetEntity.addPotionEffect(
                         new PotionEffect(MobEffects.SLOWNESS,
                                 level * GameConstants.TICKS_PER_SECOND,
