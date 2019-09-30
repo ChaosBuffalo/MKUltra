@@ -1170,7 +1170,7 @@ public class PlayerData implements IPlayerData {
     }
 
     @SideOnly(Side.CLIENT)
-    public void clientBulkKnownClassUpdate(List<PlayerClassInfo> info, boolean isFullUpdate) {
+    public void clientBulkKnownClassUpdate(Collection<PlayerClassInfo> info, boolean isFullUpdate) {
         if (isFullUpdate) {
             knownClasses.clear();
             info.forEach(ci -> {
