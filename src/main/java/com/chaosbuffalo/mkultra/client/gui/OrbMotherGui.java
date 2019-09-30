@@ -182,7 +182,7 @@ public class OrbMotherGui extends MKScreen {
     }
 
 
-    public Boolean pressTalentButton(MKButton button, Integer mouseButton) {
+    private boolean pressTalentButton(MKButton button, Integer mouseButton) {
         TalentButton talentButton = (TalentButton) button;
         PlayerData data = (PlayerData) MKUPlayerData.get(player);
         if (data != null) {

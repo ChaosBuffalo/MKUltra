@@ -1,8 +1,7 @@
 package com.chaosbuffalo.mkultra.network.packets;
 
-import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
-import com.chaosbuffalo.mkultra.log.Log;
+import com.chaosbuffalo.mkultra.core.PlayerData;
 import com.chaosbuffalo.mkultra.network.MessageHandler;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
@@ -45,7 +44,7 @@ public class ActivateUltimatePacket implements IMessage {
         public void handleServerMessage(final EntityPlayer player,
                                         ActivateUltimatePacket msg) {
 
-            IPlayerData data = MKUPlayerData.get(player);
+            PlayerData data = (PlayerData) MKUPlayerData.get(player);
             if (data != null) {
                 data.activateUltimateForSlot(msg.loc, msg.slotIndex);
             }

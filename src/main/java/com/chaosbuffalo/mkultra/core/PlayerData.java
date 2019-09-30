@@ -162,7 +162,6 @@ public class PlayerData implements IPlayerData {
         return MKURegistry.INVALID_ABILITY;
     }
 
-    @Override
     public boolean spendTalentPoint(ResourceLocation talentTree, String line, int index) {
         PlayerClassInfo classInfo = getActiveClass();
         if (classInfo == null) {
@@ -182,7 +181,6 @@ public class PlayerData implements IPlayerData {
         return didSpend;
     }
 
-    @Override
     public boolean refundTalentPoint(ResourceLocation talentTree, String line, int index) {
         PlayerClassInfo classInfo = getActiveClass();
         if (classInfo == null) {
@@ -323,7 +321,6 @@ public class PlayerData implements IPlayerData {
         return false;
     }
 
-    @Override
     public boolean activatePassiveForSlot(ResourceLocation loc, int slotIndex) {
         PlayerClassInfo activeClass = getActiveClass();
         if (activeClass != null) {
@@ -343,7 +340,6 @@ public class PlayerData implements IPlayerData {
         return false;
     }
 
-    @Override
     public boolean activateUltimateForSlot(ResourceLocation loc, int slotIndex) {
         PlayerClassInfo activeClass = getActiveClass();
         if (activeClass != null) {
@@ -834,19 +830,12 @@ public class PlayerData implements IPlayerData {
         }
     }
 
-    @Override
-    public PlayerToggleAbility getActiveToggleGroupAbility(ResourceLocation groupId) {
-        return activeToggleMap.get(groupId);
-    }
-
-    @Override
     public void clearToggleGroupAbility(ResourceLocation groupId) {
         activeToggleMap.remove(groupId);
     }
 
-    @Override
     public void setToggleGroupAbility(ResourceLocation groupId, PlayerToggleAbility ability) {
-        PlayerToggleAbility current = getActiveToggleGroupAbility(ability.getToggleGroupId());
+        PlayerToggleAbility current = activeToggleMap.get(ability.getToggleGroupId());
         // This can also be called when rebuilding the activeToggleMap after transferring dimensions and in that case
         // ability will be the same as current
         if (current != null && current != ability) {
@@ -866,8 +855,7 @@ public class PlayerData implements IPlayerData {
         return privateData.get(CAST_TICKS);
     }
 
-    @Override
-    public void setCastTicks(int value) {
+    private void setCastTicks(int value) {
         privateData.set(CAST_TICKS, value);
     }
 
@@ -1031,13 +1019,11 @@ public class PlayerData implements IPlayerData {
         }
     }
 
-    @Override
-    public void setManaRegen(float manaRegenRate) {
+    private void setManaRegen(float manaRegenRate) {
         player.getEntityAttribute(PlayerAttributes.MANA_REGEN).setBaseValue(manaRegenRate);
     }
 
-    @Override
-    public void setHealthRegen(float healthRegenRate) {
+    private void setHealthRegen(float healthRegenRate) {
         player.getEntityAttribute(PlayerAttributes.HEALTH_REGEN).setBaseValue(healthRegenRate);
     }
 
