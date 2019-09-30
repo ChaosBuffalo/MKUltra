@@ -65,7 +65,7 @@ public class CritMessagePacket implements IMessage {
     @Override
     public void fromBytes(ByteBuf buf) {
         PacketBuffer pb = new PacketBuffer(buf);
-        this.type = CritType.values()[pb.readInt()];
+        this.type = pb.readEnumValue(CritType.class);
         this.targetId = pb.readInt();
         this.sourceUUID = pb.readUniqueId();
         this.critDamage = pb.readFloat();
@@ -80,7 +80,7 @@ public class CritMessagePacket implements IMessage {
     @Override
     public void toBytes(ByteBuf buf) {
         PacketBuffer pb = new PacketBuffer(buf);
-        pb.writeInt(type.ordinal());
+        pb.writeEnumValue(type);
         pb.writeInt(targetId);
         pb.writeUniqueId(sourceUUID);
         pb.writeFloat(critDamage);
