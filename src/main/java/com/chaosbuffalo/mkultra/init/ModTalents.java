@@ -122,7 +122,7 @@ public class ModTalents {
                     }
                 }
             }
-            Log.info("Loading Line: %s for Tree: %s with %d talents", lineName, name.toString(), talentLine.size());
+            Log.debug("Loading Line: %s for Tree: %s with %d talents", lineName, name.toString(), talentLine.size());
             tree.addLine(lineName, talentLine);
         }
         Log.info("Registering Talent Tree: %s", name.toString());
