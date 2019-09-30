@@ -882,7 +882,6 @@ public class PlayerData implements IPlayerData {
                 ability.continueCastClient(player, this, player.getEntityWorld(), currentCastTime);
                 if (!lastUpdateIsCasting){
                     int castTime = ability.getCastTime(getAbilityRankForClient(loc));
-                    Log.info("Playing cast sound");
                     SoundEvent event = ability.getCastingSoundEvent();
                     if (event != null){
                         MovingSoundCasting sound = new MovingSoundCasting(player, event,
@@ -896,7 +895,6 @@ public class PlayerData implements IPlayerData {
             if (lastUpdateIsCasting && castingSound != null){
                 Minecraft.getMinecraft().getSoundHandler().stopSound(castingSound);
                 castingSound = null;
-                Log.info("Stopping cast sound");
             }
         }
 

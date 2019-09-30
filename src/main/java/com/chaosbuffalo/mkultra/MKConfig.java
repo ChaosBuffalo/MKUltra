@@ -270,7 +270,7 @@ public class MKConfig {
                     armorclass.getLocation().toString());
             armorclass.register(mat);
         } else {
-            Log.info("Failed to find armor material from config, %s", name);
+            Log.debug("Failed to find armor material from config, %s", name);
         }
     }
 
@@ -282,7 +282,7 @@ public class MKConfig {
                     armorClass.getLocation().toString());
             armorClass.registerItem((ItemArmor) item);
         } else {
-            Log.info("Failed to find armor with id or the found item is not an ItemArmor, %s", name);
+            Log.debug("Failed to find armor with id or the found item is not an ItemArmor, %s", name);
         }
 
     }

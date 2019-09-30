@@ -46,7 +46,7 @@ public class JsonLoader {
                                                                   E registry) {
 
         String path = MKUltra.config_loc + File.separator + baseDir + File.separator + mod.getModId() + File.separator + subFolder;
-        Log.info("Looking in %s for assets.", path);
+        Log.debug("Looking in %s for assets.", path);
         if (Files.isDirectory(Paths.get(path))) {
             try {
                 Files.walk(Paths.get(path))
@@ -84,7 +84,7 @@ public class JsonLoader {
                                             E event) {
         Loader.instance().setActiveModContainer(mod);
         String path = baseDir + File.separator + mod.getModId() + File.separator + subFolder;
-        Log.info("Looking in %s for assets.", path);
+        Log.debug("Looking in %s for assets.", path);
         return CraftingHelper.findFiles(mod, path,
                 root -> true,
                 (root, file) -> {
@@ -94,7 +94,7 @@ public class JsonLoader {
                     } else {
                         String name = FilenameUtils.removeExtension(relative).replaceAll("\\\\", "/");
                         ResourceLocation key = new ResourceLocation(mod.getModId(), name);
-                        Log.info("Trying to load %s", key.toString());
+                        Log.debug("Trying to load %s", key.toString());
                         try (BufferedReader reader = Files.newBufferedReader(file)) {
                             JsonObject json = JsonUtils.fromJson(GSON, reader, JsonObject.class);
                             registerFunc.accept(key, json, event);

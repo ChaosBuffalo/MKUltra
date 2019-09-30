@@ -372,7 +372,7 @@ public class ModSpawn {
                 item = Item.REGISTRY.getObject(new ResourceLocation(itemName));
             }
             if (item == null && !itemName.equals("EMPTY")) {
-                Log.info("Failed to load item for %s", jsonObject.get("item").getAsString());
+                Log.debug("Failed to load item for %s", jsonObject.get("item").getAsString());
                 continue;
             } else {
                 ItemStack itemStack;
@@ -630,7 +630,7 @@ public class ModSpawn {
                             taskType);
                     choices.add(choice);
                 }
-                Log.info("registering add task %s", name);
+                Log.debug("registering add task %s", name);
                 AIModifier ai_modifier = new AIModifier(name, modifier, choices.toArray(new BehaviorChoice[0]));
                 if (registry instanceof IForgeRegistryModifiable) {
                     IForgeRegistryModifiable modRegistry = (IForgeRegistryModifiable) registry;
@@ -664,7 +664,6 @@ public class ModSpawn {
                         return;
                     }
                     try {
-                        Log.info("Trying to get %s", jsonObject.get("task_class"));
                         Class taskClass = Class.forName(jsonObject.get("task_class").getAsString());
                         if (EntityAIBase.class.isAssignableFrom(taskClass)) {
                             BehaviorChoice choice = new BehaviorChoice(
@@ -680,7 +679,7 @@ public class ModSpawn {
                                 jsonObject.toString());
                     }
                 }
-                Log.info("registering remove task %s", name);
+                Log.debug("registering remove task %s", name);
                 AIModifier remove_task = new AIModifier(name, AIModifiers.REMOVE_AI,
                         choices.toArray(new BehaviorChoice[0]));
                 if (registry instanceof IForgeRegistryModifiable) {

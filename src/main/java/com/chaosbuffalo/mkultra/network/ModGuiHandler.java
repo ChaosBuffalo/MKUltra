@@ -107,7 +107,6 @@ public class ModGuiHandler implements IGuiHandler {
         } else if (ID == LEARN_CLASS_FROM_TILE_ENTITY_SCREEN) {
             BlockPos pos = new BlockPos(x, y, z);
             TileEntity te = world.getTileEntity(pos);
-            Log.info("Trying to open class screen");
             if (te == null)
                 return null;
             IClassProvider provider = IClassProvider.getProvider(te);
