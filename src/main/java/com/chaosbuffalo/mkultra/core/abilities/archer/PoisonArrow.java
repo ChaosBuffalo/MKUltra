@@ -23,16 +23,27 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import javax.annotation.Nullable;
 
+@Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class PoisonArrow extends PlayerAbility {
+    public static PoisonArrow INSTANCE = new PoisonArrow();
+
+    @SubscribeEvent
+    public static void register(RegistryEvent.Register<PlayerAbility> event) {
+        event.getRegistry().register(INSTANCE.setRegistryName(INSTANCE.getAbilityId()));
+    }
+
     public static float BASE_ARROW_DAMAGE = 4.0f;
     public static float SCALE_ARROW_DAMAGE = 2.0f;
     public static float BASE_DAMAGE = 2.0f;
     public static float DAMAGE_SCALE = 1.0f;
 
-    public PoisonArrow() {
+    private PoisonArrow() {
         super(MKUltra.MODID, "ability.poison_arrow");
     }
 

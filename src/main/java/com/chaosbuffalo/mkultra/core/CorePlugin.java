@@ -15,7 +15,7 @@ public class CorePlugin {
     private static List<PlayerClass> BUILTIN_CLASSES = Lists.newArrayList();
 
     static {
-        BUILTIN_CLASSES.add(new Archer());
+//        BUILTIN_CLASSES.add(new Archer());
         BUILTIN_CLASSES.add(new Brawler());
         BUILTIN_CLASSES.add(new Digger());
         BUILTIN_CLASSES.add(new Cleric());
