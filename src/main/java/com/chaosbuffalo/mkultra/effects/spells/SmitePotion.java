@@ -46,7 +46,7 @@ public class SmitePotion extends SpellPotionBase {
             damage *= 2.0f;
         }
         target.attackEntityFrom(MKDamageSource.causeIndirectMagicDamage(
-                new Smite().getAbilityId(), applier, caster), damage);
+                Smite.INSTANCE.getAbilityId(), applier, caster), damage);
 
     }
 }
