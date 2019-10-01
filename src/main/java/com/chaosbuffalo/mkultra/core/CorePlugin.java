@@ -19,7 +19,7 @@ public class CorePlugin {
 //        BUILTIN_CLASSES.add(new Brawler());
 //        BUILTIN_CLASSES.add(new Digger());
 //        BUILTIN_CLASSES.add(new Cleric());
-        BUILTIN_CLASSES.add(new Skald());
+//        BUILTIN_CLASSES.add(new Skald());
 //        BUILTIN_CLASSES.add(new NetherMage());
         BUILTIN_CLASSES.add(new WetWizard());
 //        BUILTIN_CLASSES.add(new Druid());

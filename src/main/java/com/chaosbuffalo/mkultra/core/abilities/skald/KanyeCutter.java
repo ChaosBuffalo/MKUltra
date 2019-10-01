@@ -21,15 +21,25 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import javax.annotation.Nullable;
 
+@Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class KanyeCutter extends PlayerAbility {
+    public static final KanyeCutter INSTANCE = new KanyeCutter();
+
+    @SubscribeEvent
+    public static void register(RegistryEvent.Register<PlayerAbility> event) {
+        event.getRegistry().register(INSTANCE.setRegistryName(INSTANCE.getAbilityId()));
+    }
 
     public static float BASE_DAMAGE = 6.0f;
     public static float DAMAGE_SCALE = 2.0f;
 
-    public KanyeCutter() {
+    private KanyeCutter() {
         super(MKUltra.MODID, "ability.kanye_cutter");
     }
 

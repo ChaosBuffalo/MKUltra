@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.core.abilities.skald;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
+import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.PlayerToggleAbility;
 import com.chaosbuffalo.mkultra.core.classes.Skald;
 import com.chaosbuffalo.mkultra.effects.spells.MileysInspiringBangerzSongPotion;
@@ -18,16 +19,26 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import javax.annotation.Nullable;
 
+@Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class MileysInspiringBangerz extends PlayerToggleAbility {
-    public static int BASE_DURATION = 32767;
+    public static final MileysInspiringBangerz INSTANCE = new MileysInspiringBangerz();
 
-    public MileysInspiringBangerz() {
-        super(MKUltra.MODID, "ability.mileys_bangerz");
+    @SubscribeEvent
+    public static void register(RegistryEvent.Register<PlayerAbility> event) {
+        event.getRegistry().register(INSTANCE.setRegistryName(INSTANCE.getAbilityId()));
     }
 
+    public static int BASE_DURATION = 32767;
+
+    private MileysInspiringBangerz() {
+        super(MKUltra.MODID, "ability.mileys_bangerz");
+    }
 
     @Override
     public int getCooldown(int currentRank) {
