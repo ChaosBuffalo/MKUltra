@@ -21,18 +21,25 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import javax.annotation.Nullable;
 
-/**
- * Created by Jacob on 3/24/2018.
- */
+@Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class MoonTrance extends PlayerAbility {
+    public static final MoonTrance INSTANCE = new MoonTrance();
+
+    @SubscribeEvent
+    public static void register(RegistryEvent.Register<PlayerAbility> event) {
+        event.getRegistry().register(INSTANCE.setRegistryName(INSTANCE.getAbilityId()));
+    }
 
     public static int BASE_DURATION = 30;
     public static int DURATION_SCALE = 15;
 
-    public MoonTrance() {
+    private MoonTrance() {
         super(MKUltra.MODID, "ability.moon_trance");
     }
 
