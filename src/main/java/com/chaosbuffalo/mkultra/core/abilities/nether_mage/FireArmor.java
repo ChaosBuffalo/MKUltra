@@ -22,15 +22,25 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import javax.annotation.Nullable;
 
+@Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class FireArmor extends PlayerAbility {
+    public static final FireArmor INSTANCE = new FireArmor();
+
+    @SubscribeEvent
+    public static void register(RegistryEvent.Register<PlayerAbility> event) {
+        event.getRegistry().register(INSTANCE.setRegistryName(INSTANCE.getAbilityId()));
+    }
 
     public static int BASE_DURATION = 60;
     public static int DURATION_SCALE = 30;
 
-    public FireArmor() {
+    private FireArmor() {
         super(MKUltra.MODID, "ability.fire_armor");
     }
 

@@ -56,7 +56,7 @@ public class WarpCursePotion extends SpellPeriodicPotionBase {
     public void doEffect(Entity source, Entity indirectSource, EntityLivingBase target, int amplifier, SpellCast cast) {
         Vec3d playerOrigin = target.getPositionVector();
         target.attackEntityFrom(MKDamageSource.causeIndirectMagicDamage(
-                new WarpCurse().getAbilityId(), source, indirectSource, 0.7f), amplifier * 3.0f);
+                WarpCurse.INSTANCE.getAbilityId(), source, indirectSource, 0.7f), amplifier * 3.0f);
 
         if (AbilityUtils.canTeleportEntity(target)) {
             AbilityUtils.playSoundAtServerEntity(target, ModSounds.spell_fire_5, SoundCategory.PLAYERS);
