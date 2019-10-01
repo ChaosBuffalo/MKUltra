@@ -16,14 +16,25 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
 
+@Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class TNTWhisperer extends PlayerAbility {
+    public static TNTWhisperer INSTANCE = new TNTWhisperer();
+
+    @SubscribeEvent
+    public static void register(RegistryEvent.Register<PlayerAbility> event) {
+        event.getRegistry().register(INSTANCE.setRegistryName(INSTANCE.getAbilityId()));
+    }
+
     private static final int COUNT_PER_LEVEL = 1;
 
-    public TNTWhisperer() {
+    private TNTWhisperer() {
         super(MKUltra.MODID, "ability.tnt_whisperer");
     }
 

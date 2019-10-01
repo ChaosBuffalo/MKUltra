@@ -17,14 +17,25 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
 
+@Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class GoldenOpportunity extends PlayerAbility {
+    public static GoldenOpportunity INSTANCE = new GoldenOpportunity();
+
+    @SubscribeEvent
+    public static void register(RegistryEvent.Register<PlayerAbility> event) {
+        event.getRegistry().register(INSTANCE.setRegistryName(INSTANCE.getAbilityId()));
+    }
+
     private static final int MIN_LEVEL_FOR_IRON = 2;
 
-    public GoldenOpportunity() {
+    private GoldenOpportunity() {
         super(MKUltra.MODID, "ability.golden_opportunity");
     }
 
