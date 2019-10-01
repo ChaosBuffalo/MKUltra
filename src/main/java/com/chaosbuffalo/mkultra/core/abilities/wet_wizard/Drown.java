@@ -15,15 +15,25 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import javax.annotation.Nullable;
 
+@Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class Drown extends PlayerAbility {
+    public static final Drown INSTANCE = new Drown();
+
+    @SubscribeEvent
+    public static void register(RegistryEvent.Register<PlayerAbility> event) {
+        event.getRegistry().register(INSTANCE.setRegistryName(INSTANCE.getAbilityId()));
+    }
 
     public static float PROJECTILE_SPEED = 3.0f;
     public static float PROJECTILE_INACCURACY = 0.2f;
 
-    public Drown() {
+    private Drown() {
         super(MKUltra.MODID, "ability.drown");
     }
 

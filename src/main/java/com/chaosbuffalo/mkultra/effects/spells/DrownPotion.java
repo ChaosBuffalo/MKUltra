@@ -49,7 +49,7 @@ public class DrownPotion extends SpellPeriodicPotionBase {
 
     @Override
     public void doEffect(Entity source, Entity indirectSource, EntityLivingBase target, int amplifier, SpellCast cast) {
-        target.attackEntityFrom(MKDamageSource.causeIndirectMagicDamage(new Drown().getAbilityId(),
+        target.attackEntityFrom(MKDamageSource.causeIndirectMagicDamage(Drown.INSTANCE.getAbilityId(),
                 source, indirectSource, 0.7f), amplifier * 2.0f);
         MKUltra.packetHandler.sendToAllAround(
                 new ParticleEffectSpawnPacket(

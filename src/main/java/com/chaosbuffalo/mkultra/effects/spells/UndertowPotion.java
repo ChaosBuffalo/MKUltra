@@ -46,7 +46,7 @@ public class UndertowPotion extends PassiveEffect {
             EntityLivingBase livingEnt = (EntityLivingBase) target;
             if (livingEnt.isPotionActive(DrownPotion.INSTANCE)) {
                 livingEnt.attackEntityFrom(MKDamageSource.causeIndirectMagicDamage(
-                        new Undertow().getAbilityId(), livingEnt, player),
+                        Undertow.INSTANCE.getAbilityId(), livingEnt, player),
                         5.0f * effect.getAmplifier());
             }
         }
