@@ -11,15 +11,25 @@ import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import javax.annotation.Nullable;
 
+@Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class BallLightning extends PlayerAbility {
+    public static BallLightning INSTANCE = new BallLightning();
+
+    @SubscribeEvent
+    public static void register(RegistryEvent.Register<PlayerAbility> event) {
+        event.getRegistry().register(INSTANCE.setRegistryName(INSTANCE.getAbilityId()));
+    }
 
     public static float PROJECTILE_SPEED = 1.0f;
     public static float PROJECTILE_INACCURACY = 0.2f;
 
-    public BallLightning() {
+    private BallLightning() {
         super(MKUltra.MODID, "ability.ball_lightning");
     }
 

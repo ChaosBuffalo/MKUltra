@@ -42,6 +42,6 @@ public class BallLightningPotion extends SpellPotionBase {
 
         float damage = cast.getScaledValue(amplifier);
         target.attackEntityFrom(MKDamageSource.causeIndirectMagicDamage(
-                new BallLightning().getAbilityId(), applier, caster), damage);
+                BallLightning.INSTANCE.getAbilityId(), applier, caster), damage);
     }
 }

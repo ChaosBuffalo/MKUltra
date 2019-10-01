@@ -21,14 +21,25 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import javax.annotation.Nullable;
 
+@Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class LifeSpring extends PlayerAbility {
+    public static LifeSpring INSTANCE = new LifeSpring();
+
+    @SubscribeEvent
+    public static void register(RegistryEvent.Register<PlayerAbility> event) {
+        event.getRegistry().register(INSTANCE.setRegistryName(INSTANCE.getAbilityId()));
+    }
+
     public static float BASE = 4.0f;
     public static float SCALE = 2.0f;
 
-    public LifeSpring() {
+    private LifeSpring() {
         super(MKUltra.MODID, "ability.life_spring");
     }
 
