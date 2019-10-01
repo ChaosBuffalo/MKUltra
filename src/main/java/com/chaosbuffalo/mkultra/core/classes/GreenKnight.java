@@ -4,24 +4,31 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.core.abilities.green_knight.*;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Jacob on 7/28/2018.
- */
+@Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class GreenKnight extends PlayerClass {
     public static ResourceLocation ID = new ResourceLocation(MKUltra.MODID, "class.green_knight");
+    public static final GreenKnight INSTANCE = new GreenKnight();
+
+    @SubscribeEvent
+    public static void register(RegistryEvent.Register<PlayerClass> event) {
+        event.getRegistry().register(INSTANCE.setRegistryName(INSTANCE.getClassId()));
+    }
 
     private static final List<PlayerAbility> abilities = new ArrayList<>(5);
 
     static {
-        abilities.add(new SkinLikeWood());
-        abilities.add(new NaturesRemedy());
-        abilities.add(new SpiritBomb());
-        abilities.add(new CleansingSeed());
-        abilities.add(new ExplosiveGrowth());
+        abilities.add(SkinLikeWood.INSTANCE);
+        abilities.add(NaturesRemedy.INSTANCE);
+        abilities.add(SpiritBomb.INSTANCE);
+        abilities.add(CleansingSeed.INSTANCE);
+        abilities.add(ExplosiveGrowth.INSTANCE);
     }
 
     public GreenKnight() {

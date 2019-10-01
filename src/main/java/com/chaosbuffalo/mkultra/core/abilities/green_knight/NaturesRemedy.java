@@ -20,20 +20,27 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import javax.annotation.Nullable;
 
-/**
- * Created by Jacob on 7/28/2018.
- */
+@Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class NaturesRemedy extends PlayerAbility {
+    public static final NaturesRemedy INSTANCE = new NaturesRemedy();
+
+    @SubscribeEvent
+    public static void register(RegistryEvent.Register<PlayerAbility> event) {
+        event.getRegistry().register(INSTANCE.setRegistryName(INSTANCE.getAbilityId()));
+    }
 
     public static float BASE_VALUE = 2.0f;
     public static float VALUE_SCALE = 0.0f;
     public static int BASE_DURATION = 4;
     public static int DURATION_SCALE = 2;
 
-    public NaturesRemedy() {
+    private NaturesRemedy() {
         super(MKUltra.MODID, "ability.natures_remedy");
     }
 

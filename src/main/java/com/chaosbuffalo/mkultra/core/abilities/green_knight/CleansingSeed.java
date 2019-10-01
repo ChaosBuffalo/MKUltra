@@ -11,22 +11,27 @@ import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import javax.annotation.Nullable;
 
-/**
- * Created by Jacob on 7/28/2018.
- */
+@Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class CleansingSeed extends PlayerAbility {
-
     public static final CleansingSeed INSTANCE = new CleansingSeed();
+
+    @SubscribeEvent
+    public static void register(RegistryEvent.Register<PlayerAbility> event) {
+        event.getRegistry().register(INSTANCE.setRegistryName(INSTANCE.getAbilityId()));
+    }
 
     public static float PROJECTILE_SPEED = 1.25f;
     public static float PROJECTILE_INACCURACY = 0.2f;
     public static float BASE_DAMAGE = 4.0f;
     public static float DAMAGE_SCALE = 4.0f;
 
-    public CleansingSeed() {
+    private CleansingSeed() {
         super(MKUltra.MODID, "ability.cleansing_seed");
     }
 

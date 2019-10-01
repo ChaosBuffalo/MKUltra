@@ -22,21 +22,28 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-/**
- * Created by Jacob on 7/28/2018.
- */
+@Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class ExplosiveGrowth extends PlayerAbility {
+    public static final ExplosiveGrowth INSTANCE = new ExplosiveGrowth();
+
+    @SubscribeEvent
+    public static void register(RegistryEvent.Register<PlayerAbility> event) {
+        event.getRegistry().register(INSTANCE.setRegistryName(INSTANCE.getAbilityId()));
+    }
 
     public static float BASE_DAMAGE = 10.0f;
     public static float DAMAGE_SCALE = 5.0f;
     public static float DASH_BASE = 6.0f;
     public static float DASH_SCALE = 2.0f;
 
-    public ExplosiveGrowth() {
+    private ExplosiveGrowth() {
         super(MKUltra.MODID, "ability.explosive_growth");
     }
 
