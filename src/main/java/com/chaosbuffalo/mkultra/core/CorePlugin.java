@@ -25,7 +25,7 @@ public class CorePlugin {
 //        BUILTIN_CLASSES.add(new Druid());
 //        BUILTIN_CLASSES.add(new MoonKnight());
         BUILTIN_CLASSES.add(new WaveKnight());
-        BUILTIN_CLASSES.add(new Ranger());
+//        BUILTIN_CLASSES.add(new Ranger());
 //        BUILTIN_CLASSES.add(new GreenKnight());
     }
 

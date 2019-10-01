@@ -15,18 +15,25 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import javax.annotation.Nullable;
 
-/**
- * Created by Jacob on 6/23/2018.
- */
+@Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class FairyFire extends PlayerAbility {
+    public static final FairyFire INSTANCE = new FairyFire();
+
+    @SubscribeEvent
+    public static void register(RegistryEvent.Register<PlayerAbility> event) {
+        event.getRegistry().register(INSTANCE.setRegistryName(INSTANCE.getAbilityId()));
+    }
 
     public static float PROJECTILE_SPEED = 1.75f;
     public static float PROJECTILE_INACCURACY = 0.05f;
 
-    public FairyFire() {
+    private FairyFire() {
         super(MKUltra.MODID, "ability.fairy_fire");
     }
 

@@ -18,13 +18,20 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import javax.annotation.Nullable;
 
-/**
- * Created by Jacob on 6/23/2018.
- */
+@Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class DesperateSurge extends PlayerAbility {
+    public static final DesperateSurge INSTANCE = new DesperateSurge();
+
+    @SubscribeEvent
+    public static void register(RegistryEvent.Register<PlayerAbility> event) {
+        event.getRegistry().register(INSTANCE.setRegistryName(INSTANCE.getAbilityId()));
+    }
 
     public static int BASE_DURATION = 6;
     public static int DURATION_SCALE = 2;
@@ -33,7 +40,7 @@ public class DesperateSurge extends PlayerAbility {
     public static int FOOD_COST = 2;
     public static int FOOD_SCALE = 2;
 
-    public DesperateSurge() {
+    private DesperateSurge() {
         super(MKUltra.MODID, "ability.desperate_surge");
     }
 

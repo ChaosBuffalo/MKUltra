@@ -21,9 +21,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.UUID;
 
-/**
- * Created by Jacob on 6/23/2018.
- */
 @Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class FairyFirePotion extends SpellPeriodicPotionBase {
     private static final int DEFAULT_PERIOD = 20;
@@ -61,7 +58,7 @@ public class FairyFirePotion extends SpellPeriodicPotionBase {
 
     @Override
     public void doEffect(Entity source, Entity indirectSource, EntityLivingBase target, int amplifier, SpellCast cast) {
-        target.attackEntityFrom(MKDamageSource.causeIndirectMagicDamage(new FairyFire().getAbilityId(), source,
+        target.attackEntityFrom(MKDamageSource.causeIndirectMagicDamage(FairyFire.INSTANCE.getAbilityId(), source,
                 indirectSource, 0.6f), amplifier * 1.0f);
         MKUltra.packetHandler.sendToAllAround(
                 new ParticleEffectSpawnPacket(
