@@ -9,11 +9,15 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.server.command.CommandTreeBase;
 import net.minecraftforge.server.command.CommandTreeHelp;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.Collections;
+import java.util.List;
 
 public class ClassCommand extends CommandTreeBase {
 
@@ -96,6 +100,15 @@ public class ClassCommand extends CommandTreeBase {
         public boolean isUsernameIndex(String[] args, int index) {
             return args.length > 0 && index == 0;
         }
+
+        @Nonnull
+        @Override
+        public java.util.List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
+            if (args.length == 1) {
+                return getListOfStringsMatchingLastWord(args, server.getOnlinePlayerNames());
+            }
+            return Collections.emptyList();
+        }
     }
 
     static class SwitchCommand extends MKClassCommand {
@@ -149,6 +162,17 @@ public class ClassCommand extends CommandTreeBase {
         public boolean isUsernameIndex(String[] args, int index) {
             return args.length > 0 && index == 0;
         }
+
+        @Nonnull
+        @Override
+        public java.util.List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
+            if (args.length == 1) {
+                return getListOfStringsMatchingLastWord(args, server.getOnlinePlayerNames());
+            } else if (args.length == 2) {
+                return getListOfStringsMatchingLastWord(args, MKURegistry.REGISTRY_CLASSES.getKeys());
+            }
+            return Collections.emptyList();
+        }
     }
 
     static class Learn extends MKClassCommand {
@@ -195,6 +219,17 @@ public class ClassCommand extends CommandTreeBase {
         public boolean isUsernameIndex(String[] args, int index) {
             return args.length > 0 && index == 0;
         }
+
+        @Nonnull
+        @Override
+        public java.util.List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
+            if (args.length == 1) {
+                return getListOfStringsMatchingLastWord(args, server.getOnlinePlayerNames());
+            } else if (args.length == 2) {
+                return getListOfStringsMatchingLastWord(args, MKURegistry.REGISTRY_CLASSES.getKeys());
+            }
+            return Collections.emptyList();
+        }
     }
 
     static class Unlearn extends MKClassCommand {
@@ -219,11 +254,11 @@ public class ClassCommand extends CommandTreeBase {
                 classId = new ResourceLocation(args[1]);
             }
 
-            if (data.hasChosenClass()) {
+            if (data.knowsClass(classId)) {
                 ((PlayerData) data).unlearnClass(classId);
                 sender.sendMessage(new TextComponentString("Class unlearned"));
             } else {
-                sender.sendMessage(new TextComponentString("You do not have a class. Switch to the class you want to unlearn"));
+                sender.sendMessage(new TextComponentString(String.format("Cannot unlearn %s because you do not know it", classId)));
             }
         }
 
@@ -242,6 +277,17 @@ public class ClassCommand extends CommandTreeBase {
         @Override
         public boolean isUsernameIndex(String[] args, int index) {
             return args.length > 0 && index == 0;
+        }
+
+        @Nonnull
+        @Override
+        public java.util.List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
+            if (args.length == 1) {
+                return getListOfStringsMatchingLastWord(args, server.getOnlinePlayerNames());
+            } else if (args.length == 2) {
+                return getListOfStringsMatchingLastWord(args, MKURegistry.REGISTRY_CLASSES.getKeys());
+            }
+            return Collections.emptyList();
         }
     }
 
@@ -284,6 +330,15 @@ public class ClassCommand extends CommandTreeBase {
         public boolean isUsernameIndex(String[] args, int index) {
             return args.length > 0 && index == 0;
         }
+
+        @Nonnull
+        @Override
+        public java.util.List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
+            if (args.length == 1) {
+                return getListOfStringsMatchingLastWord(args, server.getOnlinePlayerNames());
+            }
+            return Collections.emptyList();
+        }
     }
 
     static class List extends MKClassCommand {
@@ -322,6 +377,15 @@ public class ClassCommand extends CommandTreeBase {
         @Override
         public boolean isUsernameIndex(String[] args, int index) {
             return args.length > 0 && index == 0;
+        }
+
+        @Nonnull
+        @Override
+        public java.util.List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
+            if (args.length == 1) {
+                return getListOfStringsMatchingLastWord(args, server.getOnlinePlayerNames());
+            }
+            return Collections.emptyList();
         }
     }
 }
