@@ -18,6 +18,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+
 public class FlameBlade extends MobAbility {
 
 

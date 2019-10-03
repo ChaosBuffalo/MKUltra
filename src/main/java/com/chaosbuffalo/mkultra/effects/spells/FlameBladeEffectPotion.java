@@ -8,6 +8,7 @@ import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -44,7 +45,6 @@ public class FlameBladeEffectPotion extends SpellPotionBase {
         if (target.isBurning()) {
             damage = damage * 2.0f;
         }
-
         target.attackEntityFrom(MKDamageSource.causeIndirectMagicDamage(
                 FlameBlade.INSTANCE.getAbilityId(), applier, caster), damage);
     }

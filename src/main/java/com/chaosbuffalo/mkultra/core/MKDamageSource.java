@@ -4,6 +4,7 @@ import com.chaosbuffalo.mkultra.effects.spells.AbilityMagicDamage;
 import com.chaosbuffalo.mkultra.effects.spells.AbilityMeleeDamage;
 import com.chaosbuffalo.mkultra.effects.spells.HolyDamagePotion;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSourceIndirect;
 import net.minecraft.util.ResourceLocation;
@@ -56,14 +57,26 @@ public class MKDamageSource extends EntityDamageSourceIndirect {
 
     public static DamageSource causeIndirectMagicDamage(ResourceLocation abilityId, Entity source,
                                                         @Nullable Entity indirectEntityIn) {
-        return new MKDamageSource(abilityId, ABILITY_DMG_TYPE, source, indirectEntityIn)
+        String damageType;
+        if (indirectEntityIn instanceof EntityPlayer){
+            damageType = ABILITY_DMG_TYPE;
+        } else {
+            damageType = MOB_ABILITY_DAMAGE_TYPE;
+        }
+        return new MKDamageSource(abilityId, damageType, source, indirectEntityIn)
                 .setDamageBypassesArmor()
                 .setMagicDamage();
     }
 
     public static DamageSource causeIndirectMagicDamage(ResourceLocation abilityId, Entity source,
                                                         @Nullable Entity indirectEntityIn, float modifierScaling) {
-        return new MKDamageSource(abilityId, ABILITY_DMG_TYPE, source, indirectEntityIn)
+        String damageType;
+        if (indirectEntityIn instanceof EntityPlayer){
+            damageType = ABILITY_DMG_TYPE;
+        } else {
+            damageType = MOB_ABILITY_DAMAGE_TYPE;
+        }
+        return new MKDamageSource(abilityId, damageType, source, indirectEntityIn)
                 .setModifierScaling(modifierScaling)
                 .setDamageBypassesArmor()
                 .setMagicDamage();
@@ -72,6 +85,14 @@ public class MKDamageSource extends EntityDamageSourceIndirect {
     public static DamageSource causeIndirectMobMagicDamage(ResourceLocation abilityId, Entity source,
                                                            @Nullable Entity indirectEntityIn) {
         return new MKDamageSource(abilityId, MOB_ABILITY_DAMAGE_TYPE, source, indirectEntityIn)
+                .setDamageBypassesArmor()
+                .setMagicDamage();
+    }
+
+    public static DamageSource causeIndirectMobMagicDamage(ResourceLocation abilityId, Entity source,
+                                                           @Nullable Entity indirectEntityIn, float modifierScaling) {
+        return new MKDamageSource(abilityId, MOB_ABILITY_DAMAGE_TYPE, source, indirectEntityIn)
+                .setModifierScaling(modifierScaling)
                 .setDamageBypassesArmor()
                 .setMagicDamage();
     }
