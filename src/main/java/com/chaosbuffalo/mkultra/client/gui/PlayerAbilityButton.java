@@ -127,62 +127,26 @@ public class PlayerAbilityButton extends MKButton {
             if (learned == null || learned.size() == 0) {
                 return null;
             }
-            MKButton emptyButton = new MKButton(I18n.format("mkultra.ui_msg.clear_passive_slot"));
-            emptyButton.setPressedCallback((MKButton btn, Integer buttonType) -> {
-                if (playerData.canActivatePassiveForSlot(MKURegistry.INVALID_ABILITY, slotIndex)) {
-                    MKUltra.packetHandler.sendToServer(new ActivatePassivePacket(MKURegistry.INVALID_ABILITY, slotIndex));
-                }
-                MKScreen screen = getScreen();
-                if (screen != null) {
-                    screen.closeModal(this.dropdown);
-                }
-                return true;
-            });
+            MKButton emptyButton = new MKButton(I18n.format("mkultra.ui_msg.clear_passive_slot"))
+                    .setPressedCallback((btn, buttonType) -> handlePassiveSelection(MKURegistry.INVALID_ABILITY));
             layout.addWidget(emptyButton);
             for (PlayerPassiveAbility ability : learned) {
-                MKButton button = new MKButton(ability.getAbilityName());
+                MKButton button = new MKButton(ability.getAbilityName())
+                        .setPressedCallback((btn, buttonType) -> handlePassiveSelection(ability.getAbilityId()));
                 layout.addWidget(button);
-                button.setPressedCallback((MKButton btn, Integer buttonType) -> {
-                    if (playerData.canActivatePassiveForSlot(ability.getAbilityId(), slotIndex)) {
-                        MKUltra.packetHandler.sendToServer(new ActivatePassivePacket(ability.getAbilityId(), slotIndex));
-                    }
-                    MKScreen screen = getScreen();
-                    if (screen != null) {
-                        screen.closeModal(this.dropdown);
-                    }
-                    return true;
-                });
             }
         } else if (type == AbilityType.ULTIMATE){
             HashSet<PlayerAbility> learned = playerData.getLearnedUltimates();
             if (learned == null || learned.size() == 0) {
                 return null;
             }
-            MKButton emptyButton = new MKButton(I18n.format("mkultra.ui_msg.clear_ultimate_slot"));
-            emptyButton.setPressedCallback((MKButton btn, Integer buttonType) -> {
-                if (playerData.canActivateUltimateForSlot(MKURegistry.INVALID_ABILITY, slotIndex)) {
-                    MKUltra.packetHandler.sendToServer(new ActivateUltimatePacket(MKURegistry.INVALID_ABILITY, slotIndex));
-                }
-                MKScreen screen = getScreen();
-                if (screen != null) {
-                    screen.closeModal(this.dropdown);
-                }
-                return true;
-            });
+            MKButton emptyButton = new MKButton(I18n.format("mkultra.ui_msg.clear_ultimate_slot"))
+                    .setPressedCallback((btn, buttonType) -> handleUltimateSelection(MKURegistry.INVALID_ABILITY));
             layout.addWidget(emptyButton);
             for (PlayerAbility ability : learned) {
-                MKButton button = new MKButton(ability.getAbilityName());
+                MKButton button = new MKButton(ability.getAbilityName())
+                        .setPressedCallback((btn, buttonType) -> handleUltimateSelection(ability.getAbilityId()));
                 layout.addWidget(button);
-                button.setPressedCallback((MKButton btn, Integer buttonType) -> {
-                    if (playerData.canActivateUltimateForSlot(ability.getAbilityId(), slotIndex)) {
-                        MKUltra.packetHandler.sendToServer(new ActivateUltimatePacket(ability.getAbilityId(), slotIndex));
-                    }
-                    MKScreen screen = getScreen();
-                    if (screen != null) {
-                        screen.closeModal(this.dropdown);
-                    }
-                    return true;
-                });
             }
         }
         scrollView.centerContentX();
@@ -192,6 +156,28 @@ public class PlayerAbilityButton extends MKButton {
             dropdown = null;
         });
         return dropdownModal;
+    }
+
+    private boolean handlePassiveSelection(ResourceLocation abilityId) {
+        if (playerData.canActivatePassiveForSlot(abilityId, slotIndex)) {
+            MKUltra.packetHandler.sendToServer(new ActivatePassivePacket(abilityId, slotIndex));
+        }
+        MKScreen screen = getScreen();
+        if (screen != null) {
+            screen.closeModal(this.dropdown);
+        }
+        return true;
+    }
+
+    private boolean handleUltimateSelection(ResourceLocation abilityId) {
+        if (playerData.canActivateUltimateForSlot(abilityId, slotIndex)) {
+            MKUltra.packetHandler.sendToServer(new ActivateUltimatePacket(abilityId, slotIndex));
+        }
+        MKScreen screen = getScreen();
+        if (screen != null) {
+            screen.closeModal(this.dropdown);
+        }
+        return true;
     }
 
     @Override
