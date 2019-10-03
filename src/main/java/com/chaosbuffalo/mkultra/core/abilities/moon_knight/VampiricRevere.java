@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.core.abilities.moon_knight;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
+import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.PlayerToggleAbility;
 import com.chaosbuffalo.mkultra.effects.spells.VampiricReverePotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
@@ -16,18 +17,25 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import javax.annotation.Nullable;
 
-/**
- * Created by Jacob on 3/24/2018.
- */
+@Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class VampiricRevere extends PlayerToggleAbility {
+    public static final VampiricRevere INSTANCE = new VampiricRevere();
+
+    @SubscribeEvent
+    public static void register(RegistryEvent.Register<PlayerAbility> event) {
+        event.getRegistry().register(INSTANCE.setRegistryName(INSTANCE.getAbilityId()));
+    }
 
     public static int BASE_DURATION = 32767;
     public static int DURATION_SCALE = 0;
 
-    public VampiricRevere() {
+    private VampiricRevere() {
         super(MKUltra.MODID, "ability.vampiric_revere");
     }
 

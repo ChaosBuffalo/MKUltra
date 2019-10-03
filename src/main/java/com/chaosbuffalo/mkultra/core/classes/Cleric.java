@@ -4,21 +4,31 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.core.abilities.cleric.*;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class Cleric extends PlayerClass {
     public static ResourceLocation ID = new ResourceLocation(MKUltra.MODID, "class.cleric");
+    public static final Cleric INSTANCE = new Cleric();
+
+    @SubscribeEvent
+    public static void register(RegistryEvent.Register<PlayerClass> event) {
+        event.getRegistry().register(INSTANCE.setRegistryName(INSTANCE.getClassId()));
+    }
 
     private static final List<PlayerAbility> abilities = new ArrayList<>(5);
 
     static {
-        abilities.add(new Smite());
-        abilities.add(new Heal());
-        abilities.add(new Galvanize());
-        abilities.add(new PowerWordSummon());
-        abilities.add(new Inspire());
+        abilities.add(Smite.INSTANCE);
+        abilities.add(Heal.INSTANCE);
+        abilities.add(Galvanize.INSTANCE);
+        abilities.add(PowerWordSummon.INSTANCE);
+        abilities.add(Inspire.INSTANCE);
     }
 
     public Cleric() {

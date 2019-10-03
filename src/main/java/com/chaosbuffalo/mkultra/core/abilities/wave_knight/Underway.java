@@ -21,18 +21,25 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import javax.annotation.Nullable;
 
-/**
- * Created by Jacob on 3/25/2018.
- */
+@Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class Underway extends PlayerAbility {
+    public static final Underway INSTANCE = new Underway();
+
+    @SubscribeEvent
+    public static void register(RegistryEvent.Register<PlayerAbility> event) {
+        event.getRegistry().register(INSTANCE.setRegistryName(INSTANCE.getAbilityId()));
+    }
 
     public static int BASE_DURATION = 60;
     public static int DURATION_SCALE = 30;
 
-    public Underway() {
+    private Underway() {
         super(MKUltra.MODID, "ability.underway");
     }
 

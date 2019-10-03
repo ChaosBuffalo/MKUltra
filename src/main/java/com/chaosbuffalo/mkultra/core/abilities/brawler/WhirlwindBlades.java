@@ -20,15 +20,25 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import javax.annotation.Nullable;
 
+@Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class WhirlwindBlades extends PlayerAbility {
+    public static WhirlwindBlades INSTANCE = new WhirlwindBlades();
+
+    @SubscribeEvent
+    public static void register(RegistryEvent.Register<PlayerAbility> event) {
+        event.getRegistry().register(INSTANCE.setRegistryName(INSTANCE.getAbilityId()));
+    }
 
     public static float BASE_DAMAGE = 2.0f;
     public static float DAMAGE_SCALE = 1.0f;
 
-    public WhirlwindBlades() {
+    private WhirlwindBlades() {
         super(MKUltra.MODID, "ability.whirlwind_blades");
     }
 

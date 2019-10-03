@@ -13,15 +13,25 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import javax.annotation.Nullable;
 
+@Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class Geyser extends PlayerAbility {
+    public static final Geyser INSTANCE = new Geyser();
+
+    @SubscribeEvent
+    public static void register(RegistryEvent.Register<PlayerAbility> event) {
+        event.getRegistry().register(INSTANCE.setRegistryName(INSTANCE.getAbilityId()));
+    }
 
     public static float PROJECTILE_SPEED = 2.0f;
     public static float PROJECTILE_INACCURACY = 0.2f;
 
-    public Geyser() {
+    private Geyser() {
         super(MKUltra.MODID, "ability.geyser");
     }
 

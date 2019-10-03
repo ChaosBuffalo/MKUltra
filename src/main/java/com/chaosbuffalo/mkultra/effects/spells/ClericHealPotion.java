@@ -74,7 +74,7 @@ public class ClericHealPotion extends SpellPotionBase {
         if (target.isEntityUndead()) {
             if (MKConfig.gameplay.HEALS_DAMAGE_UNDEAD) {
                 target.attackEntityFrom(MKDamageSource.causeIndirectMagicDamage(
-                        new Heal().getAbilityId(), applier, caster), MKConfig.gameplay.HEAL_DAMAGE_MULTIPLIER * value);
+                        Heal.INSTANCE.getAbilityId(), applier, caster), MKConfig.gameplay.HEAL_DAMAGE_MULTIPLIER * value);
             }
         } else {
             target.heal(value);

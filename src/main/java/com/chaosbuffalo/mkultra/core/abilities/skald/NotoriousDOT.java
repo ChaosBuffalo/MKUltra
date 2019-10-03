@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.core.abilities.skald;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
+import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.PlayerToggleAbility;
 import com.chaosbuffalo.mkultra.core.classes.Skald;
 import com.chaosbuffalo.mkultra.effects.spells.NotoriousDOTSongPotion;
@@ -18,15 +19,26 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import javax.annotation.Nullable;
 
+@Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class NotoriousDOT extends PlayerToggleAbility {
+    public static final NotoriousDOT INSTANCE = new NotoriousDOT();
+
+    @SubscribeEvent
+    public static void register(RegistryEvent.Register<PlayerAbility> event) {
+        event.getRegistry().register(INSTANCE.setRegistryName(INSTANCE.getAbilityId()));
+    }
+
     public static float BASE_DAMAGE = 1.0f;
     public static float DAMAGE_SCALE = 2.0f;
     public static int BASE_DURATION = 32767;
 
-    public NotoriousDOT() {
+    private NotoriousDOT() {
         super(MKUltra.MODID, "ability.notorious_dot");
     }
 

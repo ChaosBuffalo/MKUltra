@@ -19,15 +19,25 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import javax.annotation.Nullable;
 
+@Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class SpiritOfWolf extends PlayerAbility {
+    public static SpiritOfWolf INSTANCE = new SpiritOfWolf();
+
+    @SubscribeEvent
+    public static void register(RegistryEvent.Register<PlayerAbility> event) {
+        event.getRegistry().register(INSTANCE.setRegistryName(INSTANCE.getAbilityId()));
+    }
 
     public static int BASE_DURATION = 0;
     public static int DURATION_SCALE = 10;
 
-    public SpiritOfWolf() {
+    private SpiritOfWolf() {
         super(MKUltra.MODID, "ability.spirit_of_wolf");
     }
 

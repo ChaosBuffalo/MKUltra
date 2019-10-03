@@ -21,10 +21,20 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import javax.annotation.Nullable;
 
+@Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class FlameBlade extends PlayerAbility {
+    public static FlameBlade INSTANCE = new FlameBlade();
+
+    @SubscribeEvent
+    public static void register(RegistryEvent.Register<PlayerAbility> event) {
+        event.getRegistry().register(INSTANCE.setRegistryName(INSTANCE.getAbilityId()));
+    }
 
     public static int BASE_DURATION = 10;
     public static int DURATION_SCALE = 5;
@@ -34,7 +44,7 @@ public class FlameBlade extends PlayerAbility {
     public static float PROJECTILE_SPEED = 1.0f;
     public static float PROJECTILE_INACCURACY = 0.5f;
 
-    public FlameBlade() {
+    private FlameBlade() {
         super(MKUltra.MODID, "ability.flame_blade");
     }
 

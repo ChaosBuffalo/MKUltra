@@ -7,25 +7,32 @@ import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.PlayerClass;
 import com.chaosbuffalo.mkultra.core.abilities.ranger.*;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Jacob on 6/23/2018.
- */
+@Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class Ranger extends PlayerClass {
     public static ResourceLocation ID = new ResourceLocation(MKUltra.MODID, "class.ranger");
     private static ClientData clientData = new ClientData();
+    public static final Ranger INSTANCE = new Ranger();
+
+    @SubscribeEvent
+    public static void register(RegistryEvent.Register<PlayerClass> event) {
+        event.getRegistry().register(INSTANCE.setRegistryName(INSTANCE.getClassId()));
+    }
 
     public static final List<PlayerAbility> abilities = new ArrayList<>(5);
 
     static {
-        abilities.add(new PracticedHunter());
-        abilities.add(new FairyFire());
-        abilities.add(new DesperateSurge());
-        abilities.add(new WildToxin());
-        abilities.add(new SlayingEdge());
+        abilities.add(PracticedHunter.INSTANCE);
+        abilities.add(FairyFire.INSTANCE);
+        abilities.add(DesperateSurge.INSTANCE);
+        abilities.add(WildToxin.INSTANCE);
+        abilities.add(SlayingEdge.INSTANCE);
     }
 
     public Ranger() {

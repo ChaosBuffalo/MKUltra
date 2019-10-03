@@ -4,24 +4,31 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.core.abilities.wave_knight.*;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Jacob on 3/25/2018.
- */
+@Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class WaveKnight extends PlayerClass {
     public static ResourceLocation ID = new ResourceLocation(MKUltra.MODID, "class.wave_knight");
+    public static final WaveKnight INSTANCE = new WaveKnight();
+
+    @SubscribeEvent
+    public static void register(RegistryEvent.Register<PlayerClass> event) {
+        event.getRegistry().register(INSTANCE.setRegistryName(INSTANCE.getClassId()));
+    }
 
     private static final List<PlayerAbility> abilities = new ArrayList<>(5);
 
     static {
-        abilities.add(new Whirlpool());
-        abilities.add(new WaveDash());
-        abilities.add(new Underway());
-        abilities.add(new HeavingSeas());
-        abilities.add(new WaveBreak());
+        abilities.add(Whirlpool.INSTANCE);
+        abilities.add(WaveDash.INSTANCE);
+        abilities.add(Underway.INSTANCE);
+        abilities.add(HeavingSeas.INSTANCE);
+        abilities.add(WaveBreak.INSTANCE);
     }
 
     public WaveKnight() {

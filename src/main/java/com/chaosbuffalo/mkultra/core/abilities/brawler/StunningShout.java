@@ -21,15 +21,25 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import javax.annotation.Nullable;
 
+@Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class StunningShout extends PlayerAbility {
+    public static StunningShout INSTANCE = new StunningShout();
+
+    @SubscribeEvent
+    public static void register(RegistryEvent.Register<PlayerAbility> event) {
+        event.getRegistry().register(INSTANCE.setRegistryName(INSTANCE.getAbilityId()));
+    }
 
     public static final float DAMAGE_BASE = 2.0f;
     public static final float DAMAGE_SCALE = 2.0f;
 
-    public StunningShout() {
+    private StunningShout() {
         super(MKUltra.MODID, "ability.stunning_shout");
     }
 

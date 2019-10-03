@@ -23,19 +23,27 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import javax.annotation.Nullable;
 
-/**
- * Created by Jacob on 3/25/2018.
- */
+@Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class HeavingSeas extends PlayerAbility {
+    public static final HeavingSeas INSTANCE = new HeavingSeas();
+
+    @SubscribeEvent
+    public static void register(RegistryEvent.Register<PlayerAbility> event) {
+        event.getRegistry().register(INSTANCE.setRegistryName(INSTANCE.getAbilityId()));
+    }
+
     public static float BASE_DAMAGE = 2.0f;
     public static float DAMAGE_SCALE = 2.0f;
     public static int DURATION_BASE = 2;
     public static int DURATION_SCALE = 2;
 
-    public HeavingSeas() {
+    private HeavingSeas() {
         super(MKUltra.MODID, "ability.heaving_seas");
     }
 

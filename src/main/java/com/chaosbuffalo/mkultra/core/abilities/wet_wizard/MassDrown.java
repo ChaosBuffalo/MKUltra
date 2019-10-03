@@ -14,10 +14,20 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+@Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class MassDrown extends PlayerAbility {
+    public static final MassDrown INSTANCE = new MassDrown();
 
-    public MassDrown() {
+    @SubscribeEvent
+    public static void register(RegistryEvent.Register<PlayerAbility> event) {
+        event.getRegistry().register(INSTANCE.setRegistryName(INSTANCE.getAbilityId()));
+    }
+
+    private MassDrown() {
         super(MKUltra.MODID, "ability.mass_drown");
     }
 

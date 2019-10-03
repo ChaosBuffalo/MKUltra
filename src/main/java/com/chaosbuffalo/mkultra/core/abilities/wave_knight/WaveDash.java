@@ -23,20 +23,27 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-/**
- * Created by Jacob on 3/25/2018.
- */
+@Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class WaveDash extends PlayerAbility {
+    public static final WaveDash INSTANCE = new WaveDash();
+
+    @SubscribeEvent
+    public static void register(RegistryEvent.Register<PlayerAbility> event) {
+        event.getRegistry().register(INSTANCE.setRegistryName(INSTANCE.getAbilityId()));
+    }
 
     public static float BASE_DAMAGE = 4.0f;
     public static float DAMAGE_SCALE = 3.0f;
     public static float DASH_DISTANCE = 8.0f;
 
-    public WaveDash() {
+    private WaveDash() {
         super(MKUltra.MODID, "ability.wave_dash");
     }
 

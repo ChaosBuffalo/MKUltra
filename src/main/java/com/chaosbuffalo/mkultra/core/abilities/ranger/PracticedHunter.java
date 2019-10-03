@@ -16,13 +16,21 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import javax.annotation.Nullable;
 
-/**
- * Created by Jacob on 5/20/2018.
- */
+@Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class PracticedHunter extends PlayerAbility {
+    public static final PracticedHunter INSTANCE = new PracticedHunter();
+
+    @SubscribeEvent
+    public static void register(RegistryEvent.Register<PlayerAbility> event) {
+        event.getRegistry().register(INSTANCE.setRegistryName(INSTANCE.getAbilityId()));
+    }
+
     public static int BASE_DURATION = 15;
     public static int DURATION_SCALE = 15;
     public static int FOOD_AMOUNT = 12;
@@ -30,7 +38,7 @@ public class PracticedHunter extends PlayerAbility {
     public static float FOOD_SATURATION = 6.0f;
     public static float FOOD_SATURATION_SCALE = 4.0f;
 
-    public PracticedHunter() {
+    private PracticedHunter() {
         super(MKUltra.MODID, "ability.practiced_hunter");
     }
 

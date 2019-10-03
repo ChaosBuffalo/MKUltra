@@ -4,22 +4,32 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.core.abilities.archer.*;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
+@Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class Archer extends PlayerClass {
     public static ResourceLocation ID = new ResourceLocation(MKUltra.MODID, "class.archer");
+    public static final Archer INSTANCE = new Archer();
+
+    @SubscribeEvent
+    public static void register(RegistryEvent.Register<PlayerClass> event) {
+        event.getRegistry().register(INSTANCE.setRegistryName(INSTANCE.getClassId()));
+    }
 
     public static final List<PlayerAbility> abilities = new ArrayList<>(5);
 
     static {
-        abilities.add(new FlintHound());
-        abilities.add(new FireArrow());
-        abilities.add(new PoisonArrow());
-        abilities.add(new Repulse());
-        abilities.add(new ArrowStorm());
+        abilities.add(FlintHound.INSTANCE);
+        abilities.add(FireArrow.INSTANCE);
+        abilities.add(PoisonArrow.INSTANCE);
+        abilities.add(Repulse.INSTANCE);
+        abilities.add(ArrowStorm.INSTANCE);
     }
 
     public Archer() {

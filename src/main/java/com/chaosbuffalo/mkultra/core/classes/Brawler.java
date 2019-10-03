@@ -4,21 +4,31 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.core.abilities.brawler.*;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class Brawler extends PlayerClass {
     public static ResourceLocation ID = new ResourceLocation(MKUltra.MODID, "class.brawler");
+    public static final Brawler INSTANCE = new Brawler();
+
+    @SubscribeEvent
+    public static void register(RegistryEvent.Register<PlayerClass> event) {
+        event.getRegistry().register(INSTANCE.setRegistryName(INSTANCE.getClassId()));
+    }
 
     public static final List<PlayerAbility> abilities = new ArrayList<>(5);
 
     static {
-        abilities.add(new Yank());
-        abilities.add(new FuriousBrooding());
-        abilities.add(new Yaup());
-        abilities.add(new StunningShout());
-        abilities.add(new WhirlwindBlades());
+        abilities.add(Yank.INSTANCE);
+        abilities.add(FuriousBrooding.INSTANCE);
+        abilities.add(Yaup.INSTANCE);
+        abilities.add(StunningShout.INSTANCE);
+        abilities.add(WhirlwindBlades.INSTANCE);
     }
 
     public Brawler() {

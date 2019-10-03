@@ -11,13 +11,20 @@ import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import javax.annotation.Nullable;
 
-/**
- * Created by Jacob on 7/28/2018.
- */
+@Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class SpiritBomb extends PlayerAbility {
+    public static final SpiritBomb INSTANCE = new SpiritBomb();
+
+    @SubscribeEvent
+    public static void register(RegistryEvent.Register<PlayerAbility> event) {
+        event.getRegistry().register(INSTANCE.setRegistryName(INSTANCE.getAbilityId()));
+    }
 
     public final static float BASE = 6.0f;
     public final static float SCALE = 6.0f;
@@ -25,7 +32,7 @@ public class SpiritBomb extends PlayerAbility {
     public final static float PROJECTILE_SPEED = 1.5f;
     public final static float PROJECTILE_INACCURACY = 0.2f;
 
-    public SpiritBomb() {
+    private SpiritBomb() {
         super(MKUltra.MODID, "ability.spirit_bomb");
     }
 

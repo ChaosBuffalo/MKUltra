@@ -4,22 +4,32 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.core.abilities.skald.*;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class Skald extends PlayerClass {
     public static ResourceLocation ID = new ResourceLocation(MKUltra.MODID, "class.skald");
     public static ResourceLocation TOGGLE_GROUP = new ResourceLocation(MKUltra.MODID, "toggle_group.skald");
+    public static final Skald INSTANCE = new Skald();
+
+    @SubscribeEvent
+    public static void register(RegistryEvent.Register<PlayerClass> event) {
+        event.getRegistry().register(INSTANCE.setRegistryName(INSTANCE.getClassId()));
+    }
 
     public static final List<PlayerAbility> abilities = new ArrayList<>(5);
 
     static {
-        abilities.add(new NotoriousDOT());
-        abilities.add(new KanyeCutter());
-        abilities.add(new SwiftsRodeoHeartbreak());
-        abilities.add(new KPDarkWail());
-        abilities.add(new MileysInspiringBangerz());
+        abilities.add(NotoriousDOT.INSTANCE);
+        abilities.add(KanyeCutter.INSTANCE);
+        abilities.add(SwiftsRodeoHeartbreak.INSTANCE);
+        abilities.add(KPDarkWail.INSTANCE);
+        abilities.add(MileysInspiringBangerz.INSTANCE);
     }
 
     public Skald() {
