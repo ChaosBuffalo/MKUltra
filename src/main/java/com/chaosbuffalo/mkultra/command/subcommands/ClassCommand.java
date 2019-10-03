@@ -168,6 +168,8 @@ public class ClassCommand extends CommandTreeBase {
         public java.util.List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
             if (args.length == 1) {
                 return getListOfStringsMatchingLastWord(args, server.getOnlinePlayerNames());
+            } else if (args.length == 2) {
+                return getListOfStringsMatchingLastWord(args, MKURegistry.REGISTRY_CLASSES.getKeys());
             }
             return Collections.emptyList();
         }
@@ -223,6 +225,8 @@ public class ClassCommand extends CommandTreeBase {
         public java.util.List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
             if (args.length == 1) {
                 return getListOfStringsMatchingLastWord(args, server.getOnlinePlayerNames());
+            } else if (args.length == 2) {
+                return getListOfStringsMatchingLastWord(args, MKURegistry.REGISTRY_CLASSES.getKeys());
             }
             return Collections.emptyList();
         }
@@ -250,11 +254,11 @@ public class ClassCommand extends CommandTreeBase {
                 classId = new ResourceLocation(args[1]);
             }
 
-            if (data.hasChosenClass()) {
+            if (data.knowsClass(classId)) {
                 ((PlayerData) data).unlearnClass(classId);
                 sender.sendMessage(new TextComponentString("Class unlearned"));
             } else {
-                sender.sendMessage(new TextComponentString("You do not have a class. Switch to the class you want to unlearn"));
+                sender.sendMessage(new TextComponentString(String.format("Cannot unlearn %s because you do not know it", classId)));
             }
         }
 
@@ -280,6 +284,8 @@ public class ClassCommand extends CommandTreeBase {
         public java.util.List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
             if (args.length == 1) {
                 return getListOfStringsMatchingLastWord(args, server.getOnlinePlayerNames());
+            } else if (args.length == 2) {
+                return getListOfStringsMatchingLastWord(args, MKURegistry.REGISTRY_CLASSES.getKeys());
             }
             return Collections.emptyList();
         }
