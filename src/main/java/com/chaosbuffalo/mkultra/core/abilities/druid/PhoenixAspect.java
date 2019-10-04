@@ -69,7 +69,7 @@ public class PhoenixAspect extends PlayerAbility {
 
     @Override
     public int getCastTime(int currentRank) {
-        return GameConstants.TICKS_PER_SECOND * 5;
+        return GameConstants.TICKS_PER_SECOND * 3;
     }
 
     @Override
