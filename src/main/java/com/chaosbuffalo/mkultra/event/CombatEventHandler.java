@@ -35,10 +35,6 @@ public class CombatEventHandler {
             return;
 
         DamageSource source = event.getSource();
-        if (source instanceof MKDamageSource) {
-            if (((MKDamageSource) source).shouldSuppressTriggers())
-                return;
-        }
         Entity trueSource = source.getTrueSource();
         if (source == DamageSource.FALL) { // TODO: maybe just use LivingFallEvent?
             SpellTriggers.FALL.onLivingFall(event, source, livingTarget);
@@ -109,10 +105,6 @@ public class CombatEventHandler {
     @SubscribeEvent
     public static void onEntityDeath(LivingDeathEvent event) {
         DamageSource source = event.getSource();
-        if (source instanceof MKDamageSource) {
-            if (((MKDamageSource) source).shouldSuppressTriggers())
-                return;
-        }
 
         if (source.getTrueSource() instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) source.getTrueSource();
