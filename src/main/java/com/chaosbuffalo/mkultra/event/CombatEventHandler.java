@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.event;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
+import com.chaosbuffalo.mkultra.core.MKDamageSource;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.core.events.ServerSideLeftClickEmpty;
 import com.chaosbuffalo.mkultra.effects.SpellTriggers;
@@ -34,6 +35,10 @@ public class CombatEventHandler {
             return;
 
         DamageSource source = event.getSource();
+        if (source instanceof MKDamageSource) {
+            if (((MKDamageSource) source).shouldSuppressTriggers())
+                return;
+        }
         Entity trueSource = source.getTrueSource();
         if (source == DamageSource.FALL) { // TODO: maybe just use LivingFallEvent?
             SpellTriggers.FALL.onLivingFall(event, source, livingTarget);
@@ -68,6 +73,10 @@ public class CombatEventHandler {
 
         DamageSource dmgSource = event.getSource();
         Entity source = dmgSource.getTrueSource();
+        if (dmgSource instanceof MKDamageSource) {
+            if (((MKDamageSource) dmgSource).shouldSuppressTriggers())
+                return;
+        }
         if (source instanceof EntityLivingBase) {
             SpellTriggers.ATTACK_ENTITY.onAttackEntity((EntityLivingBase) source, target);
         }
@@ -99,16 +108,22 @@ public class CombatEventHandler {
 
     @SubscribeEvent
     public static void onEntityDeath(LivingDeathEvent event) {
-        if (event.getSource().getTrueSource() instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer) event.getSource().getTrueSource();
+        DamageSource source = event.getSource();
+        if (source instanceof MKDamageSource) {
+            if (((MKDamageSource) source).shouldSuppressTriggers())
+                return;
+        }
+
+        if (source.getTrueSource() instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer) source.getTrueSource();
             if (player.world.isRemote) {
                 return;
             }
-            SpellTriggers.PLAYER_KILL_ENTITY.onEntityDeath(event, event.getSource(), player);
+            SpellTriggers.PLAYER_KILL_ENTITY.onEntityDeath(event, source, player);
         }
         if (event.getEntityLiving() instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) event.getEntityLiving();
-            SpellTriggers.PLAYER_DEATH.onEntityDeath(event, event.getSource(), player);
+            SpellTriggers.PLAYER_DEATH.onEntityDeath(event, source, player);
         }
     }
 
