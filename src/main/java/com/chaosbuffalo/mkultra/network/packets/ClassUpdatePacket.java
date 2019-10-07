@@ -1,14 +1,15 @@
 package com.chaosbuffalo.mkultra.network.packets;
 
-import com.chaosbuffalo.mkultra.core.MKUPlayerData;
-import com.chaosbuffalo.mkultra.core.PlayerClassInfo;
-import com.chaosbuffalo.mkultra.core.PlayerData;
+import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.network.MessageHandler;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -38,10 +39,23 @@ public class ClassUpdatePacket implements IMessage {
         fullUpdate = pb.readBoolean();
         classes = new ArrayList<>(count);
 
-        for (int i = 0; i < count; i++) {
-            PlayerClassInfo info = PlayerClassInfo.deserializeUpdate(pb);
-            if (info != null)
-                classes.add(info);
+        try {
+            NBTTagCompound list = pb.readCompoundTag();
+            if (list == null) {
+                return;
+            }
+            for (String key : list.getKeySet()) {
+                ResourceLocation classId = new ResourceLocation(key);
+                PlayerClass playerClass = MKURegistry.getClass(classId);
+                if (playerClass != null) {
+                    NBTTagCompound tag = list.getCompoundTag(key);
+                    PlayerClassInfo classInfo = playerClass.createClassInfo();
+                    classInfo.deserialize(tag);
+                    classes.add(classInfo);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -51,9 +65,13 @@ public class ClassUpdatePacket implements IMessage {
         pb.writeInt(classes.size());
         pb.writeBoolean(fullUpdate);
 
+        NBTTagCompound list = new NBTTagCompound();
         for (PlayerClassInfo info : classes) {
-            info.serializeUpdate(pb);
+            NBTTagCompound tag = new NBTTagCompound();
+            info.serialize(tag);
+            list.setTag(info.getClassId().toString(), tag);
         }
+        pb.writeCompoundTag(list);
     }
 
     public static class Handler extends MessageHandler.Client<ClassUpdatePacket> {

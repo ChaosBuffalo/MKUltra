@@ -1232,9 +1232,13 @@ public class PlayerData implements IPlayerData {
 
             for (int i = 0; i < classes.tagCount(); i++) {
                 NBTTagCompound cls = classes.getCompoundTagAt(i);
-                PlayerClassInfo info = new PlayerClassInfo(new ResourceLocation(cls.getString("id")));
-                info.deserialize(cls);
-                knownClasses.put(info.getClassId(), info);
+                ResourceLocation classId = new ResourceLocation(cls.getString("id"));
+                PlayerClass playerClass = MKURegistry.getClass(classId);
+                if (playerClass != null) {
+                    PlayerClassInfo info = playerClass.createClassInfo();
+                    info.deserialize(cls);
+                    knownClasses.put(info.getClassId(), info);
+                }
             }
         }
 
@@ -1359,7 +1363,7 @@ public class PlayerData implements IPlayerData {
         if (!provider.teachesClass(playerClass))
             return false;
 
-        PlayerClassInfo info = new PlayerClassInfo(classId);
+        PlayerClassInfo info = playerClass.createClassInfo();
         knownClasses.put(classId, info);
         sendBulkClassUpdate();
         MinecraftForge.EVENT_BUS.post(new PlayerClassEvent.Learned(player, this, info));
