@@ -386,8 +386,7 @@ public class PlayerData implements IPlayerData {
     }
 
     private void swapHands() {
-        player.setPrimaryHand(player.getPrimaryHand() == EnumHandSide.RIGHT ?
-                EnumHandSide.LEFT : EnumHandSide.RIGHT);
+        player.setPrimaryHand(player.getPrimaryHand().opposite());
         ItemStack mainHand = player.getHeldItemMainhand();
         player.setHeldItem(EnumHand.MAIN_HAND, player.getHeldItem(EnumHand.OFF_HAND));
         player.setHeldItem(EnumHand.OFF_HAND, mainHand);
