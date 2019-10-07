@@ -41,15 +41,16 @@ public class AbilityUpdatePacket implements IMessage {
             if (list == null)
                 return;
 
-            for (String id : list.getKeySet()) {
-                ResourceLocation abilityId = new ResourceLocation(id);
+            for (String key : list.getKeySet()) {
+                NBTTagCompound tag = list.getCompoundTag(key);
+
+                ResourceLocation abilityId = new ResourceLocation(key);
                 PlayerAbility ability = MKURegistry.getAbility(abilityId);
-                if (ability == null)
-                    continue;
-                PlayerAbilityInfo info = ability.createAbilityInfo();
-                NBTTagCompound tag = list.getCompoundTag(id);
-                if (info.deserialize(tag))
-                    skills.add(info);
+                if (ability != null) {
+                    PlayerAbilityInfo abilityInfo = ability.createAbilityInfo();
+                    if (abilityInfo.deserialize(tag))
+                        skills.add(abilityInfo);
+                }
             }
         }
         catch (IOException e) {
@@ -85,7 +86,7 @@ public class AbilityUpdatePacket implements IMessage {
             if (data == null)
                 return;
             for (PlayerAbilityInfo info : msg.skills) {
-                data.clientSkillListUpdate(info);
+                data.clientAbilityUpdate(info);
             }
         }
     }

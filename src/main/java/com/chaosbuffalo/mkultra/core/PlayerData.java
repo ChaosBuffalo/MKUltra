@@ -1178,7 +1178,7 @@ public class PlayerData implements IPlayerData {
     }
 
     @SideOnly(Side.CLIENT)
-    public void clientSkillListUpdate(PlayerAbilityInfo info) {
+    public void clientAbilityUpdate(PlayerAbilityInfo info) {
         PlayerClassInfo classInfo = getActiveClass();
         if (classInfo != null){
             classInfo.putInfo(info.getId(), info);
