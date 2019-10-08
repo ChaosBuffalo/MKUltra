@@ -369,12 +369,12 @@ public class PlayerClassInfo {
         if (getUnspentTalentPoints() == 0)
             return false;
         TalentTreeRecord talentTree = talentTrees.get(tree);
-        return talentTree.containsIndex(line, index) && talentTree.canIncrementPoint(line, index);
+        return talentTree != null && talentTree.canIncrementPoint(line, index);
     }
 
     public boolean canDecrementPointInTree(ResourceLocation tree, String line, int index) {
         TalentTreeRecord talentTree = talentTrees.get(tree);
-        return talentTree.containsIndex(line, index) && talentTree.canDecrementPoint(line, index);
+        return talentTree != null && talentTree.canDecrementPoint(line, index);
     }
 
     public boolean spendTalentPoint(EntityPlayer player, ResourceLocation tree, String line, int index) {
