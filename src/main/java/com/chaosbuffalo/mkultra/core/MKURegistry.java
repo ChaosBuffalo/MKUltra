@@ -127,14 +127,14 @@ public class MKURegistry {
     }
 
 
-    public static List<ResourceLocation> getValidClasses(Collection<ResourceLocation> classes) {
+    public static List<ResourceLocation> getEnabledClasses(Collection<ResourceLocation> classes) {
         return REGISTRY_CLASSES.getKeys().stream()
                 .filter(MKConfig::isClassEnabled)
                 .filter(classes::contains)
                 .collect(Collectors.toList());
     }
 
-    public static List<ResourceLocation> getAllClasses() {
+    public static List<ResourceLocation> getAllEnabledClasses() {
         return REGISTRY_CLASSES.getKeys().stream()
                 .filter(MKConfig::isClassEnabled)
                 .collect(Collectors.toList());

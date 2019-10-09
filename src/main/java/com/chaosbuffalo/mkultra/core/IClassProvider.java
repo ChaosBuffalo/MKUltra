@@ -66,7 +66,7 @@ public interface IClassProvider {
         @Nonnull
         @Override
         public List<ResourceLocation> getClasses() {
-            return MKURegistry.getAllClasses();
+            return MKURegistry.getAllEnabledClasses();
         }
     };
 }
