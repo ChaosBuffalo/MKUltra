@@ -26,7 +26,11 @@ public abstract class PlayerClass extends IForgeRegistryEntry.Impl<PlayerClass> 
 
     @SideOnly(Side.CLIENT)
     public String getClassName() {
-        return I18n.format(String.format("%s.%s.name", classId.getNamespace(), classId.getPath()));
+        return I18n.format(getTranslationKey());
+    }
+
+    public String getTranslationKey() {
+        return String.format("%s.%s.name", classId.getNamespace(), classId.getPath());
     }
 
     public abstract int getBaseHealth();

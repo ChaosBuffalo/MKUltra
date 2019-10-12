@@ -10,7 +10,9 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.server.command.CommandTreeBase;
 import net.minecraftforge.server.command.CommandTreeHelp;
 
@@ -28,6 +30,7 @@ public class ClassCommand extends CommandTreeBase {
         addSubcommand(new Unlearn());
         addSubcommand(new UnlearnAll());
         addSubcommand(new List());
+        addSubcommand(new Active());
         addSubcommand(new CommandTreeHelp(this)); // MUST be last
     }
 
@@ -372,6 +375,63 @@ public class ClassCommand extends CommandTreeBase {
         @Override
         public String getUsage(ICommandSender sender) {
             return "commands.mk.class.list";
+        }
+
+        @Override
+        public boolean isUsernameIndex(String[] args, int index) {
+            return args.length > 0 && index == 0;
+        }
+
+        @Nonnull
+        @Override
+        public java.util.List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
+            if (args.length == 1) {
+                return getListOfStringsMatchingLastWord(args, server.getOnlinePlayerNames());
+            }
+            return Collections.emptyList();
+        }
+    }
+
+    static class Active extends MKClassCommand {
+
+        @Override
+        public void execute(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, String[] args) throws CommandException {
+            EntityPlayerMP player = null;
+
+            if (args.length == 0) {
+                player = getCommandSenderAsPlayer(sender);
+            }
+            if (args.length >= 1) {
+                player = getPlayer(server, sender, args[0]);
+            }
+
+            IPlayerData data = MKUPlayerData.get(player);
+            if (data == null)
+                return;
+
+            ITextComponent msg = new TextComponentString("Active Class: ");
+            if (data.hasChosenClass()) {
+                PlayerClass playerClass = MKURegistry.getClass(data.getClassId());
+                if (playerClass != null) {
+                    msg.appendSibling(new TextComponentTranslation(playerClass.getTranslationKey()));
+                } else {
+                    msg.appendText("Invalid class");
+                }
+            } else {
+                msg.appendText("No Class");
+            }
+
+            sender.sendMessage(msg);
+        }
+
+        @Override
+        public String getName() {
+            return "active";
+        }
+
+        @Override
+        public String getUsage(ICommandSender sender) {
+            return "commands.mk.class.active";
         }
 
         @Override
