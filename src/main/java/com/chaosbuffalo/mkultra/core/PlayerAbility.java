@@ -78,7 +78,7 @@ public abstract class PlayerAbility extends IForgeRegistryEntry.Impl<PlayerAbili
 
     @SideOnly(Side.CLIENT)
     public String getAbilityName() {
-        return I18n.format(String.format("%s.%s.name", abilityId.getNamespace(), abilityId.getPath()));
+        return I18n.format(getTranslationKey());
     }
 
     @SideOnly(Side.CLIENT)
@@ -86,6 +86,9 @@ public abstract class PlayerAbility extends IForgeRegistryEntry.Impl<PlayerAbili
         return I18n.format(String.format("%s.%s.description", abilityId.getNamespace(), abilityId.getPath()));
     }
 
+    public String getTranslationKey() {
+        return String.format("%s.%s.name", abilityId.getNamespace(), abilityId.getPath());
+    }
 
     public ResourceLocation getAbilityIcon() {
         return new ResourceLocation(abilityId.getNamespace(), String.format("textures/class/abilities/%s.png", abilityId.getPath().split(Pattern.quote("."))[1]));

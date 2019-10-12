@@ -1549,7 +1549,7 @@ public class PlayerData implements IPlayerData {
             int max;
             PlayerAbility ability = MKURegistry.getAbility(abilityId);
             if (ability != null) {
-                name = String.format("%s.%s.name", abilityId.getNamespace(), abilityId.getPath());
+                name = ability.getTranslationKey();
                 max = getAbilityCooldown(ability);
             } else {
                 name = abilityId.toString();
