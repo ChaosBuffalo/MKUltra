@@ -385,6 +385,13 @@ public class PlayerData implements IPlayerData {
         return false;
     }
 
+    @Override
+    public int getActionBarSize() {
+        ResourceLocation loc = getAbilityInSlot(GameConstants.ACTION_BAR_SIZE - 1);
+        return hasUltimates() || !loc.equals(MKURegistry.INVALID_ABILITY) ?
+                GameConstants.ACTION_BAR_SIZE : GameConstants.NO_ULT_ACTION_BAR_SIZE;
+    }
+
     private void swapHands() {
         player.setPrimaryHand(player.getPrimaryHand().opposite());
         ItemStack mainHand = player.getHeldItemMainhand();

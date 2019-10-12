@@ -153,6 +153,8 @@ public interface IPlayerData {
 
     boolean hasUltimates();
 
+    int getActionBarSize();
+
     boolean isDualWielding();
 
     void setArbitraryCooldown(ResourceLocation loc, int cooldown);
