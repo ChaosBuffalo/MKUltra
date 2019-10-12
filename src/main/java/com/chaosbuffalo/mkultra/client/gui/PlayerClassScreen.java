@@ -232,7 +232,7 @@ public class PlayerClassScreen extends MKScreen {
         MKWidget abilityList = new MKWidget(0, 0);
         int abilityHeight = 0;
         int lastIndex = 0;
-        for (int i = 0; i < GameConstants.NO_ULT_ACTION_BAR_SIZE; i++) {
+        for (int i = 0; i < GameConstants.CLASS_ACTION_BAR_SIZE; i++) {
             PlayerAbility ability = playerClass.getOfferedAbilityBySlot(i);
             if (ability == null)
                 continue;

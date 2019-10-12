@@ -385,7 +385,7 @@ public class PlayerData implements IPlayerData {
     public int getActionBarSize() {
         ResourceLocation loc = getAbilityInSlot(GameConstants.ACTION_BAR_SIZE - 1);
         return hasUltimates() || !loc.equals(MKURegistry.INVALID_ABILITY) ?
-                GameConstants.ACTION_BAR_SIZE : GameConstants.NO_ULT_ACTION_BAR_SIZE;
+                GameConstants.ACTION_BAR_SIZE : GameConstants.CLASS_ACTION_BAR_SIZE;
     }
 
     private void swapHands() {
