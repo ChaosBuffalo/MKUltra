@@ -198,7 +198,6 @@ public class PlayerData implements IPlayerData {
         return didSpend;
     }
 
-    @Override
     public boolean canSpendTalentPoint(ResourceLocation talentTree, String line, int index) {
         PlayerClassInfo classInfo = getActiveClass();
         if (classInfo == null) {
@@ -207,7 +206,6 @@ public class PlayerData implements IPlayerData {
         return classInfo.canIncrementPointInTree(talentTree, line, index);
     }
 
-    @Override
     public boolean canRefundTalentPoint(ResourceLocation talentTree, String line, int index) {
         PlayerClassInfo classInfo = getActiveClass();
         if (classInfo == null) {
@@ -319,7 +317,6 @@ public class PlayerData implements IPlayerData {
         return null;
     }
 
-    @Override
     public boolean canActivatePassiveForSlot(ResourceLocation loc, int slotIndex) {
         PlayerClassInfo activeClass = getActiveClass();
         if (activeClass != null) {
@@ -340,7 +337,6 @@ public class PlayerData implements IPlayerData {
         return false;
     }
 
-    @Override
     public boolean canActivateUltimateForSlot(ResourceLocation loc, int slotIndex) {
         PlayerClassInfo activeClass = getActiveClass();
         if (activeClass != null) {

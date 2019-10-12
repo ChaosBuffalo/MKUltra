@@ -119,10 +119,6 @@ public interface IPlayerData {
 
     boolean refundTalentPoint(ResourceLocation talentTree, String line, int index);
 
-    boolean canSpendTalentPoint(ResourceLocation talentTree, String line, int index);
-
-    boolean canRefundTalentPoint(ResourceLocation talentTree, String line, int index);
-
     void gainTalentPoint();
 
     int getTotalTalentPoints();
@@ -143,11 +139,7 @@ public interface IPlayerData {
     @Nullable
     HashSet<PlayerAbility> getLearnedUltimates();
 
-    boolean canActivatePassiveForSlot(ResourceLocation loc, int slotIndex);
-
     boolean activatePassiveForSlot(ResourceLocation loc, int slotIndex);
-
-    boolean canActivateUltimateForSlot(ResourceLocation loc, int slotIndex);
 
     boolean activateUltimateForSlot(ResourceLocation loc, int slotIndex);
 

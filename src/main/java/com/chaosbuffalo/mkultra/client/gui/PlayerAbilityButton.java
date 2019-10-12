@@ -2,10 +2,7 @@ package com.chaosbuffalo.mkultra.client.gui;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.client.gui.lib.*;
-import com.chaosbuffalo.mkultra.core.IPlayerData;
-import com.chaosbuffalo.mkultra.core.MKURegistry;
-import com.chaosbuffalo.mkultra.core.PlayerAbility;
-import com.chaosbuffalo.mkultra.core.PlayerPassiveAbility;
+import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.network.packets.ActivatePassivePacket;
 import com.chaosbuffalo.mkultra.network.packets.ActivateUltimatePacket;
 import net.minecraft.client.Minecraft;
@@ -46,7 +43,7 @@ public class PlayerAbilityButton extends MKButton {
     private ArrayList<String> tooltip;
 
     public final PlayerAbility ability;
-    public final IPlayerData playerData;
+    public final PlayerData playerData;
     private MKModal dropdown;
     private boolean isDropdownOpen;
     private int slotIndex;
@@ -54,7 +51,7 @@ public class PlayerAbilityButton extends MKButton {
     public PlayerAbilityButton(PlayerAbility ability, AbilityType type, IPlayerData data, int slotIndex, int x, int y) {
         super(x, y, WIDTH, HEIGHT, "");
         this.ability = ability;
-        this.playerData = data;
+        this.playerData = (PlayerData) data;
         this.tooltip = new ArrayList<>();
         isDropdownOpen = false;
         this.type = type;
