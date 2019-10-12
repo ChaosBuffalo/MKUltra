@@ -299,7 +299,7 @@ public class PlayerData implements IPlayerData {
 
     @Override
     @Nullable
-    public HashSet<PlayerPassiveAbility> getLearnedPassives() {
+    public Set<PlayerPassiveAbility> getLearnedPassives() {
         PlayerClassInfo activeClass = getActiveClass();
         if (activeClass != null) {
             return activeClass.getPassiveAbilitiesFromTalents();
@@ -309,7 +309,7 @@ public class PlayerData implements IPlayerData {
 
     @Nullable
     @Override
-    public HashSet<PlayerAbility> getLearnedUltimates() {
+    public Set<PlayerAbility> getLearnedUltimates() {
         PlayerClassInfo activeClass = getActiveClass();
         if (activeClass != null) {
             return activeClass.getUltimateAbilitiesFromTalents();

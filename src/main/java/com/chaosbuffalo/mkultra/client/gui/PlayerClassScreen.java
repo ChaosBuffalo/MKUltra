@@ -19,10 +19,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Jacob on 3/16/2016.
@@ -242,7 +239,7 @@ public class PlayerClassScreen extends MKScreen {
             abilityHeight = drawAbility(ability, pData, abilityList, abilityHeight, i, true);
             lastIndex += 1;
         }
-        HashSet<PlayerAbility> learnedUlts = pData.getLearnedUltimates();
+        Set<PlayerAbility> learnedUlts = pData.getLearnedUltimates();
         if (learnedUlts != null){
             List<PlayerAbility> ultimates = new ArrayList<>(pData.getLearnedUltimates());
             ultimates.sort((a1, a2) -> a1.getAbilityName().compareToIgnoreCase(a2.getAbilityName()));

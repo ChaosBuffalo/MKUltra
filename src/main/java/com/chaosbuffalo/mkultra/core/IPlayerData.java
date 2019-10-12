@@ -7,8 +7,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nullable;
-import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public interface IPlayerData {
 
@@ -134,10 +134,10 @@ public interface IPlayerData {
     List<ResourceLocation> getActiveUltimates();
 
     @Nullable
-    HashSet<PlayerPassiveAbility> getLearnedPassives();
+    Set<PlayerPassiveAbility> getLearnedPassives();
 
     @Nullable
-    HashSet<PlayerAbility> getLearnedUltimates();
+    Set<PlayerAbility> getLearnedUltimates();
 
     boolean activatePassiveForSlot(ResourceLocation loc, int slotIndex);
 

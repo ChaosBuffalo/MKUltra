@@ -14,7 +14,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Set;
 
 public class PlayerAbilityButton extends MKButton {
     private static int X_POS_TALENT_SLOT_TEX = 22;
@@ -65,7 +65,7 @@ public class PlayerAbilityButton extends MKButton {
     @Override
     public void longHoverDraw(Minecraft mc, int x, int y, int width, int height, int mouseX, int mouseY, float partialTicks) {
         if (type == AbilityType.PASSIVE){
-            HashSet<PlayerPassiveAbility> learned = playerData.getLearnedPassives();
+            Set<PlayerPassiveAbility> learned = playerData.getLearnedPassives();
             if (learned == null || learned.size() == 0) {
                 if (getScreen() != null) {
                     getScreen().addHoveringText(new HoveringTextInstruction(
@@ -80,7 +80,7 @@ public class PlayerAbilityButton extends MKButton {
                 }
             }
         } else if (type == AbilityType.ULTIMATE){
-            HashSet<PlayerAbility> learned = playerData.getLearnedUltimates();
+            Set<PlayerAbility> learned = playerData.getLearnedUltimates();
             if (learned == null || learned.size() == 0) {
                 if (getScreen() != null) {
                     getScreen().addHoveringText(new HoveringTextInstruction(
@@ -120,7 +120,7 @@ public class PlayerAbilityButton extends MKButton {
         layout.doSetWidth(true);
         scrollView.addWidget(layout);
         if (type == AbilityType.PASSIVE){
-            HashSet<PlayerPassiveAbility> learned = playerData.getLearnedPassives();
+            Set<PlayerPassiveAbility> learned = playerData.getLearnedPassives();
             if (learned == null || learned.size() == 0) {
                 return null;
             }
@@ -133,7 +133,7 @@ public class PlayerAbilityButton extends MKButton {
                 layout.addWidget(button);
             }
         } else if (type == AbilityType.ULTIMATE){
-            HashSet<PlayerAbility> learned = playerData.getLearnedUltimates();
+            Set<PlayerAbility> learned = playerData.getLearnedUltimates();
             if (learned == null || learned.size() == 0) {
                 return null;
             }
