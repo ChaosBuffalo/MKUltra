@@ -2,18 +2,25 @@ package com.chaosbuffalo.mkultra.mob_ai;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.event.ItemEventHandler;
+import com.chaosbuffalo.mkultra.log.Log;
 import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class EntityAIAttackMeleeMK extends EntityAIBase {
     World world;
@@ -144,13 +151,25 @@ public class EntityAIAttackMeleeMK extends EntityAIBase {
         this.checkAndPerformAttack(entitylivingbase, d0);
     }
 
+    private static Set<ResourceLocation> warnedMobs = new HashSet<>();
+
     protected void checkAndPerformAttack(EntityLivingBase attackTarget, double distance) {
         double d0 = this.getAttackReachSqr(attackTarget);
         if (distance <= d0 && this.attackTick <= 0) {
-            double attackSpeed = attacker.getAttributeMap()
-                    .getAttributeInstance(SharedMonsterAttributes.ATTACK_SPEED).getAttributeValue();
-            int attackTicks = (int) (GameConstants.TICKS_PER_SECOND / attackSpeed);
-            this.attackTick = attackTicks;
+            IAttributeInstance attackSpeedAttr = attacker.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED);
+            double attackSpeed;
+            if (attackSpeedAttr == null) {
+                attackSpeed = 4;
+                ResourceLocation name = EntityList.getKey(attacker);
+                if (!warnedMobs.contains(name)) {
+                    Log.warn("Mob %s does not have the attack speed attribute, using the default value of %f. " +
+                            "If you would like it to have dynamic attack speed please add it to the MKUltra whitelist", name, attackSpeed);
+                    warnedMobs.add(name);
+                }
+            } else {
+                attackSpeed = attackSpeedAttr.getAttributeValue();
+            }
+            this.attackTick = (int) (GameConstants.TICKS_PER_SECOND / attackSpeed);
             this.attacker.swingArm(EnumHand.MAIN_HAND);
             this.attacker.attackEntityAsMob(attackTarget);
         }
