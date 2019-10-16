@@ -19,18 +19,18 @@ import net.minecraftforge.server.command.CommandTreeHelp;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Collections;
-import java.util.List;
 
 public class ClassCommand extends CommandTreeBase {
 
     public ClassCommand() {
-        addSubcommand(new ResetCommand());
+        addSubcommand(new Clear());
         addSubcommand(new SwitchCommand());
         addSubcommand(new Learn());
         addSubcommand(new Unlearn());
         addSubcommand(new UnlearnAll());
         addSubcommand(new List());
         addSubcommand(new Active());
+        addSubcommand(new Reset());
         addSubcommand(new CommandTreeHelp(this)); // MUST be last
     }
 
@@ -61,13 +61,40 @@ public class ClassCommand extends CommandTreeBase {
     }
 
     static abstract class MKClassCommand extends CommandTreeBase {
+
         @Override
         public int getRequiredPermissionLevel() {
             return 2;
         }
+
+        @Override
+        public boolean isUsernameIndex(String[] args, int index) {
+            return args.length > 0 && index == 0;
+        }
+
+        @Nonnull
+        @Override
+        public java.util.List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
+            if (args.length == 1) {
+                return getListOfStringsMatchingLastWord(args, server.getOnlinePlayerNames());
+            }
+            return Collections.emptyList();
+        }
+
+        @Nonnull
+        @Override
+        public String getUsage(ICommandSender sender) {
+            return String.format("commands.mk.class.%s", getName());
+        }
     }
 
-    static class ResetCommand extends MKClassCommand {
+    static class Clear extends MKClassCommand {
+
+        @Nonnull
+        @Override
+        public String getName() {
+            return "clear";
+        }
 
         @Override
         public void execute(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, String[] args) throws CommandException {
@@ -84,37 +111,18 @@ public class ClassCommand extends CommandTreeBase {
                 return;
 
             data.activateClass(MKURegistry.INVALID_CLASS);
-            player.sendMessage(new TextComponentString("Class reset"));
-        }
-
-        @Nonnull
-        @Override
-        public String getName() {
-            return "reset";
-        }
-
-        @Nonnull
-        @Override
-        public String getUsage(ICommandSender sender) {
-            return "commands.mk.class.reset";
-        }
-
-        @Override
-        public boolean isUsernameIndex(String[] args, int index) {
-            return args.length > 0 && index == 0;
-        }
-
-        @Nonnull
-        @Override
-        public java.util.List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
-            if (args.length == 1) {
-                return getListOfStringsMatchingLastWord(args, server.getOnlinePlayerNames());
-            }
-            return Collections.emptyList();
+            player.sendMessage(new TextComponentString("Class deactivated"));
         }
     }
 
     static class SwitchCommand extends MKClassCommand {
+
+        @Nonnull
+        @Override
+        public String getName() {
+            return "switch";
+        }
+
         @Override
         public void execute(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, String[] args) throws CommandException {
             EntityPlayerMP player = null;
@@ -151,23 +159,6 @@ public class ClassCommand extends CommandTreeBase {
 
         @Nonnull
         @Override
-        public String getName() {
-            return "switch";
-        }
-
-        @Nonnull
-        @Override
-        public String getUsage(ICommandSender sender) {
-            return "commands.mk.class.switch";
-        }
-
-        @Override
-        public boolean isUsernameIndex(String[] args, int index) {
-            return args.length > 0 && index == 0;
-        }
-
-        @Nonnull
-        @Override
         public java.util.List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
             if (args.length == 1) {
                 return getListOfStringsMatchingLastWord(args, server.getOnlinePlayerNames());
@@ -179,6 +170,13 @@ public class ClassCommand extends CommandTreeBase {
     }
 
     static class Learn extends MKClassCommand {
+
+        @Nonnull
+        @Override
+        public String getName() {
+            return "learn";
+        }
+
         @Override
         public void execute(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, String[] args) throws CommandException {
             EntityPlayerMP player = null;
@@ -208,23 +206,6 @@ public class ClassCommand extends CommandTreeBase {
 
         @Nonnull
         @Override
-        public String getName() {
-            return "learn";
-        }
-
-        @Nonnull
-        @Override
-        public String getUsage(ICommandSender sender) {
-            return "commands.mk.class.learn";
-        }
-
-        @Override
-        public boolean isUsernameIndex(String[] args, int index) {
-            return args.length > 0 && index == 0;
-        }
-
-        @Nonnull
-        @Override
         public java.util.List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
             if (args.length == 1) {
                 return getListOfStringsMatchingLastWord(args, server.getOnlinePlayerNames());
@@ -236,6 +217,12 @@ public class ClassCommand extends CommandTreeBase {
     }
 
     static class Unlearn extends MKClassCommand {
+
+        @Nonnull
+        @Override
+        public String getName() {
+            return "unlearn";
+        }
 
         @Override
         public void execute(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, String[] args) throws CommandException {
@@ -267,23 +254,6 @@ public class ClassCommand extends CommandTreeBase {
 
         @Nonnull
         @Override
-        public String getName() {
-            return "unlearn";
-        }
-
-        @Nonnull
-        @Override
-        public String getUsage(ICommandSender sender) {
-            return "commands.mk.class.unlearn";
-        }
-
-        @Override
-        public boolean isUsernameIndex(String[] args, int index) {
-            return args.length > 0 && index == 0;
-        }
-
-        @Nonnull
-        @Override
         public java.util.List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
             if (args.length == 1) {
                 return getListOfStringsMatchingLastWord(args, server.getOnlinePlayerNames());
@@ -295,6 +265,12 @@ public class ClassCommand extends CommandTreeBase {
     }
 
     static class UnlearnAll extends MKClassCommand {
+
+        @Nonnull
+        @Override
+        public String getName() {
+            return "unlearnall";
+        }
 
         @Override
         public void execute(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, String[] args) throws CommandException {
@@ -316,35 +292,15 @@ public class ClassCommand extends CommandTreeBase {
                 sender.sendMessage(new TextComponentString(String.format("Class %s unlearned", classId.toString())));
             }
         }
+    }
+
+    static class List extends MKClassCommand {
 
         @Nonnull
         @Override
         public String getName() {
-            return "unlearnall";
+            return "list";
         }
-
-        @Nonnull
-        @Override
-        public String getUsage(ICommandSender sender) {
-            return "commands.mk.class.unlearnall";
-        }
-
-        @Override
-        public boolean isUsernameIndex(String[] args, int index) {
-            return args.length > 0 && index == 0;
-        }
-
-        @Nonnull
-        @Override
-        public java.util.List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
-            if (args.length == 1) {
-                return getListOfStringsMatchingLastWord(args, server.getOnlinePlayerNames());
-            }
-            return Collections.emptyList();
-        }
-    }
-
-    static class List extends MKClassCommand {
 
         @Override
         public void execute(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, String[] args) throws CommandException {
@@ -366,33 +322,15 @@ public class ClassCommand extends CommandTreeBase {
                 sender.sendMessage(new TextComponentString(classId.toString()));
             }
         }
-
-        @Override
-        public String getName() {
-            return "list";
-        }
-
-        @Override
-        public String getUsage(ICommandSender sender) {
-            return "commands.mk.class.list";
-        }
-
-        @Override
-        public boolean isUsernameIndex(String[] args, int index) {
-            return args.length > 0 && index == 0;
-        }
-
-        @Nonnull
-        @Override
-        public java.util.List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
-            if (args.length == 1) {
-                return getListOfStringsMatchingLastWord(args, server.getOnlinePlayerNames());
-            }
-            return Collections.emptyList();
-        }
     }
 
     static class Active extends MKClassCommand {
+
+        @Nonnull
+        @Override
+        public String getName() {
+            return "active";
+        }
 
         @Override
         public void execute(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, String[] args) throws CommandException {
@@ -423,29 +361,41 @@ public class ClassCommand extends CommandTreeBase {
 
             sender.sendMessage(msg);
         }
+    }
 
-        @Override
-        public String getName() {
-            return "active";
-        }
-
-        @Override
-        public String getUsage(ICommandSender sender) {
-            return "commands.mk.class.active";
-        }
-
-        @Override
-        public boolean isUsernameIndex(String[] args, int index) {
-            return args.length > 0 && index == 0;
-        }
+    static class Reset extends MKClassCommand {
 
         @Nonnull
         @Override
-        public java.util.List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
-            if (args.length == 1) {
-                return getListOfStringsMatchingLastWord(args, server.getOnlinePlayerNames());
+        public String getName() {
+            return "reset";
+        }
+
+        @Override
+        public void execute(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, String[] args) throws CommandException {
+            EntityPlayerMP player = null;
+
+            if (args.length == 0) {
+                player = getCommandSenderAsPlayer(sender);
             }
-            return Collections.emptyList();
+            if (args.length >= 1) {
+                player = getPlayer(server, sender, args[0]);
+            }
+
+            boolean resetTalents = false;
+            if (args.length >= 2) {
+                resetTalents = ClassCommand.parseBoolean(args[1]);
+            }
+
+            PlayerData data = (PlayerData) MKUPlayerData.get(player);
+            if (data == null)
+                return;
+
+            if (data.resetAbilities(resetTalents)) {
+                player.sendMessage(new TextComponentString("Abilities were all unlearned and points were refunded"));
+            } else {
+                sender.sendMessage(new TextComponentString("Failed to reset class abilities"));
+            }
         }
     }
 }
