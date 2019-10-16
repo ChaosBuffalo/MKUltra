@@ -1292,23 +1292,31 @@ public class PlayerData implements IPlayerData {
     }
 
     private void validateAbilityPoints() {
+        if (!hasChosenClass())
+            return;
+
+        PlayerClass playerClass = MKURegistry.getClass(getClassId());
+        if (playerClass == null)
+            return;
+
         int totalPoints = getUnspentPoints();
-        for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
-            ResourceLocation abilityId = getAbilityInSlot(i);
-
-            if (abilityId.equals(MKURegistry.INVALID_ABILITY))
+        for (int i = 0; i < GameConstants.CLASS_ACTION_BAR_SIZE; i++) {
+            PlayerAbility ability = playerClass.getOfferedAbilityBySlot(i);
+            if (ability == null)
                 continue;
 
-            PlayerAbilityInfo info = getAbilityInfo(abilityId);
-            if (info == null)
+            PlayerAbilityInfo info = getAbilityInfo(ability.getAbilityId());
+            if (info == null || !info.isCurrentlyKnown())
                 continue;
 
-            if (info.isCurrentlyKnown()) {
-                totalPoints += info.getRank();
-            }
+            totalPoints += info.getRank();
         }
 
         Log.info("validateAbilityPoints: %s expected %d calculated %d", player.getName(), getLevel(), totalPoints);
+        if (totalPoints != getLevel()) {
+            resetAbilities(false);
+            player.sendMessage(new TextComponentString("Your abilities have been reset and points refunded. Sorry for the inconvenience"));
+        }
     }
 
     public void doDeath() {
@@ -1571,5 +1579,25 @@ public class PlayerData implements IPlayerData {
 
     public boolean isInSpellTriggerCallback(String tag) {
         return activeSpellTriggers.contains(tag);
+    }
+
+    public boolean resetAbilities(boolean includeTalents) {
+        if (!hasChosenClass())
+            return false;
+
+        PlayerClass playerClass = MKURegistry.getClass(getClassId());
+        if (playerClass == null)
+            return false;
+
+        for (int i = 0; i < GameConstants.CLASS_ACTION_BAR_SIZE; i++) {
+            PlayerAbility ability = playerClass.getOfferedAbilityBySlot(i);
+            if (ability == null)
+                continue;
+            unlearnAbility(ability.getAbilityId(), false, true);
+        }
+
+        setUnspentPoints(getLevel());
+
+        return true;
     }
 }
