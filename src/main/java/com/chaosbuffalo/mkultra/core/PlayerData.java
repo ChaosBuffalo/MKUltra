@@ -159,7 +159,7 @@ public class PlayerData implements IPlayerData {
     private ResourceLocation getLastUpgradedAbility() {
         PlayerClassInfo cinfo = getActiveClass();
         if (cinfo != null) {
-            return cinfo.getAbilitySpendOrder(getLearnIndex());
+            return cinfo.getAbilitySpendOrder(getAbilityLearnIndex());
         }
         return MKURegistry.INVALID_ABILITY;
     }
@@ -720,7 +720,7 @@ public class PlayerData implements IPlayerData {
         return GameConstants.ABILITY_INVALID_RANK;
     }
 
-    private int getLearnIndex() {
+    private int getAbilityLearnIndex() {
         return getLevel() - getUnspentPoints();
     }
 
@@ -748,7 +748,7 @@ public class PlayerData implements IPlayerData {
             } else {
                 return false;
             }
-            classInfo.setAbilitySpendOrder(abilityId, getLearnIndex());
+            classInfo.setAbilitySpendOrder(abilityId, getAbilityLearnIndex());
         }
 
         info.upgrade();
@@ -813,7 +813,7 @@ public class PlayerData implements IPlayerData {
     }
 
     private void updateToggleAbility(PlayerAbilityInfo info) {
-        PlayerAbility ability = MKURegistry.getAbility(info.getId());
+        PlayerAbility ability = info.getAbility();
         if (ability instanceof PlayerToggleAbility && player != null) {
             PlayerToggleAbility toggle = (PlayerToggleAbility) ability;
 
@@ -881,24 +881,22 @@ public class PlayerData implements IPlayerData {
     @SideOnly(Side.CLIENT)
     private void updateCastTimeClient() {
         if (isCasting()) {
-            int currentCastTime = getCastTicks();
             ResourceLocation loc = getCastingAbility();
             PlayerAbility ability = MKURegistry.getAbility(loc);
             if (ability != null) {
+                int currentCastTime = getCastTicks();
                 ability.continueCastClient(player, this, player.getEntityWorld(), currentCastTime);
-                if (!lastUpdateIsCasting){
-                    int castTime = ability.getCastTime(getAbilityRankForClient(loc));
+                if (!lastUpdateIsCasting) {
                     SoundEvent event = ability.getCastingSoundEvent();
-                    if (event != null){
-                        MovingSoundCasting sound = new MovingSoundCasting(player, event,
-                                SoundCategory.PLAYERS, castTime);
-                        castingSound = sound;
-                        Minecraft.getMinecraft().getSoundHandler().playSound(sound);
+                    if (event != null) {
+                        int castTime = ability.getCastTime(getAbilityRankForClient(loc));
+                        castingSound = new MovingSoundCasting(player, event, SoundCategory.PLAYERS, castTime);
+                        Minecraft.getMinecraft().getSoundHandler().playSound(castingSound);
                     }
                 }
             }
         } else {
-            if (lastUpdateIsCasting && castingSound != null){
+            if (lastUpdateIsCasting && castingSound != null) {
                 Minecraft.getMinecraft().getSoundHandler().stopSound(castingSound);
                 castingSound = null;
             }
@@ -908,24 +906,24 @@ public class PlayerData implements IPlayerData {
     }
 
     private void updateCastTime() {
-        if (isCasting()) {
+        if (!isCasting())
+            return;
+
+        PlayerAbilityInfo abilityInfo = getAbilityInfo(getCastingAbility());
+        if (abilityInfo != null) {
+            PlayerAbility ability = abilityInfo.getAbility();
             int currentCastTime = getCastTicks();
-            ResourceLocation loc = getCastingAbility();
-            PlayerAbility ability = MKURegistry.getAbility(loc);
-            if (ability != null) {
-                ability.continueCast(player, this, player.getEntityWorld(), currentCastTime, currentCastState);
-                if (currentCastTime > 0) {
-                    setCastTicks(currentCastTime - 1);
-                } else {
-                    ability.endCast(player, this, player.getEntityWorld(), currentCastState);
-                    completeAbility(ability, getAbilityInfo(loc));
-                    privateData.set(CURRENT_CAST, INVALID_ABILITY_STRING);
-                }
+            ability.continueCast(player, this, player.getEntityWorld(), currentCastTime, currentCastState);
+            if (currentCastTime > 0) {
+                setCastTicks(currentCastTime - 1);
             } else {
+                ability.endCast(player, this, player.getEntityWorld(), currentCastState);
+                completeAbility(ability, abilityInfo);
                 privateData.set(CURRENT_CAST, INVALID_ABILITY_STRING);
             }
+        } else {
+            privateData.set(CURRENT_CAST, INVALID_ABILITY_STRING);
         }
-
     }
 
     @Override
@@ -940,7 +938,7 @@ public class PlayerData implements IPlayerData {
 
         if (getCurrentAbilityCooldown(abilityId) == 0) {
 
-            PlayerAbility ability = MKURegistry.getAbility(abilityId);
+            PlayerAbility ability = info.getAbility();
             if (ability != null && ability.meetsRequirements(this)
                     && !MinecraftForge.EVENT_BUS.post(new PlayerAbilityCastEvent.Starting(player, this, ability, info))) {
                 ability.execute(player, this, player.getEntityWorld());

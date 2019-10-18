@@ -79,27 +79,26 @@ public class AbilityBar extends Gui {
 
     }
 
-    private void drawCastBar(IPlayerData data){
-        if (!data.isCasting()){
+    private void drawCastBar(IPlayerData data) {
+        if (!data.isCasting()) {
             return;
         }
         PlayerAbilityInfo info = data.getAbilityInfo(data.getCastingAbility());
-        PlayerAbility ability = MKURegistry.getAbility(data.getCastingAbility());
-        if (info == null || ability == null){
+        if (info == null || !info.isCurrentlyKnown()) {
             return;
         }
+        PlayerAbility ability = info.getAbility();
         ScaledResolution scaledresolution = new ScaledResolution(this.mc);
         int height = scaledresolution.getScaledHeight();
         int castStartY = height / 2 + 8;
         int width = 50;
-        int barSize = (int) (width * data.getCastTicks() / ability.getCastTime(info.getRank()));
+        int barSize = width * data.getCastTicks() / ability.getCastTime(info.getRank());
         int castStartX = scaledresolution.getScaledWidth() / 2 - barSize / 2;
         GlStateManager.pushMatrix();
         GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
         this.drawTexturedModalRect(castStartX, castStartY, 26,
                 21, barSize, 3);
         GlStateManager.popMatrix();
-
     }
 
     private void drawBarSlots(int slotCount) {
