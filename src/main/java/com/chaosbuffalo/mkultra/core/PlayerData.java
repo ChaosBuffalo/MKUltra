@@ -1193,31 +1193,31 @@ public class PlayerData implements IPlayerData {
         }
     }
 
-    private void serializeSkills(NBTTagCompound tag) {
-
-        NBTTagList allSkills = new NBTTagList();
+    private void serializeAbilities(NBTTagCompound tag) {
+        NBTTagList tagList = new NBTTagList();
         for (PlayerAbilityInfo info : abilityInfoMap.values()) {
             NBTTagCompound sk = new NBTTagCompound();
             info.serialize(sk);
-            allSkills.appendTag(sk);
+            tagList.appendTag(sk);
         }
-        tag.setTag("allSkills", allSkills);
+
+        tag.setTag("abilities", tagList);
     }
 
-    private void deserializeSkills(NBTTagCompound tag) {
-        if (tag.hasKey("allSkills")) {
-            NBTTagList skills = tag.getTagList("allSkills", Constants.NBT.TAG_COMPOUND);
-            abilityInfoMap = new HashMap<>(skills.tagCount());
-            for (int i = 0; i < skills.tagCount(); i++) {
-                NBTTagCompound sk = skills.getCompoundTagAt(i);
-                PlayerAbility ability = MKURegistry.getAbility(new ResourceLocation(sk.getString("id")));
+    private void deserializeAbilities(NBTTagCompound tag) {
+        if (tag.hasKey("abilities")) {
+            NBTTagList tagList = tag.getTagList("abilities", Constants.NBT.TAG_COMPOUND);
+            for (int i = 0; i < tagList.tagCount(); i++) {
+                NBTTagCompound abilityTag = tagList.getCompoundTagAt(i);
+                ResourceLocation abilityId = new ResourceLocation(abilityTag.getString("id"));
+                PlayerAbility ability = MKURegistry.getAbility(abilityId);
                 if (ability == null) {
                     continue;
                 }
                 PlayerAbilityInfo info = ability.createAbilityInfo();
-                info.deserialize(sk);
+                info.deserialize(abilityTag);
 
-                abilityInfoMap.put(info.getId(), info);
+                abilityInfoMap.put(abilityId, info);
             }
 
             sendBulkAbilityUpdate();
@@ -1269,14 +1269,14 @@ public class PlayerData implements IPlayerData {
     public void serialize(NBTTagCompound nbt) {
         nbt.setFloat("mana", getMana());
         abilityTracker.serialize(nbt);
-        serializeSkills(nbt);
+        serializeAbilities(nbt);
         serializeClasses(nbt);
     }
 
     @Override
     public void deserialize(NBTTagCompound nbt) {
         abilityTracker.deserialize(nbt);
-        deserializeSkills(nbt);
+        deserializeAbilities(nbt);
         deserializeClasses(nbt);
         if (nbt.hasKey("mana")) {
             setMana(nbt.getFloat("mana"));

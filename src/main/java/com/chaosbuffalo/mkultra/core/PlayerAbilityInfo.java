@@ -1,26 +1,25 @@
 package com.chaosbuffalo.mkultra.core;
 
 import com.chaosbuffalo.mkultra.GameConstants;
+import com.chaosbuffalo.mkultra.log.Log;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 
 public class PlayerAbilityInfo {
-    private ResourceLocation id;
+    private PlayerAbility ability;
     private int rank;
 
-    public PlayerAbilityInfo(ResourceLocation abilityId) {
-        id = abilityId;
+    public PlayerAbilityInfo(PlayerAbility ability) {
+        this.ability = ability;
         rank = GameConstants.ABILITY_INVALID_RANK;
     }
 
-    public PlayerAbilityInfo(ResourceLocation abilityId, int rank) {
-        id = abilityId;
-        this.rank = rank;
+    public PlayerAbility getAbility() {
+        return ability;
     }
 
     public ResourceLocation getId() {
-        return id;
+        return ability.getAbilityId();
     }
 
     public int getRank() {
@@ -32,7 +31,7 @@ public class PlayerAbilityInfo {
     }
 
     public void upgrade() {
-        if (rank < GameConstants.MAX_ABILITY_RANK) {
+        if (rank < ability.getMaxRank()) {
             rank += 1;
         }
     }
@@ -46,25 +45,18 @@ public class PlayerAbilityInfo {
     }
 
     public void serialize(NBTTagCompound tag) {
-        tag.setString("id", id.toString());
-        // Leaving this as "level" to avoid breaking existing saves
-        tag.setInteger("level", rank);
+        tag.setString("id", ability.getAbilityId().toString());
+        tag.setInteger("rank", rank);
     }
 
     public void deserialize(NBTTagCompound tag) {
-        id = new ResourceLocation(tag.getString("id"));
-        rank = tag.getInteger("level");
-    }
-
-    public void serializeUpdate(PacketBuffer pb) {
-        pb.writeResourceLocation(id);
-        pb.writeInt(rank);
-    }
-
-    public static PlayerAbilityInfo deserializeUpdate(PacketBuffer pb) {
-        ResourceLocation id = pb.readResourceLocation();
-        PlayerAbilityInfo info = new PlayerAbilityInfo(id);
-        info.rank = pb.readInt();
-        return info;
+        ResourceLocation id = new ResourceLocation(tag.getString("id"));
+        if (!id.equals(ability.getAbilityId())) {
+            Log.error("Failed to deserialize ability! id was %s, linked ability was %s", id, ability.getAbilityId());
+            return;
+        }
+        if (tag.hasKey("rank")) {
+            rank = tag.getInteger("rank");
+        }
     }
 }
