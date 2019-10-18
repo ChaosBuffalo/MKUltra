@@ -159,7 +159,7 @@ public class PlayerData implements IPlayerData {
     private ResourceLocation getLastUpgradedAbility() {
         PlayerClassInfo cinfo = getActiveClass();
         if (cinfo != null) {
-            return cinfo.getLastUpgradedAbility();
+            return cinfo.getAbilitySpendOrder(getLearnIndex());
         }
         return MKURegistry.INVALID_ABILITY;
     }
@@ -720,6 +720,10 @@ public class PlayerData implements IPlayerData {
         return GameConstants.ABILITY_INVALID_RANK;
     }
 
+    private int getLearnIndex() {
+        return getLevel() - getUnspentPoints();
+    }
+
     @Override
     public boolean learnAbility(ResourceLocation abilityId, boolean consumePoint) {
         PlayerClassInfo classInfo = getActiveClass();
@@ -744,7 +748,7 @@ public class PlayerData implements IPlayerData {
             } else {
                 return false;
             }
-            classInfo.addToSpendOrder(abilityId);
+            classInfo.setAbilitySpendOrder(abilityId, getLearnIndex());
         }
 
         info.upgrade();
@@ -1320,7 +1324,6 @@ public class PlayerData implements IPlayerData {
     }
 
     public void doDeath() {
-        validateAbilityPoints();
         if (getLevel() > 1) {
             int curUnspent = getUnspentPoints();
             if (curUnspent > 0) {
@@ -1336,19 +1339,22 @@ public class PlayerData implements IPlayerData {
             // If so, unlearn the spell and refund the point.
             int newLevel = getLevel() - 1;
             Arrays.stream(getActiveAbilities())
-                    .filter(r -> MKURegistry.getAbility(r) != null)
                     .map(MKURegistry::getAbility)
-                    .filter(a -> {
+                    .filter(Objects::nonNull)
+                    .filter(ability -> ability.getType() == PlayerAbility.AbilityType.Active)
+                    .filter(ability -> {
+                        int currentRank = getAbilityRank(ability.getAbilityId());
                         // Subtract 1 because getRequiredLevel is a little weird. It actually tells you the required
                         // level to go up a rank, not the required level for the current rank
-                        int newRank = getAbilityRank(a.getAbilityId()) - 1;
-                        int reqLevel = a.getRequiredLevel(newRank);
+                        int newRank = currentRank - 1;
+                        int reqLevel = ability.getRequiredLevel(newRank);
                         reqLevel = Math.max(1, reqLevel);
                         return reqLevel > newLevel;
                     })
                     .forEach(a -> unlearnAbility(a.getAbilityId(), true, false));
 
             setLevel(newLevel);
+            validateAbilityPoints();
         }
     }
 
@@ -1589,6 +1595,10 @@ public class PlayerData implements IPlayerData {
         if (playerClass == null)
             return false;
 
+        PlayerClassInfo classInfo = getActiveClass();
+        if (classInfo == null)
+            return false;
+
         for (int i = 0; i < GameConstants.CLASS_ACTION_BAR_SIZE; i++) {
             PlayerAbility ability = playerClass.getOfferedAbilityBySlot(i);
             if (ability == null)
@@ -1596,6 +1606,7 @@ public class PlayerData implements IPlayerData {
             unlearnAbility(ability.getAbilityId(), false, true);
         }
 
+        classInfo.clearAbilitySpendOrder();
         setUnspentPoints(getLevel());
 
         return true;
