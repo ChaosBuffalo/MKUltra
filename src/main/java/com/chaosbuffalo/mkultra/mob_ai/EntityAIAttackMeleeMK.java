@@ -23,7 +23,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class EntityAIAttackMeleeMK extends EntityAIBase {
-    World world;
     protected EntityCreature attacker;
     protected int attackTick;
     double speedTowardsTarget;
@@ -39,7 +38,6 @@ public class EntityAIAttackMeleeMK extends EntityAIBase {
 
     public EntityAIAttackMeleeMK(EntityCreature entityIn, double moveSpeed, boolean longMemory) {
         this.attacker = entityIn;
-        this.world = entityIn.world;
         this.speedTowardsTarget = moveSpeed;
         this.longMemory = longMemory;
         this.setMutexBits(3);
