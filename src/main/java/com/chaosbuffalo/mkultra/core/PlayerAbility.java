@@ -45,13 +45,12 @@ public abstract class PlayerAbility extends IForgeRegistryEntry.Impl<PlayerAbili
         this.abilityId = abilityId;
     }
 
-
     public ResourceLocation getAbilityId() {
         return abilityId;
     }
 
-    public PlayerAbilityInfo createAbilityInfo(){
-        return new PlayerAbilityInfo(getAbilityId());
+    public PlayerAbilityInfo createAbilityInfo() {
+        return new PlayerAbilityInfo(this);
     }
 
     @Nullable

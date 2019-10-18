@@ -2,9 +2,10 @@ package com.chaosbuffalo.mkultra.core;
 
 import com.chaosbuffalo.mkultra.event.EntityEventHandler;
 import com.chaosbuffalo.mkultra.init.ModFixes;
-import com.chaosbuffalo.mkultra.log.Log;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.datafix.FixTypes;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ModFixs;
 
 public class PlayerDataFixer {
@@ -22,8 +23,16 @@ public class PlayerDataFixer {
 
         @Override
         protected void fixCapability(NBTTagCompound compound) {
-            Log.info("!!!!!!!!!!!!!!!player");
-            Log.info("%s", compound);
+            if (compound.hasKey("allSkills")) {
+                NBTTagList skills = compound.getTagList("allSkills", Constants.NBT.TAG_COMPOUND);
+                compound.setTag("abilities", skills);
+                for (int i = 0; i < skills.tagCount(); i++) {
+                    NBTTagCompound sk = skills.getCompoundTagAt(i);
+                    if (sk.hasKey("level", Constants.NBT.TAG_INT)) {
+                        sk.setInteger("rank", sk.getInteger("level"));
+                    }
+                }
+            }
         }
     }
 }
