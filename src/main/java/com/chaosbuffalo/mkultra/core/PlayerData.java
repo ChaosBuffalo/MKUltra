@@ -290,7 +290,7 @@ public class PlayerData implements IPlayerData {
     public List<ResourceLocation> getActiveUltimates() {
         PlayerClassInfo activeClass = getActiveClass();
         if (activeClass != null) {
-            return Arrays.asList(activeClass.getActiveUltimates());
+            return activeClass.getActiveUltimates();
         }
         return null;
     }
