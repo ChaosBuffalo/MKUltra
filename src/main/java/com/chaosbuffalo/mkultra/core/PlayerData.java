@@ -280,7 +280,7 @@ public class PlayerData implements IPlayerData {
     public List<ResourceLocation> getActivePassives() {
         PlayerClassInfo activeClass = getActiveClass();
         if (activeClass != null) {
-            return Arrays.asList(activeClass.getActivePassives());
+            return activeClass.getActivePassives();
         }
         return null;
     }
