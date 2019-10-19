@@ -34,7 +34,7 @@ public class PlayerClassInfo {
     private int totalTalentPoints;
     private int unspentTalentPoints;
     private HashMap<ResourceLocation, TalentTreeRecord> talentTrees;
-    private ResourceLocation[] hotbar;
+    private List<ResourceLocation> hotbar;
     private List<ResourceLocation> abilitySpendOrder;
     private List<ResourceLocation> loadedPassives;
     private List<ResourceLocation> loadedUltimates;
@@ -53,8 +53,7 @@ public class PlayerClassInfo {
         }
         loadedPassives = NonNullList.withSize(GameConstants.MAX_PASSIVES, MKURegistry.INVALID_ABILITY);
         loadedUltimates = NonNullList.withSize(GameConstants.MAX_ULTIMATES, MKURegistry.INVALID_ABILITY);
-        hotbar = new ResourceLocation[GameConstants.ACTION_BAR_SIZE];
-        Arrays.fill(hotbar, MKURegistry.INVALID_ABILITY);
+        hotbar = NonNullList.withSize(GameConstants.ACTION_BAR_SIZE, MKURegistry.INVALID_ABILITY);
         abilitySpendOrder = NonNullList.withSize(GameConstants.MAX_CLASS_LEVEL, MKURegistry.INVALID_ABILITY);
         talentTrees = new HashMap<>();
         for (TalentTree tree : MKURegistry.REGISTRY_TALENT_TREES.getValuesCollection()) {
@@ -90,7 +89,7 @@ public class PlayerClassInfo {
         level = data.getLevel();
         unspentPoints = data.getUnspentPoints();
         for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
-            hotbar[i] = data.getAbilityInSlot(i);
+            hotbar.set(i, data.getAbilityInSlot(i));
         }
     }
 
@@ -105,16 +104,6 @@ public class PlayerClassInfo {
 
     public void putInfo(ResourceLocation abilityId, PlayerAbilityInfo info){
         abilityInfoMap.put(abilityId, info);
-    }
-
-    private ResourceLocation[] parseNBTAbilityArray(NBTTagCompound tag, String name, int size) {
-        NBTTagList list = tag.getTagList(name, Constants.NBT.TAG_STRING);
-        ResourceLocation[] arr = new ResourceLocation[size];
-        Arrays.fill(arr, MKURegistry.INVALID_ABILITY);
-        for (int i = 0; i < size && i < list.tagCount(); i++) {
-            arr[i] = new ResourceLocation(list.getStringTagAt(i));
-        }
-        return arr;
     }
 
     private List<ResourceLocation> parseNBTAbilityList(NBTTagCompound tag, String name, int size) {
@@ -382,7 +371,7 @@ public class PlayerClassInfo {
         tag.setInteger("unspentPoints", unspentPoints);
         serializeAbilities(tag);
         writeNBTAbilityArray(tag, "abilitySpendOrder", abilitySpendOrder, GameConstants.MAX_CLASS_LEVEL);
-        writeNBTAbilityArray(tag, "hotbar", Arrays.asList(hotbar), GameConstants.ACTION_BAR_SIZE);
+        writeNBTAbilityArray(tag, "hotbar", hotbar, GameConstants.ACTION_BAR_SIZE);
         serializeTalentInfo(tag);
     }
 
@@ -404,7 +393,7 @@ public class PlayerClassInfo {
                 if (abilityHash.equals(classObj.hashAbilities())){
                     unspentPoints = tag.getInteger("unspentPoints");
                     abilitySpendOrder = parseNBTAbilityList(tag, "abilitySpendOrder", GameConstants.MAX_CLASS_LEVEL);
-                    setActiveAbilities(parseNBTAbilityArray(tag, "hotbar", GameConstants.ACTION_BAR_SIZE));
+                    hotbar = parseNBTAbilityList(tag, "hotbar", GameConstants.ACTION_BAR_SIZE);
                 } else {
                     clearSpentAbilities();
                 }
@@ -445,8 +434,8 @@ public class PlayerClassInfo {
         return Collections.unmodifiableList(loadedUltimates);
     }
 
-    public ResourceLocation[] getActiveAbilities() {
-        return hotbar;
+    public List<ResourceLocation> getActiveAbilities() {
+        return Collections.unmodifiableList(hotbar);
     }
 
     public void addTalentPoints(int pointCount) {
@@ -506,10 +495,6 @@ public class PlayerClassInfo {
         }
     }
 
-    void setActiveAbilities(ResourceLocation[] hotbar) {
-        this.hotbar = hotbar;
-    }
-
     public void setAbilitySpendOrder(ResourceLocation abilityId, int level) {
         if (level > 0) {
             abilitySpendOrder.set(level - 1, abilityId);
@@ -530,7 +515,7 @@ public class PlayerClassInfo {
     }
 
     public void clearActiveAbilities(){
-        Arrays.fill(hotbar, MKURegistry.INVALID_ABILITY);
+        hotbar.clear();
     }
 
     public void clearAbilitySpendOrder() {
