@@ -16,6 +16,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
@@ -34,7 +35,7 @@ public class PlayerClassInfo {
     private int unspentTalentPoints;
     private HashMap<ResourceLocation, TalentTreeRecord> talentTrees;
     private ResourceLocation[] hotbar;
-    private ResourceLocation[] abilitySpendOrder;
+    private List<ResourceLocation> abilitySpendOrder;
     private ResourceLocation[] loadedPassives;
     private ResourceLocation[] loadedUltimates;
     private Map<ResourceLocation, PlayerAbilityInfo> abilityInfoMap =
@@ -56,8 +57,7 @@ public class PlayerClassInfo {
         Arrays.fill(loadedUltimates, MKURegistry.INVALID_ABILITY);
         hotbar = new ResourceLocation[GameConstants.ACTION_BAR_SIZE];
         Arrays.fill(hotbar, MKURegistry.INVALID_ABILITY);
-        abilitySpendOrder = new ResourceLocation[GameConstants.MAX_CLASS_LEVEL];
-        Arrays.fill(abilitySpendOrder, MKURegistry.INVALID_ABILITY);
+        abilitySpendOrder = NonNullList.withSize(GameConstants.MAX_CLASS_LEVEL, MKURegistry.INVALID_ABILITY);
         talentTrees = new HashMap<>();
         for (TalentTree tree : MKURegistry.REGISTRY_TALENT_TREES.getValuesCollection()) {
             talentTrees.put(tree.getRegistryName(), new TalentTreeRecord(tree));
@@ -117,6 +117,15 @@ public class PlayerClassInfo {
             arr[i] = new ResourceLocation(list.getStringTagAt(i));
         }
         return arr;
+    }
+
+    private List<ResourceLocation> parseNBTAbilityList(NBTTagCompound tag, String name, int size) {
+        NBTTagList list = tag.getTagList(name, Constants.NBT.TAG_STRING);
+        List<ResourceLocation> ids = NonNullList.withSize(size, MKURegistry.INVALID_ABILITY);
+        for (int i = 0; i < size && i < list.tagCount(); i++) {
+            ids.set(i, new ResourceLocation(list.getStringTagAt(i)));
+        }
+        return ids;
     }
 
     public void applyPassives(EntityPlayer player, IPlayerData data, World world) {
@@ -378,7 +387,7 @@ public class PlayerClassInfo {
 
         tag.setInteger("unspentPoints", unspentPoints);
         serializeAbilities(tag);
-        writeNBTAbilityArray(tag, "abilitySpendOrder", Arrays.asList(abilitySpendOrder), GameConstants.MAX_CLASS_LEVEL);
+        writeNBTAbilityArray(tag, "abilitySpendOrder", abilitySpendOrder, GameConstants.MAX_CLASS_LEVEL);
         writeNBTAbilityArray(tag, "hotbar", Arrays.asList(hotbar), GameConstants.ACTION_BAR_SIZE);
         serializeTalentInfo(tag);
     }
@@ -400,7 +409,7 @@ public class PlayerClassInfo {
                 String abilityHash = tag.getString("classAbilityHash");
                 if (abilityHash.equals(classObj.hashAbilities())){
                     unspentPoints = tag.getInteger("unspentPoints");
-                    abilitySpendOrder = parseNBTAbilityArray(tag, "abilitySpendOrder", GameConstants.MAX_CLASS_LEVEL);
+                    abilitySpendOrder = parseNBTAbilityList(tag, "abilitySpendOrder", GameConstants.MAX_CLASS_LEVEL);
                     setActiveAbilities(parseNBTAbilityArray(tag, "hotbar", GameConstants.ACTION_BAR_SIZE));
                 } else {
                     clearSpentAbilities();
@@ -517,7 +526,7 @@ public class PlayerClassInfo {
 
     public void setAbilitySpendOrder(ResourceLocation abilityId, int level) {
         if (level > 0) {
-            abilitySpendOrder[level - 1] = abilityId;
+            abilitySpendOrder.set(level - 1, abilityId);
         }
     }
 
@@ -539,14 +548,14 @@ public class PlayerClassInfo {
     }
 
     public void clearAbilitySpendOrder() {
-        Arrays.fill(abilitySpendOrder, MKURegistry.INVALID_ABILITY);
+        abilitySpendOrder.clear();
     }
 
     public ResourceLocation getAbilitySpendOrder(int index) {
         ResourceLocation id = MKURegistry.INVALID_ABILITY;
         if (index > 0) {
-            id = abilitySpendOrder[index - 1];
-            abilitySpendOrder[index - 1] = MKURegistry.INVALID_ABILITY;
+            id = abilitySpendOrder.get(index - 1);
+            abilitySpendOrder.set(index - 1, MKURegistry.INVALID_ABILITY);
         }
         return id;
     }
