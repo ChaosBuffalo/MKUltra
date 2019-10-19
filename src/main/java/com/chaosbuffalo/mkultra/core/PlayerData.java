@@ -872,8 +872,18 @@ public class PlayerData implements IPlayerData {
         return new ResourceLocation(privateData.get(CURRENT_CAST));
     }
 
+    private void setCastingAbility(ResourceLocation abilityId) {
+        privateData.set(CURRENT_CAST, abilityId.toString());
+    }
+
+    private void clearCastingAbility() {
+        setCastingAbility(MKURegistry.INVALID_ABILITY);
+        setCastTicks(0);
+        currentCastState = null;
+    }
+
     private CastState startCast(PlayerAbility ability, int castTime) {
-        privateData.set(CURRENT_CAST, ability.getAbilityId().toString());
+        setCastingAbility(ability.getAbilityId());
         setCastTicks(castTime);
         return ability.createCastState(castTime);
     }
@@ -919,10 +929,9 @@ public class PlayerData implements IPlayerData {
             } else {
                 ability.endCast(player, this, player.getEntityWorld(), currentCastState);
                 completeAbility(ability, abilityInfo);
-                privateData.set(CURRENT_CAST, INVALID_ABILITY_STRING);
             }
         } else {
-            privateData.set(CURRENT_CAST, INVALID_ABILITY_STRING);
+            clearCastingAbility();
         }
     }
 
@@ -959,6 +968,7 @@ public class PlayerData implements IPlayerData {
         if (sound != null){
             AbilityUtils.playSoundAtServerEntity(player, sound, SoundCategory.PLAYERS);
         }
+        clearCastingAbility();
         MinecraftForge.EVENT_BUS.post(new PlayerAbilityCastEvent.Completed(player, this, ability, info));
     }
 
