@@ -5,11 +5,7 @@ import com.chaosbuffalo.mkultra.core.abilities.cast_states.CastState;
 import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.utils.RayTraceUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.ISound;
-import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -134,8 +130,8 @@ public abstract class PlayerAbility extends IForgeRegistryEntry.Impl<PlayerAbili
     }
 
     public boolean meetsRequirements(IPlayerData player) {
-        return !player.isCasting() && player.getMana() >=
-                PlayerFormulas.applyManaCostReduction(player, getManaCost(player.getAbilityRank(abilityId))) &&
+        return !player.isCasting() &&
+                player.getMana() >= player.getAbilityManaCost(abilityId) &&
                 player.getCurrentAbilityCooldown(abilityId) == 0;
     }
 

@@ -131,8 +131,8 @@ public class AbilityBar extends Gui {
             PlayerAbility ability = MKURegistry.getAbility(abilityId);
             if (ability == null)
                 continue;
-            float manaCost = PlayerFormulas.applyManaCostReduction(data, ability.getManaCost(
-                    data.getAbilityRank(ability.getAbilityId())));
+
+            float manaCost = data.getAbilityManaCost(abilityId);
             if (!data.isCasting() && data.getMana() >= manaCost){
                 GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             } else {

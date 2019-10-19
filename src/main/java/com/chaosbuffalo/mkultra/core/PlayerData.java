@@ -948,8 +948,9 @@ public class PlayerData implements IPlayerData {
         if (getCurrentAbilityCooldown(abilityId) == 0) {
 
             PlayerAbility ability = info.getAbility();
-            if (ability != null && ability.meetsRequirements(this)
-                    && !MinecraftForge.EVENT_BUS.post(new PlayerAbilityCastEvent.Starting(player, this, ability, info))) {
+            if (ability != null &&
+                    ability.meetsRequirements(this) &&
+                    !MinecraftForge.EVENT_BUS.post(new PlayerAbilityCastEvent.Starting(player, this, ability, info))) {
                 ability.execute(player, this, player.getEntityWorld());
                 return true;
             }
@@ -979,7 +980,7 @@ public class PlayerData implements IPlayerData {
         if (info == null || !info.isCurrentlyKnown() || isCasting())
             return null;
 
-        float manaCost = PlayerFormulas.applyManaCostReduction(this, ability.getManaCost(info.getRank()));
+        float manaCost = getAbilityManaCost(ability.getAbilityId());
         setMana(getMana() - manaCost);
 
         int castTime = ability.getCastTime(info.getRank());
@@ -1556,6 +1557,12 @@ public class PlayerData implements IPlayerData {
     public float getCooldownPercent(PlayerAbility ability, float partialTicks) {
         PlayerAbilityInfo info = getAbilityInfo(ability.getAbilityId());
         return info != null ? abilityTracker.getCooldown(ability.getAbilityId(), partialTicks) : 0.0f;
+    }
+
+    @Override
+    public float getAbilityManaCost(ResourceLocation abilityId) {
+        PlayerAbilityInfo abilityInfo = getAbilityInfo(abilityId);
+        return PlayerFormulas.applyManaCostReduction(this, abilityInfo.getAbility().getManaCost(abilityInfo.getRank()));
     }
 
     public void debugResetAllCooldowns() {
