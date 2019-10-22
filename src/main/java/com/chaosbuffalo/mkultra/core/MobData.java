@@ -1,11 +1,21 @@
 package com.chaosbuffalo.mkultra.core;
 
 import com.chaosbuffalo.mkultra.GameConstants;
+import com.chaosbuffalo.mkultra.client.audio.MovingSoundCasting;
 import com.chaosbuffalo.mkultra.spawn.MobFaction;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.HashSet;
 
@@ -25,6 +35,14 @@ public class MobData implements IMobData {
     private ResourceLocation mobDefinition;
     private boolean isMKSpawning;
     private int bonusExperience;
+    private final EntityDataManager privateData;
+    private final static DataParameter<Integer> CAST_TICKS = EntityDataManager.createKey(
+            EntityPlayer.class, DataSerializers.VARINT);
+    private final static DataParameter<String> CURRENT_CAST = EntityDataManager.createKey(
+            EntityPlayer.class, DataSerializers.STRING);
+    private final static String INVALID_ABILITY_STRING = MKURegistry.INVALID_ABILITY.toString();
+    private boolean lastUpdateIsCasting;
+    private MovingSoundCasting castingSound;
 
 
     public MobData(EntityLivingBase entity) {
@@ -33,12 +51,43 @@ public class MobData implements IMobData {
         hasAbilities = false;
         aggroRange = 10.0;
         timeBetweenCasts = 0;
+        privateData = entity.getDataManager();
         isBoss = false;
         bonusExperience = 0;
         factionName = MKURegistry.INVALID_FACTION;
         maxTimeBetweenCasts = 10 * GameConstants.TICKS_PER_SECOND;
         mobDefinition = MKURegistry.INVALID_MOB;
+        lastUpdateIsCasting = false;
+        setupWatcher();
+    }
 
+    private void setupWatcher() {
+        privateData.register(CAST_TICKS, 0);
+        privateData.register(CURRENT_CAST, INVALID_ABILITY_STRING);
+    }
+
+    private void markEntityDataDirty() {
+        privateData.setDirty(CAST_TICKS);
+        privateData.setDirty(CURRENT_CAST);
+    }
+
+    @Override
+    public ResourceLocation getCastingAbility() {
+        return new ResourceLocation(privateData.get(CURRENT_CAST));
+    }
+
+    public void forceUpdate() {
+        markEntityDataDirty();
+    }
+
+    @Override
+    public boolean isCasting() {
+        return !getCastingAbility().equals(MKURegistry.INVALID_ABILITY);
+    }
+
+    @Override
+    public int getCastTicks() {
+        return privateData.get(CAST_TICKS);
     }
 
     @Override
@@ -49,6 +98,34 @@ public class MobData implements IMobData {
     @Override
     public boolean hasAbilities() {
         return hasAbilities;
+    }
+
+    @SideOnly(Side.CLIENT)
+    private void updateCastTimeClient() {
+        if (isCasting()) {
+            int currentCastTime = getCastTicks();
+            ResourceLocation loc = getCastingAbility();
+            MobAbility ability = MKURegistry.getMobAbility(loc);
+            if (ability != null) {
+//                ability.continueCastClient(player, this, player.getEntityWorld(), currentCastTime);
+                if (!lastUpdateIsCasting){
+                    int castTime = ability.getCastTime();
+                    SoundEvent event = ability.getCastingSoundEvent();
+                    if (event != null){
+                        MovingSoundCasting sound = new MovingSoundCasting(entity, event,
+                                SoundCategory.HOSTILE, castTime);
+                        castingSound = sound;
+                        Minecraft.getMinecraft().getSoundHandler().playSound(sound);
+                    }
+                }
+            }
+        } else {
+            if (lastUpdateIsCasting && castingSound != null){
+                Minecraft.getMinecraft().getSoundHandler().stopSound(castingSound);
+                castingSound = null;
+            }
+        }
+        lastUpdateIsCasting = isCasting();
     }
 
     @Override

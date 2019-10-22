@@ -33,7 +33,7 @@ public class DualWieldPotion extends PassiveAbilityPotionBase {
 
     public static final DualWieldPotion INSTANCE = (DualWieldPotion) (new DualWieldPotion().registerPotionAttributeModifier(
             SharedMonsterAttributes.ATTACK_SPEED, MODIFIER_ID.toString(),
-            0.4, PlayerAttributes.OP_SCALE_MULTIPLICATIVE));
+            0.6, PlayerAttributes.OP_SCALE_MULTIPLICATIVE));
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Potion> event) {

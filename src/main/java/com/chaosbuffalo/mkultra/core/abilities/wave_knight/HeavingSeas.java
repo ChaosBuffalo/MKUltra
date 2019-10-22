@@ -115,7 +115,7 @@ public class HeavingSeas extends PlayerAbility {
                 .particle(EnumParticleTypes.WATER_BUBBLE)
                 .spawn();
 
-        EnvironmentUtils.putOutFires(entity.getEntityWorld(), entity.getPosition(),
+        EnvironmentUtils.putOutFires(entity, entity.getPosition(),
                 new Vec3i(10, 6, 10));
 
         Vec3d lookVec = entity.getLookVec();

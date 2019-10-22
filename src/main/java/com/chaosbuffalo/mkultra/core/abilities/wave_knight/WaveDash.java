@@ -89,9 +89,9 @@ public class WaveDash extends PlayerAbility {
         Vec3d lookVec = entity.getLookVec();
         float damage = BASE_DAMAGE + DAMAGE_SCALE * level;
         Vec3d perpVec = RayTraceUtils.getPerpendicular(to.subtract(from)).normalize();
-        EnvironmentUtils.putOutFiresInLine(theWorld, from, to);
-        EnvironmentUtils.putOutFiresInLine(theWorld, from.add(perpVec), to.add(perpVec));
-        EnvironmentUtils.putOutFiresInLine(theWorld, from.subtract(perpVec), to.subtract(perpVec));
+        EnvironmentUtils.putOutFiresInLine(entity, from, to);
+        EnvironmentUtils.putOutFiresInLine(entity, from.add(perpVec), to.add(perpVec));
+        EnvironmentUtils.putOutFiresInLine(entity, from.subtract(perpVec), to.subtract(perpVec));
 
         List<EntityLivingBase> entityHit = getTargetsInLine(entity, from, to, true, .75f);
         for (EntityLivingBase entHit : entityHit) {

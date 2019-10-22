@@ -74,10 +74,10 @@ public class EntityDrownProjectile extends EntityBaseProjectile {
                     result.hitVec.y, result.hitVec.z, 50.0f);
             switch (result.typeOfHit) {
                 case BLOCK:
-                    EnvironmentUtils.putOutFires(entity.getEntityWorld(), result.getBlockPos(), new Vec3i(10, 10, 10));
+                    EnvironmentUtils.putOutFires(entity, result.getBlockPos(), new Vec3i(10, 10, 10));
                     break;
                 case ENTITY:
-                    EnvironmentUtils.putOutFires(entity.getEntityWorld(), result.entityHit.getPosition(),
+                    EnvironmentUtils.putOutFires(entity, result.entityHit.getPosition(),
                             new Vec3i(10, 10, 10));
                     break;
                 case MISS:

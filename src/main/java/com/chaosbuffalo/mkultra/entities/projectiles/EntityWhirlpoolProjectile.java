@@ -68,10 +68,10 @@ public class EntityWhirlpoolProjectile extends EntityBaseProjectile {
                     .spawn();
             switch (result.typeOfHit) {
                 case BLOCK:
-                    EnvironmentUtils.putOutFires(caster.getEntityWorld(), result.getBlockPos(), new Vec3i(16, 8, 16));
+                    EnvironmentUtils.putOutFires(caster, result.getBlockPos(), new Vec3i(16, 8, 16));
                     break;
                 case ENTITY:
-                    EnvironmentUtils.putOutFires(caster.getEntityWorld(), result.entityHit.getPosition(),
+                    EnvironmentUtils.putOutFires(caster, result.entityHit.getPosition(),
                             new Vec3i(16, 8, 16));
                     break;
                 case MISS:

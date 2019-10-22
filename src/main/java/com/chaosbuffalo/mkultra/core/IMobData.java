@@ -11,6 +11,12 @@ public interface IMobData {
 
     boolean isMKSpawned();
 
+    public boolean isCasting();
+
+    public ResourceLocation getCastingAbility();
+
+    public int getCastTicks();
+
     boolean hasAbilities();
 
     void onTick();
