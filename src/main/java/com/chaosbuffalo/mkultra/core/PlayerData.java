@@ -995,6 +995,7 @@ public class PlayerData implements IPlayerData {
 
 
     @Override
+    @Nullable
     public PlayerAbilityInfo getAbilityInfo(ResourceLocation abilityId) {
         return abilityInfoMap.get(abilityId);
     }
@@ -1562,6 +1563,9 @@ public class PlayerData implements IPlayerData {
     @Override
     public float getAbilityManaCost(ResourceLocation abilityId) {
         PlayerAbilityInfo abilityInfo = getAbilityInfo(abilityId);
+        if (abilityInfo == null){
+            return 0.0f;
+        }
         return PlayerFormulas.applyManaCostReduction(this, abilityInfo.getAbility().getManaCost(abilityInfo.getRank()));
     }
 
