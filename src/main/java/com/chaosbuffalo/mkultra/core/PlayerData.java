@@ -421,7 +421,11 @@ public class PlayerData implements IPlayerData {
 
     @Override
     public void setArbitraryCooldown(ResourceLocation loc, int cooldown) {
-        setCooldown(loc, cooldown);
+        if (cooldown > 0) {
+            abilityTracker.setCooldown(loc, cooldown);
+        } else {
+            abilityTracker.removeCooldown(loc);
+        }
     }
 
     @Override
