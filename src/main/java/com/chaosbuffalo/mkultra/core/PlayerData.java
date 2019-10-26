@@ -1183,11 +1183,7 @@ public class PlayerData implements IPlayerData {
 
     @SideOnly(Side.CLIENT)
     public void clientSkillListUpdate(PlayerAbilityInfo info) {
-        if (!info.isCurrentlyKnown()) {
-            abilityInfoMap.remove(info.getId());
-        } else {
-            abilityInfoMap.put(info.getId(), info);
-        }
+        abilityInfoMap.put(info.getId(), info);
     }
 
     @SideOnly(Side.CLIENT)
@@ -1559,15 +1555,14 @@ public class PlayerData implements IPlayerData {
     }
 
     @Override
-    public float getCooldownPercent(PlayerAbility ability, float partialTicks) {
-        PlayerAbilityInfo info = getAbilityInfo(ability.getAbilityId());
-        return info != null ? abilityTracker.getCooldown(ability.getAbilityId(), partialTicks) : 0.0f;
+    public float getCooldownPercent(PlayerAbilityInfo abilityInfo, float partialTicks) {
+        return abilityInfo != null ? abilityTracker.getCooldown(abilityInfo.getId(), partialTicks) : 0.0f;
     }
 
     @Override
     public float getAbilityManaCost(ResourceLocation abilityId) {
         PlayerAbilityInfo abilityInfo = getAbilityInfo(abilityId);
-        if (abilityInfo == null){
+        if (abilityInfo == null) {
             return 0.0f;
         }
         return PlayerFormulas.applyManaCostReduction(this, abilityInfo.getAbility().getManaCost(abilityInfo.getRank()));

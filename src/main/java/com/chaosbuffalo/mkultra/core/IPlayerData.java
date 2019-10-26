@@ -40,7 +40,7 @@ public interface IPlayerData {
 
     void addToAllCooldowns(int cooldownTicks);
 
-    float getCooldownPercent(PlayerAbility ability, float partialTicks);
+    float getCooldownPercent(PlayerAbilityInfo abilityInfo, float partialTicks);
 
     float getAbilityManaCost(ResourceLocation abilityId);
 

@@ -128,12 +128,16 @@ public class AbilityBar extends Gui {
             if (abilityId.equals(MKURegistry.INVALID_ABILITY))
                 continue;
 
-            PlayerAbility ability = MKURegistry.getAbility(abilityId);
+            PlayerAbilityInfo info = data.getAbilityInfo(abilityId);
+            if (info == null || !info.isCurrentlyKnown())
+                continue;
+
+            PlayerAbility ability = info.getAbility();
             if (ability == null)
                 continue;
 
             float manaCost = data.getAbilityManaCost(abilityId);
-            if (!data.isCasting() && data.getMana() >= manaCost){
+            if (!data.isCasting() && data.getMana() >= manaCost) {
                 GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             } else {
                 GlStateManager.color(0.5f, 0.5f, 0.5f, 1.0F);
@@ -145,7 +149,7 @@ public class AbilityBar extends Gui {
                     ABILITY_ICON_SIZE, ABILITY_ICON_SIZE, ABILITY_ICON_SIZE, ABILITY_ICON_SIZE);
 
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-            float cooldownFactor = data.getCooldownPercent(ability, partialTicks);
+            float cooldownFactor = data.getCooldownPercent(info, partialTicks);
             if (globalCooldown > 0.0f && cooldownFactor == 0) {
                 cooldownFactor = globalCooldown / ClientKeyHandler.getTotalGlobalCooldown();
             }
@@ -188,7 +192,6 @@ public class AbilityBar extends Gui {
             return;
 
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        ResourceLocation loc = data.getAbilityInSlot(GameConstants.ACTION_BAR_SIZE -1);
         int slotCount = data.getActionBarSize();
         drawMana(data);
         drawCastBar(data);
