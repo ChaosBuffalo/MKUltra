@@ -1370,7 +1370,7 @@ public class PlayerData implements IPlayerData {
 
     @Override
     public boolean learnClass(IClassProvider provider, ResourceLocation classId) {
-        if (isClassKnown(classId)) {
+        if (knowsClass(classId)) {
             // Class was already known
             return true;
         }
@@ -1392,7 +1392,7 @@ public class PlayerData implements IPlayerData {
     }
 
     public void unlearnClass(ResourceLocation classId) {
-        if (!isClassKnown(classId)) {
+        if (!knowsClass(classId)) {
             return;
         }
 
@@ -1410,10 +1410,6 @@ public class PlayerData implements IPlayerData {
 
         sendBulkClassUpdate();
         MinecraftForge.EVENT_BUS.post(new PlayerClassEvent.Removed(player, this, info));
-    }
-
-    private boolean isClassKnown(ResourceLocation classId) {
-        return knownClasses.containsKey(classId);
     }
 
     private void saveCurrentClass() {
@@ -1479,7 +1475,7 @@ public class PlayerData implements IPlayerData {
         saveCurrentClass();
         deactivateCurrentToggleAbilities();
 
-        if (classId.equals(MKURegistry.INVALID_CLASS) || !isClassKnown(classId)) {
+        if (classId.equals(MKURegistry.INVALID_CLASS) || !knowsClass(classId)) {
             // Switching to no class
 
             classId = MKURegistry.INVALID_CLASS;
