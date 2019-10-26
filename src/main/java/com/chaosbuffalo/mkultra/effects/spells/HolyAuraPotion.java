@@ -4,6 +4,7 @@ package com.chaosbuffalo.mkultra.effects.spells;
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
+import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.passives.AuraPassiveBase;
@@ -27,6 +28,7 @@ public class HolyAuraPotion extends AuraPassiveBase {
 
     private final static int TEAM_AURA_DURATION = 40 * GameConstants.TICKS_PER_SECOND;
     private final static int APPLICATION_PERIOD = 10 * GameConstants.TICKS_PER_SECOND;
+    private static final ResourceLocation TIMER_NAME = new ResourceLocation(MKUltra.MODID, "timer.holy_aura");
 
     protected HolyAuraPotion() {
         super(APPLICATION_PERIOD);
@@ -60,6 +62,10 @@ public class HolyAuraPotion extends AuraPassiveBase {
         super.doEffect(source, indirectSource, target, amplifier, cast);
         if (source instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) source;
+            IPlayerData playerData = MKUPlayerData.get(player);
+            if (playerData == null || playerData.isArbitraryOnCooldown(TIMER_NAME))
+                return;
+
             AreaEffectBuilder builder = AreaEffectBuilder.Create(player, player)
                     .instant()
                     .disableParticle()
@@ -69,6 +75,7 @@ public class HolyAuraPotion extends AuraPassiveBase {
                             1, Targeting.TargetType.ENEMY)
                     .radius(getNegativeDistance(amplifier), true);
             builder.spawn();
+            playerData.setArbitraryCooldown(TIMER_NAME, APPLICATION_PERIOD);
         }
     }
 
