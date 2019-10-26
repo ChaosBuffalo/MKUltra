@@ -19,7 +19,6 @@ import com.chaosbuffalo.mkultra.network.packets.AbilityUpdatePacket;
 import com.chaosbuffalo.mkultra.network.packets.ClassUpdatePacket;
 import com.chaosbuffalo.mkultra.network.packets.PlayerSyncRequestPacket;
 import com.chaosbuffalo.mkultra.utils.AbilityUtils;
-import com.google.common.collect.Lists;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -1505,8 +1504,8 @@ public class PlayerData implements IPlayerData {
     }
 
     @Override
-    public List<ResourceLocation> getKnownClasses() {
-        return Lists.newArrayList(knownClasses.keySet());
+    public Collection<ResourceLocation> getKnownClasses() {
+        return Collections.unmodifiableSet(knownClasses.keySet());
     }
 
     @Override

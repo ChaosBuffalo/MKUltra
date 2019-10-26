@@ -7,6 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nullable;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -105,7 +106,7 @@ public interface IPlayerData {
 
     void activateClass(ResourceLocation classId);
 
-    List<ResourceLocation> getKnownClasses();
+    Collection<ResourceLocation> getKnownClasses();
 
     default boolean knowsClass(ResourceLocation classId) {
         return getKnownClasses().contains(classId);
