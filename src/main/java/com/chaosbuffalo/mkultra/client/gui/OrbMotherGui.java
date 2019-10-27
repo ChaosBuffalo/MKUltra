@@ -5,6 +5,7 @@ import com.chaosbuffalo.mkultra.client.gui.lib.*;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.MKUPlayerData;
 import com.chaosbuffalo.mkultra.core.MKURegistry;
+import com.chaosbuffalo.mkultra.core.PlayerData;
 import com.chaosbuffalo.mkultra.core.events.PlayerClassEvent;
 import com.chaosbuffalo.mkultra.core.talents.TalentRecord;
 import com.chaosbuffalo.mkultra.core.talents.TalentTreeRecord;
@@ -183,7 +184,7 @@ public class OrbMotherGui extends MKScreen {
 
     public Boolean pressTalentButton(MKButton button, Integer mouseButton) {
         TalentButton talentButton = (TalentButton) button;
-        IPlayerData data = MKUPlayerData.get(player);
+        PlayerData data = (PlayerData) MKUPlayerData.get(player);
         if (data != null) {
             if (mouseButton == UIConstants.MOUSE_BUTTON_RIGHT) {
                 if (data.canRefundTalentPoint(selectedTree, talentButton.line, talentButton.index)) {

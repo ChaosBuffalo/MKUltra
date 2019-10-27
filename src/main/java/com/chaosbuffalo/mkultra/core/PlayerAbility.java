@@ -5,11 +5,7 @@ import com.chaosbuffalo.mkultra.core.abilities.cast_states.CastState;
 import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.utils.RayTraceUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.ISound;
-import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -45,13 +41,12 @@ public abstract class PlayerAbility extends IForgeRegistryEntry.Impl<PlayerAbili
         this.abilityId = abilityId;
     }
 
-
     public ResourceLocation getAbilityId() {
         return abilityId;
     }
 
-    public PlayerAbilityInfo createAbilityInfo(){
-        return new PlayerAbilityInfo(getAbilityId());
+    public PlayerAbilityInfo createAbilityInfo() {
+        return new PlayerAbilityInfo(this);
     }
 
     @Nullable
@@ -78,7 +73,7 @@ public abstract class PlayerAbility extends IForgeRegistryEntry.Impl<PlayerAbili
 
     @SideOnly(Side.CLIENT)
     public String getAbilityName() {
-        return I18n.format(String.format("%s.%s.name", abilityId.getNamespace(), abilityId.getPath()));
+        return I18n.format(getTranslationKey());
     }
 
     @SideOnly(Side.CLIENT)
@@ -86,6 +81,9 @@ public abstract class PlayerAbility extends IForgeRegistryEntry.Impl<PlayerAbili
         return I18n.format(String.format("%s.%s.description", abilityId.getNamespace(), abilityId.getPath()));
     }
 
+    public String getTranslationKey() {
+        return String.format("%s.%s.name", abilityId.getNamespace(), abilityId.getPath());
+    }
 
     public ResourceLocation getAbilityIcon() {
         return new ResourceLocation(abilityId.getNamespace(), String.format("textures/class/abilities/%s.png", abilityId.getPath().split(Pattern.quote("."))[1]));
@@ -132,8 +130,8 @@ public abstract class PlayerAbility extends IForgeRegistryEntry.Impl<PlayerAbili
     }
 
     public boolean meetsRequirements(IPlayerData player) {
-        return !player.isCasting() && player.getMana() >=
-                PlayerFormulas.applyManaCostReduction(player, getManaCost(player.getAbilityRank(abilityId))) &&
+        return !player.isCasting() &&
+                player.getMana() >= player.getAbilityManaCost(abilityId) &&
                 player.getCurrentAbilityCooldown(abilityId) == 0;
     }
 

@@ -7,8 +7,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nullable;
-import java.util.HashSet;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 public interface IPlayerData {
 
@@ -40,7 +41,9 @@ public interface IPlayerData {
 
     void addToAllCooldowns(int cooldownTicks);
 
-    float getCooldownPercent(PlayerAbility ability, float partialTicks);
+    float getCooldownPercent(PlayerAbilityInfo abilityInfo, float partialTicks);
+
+    float getAbilityManaCost(ResourceLocation abilityId);
 
     @Nullable
     CastState startAbility(PlayerAbility ability);
@@ -103,7 +106,7 @@ public interface IPlayerData {
 
     void activateClass(ResourceLocation classId);
 
-    List<ResourceLocation> getKnownClasses();
+    Collection<ResourceLocation> getKnownClasses();
 
     default boolean knowsClass(ResourceLocation classId) {
         return getKnownClasses().contains(classId);
@@ -118,10 +121,6 @@ public interface IPlayerData {
     boolean spendTalentPoint(ResourceLocation talentTree, String line, int index);
 
     boolean refundTalentPoint(ResourceLocation talentTree, String line, int index);
-
-    boolean canSpendTalentPoint(ResourceLocation talentTree, String line, int index);
-
-    boolean canRefundTalentPoint(ResourceLocation talentTree, String line, int index);
 
     void gainTalentPoint();
 
@@ -138,20 +137,18 @@ public interface IPlayerData {
     List<ResourceLocation> getActiveUltimates();
 
     @Nullable
-    HashSet<PlayerPassiveAbility> getLearnedPassives();
+    Set<PlayerPassiveAbility> getLearnedPassives();
 
     @Nullable
-    HashSet<PlayerAbility> getLearnedUltimates();
-
-    boolean canActivatePassiveForSlot(ResourceLocation loc, int slotIndex);
+    Set<PlayerAbility> getLearnedUltimates();
 
     boolean activatePassiveForSlot(ResourceLocation loc, int slotIndex);
-
-    boolean canActivateUltimateForSlot(ResourceLocation loc, int slotIndex);
 
     boolean activateUltimateForSlot(ResourceLocation loc, int slotIndex);
 
     boolean hasUltimates();
+
+    int getActionBarSize();
 
     boolean isDualWielding();
 

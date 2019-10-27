@@ -31,7 +31,7 @@ public class PlayerClassInfo {
     private int unspentTalentPoints;
     private HashMap<ResourceLocation, TalentTreeRecord> talentTrees;
     private ResourceLocation[] hotbar;
-    private Deque<ResourceLocation> spendOrder;
+    private ResourceLocation[] abilitySpendOrder;
     private ResourceLocation[] loadedPassives;
     private ResourceLocation[] loadedUltimates;
 
@@ -47,7 +47,8 @@ public class PlayerClassInfo {
         Arrays.fill(loadedUltimates, MKURegistry.INVALID_ABILITY);
         hotbar = new ResourceLocation[GameConstants.ACTION_BAR_SIZE];
         Arrays.fill(hotbar, MKURegistry.INVALID_ABILITY);
-        spendOrder = new ArrayDeque<>(GameConstants.MAX_CLASS_LEVEL);
+        abilitySpendOrder = new ResourceLocation[GameConstants.MAX_CLASS_LEVEL];
+        Arrays.fill(abilitySpendOrder, MKURegistry.INVALID_ABILITY);
         talentTrees = new HashMap<>();
         for (TalentTree tree : MKURegistry.REGISTRY_TALENT_TREES.getValuesCollection()) {
             talentTrees.put(tree.getRegistryName(), new TalentTreeRecord(tree));
@@ -314,7 +315,7 @@ public class PlayerClassInfo {
         tag.setString("id", classId.toString());
         tag.setInteger("level", level);
         tag.setInteger("unspentPoints", unspentPoints);
-        writeNBTAbilityArray(tag, "spendOrder", spendOrder, GameConstants.MAX_CLASS_LEVEL);
+        writeNBTAbilityArray(tag, "abilitySpendOrder", Arrays.asList(abilitySpendOrder), GameConstants.MAX_CLASS_LEVEL);
         writeNBTAbilityArray(tag, "hotbar", Arrays.asList(hotbar), GameConstants.ACTION_BAR_SIZE);
         serializeTalentInfo(tag);
     }
@@ -323,7 +324,7 @@ public class PlayerClassInfo {
         classId = new ResourceLocation(tag.getString("id"));
         level = tag.getInteger("level");
         unspentPoints = tag.getInteger("unspentPoints");
-        spendOrder = new ArrayDeque<>(Arrays.asList(parseNBTAbilityArray(tag, "spendOrder", GameConstants.MAX_CLASS_LEVEL)));
+        abilitySpendOrder = parseNBTAbilityArray(tag, "abilitySpendOrder", GameConstants.MAX_CLASS_LEVEL);
         setActiveAbilities(parseNBTAbilityArray(tag, "hotbar", GameConstants.ACTION_BAR_SIZE));
         deserializeTalentInfo(tag);
     }
@@ -369,12 +370,12 @@ public class PlayerClassInfo {
         if (getUnspentTalentPoints() == 0)
             return false;
         TalentTreeRecord talentTree = talentTrees.get(tree);
-        return talentTree.containsIndex(line, index) && talentTree.canIncrementPoint(line, index);
+        return talentTree != null && talentTree.canIncrementPoint(line, index);
     }
 
     public boolean canDecrementPointInTree(ResourceLocation tree, String line, int index) {
         TalentTreeRecord talentTree = talentTrees.get(tree);
-        return talentTree.containsIndex(line, index) && talentTree.canDecrementPoint(line, index);
+        return talentTree != null && talentTree.canDecrementPoint(line, index);
     }
 
     public boolean spendTalentPoint(EntityPlayer player, ResourceLocation tree, String line, int index) {
@@ -429,16 +430,23 @@ public class PlayerClassInfo {
         this.hotbar = hotbar;
     }
 
-    public void addToSpendOrder(ResourceLocation abilityId) {
-        spendOrder.addFirst(abilityId);
+    public void setAbilitySpendOrder(ResourceLocation abilityId, int level) {
+        if (level > 0) {
+            abilitySpendOrder[level - 1] = abilityId;
+        }
     }
 
-    public ResourceLocation getLastUpgradedAbility() {
-        if (spendOrder.size() != 0) {
-            return spendOrder.removeFirst();
-        } else {
-            return MKURegistry.INVALID_ABILITY;
+    public void clearAbilitySpendOrder() {
+        Arrays.fill(abilitySpendOrder, MKURegistry.INVALID_ABILITY);
+    }
+
+    public ResourceLocation getAbilitySpendOrder(int index) {
+        ResourceLocation id = MKURegistry.INVALID_ABILITY;
+        if (index > 0) {
+            id = abilitySpendOrder[index - 1];
+            abilitySpendOrder[index - 1] = MKURegistry.INVALID_ABILITY;
         }
+        return id;
     }
 
     public TalentTreeRecord getTalentTree(ResourceLocation loc) {

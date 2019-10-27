@@ -12,19 +12,17 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 public class ClassUpdatePacket implements IMessage {
 
-    private List<PlayerClassInfo> classes;
+    private Collection<PlayerClassInfo> classes;
     private boolean fullUpdate;
 
     public ClassUpdatePacket() {
     }
 
     public ClassUpdatePacket(Collection<PlayerClassInfo> knownClasses) {
-        classes = new ArrayList<>(1);
-        classes.addAll(knownClasses);
+        classes = Collections.unmodifiableCollection(knownClasses);
         fullUpdate = true;
     }
 

@@ -36,6 +36,8 @@ public class TalentTreeRecord {
     }
 
     public boolean canIncrementPoint(String lineName, int index) {
+        if (!containsIndex(lineName, index))
+            return false;
         ArrayList<TalentRecord> line = records.get(lineName);
         TalentRecord record = line.get(index);
         if (index != 0) {
@@ -45,6 +47,25 @@ public class TalentTreeRecord {
             }
         }
         return record.getRank() < record.getNode().getMaxRanks();
+    }
+
+    public boolean canDecrementPoint(String lineName, int index) {
+        if (!containsIndex(lineName, index))
+            return false;
+        ArrayList<TalentRecord> line = records.get(lineName);
+        TalentRecord record = line.get(index);
+        if (index < line.size() - 1) {
+            TalentRecord next = line.get(index + 1);
+            // We must have at least 1 point in a talent to put points in its child
+            if (next.getRank() > 0 && record.getRank() <= 1) {
+                return false;
+            }
+        }
+        return record.getRank() > 0;
+    }
+
+    private boolean containsIndex(String lineName, int index) {
+        return records.containsKey(lineName) && records.get(lineName).size() > index;
     }
 
     public void incrementPoint(String lineName, int index) {
@@ -64,24 +85,6 @@ public class TalentTreeRecord {
         TalentRecord record = line.get(index);
         record.addToRank(-1);
     }
-
-    public boolean containsIndex(String lineName, int index) {
-        return records.containsKey(lineName) && records.get(lineName).size() > index;
-    }
-
-    public boolean canDecrementPoint(String lineName, int index) {
-        ArrayList<TalentRecord> line = records.get(lineName);
-        TalentRecord record = line.get(index);
-        if (index < line.size() - 1) {
-            TalentRecord next = line.get(index + 1);
-            // We must have at least 1 point in a talent to put points in its child
-            if (next.getRank() > 0 && record.getRank() <= 1) {
-                return false;
-            }
-        }
-        return record.getRank() > 0;
-    }
-
 
     public NBTTagCompound toTag() {
         NBTTagCompound tag = new NBTTagCompound();

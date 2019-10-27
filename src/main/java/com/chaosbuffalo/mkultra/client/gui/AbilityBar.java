@@ -79,27 +79,26 @@ public class AbilityBar extends Gui {
 
     }
 
-    private void drawCastBar(IPlayerData data){
-        if (!data.isCasting()){
+    private void drawCastBar(IPlayerData data) {
+        if (!data.isCasting()) {
             return;
         }
         PlayerAbilityInfo info = data.getAbilityInfo(data.getCastingAbility());
-        PlayerAbility ability = MKURegistry.getAbility(data.getCastingAbility());
-        if (info == null || ability == null){
+        if (info == null || !info.isCurrentlyKnown()) {
             return;
         }
+        PlayerAbility ability = info.getAbility();
         ScaledResolution scaledresolution = new ScaledResolution(this.mc);
         int height = scaledresolution.getScaledHeight();
         int castStartY = height / 2 + 8;
         int width = 50;
-        int barSize = (int) (width * data.getCastTicks() / ability.getCastTime(info.getRank()));
+        int barSize = width * data.getCastTicks() / ability.getCastTime(info.getRank());
         int castStartX = scaledresolution.getScaledWidth() / 2 - barSize / 2;
         GlStateManager.pushMatrix();
         GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
         this.drawTexturedModalRect(castStartX, castStartY, 26,
                 21, barSize, 3);
         GlStateManager.popMatrix();
-
     }
 
     private void drawBarSlots(int slotCount) {
@@ -129,12 +128,16 @@ public class AbilityBar extends Gui {
             if (abilityId.equals(MKURegistry.INVALID_ABILITY))
                 continue;
 
-            PlayerAbility ability = MKURegistry.getAbility(abilityId);
+            PlayerAbilityInfo info = data.getAbilityInfo(abilityId);
+            if (info == null || !info.isCurrentlyKnown())
+                continue;
+
+            PlayerAbility ability = info.getAbility();
             if (ability == null)
                 continue;
-            float manaCost = PlayerFormulas.applyManaCostReduction(data, ability.getManaCost(
-                    data.getAbilityRank(ability.getAbilityId())));
-            if (!data.isCasting() && data.getMana() >= manaCost){
+
+            float manaCost = data.getAbilityManaCost(abilityId);
+            if (!data.isCasting() && data.getMana() >= manaCost) {
                 GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             } else {
                 GlStateManager.color(0.5f, 0.5f, 0.5f, 1.0F);
@@ -146,7 +149,7 @@ public class AbilityBar extends Gui {
                     ABILITY_ICON_SIZE, ABILITY_ICON_SIZE, ABILITY_ICON_SIZE, ABILITY_ICON_SIZE);
 
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-            float cooldownFactor = data.getCooldownPercent(ability, partialTicks);
+            float cooldownFactor = data.getCooldownPercent(info, partialTicks);
             if (globalCooldown > 0.0f && cooldownFactor == 0) {
                 cooldownFactor = globalCooldown / ClientKeyHandler.getTotalGlobalCooldown();
             }
@@ -189,9 +192,7 @@ public class AbilityBar extends Gui {
             return;
 
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        ResourceLocation loc = data.getAbilityInSlot(GameConstants.ACTION_BAR_SIZE -1);
-        int slotCount = data.hasUltimates() || !loc.equals(MKURegistry.INVALID_ABILITY) ?
-                GameConstants.ACTION_BAR_SIZE : GameConstants.NO_ULT_ACTION_BAR_SIZE;
+        int slotCount = data.getActionBarSize();
         drawMana(data);
         drawCastBar(data);
         drawBarSlots(slotCount);

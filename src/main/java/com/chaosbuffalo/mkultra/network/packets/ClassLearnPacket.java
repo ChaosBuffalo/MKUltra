@@ -48,7 +48,7 @@ public class ClassLearnPacket implements IMessage {
         classId = pb.readResourceLocation();
         learn = pb.readBoolean();
         enforceChecks = pb.readBoolean();
-        source = LearnSource.values()[pb.readInt()];
+        source = pb.readEnumValue(LearnSource.class);
         if (source == LearnSource.TILE_ENTITY) {
             pos = pb.readBlockPos();
         }
@@ -60,7 +60,7 @@ public class ClassLearnPacket implements IMessage {
         pb.writeResourceLocation(classId);
         pb.writeBoolean(learn);
         pb.writeBoolean(enforceChecks);
-        pb.writeInt(source.ordinal());
+        pb.writeEnumValue(source);
         if (source == LearnSource.TILE_ENTITY) {
             pb.writeBlockPos(pos);
         }

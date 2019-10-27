@@ -1,14 +1,16 @@
 package com.chaosbuffalo.mkultra.network.packets;
 
-import com.chaosbuffalo.mkultra.core.MKUPlayerData;
-import com.chaosbuffalo.mkultra.core.PlayerAbilityInfo;
-import com.chaosbuffalo.mkultra.core.PlayerData;
+import com.chaosbuffalo.mkultra.core.*;
+import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.network.MessageHandler;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -34,9 +36,27 @@ public class AbilityUpdatePacket implements IMessage {
         int count = pb.readVarInt();
         skills = new ArrayList<>(count);
 
-        for (int i = 0; i < count; i++) {
-            PlayerAbilityInfo info = PlayerAbilityInfo.deserializeUpdate(pb);
-            skills.add(info);
+        try {
+            NBTTagCompound list = pb.readCompoundTag();
+            if (list == null)
+                return;
+
+            for (String id : list.getKeySet()) {
+                ResourceLocation abilityId = new ResourceLocation(id);
+                PlayerAbility ability = MKURegistry.getAbility(abilityId);
+                if (ability == null)
+                    continue;
+                PlayerAbilityInfo info = ability.createAbilityInfo();
+                NBTTagCompound tag = list.getCompoundTag(id);
+                info.deserialize(tag);
+
+                skills.add(info);
+            }
+        }
+        catch (IOException e) {
+            Log.error("Failed to parse AbilityUpdatePacket!");
+            Log.error("%s", e.toString());
+            e.printStackTrace();
         }
     }
 
@@ -45,9 +65,14 @@ public class AbilityUpdatePacket implements IMessage {
         PacketBuffer pb = new PacketBuffer(buf);
         pb.writeVarInt(skills.size());
 
+        NBTTagCompound list = new NBTTagCompound();
         for (PlayerAbilityInfo info : skills) {
-            info.serializeUpdate(pb);
+            NBTTagCompound tag = new NBTTagCompound();
+            info.serialize(tag);
+            list.setTag(info.getId().toString(), tag);
         }
+
+        pb.writeCompoundTag(list);
     }
 
     public static class Handler extends MessageHandler.Client<AbilityUpdatePacket> {

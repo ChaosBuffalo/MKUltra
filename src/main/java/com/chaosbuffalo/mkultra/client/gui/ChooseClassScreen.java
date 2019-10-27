@@ -1,10 +1,7 @@
 package com.chaosbuffalo.mkultra.client.gui;
 
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.IClassProvider;
-import com.chaosbuffalo.mkultra.core.IPlayerData;
-import com.chaosbuffalo.mkultra.core.MKUPlayerData;
-import com.chaosbuffalo.mkultra.core.MKURegistry;
+import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.network.packets.ClassLearnPacket;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -16,6 +13,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import org.lwjgl.opengl.GL11;
 
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -86,7 +85,7 @@ public abstract class ChooseClassScreen extends GuiScreen {
 
         this.buttonList.clear();
 
-        List<ResourceLocation> knownClasses = data.getKnownClasses();
+        Collection<ResourceLocation> knownClasses = data.getKnownClasses();
 
         if (learning) {
             if (enforceChecks) {
@@ -97,6 +96,7 @@ public abstract class ChooseClassScreen extends GuiScreen {
         } else {
             classes = MKURegistry.getValidClasses(knownClasses);
         }
+        classes.sort(Comparator.comparing(MKURegistry::getClassName));
         List<ResourceLocation> class_subset = classes;
         boolean wasLarge = class_subset.size() > PER_PAGE;
         if (wasLarge) {
