@@ -6,7 +6,9 @@ import com.chaosbuffalo.mkultra.core.IMobData;
 import com.chaosbuffalo.mkultra.core.MKURegistry;
 import com.chaosbuffalo.mkultra.core.MobAbilityTracker;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkultra.utils.AbilityUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -15,6 +17,8 @@ import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
 
@@ -228,6 +232,10 @@ public class EntityAISpellCastingBase extends EntityAIBase {
                         canCast = false;
                     } else if (canSee) {
                         currentAbility.useAbility(targetEntity);
+                        SoundEvent completeSound = currentAbility.getAbility().getCastingCompleteEvent();
+                        if (completeSound != null){
+                            AbilityUtils.playSoundAtServerEntity(entity, completeSound, SoundCategory.HOSTILE);
+                        }
                         castTime = cooldown;
                         canCast = false;
                         attemptingCastTicks = 0;

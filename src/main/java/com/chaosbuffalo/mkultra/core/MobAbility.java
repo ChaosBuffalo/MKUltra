@@ -99,8 +99,11 @@ public abstract class MobAbility extends IForgeRegistryEntry.Impl<MobAbility> {
     }
 
     public SoundEvent getCastingSoundEvent(){
-        return ModSounds.casting_shadow;
+        return ModSounds.hostile_casting_general;
     }
+
+    @Nullable
+    public SoundEvent getCastingCompleteEvent() { return null; }
 
 
     protected <E extends EntityLivingBase> E getSingleLivingTarget(Class<E> clazz, EntityLivingBase caster,

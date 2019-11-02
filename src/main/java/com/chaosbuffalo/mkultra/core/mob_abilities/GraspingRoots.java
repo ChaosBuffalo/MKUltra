@@ -5,10 +5,14 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IMobData;
 import com.chaosbuffalo.mkultra.core.MobAbility;
 import com.chaosbuffalo.mkultra.entities.projectiles.EntityGraspingRootsProjectile;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.utils.EntityUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
 
 public class GraspingRoots extends MobAbility {
     private static float PROJECTILE_SPEED = 1.5f;
@@ -36,6 +40,12 @@ public class GraspingRoots extends MobAbility {
     @Override
     public float getDistance() {
         return 15.0f;
+    }
+
+    @Nullable
+    @Override
+    public SoundEvent getCastingCompleteEvent() {
+        return ModSounds.spell_earth_8;
     }
 
     @Override

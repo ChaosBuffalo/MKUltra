@@ -6,16 +6,22 @@ import com.chaosbuffalo.mkultra.core.IMobData;
 import com.chaosbuffalo.mkultra.core.MKDamageSource;
 import com.chaosbuffalo.mkultra.core.MobAbility;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkultra.utils.AbilityUtils;
 import com.chaosbuffalo.mkultra.utils.RayTraceUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
 
 public class WarpDash extends MobAbility {
 
@@ -51,6 +57,12 @@ public class WarpDash extends MobAbility {
         return Targeting.TargetType.ENEMY;
     }
 
+    @Nullable
+    @Override
+    public SoundEvent getCastingCompleteEvent() {
+        return ModSounds.spell_magic_whoosh_1;
+    }
+
     @Override
     public void execute(EntityLivingBase entity, IMobData data, EntityLivingBase target, World theWorld) {
         if (target != null) {
@@ -58,6 +70,7 @@ public class WarpDash extends MobAbility {
             target.attackEntityFrom(MKDamageSource.fromMeleeSkill(getAbilityId(), entity, entity),
                     BASE_DAMAGE + DAMAGE_SCALE * level);
             Vec3d lookVec = entity.getLookVec();
+            AbilityUtils.playSoundAtServerEntity(target, ModSounds.spell_shadow_5, SoundCategory.HOSTILE);
             MKUltra.packetHandler.sendToAllAround(
                     new ParticleEffectSpawnPacket(
                             EnumParticleTypes.SMOKE_LARGE.getParticleID(),

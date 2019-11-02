@@ -25,6 +25,16 @@ public class ModSounds {
     public static SoundEvent casting_water;
     @GameRegistry.ObjectHolder("casting_rain")
     public static SoundEvent casting_rain;
+    @GameRegistry.ObjectHolder("hostile_casting_general")
+    public static SoundEvent hostile_casting_general;
+    @GameRegistry.ObjectHolder("hostile_casting_fire")
+    public static SoundEvent hostile_casting_fire;
+    @GameRegistry.ObjectHolder("hostile_casting_shadow")
+    public static SoundEvent hostile_casting_shadow;
+    @GameRegistry.ObjectHolder("hostile_casting_holy")
+    public static SoundEvent hostile_casting_holy;
+    @GameRegistry.ObjectHolder("hostile_casting_water")
+    public static SoundEvent hostile_casting_water;
     @GameRegistry.ObjectHolder("spell_cast_2")
     public static SoundEvent spell_cast_2;
     @GameRegistry.ObjectHolder("spell_cast_3")
@@ -242,6 +252,11 @@ public class ModSounds {
         registerSound(evt, createSound("casting_shadow"));
         registerSound(evt, createSound("casting_holy"));
         registerSound(evt, createSound("casting_rain"));
+        registerSound(evt, createSound("hostile_casting_general"));
+        registerSound(evt, createSound("hostile_casting_fire"));
+        registerSound(evt, createSound("hostile_casting_water"));
+        registerSound(evt, createSound("hostile_casting_shadow"));
+        registerSound(evt, createSound("hostile_casting_holy"));
         registerSound(evt, createSound("spell_cast_2"));
         registerSound(evt, createSound("spell_cast_3"));
         registerSound(evt, createSound("spell_cast_5"));

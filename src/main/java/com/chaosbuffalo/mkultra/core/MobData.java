@@ -109,7 +109,6 @@ public class MobData implements IMobData {
                     int castTime = ability.getCastTime();
                     SoundEvent event = ability.getCastingSoundEvent();
                     if (event != null){
-                        Log.info("Playing enemy casting sound");
                         MovingSoundCasting sound = new MovingSoundCasting(entity, event,
                                 SoundCategory.HOSTILE, castTime);
                         castingSound = sound;
@@ -119,7 +118,6 @@ public class MobData implements IMobData {
             }
         } else {
             if (lastUpdateIsCasting && castingSound != null){
-                Log.info("stopping enemy casting sound");
                 Minecraft.getMinecraft().getSoundHandler().stopSound(castingSound);
                 castingSound = null;
             }
@@ -131,7 +129,6 @@ public class MobData implements IMobData {
     public void onTick() {
         if (hasAbilities()) {
             if (entity.getEntityWorld().isRemote){
-                Log.info("In mob data remote tick");
                 updateCastTimeClient();
                 return;
             }

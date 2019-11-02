@@ -4,13 +4,19 @@ import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkultra.utils.AbilityUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
 
 public class ManaLeech extends MobAbility {
 
@@ -48,12 +54,19 @@ public class ManaLeech extends MobAbility {
         return Targeting.TargetType.ENEMY;
     }
 
+    @Nullable
+    @Override
+    public SoundEvent getCastingCompleteEvent() {
+        return ModSounds.spell_dark_9;
+    }
+
     @Override
     public void execute(EntityLivingBase entity, IMobData data, EntityLivingBase target, World theWorld) {
         if (target != null) {
             int level = data.getMobLevel();
             target.attackEntityFrom(MKDamageSource.causeIndirectMobMagicDamage(getAbilityId(), entity, entity),
                     BASE_DAMAGE + DAMAGE_SCALE * level);
+            AbilityUtils.playSoundAtServerEntity(target, ModSounds.spell_debuff_1, SoundCategory.HOSTILE);
             if (target instanceof EntityPlayer) {
                 EntityPlayer playerTarget = (EntityPlayer) target;
                 IPlayerData pData = MKUPlayerData.get(playerTarget);

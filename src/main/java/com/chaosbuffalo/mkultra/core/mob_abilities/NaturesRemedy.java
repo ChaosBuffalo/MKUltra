@@ -6,13 +6,19 @@ import com.chaosbuffalo.mkultra.core.IMobData;
 import com.chaosbuffalo.mkultra.core.MobAbility;
 import com.chaosbuffalo.mkultra.effects.spells.NaturesRemedyPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkultra.utils.AbilityUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
 
 public class NaturesRemedy extends MobAbility {
 
@@ -41,6 +47,17 @@ public class NaturesRemedy extends MobAbility {
     @Override
     public float getDistance() {
         return 10.0f;
+    }
+
+    @Override
+    public SoundEvent getCastingSoundEvent() {
+        return ModSounds.hostile_casting_holy;
+    }
+
+    @Nullable
+    @Override
+    public SoundEvent getCastingCompleteEvent() {
+        return ModSounds.spell_cast_7;
     }
 
     @Override
@@ -73,6 +90,8 @@ public class NaturesRemedy extends MobAbility {
                 .setTarget(target)
                 .toPotionEffect(getDuration(), data.getMobLevel()));
         Vec3d lookVec = entity.getLookVec();
+        AbilityUtils.playSoundAtServerEntity(target, ModSounds.spell_heal_8,
+                SoundCategory.HOSTILE);
         MKUltra.packetHandler.sendToAllAround(
                 new ParticleEffectSpawnPacket(
                         EnumParticleTypes.SLIME.getParticleID(),

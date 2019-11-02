@@ -6,10 +6,13 @@ import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.MobFireballEffectPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkultra.utils.AbilityUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -48,7 +51,7 @@ public class EntityMobFireballProjectile extends EntityBaseProjectile {
             EntityLivingBase targetEntity = (EntityLivingBase) result.entityHit;
             SpellCast projectileEffect = MobFireballEffectPotion.Create(entity, 4.0f, .75f);
 
-
+            AbilityUtils.playSoundAtServerEntity(this, ModSounds.spell_fire_4, SoundCategory.HOSTILE);
             AreaEffectBuilder.Create(entity, this)
                     .spellCast(projectileEffect, level, Targeting.TargetType.ENEMY)
                     .instant()
@@ -67,6 +70,7 @@ public class EntityMobFireballProjectile extends EntityBaseProjectile {
                     targetEntity.posY, targetEntity.posZ, 50.0f);
             return true;
         } else if (entity != null) {
+            AbilityUtils.playSoundAtServerEntity(this, ModSounds.spell_fire_4, SoundCategory.HOSTILE);
             MKUltra.packetHandler.sendToAllAround(
                     new ParticleEffectSpawnPacket(
                             EnumParticleTypes.FIREWORKS_SPARK.getParticleID(),

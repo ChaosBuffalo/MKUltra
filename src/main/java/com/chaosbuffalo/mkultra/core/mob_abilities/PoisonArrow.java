@@ -7,6 +7,7 @@ import com.chaosbuffalo.mkultra.core.MobAbility;
 import com.chaosbuffalo.mkultra.effects.spells.PoisonArrowPotion;
 import com.chaosbuffalo.mkultra.entities.projectiles.SpellCastArrow;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
@@ -14,8 +15,11 @@ import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
 
 public class PoisonArrow extends MobAbility {
     private static float BASE_ARROW_DAMAGE = 2.0f;
@@ -46,6 +50,17 @@ public class PoisonArrow extends MobAbility {
     @Override
     public Targeting.TargetType getTargetType() {
         return Targeting.TargetType.ENEMY;
+    }
+
+    @Override
+    public SoundEvent getCastingSoundEvent() {
+        return ModSounds.hostile_casting_shadow;
+    }
+
+    @Nullable
+    @Override
+    public SoundEvent getCastingCompleteEvent() {
+        return ModSounds.bow_arrow_1;
     }
 
     @Override

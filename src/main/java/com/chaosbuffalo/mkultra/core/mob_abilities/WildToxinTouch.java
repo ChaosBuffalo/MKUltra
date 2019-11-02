@@ -7,12 +7,18 @@ import com.chaosbuffalo.mkultra.core.MKDamageSource;
 import com.chaosbuffalo.mkultra.core.MobAbility;
 import com.chaosbuffalo.mkultra.effects.spells.WildToxinEffectPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkultra.utils.AbilityUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
 
 public class WildToxinTouch extends MobAbility {
 
@@ -43,6 +49,12 @@ public class WildToxinTouch extends MobAbility {
         return GameConstants.TICKS_PER_SECOND;
     }
 
+    @Nullable
+    @Override
+    public SoundEvent getCastingCompleteEvent() {
+        return ModSounds.spell_dark_8;
+    }
+
     @Override
     public Targeting.TargetType getTargetType() {
         return Targeting.TargetType.ENEMY;
@@ -54,6 +66,7 @@ public class WildToxinTouch extends MobAbility {
             int level = data.getMobLevel() > 5 ? 2 : 1;
             target.attackEntityFrom(MKDamageSource.fromMeleeSkill(getAbilityId(), entity, entity),
                     BASE_DAMAGE + DAMAGE_SCALE * level);
+            AbilityUtils.playSoundAtServerEntity(target, ModSounds.spell_negative_effect_2, SoundCategory.HOSTILE);
             target.addPotionEffect(WildToxinEffectPotion
                     .Create(entity)
                     .setTarget(target)

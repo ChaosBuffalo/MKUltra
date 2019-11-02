@@ -62,7 +62,8 @@ public class EntityDrownProjectile extends EntityBaseProjectile {
 
         }
         if (entity != null) {
-            AbilityUtils.playSoundAtServerEntity(this, ModSounds.spell_debuff_1, SoundCategory.PLAYERS);
+            AbilityUtils.playSoundAtServerEntity(this, ModSounds.spell_debuff_1,
+                    AbilityUtils.getSoundCategoryForEntity(entity));
             MKUltra.packetHandler.sendToAllAround(
                     new ParticleEffectSpawnPacket(
                             EnumParticleTypes.WATER_BUBBLE.getParticleID(),

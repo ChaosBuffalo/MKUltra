@@ -56,7 +56,8 @@ public class EntityWhirlpoolProjectile extends EntityBaseProjectile {
             SpellCast yank = YankPotion.Create(caster);
             SpellCast whirlpool = WhirlpoolPotion.Create(caster);
 //            SpellCast damagePotion = AbilityMagicDamage.Create(caster, 2.0f, 2.0f);
-            AbilityUtils.playSoundAtServerEntity(this, ModSounds.spell_water_5, SoundCategory.PLAYERS);
+            AbilityUtils.playSoundAtServerEntity(this, ModSounds.spell_water_5,
+                    AbilityUtils.getSoundCategoryForEntity(caster));
             AreaEffectBuilder.Create(caster, this)
                     .spellCast(yank, amplifier - 1, Targeting.TargetType.ENEMY)
                     .spellCast(whirlpool, GameConstants.TICKS_PER_SECOND * 2 * amplifier,

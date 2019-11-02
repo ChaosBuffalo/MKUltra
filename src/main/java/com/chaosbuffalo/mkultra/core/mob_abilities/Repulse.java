@@ -7,13 +7,19 @@ import com.chaosbuffalo.mkultra.core.MobAbility;
 import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.RepulsePotion;
+import com.chaosbuffalo.mkultra.effects.spells.SoundPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
 
 public class Repulse extends MobAbility {
     public static float BASE_FORCE = 2.0f;
@@ -48,6 +54,16 @@ public class Repulse extends MobAbility {
         return GameConstants.TICKS_PER_SECOND / 2;
     }
 
+    @Nullable
+    @Override
+    public SoundEvent getCastingCompleteEvent() {
+        return ModSounds.spell_shadow_3;
+    }
+
+    @Override
+    public SoundEvent getCastingSoundEvent() {
+        return ModSounds.hostile_casting_shadow;
+    }
 
     @Override
     public void execute(EntityLivingBase entity, IMobData data, EntityLivingBase target, World theWorld) {
@@ -55,6 +71,8 @@ public class Repulse extends MobAbility {
         SpellCast repulse = RepulsePotion.Create(entity, BASE_FORCE, FORCE_SCALE);
         AreaEffectBuilder.Create(entity, entity)
                 .spellCast(repulse, level, getTargetType())
+                .spellCast(SoundPotion.Create(entity, ModSounds.spell_wind_5, SoundCategory.PLAYERS),
+                        1, getTargetType())
                 .instant()
                 .color(16409620).radius(getDistance() + 2.0f, true)
                 .spawn();
