@@ -55,14 +55,15 @@ public class PlayerAbilityInfo {
         tag.setInteger("rank", rank);
     }
 
-    public void deserialize(NBTTagCompound tag) {
+    public boolean deserialize(NBTTagCompound tag) {
         ResourceLocation id = new ResourceLocation(tag.getString("id"));
         if (!id.equals(ability.getAbilityId())) {
             Log.error("Failed to deserialize ability! id was %s, linked ability was %s", id, ability.getAbilityId());
-            return;
+            return false;
         }
         if (tag.hasKey("rank")) {
             rank = tag.getInteger("rank");
         }
+        return true;
     }
 }

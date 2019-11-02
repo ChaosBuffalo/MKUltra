@@ -154,8 +154,8 @@ public class PlayerClassInfo {
                 }
 
                 PlayerAbilityInfo info = ability.createAbilityInfo();
-                info.deserialize(abilityTag);
-                abilityInfoMap.put(abilityId, info);
+                if (info.deserialize(abilityTag))
+                    abilityInfoMap.put(abilityId, info);
             }
         } else {
             clearSpentAbilities();

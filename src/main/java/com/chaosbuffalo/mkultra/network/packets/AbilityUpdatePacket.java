@@ -48,9 +48,8 @@ public class AbilityUpdatePacket implements IMessage {
                     continue;
                 PlayerAbilityInfo info = ability.createAbilityInfo();
                 NBTTagCompound tag = list.getCompoundTag(id);
-                info.deserialize(tag);
-
-                skills.add(info);
+                if (info.deserialize(tag))
+                    skills.add(info);
             }
         }
         catch (IOException e) {
