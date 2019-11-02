@@ -93,6 +93,7 @@ public final class PacketHandler {
         registerPacket(CritMessagePacket.class, new CritMessagePacket.Handler(), Side.CLIENT);
         registerPacket(OpenLearnClassTileEntityPacket.class, new OpenLearnClassTileEntityPacket.Handler(), Side.CLIENT);
         registerPacket(OpenTalentGuiPacket.class, new OpenTalentGuiPacket.Handler(), Side.CLIENT);
+        registerPacket(SyncMobCastingPacket.class, new SyncMobCastingPacket.Handler(), Side.CLIENT);
     }
 
     /**
@@ -176,5 +177,9 @@ public final class PacketHandler {
      */
     public void sendToServer(IMessage message) {
         this.wrapper.sendToServer(message);
+    }
+
+    public void sendToAllTracking(IMessage message, Entity entity) {
+        this.wrapper.sendToAllTracking(message, entity);
     }
 }

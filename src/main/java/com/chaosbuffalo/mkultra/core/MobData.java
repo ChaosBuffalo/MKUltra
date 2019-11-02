@@ -1,8 +1,10 @@
 package com.chaosbuffalo.mkultra.core;
 
 import com.chaosbuffalo.mkultra.GameConstants;
+import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.client.audio.MovingSoundCasting;
 import com.chaosbuffalo.mkultra.log.Log;
+import com.chaosbuffalo.mkultra.network.packets.SyncMobCastingPacket;
 import com.chaosbuffalo.mkultra.spawn.MobFaction;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
@@ -15,6 +17,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -26,6 +29,8 @@ public class MobData implements IMobData {
     private boolean isMKSpawned;
     private final HashSet<MobAbilityTracker> trackers;
     private boolean hasAbilities;
+    private int castTicks;
+    private ResourceLocation currentCast;
     private double aggroRange;
     private ResourceLocation factionName;
     private BlockPos spawnPoint;
@@ -36,16 +41,9 @@ public class MobData implements IMobData {
     private ResourceLocation mobDefinition;
     private boolean isMKSpawning;
     private int bonusExperience;
-    private final EntityDataManager privateData;
-    private final static DataParameter<Integer> CAST_TICKS = EntityDataManager.createKey(
-            EntityPlayer.class, DataSerializers.VARINT);
-    private final static DataParameter<String> CURRENT_CAST = EntityDataManager.createKey(
-            EntityPlayer.class, DataSerializers.STRING);
-    private final static String INVALID_ABILITY_STRING = MKURegistry.INVALID_MOB_ABILITY.toString();
     private boolean lastUpdateIsCasting;
     private MovingSoundCasting castingSound;
-    private final static DataParameter<Boolean> HAS_ABILITIES = EntityDataManager.createKey(
-            EntityPlayer.class, DataSerializers.BOOLEAN);
+
 
 
     public MobData(EntityLivingBase entity) {
@@ -53,35 +51,30 @@ public class MobData implements IMobData {
         this.trackers = new HashSet<>();
         aggroRange = 10.0;
         timeBetweenCasts = 0;
-        privateData = entity.getDataManager();
+        castTicks = 0;
+        currentCast = MKURegistry.INVALID_MOB_ABILITY;
+        hasAbilities = false;
         isBoss = false;
         bonusExperience = 0;
         factionName = MKURegistry.INVALID_FACTION;
         maxTimeBetweenCasts = 10 * GameConstants.TICKS_PER_SECOND;
         mobDefinition = MKURegistry.INVALID_MOB;
         lastUpdateIsCasting = false;
-        setupWatcher();
     }
 
-    private void setupWatcher() {
-        privateData.register(CAST_TICKS, 0);
-        privateData.register(CURRENT_CAST, INVALID_ABILITY_STRING);
-        privateData.register(HAS_ABILITIES, false);
-    }
 
-    private void markEntityDataDirty() {
-        privateData.setDirty(CAST_TICKS);
-        privateData.setDirty(CURRENT_CAST);
-        privateData.setDirty(HAS_ABILITIES);
-    }
 
     @Override
     public ResourceLocation getCastingAbility() {
-        return new ResourceLocation(privateData.get(CURRENT_CAST));
+        return currentCast;
     }
 
-    public void forceUpdate() {
-        markEntityDataDirty();
+    private void syncCastingData(){
+        if (!entity.getEntityWorld().isRemote){
+            MKUltra.packetHandler.sendToAllTracking(
+                    new SyncMobCastingPacket(entity, castTicks, currentCast),
+                    entity);
+        }
     }
 
     @Override
@@ -91,7 +84,7 @@ public class MobData implements IMobData {
 
     @Override
     public int getCastTicks() {
-        return privateData.get(CAST_TICKS);
+        return castTicks;
     }
 
     @Override
@@ -101,7 +94,7 @@ public class MobData implements IMobData {
 
     @Override
     public boolean hasAbilities() {
-        return privateData.get(HAS_ABILITIES);
+        return hasAbilities;
     }
 
     @SideOnly(Side.CLIENT)
@@ -360,12 +353,14 @@ public class MobData implements IMobData {
 
     @Override
     public void setCastTicks(int value) {
-        privateData.set(CAST_TICKS, value);
-
+        castTicks = value;
+        syncCastingData();
     }
 
     @Override
     public void setCastingAbility(ResourceLocation abilityId) {
-        privateData.set(CURRENT_CAST, abilityId.toString());
+        hasAbilities = true;
+        currentCast = abilityId;
+        syncCastingData();
     }
 }
