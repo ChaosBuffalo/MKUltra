@@ -89,4 +89,8 @@ public interface IMobData {
 
     void setMobDefinition(ResourceLocation definition);
 
+    void setCastTicks(int value);
+
+    void setCastingAbility(ResourceLocation abilityId);
+
 }

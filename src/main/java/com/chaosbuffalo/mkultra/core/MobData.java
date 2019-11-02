@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.core;
 
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.client.audio.MovingSoundCasting;
+import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.spawn.MobFaction;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
@@ -40,15 +41,16 @@ public class MobData implements IMobData {
             EntityPlayer.class, DataSerializers.VARINT);
     private final static DataParameter<String> CURRENT_CAST = EntityDataManager.createKey(
             EntityPlayer.class, DataSerializers.STRING);
-    private final static String INVALID_ABILITY_STRING = MKURegistry.INVALID_ABILITY.toString();
+    private final static String INVALID_ABILITY_STRING = MKURegistry.INVALID_MOB_ABILITY.toString();
     private boolean lastUpdateIsCasting;
     private MovingSoundCasting castingSound;
+    private final static DataParameter<Boolean> HAS_ABILITIES = EntityDataManager.createKey(
+            EntityPlayer.class, DataSerializers.BOOLEAN);
 
 
     public MobData(EntityLivingBase entity) {
         this.entity = entity;
         this.trackers = new HashSet<>();
-        hasAbilities = false;
         aggroRange = 10.0;
         timeBetweenCasts = 0;
         privateData = entity.getDataManager();
@@ -64,11 +66,13 @@ public class MobData implements IMobData {
     private void setupWatcher() {
         privateData.register(CAST_TICKS, 0);
         privateData.register(CURRENT_CAST, INVALID_ABILITY_STRING);
+        privateData.register(HAS_ABILITIES, false);
     }
 
     private void markEntityDataDirty() {
         privateData.setDirty(CAST_TICKS);
         privateData.setDirty(CURRENT_CAST);
+        privateData.setDirty(HAS_ABILITIES);
     }
 
     @Override
@@ -82,7 +86,7 @@ public class MobData implements IMobData {
 
     @Override
     public boolean isCasting() {
-        return !getCastingAbility().equals(MKURegistry.INVALID_ABILITY);
+        return !getCastingAbility().equals(MKURegistry.INVALID_MOB_ABILITY);
     }
 
     @Override
@@ -97,7 +101,7 @@ public class MobData implements IMobData {
 
     @Override
     public boolean hasAbilities() {
-        return hasAbilities;
+        return privateData.get(HAS_ABILITIES);
     }
 
     @SideOnly(Side.CLIENT)
@@ -112,6 +116,7 @@ public class MobData implements IMobData {
                     int castTime = ability.getCastTime();
                     SoundEvent event = ability.getCastingSoundEvent();
                     if (event != null){
+                        Log.info("Playing enemy casting sound");
                         MovingSoundCasting sound = new MovingSoundCasting(entity, event,
                                 SoundCategory.HOSTILE, castTime);
                         castingSound = sound;
@@ -121,6 +126,7 @@ public class MobData implements IMobData {
             }
         } else {
             if (lastUpdateIsCasting && castingSound != null){
+                Log.info("stopping enemy casting sound");
                 Minecraft.getMinecraft().getSoundHandler().stopSound(castingSound);
                 castingSound = null;
             }
@@ -130,7 +136,12 @@ public class MobData implements IMobData {
 
     @Override
     public void onTick() {
-        if (hasAbilities) {
+        if (hasAbilities()) {
+            if (entity.getEntityWorld().isRemote){
+                Log.info("In mob data remote tick");
+                updateCastTimeClient();
+                return;
+            }
             for (MobAbilityTracker tracker : trackers) {
                 tracker.update();
             }
@@ -345,5 +356,16 @@ public class MobData implements IMobData {
     @Override
     public void setMobDefinition(ResourceLocation definition) {
         mobDefinition = definition;
+    }
+
+    @Override
+    public void setCastTicks(int value) {
+        privateData.set(CAST_TICKS, value);
+
+    }
+
+    @Override
+    public void setCastingAbility(ResourceLocation abilityId) {
+        privateData.set(CURRENT_CAST, abilityId.toString());
     }
 }

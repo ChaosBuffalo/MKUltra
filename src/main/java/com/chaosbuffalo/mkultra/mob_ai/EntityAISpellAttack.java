@@ -35,6 +35,7 @@ public class EntityAISpellAttack extends EntityAISpellCastingBase {
                                 tracker.getAbility().shouldCast(entity, target)) {
                             currentAbility = tracker;
                             targetEntity = target;
+                            startMobCastingState(tracker.getAbility().getAbilityId());
                             return true;
                         }
                     }

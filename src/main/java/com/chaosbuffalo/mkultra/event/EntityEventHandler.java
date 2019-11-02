@@ -4,6 +4,7 @@ import com.chaosbuffalo.mkultra.MKConfig;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.init.ModSpawn;
+import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.spawn.DefaultSpawnIndex;
 import com.chaosbuffalo.mkultra.spawn.MobDefinition;
 import com.chaosbuffalo.mkultra.spawn.SpawnList;
