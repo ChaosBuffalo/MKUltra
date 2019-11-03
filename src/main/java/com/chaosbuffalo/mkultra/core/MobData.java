@@ -1,11 +1,25 @@
 package com.chaosbuffalo.mkultra.core;
 
 import com.chaosbuffalo.mkultra.GameConstants;
+import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.client.audio.MovingSoundCasting;
+import com.chaosbuffalo.mkultra.log.Log;
+import com.chaosbuffalo.mkultra.network.packets.SyncMobCastingPacket;
 import com.chaosbuffalo.mkultra.spawn.MobFaction;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.HashSet;
 
@@ -15,6 +29,8 @@ public class MobData implements IMobData {
     private boolean isMKSpawned;
     private final HashSet<MobAbilityTracker> trackers;
     private boolean hasAbilities;
+    private int castTicks;
+    private ResourceLocation currentCast;
     private double aggroRange;
     private ResourceLocation factionName;
     private BlockPos spawnPoint;
@@ -25,20 +41,50 @@ public class MobData implements IMobData {
     private ResourceLocation mobDefinition;
     private boolean isMKSpawning;
     private int bonusExperience;
+    private boolean lastUpdateIsCasting;
+    private MovingSoundCasting castingSound;
+
 
 
     public MobData(EntityLivingBase entity) {
         this.entity = entity;
         this.trackers = new HashSet<>();
-        hasAbilities = false;
         aggroRange = 10.0;
         timeBetweenCasts = 0;
+        castTicks = 0;
+        currentCast = MKURegistry.INVALID_MOB_ABILITY;
+        hasAbilities = false;
         isBoss = false;
         bonusExperience = 0;
         factionName = MKURegistry.INVALID_FACTION;
         maxTimeBetweenCasts = 10 * GameConstants.TICKS_PER_SECOND;
         mobDefinition = MKURegistry.INVALID_MOB;
+        lastUpdateIsCasting = false;
+    }
 
+
+
+    @Override
+    public ResourceLocation getCastingAbility() {
+        return currentCast;
+    }
+
+    private void syncCastingData(){
+        if (!entity.getEntityWorld().isRemote){
+            MKUltra.packetHandler.sendToAllTracking(
+                    new SyncMobCastingPacket(entity, castTicks, currentCast),
+                    entity);
+        }
+    }
+
+    @Override
+    public boolean isCasting() {
+        return !getCastingAbility().equals(MKURegistry.INVALID_MOB_ABILITY);
+    }
+
+    @Override
+    public int getCastTicks() {
+        return castTicks;
     }
 
     @Override
@@ -51,9 +97,41 @@ public class MobData implements IMobData {
         return hasAbilities;
     }
 
+    @SideOnly(Side.CLIENT)
+    private void updateCastTimeClient() {
+        if (isCasting()) {
+            int currentCastTime = getCastTicks();
+            ResourceLocation loc = getCastingAbility();
+            MobAbility ability = MKURegistry.getMobAbility(loc);
+            if (ability != null) {
+//                ability.continueCastClient(player, this, player.getEntityWorld(), currentCastTime);
+                if (!lastUpdateIsCasting){
+                    int castTime = ability.getCastTime();
+                    SoundEvent event = ability.getCastingSoundEvent();
+                    if (event != null){
+                        MovingSoundCasting sound = new MovingSoundCasting(entity, event,
+                                SoundCategory.HOSTILE, castTime);
+                        castingSound = sound;
+                        Minecraft.getMinecraft().getSoundHandler().playSound(sound);
+                    }
+                }
+            }
+        } else {
+            if (lastUpdateIsCasting && castingSound != null){
+                Minecraft.getMinecraft().getSoundHandler().stopSound(castingSound);
+                castingSound = null;
+            }
+        }
+        lastUpdateIsCasting = isCasting();
+    }
+
     @Override
     public void onTick() {
-        if (hasAbilities) {
+        if (hasAbilities()) {
+            if (entity.getEntityWorld().isRemote){
+                updateCastTimeClient();
+                return;
+            }
             for (MobAbilityTracker tracker : trackers) {
                 tracker.update();
             }
@@ -268,5 +346,18 @@ public class MobData implements IMobData {
     @Override
     public void setMobDefinition(ResourceLocation definition) {
         mobDefinition = definition;
+    }
+
+    @Override
+    public void setCastTicks(int value) {
+        castTicks = value;
+        syncCastingData();
+    }
+
+    @Override
+    public void setCastingAbility(ResourceLocation abilityId) {
+        hasAbilities = true;
+        currentCast = abilityId;
+        syncCastingData();
     }
 }

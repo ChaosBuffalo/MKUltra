@@ -5,10 +5,14 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IMobData;
 import com.chaosbuffalo.mkultra.core.MobAbility;
 import com.chaosbuffalo.mkultra.entities.projectiles.EntityMobFireballProjectile;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.utils.EntityUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
 
 public class Fireball extends MobAbility {
     private static float PROJECTILE_SPEED = 1.0f;
@@ -38,6 +42,17 @@ public class Fireball extends MobAbility {
         return 20.0f;
     }
 
+    @Override
+    public SoundEvent getCastingSoundEvent() {
+        return ModSounds.hostile_casting_fire;
+    }
+
+
+    @Nullable
+    @Override
+    public SoundEvent getCastingCompleteEvent() {
+        return ModSounds.spell_fire_2;
+    }
 
     @Override
     public void execute(EntityLivingBase entity, IMobData data, EntityLivingBase target, World theWorld) {

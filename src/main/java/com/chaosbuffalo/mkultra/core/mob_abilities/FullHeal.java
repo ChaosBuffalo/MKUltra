@@ -5,12 +5,18 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IMobData;
 import com.chaosbuffalo.mkultra.core.MobAbility;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkultra.utils.AbilityUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
 
 public class FullHeal extends MobAbility {
     public static final float HEAL_THRESHOLD = .25f;
@@ -45,6 +51,17 @@ public class FullHeal extends MobAbility {
     }
 
     @Override
+    public SoundEvent getCastingSoundEvent() {
+        return ModSounds.hostile_casting_holy;
+    }
+
+    @Nullable
+    @Override
+    public SoundEvent getCastingCompleteEvent() {
+        return ModSounds.spell_heal_9;
+    }
+
+    @Override
     public boolean shouldCast(EntityLivingBase caster, EntityLivingBase target) {
         if (target.getHealth() >= target.getMaxHealth() * HEAL_THRESHOLD) {
             return false;
@@ -56,6 +73,7 @@ public class FullHeal extends MobAbility {
     @Override
     public void execute(EntityLivingBase entity, IMobData data, EntityLivingBase target, World theWorld) {
         target.setHealth(target.getMaxHealth());
+        AbilityUtils.playSoundAtServerEntity(target, ModSounds.spell_heal_7, SoundCategory.HOSTILE);
         Vec3d lookVec = entity.getLookVec();
         MKUltra.packetHandler.sendToAllAround(
                 new ParticleEffectSpawnPacket(

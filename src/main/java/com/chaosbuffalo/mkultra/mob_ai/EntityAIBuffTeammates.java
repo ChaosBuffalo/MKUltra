@@ -37,6 +37,7 @@ public class EntityAIBuffTeammates extends EntityAISpellCastingBase {
                                 EntityLivingBase minLiv = (EntityLivingBase) min;
                                 if (tracker.getAbility().shouldCast(entity, minLiv)) {
                                     currentAbility = tracker;
+                                    startMobCastingState(tracker.getAbility().getAbilityId());
                                     targetEntity = minLiv;
                                     return true;
                                 }
@@ -48,6 +49,7 @@ public class EntityAIBuffTeammates extends EntityAISpellCastingBase {
                                 EntityLivingBase minLiv = (EntityLivingBase) min;
                                 if (tracker.getAbility().shouldCast(entity, minLiv)) {
                                     currentAbility = tracker;
+                                    startMobCastingState(tracker.getAbility().getAbilityId());
                                     targetEntity = minLiv;
                                     return true;
                                 }

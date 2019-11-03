@@ -6,11 +6,15 @@ import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.AbilityMagicDamage;
 import com.chaosbuffalo.mkultra.effects.spells.GraspingRootsPotion;
+import com.chaosbuffalo.mkultra.effects.spells.SoundPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkultra.utils.AbilityUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -48,11 +52,14 @@ public class EntityGraspingRootsProjectile extends EntityBaseProjectile {
         if (!this.world.isRemote && caster != null) {
             SpellCast grasping_roots = GraspingRootsPotion.Create(caster);
             SpellCast damage = AbilityMagicDamage.Create(caster, BASE, SCALE);
-
+            AbilityUtils.playSoundAtServerEntity(this, ModSounds.spell_earth_7, SoundCategory.HOSTILE);
             AreaEffectBuilder.Create(caster, this)
                     .spellCast(grasping_roots, 4 * GameConstants.TICKS_PER_SECOND,
                             amplifier, Targeting.TargetType.ENEMY)
                     .spellCast(damage, amplifier, Targeting.TargetType.ENEMY)
+                    .spellCast(SoundPotion.Create(caster, ModSounds.spell_earth_6, SoundCategory.HOSTILE),
+                            1, Targeting.TargetType.ENEMY)
+
                     .instant()
                     .color(3669880).radius(5.0f, true)
                     .spawn();

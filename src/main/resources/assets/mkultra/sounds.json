@@ -53,6 +53,51 @@
             }
         ]
     },
+    "hostile_casting_general": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.hostile_casting_general",
+        "sounds": [ {
+            "name": "mkultra:casting/hostile_general_loop",
+            "stream": true
+            }
+        ]
+    },
+   "hostile_casting_fire": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.hostile_casting_fire",
+        "sounds": [ {
+            "name": "mkultra:casting/hostile_fire_loop",
+            "stream": true
+            }
+        ]
+    },
+    "hostile_casting_holy": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.hostile_casting_holy",
+        "sounds": [ {
+            "name": "mkultra:casting/hostile_holy_loop",
+            "stream": true
+            }
+        ]
+    },
+    "hostile_casting_shadow": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.hostile_casting_shadow",
+        "sounds": [ {
+            "name": "mkultra:casting/hostile_shadow_loop",
+            "stream": true
+            }
+        ]
+    },
+    "hostile_casting_water": {
+        "category": "player",
+        "subtitle": "mkultra.subtitle.hostile_casting_water",
+        "sounds": [ {
+            "name": "mkultra:casting/hostile_water_loop",
+            "stream": true
+            }
+        ]
+    },
     "spell_cast_2": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",

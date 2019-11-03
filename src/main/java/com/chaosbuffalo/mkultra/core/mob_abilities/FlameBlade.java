@@ -8,15 +8,21 @@ import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.FlameBladePotion;
 import com.chaosbuffalo.mkultra.effects.spells.ParticlePotion;
+import com.chaosbuffalo.mkultra.effects.spells.SoundPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
 
 
 public class FlameBlade extends MobAbility {
@@ -66,6 +72,17 @@ public class FlameBlade extends MobAbility {
     }
 
     @Override
+    public SoundEvent getCastingSoundEvent() {
+        return ModSounds.hostile_casting_fire;
+    }
+
+    @Nullable
+    @Override
+    public SoundEvent getCastingCompleteEvent() {
+        return ModSounds.spell_fire_3;
+    }
+
+    @Override
     public boolean shouldCast(EntityLivingBase caster, EntityLivingBase target) {
         if (caster instanceof EntityCreature) {
             EntityCreature creature = (EntityCreature) caster;
@@ -90,6 +107,8 @@ public class FlameBlade extends MobAbility {
         AreaEffectBuilder.Create(entity, entity)
                 .spellCast(effect, duration, data.getMobLevel() / 2, getTargetType())
                 .spellCast(particlePotion, data.getMobLevel() / 2, getTargetType())
+                .spellCast(SoundPotion.Create(entity, ModSounds.spell_fire_7,
+                        SoundCategory.HOSTILE), 0, getTargetType())
                 .instant()
                 .particle(EnumParticleTypes.FIREWORKS_SPARK)
                 .color(16737330).radius(getDistance(), true)

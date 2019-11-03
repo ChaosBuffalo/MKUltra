@@ -7,13 +7,19 @@ import com.chaosbuffalo.mkultra.core.MobAbility;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.ManaBurnPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkultra.utils.AbilityUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
 
 public class ManaBurn extends MobAbility {
 
@@ -46,6 +52,17 @@ public class ManaBurn extends MobAbility {
     }
 
     @Override
+    public SoundEvent getCastingSoundEvent() {
+        return ModSounds.hostile_casting_shadow;
+    }
+
+    @Nullable
+    @Override
+    public SoundEvent getCastingCompleteEvent() {
+        return ModSounds.spell_shadow_9;
+    }
+
+    @Override
     public Potion getEffectPotion() {
         return ManaBurnPotion.INSTANCE;
     }
@@ -55,6 +72,7 @@ public class ManaBurn extends MobAbility {
         SpellCast manaBurn = ManaBurnPotion.Create(entity, 2.0f, 0.0f).setTarget(target);
         target.addPotionEffect(manaBurn.toPotionEffect(
                 GameConstants.TICKS_PER_SECOND * (2 + data.getMobLevel()), 1));
+        AbilityUtils.playSoundAtServerEntity(target, ModSounds.spell_dark_9, SoundCategory.HOSTILE);
         MKUltra.packetHandler.sendToAllAround(
                 new ParticleEffectSpawnPacket(
                         EnumParticleTypes.SPELL_MOB_AMBIENT.getParticleID(),

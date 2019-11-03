@@ -6,14 +6,20 @@ import com.chaosbuffalo.mkultra.core.IMobData;
 import com.chaosbuffalo.mkultra.core.MKDamageSource;
 import com.chaosbuffalo.mkultra.core.MobAbility;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkultra.utils.AbilityUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
 
 public class WitherTouch extends MobAbility {
 
@@ -45,8 +51,19 @@ public class WitherTouch extends MobAbility {
     }
 
     @Override
+    public SoundEvent getCastingSoundEvent() {
+        return ModSounds.hostile_casting_shadow;
+    }
+
+    @Override
     public Targeting.TargetType getTargetType() {
         return Targeting.TargetType.ENEMY;
+    }
+
+    @Nullable
+    @Override
+    public SoundEvent getCastingCompleteEvent() {
+        return ModSounds.spell_dark_3;
     }
 
     @Override
@@ -57,6 +74,7 @@ public class WitherTouch extends MobAbility {
                     BASE_DAMAGE + DAMAGE_SCALE * level);
             target.addPotionEffect(new PotionEffect(MobEffects.WITHER,
                     GameConstants.TICKS_PER_SECOND * level / 2));
+            AbilityUtils.playSoundAtServerEntity(target, ModSounds.spell_dark_7, SoundCategory.HOSTILE);
             Vec3d lookVec = entity.getLookVec();
             MKUltra.packetHandler.sendToAllAround(
                     new ParticleEffectSpawnPacket(

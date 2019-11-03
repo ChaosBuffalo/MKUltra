@@ -3,9 +3,12 @@ package com.chaosbuffalo.mkultra.mob_ai;
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IMobData;
+import com.chaosbuffalo.mkultra.core.MKURegistry;
 import com.chaosbuffalo.mkultra.core.MobAbilityTracker;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkultra.utils.AbilityUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -13,6 +16,9 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
 
@@ -167,6 +173,17 @@ public class EntityAISpellCastingBase extends EntityAIBase {
         if (entity instanceof IRangedAttackMob) {
             ((IRangedAttackMob) this.entity).setSwingingArms(false);
         }
+        endMobCastingState();
+    }
+
+    public void startMobCastingState(ResourceLocation casting){
+        mobData.setCastingAbility(casting);
+        mobData.setCastTicks(0);
+    }
+
+    public void endMobCastingState(){
+        mobData.setCastingAbility(MKURegistry.INVALID_MOB_ABILITY);
+        mobData.setCastTicks(0);
     }
 
     @Override
@@ -210,13 +227,19 @@ public class EntityAISpellCastingBase extends EntityAIBase {
                 }
                 if (canCast) {
                     attemptingCastTicks++;
+                    mobData.setCastTicks(attemptingCastTicks);
                     if (!canSee && this.seeTime < -60) {
                         canCast = false;
                     } else if (canSee) {
                         currentAbility.useAbility(targetEntity);
+                        SoundEvent completeSound = currentAbility.getAbility().getCastingCompleteEvent();
+                        if (completeSound != null){
+                            AbilityUtils.playSoundAtServerEntity(entity, completeSound, SoundCategory.HOSTILE);
+                        }
                         castTime = cooldown;
                         canCast = false;
                         attemptingCastTicks = 0;
+                        endMobCastingState();
                         if (entity instanceof IRangedAttackMob) {
                             ((IRangedAttackMob) this.entity).setSwingingArms(true);
                         }

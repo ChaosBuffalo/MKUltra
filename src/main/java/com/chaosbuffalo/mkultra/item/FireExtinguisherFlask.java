@@ -35,7 +35,7 @@ public class FireExtinguisherFlask extends Item {
         ItemStack stack = playerIn.getHeldItem(hand);
         if (!worldIn.isRemote) {
             BlockPos player_pos = playerIn.getPosition();
-            EnvironmentUtils.putOutFires(worldIn, player_pos, new Vec3i(rangeX, rangeY, rangeZ));
+            EnvironmentUtils.putOutFires(playerIn, player_pos, new Vec3i(rangeX, rangeY, rangeZ));
             ItemHelper.shrinkStack(playerIn, stack, 1);
         }
         return ActionResult.newResult(EnumActionResult.SUCCESS, stack);

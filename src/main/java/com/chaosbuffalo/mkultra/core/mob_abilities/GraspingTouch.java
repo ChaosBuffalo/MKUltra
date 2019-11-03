@@ -7,12 +7,18 @@ import com.chaosbuffalo.mkultra.core.MKDamageSource;
 import com.chaosbuffalo.mkultra.core.MobAbility;
 import com.chaosbuffalo.mkultra.effects.spells.GraspingRootsPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkultra.utils.AbilityUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
 
 public class GraspingTouch extends MobAbility {
 
@@ -44,6 +50,17 @@ public class GraspingTouch extends MobAbility {
     }
 
     @Override
+    public SoundEvent getCastingSoundEvent() {
+        return ModSounds.hostile_casting_shadow;
+    }
+
+    @Nullable
+    @Override
+    public SoundEvent getCastingCompleteEvent() {
+        return ModSounds.spell_earth_1;
+    }
+
+    @Override
     public Targeting.TargetType getTargetType() {
         return Targeting.TargetType.ENEMY;
     }
@@ -58,6 +75,7 @@ public class GraspingTouch extends MobAbility {
                     .Create(entity)
                     .setTarget(target)
                     .toPotionEffect(GameConstants.TICKS_PER_SECOND * level / 2, 1));
+            AbilityUtils.playSoundAtServerEntity(target, ModSounds.spell_earth_6, SoundCategory.HOSTILE);
             Vec3d lookVec = entity.getLookVec();
             MKUltra.packetHandler.sendToAllAround(
                     new ParticleEffectSpawnPacket(

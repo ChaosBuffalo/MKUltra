@@ -2,8 +2,10 @@ package com.chaosbuffalo.mkultra.utils;
 
 import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.core.abilities.cast_states.CastState;
+import net.minecraft.client.audio.Sound;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.RayTraceResult;
@@ -42,6 +44,14 @@ public class AbilityUtils {
             teleLoc = colTrace.hitVec;
         }
         targetEntity.setPositionAndUpdate(teleLoc.x, teleLoc.y, teleLoc.z);
+    }
+
+    public static SoundCategory getSoundCategoryForEntity(EntityLivingBase entity){
+        if (entity instanceof EntityPlayer){
+            return SoundCategory.PLAYERS;
+        } else {
+            return SoundCategory.HOSTILE;
+        }
     }
 
     @Nullable

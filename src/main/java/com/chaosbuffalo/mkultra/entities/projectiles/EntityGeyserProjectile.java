@@ -62,7 +62,7 @@ public class EntityGeyserProjectile extends EntityBaseProjectile {
                             this.posZ, 1.5, 2.0, 1.5, 1.0,
                             new Vec3d(0., 1.0, 0.0)),
                     this.dimension, this.posX, this.posY, this.posZ, 50.0f);
-            EnvironmentUtils.putOutFires(caster.getEntityWorld(), this.getPosition(), new Vec3i(16, 8, 16));
+            EnvironmentUtils.putOutFires(caster, this.getPosition(), new Vec3i(16, 8, 16));
             return true;
         }
         return false;

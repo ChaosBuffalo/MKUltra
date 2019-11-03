@@ -8,13 +8,19 @@ import com.chaosbuffalo.mkultra.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.FlameWavePotion;
 import com.chaosbuffalo.mkultra.effects.spells.ParticlePotion;
+import com.chaosbuffalo.mkultra.effects.spells.SoundPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
 
 public class FlameWave extends MobAbility {
     public static float BASE_DAMAGE = 2.0f;
@@ -44,6 +50,16 @@ public class FlameWave extends MobAbility {
         return 3.0f;
     }
 
+    @Override
+    public SoundEvent getCastingSoundEvent() {
+        return ModSounds.hostile_casting_fire;
+    }
+
+    @Nullable
+    @Override
+    public SoundEvent getCastingCompleteEvent() {
+        return ModSounds.spell_fire_7;
+    }
 
     @Override
     public void execute(EntityLivingBase entity, IMobData data, EntityLivingBase target, World theWorld) {
@@ -59,6 +75,8 @@ public class FlameWave extends MobAbility {
         AreaEffectBuilder.Create(entity, entity)
                 .spellCast(flames, level, getTargetType())
                 .spellCast(particles, level, getTargetType())
+                .spellCast(SoundPotion.Create(entity, ModSounds.spell_fire_1, SoundCategory.HOSTILE),
+                        1, getTargetType())
                 .instant()
                 .color(16737305).radius(getDistance() + 3.0f, true)
                 .particle(EnumParticleTypes.LAVA)

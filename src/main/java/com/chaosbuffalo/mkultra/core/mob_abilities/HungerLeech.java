@@ -6,13 +6,19 @@ import com.chaosbuffalo.mkultra.core.IMobData;
 import com.chaosbuffalo.mkultra.core.MKDamageSource;
 import com.chaosbuffalo.mkultra.core.MobAbility;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkultra.utils.AbilityUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
 
 public class HungerLeech extends MobAbility {
 
@@ -51,11 +57,23 @@ public class HungerLeech extends MobAbility {
     }
 
     @Override
+    public SoundEvent getCastingSoundEvent() {
+        return ModSounds.hostile_casting_shadow;
+    }
+
+    @Nullable
+    @Override
+    public SoundEvent getCastingCompleteEvent() {
+        return ModSounds.spell_shadow_10;
+    }
+
+    @Override
     public void execute(EntityLivingBase entity, IMobData data, EntityLivingBase target, World theWorld) {
         if (target != null) {
             int level = data.getMobLevel();
             target.attackEntityFrom(MKDamageSource.causeIndirectMobMagicDamage(getAbilityId(), entity, entity),
                     BASE_DAMAGE + DAMAGE_SCALE * level);
+            AbilityUtils.playSoundAtServerEntity(target, ModSounds.spell_dark_3, SoundCategory.HOSTILE);
             if (target instanceof EntityPlayer) {
                 EntityPlayer playerTarget = (EntityPlayer) target;
                 playerTarget.getFoodStats().setFoodLevel(playerTarget.getFoodStats().getFoodLevel()

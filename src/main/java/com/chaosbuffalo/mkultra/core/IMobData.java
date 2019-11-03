@@ -11,6 +11,12 @@ public interface IMobData {
 
     boolean isMKSpawned();
 
+    public boolean isCasting();
+
+    public ResourceLocation getCastingAbility();
+
+    public int getCastTicks();
+
     boolean hasAbilities();
 
     void onTick();
@@ -82,5 +88,9 @@ public interface IMobData {
     ResourceLocation getMobDefinition();
 
     void setMobDefinition(ResourceLocation definition);
+
+    void setCastTicks(int value);
+
+    void setCastingAbility(ResourceLocation abilityId);
 
 }
