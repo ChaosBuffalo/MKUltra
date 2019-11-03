@@ -19,7 +19,9 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import scala.Array;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.*;
 
@@ -35,6 +37,8 @@ public class PlayerClassInfo {
     private ResourceLocation[] abilitySpendOrder;
     private ResourceLocation[] loadedPassives;
     private ResourceLocation[] loadedUltimates;
+    private Map<ResourceLocation, PlayerAbilityInfo> abilityInfoMap =
+            new HashMap<>(GameConstants.ACTION_BAR_SIZE);
 
     public PlayerClassInfo(ResourceLocation classId) {
         this.classId = classId;
@@ -43,6 +47,9 @@ public class PlayerClassInfo {
         this.totalTalentPoints = 0;
         this.unspentTalentPoints = 0;
         this.classObj = MKURegistry.getClass(classId);
+        if (this.classObj == null){
+            Log.info("Didnt find class for: %s", classId.toString());
+        }
         loadedPassives = new ResourceLocation[GameConstants.MAX_PASSIVES];
         Arrays.fill(loadedPassives, MKURegistry.INVALID_ABILITY);
         loadedUltimates = new ResourceLocation[GameConstants.MAX_ULTIMATES];
@@ -77,6 +84,10 @@ public class PlayerClassInfo {
         return unspentTalentPoints;
     }
 
+    public Collection<PlayerAbilityInfo> getAbilityInfos(){
+        return abilityInfoMap.values();
+    }
+
     void save(PlayerData data) {
         level = data.getLevel();
         unspentPoints = data.getUnspentPoints();
@@ -92,6 +103,10 @@ public class PlayerClassInfo {
             return true;
         }
         return false;
+    }
+
+    public void putInfo(ResourceLocation abilityId, PlayerAbilityInfo info){
+        abilityInfoMap.put(abilityId, info);
     }
 
     private ResourceLocation[] parseNBTAbilityArray(NBTTagCompound tag, String name, int size) {
@@ -113,6 +128,37 @@ public class PlayerClassInfo {
                     ability.execute(player, data, world);
                 }
             }
+        }
+    }
+
+    private void serializeAbilities(NBTTagCompound tag) {
+        NBTTagList tagList = new NBTTagList();
+        for (PlayerAbilityInfo info : abilityInfoMap.values()) {
+            NBTTagCompound sk = new NBTTagCompound();
+            info.serialize(sk);
+            tagList.appendTag(sk);
+        }
+
+        tag.setTag("abilities", tagList);
+    }
+
+    private void deserializeAbilities(NBTTagCompound tag) {
+        if (tag.hasKey("abilities")) {
+            NBTTagList tagList = tag.getTagList("abilities", Constants.NBT.TAG_COMPOUND);
+            for (int i = 0; i < tagList.tagCount(); i++) {
+                NBTTagCompound abilityTag = tagList.getCompoundTagAt(i);
+                ResourceLocation abilityId = new ResourceLocation(abilityTag.getString("id"));
+                PlayerAbility ability = MKURegistry.getAbility(abilityId);
+                if (ability == null) {
+                    continue;
+                }
+
+                PlayerAbilityInfo info = ability.createAbilityInfo();
+                info.deserialize(abilityTag);
+                abilityInfoMap.put(abilityId, info);
+            }
+        } else {
+            clearSpentAbilities();
         }
     }
 
@@ -324,34 +370,47 @@ public class PlayerClassInfo {
     public void serialize(NBTTagCompound tag) {
         tag.setString("id", classId.toString());
         tag.setInteger("level", level);
-        tag.setString("classAbilityHash", classObj.hashAbilities());
+        if (classObj != null){
+            tag.setString("classAbilityHash", classObj.hashAbilities());
+        } else {
+            tag.setString("classAbilityHash", "invalid_hash");
+        }
+
         tag.setInteger("unspentPoints", unspentPoints);
+        serializeAbilities(tag);
         writeNBTAbilityArray(tag, "abilitySpendOrder", Arrays.asList(abilitySpendOrder), GameConstants.MAX_CLASS_LEVEL);
         writeNBTAbilityArray(tag, "hotbar", Arrays.asList(hotbar), GameConstants.ACTION_BAR_SIZE);
         serializeTalentInfo(tag);
     }
 
+    private void clearSpentAbilities(){
+        unspentPoints = level;
+        clearAbilitySpendOrder();
+        clearActiveAbilities();
+        abilityInfoMap.clear();
+    }
+
     public void deserialize(NBTTagCompound tag) {
         classId = new ResourceLocation(tag.getString("id"));
-        classObj = MKURegistry.getClass(classId);
         level = tag.getInteger("level");
-        if (tag.hasKey("classAbilityHash")){
-            String abilityHash = tag.getString("classAbilityHash");
-            if (abilityHash.equals(classObj.hashAbilities())){
-                unspentPoints = tag.getInteger("unspentPoints");
-                abilitySpendOrder = parseNBTAbilityArray(tag, "abilitySpendOrder", GameConstants.MAX_CLASS_LEVEL);
-                setActiveAbilities(parseNBTAbilityArray(tag, "hotbar", GameConstants.ACTION_BAR_SIZE));
+        classObj = MKURegistry.getClass(classId);
+        deserializeAbilities(tag);
+        if (classObj != null){
+            if (tag.hasKey("classAbilityHash")){
+                String abilityHash = tag.getString("classAbilityHash");
+                if (abilityHash.equals(classObj.hashAbilities())){
+                    unspentPoints = tag.getInteger("unspentPoints");
+                    abilitySpendOrder = parseNBTAbilityArray(tag, "abilitySpendOrder", GameConstants.MAX_CLASS_LEVEL);
+                    setActiveAbilities(parseNBTAbilityArray(tag, "hotbar", GameConstants.ACTION_BAR_SIZE));
+                } else {
+                    clearSpentAbilities();
+                }
             } else {
-                unspentPoints = level;
-                clearAbilitySpendOrder();
-                clearActiveAbilities();
+                clearSpentAbilities();
             }
         } else {
-            unspentPoints = level;
-            clearAbilitySpendOrder();
-            clearActiveAbilities();
+           clearSpentAbilities();
         }
-
         deserializeTalentInfo(tag);
     }
 
@@ -460,6 +519,11 @@ public class PlayerClassInfo {
         if (level > 0) {
             abilitySpendOrder[level - 1] = abilityId;
         }
+    }
+
+    @Nullable
+    public PlayerAbilityInfo getAbilityInfo(ResourceLocation abilityId) {
+        return abilityInfoMap.get(abilityId);
     }
 
     public void clearUltimateAbilities(){
