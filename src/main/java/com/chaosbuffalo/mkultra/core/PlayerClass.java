@@ -43,6 +43,14 @@ public abstract class PlayerClass extends IForgeRegistryEntry.Impl<PlayerClass> 
 
     public abstract int getBaseMana();
 
+    public int hashAbilities() {
+        StringBuilder concatIds = new StringBuilder();
+        for (PlayerAbility ability : getAbilities()){
+            concatIds.append(ability.getAbilityId().toString());
+        }
+        return concatIds.toString().hashCode();
+    }
+
     public abstract int getManaPerLevel();
 
     public abstract IClassClientData getClientData();

@@ -25,6 +25,7 @@ import java.util.*;
 
 public class PlayerClassInfo {
     private ResourceLocation classId;
+    private PlayerClass classObj;
     private int level;
     private int unspentPoints;
     private int totalTalentPoints;
@@ -41,6 +42,7 @@ public class PlayerClassInfo {
         this.unspentPoints = 1;
         this.totalTalentPoints = 0;
         this.unspentTalentPoints = 0;
+        this.classObj = MKURegistry.getClass(classId);
         loadedPassives = new ResourceLocation[GameConstants.MAX_PASSIVES];
         Arrays.fill(loadedPassives, MKURegistry.INVALID_ABILITY);
         loadedUltimates = new ResourceLocation[GameConstants.MAX_ULTIMATES];
@@ -314,6 +316,7 @@ public class PlayerClassInfo {
     public void serialize(NBTTagCompound tag) {
         tag.setString("id", classId.toString());
         tag.setInteger("level", level);
+        tag.setInteger("classAbilityHash", classObj.hashAbilities());
         tag.setInteger("unspentPoints", unspentPoints);
         writeNBTAbilityArray(tag, "abilitySpendOrder", Arrays.asList(abilitySpendOrder), GameConstants.MAX_CLASS_LEVEL);
         writeNBTAbilityArray(tag, "hotbar", Arrays.asList(hotbar), GameConstants.ACTION_BAR_SIZE);
@@ -322,10 +325,25 @@ public class PlayerClassInfo {
 
     public void deserialize(NBTTagCompound tag) {
         classId = new ResourceLocation(tag.getString("id"));
+        classObj = MKURegistry.getClass(classId);
         level = tag.getInteger("level");
-        unspentPoints = tag.getInteger("unspentPoints");
-        abilitySpendOrder = parseNBTAbilityArray(tag, "abilitySpendOrder", GameConstants.MAX_CLASS_LEVEL);
-        setActiveAbilities(parseNBTAbilityArray(tag, "hotbar", GameConstants.ACTION_BAR_SIZE));
+        if (tag.hasKey("classAbilityHash")){
+            int abilityHash = tag.getInteger("classAbilityHash");
+            if (abilityHash == classObj.hashAbilities()){
+                unspentPoints = tag.getInteger("unspentPoints");
+                abilitySpendOrder = parseNBTAbilityArray(tag, "abilitySpendOrder", GameConstants.MAX_CLASS_LEVEL);
+                setActiveAbilities(parseNBTAbilityArray(tag, "hotbar", GameConstants.ACTION_BAR_SIZE));
+            } else {
+                unspentPoints = level;
+                clearAbilitySpendOrder();
+                clearActiveAbilities();
+            }
+        } else {
+            unspentPoints = level;
+            clearAbilitySpendOrder();
+            clearActiveAbilities();
+        }
+
         deserializeTalentInfo(tag);
     }
 
@@ -434,6 +452,10 @@ public class PlayerClassInfo {
         if (level > 0) {
             abilitySpendOrder[level - 1] = abilityId;
         }
+    }
+
+    public void clearActiveAbilities(){
+        Arrays.fill(hotbar, MKURegistry.INVALID_ABILITY);
     }
 
     public void clearAbilitySpendOrder() {
