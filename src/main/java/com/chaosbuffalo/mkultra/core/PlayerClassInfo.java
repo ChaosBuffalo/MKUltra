@@ -302,14 +302,22 @@ public class PlayerClassInfo {
     }
 
     public void parseTalentTrees(NBTTagCompound tag) {
+        boolean doReset = false;
         if (tag.hasKey("trees")) {
             NBTTagCompound trees = tag.getCompoundTag("trees");
             for (String key : trees.getKeySet()) {
                 ResourceLocation loc = new ResourceLocation(key);
                 if (talentTrees.containsKey(loc)) {
-                    talentTrees.get(loc).fromTag(trees.getCompoundTag(key));
+                    boolean needsReset = talentTrees.get(loc).fromTag(trees.getCompoundTag(key));
+                    if (needsReset) {
+                        doReset = true;
+                    }
                 }
             }
+        }
+        if (doReset){
+            clearUltimateAbilities();
+            clearPassiveAbilities();
         }
     }
 
@@ -452,6 +460,14 @@ public class PlayerClassInfo {
         if (level > 0) {
             abilitySpendOrder[level - 1] = abilityId;
         }
+    }
+
+    public void clearUltimateAbilities(){
+        Arrays.fill(loadedUltimates, MKURegistry.INVALID_ABILITY);
+    }
+
+    public void clearPassiveAbilities(){
+        Arrays.fill(loadedPassives, MKURegistry.INVALID_ABILITY);
     }
 
     public void clearActiveAbilities(){
