@@ -3,6 +3,7 @@ package com.chaosbuffalo.mkultra.core.classes;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.core.abilities.green_knight.*;
+import com.chaosbuffalo.mkultra.init.ModPlayerClasses;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -77,6 +78,6 @@ public class GreenKnight extends PlayerClass {
 
     @Override
     public IClassClientData getClientData() {
-        return ClassClientData.DesperateIcon.INSTANCE;
+        return ModPlayerClasses.desperateIcon;
     }
 }

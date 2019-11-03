@@ -1,11 +1,9 @@
 package com.chaosbuffalo.mkultra.core.classes;
 
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.core.ArmorClass;
-import com.chaosbuffalo.mkultra.core.IClassClientData;
-import com.chaosbuffalo.mkultra.core.PlayerAbility;
-import com.chaosbuffalo.mkultra.core.PlayerClass;
+import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.core.abilities.ranger.*;
+import com.chaosbuffalo.mkultra.init.ModPlayerClasses;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -17,7 +15,6 @@ import java.util.List;
 @Mod.EventBusSubscriber(modid = MKUltra.MODID)
 public class Ranger extends PlayerClass {
     public static ResourceLocation ID = new ResourceLocation(MKUltra.MODID, "class.ranger");
-    private static ClientData clientData = new ClientData();
     public static final Ranger INSTANCE = new Ranger();
 
     @SubscribeEvent
@@ -81,28 +78,8 @@ public class Ranger extends PlayerClass {
 
     @Override
     public IClassClientData getClientData() {
-        return clientData;
+        return ModPlayerClasses.rangerIcon;
     }
 
-    private static class ClientData implements IClassClientData {
-        @Override
-        public ResourceLocation getIcon() {
-            return new ResourceLocation(MKUltra.MODID, "textures/class/icons/ranger.png");
-        }
 
-        @Override
-        public String getXpTableText() {
-            return "The Watchful Ranger taught you the basics, but you must exchange brouzouf to learn more.";
-        }
-
-        @Override
-        public ResourceLocation getXpTableBackground() {
-            return new ResourceLocation(MKUltra.MODID, "textures/gui/xp_table_background_ranger.png");
-        }
-
-        @Override
-        public int getXpTableTextColor() {
-            return 16707252;
-        }
-    }
 }

@@ -211,7 +211,7 @@ public class MKConfig {
                 ClassLists.classesToString(new ResourceLocation(MKUltra.MODID, "provider.sun_icon"),
                         Archer.ID,
                         Brawler.ID,
-                        Cleric.ID,
+                        new ResourceLocation(MKUltra.MODID, "class.cleric"),
                         Digger.ID,
                         Druid.ID,
                         NetherMage.ID,

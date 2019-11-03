@@ -1,79 +1,47 @@
 package com.chaosbuffalo.mkultra.core;
 
-import com.chaosbuffalo.mkultra.MKUltra;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 
-public class ClassClientData {
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
-    public static class SunIcon implements IClassClientData {
-        public static SunIcon INSTANCE = new SunIcon();
 
-        @Override
-        public ResourceLocation getIcon() {
-            return new ResourceLocation(MKUltra.MODID, "textures/class/icons/sun.png");
-        }
+public class ClassClientData extends IForgeRegistryEntry.Impl<ClassClientData>
+        implements IClassClientData {
 
-        @Override
-        public String getXpTableText() {
-            return "Give your Brouzoufs to Solarius. Receive his blessings.";
-        }
+    private final ResourceLocation name;
+    private final ResourceLocation icon;
+    private final ResourceLocation xpBackground;
+    private final int xpColor;
 
-        @Override
-        public ResourceLocation getXpTableBackground() {
-            return new ResourceLocation(MKUltra.MODID, "textures/gui/xp_table_background.png");
-        }
-
-        @Override
-        public int getXpTableTextColor() {
-            return 38600;
-        }
+    public ClassClientData(ResourceLocation name, ResourceLocation icon,
+                           ResourceLocation xpBackground, int xpColor){
+        setRegistryName(name);
+        this.name = name;
+        this.xpColor = xpColor;
+        this.icon = icon;
+        this.xpBackground = xpBackground;
     }
 
-    public static class MoonIcon implements IClassClientData {
-        public static MoonIcon INSTANCE = new MoonIcon();
-
-        @Override
-        public ResourceLocation getIcon() {
-            return new ResourceLocation(MKUltra.MODID, "textures/class/icons/moon.png");
-        }
-
-        @Override
-        public String getXpTableText() {
-            return "Thalassa, Goddess of the Moon, demands brouzouf in exchange for her powers.";
-        }
-
-        @Override
-        public ResourceLocation getXpTableBackground() {
-            return new ResourceLocation(MKUltra.MODID, "textures/gui/xp_table_background_moon.png");
-        }
-
-        @Override
-        public int getXpTableTextColor() {
-            return 4404838;
-        }
+    @Override
+    public ResourceLocation getIcon() {
+        return icon;
     }
 
-    public static class DesperateIcon implements IClassClientData {
-        public static DesperateIcon INSTANCE = new DesperateIcon();
+    @Override
+    public String getXpTableText() {
+        return I18n.format(String.format("%s.%s.text",
+                name.getNamespace(), name.getPath()));
+    }
 
-        @Override
-        public ResourceLocation getIcon() {
-            return new ResourceLocation(MKUltra.MODID, "textures/class/icons/desperate.png");
-        }
 
-        @Override
-        public String getXpTableText() {
-            return "Ydira, Elusive Spirit of the Wood, will increase your powers in exchange for brouzouf.";
-        }
+    @Override
+    public ResourceLocation getXpTableBackground() {
+        return xpBackground;
+    }
 
-        @Override
-        public ResourceLocation getXpTableBackground() {
-            return new ResourceLocation(MKUltra.MODID, "textures/gui/xp_table_background_desperate.png");
-        }
-
-        @Override
-        public int getXpTableTextColor() {
-            return 32025;
-        }
+    @Override
+    public int getXpTableTextColor() {
+        return xpColor;
     }
 }
