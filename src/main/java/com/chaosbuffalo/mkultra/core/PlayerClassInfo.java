@@ -324,7 +324,7 @@ public class PlayerClassInfo {
     public void serialize(NBTTagCompound tag) {
         tag.setString("id", classId.toString());
         tag.setInteger("level", level);
-        tag.setInteger("classAbilityHash", classObj.hashAbilities());
+        tag.setString("classAbilityHash", classObj.hashAbilities());
         tag.setInteger("unspentPoints", unspentPoints);
         writeNBTAbilityArray(tag, "abilitySpendOrder", Arrays.asList(abilitySpendOrder), GameConstants.MAX_CLASS_LEVEL);
         writeNBTAbilityArray(tag, "hotbar", Arrays.asList(hotbar), GameConstants.ACTION_BAR_SIZE);
@@ -336,8 +336,8 @@ public class PlayerClassInfo {
         classObj = MKURegistry.getClass(classId);
         level = tag.getInteger("level");
         if (tag.hasKey("classAbilityHash")){
-            int abilityHash = tag.getInteger("classAbilityHash");
-            if (abilityHash == classObj.hashAbilities()){
+            String abilityHash = tag.getString("classAbilityHash");
+            if (abilityHash.equals(classObj.hashAbilities())){
                 unspentPoints = tag.getInteger("unspentPoints");
                 abilitySpendOrder = parseNBTAbilityArray(tag, "abilitySpendOrder", GameConstants.MAX_CLASS_LEVEL);
                 setActiveAbilities(parseNBTAbilityArray(tag, "hotbar", GameConstants.ACTION_BAR_SIZE));

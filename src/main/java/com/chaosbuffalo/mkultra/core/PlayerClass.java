@@ -5,6 +5,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistryEntry;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import java.util.List;
 
@@ -43,12 +44,12 @@ public abstract class PlayerClass extends IForgeRegistryEntry.Impl<PlayerClass> 
 
     public abstract int getBaseMana();
 
-    public int hashAbilities() {
+    public String hashAbilities() {
         StringBuilder concatIds = new StringBuilder();
         for (PlayerAbility ability : getAbilities()){
             concatIds.append(ability.getAbilityId().toString());
         }
-        return concatIds.toString().hashCode();
+        return DigestUtils.sha1Hex(concatIds.toString());
     }
 
     public abstract int getManaPerLevel();
