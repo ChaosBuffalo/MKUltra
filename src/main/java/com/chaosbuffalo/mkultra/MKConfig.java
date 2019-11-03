@@ -2,7 +2,6 @@ package com.chaosbuffalo.mkultra;
 
 import com.chaosbuffalo.mkultra.core.ArmorClass;
 import com.chaosbuffalo.mkultra.core.ClassLists;
-import com.chaosbuffalo.mkultra.core.classes.NetherMage;
 import com.chaosbuffalo.mkultra.core.classes.*;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.utils.EntityUtils;
@@ -209,21 +208,21 @@ public class MKConfig {
         @Config.Comment("Controls what class providers teach which classes")
         public String[] CLASS_MAP = {
                 ClassLists.classesToString(new ResourceLocation(MKUltra.MODID, "provider.sun_icon"),
-                        Archer.ID,
-                        Brawler.ID,
+                        new ResourceLocation(MKUltra.MODID, "class.archer"),
+                        new ResourceLocation(MKUltra.MODID, "class.brawler"),
                         new ResourceLocation(MKUltra.MODID, "class.cleric"),
-                        Digger.ID,
-                        Druid.ID,
-                        NetherMage.ID,
-                        Skald.ID,
-                        WetWizard.ID),
+                        new ResourceLocation(MKUltra.MODID, "class.digger"),
+                        new ResourceLocation(MKUltra.MODID, "class.druid"),
+                        new ResourceLocation(MKUltra.MODID, "class.nether_mage"),
+                        new ResourceLocation(MKUltra.MODID, "class.skald"),
+                        new ResourceLocation(MKUltra.MODID, "class.wet_wizard")),
                 ClassLists.classesToString(new ResourceLocation(MKUltra.MODID, "provider.moon_icon"),
-                        WaveKnight.ID,
-                        MoonKnight.ID),
+                        new ResourceLocation(MKUltra.MODID, "class.wave_knight"),
+                        new ResourceLocation(MKUltra.MODID, "class.moon_knight")),
                 ClassLists.classesToString(new ResourceLocation(MKUltra.MODID, "provider.desperate_icon"),
-                        GreenKnight.ID),
+                        new ResourceLocation(MKUltra.MODID, "class.green_knight")),
                 ClassLists.classesToString(new ResourceLocation(MKUltra.MODID, "provider.ranger"),
-                        Ranger.ID),
+                        new ResourceLocation(MKUltra.MODID, "class.ranger")),
         };
 
         @Config.Name("Banned Classes")

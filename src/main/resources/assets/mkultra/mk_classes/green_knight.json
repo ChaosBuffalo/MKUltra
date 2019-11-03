@@ -1,0 +1,17 @@
+{
+  "baseHealth": 24,
+  "healthPerLevel": 2,
+  "baseManaRegen": 1.0,
+  "manaRegenPerLevel": 0.3,
+  "baseMana": 14,
+  "manaPerLevel": 1,
+  "armorClass": "heavy",
+  "clientData": "mkultra:client_data.desperate_icon",
+  "abilities": [
+    "mkultra:ability.skin_like_wood",
+    "mkultra:ability.natures_remedy",
+    "mkultra:ability.spirit_bomb",
+    "mkultra:ability.cleansing_seed",
+    "mkultra:ability.explosive_growth"
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "baseHealth": 28,
+  "healthPerLevel": 2,
+  "baseManaRegen": 1.0,
+  "manaRegenPerLevel": 0.2,
+  "baseMana": 10,
+  "manaPerLevel": 1,
+  "armorClass": "medium",
+  "clientData": "mkultra:client_data.sun_icon",
+  "abilities": [
+    "mkultra:ability.yank",
+    "mkultra:ability.furious_brooding",
+    "mkultra:ability.yaup",
+    "mkultra:ability.stunning_shout",
+    "mkultra:ability.whirlwind_blades"
+  ]
+}

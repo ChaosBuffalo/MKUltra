@@ -4,7 +4,6 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.IPlayerData;
 import com.chaosbuffalo.mkultra.core.PlayerAbility;
 import com.chaosbuffalo.mkultra.core.PlayerToggleAbility;
-import com.chaosbuffalo.mkultra.core.classes.Skald;
 import com.chaosbuffalo.mkultra.effects.spells.NotoriousDOTSongPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.init.ModSounds;
@@ -74,7 +73,7 @@ public class NotoriousDOT extends PlayerToggleAbility {
 
     @Override
     public ResourceLocation getToggleGroupId() {
-        return Skald.TOGGLE_GROUP;
+        return SkaldConstants.TOGGLE_GROUP;
     }
 
     @Nullable
