@@ -104,13 +104,14 @@ public class TalentTreeRecord {
         return tag;
     }
 
-    public void fromTag(NBTTagCompound tag) {
+    public boolean fromTag(NBTTagCompound tag) {
+        boolean needsReset = false;
         if (tag.hasKey("version")) {
             int version = tag.getInteger("version");
             if (version != tree.getVersion()) {
                 Log.info("Can't load talent tree for %s, found version %d, but we have loaded %d", tree.getRegistryName().toString(),
                         version, tree.getVersion());
-                return;
+                return true;
             }
             if (tag.hasKey("lines")) {
                 NBTTagCompound lines = tag.getCompoundTag("lines");
@@ -123,10 +124,12 @@ public class TalentTreeRecord {
                         }
                     } else {
                         Log.info("Can't load talent line %s for %s", key, tree.getRegistryName().toString());
+                        needsReset = true;
                     }
                 }
             }
         }
+        return needsReset;
     }
 
     public boolean hasPointsInLine(String lineName) {

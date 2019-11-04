@@ -90,6 +90,7 @@ public class MKUltra {
         MKConfig.registerDisabledMobs();
         ModSpawn.postInitJsonRegistration();
         ModTalents.postInitJsonRegistration();
+        ModPlayerClasses.postInitJsonRegistration();
         ClassLists.initFromConfig();
         proxy.postInit(e);
     }

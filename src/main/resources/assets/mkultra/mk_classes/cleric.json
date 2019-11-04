@@ -1,0 +1,18 @@
+{
+  "baseHealth": 20,
+  "healthPerLevel": 2,
+  "baseManaRegen": 1.0,
+  "manaRegenPerLevel": 0.2,
+  "baseMana": 12,
+  "manaPerLevel": 1,
+  "armorClass": "heavy",
+  "clientData": "mkultra:client_data.sun_icon",
+  "abilities": [
+    "mkultra:ability.smite",
+    "mkultra:ability.heal",
+    "mkultra:ability.galvanize",
+    "mkultra:ability.power_word_summon",
+    "mkultra:ability.inspire"
+  ]
+}
+

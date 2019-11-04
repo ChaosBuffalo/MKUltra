@@ -37,6 +37,7 @@ public class MKURegistry {
     public static IForgeRegistry<CustomSetter> REGISTRY_CUSTOM_SETTERS = null;
     public static IForgeRegistry<BaseTalent> REGISTRY_TALENTS = null;
     public static IForgeRegistry<TalentTree> REGISTRY_TALENT_TREES = null;
+    public static IForgeRegistry<ClassClientData> REGISTRY_CLASS_CLIENT_DATA = null;
 
 
     public static ResourceLocation INVALID_CLASS = new ResourceLocation(MKUltra.MODID, "class.invalid");
@@ -154,6 +155,11 @@ public class MKURegistry {
         return REGISTRY_ATTRIBUTE_SETTERS.getValue(name);
     }
 
+    @Nullable
+    public static ClassClientData getClassClientData(ResourceLocation name){
+        return REGISTRY_CLASS_CLIENT_DATA.getValue(name);
+    }
+
 
     @SuppressWarnings("unused")
     @SubscribeEvent
@@ -162,6 +168,7 @@ public class MKURegistry {
                 .setName(new ResourceLocation(MKUltra.MODID, "classes"))
                 .setType(PlayerClass.class)
                 .setIDRange(0, Integer.MAX_VALUE - 1)
+                .allowModification()
                 .create();
 
         REGISTRY_ABILITIES = new RegistryBuilder<PlayerAbility>()
@@ -252,6 +259,13 @@ public class MKURegistry {
                 .setName(new ResourceLocation(MKUltra.MODID, "talent_trees"))
                 .setType(TalentTree.class)
                 .setIDRange(0, Integer.MAX_VALUE - 1)
+                .allowModification()
+                .create();
+
+        REGISTRY_CLASS_CLIENT_DATA = new RegistryBuilder<ClassClientData>()
+                .setName(new ResourceLocation(MKUltra.MODID, "aclass_client_data"))
+                .setType(ClassClientData.class)
+                .setIDRange(0, Integer.MAX_VALUE -1)
                 .allowModification()
                 .create();
     }

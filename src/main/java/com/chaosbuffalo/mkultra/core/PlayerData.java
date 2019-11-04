@@ -83,7 +83,6 @@ public class PlayerData implements IPlayerData {
     private float healthRegenTime;
     private AbilityTracker abilityTracker;
     private Map<ResourceLocation, PlayerClassInfo> knownClasses = new HashMap<>();
-    private Map<ResourceLocation, PlayerAbilityInfo> abilityInfoMap = new HashMap<>(GameConstants.ACTION_BAR_SIZE);
     private Map<ResourceLocation, PlayerToggleAbility> activeToggleMap = new HashMap<>();
     private boolean needPassiveTalentRefresh;
     private boolean talentPassivesUnlocked;
@@ -762,7 +761,7 @@ public class PlayerData implements IPlayerData {
             setCooldown(info.getId(), Math.min(current, newMaxCooldown));
         }
 
-        abilityInfoMap.put(abilityId, info);
+        classInfo.putInfo(abilityId, info);
         updateToggleAbility(info);
         sendSingleAbilityUpdate(info);
 
@@ -1000,7 +999,11 @@ public class PlayerData implements IPlayerData {
     @Override
     @Nullable
     public PlayerAbilityInfo getAbilityInfo(ResourceLocation abilityId) {
-        return abilityInfoMap.get(abilityId);
+        PlayerClassInfo info = getActiveClass();
+        if (info != null){
+            return info.getAbilityInfo(abilityId);
+        }
+        return null;
     }
 
     private void updateActiveAbilitySlot(int index) {
@@ -1160,7 +1163,12 @@ public class PlayerData implements IPlayerData {
 
     private void sendBulkAbilityUpdate() {
         if (isServerSide()) {
-            MKUltra.packetHandler.sendTo(new AbilityUpdatePacket(abilityInfoMap.values()), (EntityPlayerMP) player);
+            PlayerClassInfo classInfo = getActiveClass();
+            if (classInfo != null){
+                MKUltra.packetHandler.sendTo(new AbilityUpdatePacket(classInfo.getAbilityInfos()),
+                        (EntityPlayerMP) player);
+            }
+
         }
     }
 
@@ -1182,7 +1190,10 @@ public class PlayerData implements IPlayerData {
 
     @SideOnly(Side.CLIENT)
     public void clientSkillListUpdate(PlayerAbilityInfo info) {
-        abilityInfoMap.put(info.getId(), info);
+        PlayerClassInfo classInfo = getActiveClass();
+        if (classInfo != null){
+            classInfo.putInfo(info.getId(), info);
+        }
     }
 
     @SideOnly(Side.CLIENT)
@@ -1202,36 +1213,6 @@ public class PlayerData implements IPlayerData {
         }
     }
 
-    private void serializeAbilities(NBTTagCompound tag) {
-        NBTTagList tagList = new NBTTagList();
-        for (PlayerAbilityInfo info : abilityInfoMap.values()) {
-            NBTTagCompound sk = new NBTTagCompound();
-            info.serialize(sk);
-            tagList.appendTag(sk);
-        }
-
-        tag.setTag("abilities", tagList);
-    }
-
-    private void deserializeAbilities(NBTTagCompound tag) {
-        if (tag.hasKey("abilities")) {
-            NBTTagList tagList = tag.getTagList("abilities", Constants.NBT.TAG_COMPOUND);
-            for (int i = 0; i < tagList.tagCount(); i++) {
-                NBTTagCompound abilityTag = tagList.getCompoundTagAt(i);
-                ResourceLocation abilityId = new ResourceLocation(abilityTag.getString("id"));
-                PlayerAbility ability = MKURegistry.getAbility(abilityId);
-                if (ability == null) {
-                    continue;
-                }
-                PlayerAbilityInfo info = ability.createAbilityInfo();
-                info.deserialize(abilityTag);
-
-                abilityInfoMap.put(abilityId, info);
-            }
-
-            sendBulkAbilityUpdate();
-        }
-    }
 
     private void serializeClasses(NBTTagCompound tag) {
         saveCurrentClass();
@@ -1256,7 +1237,6 @@ public class PlayerData implements IPlayerData {
                 NBTTagCompound cls = classes.getCompoundTagAt(i);
                 PlayerClassInfo info = new PlayerClassInfo(new ResourceLocation(cls.getString("id")));
                 info.deserialize(cls);
-
                 knownClasses.put(info.getClassId(), info);
             }
         }
@@ -1269,6 +1249,7 @@ public class PlayerData implements IPlayerData {
                 classId = MKURegistry.INVALID_CLASS;
 
             activateClass(classId);
+            sendBulkAbilityUpdate();
         } else {
             activateClass(MKURegistry.INVALID_CLASS);
         }
@@ -1278,14 +1259,14 @@ public class PlayerData implements IPlayerData {
     public void serialize(NBTTagCompound nbt) {
         nbt.setFloat("mana", getMana());
         abilityTracker.serialize(nbt);
-        serializeAbilities(nbt);
+//        serializeAbilities(nbt);
         serializeClasses(nbt);
     }
 
     @Override
     public void deserialize(NBTTagCompound nbt) {
         abilityTracker.deserialize(nbt);
-        deserializeAbilities(nbt);
+//        deserializeAbilities(nbt);
         deserializeClasses(nbt);
         if (nbt.hasKey("mana")) {
             setMana(nbt.getFloat("mana"));
