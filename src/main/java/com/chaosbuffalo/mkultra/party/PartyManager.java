@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.party;
 
+import com.chaosbuffalo.mkultra.MKConfig;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -106,7 +107,8 @@ public class PartyManager {
             ArrayList<EntityPlayer> members = new ArrayList<>();
             for (String member : team.getMembershipCollection()) {
                 EntityPlayer p = world.getPlayerEntityByName(member);
-                if (p != null) {
+                if (p != null && p.getDistanceSq(orb) <= MKConfig.gameplay.XP_SHARE_DISTANCE *
+                        MKConfig.gameplay.XP_SHARE_DISTANCE) {
                     members.add(p);
                 }
             }
