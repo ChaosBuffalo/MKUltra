@@ -60,7 +60,7 @@ public class DualityRune extends PlayerAbility {
 
     @Override
     public int getCastTime(int currentRank) {
-        return GameConstants.TICKS_PER_SECOND / currentRank;
+        return GameConstants.TICKS_PER_SECOND / 2 * currentRank;
     }
 
     @Override

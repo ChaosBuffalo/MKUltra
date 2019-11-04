@@ -185,6 +185,10 @@ public class MKConfig {
         @Config.Comment("Multiplier to scale healing damage to undead by if HEALS_DAMAGE_UNDEAD is true")
         public float HEAL_DAMAGE_MULTIPLIER = 2.0f;
 
+        @Config.Name("XP Share Distance")
+        @Config.Comment("Maximum distance away to share xp to other players in your party")
+        public float XP_SHARE_DISTANCE = 100.0f;
+
         @Config.Name("Maximum Entity Health")
         @Config.Comment("Adjusts the default maximum health in minecraft for entities")
         public double MAX_ENTITY_HEALTH = 4096.0;
