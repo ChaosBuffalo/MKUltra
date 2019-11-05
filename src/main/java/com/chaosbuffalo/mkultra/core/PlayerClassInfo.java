@@ -563,6 +563,8 @@ public class PlayerClassInfo {
         try {
             NBTTagCompound talentData = pb.readCompoundTag();
             info.deserializeTalentInfo(talentData);
+            NBTTagCompound abilityData = pb.readCompoundTag();
+            info.deserializeAbilities(abilityData);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -576,5 +578,8 @@ public class PlayerClassInfo {
         NBTTagCompound talentData = new NBTTagCompound();
         serializeTalentInfo(talentData);
         pb.writeCompoundTag(talentData);
+        NBTTagCompound abilityData = new NBTTagCompound();
+        serializeAbilities(abilityData);
+        pb.writeCompoundTag(abilityData);
     }
 }

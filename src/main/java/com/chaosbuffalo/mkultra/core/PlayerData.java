@@ -1165,6 +1165,7 @@ public class PlayerData implements IPlayerData {
         if (isServerSide()) {
             PlayerClassInfo classInfo = getActiveClass();
             if (classInfo != null){
+                Log.info("sending update for %s", classInfo.getClassId().toString());
                 MKUltra.packetHandler.sendTo(new AbilityUpdatePacket(classInfo.getAbilityInfos()),
                         (EntityPlayerMP) player);
             }
@@ -1192,7 +1193,10 @@ public class PlayerData implements IPlayerData {
     public void clientSkillListUpdate(PlayerAbilityInfo info) {
         PlayerClassInfo classInfo = getActiveClass();
         if (classInfo != null){
+            Log.info("updating skill for %s: %s", classInfo.getClassId().toString(), info.getId().toString());
             classInfo.putInfo(info.getId(), info);
+        } else {
+            Log.info("active class not found, %s", getClassId().toString());
         }
     }
 
@@ -1201,11 +1205,13 @@ public class PlayerData implements IPlayerData {
         if (isFullUpdate) {
             knownClasses.clear();
             info.forEach(ci -> {
+                Log.info("full update adding class to thing %s", ci.getClassId());
                 knownClasses.put(ci.getClassId(), ci);
                 MinecraftForge.EVENT_BUS.post(new PlayerClassEvent.Updated(player, this, ci));
             });
         } else {
             info.forEach(ci -> {
+                Log.info("adding class to thing %s", ci.getClassId());
                 knownClasses.remove(ci.getClassId());
                 knownClasses.put(ci.getClassId(), ci);
                 MinecraftForge.EVENT_BUS.post(new PlayerClassEvent.Updated(player, this, ci));
