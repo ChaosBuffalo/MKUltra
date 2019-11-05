@@ -34,7 +34,6 @@ public class AbilityUpdatePacket implements IMessage {
     public void fromBytes(ByteBuf buf) {
         PacketBuffer pb = new PacketBuffer(buf);
         int count = pb.readVarInt();
-        Log.info("Found skills: %d", count);
         skills = new ArrayList<>(count);
 
         try {
@@ -83,11 +82,9 @@ public class AbilityUpdatePacket implements IMessage {
         public void handleClientMessage(final EntityPlayer player, final AbilityUpdatePacket msg) {
             if (player == null)
                 return;
-            Log.info("Got client side ability update");
             PlayerData data = (PlayerData) MKUPlayerData.get(player);
             if (data == null)
                 return;
-            Log.info("Class is: %s, skill count is: %d", data.getClassId().toString(), msg.skills.size());
             for (PlayerAbilityInfo info : msg.skills) {
                 data.clientSkillListUpdate(info);
             }
