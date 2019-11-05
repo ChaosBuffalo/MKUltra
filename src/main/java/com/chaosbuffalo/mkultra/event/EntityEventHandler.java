@@ -88,6 +88,9 @@ public class EntityEventHandler {
                 if (definition != MKURegistry.EMPTY_MOB) {
                     event.setCanceled(true);
                 } else {
+                    if (!MKConfig.gameplay.SPAWN_REPLACEMENT) {
+                        return;
+                    }
                     ResourceLocation entityId = EntityList.getKey(entity);
 //                    Log.info("Checking spawn list for %s", entity.toString());
                     SpawnList spawnList = DefaultSpawnIndex.getSpawnListForEntity(entityId);
