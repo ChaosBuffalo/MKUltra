@@ -743,6 +743,12 @@ public class PlayerData implements IPlayerData {
             info = ability.createAbilityInfo();
         }
 
+        if (consumePoint && getUnspentPoints() == 0)
+            return false;
+
+        if (!info.upgrade())
+            return false;
+
         if (consumePoint) {
             int curUnspent = getUnspentPoints();
             if (curUnspent > 0) {
@@ -752,8 +758,6 @@ public class PlayerData implements IPlayerData {
             }
             classInfo.setAbilitySpendOrder(abilityId, getAbilityLearnIndex());
         }
-
-        info.upgrade();
 
         if (abilityTracker.hasCooldown(abilityId)) {
             int newMaxCooldown = getAbilityCooldown(ability);

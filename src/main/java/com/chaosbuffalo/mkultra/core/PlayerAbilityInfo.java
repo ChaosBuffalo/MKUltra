@@ -30,10 +30,16 @@ public class PlayerAbilityInfo {
         return rank > GameConstants.ABILITY_INVALID_RANK;
     }
 
-    public void upgrade() {
-        if (rank < ability.getMaxRank()) {
+    public boolean isUpgradeable() {
+        return getRank() < getAbility().getMaxRank();
+    }
+
+    public boolean upgrade() {
+        if (isUpgradeable()) {
             rank += 1;
+            return true;
         }
+        return false;
     }
 
     public boolean downgrade() {
