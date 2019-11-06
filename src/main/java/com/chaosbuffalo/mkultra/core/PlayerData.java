@@ -1477,6 +1477,7 @@ public class PlayerData implements IPlayerData {
         ItemEventHandler.checkEquipment(player);
         updateTalents();
         checkTalentTotals();
+        validateAbilityPoints();
         sendCurrentClassUpdate();
 
         if (!classId.equals(oldClassId)) {
