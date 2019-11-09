@@ -86,11 +86,20 @@ public class PlayerClassInfo {
         return abilityInfoMap.values();
     }
 
-    void save(PlayerData data) {
-        level = data.getLevel();
-        for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
-            hotbar.set(i, data.getAbilityInSlot(i));
+    public ResourceLocation getAbilityInSlot(int index) {
+        if (index < hotbar.size()) {
+            return hotbar.get(index);
         }
+        return MKURegistry.INVALID_ABILITY;
+    }
+
+    public void setAbilityInSlot(int index, ResourceLocation abilityId) {
+        if (index < hotbar.size()) {
+            hotbar.set(index, abilityId);
+        }
+    }
+
+    void save(PlayerData data) {
     }
 
     boolean checkTalentTotals() {

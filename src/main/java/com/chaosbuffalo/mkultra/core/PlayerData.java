@@ -52,7 +52,6 @@ public class PlayerData implements IPlayerData {
             EntityPlayer.class, DataSerializers.FLOAT);
     private final static DataParameter<String> CLASS_ID = EntityDataManager.createKey(
             EntityPlayer.class, DataSerializers.STRING);
-    private final static DataParameter<String>[] ACTION_BAR_ABILITY_ID;
     private final static DataParameter<Integer>[] ACTION_BAR_ABILITY_RANK;
     private final static DataParameter<Integer> CAST_TICKS = EntityDataManager.createKey(
             EntityPlayer.class, DataSerializers.VARINT);
@@ -62,10 +61,6 @@ public class PlayerData implements IPlayerData {
     private final static String INVALID_ABILITY_STRING = MKURegistry.INVALID_ABILITY.toString();
 
     static {
-        ACTION_BAR_ABILITY_ID = new DataParameter[GameConstants.ACTION_BAR_SIZE];
-        for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
-            ACTION_BAR_ABILITY_ID[i] = EntityDataManager.createKey(EntityPlayer.class, DataSerializers.STRING);
-        }
         ACTION_BAR_ABILITY_RANK = new DataParameter[GameConstants.ACTION_BAR_SIZE];
         for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
             ACTION_BAR_ABILITY_RANK[i] = EntityDataManager.createKey(EntityPlayer.class, DataSerializers.VARINT);
@@ -125,7 +120,6 @@ public class PlayerData implements IPlayerData {
         privateData.register(CAST_TICKS, 0);
         privateData.register(CURRENT_CAST, INVALID_ABILITY_STRING);
         for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
-            privateData.register(ACTION_BAR_ABILITY_ID[i], INVALID_ABILITY_STRING);
             privateData.register(ACTION_BAR_ABILITY_RANK[i], GameConstants.ABILITY_INVALID_RANK);
         }
     }
@@ -136,7 +130,6 @@ public class PlayerData implements IPlayerData {
         privateData.setDirty(CAST_TICKS);
         privateData.setDirty(CURRENT_CAST);
         for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
-            privateData.setDirty(ACTION_BAR_ABILITY_ID[i]);
             privateData.setDirty(ACTION_BAR_ABILITY_RANK[i]);
         }
     }
@@ -669,8 +662,23 @@ public class PlayerData implements IPlayerData {
         return actives;
     }
 
+    @Override
+    public ResourceLocation getAbilityInSlot(int index) {
+        PlayerClassInfo classInfo = getActiveClass();
+        if (classInfo == null) {
+            return MKURegistry.INVALID_ABILITY;
+        }
+
+        return classInfo.getAbilityInSlot(index);
+    }
+
     private void setAbilityInSlot(int slotIndex, ResourceLocation abilityId) {
-        privateData.set(ACTION_BAR_ABILITY_ID[slotIndex], abilityId.toString());
+        PlayerClassInfo classInfo = getActiveClass();
+        if (classInfo == null) {
+            return;
+        }
+        classInfo.setAbilityInSlot(slotIndex, abilityId);
+        sendCurrentClassUpdate();
     }
 
     private int getCurrentSlotForAbility(ResourceLocation abilityId) {
@@ -684,14 +692,6 @@ public class PlayerData implements IPlayerData {
 
     private int getFirstFreeAbilitySlot() {
         return getCurrentSlotForAbility(MKURegistry.INVALID_ABILITY);
-    }
-
-    @Override
-    public ResourceLocation getAbilityInSlot(int index) {
-        if (index < ACTION_BAR_ABILITY_ID.length) {
-            return new ResourceLocation(privateData.get(ACTION_BAR_ABILITY_ID[index]));
-        }
-        return MKURegistry.INVALID_ABILITY;
     }
 
     @Override
