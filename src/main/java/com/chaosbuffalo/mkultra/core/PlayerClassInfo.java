@@ -62,6 +62,10 @@ public class PlayerClassInfo {
         return level;
     }
 
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
     public int getUnspentPoints() {
         return unspentPoints;
     }

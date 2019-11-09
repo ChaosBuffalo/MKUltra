@@ -50,8 +50,6 @@ public class PlayerData implements IPlayerData {
 
     private final static DataParameter<Float> MANA = EntityDataManager.createKey(
             EntityPlayer.class, DataSerializers.FLOAT);
-    private final static DataParameter<Integer> LEVEL = EntityDataManager.createKey(
-            EntityPlayer.class, DataSerializers.VARINT);
     private final static DataParameter<String> CLASS_ID = EntityDataManager.createKey(
             EntityPlayer.class, DataSerializers.STRING);
     private final static DataParameter<String>[] ACTION_BAR_ABILITY_ID;
@@ -124,7 +122,6 @@ public class PlayerData implements IPlayerData {
 
         privateData.register(MANA, 0f);
         privateData.register(CLASS_ID, MKURegistry.INVALID_CLASS.toString());
-        privateData.register(LEVEL, 0);
         privateData.register(CAST_TICKS, 0);
         privateData.register(CURRENT_CAST, INVALID_ABILITY_STRING);
         for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
@@ -136,7 +133,6 @@ public class PlayerData implements IPlayerData {
     private void markEntityDataDirty() {
         privateData.setDirty(MANA);
         privateData.setDirty(CLASS_ID);
-        privateData.setDirty(LEVEL);
         privateData.setDirty(CAST_TICKS);
         privateData.setDirty(CURRENT_CAST);
         for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
@@ -620,7 +616,11 @@ public class PlayerData implements IPlayerData {
 
     @Override
     public int getLevel() {
-        return privateData.get(LEVEL);
+        PlayerClassInfo classInfo = getActiveClass();
+        if (classInfo != null) {
+            return classInfo.getLevel();
+        }
+        return 0;
     }
 
     @Override
@@ -642,8 +642,13 @@ public class PlayerData implements IPlayerData {
     }
 
     private void setLevel(int level) {
-        int currentLevel = getLevel();
-        privateData.set(LEVEL, level);
+        PlayerClassInfo classInfo = getActiveClass();
+        if (classInfo == null) {
+            return;
+        }
+        int currentLevel = classInfo.getLevel();
+        classInfo.setLevel(level);
+        sendCurrentClassUpdate();
         updatePlayerStats(false);
         MinecraftForge.EVENT_BUS.post(new PlayerClassEvent.LevelChanged(player, this, getActiveClass(), currentLevel, level));
     }
