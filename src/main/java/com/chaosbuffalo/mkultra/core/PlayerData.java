@@ -52,8 +52,6 @@ public class PlayerData implements IPlayerData {
             EntityPlayer.class, DataSerializers.FLOAT);
     private final static DataParameter<Integer> LEVEL = EntityDataManager.createKey(
             EntityPlayer.class, DataSerializers.VARINT);
-    private final static DataParameter<Integer> UNSPENT_POINTS = EntityDataManager.createKey(
-            EntityPlayer.class, DataSerializers.VARINT);
     private final static DataParameter<String> CLASS_ID = EntityDataManager.createKey(
             EntityPlayer.class, DataSerializers.STRING);
     private final static DataParameter<String>[] ACTION_BAR_ABILITY_ID;
@@ -125,7 +123,6 @@ public class PlayerData implements IPlayerData {
     private void setupWatcher() {
 
         privateData.register(MANA, 0f);
-        privateData.register(UNSPENT_POINTS, 0);
         privateData.register(CLASS_ID, MKURegistry.INVALID_CLASS.toString());
         privateData.register(LEVEL, 0);
         privateData.register(CAST_TICKS, 0);
@@ -138,7 +135,6 @@ public class PlayerData implements IPlayerData {
 
     private void markEntityDataDirty() {
         privateData.setDirty(MANA);
-        privateData.setDirty(UNSPENT_POINTS);
         privateData.setDirty(CLASS_ID);
         privateData.setDirty(LEVEL);
         privateData.setDirty(CAST_TICKS);
@@ -595,14 +591,22 @@ public class PlayerData implements IPlayerData {
 
     @Override
     public int getUnspentPoints() {
-        return privateData.get(UNSPENT_POINTS);
+        PlayerClassInfo classInfo = getActiveClass();
+        if (classInfo != null) {
+            return classInfo.getUnspentPoints();
+        }
+        return 0;
     }
 
     private void setUnspentPoints(int unspentPoints) {
         // You shouldn't have more unspent points than your levels
         if (unspentPoints > getLevel())
             return;
-        privateData.set(UNSPENT_POINTS, unspentPoints);
+        PlayerClassInfo classInfo = getActiveClass();
+        if (classInfo != null) {
+            classInfo.setUnspentPoints(unspentPoints);
+        }
+        sendCurrentClassUpdate();
     }
 
     private void setClassId(ResourceLocation classId) {

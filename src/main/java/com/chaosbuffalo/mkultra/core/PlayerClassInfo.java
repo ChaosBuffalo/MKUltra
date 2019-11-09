@@ -66,6 +66,10 @@ public class PlayerClassInfo {
         return unspentPoints;
     }
 
+    public void setUnspentPoints(int unspentPoints) {
+        this.unspentPoints = unspentPoints;
+    }
+
     public int getTotalTalentPoints() {
         return totalTalentPoints;
     }
@@ -80,7 +84,6 @@ public class PlayerClassInfo {
 
     void save(PlayerData data) {
         level = data.getLevel();
-        unspentPoints = data.getUnspentPoints();
         for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
             hotbar.set(i, data.getAbilityInSlot(i));
         }
