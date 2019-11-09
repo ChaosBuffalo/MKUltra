@@ -1207,8 +1207,6 @@ public class PlayerData implements IPlayerData {
 
 
     private void serializeClasses(NBTTagCompound tag) {
-        saveCurrentClass();
-
         NBTTagList classes = new NBTTagList();
         for (PlayerClassInfo info : knownClasses.values()) {
             NBTTagCompound sk = new NBTTagCompound();
@@ -1388,20 +1386,6 @@ public class PlayerData implements IPlayerData {
         MinecraftForge.EVENT_BUS.post(new PlayerClassEvent.Removed(player, this, info));
     }
 
-    private void saveCurrentClass() {
-        if (!hasChosenClass()) {
-            return;
-        }
-
-        PlayerClassInfo cinfo = getActiveClass();
-        if (cinfo == null) {
-            return;
-        }
-
-        // save current class data
-        cinfo.save(this);
-    }
-
     private void deactivateCurrentToggleAbilities() {
         for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
             ResourceLocation abilityId = getAbilityInSlot(i);
@@ -1448,7 +1432,6 @@ public class PlayerData implements IPlayerData {
         List<ResourceLocation> hotbar;
 
         ResourceLocation oldClassId = getClassId();
-        saveCurrentClass();
         deactivateCurrentToggleAbilities();
 
         if (classId.equals(MKURegistry.INVALID_CLASS) || !knowsClass(classId)) {

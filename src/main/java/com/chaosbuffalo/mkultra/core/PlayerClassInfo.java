@@ -99,9 +99,6 @@ public class PlayerClassInfo {
         }
     }
 
-    void save(PlayerData data) {
-    }
-
     boolean checkTalentTotals() {
         int spent = getTotalSpentPoints();
         if (getTotalTalentPoints() - spent != getUnspentTalentPoints()) {
