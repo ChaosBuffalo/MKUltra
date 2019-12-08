@@ -58,6 +58,16 @@ public class ClientKeyHandler {
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public static void onKeyEvent(InputEvent.KeyInputEvent event) {
+        handleInputEvent();
+    }
+
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public static void onMouseEvent(InputEvent.MouseInputEvent event) {
+        handleInputEvent();
+    }
+
+    public static void handleInputEvent() {
         EntityPlayer player = Minecraft.getMinecraft().player;
         if (player == null)
             return;
@@ -77,7 +87,7 @@ public class ClientKeyHandler {
 
             for (int i = 0; i < abilityBinds.length; i++) {
                 KeyBinding bind = abilityBinds[i];
-                if (!bind.isKeyDown()) {
+                if (!bind.isPressed()) {
                     continue;
                 }
 
