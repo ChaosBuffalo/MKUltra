@@ -499,11 +499,10 @@ public class PlayerData implements IPlayerData {
     private void updatePlayerStats(boolean doTalents) {
         if (!hasChosenClass()) {
             setMana(0);
-            setTotalMana(0);
+            setTotalManaBase(0);
             setManaRegen(0);
             setHealthRegen(0);
-            setHealth(Math.min(20, this.player.getHealth()));
-            setTotalHealth(20);
+            setTotalHealthBase(20);
             if (doTalents) {
                 removeTalents();
             }
@@ -516,10 +515,8 @@ public class PlayerData implements IPlayerData {
             int newTotalMana = playerClass.getBaseMana() + (level * playerClass.getManaPerLevel());
             int newTotalHealth = playerClass.getBaseHealth() + (level * playerClass.getHealthPerLevel());
             float newManaRegen = playerClass.getBaseManaRegen() + (level * playerClass.getManaRegenPerLevel());
-            setTotalMana(newTotalMana);
-            setMana(getMana()); // Refresh after changing total mana
-            setTotalHealth(newTotalHealth);
-            setHealth(Math.min(newTotalHealth, this.player.getHealth()));
+            setTotalManaBase(newTotalMana);
+            setTotalHealthBase(newTotalHealth);
             setManaRegen(newManaRegen);
             setHealthRegen(0);
             if (doTalents) {
@@ -529,8 +526,9 @@ public class PlayerData implements IPlayerData {
         }
     }
 
-    private void setTotalHealth(float maxHealth) {
+    private void setTotalHealthBase(float maxHealth) {
         this.player.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(maxHealth);
+        setHealth(getHealth()); // Refresh the health to account for the updated maximum
     }
 
     @Override
@@ -1053,8 +1051,9 @@ public class PlayerData implements IPlayerData {
         return (float) player.getEntityAttribute(PlayerAttributes.MANA_REGEN).getAttributeValue();
     }
 
-    private void setTotalMana(float totalMana) {
+    private void setTotalManaBase(float totalMana) {
         player.getEntityAttribute(PlayerAttributes.MAX_MANA).setBaseValue(totalMana);
+        setMana(getMana()); // Refresh the mana to account for the updated maximum
     }
 
     @Override
