@@ -2,7 +2,6 @@ package com.chaosbuffalo.mkultra;
 
 import com.chaosbuffalo.mkultra.core.ArmorClass;
 import com.chaosbuffalo.mkultra.core.ClassLists;
-import com.chaosbuffalo.mkultra.core.classes.*;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.utils.EntityUtils;
 import com.chaosbuffalo.mkultra.utils.MobUtils;
@@ -257,17 +256,23 @@ public class MKConfig {
         return Arrays.stream(classConfig.BANNED_CLASSES).noneMatch(s -> s.equalsIgnoreCase(classId.toString()));
     }
 
-    public static ItemArmor.ArmorMaterial findArmorMat(String armorMat) {
+    public static ItemArmor.ArmorMaterial findArmorMaterial(String armorMat) {
+        if (armorMat == null)
+            return null;
         for (ItemArmor.ArmorMaterial material : ItemArmor.ArmorMaterial.values()) {
-            if (getArmorName(material).equals(armorMat)) {
-                return material;
+            String armorName = getArmorName(material);
+            if (armorName == null) {
+                Log.error("Failed to obtain armor material name for ArmorMaterial %s", material);
+                continue;
             }
+            if (armorName.equals(armorMat))
+                return material;
         }
         return null;
     }
 
     public static void registerArmorFromName(String name, ArmorClass armorclass) {
-        ItemArmor.ArmorMaterial mat = findArmorMat(name);
+        ItemArmor.ArmorMaterial mat = findArmorMaterial(name);
         if (mat != null) {
             Log.info("Registering %s for Armor Class: %s", name,
                     armorclass.getLocation().toString());
