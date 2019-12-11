@@ -4,9 +4,7 @@ package com.chaosbuffalo.mkultra.client.gui.lib;
 import com.chaosbuffalo.mkultra.log.Log;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.input.Mouse;
 
 import java.io.IOException;
@@ -41,12 +39,20 @@ public class MKScreen extends GuiScreen {
         MinecraftForge.EVENT_BUS.register(this);
     }
 
-    @SubscribeEvent
-    public void handleMouseScroll(GuiScreenEvent.MouseInputEvent.Pre event) {
-        int i = Integer.signum(Mouse.getEventDWheel());
-        if (Mouse.getEventDWheel() != 0) {
+    @Override
+    public void onGuiClosed() {
+        MinecraftForge.EVENT_BUS.unregister(this);
+    }
+
+    @Override
+    public void handleMouseInput() throws IOException {
+        super.handleMouseInput();
+        int scroll = Mouse.getEventDWheel();
+        if (scroll != 0) {
             int x = Mouse.getEventX() * this.width / this.mc.displayWidth;
             int y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
+            int i = Integer.signum(scroll);
+
             Iterator<MKModal> modalIt = modals.descendingIterator();
             while (modalIt.hasNext()) {
                 MKModal child = modalIt.next();
@@ -198,11 +204,6 @@ public class MKScreen extends GuiScreen {
             }
         }
         return false;
-    }
-
-    @Override
-    public void onGuiClosed() {
-        MinecraftForge.EVENT_BUS.unregister(this);
     }
 
     @Override
