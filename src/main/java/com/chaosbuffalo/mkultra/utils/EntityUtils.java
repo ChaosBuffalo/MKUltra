@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.utils;
 
+import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.core.stats.CriticalStats;
 import com.chaosbuffalo.mkultra.entities.projectiles.EntityBaseProjectile;
 import net.minecraft.entity.Entity;
@@ -76,7 +77,7 @@ public class EntityUtils {
     public static boolean shootProjectileAtTarget(EntityBaseProjectile projectile, EntityLivingBase target,
                                                float velocity, float accuracy) {
         ProjectileUtils.BallisticResult result = ProjectileUtils.solveBallisticArcStationaryTarget(projectile.getPositionVector(), target.getPositionVector(),
-                velocity, projectile.getGravityVelocity());
+                velocity, projectile.getGravityVelocity() * GameConstants.TICKS_PER_SECOND);
 
         if (!result.foundSolution){
             return false;
