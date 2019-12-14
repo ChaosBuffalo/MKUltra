@@ -61,8 +61,13 @@ public class TripleFireball extends MobAbility {
             EntityMobFireballProjectile flamep = new EntityMobFireballProjectile(world, entity,
                     entity.getEyeHeight() / 2.0);
             flamep.setAmplifier(data.getMobLevel() / 2);
-            EntityUtils.shootProjectileAtTarget(flamep, target, PROJECTILE_SPEED, PROJECTILE_INACCURACY);
+            boolean result = EntityUtils.shootProjectileAtTarget(flamep, target, PROJECTILE_SPEED, PROJECTILE_INACCURACY);
             world.spawnEntity(flamep);
+            if (result){
+                world.spawnEntity(flamep);
+            } else {
+                flamep.setDead();
+            }
         }
     }
 }

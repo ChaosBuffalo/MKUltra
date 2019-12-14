@@ -57,10 +57,14 @@ public class Fireball extends MobAbility {
     @Override
     public void execute(EntityLivingBase entity, IMobData data, EntityLivingBase target, World theWorld) {
         World world = entity.getEntityWorld();
-        EntityMobFireballProjectile flamep = new EntityMobFireballProjectile(world, entity,
+        EntityMobFireballProjectile projectile = new EntityMobFireballProjectile(world, entity,
                 entity.getEyeHeight() / 2.0);
-        flamep.setAmplifier(data.getMobLevel());
-        EntityUtils.shootProjectileAtTarget(flamep, target, PROJECTILE_SPEED, PROJECTILE_INACCURACY);
-        world.spawnEntity(flamep);
+        projectile.setAmplifier(data.getMobLevel());
+        boolean result = EntityUtils.shootProjectileAtTarget(projectile, target, PROJECTILE_SPEED, PROJECTILE_INACCURACY);
+        if (result){
+            world.spawnEntity(projectile);
+        } else {
+            projectile.setDead();
+        }
     }
 }

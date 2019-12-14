@@ -54,7 +54,12 @@ public class GraspingRoots extends MobAbility {
         EntityGraspingRootsProjectile proj = new EntityGraspingRootsProjectile(world, entity,
                 entity.getEyeHeight() / 2.0);
         proj.setAmplifier(data.getMobLevel());
-        EntityUtils.shootProjectileAtTarget(proj, target, PROJECTILE_SPEED, PROJECTILE_INACCURACY);
+        boolean result = EntityUtils.shootProjectileAtTarget(proj, target, PROJECTILE_SPEED, PROJECTILE_INACCURACY);
         world.spawnEntity(proj);
+        if (result){
+            world.spawnEntity(proj);
+        } else {
+            proj.setDead();
+        }
     }
 }
