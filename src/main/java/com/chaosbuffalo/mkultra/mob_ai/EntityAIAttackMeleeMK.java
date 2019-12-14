@@ -177,7 +177,7 @@ public class EntityAIAttackMeleeMK extends EntityAIBase {
     protected double getAttackReachSqr(EntityLivingBase attackTarget) {
         ItemStack inMainhand = attacker.getHeldItemMainhand();
         double attackRange = this.attacker.width * 2.0;
-        if (inMainhand != ItemStack.EMPTY) {
+        if (!inMainhand.isEmpty()) {
             Item item = inMainhand.getItem();
             if (ItemEventHandler.isNoShieldItem(item)) {
                 attackRange *= 2.0;

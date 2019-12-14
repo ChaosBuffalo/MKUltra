@@ -33,7 +33,7 @@ public class ItemUtils {
     }
 
     public static boolean isSuitableOffhandWeapon(ItemStack item) {
-        return !item.equals(ItemStack.EMPTY) && item.getItem() instanceof ItemSword &&
+        return !item.isEmpty() && item.getItem() instanceof ItemSword &&
                 !ItemEventHandler.isNoShieldItem(item.getItem());
     }
 
@@ -59,7 +59,7 @@ public class ItemUtils {
 
 
     public static float getCritChanceForItem(ItemStack itemInHand) {
-        if (itemInHand.equals(ItemStack.EMPTY)) {
+        if (itemInHand.isEmpty()) {
             return DEFAULT_CRIT_RATE;
         }
         Item item = itemInHand.getItem();
@@ -67,7 +67,7 @@ public class ItemUtils {
     }
 
     public static float getCritDamageForItem(ItemStack itemInHand) {
-        if (itemInHand.equals(ItemStack.EMPTY)) {
+        if (itemInHand.isEmpty()) {
             return DEFAULT_CRIT_DAMAGE;
         }
         Item item = itemInHand.getItem();
