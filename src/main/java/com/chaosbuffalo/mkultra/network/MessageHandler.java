@@ -1,8 +1,8 @@
 package com.chaosbuffalo.mkultra.network;
 
-import com.chaosbuffalo.mkultra.utils.ClientUtils;
-import com.chaosbuffalo.mkultra.utils.ServerUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -19,13 +19,15 @@ public abstract class MessageHandler<T extends IMessage> implements IMessageHand
 
     @SideOnly(Side.CLIENT)
     private void runHandleClient(T message, MessageContext ctx) {
-        EntityPlayer player = ctx.side.isClient() ? ClientUtils.mc().player : ctx.getServerHandler().player;
-        ClientUtils.addScheduledTask(() -> handleClientMessage(player, message));
+        Minecraft mc = Minecraft.getMinecraft();
+        EntityPlayer player = ctx.side.isClient() ? mc.player : ctx.getServerHandler().player;
+        mc.addScheduledTask(() -> handleClientMessage(player, message));
     }
 
     private void runHandleServer(T message, MessageContext ctx) {
         EntityPlayer player = ctx.getServerHandler().player;
-        ServerUtils.addScheduledTask(() -> handleServerMessage(player, message));
+        FMLCommonHandler.instance().getMinecraftServerInstance()
+                .addScheduledTask(() -> handleServerMessage(player, message));
     }
 
     @Override
@@ -49,5 +51,4 @@ public abstract class MessageHandler<T extends IMessage> implements IMessageHand
         public final void handleClientMessage(EntityPlayer player, T message) {
         }
     }
-
 }
