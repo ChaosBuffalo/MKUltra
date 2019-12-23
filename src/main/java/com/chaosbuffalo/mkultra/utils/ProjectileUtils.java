@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.utils;
 
+import com.chaosbuffalo.mkultra.log.Log;
 import net.minecraft.util.math.Vec3d;
 
 import javax.vecmath.Vector3d;
@@ -36,15 +37,14 @@ public class ProjectileUtils {
 
 
         Vec3d diff = target.subtract(projPos);
-        Vec3d diffXZ = new Vec3d(diff.x, 0.0, diff.y);
-        double groundDist = diff.length();
+        Vec3d diffXZ = new Vec3d(diff.x, 0.0, diff.z);
+        double groundDist = diffXZ.length();
         float vel2 = velocity*velocity;
         float vel4 = velocity*velocity*velocity*velocity;
         double y = diff.y;
-        double x = groundDist;
-        double gx = gravity*x;
-        double root = vel4 - gravity*(gravity*x*x + 2*y*vel2);
-
+        double gx = gravity * groundDist;
+        double root = vel4 - gravity*((gravity* groundDist * groundDist) + (2*y*vel2));
+        Log.info("root is: %f", root);
         if (root < 0){
             return new BallisticResult();
         }

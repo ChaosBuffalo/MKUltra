@@ -3,6 +3,7 @@ package com.chaosbuffalo.mkultra.utils;
 import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.core.stats.CriticalStats;
 import com.chaosbuffalo.mkultra.entities.projectiles.EntityBaseProjectile;
+import com.chaosbuffalo.mkultra.log.Log;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityArrow;
@@ -11,6 +12,7 @@ import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.entity.projectile.EntityTippedArrow;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.Vec3d;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -76,10 +78,14 @@ public class EntityUtils {
 //
     public static boolean shootProjectileAtTarget(EntityBaseProjectile projectile, EntityLivingBase target,
                                                float velocity, float accuracy) {
-        ProjectileUtils.BallisticResult result = ProjectileUtils.solveBallisticArcStationaryTarget(projectile.getPositionVector(), target.getPositionVector(),
-                velocity, projectile.getGravityVelocity() * GameConstants.TICKS_PER_SECOND);
+
+        ProjectileUtils.BallisticResult result = ProjectileUtils.solveBallisticArcStationaryTarget(
+                projectile.getPositionVector(),
+                target.getPositionVector().add(new Vec3d(0, target.height / 2.0, 0)),
+                velocity, projectile.getGravityVelocity());
 
         if (!result.foundSolution){
+            Log.info("No solution found for %s", projectile.toString());
             return false;
         } else {
             projectile.shoot(result.lowArc, accuracy);

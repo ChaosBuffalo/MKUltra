@@ -226,9 +226,9 @@ public abstract class EntityBaseProjectile extends Entity implements IProjectile
     }
 
     public void shoot(Vec3d arc, float inaccuracy){
-        this.motionX = arc.x + this.rand.nextGaussian() * 0.007499999832361937D * (double) inaccuracy;
-        this.motionY = arc.y + this.rand.nextGaussian() * 0.007499999832361937D * (double) inaccuracy;
-        this.motionZ = arc.z + this.rand.nextGaussian() * 0.007499999832361937D * (double) inaccuracy;
+        this.motionX = arc.x;// + this.rand.nextGaussian() * 0.007499999832361937D * (double) inaccuracy;
+        this.motionY = arc.y;// + this.rand.nextGaussian() * 0.007499999832361937D * (double) inaccuracy;
+        this.motionZ = arc.z;// + this.rand.nextGaussian() * 0.007499999832361937D * (double) inaccuracy;
         float f1 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
         this.prevRotationYaw = this.rotationYaw = (float) (MathHelper.atan2(this.motionX, this.motionZ) * (180D / Math.PI));
         this.prevRotationPitch = this.rotationPitch = (float) (MathHelper.atan2(this.motionY, (double) f1) * (180D / Math.PI));
