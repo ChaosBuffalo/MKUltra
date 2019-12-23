@@ -73,8 +73,12 @@ public class Whirlpool extends MobAbility {
                         lookVec),
                 entity.dimension, entity.posX,
                 entity.posY, entity.posZ, 50.0f);
-        EntityUtils.shootProjectileAtTarget(projectile, target, PROJECTILE_SPEED, PROJECTILE_INACCURACY);
-        world.spawnEntity(projectile);
+        boolean result = EntityUtils.shootProjectileAtTarget(projectile, target, PROJECTILE_SPEED, PROJECTILE_INACCURACY);
+        if (result){
+            world.spawnEntity(projectile);
+        } else {
+            projectile.setDead();
+        }
     }
 }
 

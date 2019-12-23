@@ -58,8 +58,13 @@ public class Drown extends MobAbility {
         World world = entity.getEntityWorld();
         EntityDrownProjectile projectile = new EntityDrownProjectile(world, entity, entity.getEyeHeight() / 2.0);
         projectile.setAmplifier(data.getMobLevel() > 5 ? 2 : 1);
-        EntityUtils.shootProjectileAtTarget(projectile, target, PROJECTILE_SPEED, PROJECTILE_INACCURACY);
-        world.spawnEntity(projectile);
+        boolean result = EntityUtils.shootProjectileAtTarget(projectile, target, PROJECTILE_SPEED, PROJECTILE_INACCURACY);
+        if (result){
+            world.spawnEntity(projectile);
+        } else {
+            projectile.setDead();
+        }
+
     }
 }
 

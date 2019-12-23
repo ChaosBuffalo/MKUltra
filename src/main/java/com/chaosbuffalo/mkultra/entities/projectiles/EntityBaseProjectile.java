@@ -225,6 +225,16 @@ public abstract class EntityBaseProjectile extends Entity implements IProjectile
         this.ticksInGround = 0;
     }
 
+    public void shoot(Vec3d arc, float inaccuracy){
+        this.motionX = arc.x;// + this.rand.nextGaussian() * 0.007499999832361937D * (double) inaccuracy;
+        this.motionY = arc.y;// + this.rand.nextGaussian() * 0.007499999832361937D * (double) inaccuracy;
+        this.motionZ = arc.z;// + this.rand.nextGaussian() * 0.007499999832361937D * (double) inaccuracy;
+        float f1 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
+        this.prevRotationYaw = this.rotationYaw = (float) (MathHelper.atan2(this.motionX, this.motionZ) * (180D / Math.PI));
+        this.prevRotationPitch = this.rotationPitch = (float) (MathHelper.atan2(this.motionY, (double) f1) * (180D / Math.PI));
+        this.ticksInGround = 0;
+    }
+
     /**
      * Updates the velocity of the entity to a new value.
      */
@@ -359,23 +369,23 @@ public abstract class EntityBaseProjectile extends Entity implements IProjectile
             this.rotationPitch = this.prevRotationPitch + (this.rotationPitch - this.prevRotationPitch) * 0.2F;
             this.rotationYaw = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.2F;
 
-            float drag;
-            if (this.isInWater()) {
-                for (int j = 0; j < 4; ++j) {
-                    float f3 = 0.25F;
-                    this.world.spawnParticle(EnumParticleTypes.WATER_BUBBLE, this.posX - this.motionX * (double) f3,
-                            this.posY - this.motionY * (double) f3, this.posZ - this.motionZ * (double) f3, this.motionX,
-                            this.motionY, this.motionZ);
-                }
-
-                drag = getWaterDrag();
-            } else {
-                drag = getFlightDrag();
-            }
-
-            this.motionX *= (double) drag;
-            this.motionY *= (double) drag;
-            this.motionZ *= (double) drag;
+//            float drag;
+//            if (this.isInWater()) {
+//                for (int j = 0; j < 4; ++j) {
+//                    float f3 = 0.25F;
+//                    this.world.spawnParticle(EnumParticleTypes.WATER_BUBBLE, this.posX - this.motionX * (double) f3,
+//                            this.posY - this.motionY * (double) f3, this.posZ - this.motionZ * (double) f3, this.motionX,
+//                            this.motionY, this.motionZ);
+//                }
+//
+//                drag = getWaterDrag();
+//            } else {
+//                drag = getFlightDrag();
+//            }
+//
+//            this.motionX *= (double) drag;
+//            this.motionY *= (double) drag;
+//            this.motionZ *= (double) drag;
             if (!this.inGround && !world.isRemote) {
                 this.motionY -= this.getGravityVelocity();
             }
@@ -425,13 +435,13 @@ public abstract class EntityBaseProjectile extends Entity implements IProjectile
         return 0.03F;
     }
 
-    public float getFlightDrag() {
-        return 0.99f;
-    }
-
-    public float getWaterDrag() {
-        return 0.8f;
-    }
+//    public float getFlightDrag() {
+//        return 0.99f;
+//    }
+//
+//    public float getWaterDrag() {
+//        return 0.8f;
+//    }
 
     /**
      * Called when this EntityThrowable hits a block or entity.

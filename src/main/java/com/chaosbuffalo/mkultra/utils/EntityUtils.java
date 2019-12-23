@@ -1,7 +1,9 @@
 package com.chaosbuffalo.mkultra.utils;
 
+import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.core.stats.CriticalStats;
 import com.chaosbuffalo.mkultra.entities.projectiles.EntityBaseProjectile;
+import com.chaosbuffalo.mkultra.log.Log;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityArrow;
@@ -10,6 +12,7 @@ import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.entity.projectile.EntityTippedArrow;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.Vec3d;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -56,39 +59,51 @@ public class EntityUtils {
         return vol >= LARGE_VOLUME;
     }
 
-    public static double getDrag(EntityBaseProjectile projectile) {
-        if (projectile.isInWater()) {
-            return projectile.getWaterDrag();
+//    public static double getDrag(EntityBaseProjectile projectile) {
+//        if (projectile.isInWater()) {
+//            return projectile.getWaterDrag();
+//        } else {
+//            return projectile.getFlightDrag();
+//        }
+//    }
+//
+//    public static int travelTimeForDistance(double distance, double speed, double drag, float gravity) {
+//        int ticks = 0;
+//        while (distance > 0) {
+//            distance -= speed * Math.pow(drag, ticks);
+//            ticks++;
+//        }
+//        return ticks;
+//    }
+//
+    public static boolean shootProjectileAtTarget(EntityBaseProjectile projectile, EntityLivingBase target,
+                                               float velocity, float accuracy) {
+
+        ProjectileUtils.BallisticResult result = ProjectileUtils.solveBallisticArcStationaryTarget(
+                projectile.getPositionVector(),
+                target.getPositionVector().add(new Vec3d(0, target.height / 2.0, 0)),
+                velocity, projectile.getGravityVelocity());
+
+        if (!result.foundSolution){
+            Log.info("No solution found for %s", projectile.toString());
+            return false;
         } else {
-            return projectile.getFlightDrag();
+            projectile.shoot(result.lowArc, accuracy);
+            return true;
         }
-    }
-
-    public static int travelTimeForDistance(double distance, double speed, double drag, float gravity) {
-        int ticks = 0;
-        while (distance > 0) {
-            distance -= speed * Math.pow(drag, ticks);
-            ticks++;
-        }
-        return ticks;
-    }
-
-    public static void shootProjectileAtTarget(EntityBaseProjectile projectile, EntityLivingBase target,
-                                               float speed, float accuracy) {
-
-        double distance = projectile.getPositionVector().distanceTo(target.getPositionVector());
-        double drag = getDrag(projectile);
-        int travelTimeInTicks = travelTimeForDistance(distance, speed, drag, projectile.getGravityVelocity());
-        double gravityOffset = 0.0;
-        float gravity = projectile.getGravityVelocity();
-        // WARNING BIG BRAIN ALGORITHM, ACCOUNTS FOR GRAVITY-ISH
-        for (int i = 0; i < travelTimeInTicks; i++) {
-            int multiplier = ((i / 10) * 2) + 2;
-            gravityOffset += gravity * multiplier;
-        }
-        double d1 = target.posX - projectile.posX;
-        double d2 = (target.posY + gravityOffset + (target.getEyeHeight() / 2.0)) - projectile.posY;
-        double d3 = target.posZ - projectile.posZ;
-        projectile.shoot(d1, d2, d3, speed, accuracy);
+//        double distance = projectile.getPositionVector().distanceTo(target.getPositionVector());
+//        double drag = getDrag(projectile);
+//        int travelTimeInTicks = travelTimeForDistance(distance, velocity, drag, projectile.getGravityVelocity());
+//        double gravityOffset = 0.0;
+//        float gravity = projectile.getGravityVelocity();
+//        // WARNING BIG BRAIN ALGORITHM, ACCOUNTS FOR GRAVITY-ISH
+//        for (int i = 0; i < travelTimeInTicks; i++) {
+//            int multiplier = ((i / 10) * 2) + 2;
+//            gravityOffset += gravity * multiplier;
+//        }
+//        double d1 = target.posX - projectile.posX;
+//        double d2 = (target.posY + gravityOffset + (target.getEyeHeight() / 2.0)) - projectile.posY;
+//        double d3 = target.posZ - projectile.posZ;
+//        projectile.shoot(d1, d2, d3, velocity, accuracy);
     }
 }
