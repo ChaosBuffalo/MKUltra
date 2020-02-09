@@ -87,11 +87,10 @@ public class Smite extends PlayerAbility {
     public void endCast(EntityPlayer entity, IPlayerData data, World theWorld, CastState state) {
         super.endCast(entity, data, theWorld, state);
         SingleTargetCastState singleTargetState = AbilityUtils.getCastStateAsType(state, SingleTargetCastState.class);
-        if (singleTargetState == null){
+        if (singleTargetState == null)
             return;
-        }
-        if (singleTargetState.hasTarget()){
-            EntityLivingBase targetEntity = singleTargetState.getTarget();
+
+        singleTargetState.getTarget().ifPresent(targetEntity -> {
             int level = data.getAbilityRank(getAbilityId());
             targetEntity.addPotionEffect(SmitePotion.Create(entity, targetEntity,
                     BASE_DAMAGE, DAMAGE_SCALE).toPotionEffect(level));
@@ -110,7 +109,7 @@ public class Smite extends PlayerAbility {
                             lookVec),
                     entity.dimension, targetEntity.posX,
                     targetEntity.posY, targetEntity.posZ, 50.0f);
-        }
+        });
     }
 
     @Override

@@ -91,27 +91,28 @@ public class SpiritOfWolf extends PlayerAbility {
     public void endCast(EntityPlayer entity, IPlayerData data, World theWorld, CastState state) {
         super.endCast(entity, data, theWorld, state);
         SingleTargetCastState singleTargetState = AbilityUtils.getCastStateAsType(state, SingleTargetCastState.class);
-        if (singleTargetState == null || !singleTargetState.hasTarget()){
+        if (singleTargetState == null)
             return;
-        }
-        EntityLivingBase targetEntity = singleTargetState.getTarget();
-        int level = data.getAbilityRank(getAbilityId());
-        int duration = GameConstants.TICKS_PER_SECOND * 60 * (BASE_DURATION + DURATION_SCALE * level);
-        duration = PlayerFormulas.applyBuffDurationBonus(data, duration);
-        PotionEffect addSpeed = new PotionEffect(MobEffects.SPEED, duration, level - 1);
-        targetEntity.addPotionEffect(addSpeed);
-        AbilityUtils.playSoundAtServerEntity(targetEntity,
-                ModSounds.spell_wind_4, SoundCategory.PLAYERS);
-        Vec3d lookVec = entity.getLookVec();
-        MKUltra.packetHandler.sendToAllAround(
-                new ParticleEffectSpawnPacket(
-                        EnumParticleTypes.SPELL_MOB.getParticleID(),
-                        ParticleEffects.SPHERE_MOTION, 50, 10,
-                        targetEntity.posX, targetEntity.posY + 1.0f,
-                        targetEntity.posZ, 1.0, 1.0, 1.0, 1.5,
-                        lookVec),
-                entity.dimension, targetEntity.posX,
-                targetEntity.posY, targetEntity.posZ, 50.0f);
+
+        singleTargetState.getTarget().ifPresent(targetEntity -> {
+            int level = data.getAbilityRank(getAbilityId());
+            int duration = GameConstants.TICKS_PER_SECOND * 60 * (BASE_DURATION + DURATION_SCALE * level);
+            duration = PlayerFormulas.applyBuffDurationBonus(data, duration);
+            PotionEffect addSpeed = new PotionEffect(MobEffects.SPEED, duration, level - 1);
+            targetEntity.addPotionEffect(addSpeed);
+            AbilityUtils.playSoundAtServerEntity(targetEntity,
+                    ModSounds.spell_wind_4, SoundCategory.PLAYERS);
+            Vec3d lookVec = entity.getLookVec();
+            MKUltra.packetHandler.sendToAllAround(
+                    new ParticleEffectSpawnPacket(
+                            EnumParticleTypes.SPELL_MOB.getParticleID(),
+                            ParticleEffects.SPHERE_MOTION, 50, 10,
+                            targetEntity.posX, targetEntity.posY + 1.0f,
+                            targetEntity.posZ, 1.0, 1.0, 1.0, 1.5,
+                            lookVec),
+                    entity.dimension, targetEntity.posX,
+                    targetEntity.posY, targetEntity.posZ, 50.0f);
+        });
     }
 
     @Override
@@ -120,9 +121,8 @@ public class SpiritOfWolf extends PlayerAbility {
         EntityLivingBase targetEntity = getSingleLivingTargetOrSelf(entity, getDistance(level), true);
         CastState state = pData.startAbility(this);
         SingleTargetCastState singleTargetState = AbilityUtils.getCastStateAsType(state, SingleTargetCastState.class);
-        if (singleTargetState != null){
+        if (singleTargetState != null) {
             singleTargetState.setTarget(targetEntity);
         }
     }
 }
-

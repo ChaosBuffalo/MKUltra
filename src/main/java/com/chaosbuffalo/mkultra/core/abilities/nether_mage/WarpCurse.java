@@ -88,11 +88,11 @@ public class WarpCurse extends PlayerAbility {
         super.endCast(entity, data, theWorld, state);
         SingleTargetCastState singleTargetState = AbilityUtils.getCastStateAsType(state, SingleTargetCastState.class);
         PlayerAbilityInfo info = data.getAbilityInfo(getAbilityId());
-        if (singleTargetState == null || info == null){
+        if (singleTargetState == null || info == null) {
             return;
         }
-        if (singleTargetState.hasTarget()){
-            EntityLivingBase targetEntity = singleTargetState.getTarget();
+
+        singleTargetState.getTarget().ifPresent(targetEntity -> {
             int level = info.getRank();
             AbilityUtils.playSoundAtServerEntity(targetEntity, ModSounds.spell_fire_5, SoundCategory.PLAYERS);
             targetEntity.addPotionEffect(WarpCursePotion.Create(entity)
@@ -113,8 +113,7 @@ public class WarpCurse extends PlayerAbility {
                             lookVec),
                     entity.dimension, targetEntity.posX,
                     targetEntity.posY, targetEntity.posZ, 50.0f);
-
-        }
+        });
     }
 
     @Override
@@ -130,7 +129,7 @@ public class WarpCurse extends PlayerAbility {
             CastState castState = pData.startAbility(this);
             SingleTargetCastState singleTargetState = AbilityUtils.getCastStateAsType(castState,
                     SingleTargetCastState.class);
-            if (singleTargetState != null){
+            if (singleTargetState != null) {
                 singleTargetState.setTarget(targetEntity);
             }
         }

@@ -92,12 +92,12 @@ public class Ember extends PlayerAbility {
         super.endCast(entity, data, theWorld, state);
         SingleTargetCastState singleTargetState = AbilityUtils.getCastStateAsType(state,
                 SingleTargetCastState.class);
-        if (singleTargetState == null){
+        if (singleTargetState == null) {
             return;
         }
-        if (singleTargetState.hasTarget()){
+
+        singleTargetState.getTarget().ifPresent(targetEntity -> {
             int level = data.getAbilityRank(getAbilityId());
-            EntityLivingBase targetEntity = singleTargetState.getTarget();
             targetEntity.setFire(BASE_DURATION + level * DURATION_SCALE);
             targetEntity.attackEntityFrom(MKDamageSource.causeIndirectMagicDamage(getAbilityId(), entity, entity), BASE_DAMAGE + level * DAMAGE_SCALE);
             AbilityUtils.playSoundAtServerEntity(targetEntity, ModSounds.spell_fire_6, SoundCategory.PLAYERS);
@@ -111,7 +111,7 @@ public class Ember extends PlayerAbility {
                             lookVec),
                     entity.dimension, targetEntity.posX,
                     targetEntity.posY, targetEntity.posZ, 50.0f);
-        }
+        });
     }
 
     @Override
@@ -121,7 +121,7 @@ public class Ember extends PlayerAbility {
         if (targetEntity != null) {
             CastState state = pData.startAbility(this);
             SingleTargetCastState singleTargetState = AbilityUtils.getCastStateAsType(state, SingleTargetCastState.class);
-            if (singleTargetState != null){
+            if (singleTargetState != null) {
                 singleTargetState.setTarget(targetEntity);
             }
         }
