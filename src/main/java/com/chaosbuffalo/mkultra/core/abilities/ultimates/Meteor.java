@@ -8,7 +8,6 @@ import com.chaosbuffalo.mkultra.core.abilities.cast_states.Vec3dCastState;
 import com.chaosbuffalo.mkultra.entities.projectiles.EntityMeteorProjectile;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.init.ModSounds;
-import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.mkultra.utils.AbilityUtils;
 import com.chaosbuffalo.mkultra.utils.RayTraceUtils;
@@ -45,8 +44,7 @@ public class Meteor extends PlayerAbility {
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<PlayerAbility> event) {
-        INSTANCE.setRegistryName(INSTANCE.getAbilityId());
-        event.getRegistry().register(INSTANCE);
+        event.getRegistry().register(INSTANCE.setRegistryName(INSTANCE.getAbilityId()));
     }
 
     public AbilityType getType() {
@@ -103,21 +101,18 @@ public class Meteor extends PlayerAbility {
     public void continueCast(EntityPlayer entity, IPlayerData data, World theWorld, int castTimeLeft, CastState state) {
         super.continueCast(entity, data, theWorld, castTimeLeft, state);
         int tickSpeed = 4;
-        if (castTimeLeft % tickSpeed == 0){
+        if (castTimeLeft % tickSpeed == 0) {
             Vec3dCastState castState = AbilityUtils.getCastStateAsType(state, Vec3dCastState.class);
-            if (castState == null){
+            if (castState == null)
                 return;
-            }
-            if (castState.hasLocation()) {
+
+            castState.getLocation().ifPresent(pos -> {
                 EntityMeteorProjectile proj = new EntityMeteorProjectile(theWorld, entity);
-                Vec3d pos = castState.getLocation();
                 int randX = theWorld.rand.nextInt(SUMMON_RANGE * 2) - SUMMON_RANGE;
                 int randZ = theWorld.rand.nextInt(SUMMON_RANGE * 2) - SUMMON_RANGE;
-                proj.setPosition(pos.x + randX, pos.y + SUMMON_HEIGHT,
-                        pos.z + randZ);
+                proj.setPosition(pos.x + randX, pos.y + SUMMON_HEIGHT, pos.z + randZ);
                 proj.shoot(pos.x, pos.y, pos.z, VELOCITY, INACCURACY);
                 theWorld.spawnEntity(proj);
-
 
                 Vec3d lookVec = entity.getLookVec();
                 MKUltra.packetHandler.sendToAllAround(
@@ -128,8 +123,7 @@ public class Meteor extends PlayerAbility {
                                 entity.posZ, 1.0, 1.0, 1.0, 0.1,
                                 lookVec),
                         entity, 50.0f);
-            }
-
+            });
         }
     }
 
@@ -137,10 +131,10 @@ public class Meteor extends PlayerAbility {
     public void execute(EntityPlayer entity, IPlayerData pData, World theWorld) {
         CastState state = pData.startAbility(this);
         Vec3dCastState vec3dCastState = AbilityUtils.getCastStateAsType(state, Vec3dCastState.class);
-        if (vec3dCastState != null){
+        if (vec3dCastState != null) {
             RayTraceResult lookingAt = RayTraceUtils.getLookingAt(EntityLivingBase.class, entity, RANGE,
                     e -> e != null && isValidTarget(entity, e));
-            if (lookingAt == null){
+            if (lookingAt == null) {
                 Vec3d look = entity.getLookVec().scale(RANGE);
                 Vec3d from = entity.getPositionVector().add(0, entity.getEyeHeight(), 0);
                 vec3dCastState.setLocation(from.add(look));
