@@ -502,7 +502,7 @@ public class PlayerData implements IPlayerData {
             setTotalManaBase(0);
             setManaRegen(0);
             setHealthRegen(0);
-            setTotalHealthBase(20);
+            setTotalHealthBase((int) SharedMonsterAttributes.MAX_HEALTH.getDefaultValue());
             if (doTalents) {
                 removeTalents();
             }
