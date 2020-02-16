@@ -504,7 +504,7 @@ public class PlayerData implements IPlayerData {
             setHealthRegen(0);
             setTotalHealthBase((int) SharedMonsterAttributes.MAX_HEALTH.getDefaultValue());
             if (doTalents) {
-                removeTalents();
+                updateTalents();
             }
         } else {
             PlayerClass playerClass = MKURegistry.getClass(getClassId());
@@ -1203,17 +1203,11 @@ public class PlayerData implements IPlayerData {
     public void clientBulkKnownClassUpdate(Collection<PlayerClassInfo> info, boolean isFullUpdate) {
         if (isFullUpdate) {
             knownClasses.clear();
-            info.forEach(ci -> {
-                knownClasses.put(ci.getClassId(), ci);
-                MinecraftForge.EVENT_BUS.post(new PlayerClassEvent.Updated(player, this, ci));
-            });
-        } else {
-            info.forEach(ci -> {
-                knownClasses.remove(ci.getClassId());
-                knownClasses.put(ci.getClassId(), ci);
-                MinecraftForge.EVENT_BUS.post(new PlayerClassEvent.Updated(player, this, ci));
-            });
         }
+        info.forEach(classInfo -> {
+            knownClasses.put(classInfo.getClassId(), classInfo);
+            MinecraftForge.EVENT_BUS.post(new PlayerClassEvent.Updated(player, this, classInfo));
+        });
     }
 
 
