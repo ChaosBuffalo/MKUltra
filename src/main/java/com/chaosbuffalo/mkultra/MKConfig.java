@@ -13,6 +13,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -324,20 +325,12 @@ public class MKConfig {
 
     public static void setMaxHealthMax() {
         RangedAttribute attr = (RangedAttribute) SharedMonsterAttributes.MAX_HEALTH;
-        final Field maxValueMaxHealth;
+        double max = gameplay.MAX_ENTITY_HEALTH;
+        Log.info("Setting max health to %f", max);
         try {
-            // 'maximumValue' of RangedAttribute
-            maxValueMaxHealth = RangedAttribute.class.getDeclaredField("field_111118_b");
-            maxValueMaxHealth.setAccessible(true);
-            try {
-                Log.info("Setting max health");
-                maxValueMaxHealth.setDouble(attr, gameplay.MAX_ENTITY_HEALTH);
-            } catch (IllegalAccessException e1) {
-                e1.printStackTrace();
-            }
-            maxValueMaxHealth.setAccessible(false);
-        } catch (NoSuchFieldException e1) {
-            e1.printStackTrace();
+            ObfuscationReflectionHelper.setPrivateValue(RangedAttribute.class, attr, max, "field_111118_b");
+        } catch (ReflectionHelper.UnableToAccessFieldException e) {
+            e.printStackTrace();
         }
     }
 }
