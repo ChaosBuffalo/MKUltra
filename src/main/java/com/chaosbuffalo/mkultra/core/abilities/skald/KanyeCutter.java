@@ -88,12 +88,12 @@ public class KanyeCutter extends PlayerAbility {
     public void endCast(EntityPlayer entity, IPlayerData data, World theWorld, CastState state) {
         super.endCast(entity, data, theWorld, state);
         SingleTargetCastState singleTargetState = AbilityUtils.getCastStateAsType(state, SingleTargetCastState.class);
-        if (singleTargetState == null){
+        if (singleTargetState == null) {
             return;
         }
-        if (singleTargetState.hasTarget()){
+
+        singleTargetState.getTarget().ifPresent(targetEntity -> {
             int level = data.getAbilityRank(getAbilityId());
-            EntityLivingBase targetEntity = singleTargetState.getTarget();
             if (isValidTarget(entity, targetEntity)) {
                 targetEntity.addPotionEffect(new PotionEffect(MobEffects.WITHER, GameConstants.TICKS_PER_SECOND * 3, level));
                 targetEntity.attackEntityFrom(MKDamageSource.fromMeleeSkill(getAbilityId(), entity, entity),
@@ -134,7 +134,7 @@ public class KanyeCutter extends PlayerAbility {
                             lookVec),
                     entity.dimension, targetEntity.posX,
                     targetEntity.posY, targetEntity.posZ, 50.0f);
-        }
+        });
     }
 
     @Override
@@ -151,10 +151,9 @@ public class KanyeCutter extends PlayerAbility {
             CastState castState = pData.startAbility(this);
             SingleTargetCastState singleTargetState = AbilityUtils.getCastStateAsType(castState,
                     SingleTargetCastState.class);
-            if (singleTargetState != null){
+            if (singleTargetState != null) {
                 singleTargetState.setTarget(targetEntity);
             }
         }
     }
 }
-

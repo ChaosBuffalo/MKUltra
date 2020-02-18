@@ -2,26 +2,22 @@ package com.chaosbuffalo.mkultra.core.abilities.cast_states;
 
 import net.minecraft.entity.EntityLivingBase;
 
-import javax.annotation.Nullable;
+import java.lang.ref.WeakReference;
+import java.util.Optional;
 
 public class SingleTargetCastState extends CastState {
 
-    private EntityLivingBase target;
+    private WeakReference<EntityLivingBase> target;
 
-    public SingleTargetCastState(int castTime){
+    public SingleTargetCastState(int castTime) {
         super(castTime);
     }
 
-    public boolean hasTarget(){
-        return getTarget() != null && getTarget().isEntityAlive();
+    public Optional<EntityLivingBase> getTarget() {
+        return Optional.ofNullable(target.get()).filter(EntityLivingBase::isEntityAlive);
     }
 
-    @Nullable
-    public EntityLivingBase getTarget(){
-        return target;
-    }
-
-    public void setTarget(EntityLivingBase target){
-        this.target = target;
+    public void setTarget(EntityLivingBase target) {
+        this.target = new WeakReference<>(target);
     }
 }

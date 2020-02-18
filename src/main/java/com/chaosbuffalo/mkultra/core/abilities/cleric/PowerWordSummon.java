@@ -85,27 +85,28 @@ public class PowerWordSummon extends PlayerAbility {
         super.endCast(entity, data, theWorld, state);
         SingleTargetCastState singleTargetState = AbilityUtils.getCastStateAsType(state,
                 SingleTargetCastState.class);
-        if (singleTargetState == null || !singleTargetState.hasTarget()){
+        if (singleTargetState == null)
             return;
-        }
-        int level = data.getAbilityRank(getAbilityId());
-        EntityLivingBase targetEntity = singleTargetState.getTarget();
-        targetEntity.addPotionEffect(WarpTargetPotion.Create(entity).setTarget(targetEntity).toPotionEffect(level));
-        targetEntity.addPotionEffect(
-                new PotionEffect(MobEffects.SLOWNESS,
-                        (4 + level) * GameConstants.TICKS_PER_SECOND, 100, false, true));
 
-        Vec3d lookVec = entity.getLookVec();
-        AbilityUtils.playSoundAtServerEntity(targetEntity, ModSounds.spell_magic_whoosh_4, SoundCategory.PLAYERS);
-        MKUltra.packetHandler.sendToAllAround(
-                new ParticleEffectSpawnPacket(
-                        EnumParticleTypes.SPELL_MOB.getParticleID(),
-                        ParticleEffects.CIRCLE_PILLAR_MOTION, 60, 10,
-                        targetEntity.posX, targetEntity.posY + 0.5,
-                        targetEntity.posZ, 1.0, 1.0, 1.0, 1.0,
-                        lookVec),
-                entity.dimension, targetEntity.posX,
-                targetEntity.posY, targetEntity.posZ, 50.0f);
+        singleTargetState.getTarget().ifPresent(targetEntity -> {
+            int level = data.getAbilityRank(getAbilityId());
+            targetEntity.addPotionEffect(WarpTargetPotion.Create(entity).setTarget(targetEntity).toPotionEffect(level));
+            targetEntity.addPotionEffect(
+                    new PotionEffect(MobEffects.SLOWNESS,
+                            (4 + level) * GameConstants.TICKS_PER_SECOND, 100, false, true));
+
+            Vec3d lookVec = entity.getLookVec();
+            AbilityUtils.playSoundAtServerEntity(targetEntity, ModSounds.spell_magic_whoosh_4, SoundCategory.PLAYERS);
+            MKUltra.packetHandler.sendToAllAround(
+                    new ParticleEffectSpawnPacket(
+                            EnumParticleTypes.SPELL_MOB.getParticleID(),
+                            ParticleEffects.CIRCLE_PILLAR_MOTION, 60, 10,
+                            targetEntity.posX, targetEntity.posY + 0.5,
+                            targetEntity.posZ, 1.0, 1.0, 1.0, 1.0,
+                            lookVec),
+                    entity.dimension, targetEntity.posX,
+                    targetEntity.posY, targetEntity.posZ, 50.0f);
+        });
     }
 
     @Override
@@ -118,10 +119,9 @@ public class PowerWordSummon extends PlayerAbility {
             CastState state = pData.startAbility(this);
             SingleTargetCastState singleTargetState = AbilityUtils.getCastStateAsType(state,
                     SingleTargetCastState.class);
-            if (singleTargetState != null){
+            if (singleTargetState != null) {
                 singleTargetState.setTarget(targetEntity);
             }
         }
     }
 }
-

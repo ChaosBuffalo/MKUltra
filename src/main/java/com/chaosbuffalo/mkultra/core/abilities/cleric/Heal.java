@@ -9,7 +9,6 @@ import com.chaosbuffalo.mkultra.effects.SpellCast;
 import com.chaosbuffalo.mkultra.effects.spells.ClericHealPotion;
 import com.chaosbuffalo.mkultra.fx.ParticleEffects;
 import com.chaosbuffalo.mkultra.init.ModSounds;
-import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.network.packets.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.mkultra.utils.AbilityUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
@@ -73,12 +72,11 @@ public class Heal extends PlayerAbility {
         super.endCast(entity, data, theWorld, castState);
 
         SingleTargetCastState singleTargetState = AbilityUtils.getCastStateAsType(castState, SingleTargetCastState.class);
-        if (singleTargetState == null){
+        if (singleTargetState == null)
             return;
-        }
-        if (singleTargetState.hasTarget()){
+
+        singleTargetState.getTarget().ifPresent(target -> {
             int level = data.getAbilityRank(getAbilityId());
-            EntityLivingBase target = singleTargetState.getTarget();
             SpellCast heal = ClericHealPotion.Create(entity, BASE_VALUE, VALUE_SCALE).setTarget(target);
             target.addPotionEffect(heal.toPotionEffect(level));
             Vec3d lookVec = entity.getLookVec();
@@ -92,8 +90,7 @@ public class Heal extends PlayerAbility {
                             lookVec),
                     entity.dimension, target.posX,
                     target.posY, target.posZ, 50.0f);
-        }
-
+        });
     }
 
     @Override
@@ -132,9 +129,8 @@ public class Heal extends PlayerAbility {
         EntityLivingBase targetEntity = getSingleLivingTargetOrSelf(entity, getDistance(level), true);
         CastState state = pData.startAbility(this);
         SingleTargetCastState singleTargetState = AbilityUtils.getCastStateAsType(state, SingleTargetCastState.class);
-        if (singleTargetState != null){
+        if (singleTargetState != null) {
             singleTargetState.setTarget(targetEntity);
         }
     }
 }
-
