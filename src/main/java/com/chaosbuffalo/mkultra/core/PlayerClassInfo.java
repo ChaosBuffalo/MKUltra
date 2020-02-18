@@ -16,10 +16,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
-import scala.Array;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
@@ -27,18 +27,16 @@ import java.util.*;
 
 public class PlayerClassInfo {
     private ResourceLocation classId;
-    private PlayerClass classObj;
     private int level;
     private int unspentPoints;
     private int totalTalentPoints;
     private int unspentTalentPoints;
     private HashMap<ResourceLocation, TalentTreeRecord> talentTrees;
-    private ResourceLocation[] hotbar;
-    private ResourceLocation[] abilitySpendOrder;
-    private ResourceLocation[] loadedPassives;
-    private ResourceLocation[] loadedUltimates;
-    private Map<ResourceLocation, PlayerAbilityInfo> abilityInfoMap =
-            new HashMap<>(GameConstants.ACTION_BAR_SIZE);
+    private List<ResourceLocation> hotbar;
+    private List<ResourceLocation> abilitySpendOrder;
+    private List<ResourceLocation> loadedPassives;
+    private List<ResourceLocation> loadedUltimates;
+    private Map<ResourceLocation, PlayerAbilityInfo> abilityInfoMap = new HashMap<>(GameConstants.ACTION_BAR_SIZE);
 
     public PlayerClassInfo(ResourceLocation classId) {
         this.classId = classId;
@@ -46,18 +44,10 @@ public class PlayerClassInfo {
         this.unspentPoints = 1;
         this.totalTalentPoints = 0;
         this.unspentTalentPoints = 0;
-        this.classObj = MKURegistry.getClass(classId);
-        if (this.classObj == null){
-            Log.info("Didnt find class for: %s", classId.toString());
-        }
-        loadedPassives = new ResourceLocation[GameConstants.MAX_PASSIVES];
-        Arrays.fill(loadedPassives, MKURegistry.INVALID_ABILITY);
-        loadedUltimates = new ResourceLocation[GameConstants.MAX_ULTIMATES];
-        Arrays.fill(loadedUltimates, MKURegistry.INVALID_ABILITY);
-        hotbar = new ResourceLocation[GameConstants.ACTION_BAR_SIZE];
-        Arrays.fill(hotbar, MKURegistry.INVALID_ABILITY);
-        abilitySpendOrder = new ResourceLocation[GameConstants.MAX_CLASS_LEVEL];
-        Arrays.fill(abilitySpendOrder, MKURegistry.INVALID_ABILITY);
+        loadedPassives = NonNullList.withSize(GameConstants.MAX_PASSIVES, MKURegistry.INVALID_ABILITY);
+        loadedUltimates = NonNullList.withSize(GameConstants.MAX_ULTIMATES, MKURegistry.INVALID_ABILITY);
+        hotbar = NonNullList.withSize(GameConstants.ACTION_BAR_SIZE, MKURegistry.INVALID_ABILITY);
+        abilitySpendOrder = NonNullList.withSize(GameConstants.MAX_CLASS_LEVEL, MKURegistry.INVALID_ABILITY);
         talentTrees = new HashMap<>();
         for (TalentTree tree : MKURegistry.REGISTRY_TALENT_TREES.getValuesCollection()) {
             talentTrees.put(tree.getRegistryName(), new TalentTreeRecord(tree));
@@ -84,7 +74,7 @@ public class PlayerClassInfo {
         return unspentTalentPoints;
     }
 
-    public Collection<PlayerAbilityInfo> getAbilityInfos(){
+    public Collection<PlayerAbilityInfo> getAbilityInfos() {
         return abilityInfoMap.values();
     }
 
@@ -92,7 +82,7 @@ public class PlayerClassInfo {
         level = data.getLevel();
         unspentPoints = data.getUnspentPoints();
         for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
-            hotbar[i] = data.getAbilityInSlot(i);
+            hotbar.set(i, data.getAbilityInSlot(i));
         }
     }
 
@@ -105,22 +95,21 @@ public class PlayerClassInfo {
         return false;
     }
 
-    public void putInfo(ResourceLocation abilityId, PlayerAbilityInfo info){
+    public void putInfo(ResourceLocation abilityId, PlayerAbilityInfo info) {
         abilityInfoMap.put(abilityId, info);
     }
 
-    private ResourceLocation[] parseNBTAbilityArray(NBTTagCompound tag, String name, int size) {
+    private List<ResourceLocation> parseNBTAbilityList(NBTTagCompound tag, String name, int size) {
         NBTTagList list = tag.getTagList(name, Constants.NBT.TAG_STRING);
-        ResourceLocation[] arr = new ResourceLocation[size];
-        Arrays.fill(arr, MKURegistry.INVALID_ABILITY);
+        List<ResourceLocation> ids = NonNullList.withSize(size, MKURegistry.INVALID_ABILITY);
         for (int i = 0; i < size && i < list.tagCount(); i++) {
-            arr[i] = new ResourceLocation(list.getStringTagAt(i));
+            ids.set(i, new ResourceLocation(list.getStringTagAt(i)));
         }
-        return arr;
+        return ids;
     }
 
     public void applyPassives(EntityPlayer player, IPlayerData data, World world) {
-        Log.debug("applyPassives - loadedPassives %s %s", loadedPassives[0], loadedPassives[1]);
+//        Log.debug("applyPassives - loadedPassives %s %s", loadedPassives[0], loadedPassives[1]);
         for (ResourceLocation loc : loadedPassives) {
             if (!loc.equals(MKURegistry.INVALID_ABILITY)) {
                 PlayerAbility ability = MKURegistry.getAbility(loc);
@@ -162,84 +151,80 @@ public class PlayerClassInfo {
         }
     }
 
-    public boolean hasUltimate(){
+    public boolean hasUltimate() {
         return getUltimateAbilitiesFromTalents().size() > 0;
     }
 
-    public boolean addPassiveToSlot(ResourceLocation loc, int slotIndex) {
-        if (canAddPassiveToSlot(loc, slotIndex)) {
-            for (int i = 0; i < GameConstants.MAX_PASSIVES; i++) {
-                if (!loc.equals(MKURegistry.INVALID_ABILITY) && i != slotIndex && loc.equals(loadedPassives[i])) {
-                    loadedPassives[i] = loadedPassives[slotIndex];
+    public boolean addPassiveToSlot(ResourceLocation abilityId, int slotIndex) {
+        if (canAddPassiveToSlot(abilityId, slotIndex)) {
+            for (int i = 0; i < loadedPassives.size(); i++) {
+                if (!abilityId.equals(MKURegistry.INVALID_ABILITY) && i != slotIndex && abilityId.equals(loadedPassives.get(i))) {
+                    loadedPassives.set(i, loadedPassives.get(slotIndex));
                 }
             }
-            loadedPassives[slotIndex] = loc;
+            loadedPassives.set(slotIndex, abilityId);
             return true;
         }
         return false;
     }
 
-    public boolean addUltimateToSlot(ResourceLocation loc, int slotIndex){
-        if (canAddUltimateToSlot(loc, slotIndex)){
-            loadedUltimates[slotIndex] = loc;
+    public boolean addUltimateToSlot(ResourceLocation abilityId, int slotIndex) {
+        if (canAddUltimateToSlot(abilityId, slotIndex)) {
+            loadedUltimates.set(slotIndex, abilityId);
             return true;
         }
         return false;
     }
 
-    public int getUltimateSlot(ResourceLocation loc){
-        for (int i = 0; i < GameConstants.MAX_ULTIMATES; i++) {
-            if (loc.equals(loadedUltimates[i])) {
-                return i;
-            }
-        }
-
-        return GameConstants.ULTIMATE_INVALID_SLOT;
+    public int getUltimateSlot(ResourceLocation abilityId) {
+        int index = loadedUltimates.indexOf(abilityId);
+        if (index == -1)
+            return GameConstants.ULTIMATE_INVALID_SLOT;
+        return index;
     }
 
 
-    public int getPassiveSlot(ResourceLocation loc) {
-        for (int i = 0; i < GameConstants.MAX_PASSIVES; i++) {
-            if (loc.equals(loadedPassives[i])) {
-                return i;
-            }
-        }
-
-        return GameConstants.PASSIVE_INVALID_SLOT;
+    public int getPassiveSlot(ResourceLocation abilityId) {
+        int index = loadedPassives.indexOf(abilityId);
+        if (index == -1)
+            return GameConstants.PASSIVE_INVALID_SLOT;
+        return index;
     }
 
-    public void clearUltimateSlot(int slotIndex){ loadedUltimates[slotIndex] = MKURegistry.INVALID_ABILITY; }
+    public void clearUltimateSlot(int slotIndex) {
+        loadedUltimates.set(slotIndex, MKURegistry.INVALID_ABILITY);
+    }
 
     public void clearPassiveSlot(int slotIndex) {
-        loadedPassives[slotIndex] = MKURegistry.INVALID_ABILITY;
+        loadedPassives.set(slotIndex, MKURegistry.INVALID_ABILITY);
     }
 
     public ResourceLocation getPassiveForSlot(int slotIndex) {
         if (slotIndex >= GameConstants.MAX_PASSIVES) {
             return MKURegistry.INVALID_ABILITY;
         }
-        return loadedPassives[slotIndex];
+        return loadedPassives.get(slotIndex);
     }
 
-    public ResourceLocation getUltimateForSlot(int slotIndex){
-        if (slotIndex >= GameConstants.MAX_ULTIMATES){
+    public ResourceLocation getUltimateForSlot(int slotIndex) {
+        if (slotIndex >= GameConstants.MAX_ULTIMATES) {
             return MKURegistry.INVALID_ABILITY;
         }
-        return loadedUltimates[slotIndex];
+        return loadedUltimates.get(slotIndex);
     }
 
-    public boolean canAddUltimateToSlot(ResourceLocation loc, int slotIndex){
-        return slotIndex < GameConstants.MAX_ULTIMATES && hasTrainedUltimate(loc);
+    public boolean canAddUltimateToSlot(ResourceLocation abilityId, int slotIndex) {
+        return slotIndex < GameConstants.MAX_ULTIMATES && hasTrainedUltimate(abilityId);
     }
 
-    public boolean canAddPassiveToSlot(ResourceLocation loc, int slotIndex) {
-        return slotIndex < GameConstants.MAX_PASSIVES && hasTrainedPassive(loc);
+    public boolean canAddPassiveToSlot(ResourceLocation abilityId, int slotIndex) {
+        return slotIndex < GameConstants.MAX_PASSIVES && hasTrainedPassive(abilityId);
     }
 
-    public HashSet<PlayerAbility> getUltimateAbilitiesFromTalents(){
+    public HashSet<PlayerAbility> getUltimateAbilitiesFromTalents() {
         HashSet<PlayerAbility> abilities = new HashSet<>();
-        for (TalentTreeRecord rec: talentTrees.values()){
-            if (rec.hasPointsInTree()){
+        for (TalentTreeRecord rec : talentTrees.values()) {
+            if (rec.hasPointsInTree()) {
                 rec.getUltimatesWithPoints().forEach(talent -> abilities.add(talent.getAbility()));
             }
         }
@@ -256,21 +241,21 @@ public class PlayerClassInfo {
         return abilities;
     }
 
-    public boolean hasTrainedUltimate(ResourceLocation loc){
-        if (loc.equals(MKURegistry.INVALID_ABILITY)){
+    public boolean hasTrainedUltimate(ResourceLocation abilityId) {
+        if (abilityId.equals(MKURegistry.INVALID_ABILITY)) {
             return true;
         }
         HashSet<PlayerAbility> abilities = getUltimateAbilitiesFromTalents();
-        PlayerAbility ability = MKURegistry.getAbility(loc);
+        PlayerAbility ability = MKURegistry.getAbility(abilityId);
         return ability != null && abilities.contains(ability);
     }
 
-    public boolean hasTrainedPassive(ResourceLocation loc) {
-        if (loc.equals(MKURegistry.INVALID_ABILITY)) {
+    public boolean hasTrainedPassive(ResourceLocation abilityId) {
+        if (abilityId.equals(MKURegistry.INVALID_ABILITY)) {
             return true;
         }
         HashSet<PlayerPassiveAbility> abilities = getPassiveAbilitiesFromTalents();
-        PlayerAbility ability = MKURegistry.getAbility(loc);
+        PlayerAbility ability = MKURegistry.getAbility(abilityId);
         return ability instanceof PlayerPassiveAbility && abilities.contains(ability);
     }
 
@@ -361,7 +346,7 @@ public class PlayerClassInfo {
                 }
             }
         }
-        if (doReset){
+        if (doReset) {
             clearUltimateAbilities();
             clearPassiveAbilities();
         }
@@ -370,7 +355,8 @@ public class PlayerClassInfo {
     public void serialize(NBTTagCompound tag) {
         tag.setString("id", classId.toString());
         tag.setInteger("level", level);
-        if (classObj != null){
+        PlayerClass classObj = MKURegistry.getClass(classId);
+        if (classObj != null) {
             tag.setString("classAbilityHash", classObj.hashAbilities());
         } else {
             tag.setString("classAbilityHash", "invalid_hash");
@@ -378,12 +364,12 @@ public class PlayerClassInfo {
 
         tag.setInteger("unspentPoints", unspentPoints);
         serializeAbilities(tag);
-        writeNBTAbilityArray(tag, "abilitySpendOrder", Arrays.asList(abilitySpendOrder), GameConstants.MAX_CLASS_LEVEL);
-        writeNBTAbilityArray(tag, "hotbar", Arrays.asList(hotbar), GameConstants.ACTION_BAR_SIZE);
+        writeNBTAbilityArray(tag, "abilitySpendOrder", abilitySpendOrder, GameConstants.MAX_CLASS_LEVEL);
+        writeNBTAbilityArray(tag, "hotbar", hotbar, GameConstants.ACTION_BAR_SIZE);
         serializeTalentInfo(tag);
     }
 
-    private void clearSpentAbilities(){
+    private void clearSpentAbilities() {
         unspentPoints = level;
         clearAbilitySpendOrder();
         clearActiveAbilities();
@@ -393,15 +379,15 @@ public class PlayerClassInfo {
     public void deserialize(NBTTagCompound tag) {
         classId = new ResourceLocation(tag.getString("id"));
         level = tag.getInteger("level");
-        classObj = MKURegistry.getClass(classId);
         deserializeAbilities(tag);
-        if (classObj != null){
-            if (tag.hasKey("classAbilityHash")){
+        PlayerClass classObj = MKURegistry.getClass(classId);
+        if (classObj != null) {
+            if (tag.hasKey("classAbilityHash")) {
                 String abilityHash = tag.getString("classAbilityHash");
-                if (abilityHash.equals(classObj.hashAbilities())){
+                if (abilityHash.equals(classObj.hashAbilities())) {
                     unspentPoints = tag.getInteger("unspentPoints");
-                    abilitySpendOrder = parseNBTAbilityArray(tag, "abilitySpendOrder", GameConstants.MAX_CLASS_LEVEL);
-                    setActiveAbilities(parseNBTAbilityArray(tag, "hotbar", GameConstants.ACTION_BAR_SIZE));
+                    abilitySpendOrder = parseNBTAbilityList(tag, "abilitySpendOrder", GameConstants.MAX_CLASS_LEVEL);
+                    hotbar = parseNBTAbilityList(tag, "hotbar", GameConstants.ACTION_BAR_SIZE);
                 } else {
                     clearSpentAbilities();
                 }
@@ -409,7 +395,7 @@ public class PlayerClassInfo {
                 clearSpentAbilities();
             }
         } else {
-           clearSpentAbilities();
+            clearSpentAbilities();
         }
         deserializeTalentInfo(tag);
     }
@@ -417,8 +403,8 @@ public class PlayerClassInfo {
     public void serializeTalentInfo(NBTTagCompound tag) {
         tag.setInteger("unspentTalentPoints", unspentTalentPoints);
         tag.setInteger("totalTalentPoints", totalTalentPoints);
-        writeNBTAbilityArray(tag, "loadedPassives", Arrays.asList(loadedPassives), GameConstants.MAX_PASSIVES);
-        writeNBTAbilityArray(tag, "loadedUltimates", Arrays.asList(loadedUltimates), GameConstants.MAX_ULTIMATES);
+        writeNBTAbilityArray(tag, "loadedPassives", loadedPassives, GameConstants.MAX_PASSIVES);
+        writeNBTAbilityArray(tag, "loadedUltimates", loadedUltimates, GameConstants.MAX_ULTIMATES);
         writeTalentTrees(tag);
     }
 
@@ -426,24 +412,24 @@ public class PlayerClassInfo {
         unspentTalentPoints = tag.getInteger("unspentTalentPoints");
         totalTalentPoints = tag.getInteger("totalTalentPoints");
         if (tag.hasKey("loadedPassives")) {
-            setLoadedPassives(parseNBTAbilityArray(tag, "loadedPassives", GameConstants.MAX_PASSIVES));
+            loadedPassives = parseNBTAbilityList(tag, "loadedPassives", GameConstants.MAX_PASSIVES);
         }
-        if (tag.hasKey("loadedUltimates")){
-            setLoadedUltimates(parseNBTAbilityArray(tag, "loadedUltimates", GameConstants.MAX_ULTIMATES));
+        if (tag.hasKey("loadedUltimates")) {
+            loadedUltimates = parseNBTAbilityList(tag, "loadedUltimates", GameConstants.MAX_ULTIMATES);
         }
         parseTalentTrees(tag);
     }
 
-    public ResourceLocation[] getActivePassives() {
-        return loadedPassives;
+    public List<ResourceLocation> getActivePassives() {
+        return Collections.unmodifiableList(loadedPassives);
     }
 
-    public ResourceLocation[] getActiveUltimates(){
-        return loadedUltimates;
+    public List<ResourceLocation> getActiveUltimates() {
+        return Collections.unmodifiableList(loadedUltimates);
     }
 
-    public ResourceLocation[] getActiveAbilities() {
-        return hotbar;
+    public List<ResourceLocation> getActiveAbilities() {
+        return Collections.unmodifiableList(hotbar);
     }
 
     public void addTalentPoints(int pointCount) {
@@ -503,21 +489,9 @@ public class PlayerClassInfo {
         }
     }
 
-    void setLoadedUltimates(ResourceLocation[] ultimates){
-        this.loadedUltimates = ultimates;
-    }
-
-    void setLoadedPassives(ResourceLocation[] passives) {
-        this.loadedPassives = passives;
-    }
-
-    void setActiveAbilities(ResourceLocation[] hotbar) {
-        this.hotbar = hotbar;
-    }
-
     public void setAbilitySpendOrder(ResourceLocation abilityId, int level) {
         if (level > 0) {
-            abilitySpendOrder[level - 1] = abilityId;
+            abilitySpendOrder.set(level - 1, abilityId);
         }
     }
 
@@ -526,27 +500,27 @@ public class PlayerClassInfo {
         return abilityInfoMap.get(abilityId);
     }
 
-    public void clearUltimateAbilities(){
-        Arrays.fill(loadedUltimates, MKURegistry.INVALID_ABILITY);
+    public void clearUltimateAbilities() {
+        loadedUltimates.clear();
     }
 
-    public void clearPassiveAbilities(){
-        Arrays.fill(loadedPassives, MKURegistry.INVALID_ABILITY);
+    public void clearPassiveAbilities() {
+        loadedPassives.clear();
     }
 
-    public void clearActiveAbilities(){
-        Arrays.fill(hotbar, MKURegistry.INVALID_ABILITY);
+    public void clearActiveAbilities() {
+        hotbar.clear();
     }
 
     public void clearAbilitySpendOrder() {
-        Arrays.fill(abilitySpendOrder, MKURegistry.INVALID_ABILITY);
+        abilitySpendOrder.clear();
     }
 
     public ResourceLocation getAbilitySpendOrder(int index) {
         ResourceLocation id = MKURegistry.INVALID_ABILITY;
         if (index > 0) {
-            id = abilitySpendOrder[index - 1];
-            abilitySpendOrder[index - 1] = MKURegistry.INVALID_ABILITY;
+            id = abilitySpendOrder.get(index - 1);
+            abilitySpendOrder.set(index - 1, MKURegistry.INVALID_ABILITY);
         }
         return id;
     }

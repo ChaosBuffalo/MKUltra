@@ -280,7 +280,7 @@ public class PlayerData implements IPlayerData {
     public List<ResourceLocation> getActivePassives() {
         PlayerClassInfo activeClass = getActiveClass();
         if (activeClass != null) {
-            return Arrays.asList(activeClass.getActivePassives());
+            return activeClass.getActivePassives();
         }
         return null;
     }
@@ -290,7 +290,7 @@ public class PlayerData implements IPlayerData {
     public List<ResourceLocation> getActiveUltimates() {
         PlayerClassInfo activeClass = getActiveClass();
         if (activeClass != null) {
-            return Arrays.asList(activeClass.getActiveUltimates());
+            return activeClass.getActiveUltimates();
         }
         return null;
     }
@@ -648,10 +648,10 @@ public class PlayerData implements IPlayerData {
         MinecraftForge.EVENT_BUS.post(new PlayerClassEvent.LevelChanged(player, this, getActiveClass(), currentLevel, level));
     }
 
-    private void setActiveAbilities(ResourceLocation[] abilities) {
-        int max = Math.min(abilities.length, GameConstants.ACTION_BAR_SIZE);
+    private void setActiveAbilities(List<ResourceLocation> abilities) {
+        int max = Math.min(abilities.size(), GameConstants.ACTION_BAR_SIZE);
         for (int i = 0; i < max; i++) {
-            setAbilityInSlot(i, abilities[i]);
+            setAbilityInSlot(i, abilities.get(i));
         }
         updateActiveAbilities();
     }
@@ -1452,7 +1452,7 @@ public class PlayerData implements IPlayerData {
 
         int level;
         int unspent;
-        ResourceLocation[] hotbar;
+        List<ResourceLocation> hotbar;
 
         ResourceLocation oldClassId = getClassId();
         saveCurrentClass();
@@ -1464,8 +1464,7 @@ public class PlayerData implements IPlayerData {
             classId = MKURegistry.INVALID_CLASS;
             level = 1;
             unspent = 1;
-            hotbar = new ResourceLocation[GameConstants.ACTION_BAR_SIZE];
-            Arrays.fill(hotbar, MKURegistry.INVALID_ABILITY);
+            hotbar = NonNullList.withSize(GameConstants.ACTION_BAR_SIZE, MKURegistry.INVALID_ABILITY);
         } else {
             PlayerClassInfo info = knownClasses.get(classId);
             level = info.getLevel();
