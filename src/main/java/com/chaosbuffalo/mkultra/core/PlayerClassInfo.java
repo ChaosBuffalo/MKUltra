@@ -62,7 +62,7 @@ public class PlayerClassInfo {
         return level;
     }
 
-    public void setLevel(int level) {
+    void setLevel(int level) {
         this.level = level;
     }
 
@@ -70,7 +70,7 @@ public class PlayerClassInfo {
         return unspentPoints;
     }
 
-    public void setUnspentPoints(int unspentPoints) {
+    void setUnspentPoints(int unspentPoints) {
         this.unspentPoints = unspentPoints;
     }
 
@@ -93,7 +93,7 @@ public class PlayerClassInfo {
         return MKURegistry.INVALID_ABILITY;
     }
 
-    public void setAbilityInSlot(int index, ResourceLocation abilityId) {
+    void setAbilityInSlot(int index, ResourceLocation abilityId) {
         if (index < hotbar.size()) {
             hotbar.set(index, abilityId);
         }
@@ -108,7 +108,7 @@ public class PlayerClassInfo {
         return false;
     }
 
-    public void putInfo(ResourceLocation abilityId, PlayerAbilityInfo info) {
+    void putInfo(ResourceLocation abilityId, PlayerAbilityInfo info) {
         abilityInfoMap.put(abilityId, info);
     }
 
