@@ -528,32 +528,4 @@ public class PlayerClassInfo {
     public TalentTreeRecord getTalentTree(ResourceLocation loc) {
         return talentTrees.get(loc);
     }
-
-
-    public static PlayerClassInfo deserializeUpdate(PacketBuffer pb) {
-        PlayerClassInfo info = new PlayerClassInfo(pb.readResourceLocation());
-
-        info.level = pb.readInt();
-        try {
-            NBTTagCompound talentData = pb.readCompoundTag();
-            info.deserializeTalentInfo(talentData);
-            NBTTagCompound abilityData = pb.readCompoundTag();
-            info.deserializeAbilities(abilityData);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-        return info;
-    }
-
-    public void serializeUpdate(PacketBuffer pb) {
-        pb.writeResourceLocation(getClassId());
-        pb.writeInt(getLevel());
-        NBTTagCompound talentData = new NBTTagCompound();
-        serializeTalentInfo(talentData);
-        pb.writeCompoundTag(talentData);
-        NBTTagCompound abilityData = new NBTTagCompound();
-        serializeAbilities(abilityData);
-        pb.writeCompoundTag(abilityData);
-    }
 }

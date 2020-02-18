@@ -50,11 +50,7 @@ public interface IPlayerData {
 
     PlayerAbilityInfo getAbilityInfo(ResourceLocation abilityId);
 
-    void setManaRegen(float manaRegenRate);
-
     float getHealthRegenRate();
-
-    void setHealthRegen(float healthRegenRate);
 
     float getManaRegenRate();
 
@@ -118,10 +114,6 @@ public interface IPlayerData {
 
     boolean canWearArmor(ItemArmor item);
 
-    boolean spendTalentPoint(ResourceLocation talentTree, String line, int index);
-
-    boolean refundTalentPoint(ResourceLocation talentTree, String line, int index);
-
     void gainTalentPoint();
 
     int getTotalTalentPoints();
@@ -142,10 +134,6 @@ public interface IPlayerData {
     @Nullable
     Set<PlayerAbility> getLearnedUltimates();
 
-    boolean activatePassiveForSlot(ResourceLocation loc, int slotIndex);
-
-    boolean activateUltimateForSlot(ResourceLocation loc, int slotIndex);
-
     boolean hasUltimates();
 
     int getActionBarSize();
@@ -162,17 +150,9 @@ public interface IPlayerData {
 
     ArmorClass getArmorClass();
 
-    PlayerToggleAbility getActiveToggleGroupAbility(ResourceLocation groupId);
-
-    void clearToggleGroupAbility(ResourceLocation groupId);
-
-    void setToggleGroupAbility(ResourceLocation groupId, PlayerToggleAbility ability);
-
     boolean isCasting();
 
     int getCastTicks();
-
-    void setCastTicks(int value);
 
     ResourceLocation getCastingAbility();
 }

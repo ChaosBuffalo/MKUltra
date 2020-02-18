@@ -91,10 +91,10 @@ public abstract class ChooseClassScreen extends GuiScreen {
             if (enforceChecks) {
                 classes = provider.getClasses();
             } else {
-                classes = MKURegistry.getAllClasses();
+                classes = MKURegistry.getAllEnabledClasses();
             }
         } else {
-            classes = MKURegistry.getValidClasses(knownClasses);
+            classes = MKURegistry.getEnabledClasses(knownClasses);
         }
         classes.sort(Comparator.comparing(MKURegistry::getClassName));
         List<ResourceLocation> class_subset = classes;
