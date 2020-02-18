@@ -5,6 +5,7 @@ import com.chaosbuffalo.mkultra.core.abilities.cast_states.CastState;
 import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkultra.utils.RayTraceUtils;
 import com.chaosbuffalo.targeting_api.Targeting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -85,8 +86,14 @@ public abstract class PlayerAbility extends IForgeRegistryEntry.Impl<PlayerAbili
         return String.format("%s.%s.name", abilityId.getNamespace(), abilityId.getPath());
     }
 
+    @SideOnly(Side.CLIENT)
     public ResourceLocation getAbilityIcon() {
         return new ResourceLocation(abilityId.getNamespace(), String.format("textures/class/abilities/%s.png", abilityId.getPath().split(Pattern.quote("."))[1]));
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void drawAbilityBarEffect(Minecraft mc, int slotX, int slotY) {
+
     }
 
     public CastState createCastState(int castTime){

@@ -1,6 +1,5 @@
 package com.chaosbuffalo.mkultra.client.gui;
 
-import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.core.*;
 import com.chaosbuffalo.mkultra.event.ClientKeyHandler;
@@ -17,7 +16,6 @@ import org.lwjgl.opengl.GL11;
 
 @Mod.EventBusSubscriber(Side.CLIENT)
 public class AbilityBar extends Gui {
-    private static final int SLOT_COUNT = GameConstants.ACTION_BAR_SIZE;
 
     private static final ResourceLocation barTexture = new ResourceLocation(MKUltra.MODID,
             "textures/gui/abilitybar.png");
@@ -31,10 +29,7 @@ public class AbilityBar extends Gui {
     private static final ResourceLocation COOLDOWN_ICON = new ResourceLocation(MKUltra.MODID,
             "textures/class/abilities/cooldown.png");
 
-    private static final ResourceLocation TOGGLE_EFFECT = new ResourceLocation(MKUltra.MODID,
-            "textures/class/abilities/ability_toggle.png");
-
-    private static final int ABILITY_ICON_SIZE = 16;
+    public static final int ABILITY_ICON_SIZE = 16;
 
     private static final int MIN_BAR_START_Y = 80;
 
@@ -96,8 +91,7 @@ public class AbilityBar extends Gui {
         int castStartX = scaledresolution.getScaledWidth() / 2 - barSize / 2;
         GlStateManager.pushMatrix();
         GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
-        this.drawTexturedModalRect(castStartX, castStartY, 26,
-                21, barSize, 3);
+        this.drawTexturedModalRect(castStartX, castStartY, 26, 21, barSize, 3);
         GlStateManager.popMatrix();
     }
 
@@ -108,8 +102,7 @@ public class AbilityBar extends Gui {
         int xOffset = 0;
         int yOffset = getBarStartY(slotCount);
         for (int i = 0; i < slotCount; i++) {
-            this.drawTexturedModalRect(xOffset, yOffset + i * SLOT_HEIGHT,
-                    0, 0, SLOT_WIDTH, SLOT_HEIGHT);
+            this.drawTexturedModalRect(xOffset, yOffset + i * SLOT_HEIGHT, 0, 0, SLOT_WIDTH, SLOT_HEIGHT);
         }
     }
 
@@ -142,10 +135,12 @@ public class AbilityBar extends Gui {
             } else {
                 GlStateManager.color(0.5f, 0.5f, 0.5f, 1.0F);
             }
+
+            int slotX = slotAbilityOffsetX;
+            int slotY = barStartY + slotAbilityOffsetY + (i * SLOT_HEIGHT);
+
             mc.getTextureManager().bindTexture(ability.getAbilityIcon());
-            Gui.drawModalRectWithCustomSizedTexture(slotAbilityOffsetX,
-                    barStartY + slotAbilityOffsetY + (i * SLOT_HEIGHT),
-                    0, 0,
+            Gui.drawModalRectWithCustomSizedTexture(slotX, slotY, 0, 0,
                     ABILITY_ICON_SIZE, ABILITY_ICON_SIZE, ABILITY_ICON_SIZE, ABILITY_ICON_SIZE);
 
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
@@ -162,21 +157,11 @@ public class AbilityBar extends Gui {
                     coolDownHeight = 1;
                 }
                 mc.getTextureManager().bindTexture(COOLDOWN_ICON);
-                Gui.drawModalRectWithCustomSizedTexture(slotAbilityOffsetX,
-                        barStartY + slotAbilityOffsetY + (i * SLOT_HEIGHT),
-                        0, 0,
+                Gui.drawModalRectWithCustomSizedTexture(slotX, slotY, 0, 0,
                         ABILITY_ICON_SIZE, coolDownHeight, ABILITY_ICON_SIZE, coolDownHeight);
             }
 
-            if (ability instanceof PlayerToggleAbility) {
-                if (mc.player.isPotionActive(((PlayerToggleAbility) ability).getToggleEffect())) {
-                    mc.getTextureManager().bindTexture(TOGGLE_EFFECT);
-                    Gui.drawModalRectWithCustomSizedTexture(slotAbilityOffsetX,
-                            barStartY + slotAbilityOffsetY + (i * SLOT_HEIGHT),
-                            0, 0,
-                            ABILITY_ICON_SIZE, ABILITY_ICON_SIZE, ABILITY_ICON_SIZE, ABILITY_ICON_SIZE);
-                }
-            }
+            ability.drawAbilityBarEffect(mc, slotX, slotY);
         }
     }
 
