@@ -62,8 +62,16 @@ public class PlayerClassInfo {
         return level;
     }
 
+    void setLevel(int level) {
+        this.level = level;
+    }
+
     public int getUnspentPoints() {
         return unspentPoints;
+    }
+
+    void setUnspentPoints(int unspentPoints) {
+        this.unspentPoints = unspentPoints;
     }
 
     public int getTotalTalentPoints() {
@@ -78,11 +86,16 @@ public class PlayerClassInfo {
         return abilityInfoMap.values();
     }
 
-    void save(PlayerData data) {
-        level = data.getLevel();
-        unspentPoints = data.getUnspentPoints();
-        for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
-            hotbar.set(i, data.getAbilityInSlot(i));
+    public ResourceLocation getAbilityInSlot(int index) {
+        if (index < hotbar.size()) {
+            return hotbar.get(index);
+        }
+        return MKURegistry.INVALID_ABILITY;
+    }
+
+    void setAbilityInSlot(int index, ResourceLocation abilityId) {
+        if (index < hotbar.size()) {
+            hotbar.set(index, abilityId);
         }
     }
 
@@ -95,7 +108,7 @@ public class PlayerClassInfo {
         return false;
     }
 
-    public void putInfo(ResourceLocation abilityId, PlayerAbilityInfo info) {
+    void putInfo(ResourceLocation abilityId, PlayerAbilityInfo info) {
         abilityInfoMap.put(abilityId, info);
     }
 

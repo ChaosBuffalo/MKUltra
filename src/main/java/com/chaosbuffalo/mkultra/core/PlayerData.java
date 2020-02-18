@@ -50,13 +50,8 @@ public class PlayerData implements IPlayerData {
 
     private final static DataParameter<Float> MANA = EntityDataManager.createKey(
             EntityPlayer.class, DataSerializers.FLOAT);
-    private final static DataParameter<Integer> LEVEL = EntityDataManager.createKey(
-            EntityPlayer.class, DataSerializers.VARINT);
-    private final static DataParameter<Integer> UNSPENT_POINTS = EntityDataManager.createKey(
-            EntityPlayer.class, DataSerializers.VARINT);
     private final static DataParameter<String> CLASS_ID = EntityDataManager.createKey(
             EntityPlayer.class, DataSerializers.STRING);
-    private final static DataParameter<String>[] ACTION_BAR_ABILITY_ID;
     private final static DataParameter<Integer>[] ACTION_BAR_ABILITY_RANK;
     private final static DataParameter<Integer> CAST_TICKS = EntityDataManager.createKey(
             EntityPlayer.class, DataSerializers.VARINT);
@@ -66,10 +61,6 @@ public class PlayerData implements IPlayerData {
     private final static String INVALID_ABILITY_STRING = MKURegistry.INVALID_ABILITY.toString();
 
     static {
-        ACTION_BAR_ABILITY_ID = new DataParameter[GameConstants.ACTION_BAR_SIZE];
-        for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
-            ACTION_BAR_ABILITY_ID[i] = EntityDataManager.createKey(EntityPlayer.class, DataSerializers.STRING);
-        }
         ACTION_BAR_ABILITY_RANK = new DataParameter[GameConstants.ACTION_BAR_SIZE];
         for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
             ACTION_BAR_ABILITY_RANK[i] = EntityDataManager.createKey(EntityPlayer.class, DataSerializers.VARINT);
@@ -125,26 +116,20 @@ public class PlayerData implements IPlayerData {
     private void setupWatcher() {
 
         privateData.register(MANA, 0f);
-        privateData.register(UNSPENT_POINTS, 0);
         privateData.register(CLASS_ID, MKURegistry.INVALID_CLASS.toString());
-        privateData.register(LEVEL, 0);
         privateData.register(CAST_TICKS, 0);
         privateData.register(CURRENT_CAST, INVALID_ABILITY_STRING);
         for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
-            privateData.register(ACTION_BAR_ABILITY_ID[i], INVALID_ABILITY_STRING);
             privateData.register(ACTION_BAR_ABILITY_RANK[i], GameConstants.ABILITY_INVALID_RANK);
         }
     }
 
     private void markEntityDataDirty() {
         privateData.setDirty(MANA);
-        privateData.setDirty(UNSPENT_POINTS);
         privateData.setDirty(CLASS_ID);
-        privateData.setDirty(LEVEL);
         privateData.setDirty(CAST_TICKS);
         privateData.setDirty(CURRENT_CAST);
         for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
-            privateData.setDirty(ACTION_BAR_ABILITY_ID[i]);
             privateData.setDirty(ACTION_BAR_ABILITY_RANK[i]);
         }
     }
@@ -595,14 +580,22 @@ public class PlayerData implements IPlayerData {
 
     @Override
     public int getUnspentPoints() {
-        return privateData.get(UNSPENT_POINTS);
+        PlayerClassInfo classInfo = getActiveClass();
+        if (classInfo != null) {
+            return classInfo.getUnspentPoints();
+        }
+        return 0;
     }
 
     private void setUnspentPoints(int unspentPoints) {
         // You shouldn't have more unspent points than your levels
         if (unspentPoints > getLevel())
             return;
-        privateData.set(UNSPENT_POINTS, unspentPoints);
+        PlayerClassInfo classInfo = getActiveClass();
+        if (classInfo != null) {
+            classInfo.setUnspentPoints(unspentPoints);
+        }
+        sendCurrentClassUpdate();
     }
 
     private void setClassId(ResourceLocation classId) {
@@ -616,7 +609,11 @@ public class PlayerData implements IPlayerData {
 
     @Override
     public int getLevel() {
-        return privateData.get(LEVEL);
+        PlayerClassInfo classInfo = getActiveClass();
+        if (classInfo != null) {
+            return classInfo.getLevel();
+        }
+        return 0;
     }
 
     @Override
@@ -638,8 +635,13 @@ public class PlayerData implements IPlayerData {
     }
 
     private void setLevel(int level) {
-        int currentLevel = getLevel();
-        privateData.set(LEVEL, level);
+        PlayerClassInfo classInfo = getActiveClass();
+        if (classInfo == null) {
+            return;
+        }
+        int currentLevel = classInfo.getLevel();
+        classInfo.setLevel(level);
+        sendCurrentClassUpdate();
         updatePlayerStats(false);
         MinecraftForge.EVENT_BUS.post(new PlayerClassEvent.LevelChanged(player, this, getActiveClass(), currentLevel, level));
     }
@@ -660,8 +662,23 @@ public class PlayerData implements IPlayerData {
         return actives;
     }
 
+    @Override
+    public ResourceLocation getAbilityInSlot(int index) {
+        PlayerClassInfo classInfo = getActiveClass();
+        if (classInfo == null) {
+            return MKURegistry.INVALID_ABILITY;
+        }
+
+        return classInfo.getAbilityInSlot(index);
+    }
+
     private void setAbilityInSlot(int slotIndex, ResourceLocation abilityId) {
-        privateData.set(ACTION_BAR_ABILITY_ID[slotIndex], abilityId.toString());
+        PlayerClassInfo classInfo = getActiveClass();
+        if (classInfo == null) {
+            return;
+        }
+        classInfo.setAbilityInSlot(slotIndex, abilityId);
+        sendCurrentClassUpdate();
     }
 
     private int getCurrentSlotForAbility(ResourceLocation abilityId) {
@@ -675,14 +692,6 @@ public class PlayerData implements IPlayerData {
 
     private int getFirstFreeAbilitySlot() {
         return getCurrentSlotForAbility(MKURegistry.INVALID_ABILITY);
-    }
-
-    @Override
-    public ResourceLocation getAbilityInSlot(int index) {
-        if (index < ACTION_BAR_ABILITY_ID.length) {
-            return new ResourceLocation(privateData.get(ACTION_BAR_ABILITY_ID[index]));
-        }
-        return MKURegistry.INVALID_ABILITY;
     }
 
     @Override
@@ -1198,8 +1207,6 @@ public class PlayerData implements IPlayerData {
 
 
     private void serializeClasses(NBTTagCompound tag) {
-        saveCurrentClass();
-
         NBTTagList classes = new NBTTagList();
         for (PlayerClassInfo info : knownClasses.values()) {
             NBTTagCompound sk = new NBTTagCompound();
@@ -1379,20 +1386,6 @@ public class PlayerData implements IPlayerData {
         MinecraftForge.EVENT_BUS.post(new PlayerClassEvent.Removed(player, this, info));
     }
 
-    private void saveCurrentClass() {
-        if (!hasChosenClass()) {
-            return;
-        }
-
-        PlayerClassInfo cinfo = getActiveClass();
-        if (cinfo == null) {
-            return;
-        }
-
-        // save current class data
-        cinfo.save(this);
-    }
-
     private void deactivateCurrentToggleAbilities() {
         for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
             ResourceLocation abilityId = getAbilityInSlot(i);
@@ -1439,7 +1432,6 @@ public class PlayerData implements IPlayerData {
         List<ResourceLocation> hotbar;
 
         ResourceLocation oldClassId = getClassId();
-        saveCurrentClass();
         deactivateCurrentToggleAbilities();
 
         if (classId.equals(MKURegistry.INVALID_CLASS) || !knowsClass(classId)) {
