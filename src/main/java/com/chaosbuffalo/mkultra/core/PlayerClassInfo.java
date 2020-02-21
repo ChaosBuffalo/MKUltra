@@ -6,6 +6,7 @@ import com.chaosbuffalo.mkultra.core.talents.RangedAttributeTalent;
 import com.chaosbuffalo.mkultra.core.talents.TalentTree;
 import com.chaosbuffalo.mkultra.core.talents.TalentTreeRecord;
 import com.chaosbuffalo.mkultra.log.Log;
+import com.chaosbuffalo.mkultra.network.packets.ClassUpdatePacket;
 import com.google.common.collect.Maps;
 import net.minecraft.entity.ai.attributes.AbstractAttributeMap;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -20,6 +21,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
@@ -37,6 +39,7 @@ public class PlayerClassInfo {
     private List<ResourceLocation> loadedPassives;
     private List<ResourceLocation> loadedUltimates;
     private Map<ResourceLocation, PlayerAbilityInfo> abilityInfoMap = new HashMap<>(GameConstants.ACTION_BAR_SIZE);
+    private boolean dirty;
 
     public PlayerClassInfo(ResourceLocation classId) {
         this.classId = classId;
@@ -54,6 +57,18 @@ public class PlayerClassInfo {
         }
     }
 
+    private void markDirty() {
+        dirty = true;
+    }
+
+    IMessage getUpdateMessage() {
+        if (dirty) {
+            dirty = false;
+            return new ClassUpdatePacket(this);
+        }
+        return null;
+    }
+
     public ResourceLocation getClassId() {
         return classId;
     }
@@ -64,6 +79,7 @@ public class PlayerClassInfo {
 
     void setLevel(int level) {
         this.level = level;
+        markDirty();
     }
 
     public int getUnspentPoints() {
@@ -72,14 +88,25 @@ public class PlayerClassInfo {
 
     void setUnspentPoints(int unspentPoints) {
         this.unspentPoints = unspentPoints;
+        markDirty();
     }
 
     public int getTotalTalentPoints() {
         return totalTalentPoints;
     }
 
+    private void setTotalTalentPoints(int points) {
+        totalTalentPoints = points;
+        markDirty();
+    }
+
     public int getUnspentTalentPoints() {
         return unspentTalentPoints;
+    }
+
+    private void setUnspentTalentPoints(int points) {
+        unspentTalentPoints = points;
+        markDirty();
     }
 
     public Collection<PlayerAbilityInfo> getAbilityInfos() {
@@ -96,13 +123,14 @@ public class PlayerClassInfo {
     void setAbilityInSlot(int index, ResourceLocation abilityId) {
         if (index < hotbar.size()) {
             hotbar.set(index, abilityId);
+            markDirty();
         }
     }
 
     boolean checkTalentTotals() {
         int spent = getTotalSpentPoints();
         if (getTotalTalentPoints() - spent != getUnspentTalentPoints()) {
-            unspentTalentPoints = getTotalTalentPoints() - spent;
+            setUnspentTalentPoints(getTotalTalentPoints() - spent);
             return true;
         }
         return false;
@@ -110,6 +138,7 @@ public class PlayerClassInfo {
 
     void putInfo(ResourceLocation abilityId, PlayerAbilityInfo info) {
         abilityInfoMap.put(abilityId, info);
+        markDirty();
     }
 
     private List<ResourceLocation> parseNBTAbilityList(NBTTagCompound tag, String name, int size) {
@@ -176,6 +205,7 @@ public class PlayerClassInfo {
                 }
             }
             loadedPassives.set(slotIndex, abilityId);
+            markDirty();
             return true;
         }
         return false;
@@ -184,6 +214,7 @@ public class PlayerClassInfo {
     public boolean addUltimateToSlot(ResourceLocation abilityId, int slotIndex) {
         if (canAddUltimateToSlot(abilityId, slotIndex)) {
             loadedUltimates.set(slotIndex, abilityId);
+            markDirty();
             return true;
         }
         return false;
@@ -206,10 +237,12 @@ public class PlayerClassInfo {
 
     public void clearUltimateSlot(int slotIndex) {
         loadedUltimates.set(slotIndex, MKURegistry.INVALID_ABILITY);
+        markDirty();
     }
 
     public void clearPassiveSlot(int slotIndex) {
         loadedPassives.set(slotIndex, MKURegistry.INVALID_ABILITY);
+        markDirty();
     }
 
     public ResourceLocation getPassiveForSlot(int slotIndex) {
@@ -387,6 +420,7 @@ public class PlayerClassInfo {
         clearAbilitySpendOrder();
         clearActiveAbilities();
         abilityInfoMap.clear();
+        markDirty();
     }
 
     public void deserialize(NBTTagCompound tag) {
@@ -448,6 +482,7 @@ public class PlayerClassInfo {
     public void addTalentPoints(int pointCount) {
         totalTalentPoints += pointCount;
         unspentTalentPoints += pointCount;
+        markDirty();
     }
 
     public boolean canIncrementPointInTree(ResourceLocation tree, String line, int index) {
@@ -469,13 +504,11 @@ public class PlayerClassInfo {
             if (talentDef.onAdd(player, this)) {
                 talentTree.incrementPoint(line, index);
                 unspentTalentPoints -= 1;
+                markDirty();
                 return true;
             }
-
-            return false;
-        } else {
-            return false;
         }
+        return false;
     }
 
     public int getTotalSpentPoints() {
@@ -493,13 +526,11 @@ public class PlayerClassInfo {
             if (talentDef.onRemove(player, this)) {
                 talentTree.decrementPoint(line, index);
                 unspentTalentPoints += 1;
+                markDirty();
                 return true;
             }
-
-            return false;
-        } else {
-            return false;
         }
+        return false;
     }
 
     public void setAbilitySpendOrder(ResourceLocation abilityId, int level) {
@@ -515,18 +546,22 @@ public class PlayerClassInfo {
 
     public void clearUltimateAbilities() {
         loadedUltimates.clear();
+        markDirty();
     }
 
     public void clearPassiveAbilities() {
         loadedPassives.clear();
+        markDirty();
     }
 
     public void clearActiveAbilities() {
         hotbar.clear();
+        markDirty();
     }
 
     public void clearAbilitySpendOrder() {
         abilitySpendOrder.clear();
+        markDirty();
     }
 
     public ResourceLocation getAbilitySpendOrder(int index) {

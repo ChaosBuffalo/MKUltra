@@ -40,6 +40,7 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -158,7 +159,6 @@ public class PlayerData implements IPlayerData {
             didSpend = classInfo.spendTalentPoint(player, talentTree, line, index);
             if (didSpend) {
                 updateTalents();
-                sendCurrentClassUpdate();
             }
 //            Log.info("Did spend talent %b", didSpend);
         }
@@ -174,7 +174,6 @@ public class PlayerData implements IPlayerData {
         boolean didSpend = classInfo.refundTalentPoint(player, talentTree, line, index);
         if (didSpend) {
             updateTalents();
-            sendCurrentClassUpdate();
         }
         return didSpend;
     }
@@ -207,7 +206,6 @@ public class PlayerData implements IPlayerData {
         if (player.experienceLevel >= classInfo.getTotalTalentPoints()) {
             player.addExperienceLevel(-classInfo.getTotalTalentPoints());
             classInfo.addTalentPoints(1);
-            sendCurrentClassUpdate();
         }
     }
 
@@ -311,7 +309,6 @@ public class PlayerData implements IPlayerData {
         if (activeClass != null) {
             boolean didWork = activeClass.addPassiveToSlot(loc, slotIndex);
             setRefreshPassiveTalents();
-            sendCurrentClassUpdate();
             return didWork;
         }
         return false;
@@ -332,7 +329,6 @@ public class PlayerData implements IPlayerData {
             if (loc.equals(MKURegistry.INVALID_ABILITY) && !currentAbility.equals(MKURegistry.INVALID_ABILITY)){
                 unlearnAbility(currentAbility, false, true);
                 activeClass.clearUltimateSlot(slotIndex);
-                sendCurrentClassUpdate();
                 return true;
             } else {
                 if (!currentAbility.equals(MKURegistry.INVALID_ABILITY)){
@@ -343,7 +339,6 @@ public class PlayerData implements IPlayerData {
                 if (didWork){
                     learnAbility(loc, false);
                 }
-                sendCurrentClassUpdate();
                 return didWork;
             }
         }
@@ -595,7 +590,6 @@ public class PlayerData implements IPlayerData {
         if (classInfo != null) {
             classInfo.setUnspentPoints(unspentPoints);
         }
-        sendCurrentClassUpdate();
     }
 
     private void setClassId(ResourceLocation classId) {
@@ -641,7 +635,6 @@ public class PlayerData implements IPlayerData {
         }
         int currentLevel = classInfo.getLevel();
         classInfo.setLevel(level);
-        sendCurrentClassUpdate();
         updatePlayerStats(false);
         MinecraftForge.EVENT_BUS.post(new PlayerClassEvent.LevelChanged(player, this, getActiveClass(), currentLevel, level));
     }
@@ -678,7 +671,6 @@ public class PlayerData implements IPlayerData {
             return;
         }
         classInfo.setAbilityInSlot(slotIndex, abilityId);
-        sendCurrentClassUpdate();
     }
 
     private int getCurrentSlotForAbility(ResourceLocation abilityId) {
@@ -1151,6 +1143,15 @@ public class PlayerData implements IPlayerData {
         updateHealth();
         updateDualWielding();
         updateCastTime();
+
+        PlayerClassInfo activeClass = getActiveClass();
+        if (activeClass != null) {
+            IMessage message = activeClass.getUpdateMessage();
+            if (message != null) {
+                MinecraftForge.EVENT_BUS.post(new PlayerClassEvent.Updated(player, this, activeClass));
+                MKUltra.packetHandler.sendTo(message, (EntityPlayerMP) player);
+            }
+        }
     }
 
     private void sendSingleAbilityUpdate(PlayerAbilityInfo info) {
@@ -1173,16 +1174,6 @@ public class PlayerData implements IPlayerData {
     private void sendBulkClassUpdate() {
         if (isServerSide()) {
             MKUltra.packetHandler.sendTo(new ClassUpdatePacket(knownClasses.values()), (EntityPlayerMP) player);
-        }
-    }
-
-    private void sendCurrentClassUpdate() {
-        if (isServerSide()) {
-            PlayerClassInfo activeClass = getActiveClass();
-            if (activeClass != null) {
-                MinecraftForge.EVENT_BUS.post(new PlayerClassEvent.Updated(player, this, activeClass));
-                MKUltra.packetHandler.sendTo(new ClassUpdatePacket(activeClass), (EntityPlayerMP) player);
-            }
         }
     }
 
@@ -1456,7 +1447,6 @@ public class PlayerData implements IPlayerData {
         checkTalentTotals();
         validateAbilityPoints();
         ItemEventHandler.checkEquipment(player);
-        sendCurrentClassUpdate();
 
         if (!classId.equals(oldClassId)) {
             MinecraftForge.EVENT_BUS.post(new PlayerClassEvent.ClassChanged(player, this, getActiveClass(), oldClassId));
