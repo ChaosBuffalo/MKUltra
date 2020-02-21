@@ -94,6 +94,7 @@ public final class PacketHandler {
         registerPacket(OpenLearnClassTileEntityPacket.class, new OpenLearnClassTileEntityPacket.Handler(), Side.CLIENT);
         registerPacket(OpenTalentGuiPacket.class, new OpenTalentGuiPacket.Handler(), Side.CLIENT);
         registerPacket(SyncMobCastingPacket.class, new SyncMobCastingPacket.Handler(), Side.CLIENT);
+        registerPacket(PlayerDataSyncPacket.class, new PlayerDataSyncPacket.Handler(), Side.CLIENT);
     }
 
     /**

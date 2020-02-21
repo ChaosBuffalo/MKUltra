@@ -17,6 +17,7 @@ import com.chaosbuffalo.mkultra.event.ItemEventHandler;
 import com.chaosbuffalo.mkultra.log.Log;
 import com.chaosbuffalo.mkultra.network.packets.AbilityUpdatePacket;
 import com.chaosbuffalo.mkultra.network.packets.ClassUpdatePacket;
+import com.chaosbuffalo.mkultra.network.packets.PlayerDataSyncPacket;
 import com.chaosbuffalo.mkultra.network.packets.PlayerSyncRequestPacket;
 import com.chaosbuffalo.mkultra.utils.AbilityUtils;
 import net.minecraft.client.Minecraft;
@@ -49,8 +50,6 @@ import java.util.*;
 
 public class PlayerData implements IPlayerData {
 
-    private final static DataParameter<Float> MANA = EntityDataManager.createKey(
-            EntityPlayer.class, DataSerializers.FLOAT);
     private final static DataParameter<String> CLASS_ID = EntityDataManager.createKey(
             EntityPlayer.class, DataSerializers.STRING);
     private final static DataParameter<Integer>[] ACTION_BAR_ABILITY_RANK;
@@ -86,11 +85,15 @@ public class PlayerData implements IPlayerData {
     private Set<String> activeSpellTriggers;
     private boolean lastUpdateIsCasting;
     private MovingSoundCasting castingSound;
+    private boolean dirty;
+    private float mana;
+
 
     public PlayerData(EntityPlayer player) {
         this.player = player;
         regenTime = 0;
         healthRegenTime = 0;
+        mana = 0f;
         ticksSinceLastSwing = 0;
         isDualWielding = false;
         originalMainHand = player.getPrimaryHand();
@@ -115,8 +118,6 @@ public class PlayerData implements IPlayerData {
     }
 
     private void setupWatcher() {
-
-        privateData.register(MANA, 0f);
         privateData.register(CLASS_ID, MKURegistry.INVALID_CLASS.toString());
         privateData.register(CAST_TICKS, 0);
         privateData.register(CURRENT_CAST, INVALID_ABILITY_STRING);
@@ -126,13 +127,26 @@ public class PlayerData implements IPlayerData {
     }
 
     private void markEntityDataDirty() {
-        privateData.setDirty(MANA);
+        markDirty();
         privateData.setDirty(CLASS_ID);
         privateData.setDirty(CAST_TICKS);
         privateData.setDirty(CURRENT_CAST);
         for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
             privateData.setDirty(ACTION_BAR_ABILITY_RANK[i]);
         }
+    }
+
+    private void markDirty() {
+//        Log.info("markDirty %s", dirty);
+        dirty = true;
+    }
+
+    private IMessage getUpdateMessage() {
+        if (dirty) {
+            dirty = false;
+            return new PlayerDataSyncPacket(this, player.getUniqueID());
+        }
+        return null;
     }
 
     @Nullable
@@ -1050,13 +1064,13 @@ public class PlayerData implements IPlayerData {
 
     @Override
     public void setMana(float mana) {
-        mana = MathHelper.clamp(mana, 0, getTotalMana());
-        privateData.set(MANA, mana);
+        this.mana = MathHelper.clamp(mana, 0, getTotalMana());
+        markDirty();
     }
 
     @Override
     public float getMana() {
-        return privateData.get(MANA);
+        return mana;
     }
 
     private void updateMana() {
@@ -1152,6 +1166,12 @@ public class PlayerData implements IPlayerData {
                 MKUltra.packetHandler.sendTo(message, (EntityPlayerMP) player);
             }
         }
+
+        IMessage updateMessage = getUpdateMessage();
+        if (updateMessage != null) {
+            MKUltra.packetHandler.sendTo(updateMessage, (EntityPlayerMP) player);
+            MKUltra.packetHandler.sendToAllTracking(updateMessage, player);
+        }
     }
 
     private void sendSingleAbilityUpdate(PlayerAbilityInfo info) {
@@ -1225,7 +1245,31 @@ public class PlayerData implements IPlayerData {
                 }
             }
         }
+    }
 
+    @Override
+    public void serialize(NBTTagCompound nbt) {
+        serializeUpdate(nbt);
+        serializeClasses(nbt);
+        abilityTracker.serialize(nbt);
+    }
+
+    @Override
+    public void deserialize(NBTTagCompound nbt) {
+        abilityTracker.deserialize(nbt);
+        deserializeClasses(nbt);
+        deserializeUpdate(nbt);
+    }
+
+    public void serializeUpdate(NBTTagCompound tag) {
+        tag.setString("activeClassId", getClassId().toString());
+        tag.setFloat("mana", getMana());
+    }
+
+    private void deserializeUpdate(NBTTagCompound tag) {
+        if (tag.hasKey("mana")) {
+            setMana(tag.getFloat("mana"));
+        }
         if (tag.hasKey("activeClassId", Constants.NBT.TAG_STRING)) {
             ResourceLocation classId = new ResourceLocation(tag.getString("activeClassId"));
             // If the character was saved with a class that doesn't exist anymore (say from a plugin),
@@ -1240,21 +1284,15 @@ public class PlayerData implements IPlayerData {
         }
     }
 
-    @Override
-    public void serialize(NBTTagCompound nbt) {
-        nbt.setFloat("mana", getMana());
-        abilityTracker.serialize(nbt);
-//        serializeAbilities(nbt);
-        serializeClasses(nbt);
+    public void serializeClientUpdate(NBTTagCompound tag) {
+        tag.setString("activeClassId", getClassId().toString());
+        tag.setFloat("mana", getMana());
     }
 
-    @Override
-    public void deserialize(NBTTagCompound nbt) {
-        abilityTracker.deserialize(nbt);
-//        deserializeAbilities(nbt);
-        deserializeClasses(nbt);
-        if (nbt.hasKey("mana")) {
-            setMana(nbt.getFloat("mana"));
+    @SideOnly(Side.CLIENT)
+    public void deserializeClientUpdate(NBTTagCompound tag) {
+        if (tag.hasKey("mana")) {
+            mana = tag.getFloat("mana");
         }
     }
 
