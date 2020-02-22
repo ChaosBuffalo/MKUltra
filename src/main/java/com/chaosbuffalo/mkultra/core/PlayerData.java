@@ -209,9 +209,6 @@ public class PlayerData implements IPlayerData {
     }
 
     public void gainTalentPoint() {
-        if (!hasChosenClass()) {
-            return;
-        }
         PlayerClassInfo classInfo = getActiveClass();
         if (classInfo == null) {
             return;
@@ -224,9 +221,6 @@ public class PlayerData implements IPlayerData {
 
     @Override
     public int getTotalTalentPoints() {
-        if (!hasChosenClass()) {
-            return 0;
-        }
         PlayerClassInfo classInfo = getActiveClass();
         if (classInfo == null) {
             return 0;
@@ -235,9 +229,6 @@ public class PlayerData implements IPlayerData {
     }
 
     private boolean checkTalentTotals() {
-        if (!hasChosenClass()) {
-            return false;
-        }
         PlayerClassInfo classInfo = getActiveClass();
         if (classInfo == null) {
             return false;
@@ -247,9 +238,6 @@ public class PlayerData implements IPlayerData {
 
     @Override
     public int getUnspentTalentPoints() {
-        if (!hasChosenClass()) {
-            return 0;
-        }
         PlayerClassInfo classInfo = getActiveClass();
         if (classInfo == null) {
             return 0;
@@ -259,9 +247,6 @@ public class PlayerData implements IPlayerData {
 
     @Override
     public TalentTreeRecord getTalentTree(ResourceLocation loc) {
-        if (!hasChosenClass()) {
-            return null;
-        }
         PlayerClassInfo classInfo = getActiveClass();
         if (classInfo == null) {
             return null;
@@ -319,12 +304,23 @@ public class PlayerData implements IPlayerData {
 
     public boolean activatePassiveForSlot(ResourceLocation loc, int slotIndex) {
         PlayerClassInfo activeClass = getActiveClass();
-        if (activeClass != null) {
-            boolean didWork = activeClass.addPassiveToSlot(loc, slotIndex);
-            setRefreshPassiveTalents();
-            return didWork;
+        if (activeClass == null)
+            return false;
+
+        boolean didWork = activeClass.addPassiveToSlot(loc, slotIndex);
+        setRefreshPassiveTalents();
+        return didWork;
+    }
+
+    public void clearPassive(ResourceLocation abilityId) {
+        PlayerClassInfo classInfo = getActiveClass();
+        if (classInfo == null)
+            return;
+
+        int slot = classInfo.getPassiveSlot(abilityId);
+        if (slot != GameConstants.PASSIVE_INVALID_SLOT) {
+            classInfo.clearPassiveSlot(slot);
         }
-        return false;
     }
 
     public boolean canActivateUltimateForSlot(ResourceLocation loc, int slotIndex) {
@@ -337,25 +333,37 @@ public class PlayerData implements IPlayerData {
 
     public boolean activateUltimateForSlot(ResourceLocation loc, int slotIndex) {
         PlayerClassInfo activeClass = getActiveClass();
-        if (activeClass != null) {
-            ResourceLocation currentAbility = activeClass.getUltimateForSlot(slotIndex);
-            if (loc.equals(MKURegistry.INVALID_ABILITY) && !currentAbility.equals(MKURegistry.INVALID_ABILITY)){
-                unlearnAbility(currentAbility, false, true);
+        if (activeClass == null)
+            return false;
+
+        ResourceLocation currentAbility = activeClass.getUltimateForSlot(slotIndex);
+        if (loc.equals(MKURegistry.INVALID_ABILITY) && !currentAbility.equals(MKURegistry.INVALID_ABILITY)) {
+            unlearnAbility(currentAbility, false, true);
+            activeClass.clearUltimateSlot(slotIndex);
+            return true;
+        } else {
+            if (!currentAbility.equals(MKURegistry.INVALID_ABILITY)) {
                 activeClass.clearUltimateSlot(slotIndex);
-                return true;
-            } else {
-                if (!currentAbility.equals(MKURegistry.INVALID_ABILITY)){
-                    activeClass.clearUltimateSlot(slotIndex);
-                    unlearnAbility(currentAbility, false, true);
-                }
-                boolean didWork = activeClass.addUltimateToSlot(loc, slotIndex);
-                if (didWork){
-                    learnAbility(loc, false);
-                }
-                return didWork;
+                unlearnAbility(currentAbility, false, true);
             }
+            boolean didWork = activeClass.addUltimateToSlot(loc, slotIndex);
+            if (didWork) {
+                learnAbility(loc, false);
+            }
+            return didWork;
         }
-        return false;
+    }
+
+    public void clearUltimate(ResourceLocation abilityId) {
+        PlayerClassInfo classInfo = getActiveClass();
+        if (classInfo == null)
+            return;
+
+        int slot = classInfo.getUltimateSlot(abilityId);
+        if (slot != GameConstants.ULTIMATE_INVALID_SLOT) {
+            classInfo.clearUltimateSlot(slot);
+            unlearnAbility(abilityId, false, true);
+        }
     }
 
 
@@ -596,9 +604,6 @@ public class PlayerData implements IPlayerData {
     }
 
     private void setUnspentPoints(int unspentPoints) {
-        // You shouldn't have more unspent points than your levels
-        if (unspentPoints > getLevel())
-            return;
         PlayerClassInfo classInfo = getActiveClass();
         if (classInfo != null) {
             classInfo.setUnspentPoints(unspentPoints);
@@ -736,17 +741,16 @@ public class PlayerData implements IPlayerData {
 
     @Override
     public boolean learnAbility(ResourceLocation abilityId, boolean consumePoint) {
-        PlayerClassInfo classInfo = getActiveClass();
-
         // Can't learn an ability without a class
-        if (classInfo == null) {
+        PlayerClassInfo classInfo = getActiveClass();
+        if (classInfo == null)
             return false;
-        }
+
         PlayerAbility ability = MKURegistry.getAbility(abilityId);
         if (ability == null) {
             return false;
         }
-        PlayerAbilityInfo info = getAbilityInfo(abilityId);
+        PlayerAbilityInfo info = classInfo.getAbilityInfo(abilityId);
         if (info == null) {
             info = ability.createAbilityInfo();
         }
@@ -758,9 +762,9 @@ public class PlayerData implements IPlayerData {
             return false;
 
         if (consumePoint) {
-            int curUnspent = getUnspentPoints();
+            int curUnspent = classInfo.getUnspentPoints();
             if (curUnspent > 0) {
-                setUnspentPoints(curUnspent - 1);
+                classInfo.setUnspentPoints(curUnspent - 1);
             } else {
                 return false;
             }
@@ -1004,7 +1008,7 @@ public class PlayerData implements IPlayerData {
     @Nullable
     public PlayerAbilityInfo getAbilityInfo(ResourceLocation abilityId) {
         PlayerClassInfo info = getActiveClass();
-        if (info != null){
+        if (info != null) {
             return info.getAbilityInfo(abilityId);
         }
         return null;
@@ -1591,15 +1595,12 @@ public class PlayerData implements IPlayerData {
     }
 
     public boolean resetAbilities(boolean includeTalents) {
-        if (!hasChosenClass())
-            return false;
-
-        PlayerClass playerClass = MKURegistry.getClass(getClassId());
-        if (playerClass == null)
-            return false;
-
         PlayerClassInfo classInfo = getActiveClass();
         if (classInfo == null)
+            return false;
+
+        PlayerClass playerClass = MKURegistry.getClass(classInfo.getClassId());
+        if (playerClass == null)
             return false;
 
         for (int i = 0; i < GameConstants.CLASS_ACTION_BAR_SIZE; i++) {
@@ -1610,7 +1611,7 @@ public class PlayerData implements IPlayerData {
         }
 
         classInfo.clearAbilitySpendOrder();
-        setUnspentPoints(getLevel());
+        classInfo.setUnspentPoints(classInfo.getLevel());
 
         return true;
     }

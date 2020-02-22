@@ -24,11 +24,7 @@ public class UltimateAbilityTalent extends BaseTalent {
         if (data == null)
             return false;
 
-        int slot = classInfo.getUltimateSlot(getAbility().getAbilityId());
-        if (slot != GameConstants.ULTIMATE_INVALID_SLOT) {
-            classInfo.clearUltimateSlot(slot);
-            data.unlearnAbility(getAbility().getAbilityId(), false, true);
-        }
+        data.clearUltimate(getAbility().getAbilityId());
         return true;
     }
 

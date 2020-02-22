@@ -87,6 +87,9 @@ public class PlayerClassInfo {
     }
 
     void setUnspentPoints(int unspentPoints) {
+        // You shouldn't have more unspent points than your levels
+        if (unspentPoints > getLevel())
+            return;
         this.unspentPoints = unspentPoints;
         markDirty();
     }
