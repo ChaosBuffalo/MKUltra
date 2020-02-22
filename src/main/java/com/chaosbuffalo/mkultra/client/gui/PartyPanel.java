@@ -82,7 +82,7 @@ public class PartyPanel extends Gui {
         if (data == null || data.getTotalMana() == 0) {
             manaSize = 0;
         } else {
-            manaSize = PARTY_MEMBER_WIDTH * (int) (data.getMana() / data.getTotalMana());
+            manaSize =  (int) (PARTY_MEMBER_WIDTH * data.getMana() / data.getTotalMana());
         }
         int healthSize = (int) (PARTY_MEMBER_WIDTH * player.getHealth() / player.getMaxHealth());
         mc.renderEngine.bindTexture(new ResourceLocation(MKUltra.MODID, "textures/gui/abilitybar.png"));
