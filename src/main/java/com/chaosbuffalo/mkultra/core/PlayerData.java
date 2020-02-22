@@ -49,20 +49,8 @@ public class PlayerData implements IPlayerData {
 
     private final static DataParameter<String> CLASS_ID = EntityDataManager.createKey(
             EntityPlayer.class, DataSerializers.STRING);
-    private final static DataParameter<Integer>[] ACTION_BAR_ABILITY_RANK;
-    private final static DataParameter<Integer> CAST_TICKS = EntityDataManager.createKey(
-            EntityPlayer.class, DataSerializers.VARINT);
-    private final static DataParameter<String> CURRENT_CAST = EntityDataManager.createKey(
-            EntityPlayer.class, DataSerializers.STRING);
 
     private final static String INVALID_ABILITY_STRING = MKURegistry.INVALID_ABILITY.toString();
-
-    static {
-        ACTION_BAR_ABILITY_RANK = new DataParameter[GameConstants.ACTION_BAR_SIZE];
-        for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
-            ACTION_BAR_ABILITY_RANK[i] = EntityDataManager.createKey(EntityPlayer.class, DataSerializers.VARINT);
-        }
-    }
 
 
     private final EntityPlayer player;
@@ -78,12 +66,10 @@ public class PlayerData implements IPlayerData {
     private boolean isDualWielding;
     private int ticksSinceLastSwing;
     private final static int DUAL_WIELD_TIMEOUT = 25;
-    private CastState currentCastState;
     private Set<String> activeSpellTriggers;
-    private boolean lastUpdateIsCasting;
-    private MovingSoundCasting castingSound;
     private boolean dirty;
     private float mana;
+    private PlayerCastingState currentCast;
 
 
     public PlayerData(EntityPlayer player) {
@@ -96,10 +82,13 @@ public class PlayerData implements IPlayerData {
         originalMainHand = player.getPrimaryHand();
         abilityTracker = AbilityTracker.getTracker(player);
         privateData = player.getDataManager();
-        currentCastState = null;
-        lastUpdateIsCasting = false;
         activeSpellTriggers = new HashSet<>();
+        currentCast = null;
         setupWatcher();
+        registerAttributes();
+    }
+
+    private void registerAttributes() {
         player.getAttributeMap().registerAttribute(PlayerAttributes.MAX_MANA);
         player.getAttributeMap().registerAttribute(PlayerAttributes.MANA_REGEN);
         player.getAttributeMap().registerAttribute(PlayerAttributes.MAGIC_ATTACK_DAMAGE);
@@ -116,25 +105,14 @@ public class PlayerData implements IPlayerData {
 
     private void setupWatcher() {
         privateData.register(CLASS_ID, MKURegistry.INVALID_CLASS.toString());
-        privateData.register(CAST_TICKS, 0);
-        privateData.register(CURRENT_CAST, INVALID_ABILITY_STRING);
-        for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
-            privateData.register(ACTION_BAR_ABILITY_RANK[i], GameConstants.ABILITY_INVALID_RANK);
-        }
     }
 
     private void markEntityDataDirty() {
         markDirty();
         privateData.setDirty(CLASS_ID);
-        privateData.setDirty(CAST_TICKS);
-        privateData.setDirty(CURRENT_CAST);
-        for (int i = 0; i < GameConstants.ACTION_BAR_SIZE; i++) {
-            privateData.setDirty(ACTION_BAR_ABILITY_RANK[i]);
-        }
     }
 
     private void markDirty() {
-//        Log.info("markDirty %s", dirty);
         dirty = true;
     }
 
@@ -330,7 +308,6 @@ public class PlayerData implements IPlayerData {
             unlearnAbility(abilityId, false, true);
         }
     }
-
 
     @Override
     public boolean hasUltimates() {
@@ -580,10 +557,7 @@ public class PlayerData implements IPlayerData {
     @Override
     public int getLevel() {
         PlayerClassInfo classInfo = getActiveClass();
-        if (classInfo != null) {
-            return classInfo.getLevel();
-        }
-        return 0;
+        return classInfo != null ? classInfo.getLevel() : 0;
     }
 
     @Override
@@ -627,7 +601,6 @@ public class PlayerData implements IPlayerData {
     public ResourceLocation getAbilityInSlot(int index) {
         PlayerClassInfo classInfo = getActiveClass();
         return classInfo != null ? classInfo.getAbilityInSlot(index) : MKURegistry.INVALID_ABILITY;
-
     }
 
     private int getCurrentSlotForAbility(ResourceLocation abilityId) {
@@ -659,15 +632,6 @@ public class PlayerData implements IPlayerData {
     public int getAbilityRank(ResourceLocation abilityId) {
         PlayerAbilityInfo abilityInfo = getAbilityInfo(abilityId);
         return abilityInfo != null ? abilityInfo.getRank() : GameConstants.ABILITY_INVALID_RANK;
-    }
-
-    @SideOnly(Side.CLIENT)
-    private int getAbilityRankForClient(ResourceLocation abilityId) {
-        int slot = getCurrentSlotForAbility(abilityId);
-        if (slot != GameConstants.ACTION_BAR_INVALID_SLOT) {
-            return privateData.get(ACTION_BAR_ABILITY_RANK[slot]);
-        }
-        return GameConstants.ABILITY_INVALID_RANK;
     }
 
     private int getAbilityLearnIndex() {
@@ -804,82 +768,156 @@ public class PlayerData implements IPlayerData {
 
     @Override
     public boolean isCasting() {
-        return !getCastingAbility().equals(MKURegistry.INVALID_ABILITY);
+        return currentCast != null;
     }
 
     @Override
     public int getCastTicks() {
-        return privateData.get(CAST_TICKS);
-    }
-
-    private void setCastTicks(int value) {
-        privateData.set(CAST_TICKS, value);
+        return currentCast != null ? currentCast.getCastTicks() : 0;
     }
 
     @Override
     public ResourceLocation getCastingAbility() {
-        return new ResourceLocation(privateData.get(CURRENT_CAST));
-    }
-
-    private void setCastingAbility(ResourceLocation abilityId) {
-        privateData.set(CURRENT_CAST, abilityId.toString());
+        return currentCast != null ? currentCast.getAbilityId() : MKURegistry.INVALID_ABILITY;
     }
 
     private void clearCastingAbility() {
-        setCastingAbility(MKURegistry.INVALID_ABILITY);
-        setCastTicks(0);
-        currentCastState = null;
+        currentCast = null;
     }
 
-    private CastState startCast(PlayerAbility ability, int castTime) {
-        setCastingAbility(ability.getAbilityId());
-        setCastTicks(castTime);
-        return ability.createCastState(castTime);
-    }
+    static abstract class PlayerCastingState {
+        boolean started = false;
+        int castTicks;
+        PlayerAbility ability;
+        PlayerData playerData;
 
-    @SideOnly(Side.CLIENT)
-    private void updateCastTimeClient() {
-        if (isCasting()) {
-            ResourceLocation loc = getCastingAbility();
-            PlayerAbility ability = MKURegistry.getAbility(loc);
-            if (ability != null) {
-                int currentCastTime = getCastTicks();
-                ability.continueCastClient(player, this, player.getEntityWorld(), currentCastTime);
-                if (!lastUpdateIsCasting) {
-                    SoundEvent event = ability.getCastingSoundEvent();
-                    if (event != null) {
-                        int castTime = ability.getCastTime(getAbilityRankForClient(loc));
-                        castingSound = new MovingSoundCasting(player, event, SoundCategory.PLAYERS, castTime);
-                        Minecraft.getMinecraft().getSoundHandler().playSound(castingSound);
-                    }
-                }
+        public PlayerCastingState(PlayerData playerData, PlayerAbility ability, int castTicks) {
+            this.playerData = playerData;
+            this.ability = ability;
+            this.castTicks = castTicks;
+        }
+
+        public int getCastTicks() {
+            return castTicks;
+        }
+
+        public ResourceLocation getAbilityId() {
+            return ability.getAbilityId();
+        }
+
+        public boolean tick() {
+            if (castTicks <= 0)
+                return false;
+
+            if (!started) {
+                begin();
+                started = true;
             }
-        } else {
-            if (lastUpdateIsCasting && castingSound != null) {
-                Minecraft.getMinecraft().getSoundHandler().stopSound(castingSound);
-                castingSound = null;
+
+            activeTick();
+            castTicks--;
+            boolean active = castTicks > 0;
+            if (!active) {
+                finish();
+            }
+            return active;
+        }
+
+        void begin() {
+
+        }
+
+        abstract void activeTick();
+
+        abstract void finish();
+    }
+
+    static class ServerCastingState extends PlayerCastingState {
+        PlayerAbilityInfo info;
+        CastState abilityCastState;
+
+        public ServerCastingState(PlayerData playerData, PlayerAbilityInfo ability, int castTicks) {
+            super(playerData, ability.getAbility(), castTicks);
+            this.info = ability;
+            abilityCastState = ability.getAbility().createCastState(castTicks);
+        }
+
+        public CastState getAbilityCastState() {
+            return abilityCastState;
+        }
+
+        @Override
+        void activeTick() {
+            ability.continueCast(playerData.player, playerData, playerData.player.getEntityWorld(), castTicks, abilityCastState);
+        }
+
+        @Override
+        void finish() {
+            ability.endCast(playerData.player, playerData, playerData.player.getEntityWorld(), abilityCastState);
+            playerData.completeAbility(ability, info);
+        }
+    }
+
+    static class ClientCastingState extends PlayerCastingState {
+        MovingSoundCasting sound;
+        boolean playing = false;
+
+        public ClientCastingState(PlayerData player, PlayerAbility ability, int castTicks) {
+            super(player, ability, castTicks);
+        }
+
+        @Override
+        void begin() {
+            SoundEvent event = ability.getCastingSoundEvent();
+            if (event != null) {
+                sound = new MovingSoundCasting(playerData.player, event, SoundCategory.PLAYERS, castTicks);
+                Minecraft.getMinecraft().getSoundHandler().playSound(sound);
+                playing = true;
             }
         }
 
-        lastUpdateIsCasting = isCasting();
+        @Override
+        void activeTick() {
+            ability.continueCastClient(playerData.player, playerData, playerData.player.getEntityWorld(), castTicks);
+        }
+
+        @Override
+        void finish() {
+            if (playing && sound != null) {
+                Minecraft.getMinecraft().getSoundHandler().stopSound(sound);
+                playing = false;
+            }
+        }
     }
 
-    private void updateCastTime() {
+
+
+    private CastState startCast(PlayerAbilityInfo abilityInfo, int castTime) {
+        ServerCastingState serverCastingState = new ServerCastingState(this, abilityInfo, castTime);
+        currentCast = serverCastingState;
+        if (isServerSide()) {
+            IMessage packet = new PlayerStartCastPacket(abilityInfo.getId(), castTime);
+            MKUltra.packetHandler.sendToAllTrackingAndSelf(packet, (EntityPlayerMP) player);
+        }
+
+        return serverCastingState.getAbilityCastState();
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void startCastClient(ResourceLocation abilityId, int castTicks) {
+        PlayerAbility ability = MKURegistry.getAbility(abilityId);
+        if (ability != null) {
+            currentCast = new ClientCastingState(this, ability, castTicks);
+        } else {
+            clearCastingAbility();
+        }
+    }
+
+    void updateCurrentCast() {
         if (!isCasting())
             return;
 
-        PlayerAbilityInfo abilityInfo = getAbilityInfo(getCastingAbility());
-        if (abilityInfo != null) {
-            PlayerAbility ability = abilityInfo.getAbility();
-            int currentCastTime = getCastTicks();
-            ability.continueCast(player, this, player.getEntityWorld(), currentCastTime, currentCastState);
-            if (currentCastTime > 0) {
-                setCastTicks(currentCastTime - 1);
-            } else {
-                ability.endCast(player, this, player.getEntityWorld(), currentCastState);
-                completeAbility(ability, abilityInfo);
-            }
-        } else {
+        if (!currentCast.tick()) {
             clearCastingAbility();
         }
     }
@@ -913,7 +951,6 @@ public class PlayerData implements IPlayerData {
         int cooldown = ability.getCooldownTicks(info.getRank());
         cooldown = PlayerFormulas.applyCooldownReduction(this, cooldown);
         setCooldown(info.getId(), cooldown);
-        currentCastState = null;
         SoundEvent sound = ability.getSpellCompleteSoundEvent();
         if (sound != null){
             AbilityUtils.playSoundAtServerEntity(player, sound, SoundCategory.PLAYERS);
@@ -934,8 +971,7 @@ public class PlayerData implements IPlayerData {
 
         int castTime = ability.getCastTime(info.getRank());
         if (castTime > 0) {
-            currentCastState = startCast(ability, castTime);
-            return currentCastState;
+            return startCast(info, castTime);
         } else {
             completeAbility(ability, info);
         }
@@ -959,7 +995,6 @@ public class PlayerData implements IPlayerData {
         int rank = valid ? abilityInfo.getRank() : GameConstants.ABILITY_INVALID_RANK;
 
         classInfo.setAbilityInSlot(index, id);
-        privateData.set(ACTION_BAR_ABILITY_RANK[index], rank);
 
         if (abilityTracker.hasCooldown(abilityId)) {
             int cd = abilityTracker.getCooldownTicks(abilityId);
@@ -1085,8 +1120,8 @@ public class PlayerData implements IPlayerData {
 
     public void onTick() {
         abilityTracker.tick();
-        if (!isServerSide()){
-            updateCastTimeClient();
+        updateCurrentCast();
+        if (!isServerSide()) {
             return;
         }
         if (needPassiveTalentRefresh) {
@@ -1099,7 +1134,6 @@ public class PlayerData implements IPlayerData {
         updateMana();
         updateHealth();
         updateDualWielding();
-        updateCastTime();
         syncState();
     }
 
@@ -1115,8 +1149,7 @@ public class PlayerData implements IPlayerData {
 
         IMessage updateMessage = getUpdateMessage();
         if (updateMessage != null) {
-            MKUltra.packetHandler.sendTo(updateMessage, (EntityPlayerMP) player);
-            MKUltra.packetHandler.sendToAllTracking(updateMessage, player);
+            MKUltra.packetHandler.sendToAllTrackingAndSelf(updateMessage, (EntityPlayerMP) player);
         }
     }
 

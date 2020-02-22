@@ -95,6 +95,7 @@ public final class PacketHandler {
         registerPacket(OpenTalentGuiPacket.class, new OpenTalentGuiPacket.Handler(), Side.CLIENT);
         registerPacket(SyncMobCastingPacket.class, new SyncMobCastingPacket.Handler(), Side.CLIENT);
         registerPacket(PlayerDataSyncPacket.class, new PlayerDataSyncPacket.Handler(), Side.CLIENT);
+        registerPacket(PlayerStartCastPacket.class, new PlayerStartCastPacket.Handler(), Side.CLIENT);
     }
 
     /**
@@ -181,6 +182,11 @@ public final class PacketHandler {
     }
 
     public void sendToAllTracking(IMessage message, Entity entity) {
+        this.wrapper.sendToAllTracking(message, entity);
+    }
+
+    public void sendToAllTrackingAndSelf(IMessage message, EntityPlayerMP entity) {
+        sendTo(message, entity);
         this.wrapper.sendToAllTracking(message, entity);
     }
 }
