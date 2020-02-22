@@ -114,8 +114,6 @@ public interface IPlayerData {
 
     boolean canWearArmor(ItemArmor item);
 
-    void gainTalentPoint();
-
     int getTotalTalentPoints();
 
     int getUnspentTalentPoints();

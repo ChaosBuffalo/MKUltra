@@ -208,7 +208,6 @@ public class PlayerData implements IPlayerData {
         return classInfo.canDecrementPointInTree(talentTree, line, index);
     }
 
-    @Override
     public void gainTalentPoint() {
         if (!hasChosenClass()) {
             return;
