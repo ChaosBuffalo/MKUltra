@@ -9,7 +9,6 @@ import com.chaosbuffalo.mkultra.core.PlayerData;
 import com.chaosbuffalo.mkultra.core.events.PlayerClassEvent;
 import com.chaosbuffalo.mkultra.core.talents.TalentRecord;
 import com.chaosbuffalo.mkultra.core.talents.TalentTreeRecord;
-import com.chaosbuffalo.mkultra.network.packets.AddRemoveTalentPointPacket;
 import com.chaosbuffalo.mkultra.network.packets.AddTalentRequestPacket;
 import com.chaosbuffalo.mkultra.tiles.TileEntityNPCSpawner;
 import net.minecraft.client.Minecraft;
@@ -187,18 +186,9 @@ public class OrbMotherGui extends MKScreen {
         PlayerData data = (PlayerData) MKUPlayerData.get(player);
         if (data != null) {
             if (mouseButton == UIConstants.MOUSE_BUTTON_RIGHT) {
-                if (data.canRefundTalentPoint(selectedTree, talentButton.line, talentButton.index)) {
-                    MKUltra.packetHandler.sendToServer(new AddRemoveTalentPointPacket(
-                            selectedTree, talentButton.line, talentButton.index,
-                            AddRemoveTalentPointPacket.Mode.REFUND));
-                }
+                data.refundTalentPoint(selectedTree, talentButton.line, talentButton.index);
             } else if (mouseButton == UIConstants.MOUSE_BUTTON_LEFT) {
-                if (data.canSpendTalentPoint(selectedTree, talentButton.line, talentButton.index)) {
-                    MKUltra.packetHandler.sendToServer(new AddRemoveTalentPointPacket(
-                            selectedTree, talentButton.line, talentButton.index,
-                            AddRemoveTalentPointPacket.Mode.SPEND
-                    ));
-                }
+                data.spendTalentPoint(selectedTree, talentButton.line, talentButton.index);
             }
         }
         return true;

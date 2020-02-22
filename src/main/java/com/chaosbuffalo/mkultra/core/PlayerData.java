@@ -161,48 +161,45 @@ public class PlayerData implements IPlayerData {
 
     public boolean spendTalentPoint(ResourceLocation talentTree, String line, int index) {
         PlayerClassInfo classInfo = getActiveClass();
-        if (classInfo == null) {
+        if (classInfo == null)
             return false;
-        }
-        boolean didSpend = false;
-//        Log.info("In spend talent point %d", classInfo.unspentTalentPoints);
-        if (classInfo.getUnspentTalentPoints() > 0) {
-            didSpend = classInfo.spendTalentPoint(player, talentTree, line, index);
-            if (didSpend) {
-                updateTalents();
+
+        if (isServerSide()) {
+            if (classInfo.getUnspentTalentPoints() > 0) {
+                boolean didSpend = classInfo.spendTalentPoint(player, talentTree, line, index);
+                if (didSpend) {
+                    updateTalents();
+                }
+                return didSpend;
             }
-//            Log.info("Did spend talent %b", didSpend);
+        } else {
+            if (classInfo.canIncrementPointInTree(talentTree, line, index)) {
+                MKUltra.packetHandler.sendToServer(new AddRemoveTalentPointPacket(talentTree, line, index, AddRemoveTalentPointPacket.Mode.SPEND));
+                return true;
+            }
         }
 
-        return didSpend;
+        return false;
     }
 
     public boolean refundTalentPoint(ResourceLocation talentTree, String line, int index) {
         PlayerClassInfo classInfo = getActiveClass();
-        if (classInfo == null) {
+        if (classInfo == null)
             return false;
-        }
-        boolean didSpend = classInfo.refundTalentPoint(player, talentTree, line, index);
-        if (didSpend) {
-            updateTalents();
-        }
-        return didSpend;
-    }
 
-    public boolean canSpendTalentPoint(ResourceLocation talentTree, String line, int index) {
-        PlayerClassInfo classInfo = getActiveClass();
-        if (classInfo == null) {
-            return false;
+        if (isServerSide()) {
+            boolean didSpend = classInfo.refundTalentPoint(player, talentTree, line, index);
+            if (didSpend) {
+                updateTalents();
+            }
+            return didSpend;
+        } else {
+            if (classInfo.canDecrementPointInTree(talentTree, line, index)) {
+                MKUltra.packetHandler.sendToServer(new AddRemoveTalentPointPacket(talentTree, line, index, AddRemoveTalentPointPacket.Mode.REFUND));
+                return true;
+            }
         }
-        return classInfo.canIncrementPointInTree(talentTree, line, index);
-    }
-
-    public boolean canRefundTalentPoint(ResourceLocation talentTree, String line, int index) {
-        PlayerClassInfo classInfo = getActiveClass();
-        if (classInfo == null) {
-            return false;
-        }
-        return classInfo.canDecrementPointInTree(talentTree, line, index);
+        return false;
     }
 
     public void gainTalentPoint() {
