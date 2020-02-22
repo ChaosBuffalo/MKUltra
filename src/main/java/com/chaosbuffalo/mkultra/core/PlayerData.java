@@ -28,9 +28,6 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.*;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
@@ -47,14 +44,7 @@ import java.util.*;
 
 public class PlayerData implements IPlayerData {
 
-    private final static DataParameter<String> CLASS_ID = EntityDataManager.createKey(
-            EntityPlayer.class, DataSerializers.STRING);
-
-    private final static String INVALID_ABILITY_STRING = MKURegistry.INVALID_ABILITY.toString();
-
-
     private final EntityPlayer player;
-    private final EntityDataManager privateData;
     private float regenTime;
     private float healthRegenTime;
     private AbilityTracker abilityTracker;
@@ -70,6 +60,7 @@ public class PlayerData implements IPlayerData {
     private boolean dirty;
     private float mana;
     private PlayerCastingState currentCast;
+    private ResourceLocation activeClassId;
 
 
     public PlayerData(EntityPlayer player) {
@@ -81,10 +72,9 @@ public class PlayerData implements IPlayerData {
         isDualWielding = false;
         originalMainHand = player.getPrimaryHand();
         abilityTracker = AbilityTracker.getTracker(player);
-        privateData = player.getDataManager();
         activeSpellTriggers = new HashSet<>();
         currentCast = null;
-        setupWatcher();
+        activeClassId = MKURegistry.INVALID_CLASS;
         registerAttributes();
     }
 
@@ -101,15 +91,6 @@ public class PlayerData implements IPlayerData {
         player.getAttributeMap().registerAttribute(PlayerAttributes.HEAL_BONUS);
         player.getAttributeMap().registerAttribute(PlayerAttributes.MELEE_CRITICAL_DAMAGE);
         player.getAttributeMap().registerAttribute(PlayerAttributes.BUFF_DURATION);
-    }
-
-    private void setupWatcher() {
-        privateData.register(CLASS_ID, MKURegistry.INVALID_CLASS.toString());
-    }
-
-    private void markEntityDataDirty() {
-        markDirty();
-        privateData.setDirty(CLASS_ID);
     }
 
     private void markDirty() {
@@ -546,12 +527,13 @@ public class PlayerData implements IPlayerData {
     }
 
     private void setClassId(ResourceLocation classId) {
-        privateData.set(CLASS_ID, classId.toString());
+        activeClassId = classId;
+        markDirty();
     }
 
     @Override
     public ResourceLocation getClassId() {
-        return new ResourceLocation(privateData.get(CLASS_ID));
+        return activeClassId;
     }
 
     @Override
@@ -601,11 +583,6 @@ public class PlayerData implements IPlayerData {
     public ResourceLocation getAbilityInSlot(int index) {
         PlayerClassInfo classInfo = getActiveClass();
         return classInfo != null ? classInfo.getAbilityInSlot(index) : MKURegistry.INVALID_ABILITY;
-    }
-
-    private int getCurrentSlotForAbility(ResourceLocation abilityId) {
-        PlayerClassInfo classInfo = getActiveClass();
-        return classInfo != null ? classInfo.getSlotForAbility(abilityId) : GameConstants.ACTION_BAR_INVALID_SLOT;
     }
 
     private int getFirstFreeAbilitySlot(PlayerClassInfo classInfo) {
@@ -891,7 +868,6 @@ public class PlayerData implements IPlayerData {
     }
 
 
-
     private CastState startCast(PlayerAbilityInfo abilityInfo, int castTime) {
         ServerCastingState serverCastingState = new ServerCastingState(this, abilityInfo, castTime);
         currentCast = serverCastingState;
@@ -952,7 +928,7 @@ public class PlayerData implements IPlayerData {
         cooldown = PlayerFormulas.applyCooldownReduction(this, cooldown);
         setCooldown(info.getId(), cooldown);
         SoundEvent sound = ability.getSpellCompleteSoundEvent();
-        if (sound != null){
+        if (sound != null) {
             AbilityUtils.playSoundAtServerEntity(player, sound, SoundCategory.PLAYERS);
         }
         clearCastingAbility();
@@ -987,15 +963,10 @@ public class PlayerData implements IPlayerData {
     }
 
     private void updateActiveAbilitySlot(PlayerClassInfo classInfo, int index) {
-        ResourceLocation abilityId = getAbilityInSlot(index);
-        PlayerAbilityInfo abilityInfo = getAbilityInfo(abilityId);
-
-        boolean valid = abilityInfo != null && abilityInfo.isCurrentlyKnown();
-        ResourceLocation id = valid ? abilityInfo.getId() : MKURegistry.INVALID_ABILITY;
-        int rank = valid ? abilityInfo.getRank() : GameConstants.ABILITY_INVALID_RANK;
-
-        classInfo.setAbilityInSlot(index, id);
-
+        // This is mostly to get the abilityTracker to send an AbilityCooldown packet to the client
+        // so the AbilityBar can shade based on cooldowns
+        // FIXME: make this less awkward
+        ResourceLocation abilityId = classInfo.getAbilityInSlot(index);
         if (abilityTracker.hasCooldown(abilityId)) {
             int cd = abilityTracker.getCooldownTicks(abilityId);
             setCooldown(abilityId, cd);
@@ -1087,7 +1058,7 @@ public class PlayerData implements IPlayerData {
     }
 
     public void forceUpdate() {
-        markEntityDataDirty();
+        markDirty();
         sendBulkAbilityUpdate();
         sendBulkClassUpdate();
         updateActiveAbilities();
@@ -1178,7 +1149,7 @@ public class PlayerData implements IPlayerData {
     @SideOnly(Side.CLIENT)
     public void clientAbilityUpdate(PlayerAbilityInfo info) {
         PlayerClassInfo classInfo = getActiveClass();
-        if (classInfo != null){
+        if (classInfo != null) {
             classInfo.putInfo(info.getId(), info);
         }
     }
@@ -1203,8 +1174,6 @@ public class PlayerData implements IPlayerData {
             classes.appendTag(sk);
         }
         tag.setTag("classes", classes);
-
-        tag.setString("activeClassId", getClassId().toString());
     }
 
     private void deserializeClasses(NBTTagCompound tag) {
@@ -1245,9 +1214,6 @@ public class PlayerData implements IPlayerData {
     }
 
     private void deserializeUpdate(NBTTagCompound tag) {
-        if (tag.hasKey("mana")) {
-            setMana(tag.getFloat("mana"));
-        }
         if (tag.hasKey("activeClassId", Constants.NBT.TAG_STRING)) {
             ResourceLocation classId = new ResourceLocation(tag.getString("activeClassId"));
             // If the character was saved with a class that doesn't exist anymore (say from a plugin),
@@ -1260,6 +1226,9 @@ public class PlayerData implements IPlayerData {
         } else {
             activateClass(MKURegistry.INVALID_CLASS);
         }
+        if (tag.hasKey("mana")) {
+            setMana(tag.getFloat("mana"));
+        }
     }
 
     public void serializeClientUpdate(NBTTagCompound tag) {
@@ -1269,6 +1238,9 @@ public class PlayerData implements IPlayerData {
 
     @SideOnly(Side.CLIENT)
     public void deserializeClientUpdate(NBTTagCompound tag) {
+        if (tag.hasKey("activeClassId")) {
+            activeClassId = new ResourceLocation(tag.getString("activeClassId"));
+        }
         if (tag.hasKey("mana")) {
             mana = tag.getFloat("mana");
         }
@@ -1545,8 +1517,7 @@ public class PlayerData implements IPlayerData {
     public void setInSpellTriggerCallback(String tag, boolean enable) {
         if (enable) {
             activeSpellTriggers.add(tag);
-        }
-        else {
+        } else {
             activeSpellTriggers.remove(tag);
         }
     }
