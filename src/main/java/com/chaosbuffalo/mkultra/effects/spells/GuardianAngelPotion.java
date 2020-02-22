@@ -52,12 +52,12 @@ public class GuardianAngelPotion extends PassiveAbilityPotionBase {
     public void onPlayerDeath(LivingDeathEvent event, DamageSource source, EntityPlayer player) {
         IPlayerData pData = MKUPlayerData.get(player);
         if (pData != null) {
-            if (!pData.isArbitraryOnCooldown(TIMER_NAME)) {
+            if (!pData.hasActiveTimer(TIMER_NAME)) {
                 player.setHealth(1.0f);
                 event.setCanceled(true);
                 AbilityUtils.playSoundAtServerEntity(player, ModSounds.spell_heal_9, SoundCategory.PLAYERS);
                 player.addPotionEffect(GuardianAngelInvulnerabilityPotion.Create(player).setTarget(player).toPotionEffect(INVULN_DURATION, 1));
-                pData.setArbitraryCooldown(TIMER_NAME, TIMER_COOLDOWN);
+                pData.setTimer(TIMER_NAME, TIMER_COOLDOWN);
             }
         }
     }

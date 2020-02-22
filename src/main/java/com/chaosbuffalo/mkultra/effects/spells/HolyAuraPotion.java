@@ -63,7 +63,7 @@ public class HolyAuraPotion extends AuraPassiveBase {
         if (source instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) source;
             IPlayerData playerData = MKUPlayerData.get(player);
-            if (playerData == null || playerData.isArbitraryOnCooldown(TIMER_NAME))
+            if (playerData == null || playerData.hasActiveTimer(TIMER_NAME))
                 return;
 
             AreaEffectBuilder builder = AreaEffectBuilder.Create(player, player)
@@ -75,7 +75,7 @@ public class HolyAuraPotion extends AuraPassiveBase {
                             1, Targeting.TargetType.ENEMY)
                     .radius(getNegativeDistance(amplifier), true);
             builder.spawn();
-            playerData.setArbitraryCooldown(TIMER_NAME, APPLICATION_PERIOD);
+            playerData.setTimer(TIMER_NAME, APPLICATION_PERIOD);
         }
     }
 

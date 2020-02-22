@@ -408,7 +408,7 @@ public class PlayerData implements IPlayerData {
     }
 
     @Override
-    public void setArbitraryCooldown(ResourceLocation loc, int cooldown) {
+    public void setTimer(ResourceLocation loc, int cooldown) {
         if (cooldown > 0) {
             abilityTracker.setCooldown(loc, cooldown);
         } else {
@@ -417,7 +417,7 @@ public class PlayerData implements IPlayerData {
     }
 
     @Override
-    public int getArbitraryCooldown(ResourceLocation loc) {
+    public int getTimer(ResourceLocation loc) {
         return abilityTracker.getCooldownTicks(loc);
     }
 

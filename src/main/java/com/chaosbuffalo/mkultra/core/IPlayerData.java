@@ -140,12 +140,12 @@ public interface IPlayerData {
 
     boolean isDualWielding();
 
-    void setArbitraryCooldown(ResourceLocation loc, int cooldown);
+    void setTimer(ResourceLocation loc, int cooldown);
 
-    int getArbitraryCooldown(ResourceLocation loc);
+    int getTimer(ResourceLocation loc);
 
-    default boolean isArbitraryOnCooldown(ResourceLocation loc) {
-        return getArbitraryCooldown(loc) > 0;
+    default boolean hasActiveTimer(ResourceLocation loc) {
+        return getTimer(loc) > 0;
     }
 
     ArmorClass getArmorClass();
