@@ -123,6 +123,13 @@ public class PlayerClassInfo {
         return MKURegistry.INVALID_ABILITY;
     }
 
+    public int getSlotForAbility(ResourceLocation abilityId) {
+        int slot = hotbar.indexOf(abilityId);
+        if (slot == -1)
+            return GameConstants.ACTION_BAR_INVALID_SLOT;
+        return slot;
+    }
+
     void setAbilityInSlot(int index, ResourceLocation abilityId) {
         if (index < hotbar.size()) {
             hotbar.set(index, abilityId);
