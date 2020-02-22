@@ -1157,7 +1157,10 @@ public class PlayerData implements IPlayerData {
         updateHealth();
         updateDualWielding();
         updateCastTime();
+        syncState();
+    }
 
+    private void syncState() {
         PlayerClassInfo activeClass = getActiveClass();
         if (activeClass != null) {
             IMessage message = activeClass.getUpdateMessage();
