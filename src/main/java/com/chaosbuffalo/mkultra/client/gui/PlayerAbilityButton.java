@@ -1,10 +1,7 @@
 package com.chaosbuffalo.mkultra.client.gui;
 
-import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.client.gui.lib.*;
 import com.chaosbuffalo.mkultra.core.*;
-import com.chaosbuffalo.mkultra.network.packets.ActivatePassivePacket;
-import com.chaosbuffalo.mkultra.network.packets.ActivateUltimatePacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
@@ -156,9 +153,7 @@ public class PlayerAbilityButton extends MKButton {
     }
 
     private boolean handlePassiveSelection(ResourceLocation abilityId) {
-        if (playerData.canActivatePassiveForSlot(abilityId, slotIndex)) {
-            MKUltra.packetHandler.sendToServer(new ActivatePassivePacket(abilityId, slotIndex));
-        }
+        playerData.activatePassive(abilityId, slotIndex);
         MKScreen screen = getScreen();
         if (screen != null) {
             screen.closeModal(this.dropdown);
@@ -167,9 +162,7 @@ public class PlayerAbilityButton extends MKButton {
     }
 
     private boolean handleUltimateSelection(ResourceLocation abilityId) {
-        if (playerData.canActivateUltimateForSlot(abilityId, slotIndex)) {
-            MKUltra.packetHandler.sendToServer(new ActivateUltimatePacket(abilityId, slotIndex));
-        }
+        playerData.activateUltimate(abilityId, slotIndex);
         MKScreen screen = getScreen();
         if (screen != null) {
             screen.closeModal(this.dropdown);

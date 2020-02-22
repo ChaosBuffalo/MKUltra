@@ -46,7 +46,7 @@ public class ActivateUltimatePacket implements IMessage {
 
             PlayerData data = (PlayerData) MKUPlayerData.get(player);
             if (data != null) {
-                data.activateUltimateForSlot(msg.loc, msg.slotIndex);
+                data.activateUltimate(msg.loc, msg.slotIndex);
             }
         }
     }

@@ -46,7 +46,7 @@ public class ActivatePassivePacket implements IMessage {
 
             PlayerData data = (PlayerData) MKUPlayerData.get(player);
             if (data != null) {
-                data.activatePassiveForSlot(msg.loc, msg.slotIndex);
+                data.activatePassive(msg.loc, msg.slotIndex);
             }
         }
     }

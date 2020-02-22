@@ -15,10 +15,7 @@ import com.chaosbuffalo.mkultra.effects.passives.PassiveAbilityPotionBase;
 import com.chaosbuffalo.mkultra.effects.spells.ArmorTrainingPotion;
 import com.chaosbuffalo.mkultra.event.ItemEventHandler;
 import com.chaosbuffalo.mkultra.log.Log;
-import com.chaosbuffalo.mkultra.network.packets.AbilityUpdatePacket;
-import com.chaosbuffalo.mkultra.network.packets.ClassUpdatePacket;
-import com.chaosbuffalo.mkultra.network.packets.PlayerDataSyncPacket;
-import com.chaosbuffalo.mkultra.network.packets.PlayerSyncRequestPacket;
+import com.chaosbuffalo.mkultra.network.packets.*;
 import com.chaosbuffalo.mkultra.utils.AbilityUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.ICommandSender;
@@ -294,22 +291,22 @@ public class PlayerData implements IPlayerData {
         return null;
     }
 
-    public boolean canActivatePassiveForSlot(ResourceLocation loc, int slotIndex) {
-        PlayerClassInfo activeClass = getActiveClass();
-        if (activeClass != null) {
-            return activeClass.canAddPassiveToSlot(loc, slotIndex);
-        }
-        return false;
-    }
-
-    public boolean activatePassiveForSlot(ResourceLocation loc, int slotIndex) {
+    public boolean activatePassive(ResourceLocation loc, int slotIndex) {
         PlayerClassInfo activeClass = getActiveClass();
         if (activeClass == null)
             return false;
 
-        boolean didWork = activeClass.addPassiveToSlot(loc, slotIndex);
-        setRefreshPassiveTalents();
-        return didWork;
+        if (isServerSide()) {
+            boolean didWork = activeClass.addPassiveToSlot(loc, slotIndex);
+            setRefreshPassiveTalents();
+            return didWork;
+        } else {
+            if (activeClass.canAddPassiveToSlot(loc, slotIndex)) {
+                MKUltra.packetHandler.sendToServer(new ActivatePassivePacket(loc, slotIndex));
+                return true;
+            }
+        }
+        return false;
     }
 
     public void clearPassive(ResourceLocation abilityId) {
@@ -323,35 +320,35 @@ public class PlayerData implements IPlayerData {
         }
     }
 
-    public boolean canActivateUltimateForSlot(ResourceLocation loc, int slotIndex) {
-        PlayerClassInfo activeClass = getActiveClass();
-        if (activeClass != null) {
-            return activeClass.canAddUltimateToSlot(loc, slotIndex);
-        }
-        return false;
-    }
-
-    public boolean activateUltimateForSlot(ResourceLocation loc, int slotIndex) {
+    public boolean activateUltimate(ResourceLocation loc, int slotIndex) {
         PlayerClassInfo activeClass = getActiveClass();
         if (activeClass == null)
             return false;
 
-        ResourceLocation currentAbility = activeClass.getUltimateForSlot(slotIndex);
-        if (loc.equals(MKURegistry.INVALID_ABILITY) && !currentAbility.equals(MKURegistry.INVALID_ABILITY)) {
-            unlearnAbility(currentAbility, false, true);
-            activeClass.clearUltimateSlot(slotIndex);
-            return true;
-        } else {
-            if (!currentAbility.equals(MKURegistry.INVALID_ABILITY)) {
-                activeClass.clearUltimateSlot(slotIndex);
+        if (isServerSide()) {
+            ResourceLocation currentAbility = activeClass.getUltimateForSlot(slotIndex);
+            if (loc.equals(MKURegistry.INVALID_ABILITY) && !currentAbility.equals(MKURegistry.INVALID_ABILITY)) {
                 unlearnAbility(currentAbility, false, true);
+                activeClass.clearUltimateSlot(slotIndex);
+                return true;
+            } else {
+                if (!currentAbility.equals(MKURegistry.INVALID_ABILITY)) {
+                    activeClass.clearUltimateSlot(slotIndex);
+                    unlearnAbility(currentAbility, false, true);
+                }
+                boolean didWork = activeClass.addUltimateToSlot(loc, slotIndex);
+                if (didWork) {
+                    learnAbility(loc, false);
+                }
+                return didWork;
             }
-            boolean didWork = activeClass.addUltimateToSlot(loc, slotIndex);
-            if (didWork) {
-                learnAbility(loc, false);
+        } else {
+            if (activeClass.canAddUltimateToSlot(loc, slotIndex)) {
+                MKUltra.packetHandler.sendToServer(new ActivateUltimatePacket(loc, slotIndex));
+                return true;
             }
-            return didWork;
         }
+        return false;
     }
 
     public void clearUltimate(ResourceLocation abilityId) {
