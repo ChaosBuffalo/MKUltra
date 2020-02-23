@@ -575,7 +575,7 @@ public class PlayerData implements IPlayerData {
         classInfo.setLevel(level);
         updatePlayerStats(false);
         if (level != currentLevel) {
-            MinecraftForge.EVENT_BUS.post(new PlayerClassEvent.LevelChanged(player, this, getActiveClass(), currentLevel, level));
+            MinecraftForge.EVENT_BUS.post(new PlayerClassEvent.LevelChanged(player, this, currentLevel, level));
         }
     }
 
@@ -1113,7 +1113,7 @@ public class PlayerData implements IPlayerData {
         if (activeClass != null) {
             IMessage message = activeClass.getUpdateMessage();
             if (message != null) {
-                MinecraftForge.EVENT_BUS.post(new PlayerClassEvent.Updated(player, this, activeClass));
+                MinecraftForge.EVENT_BUS.post(new PlayerClassEvent.Updated(player, this, activeClass.getClassId()));
                 MKUltra.packetHandler.sendTo(message, (EntityPlayerMP) player);
             }
         }
@@ -1161,7 +1161,7 @@ public class PlayerData implements IPlayerData {
         }
         info.forEach(classInfo -> {
             knownClasses.put(classInfo.getClassId(), classInfo);
-            MinecraftForge.EVENT_BUS.post(new PlayerClassEvent.Updated(player, this, classInfo));
+            MinecraftForge.EVENT_BUS.post(new PlayerClassEvent.Updated(player, this, classInfo.getClassId()));
         });
     }
 
@@ -1344,7 +1344,7 @@ public class PlayerData implements IPlayerData {
         PlayerClassInfo info = playerClass.createClassInfo();
         knownClasses.put(classId, info);
         sendBulkClassUpdate();
-        MinecraftForge.EVENT_BUS.post(new PlayerClassEvent.Learned(player, this, info));
+        MinecraftForge.EVENT_BUS.post(new PlayerClassEvent.Learned(player, this));
 
         // Learned class
         return true;
@@ -1368,7 +1368,7 @@ public class PlayerData implements IPlayerData {
         }
 
         sendBulkClassUpdate();
-        MinecraftForge.EVENT_BUS.post(new PlayerClassEvent.Removed(player, this, info));
+        MinecraftForge.EVENT_BUS.post(new PlayerClassEvent.Removed(player, this));
     }
 
     private void deactivateCurrentToggleAbilities() {
@@ -1430,7 +1430,7 @@ public class PlayerData implements IPlayerData {
         ItemEventHandler.checkEquipment(player);
 
         if (!classId.equals(oldClassId)) {
-            MinecraftForge.EVENT_BUS.post(new PlayerClassEvent.ClassChanged(player, this, getActiveClass(), oldClassId));
+            MinecraftForge.EVENT_BUS.post(new PlayerClassEvent.ClassChanged(player, this, oldClassId, classId));
         }
     }
 
