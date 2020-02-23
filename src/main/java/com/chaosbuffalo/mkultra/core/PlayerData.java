@@ -4,7 +4,7 @@ import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.client.audio.MovingSoundCasting;
 import com.chaosbuffalo.mkultra.core.abilities.cast_states.CastState;
-import com.chaosbuffalo.mkultra.core.events.PlayerAbilityCastEvent;
+import com.chaosbuffalo.mkultra.core.events.PlayerAbilityEvent;
 import com.chaosbuffalo.mkultra.core.events.PlayerClassEvent;
 import com.chaosbuffalo.mkultra.core.talents.PassiveAbilityTalent;
 import com.chaosbuffalo.mkultra.core.talents.RangedAttributeTalent;
@@ -913,7 +913,7 @@ public class PlayerData implements IPlayerData {
             PlayerAbility ability = info.getAbility();
             if (ability != null &&
                     ability.meetsRequirements(this) &&
-                    !MinecraftForge.EVENT_BUS.post(new PlayerAbilityCastEvent.Starting(player, this, ability, info))) {
+                    !MinecraftForge.EVENT_BUS.post(new PlayerAbilityEvent.StartCasting(player, this, info))) {
                 ability.execute(player, this, player.getEntityWorld());
                 return true;
             }
@@ -932,7 +932,7 @@ public class PlayerData implements IPlayerData {
             AbilityUtils.playSoundAtServerEntity(player, sound, SoundCategory.PLAYERS);
         }
         clearCastingAbility();
-        MinecraftForge.EVENT_BUS.post(new PlayerAbilityCastEvent.Completed(player, this, ability, info));
+        MinecraftForge.EVENT_BUS.post(new PlayerAbilityEvent.Completed(player, this, info));
     }
 
     @Nullable
