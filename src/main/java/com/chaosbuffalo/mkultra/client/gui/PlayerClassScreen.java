@@ -71,25 +71,18 @@ public class PlayerClassScreen extends MKScreen {
         super();
     }
 
-    @SideOnly(Side.CLIENT)
-    @SubscribeEvent
     public void handlePlayerDataUpdate(PlayerClassEvent.Updated event) {
-        // This event will cause UI updates, so it must only run on the client
-        if (!event.getPlayer().getEntityWorld().isRemote)
-            return;
         if (!event.isCurrentClass())
             return;
+        IPlayerData pData = event.getPlayerData();
         if (passivePanel != null) {
             mainRoot.removeWidget(passivePanel);
         }
-        if (ultimatePanel != null){
+        if (ultimatePanel != null) {
             mainRoot.removeWidget(ultimatePanel);
         }
         int xPos = width / 2 - PANEL_WIDTH / 2;
         int yPos = height / 2 - PANEL_HEIGHT / 2;
-        IPlayerData pData = MKUPlayerData.get(this.mc.player);
-        if (pData == null)
-            return;
         MKWidget passiveTray = drawPassivePanel(pData, xPos + STAT_PANEL_START_X,
                 yPos + STAT_PANEL_START_Y + STAT_PANEL_HEIGHT + 4);
         passivePanel = passiveTray;
@@ -102,7 +95,7 @@ public class PlayerClassScreen extends MKScreen {
         MKWidget ultTray = drawUltimatePanel(pData, xPos + STAT_PANEL_START_X,
                 yPos + STAT_PANEL_START_Y + STAT_PANEL_HEIGHT + 4 + passiveTrayHeight + 4);
         ultimatePanel = ultTray;
-        if (ultTray != null){
+        if (ultTray != null) {
             mainRoot.addWidget(ultTray);
         }
     }

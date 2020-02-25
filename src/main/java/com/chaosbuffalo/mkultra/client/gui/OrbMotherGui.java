@@ -17,12 +17,10 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 
 public class OrbMotherGui extends MKScreen {
 
@@ -41,7 +39,6 @@ public class OrbMotherGui extends MKScreen {
         treeView = null;
     }
 
-    @SubscribeEvent
     public void handlePlayerDataUpdate(PlayerClassEvent.Updated event) {
         if (!event.isCurrentClass())
             return;

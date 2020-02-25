@@ -4,7 +4,6 @@ package com.chaosbuffalo.mkultra.client.gui.lib;
 import com.chaosbuffalo.mkultra.log.Log;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.input.Mouse;
 
 import java.io.IOException;
@@ -36,12 +35,6 @@ public class MKScreen extends GuiScreen {
         hoveringText = new ArrayList<>();
         modals = new ArrayDeque<>();
         currentState = NO_STATE;
-        MinecraftForge.EVENT_BUS.register(this);
-    }
-
-    @Override
-    public void onGuiClosed() {
-        MinecraftForge.EVENT_BUS.unregister(this);
     }
 
     @Override
