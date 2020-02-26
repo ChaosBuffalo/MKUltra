@@ -153,13 +153,20 @@ public class PlayerData implements IPlayerData {
         return false;
     }
 
+    public boolean canGainTalentPoint() {
+        PlayerClassInfo classInfo = getActiveClass();
+        if (classInfo == null)
+            return false;
+
+        return PlayerFormulas.tryGainTalentPoint(this, classInfo, player, true);
+    }
+
     public void gainTalentPoint() {
         PlayerClassInfo classInfo = getActiveClass();
-        if (classInfo == null || classInfo.isAtTalentPointLimit())
+        if (classInfo == null)
             return;
 
-        if (player.experienceLevel >= classInfo.getTotalTalentPoints()) {
-            player.addExperienceLevel(-classInfo.getTotalTalentPoints());
+        if (PlayerFormulas.tryGainTalentPoint(this, classInfo, player, false)) {
             classInfo.addTalentPoints(1);
         }
     }
@@ -548,8 +555,7 @@ public class PlayerData implements IPlayerData {
         if (classInfo == null)
             return false;
 
-        return player.experienceLevel >= (classInfo.getLevel() + 1) &&
-                classInfo.getLevel() < GameConstants.MAX_CLASS_LEVEL;
+        return PlayerFormulas.tryGainLevel(this, classInfo, player, true);
     }
 
     @Override
@@ -558,19 +564,14 @@ public class PlayerData implements IPlayerData {
         if (classInfo == null)
             return;
 
-        if (canLevelUp()) {
-            int newLevel = classInfo.getLevel() + 1;
-            setLevel(newLevel);
+        int newLevel = classInfo.getLevel() + 1;
+        if (PlayerFormulas.tryGainLevel(this, classInfo, player, false)) {
+            setLevel(classInfo, newLevel);
             classInfo.setUnspentPoints(classInfo.getUnspentPoints() + 1);
-            player.addExperienceLevel(-newLevel);
         }
     }
 
-    private void setLevel(int level) {
-        PlayerClassInfo classInfo = getActiveClass();
-        if (classInfo == null)
-            return;
-
+    private void setLevel(PlayerClassInfo classInfo, int level) {
         int currentLevel = classInfo.getLevel();
         classInfo.setLevel(level);
         updatePlayerStats(false);
@@ -1322,7 +1323,7 @@ public class PlayerData implements IPlayerData {
                     })
                     .forEach(a -> unlearnAbility(a.getAbilityId(), true, false));
 
-            setLevel(newLevel);
+            setLevel(classInfo, newLevel);
             validateAbilityPoints();
         }
     }

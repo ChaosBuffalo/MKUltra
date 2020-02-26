@@ -112,7 +112,7 @@ public class OrbMotherGui extends MKScreen {
                 .setMarginLeft(25)
                 .setMarginRight(25)
                 .setPaddingBot(4);
-        IPlayerData data = MKUPlayerData.get(player);
+        PlayerData data = (PlayerData) MKUPlayerData.get(player);
         if (data != null) {
             String unspentText = String.format("Unspent Points: %d", data.getUnspentTalentPoints());
             MKWidget unspentPoints = new MKText(mc.fontRenderer, unspentText)
@@ -127,10 +127,11 @@ public class OrbMotherGui extends MKScreen {
                     .setColor(8129636);
             textLayout.addWidget(nextPoint);
             MKWidget buyButton = new MKButton("Buy Talent Point")
-                    .setPressedCallback((MKButton button, Integer mouseButton) -> {
+                    .setPressedCallback((button, mouseButton) -> {
                         MKUltra.packetHandler.sendToServer(new AddTalentRequestPacket());
                         return true;
                     })
+                    .setEnabled(data.canGainTalentPoint())
                     .setSizeHintWidth(0.6f)
                     .setPosHintX(0.2f);
             textLayout.addWidget(buyButton);

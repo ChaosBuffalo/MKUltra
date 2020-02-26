@@ -1,8 +1,10 @@
 package com.chaosbuffalo.mkultra.core;
 
+import com.chaosbuffalo.mkultra.GameConstants;
 import com.chaosbuffalo.mkultra.utils.EntityUtils;
 import com.chaosbuffalo.mkultra.utils.ItemUtils;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 
@@ -43,5 +45,32 @@ public class PlayerFormulas {
 
     public static int applyBuffDurationBonus(IPlayerData data, int duration) {
         return (int) (duration * data.getBuffDurationBonus());
+    }
+
+    public static boolean tryGainTalentPoint(IPlayerData data, PlayerClassInfo classInfo,  EntityPlayer player, boolean sim) {
+        if (classInfo.isAtTalentPointLimit())
+            return false;
+        if (player.experienceLevel >= classInfo.getTotalTalentPoints()) {
+            if (!sim) {
+                player.addExperienceLevel(-classInfo.getTotalTalentPoints());
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean tryGainLevel(IPlayerData data, PlayerClassInfo classInfo, EntityPlayer player, boolean sim) {
+        int nextLevel = classInfo.getLevel() + 1;
+        boolean xpCheck = player.experienceLevel >= nextLevel;
+        boolean levelCheck = classInfo.getLevel() < GameConstants.MAX_CLASS_LEVEL;
+
+        if (xpCheck && levelCheck) {
+            if (!sim) {
+                player.addExperienceLevel(-nextLevel);
+            }
+            return true;
+        }
+
+        return false;
     }
 }
