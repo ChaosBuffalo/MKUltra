@@ -14,9 +14,6 @@ import net.minecraft.entity.ai.attributes.AbstractAttributeMap;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 import java.util.*;
@@ -83,6 +80,10 @@ public class PlayerClassScreen extends MKScreen {
         }
         int xPos = width / 2 - PANEL_WIDTH / 2;
         int yPos = height / 2 - PANEL_HEIGHT / 2;
+        drawSlottedTalentTrays(pData, xPos, yPos);
+    }
+
+    private void drawSlottedTalentTrays(IPlayerData pData, int xPos, int yPos) {
         MKWidget passiveTray = drawPassivePanel(pData, xPos + STAT_PANEL_START_X,
                 yPos + STAT_PANEL_START_Y + STAT_PANEL_HEIGHT + 4);
         passivePanel = passiveTray;
@@ -93,7 +94,7 @@ public class PlayerClassScreen extends MKScreen {
         }
 
         MKWidget ultTray = drawUltimatePanel(pData, xPos + STAT_PANEL_START_X,
-                yPos + STAT_PANEL_START_Y + STAT_PANEL_HEIGHT + 4 + passiveTrayHeight + 4);
+                yPos + STAT_PANEL_START_Y + STAT_PANEL_HEIGHT + 4 + passiveTrayHeight);
         ultimatePanel = ultTray;
         if (ultTray != null) {
             mainRoot.addWidget(ultTray);
@@ -184,8 +185,7 @@ public class PlayerClassScreen extends MKScreen {
         int xPos = width / 2 - PANEL_WIDTH / 2;
         int yPos = height / 2 - PANEL_HEIGHT / 2;
         ScaledResolution scaledRes = new ScaledResolution(mc);
-        MKWidget mainRoot = new MKWidget(xPos, yPos, PANEL_WIDTH, PANEL_HEIGHT);
-        this.mainRoot = mainRoot;
+        mainRoot = new MKWidget(xPos, yPos, PANEL_WIDTH, PANEL_HEIGHT);
         addState("main", mainRoot);
 
         IPlayerData pData = MKUPlayerData.get(this.mc.player);
@@ -248,20 +248,7 @@ public class PlayerClassScreen extends MKScreen {
         abilityScrollView.setToRight();
         abilityScrollView.setToTop();
         mainRoot.addWidget(abilityScrollView);
-        MKWidget passiveTray = drawPassivePanel(pData, xPos + STAT_PANEL_START_X,
-                yPos + STAT_PANEL_START_Y + STAT_PANEL_HEIGHT + 4);
-        passivePanel = passiveTray;
-        int passiveTrayHeight = 0;
-        if (passiveTray != null) {
-            passiveTrayHeight = passiveTray.getHeight();
-            mainRoot.addWidget(passiveTray);
-        }
-        MKWidget ultTray = drawUltimatePanel(pData, xPos + STAT_PANEL_START_X,
-                yPos + STAT_PANEL_START_Y + STAT_PANEL_HEIGHT + 4 + passiveTrayHeight);
-        ultimatePanel = ultTray;
-        if (ultTray != null){
-            mainRoot.addWidget(ultTray);
-        }
+        drawSlottedTalentTrays(pData, xPos, yPos);
         setState("main");
     }
 
