@@ -155,9 +155,9 @@ public class PlayerData implements IPlayerData {
 
     public void gainTalentPoint() {
         PlayerClassInfo classInfo = getActiveClass();
-        if (classInfo == null) {
+        if (classInfo == null || classInfo.isAtTalentPointLimit())
             return;
-        }
+
         if (player.experienceLevel >= classInfo.getTotalTalentPoints()) {
             player.addExperienceLevel(-classInfo.getTotalTalentPoints());
             classInfo.addTalentPoints(1);

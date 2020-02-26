@@ -1,6 +1,7 @@
 package com.chaosbuffalo.mkultra.core;
 
 import com.chaosbuffalo.mkultra.GameConstants;
+import com.chaosbuffalo.mkultra.MKConfig;
 import com.chaosbuffalo.mkultra.core.talents.BaseTalent;
 import com.chaosbuffalo.mkultra.core.talents.RangedAttributeTalent;
 import com.chaosbuffalo.mkultra.core.talents.TalentTree;
@@ -16,7 +17,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
-import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -24,7 +24,6 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 import javax.annotation.Nullable;
-import java.io.IOException;
 import java.util.*;
 
 public class PlayerClassInfo {
@@ -112,6 +111,15 @@ public class PlayerClassInfo {
         markDirty();
     }
 
+    boolean isAtTalentPointLimit() {
+        int max = getTalentPointLimit();
+        return max != -1 && getTotalTalentPoints() >= max;
+    }
+
+    private int getTalentPointLimit() {
+        return MKConfig.gameplay.MAX_TALENT_POINTS_PER_CLASS;
+    }
+
     public Collection<PlayerAbilityInfo> getAbilityInfos() {
         return abilityInfoMap.values();
     }
@@ -138,12 +146,18 @@ public class PlayerClassInfo {
     }
 
     boolean checkTalentTotals() {
+        int maxPoints = getTalentPointLimit();
+        if (maxPoints >= 0 && getTotalTalentPoints() > maxPoints) {
+            Log.info("player has too many talents! %d max %d", getTotalTalentPoints(), maxPoints);
+            resetTalents();
+            return false;
+        }
         int spent = getTotalSpentPoints();
         if (getTotalTalentPoints() - spent != getUnspentTalentPoints()) {
-            setUnspentTalentPoints(getTotalTalentPoints() - spent);
-            return true;
+            resetTalents();
+            return false;
         }
-        return false;
+        return true;
     }
 
     void putInfo(ResourceLocation abilityId, PlayerAbilityInfo info) {
@@ -403,9 +417,38 @@ public class PlayerClassInfo {
             }
         }
         if (doReset) {
-            clearUltimateAbilities();
-            clearPassiveAbilities();
+            resetTalents();
         }
+    }
+
+    private void checkSlottedTalents() {
+        HashSet<PlayerPassiveAbility> knownPassives = getPassiveAbilitiesFromTalents();
+        for (int i = 0; i < loadedPassives.size(); i++) {
+            ResourceLocation abilityId = loadedPassives.get(i);
+            PlayerAbility ability = MKURegistry.getAbility(abilityId);
+            if (ability == null || (ability instanceof PlayerPassiveAbility && !knownPassives.contains(ability))) {
+                clearPassiveSlot(i);
+            }
+        }
+
+        HashSet<PlayerAbility> knownUltimates = getUltimateAbilitiesFromTalents();
+        for (int i = 0; i < loadedUltimates.size(); i++) {
+            ResourceLocation id = loadedUltimates.get(i);
+            PlayerAbility ability = MKURegistry.getAbility(id);
+            if (ability == null || !knownUltimates.contains(ability)) {
+                clearUltimateSlot(i);
+            }
+        }
+    }
+
+    private void resetTalents() {
+        talentTrees.values().forEach(TalentTreeRecord::reset);
+        clearPassiveAbilities();
+        clearUltimateAbilities();
+
+        int maxPoints = Math.min(getTotalTalentPoints(), getTalentPointLimit());
+        setTotalTalentPoints(maxPoints);
+        setUnspentTalentPoints(maxPoints);
     }
 
     public void serialize(NBTTagCompound tag) {
@@ -475,6 +518,7 @@ public class PlayerClassInfo {
             loadedUltimates = parseNBTAbilityList(tag, "loadedUltimates", GameConstants.MAX_ULTIMATES);
         }
         parseTalentTrees(tag);
+        checkSlottedTalents();
     }
 
     public List<ResourceLocation> getActivePassives() {

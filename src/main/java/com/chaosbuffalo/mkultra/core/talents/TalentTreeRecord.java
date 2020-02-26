@@ -35,6 +35,10 @@ public class TalentTreeRecord {
         }
     }
 
+    public void reset() {
+        setup();
+    }
+
     public boolean canIncrementPoint(String lineName, int index) {
         if (!containsIndex(lineName, index))
             return false;

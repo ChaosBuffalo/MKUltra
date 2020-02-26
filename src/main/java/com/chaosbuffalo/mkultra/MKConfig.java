@@ -205,6 +205,10 @@ public class MKConfig {
         public String[] DISABLED_ENTITIES = {
 
         };
+
+        @Config.Name("Maximum Talent Points Per Class")
+        @Config.Comment("Limits the talent points players can spend in a single class (-1 for unlimited, 0 disables talents)")
+        public int MAX_TALENT_POINTS_PER_CLASS = -1;
     }
 
     public static class ClassConfiguration {
