@@ -168,7 +168,7 @@ public class AbilityBar extends Gui {
     @SuppressWarnings("unused")
     @SubscribeEvent
     public void onRenderExperienceBar(RenderGameOverlayEvent event) {
-        if (event.isCancelable() || event.getType() != RenderGameOverlayEvent.ElementType.EXPERIENCE) {
+        if (event.isCancelable() || event.getType() != RenderGameOverlayEvent.ElementType.ALL) {
             return;
         }
 
