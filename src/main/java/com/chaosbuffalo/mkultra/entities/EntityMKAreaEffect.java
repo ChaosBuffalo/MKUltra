@@ -9,6 +9,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityAreaEffectCloud;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -45,6 +46,7 @@ public class EntityMKAreaEffect extends Entity {
     private float radiusPerTick;
     private EntityLivingBase owner;
     private UUID ownerUniqueId;
+    EntityAreaEffectCloud
 
     private static class EffectEntry {
         final PotionEffect effect;

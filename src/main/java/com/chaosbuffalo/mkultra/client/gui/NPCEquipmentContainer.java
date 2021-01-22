@@ -27,7 +27,7 @@ public class NPCEquipmentContainer extends Container {
     private TileEntityNPCSpawner spawner;
 
 
-    public NPCEquipmentContainer(TileEntityNPCSpawner spawner, EntityPlayer p) {
+    public NPCEquipmentContainer(TileEntityNPCSpawner spawner, EntityPlayer player) {
         this.spawner = spawner;
         int xPos = 26;
         int yPos = 20;
@@ -46,13 +46,13 @@ public class NPCEquipmentContainer extends Container {
 
         for (int y = 0; y < 3; ++y) {
             for (int x = 0; x < 9; ++x) {
-                addSlotToContainer(new Slot(p.inventory, x + y * 9 + 9, xPos + x * 18, yPos + y * 18));
+                addSlotToContainer(new Slot(player.inventory, x + y * 9 + 9, xPos + x * 18, yPos + y * 18));
             }
         }
 
         yPos = 109;
         for (int x = 0; x < 9; ++x) {
-            addSlotToContainer(new Slot(p.inventory, x, xPos + x * 18, yPos));
+            addSlotToContainer(new Slot(player.inventory, x, xPos + x * 18, yPos));
         }
 
     }
