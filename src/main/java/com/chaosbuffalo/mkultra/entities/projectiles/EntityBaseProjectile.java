@@ -44,6 +44,7 @@ public abstract class EntityBaseProjectile extends Entity implements IProjectile
     private int amplifier;
     private int graphicalEffectTickInterval;
 
+
     public EntityBaseProjectile(World worldIn) {
         super(worldIn);
         this.xTile = -1;
