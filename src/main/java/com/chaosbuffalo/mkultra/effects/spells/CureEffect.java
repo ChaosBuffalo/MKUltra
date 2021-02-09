@@ -56,15 +56,11 @@ public class CureEffect extends SpellEffectBase {
         return TargetingContexts.FRIENDLY;
     }
 
-    @Override
-    public boolean canSelfCast() {
-        return true;
-    }
 
     @Override
     public void doEffect(Entity applier, Entity caster, LivingEntity target, int amplifier, SpellCast cast) {
         apply(target);
-        PacketHandler.sendToTrackingMaybeSelf(
+        PacketHandler.sendToTrackingAndSelf(
                 new ParticleEffectSpawnPacket(
                         ParticleTypes.HAPPY_VILLAGER,
                         ParticleEffects.CIRCLE_PILLAR_MOTION, 30, 0,

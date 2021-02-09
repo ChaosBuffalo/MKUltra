@@ -72,7 +72,7 @@ public class SkinLikeWoodAbility extends MKToggleAbility {
         // What to do for each target hit
         entity.addPotionEffect(getToggleEffect().createSelfCastEffectInstance(entity, amplifier));
 
-        PacketHandler.sendToTrackingMaybeSelf(
+        PacketHandler.sendToTrackingAndSelf(
                 new ParticleEffectSpawnPacket(
                         ParticleTypes.ITEM_SLIME,
                         ParticleEffects.CIRCLE_MOTION, 30, 0,

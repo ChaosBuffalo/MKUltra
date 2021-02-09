@@ -104,7 +104,7 @@ public class ExplosiveGrowthAbility extends MKAbility {
                 NaturesRemedyAbility.INSTANCE.castNaturesRemedyOnTarget(entHit, data, restoLevel);
                 SoundUtils.playSoundAtEntity(entHit, ModSounds.spell_earth_6, cat);
             }
-            PacketHandler.sendToTrackingMaybeSelf(
+            PacketHandler.sendToTrackingAndSelf(
                     new ParticleEffectSpawnPacket(
                             ParticleTypes.INSTANT_EFFECT,
                             ParticleEffects.CIRCLE_MOTION, 20, 10,
@@ -120,7 +120,7 @@ public class ExplosiveGrowthAbility extends MKAbility {
         entity.addPotionEffect(CureEffect.Create(entity).setTarget(entity).toPotionEffect(restoLevel));
         NaturesRemedyAbility.INSTANCE.castNaturesRemedyOnTarget(entity, data, restoLevel);
         entity.setPositionAndUpdate(to.x, to.y, to.z);
-        PacketHandler.sendToTrackingMaybeSelf(
+        PacketHandler.sendToTrackingAndSelf(
                 new ParticleEffectSpawnPacket(
                         ParticleTypes.AMBIENT_ENTITY_EFFECT,
                         ParticleEffects.SPHERE_MOTION, 30, 10,

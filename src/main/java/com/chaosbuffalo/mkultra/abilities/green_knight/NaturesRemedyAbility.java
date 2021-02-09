@@ -85,7 +85,7 @@ public class NaturesRemedyAbility extends MKAbility {
             castNaturesRemedyOnTarget(targetEntity, data, level);
             SoundUtils.playSoundAtEntity(targetEntity, ModSounds.spell_heal_8);
             Vector3d lookVec = entity.getLookVec();
-            PacketHandler.sendToTrackingMaybeSelf(
+            PacketHandler.sendToTrackingAndSelf(
                     new ParticleEffectSpawnPacket(
                             ParticleTypes.ITEM_SLIME,
                             ParticleEffects.SPHERE_MOTION, 30, 10,

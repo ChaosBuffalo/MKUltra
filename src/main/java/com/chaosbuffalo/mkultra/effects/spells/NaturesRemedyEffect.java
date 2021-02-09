@@ -55,10 +55,6 @@ public class NaturesRemedyEffect extends SpellPeriodicEffectBase {
         return TargetingContexts.FRIENDLY;
     }
 
-    @Override
-    public boolean canSelfCast() {
-        return true;
-    }
 
     @Override
     public void doEffect(Entity applier, Entity caster, LivingEntity target, int amplifier, SpellCast cast) {
@@ -67,7 +63,7 @@ public class NaturesRemedyEffect extends SpellPeriodicEffectBase {
         MKHealing.healEntityFrom(target, value,
                 MKHealSource.getNatureHeal(NaturesRemedyAbility.INSTANCE.getAbilityId(), applier, caster, 0.25f));
 
-        PacketHandler.sendToTrackingMaybeSelf(
+        PacketHandler.sendToTrackingAndSelf(
                 new ParticleEffectSpawnPacket(
                         ParticleTypes.ITEM_SLIME,
                         ParticleEffects.SPHERE_MOTION, 30, 10,
