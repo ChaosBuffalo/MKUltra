@@ -40,8 +40,6 @@ public class ExplosiveGrowthAbility extends MKAbility {
         event.getRegistry().register(INSTANCE);
     }
 
-    public static float BASE_DAMAGE = 10.0f;
-    public static float DAMAGE_SCALE = 5.0f;
     protected final FloatAttribute baseDamage = new FloatAttribute("baseDamage", 10.0f);
     protected final FloatAttribute scaleDamage = new FloatAttribute("scaleDamage", 5.0f);
 
