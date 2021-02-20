@@ -6,6 +6,7 @@ import com.chaosbuffalo.mkcore.abilities.MKAbility;
 import com.chaosbuffalo.mkcore.abilities.attributes.FloatAttribute;
 import com.chaosbuffalo.mkcore.core.IMKEntityData;
 import com.chaosbuffalo.mkcore.core.MKAttributes;
+import com.chaosbuffalo.mkcore.init.CoreDamageTypes;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.entities.projectiles.SpiritBombProjectileEntity;
 import com.chaosbuffalo.mkultra.init.ModSounds;
@@ -13,6 +14,8 @@ import com.chaosbuffalo.targeting_api.TargetingContext;
 import com.chaosbuffalo.targeting_api.TargetingContexts;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -32,13 +35,14 @@ public class SpiritBombAbility extends MKAbility {
     protected final FloatAttribute scaleDamage = new FloatAttribute("scaleDamage", 4.0f);
     protected final FloatAttribute projectileSpeed = new FloatAttribute("projectileSpeed", 1.25f);
     protected final FloatAttribute projectileInaccuracy = new FloatAttribute("projectileInaccuracy", 0.2f);
+    protected final FloatAttribute modifierScaling = new FloatAttribute("modifierScaling", 1.0f);
 
     private SpiritBombAbility() {
         super(MKUltra.MODID, "ability.spirit_bomb");
         setCooldownSeconds(16);
         setCastTime(GameConstants.TICKS_PER_SECOND + (GameConstants.TICKS_PER_SECOND / 4));
         setManaCost(4);
-        addAttributes(baseDamage, scaleDamage, projectileSpeed, projectileInaccuracy);
+        addAttributes(baseDamage, scaleDamage, projectileSpeed, projectileInaccuracy, modifierScaling);
         addSkillAttribute(MKAttributes.EVOCATION);
     }
 
@@ -59,12 +63,24 @@ public class SpiritBombAbility extends MKAbility {
         return ModSounds.spell_magic_whoosh_1;
     }
 
-    public FloatAttribute getBaseDamage() {
-        return baseDamage;
+    public float getBaseDamage() {
+        return baseDamage.getValue();
     }
 
-    public FloatAttribute getScaleDamage() {
-        return scaleDamage;
+    public float getScaleDamage() {
+        return scaleDamage.getValue();
+    }
+
+    public float getModifierScaling() {
+        return modifierScaling.getValue();
+    }
+
+    @Override
+    protected ITextComponent getAbilityDescription(IMKEntityData entityData) {
+        ITextComponent damageStr = getDamageDescription(entityData, CoreDamageTypes.NatureDamage, baseDamage.getValue(),
+                scaleDamage.getValue(), getSkillLevel(entityData.getEntity(), MKAttributes.EVOCATION),
+                modifierScaling.getValue());
+        return new TranslationTextComponent(getDescriptionTranslationKey(), damageStr);
     }
 
     @Override

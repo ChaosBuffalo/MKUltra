@@ -4,6 +4,7 @@
   "castTime": 25,
   "attributes": {
     "scaleDamage": 4.0,
+    "modifierScaling": 1.0,
     "projectileInaccuracy": 0.2,
     "baseDamage": 4.0,
     "projectileSpeed": 1.25

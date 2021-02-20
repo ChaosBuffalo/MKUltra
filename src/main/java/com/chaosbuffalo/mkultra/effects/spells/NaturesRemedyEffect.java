@@ -61,7 +61,8 @@ public class NaturesRemedyEffect extends SpellPeriodicEffectBase {
 
         float value = cast.getScaledValue(amplifier);
         MKHealing.healEntityFrom(target, value,
-                MKHealSource.getNatureHeal(NaturesRemedyAbility.INSTANCE.getAbilityId(), applier, caster, 0.25f));
+                MKHealSource.getNatureHeal(NaturesRemedyAbility.INSTANCE.getAbilityId(), applier, caster,
+                        NaturesRemedyAbility.INSTANCE.getModifierScaling()));
 
         PacketHandler.sendToTrackingAndSelf(
                 new ParticleEffectSpawnPacket(

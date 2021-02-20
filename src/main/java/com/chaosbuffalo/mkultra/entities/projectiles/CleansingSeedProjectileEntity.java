@@ -3,7 +3,7 @@ package com.chaosbuffalo.mkultra.entities.projectiles;
 import com.chaosbuffalo.mkcore.core.damage.MKDamageSource;
 import com.chaosbuffalo.mkcore.entities.BaseProjectileEntity;
 import com.chaosbuffalo.mkcore.fx.ParticleEffects;
-import com.chaosbuffalo.mkcore.init.ModDamageTypes;
+import com.chaosbuffalo.mkcore.init.CoreDamageTypes;
 import com.chaosbuffalo.mkcore.network.PacketHandler;
 import com.chaosbuffalo.mkcore.network.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.mkcore.utils.SoundUtils;
@@ -66,8 +66,9 @@ public class CleansingSeedProjectileEntity extends BaseProjectileEntity implemen
                     target.addPotionEffect(CureEffect.Create(caster).setTarget(target).toPotionEffect(amplifier));
                     SoundUtils.playSoundAtEntity(target, ModSounds.spell_water_2, cat);
                 } else if (Targeting.isValidEnemy(caster, target)){
-                    target.attackEntityFrom(MKDamageSource.causeAbilityDamage(ModDamageTypes.NatureDamage,
-                            CleansingSeedAbility.INSTANCE.getAbilityId(), caster, this),
+                    target.attackEntityFrom(MKDamageSource.causeAbilityDamage(CoreDamageTypes.NatureDamage,
+                            CleansingSeedAbility.INSTANCE.getAbilityId(), caster, this,
+                            CleansingSeedAbility.INSTANCE.getModifierScaling()),
                             CleansingSeedAbility.INSTANCE.getDamageForLevel(amplifier));
                     SoundUtils.playSoundAtEntity(target, ModSounds.spell_water_8, cat);
                 }

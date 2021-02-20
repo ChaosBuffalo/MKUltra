@@ -5,6 +5,7 @@
   "attributes": {
     "baseDuration": 4,
     "baseValue": 2.0,
+    "modifierScaling": 1.0,
     "scaleValue": 1.0,
     "scaleDuration": 1
   }

@@ -7,6 +7,7 @@ import com.chaosbuffalo.mkcore.core.IMKEntityData;
 import com.chaosbuffalo.mkcore.core.MKAttributes;
 import com.chaosbuffalo.mkcore.core.damage.MKDamageSource;
 import com.chaosbuffalo.mkcore.fx.ParticleEffects;
+import com.chaosbuffalo.mkcore.init.CoreDamageTypes;
 import com.chaosbuffalo.mkcore.network.PacketHandler;
 import com.chaosbuffalo.mkcore.network.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.mkcore.utils.RayTraceUtils;
@@ -24,6 +25,8 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -42,6 +45,7 @@ public class ExplosiveGrowthAbility extends MKAbility {
 
     protected final FloatAttribute baseDamage = new FloatAttribute("baseDamage", 10.0f);
     protected final FloatAttribute scaleDamage = new FloatAttribute("scaleDamage", 5.0f);
+    protected final FloatAttribute modifierScaling = new FloatAttribute("modifierScaling", 1.0f);
 
     private ExplosiveGrowthAbility() {
         super(MKUltra.MODID, "ability.explosive_growth");
@@ -63,6 +67,14 @@ public class ExplosiveGrowthAbility extends MKAbility {
         return TargetingContexts.ALL;
     }
 
+
+    @Override
+    protected ITextComponent getAbilityDescription(IMKEntityData entityData) {
+        ITextComponent damageStr = getDamageDescription(entityData, CoreDamageTypes.MeleeDamage, baseDamage.getValue(),
+                scaleDamage.getValue(), getSkillLevel(entityData.getEntity(), MKAttributes.PANKRATION),
+                modifierScaling.getValue());
+        return new TranslationTextComponent(getDescriptionTranslationKey(), damageStr);
+    }
 
     @Override
     public float getDistance(LivingEntity entity) {

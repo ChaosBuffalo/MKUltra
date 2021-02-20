@@ -1,5 +1,13 @@
 {
   "mkultra.ability.skin_like_wood.name": "Skin Like Wood",
   "mkultra.ability.skin_like_wood.description": "Hardens your skin, increasing your armor. Drains 1 mana for every hit you take.",
-  "effect.mkultra.effect.skin_like_wood": "Skin Like Wood"
+  "effect.mkultra.effect.skin_like_wood": "Skin Like Wood",
+  "mkultra.ability.natures_remedy.name": "Nature's Remedy",
+  "mkultra.ability.natures_remedy.description": "Heals your target for %s every second, lasts for %d seconds.",
+  "mkultra.ability.spirit_bomb.name": "Spirit Bomb",
+  "mkultra.ability.spirit_bomb.description": "Shoot a projectile that will explode after 2 seconds, dealing %s damage to enemies in the area.",
+  "mkultra.ability.cleansing_seed.name": "Cleansing Seed",
+  "mkultra.ability.cleansing_seed.description": "Shoot a projectile that removes negative effects from friends or deals %s damage to enemies.",
+  "mkultra.ability.explosive_growth.name": "Explosive Growth",
+  "mkultra.ability.explosive_growth.description": "Dash forward, damaging all enemies you hit for %s and casting Cleansing Seed and Nature's Remedy on your allies and yourself."
 }

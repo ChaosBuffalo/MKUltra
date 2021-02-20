@@ -39,11 +39,16 @@ public class CureEffect extends SpellEffectBase {
         setRegistryName(MKUltra.MODID, "effect.cure");
     }
 
-    private static void apply(LivingEntity entity) {
+    private static void apply(LivingEntity entity, int amplifier) {
         ArrayList<EffectInstance> toRemove = new ArrayList<>();
+        int count = 0;
         for (EffectInstance effect : entity.getActivePotionEffects()) {
+            if (count > amplifier){
+                break;
+            }
             if (!effect.getPotion().isBeneficial()) {
                 toRemove.add(effect);
+                count++;
             }
         }
         for (EffectInstance effect : toRemove) {
@@ -59,7 +64,7 @@ public class CureEffect extends SpellEffectBase {
 
     @Override
     public void doEffect(Entity applier, Entity caster, LivingEntity target, int amplifier, SpellCast cast) {
-        apply(target);
+        apply(target, amplifier);
         PacketHandler.sendToTrackingAndSelf(
                 new ParticleEffectSpawnPacket(
                         ParticleTypes.HAPPY_VILLAGER,

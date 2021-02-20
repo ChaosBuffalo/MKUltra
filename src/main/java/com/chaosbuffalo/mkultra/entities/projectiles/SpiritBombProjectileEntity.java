@@ -3,9 +3,10 @@ package com.chaosbuffalo.mkultra.entities.projectiles;
 import com.chaosbuffalo.mkcore.GameConstants;
 import com.chaosbuffalo.mkcore.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkcore.effects.SpellCast;
-import com.chaosbuffalo.mkcore.effects.instant.AbilityMagicDamage;
+import com.chaosbuffalo.mkcore.effects.instant.MKAbilityDamage;
 import com.chaosbuffalo.mkcore.entities.BaseProjectileEntity;
 import com.chaosbuffalo.mkcore.fx.ParticleEffects;
+import com.chaosbuffalo.mkcore.init.CoreDamageTypes;
 import com.chaosbuffalo.mkcore.network.PacketHandler;
 import com.chaosbuffalo.mkcore.network.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.mkcore.utils.SoundUtils;
@@ -110,8 +111,11 @@ public class SpiritBombProjectileEntity extends BaseProjectileEntity implements 
 
     private boolean doEffect(Entity caster, int amplifier) {
         if (!this.world.isRemote && caster instanceof LivingEntity) {
-            SpellCast damage = AbilityMagicDamage.Create(caster, SpiritBombAbility.INSTANCE.getBaseDamage().getValue(),
-                    SpiritBombAbility.INSTANCE.getScaleDamage().getValue());
+            SpellCast damage = MKAbilityDamage.Create(caster, CoreDamageTypes.NatureDamage,
+                    SpiritBombAbility.INSTANCE,
+                    SpiritBombAbility.INSTANCE.getBaseDamage(),
+                    SpiritBombAbility.INSTANCE.getScaleDamage(),
+                    SpiritBombAbility.INSTANCE.getModifierScaling());
             AreaEffectBuilder.Create((LivingEntity) caster, this)
                     .spellCast(damage, amplifier, getTargetContext())
                     .instant()

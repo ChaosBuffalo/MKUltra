@@ -23,6 +23,8 @@ import net.minecraft.entity.ai.brain.memory.MemoryModuleType;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -43,6 +45,7 @@ public class NaturesRemedyAbility extends MKAbility {
     protected final FloatAttribute scaleValue = new FloatAttribute("scaleValue", 1.0f);
     protected final IntAttribute baseDuration = new IntAttribute("baseDuration", 4);
     protected final IntAttribute scaleDuration = new IntAttribute("scaleDuration", 1);
+    protected final FloatAttribute modifierScaling = new FloatAttribute("modifierScaling", 1.0f);
 
     private NaturesRemedyAbility() {
         super(MKUltra.MODID, "ability.natures_remedy");
@@ -50,7 +53,7 @@ public class NaturesRemedyAbility extends MKAbility {
         setManaCost(4);
         setCastTime(GameConstants.TICKS_PER_SECOND);
         addSkillAttribute(MKAttributes.RESTORATION);
-        addAttributes(baseValue, scaleValue, baseDuration, scaleDuration);
+        addAttributes(baseValue, scaleValue, baseDuration, scaleDuration, modifierScaling);
         setUseCondition(new HealCondition(this, .75f));
     }
 
@@ -64,6 +67,20 @@ public class NaturesRemedyAbility extends MKAbility {
         return 10.0f;
     }
 
+    @Override
+    protected ITextComponent getAbilityDescription(IMKEntityData entityData) {
+        int level = getSkillLevel(entityData.getEntity(), MKAttributes.RESTORATION);
+        ITextComponent damageStr = getHealDescription(entityData, baseValue.getValue(),
+                scaleValue.getValue(), level,
+                modifierScaling.getValue());
+        return new TranslationTextComponent(getDescriptionTranslationKey(), damageStr,
+                getBuffDuration(entityData, level, baseDuration.getValue(), scaleDuration.getValue()));
+    }
+
+    public float getModifierScaling() {
+        return modifierScaling.getValue();
+    }
+
     @Nullable
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
@@ -71,7 +88,7 @@ public class NaturesRemedyAbility extends MKAbility {
     }
 
     public void castNaturesRemedyOnTarget(LivingEntity target, IMKEntityData casterData, int level){
-        int duration = getBuffDuration(casterData, level, baseDuration.getValue(), scaleDuration.getValue());
+        int duration = getBuffDuration(casterData, level, baseDuration.getValue(), scaleDuration.getValue()) / GameConstants.TICKS_PER_SECOND;
         SpellCast heal = NaturesRemedyEffect.Create(casterData.getEntity(), target,
                 baseValue.getValue(), scaleDuration.getValue());
         target.addPotionEffect(heal.toPotionEffect(duration, level));
