@@ -1,7 +1,5 @@
 package com.chaosbuffalo.mkultra.init;
 
-import com.chaosbuffalo.mknpc.init.MKNpcWorldGen;
-import com.chaosbuffalo.mknpc.world.gen.feature.MKSpringFeature;
 import com.chaosbuffalo.mknpc.world.gen.feature.structure.*;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.world.gen.feature.structure.CryptStructurePools;
@@ -40,7 +38,7 @@ public class MKUWorldGen {
     }
 
     public static void worldSetup(FMLServerAboutToStartEvent event){
-        event.getServer().func_244267_aX().getRegistry(Registry.NOISE_SETTINGS_KEY).forEach(dimensionSettings -> {
+        event.getServer().getDynamicRegistries().getRegistry(Registry.NOISE_SETTINGS_KEY).forEach(dimensionSettings -> {
             dimensionSettings.getStructures().func_236195_a_().put(CRYPT_STRUCTURE,
                     new StructureSeparationSettings(30, 10, 32400244));
         });

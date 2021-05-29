@@ -99,20 +99,20 @@ dependencies {
     // that the dep is a ForgeGradle 'patcher' dependency. And it's patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
     minecraft "net.minecraftforge:forge:${forge_version}"
-    compileOnly fg.deobf("com.chaosbuffalo.targeting_api:targeting_api-1.16.4:0.22")
-    runtimeOnly fg.deobf("com.chaosbuffalo.targeting_api:targeting_api-1.16.4:0.22")
-    compileOnly fg.deobf("com.chaosbuffalo.mkwidgets:mkwidgets-1.16.4:1.17")
-    runtimeOnly fg.deobf("com.chaosbuffalo.mkwidgets:mkwidgets-1.16.4:1.17")
-    compileOnly fg.deobf("com.chaosbuffalo.mkcore:mkcore-1.16.4:0.14")
-    runtimeOnly fg.deobf("com.chaosbuffalo.mkcore:mkcore-1.16.4:0.14")
-    compileOnly fg.deobf("com.chaosbuffalo.mkchat:mkchat-1.16.4:0.13")
-    runtimeOnly fg.deobf("com.chaosbuffalo.mkchat:mkchat-1.16.4:0.13")
-    compileOnly fg.deobf("com.chaosbuffalo.mkfaction:mkfaction-1.16.4:0.13")
-    runtimeOnly fg.deobf("com.chaosbuffalo.mkfaction:mkfaction-1.16.4:0.13")
-    compileOnly fg.deobf("com.chaosbuffalo.mkweapons:mkweapons-1.16.4:0.11")
-    runtimeOnly fg.deobf("com.chaosbuffalo.mkweapons:mkweapons-1.16.4:0.11")
-    compileOnly fg.deobf("com.chaosbuffalo.mknpc:mknpc-1.16.4:0.11")
-    runtimeOnly fg.deobf("com.chaosbuffalo.mknpc:mknpc-1.16.4:0.11")
+    compileOnly fg.deobf("com.chaosbuffalo.targeting_api:targeting_api-${mc_version}:${targeting_api_version}")
+    runtimeOnly fg.deobf("com.chaosbuffalo.targeting_api:targeting_api-${mc_version}:${targeting_api_version}")
+    compileOnly fg.deobf("com.chaosbuffalo.mkwidgets:mkwidgets-${mc_version}:${mk_widgets_version}")
+    runtimeOnly fg.deobf("com.chaosbuffalo.mkwidgets:mkwidgets-${mc_version}:${mk_widgets_version}")
+    compileOnly fg.deobf("com.chaosbuffalo.mkcore:mkcore-${mc_version}:${mk_core_version}")
+    runtimeOnly fg.deobf("com.chaosbuffalo.mkcore:mkcore-${mc_version}:${mk_core_version}")
+    compileOnly fg.deobf("com.chaosbuffalo.mkchat:mkchat-${mc_version}:${mk_chat_version}")
+    runtimeOnly fg.deobf("com.chaosbuffalo.mkchat:mkchat-${mc_version}:${mk_chat_version}")
+    compileOnly fg.deobf("com.chaosbuffalo.mkfaction:mkfaction-${mc_version}:${mk_faction_version}")
+    runtimeOnly fg.deobf("com.chaosbuffalo.mkfaction:mkfaction-${mc_version}:${mk_faction_version}")
+    compileOnly fg.deobf("com.chaosbuffalo.mkweapons:mkweapons-${mc_version}:${mk_weapons_version}")
+    runtimeOnly fg.deobf("com.chaosbuffalo.mkweapons:mkweapons-${mc_version}:${mk_weapons_version}")
+    compileOnly fg.deobf("com.chaosbuffalo.mknpc:mknpc-${mc_version}:${mk_npc_version}")
+    runtimeOnly fg.deobf("com.chaosbuffalo.mknpc:mknpc-${mc_version}:${mk_npc_version}")
 
 }
 
