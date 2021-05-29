@@ -73,8 +73,8 @@ public class NaturesRemedyAbility extends MKAbility {
         ITextComponent damageStr = getHealDescription(entityData, baseValue.getValue(),
                 scaleValue.getValue(), level,
                 modifierScaling.getValue());
-        return new TranslationTextComponent(getDescriptionTranslationKey(), damageStr,
-                getBuffDuration(entityData, level, baseDuration.getValue(), scaleDuration.getValue()));
+        int duration = getBuffDuration(entityData, level, baseDuration.getValue(), scaleDuration.getValue()) / GameConstants.TICKS_PER_SECOND;
+        return new TranslationTextComponent(getDescriptionTranslationKey(), damageStr, duration);
     }
 
     public float getModifierScaling() {
@@ -88,9 +88,9 @@ public class NaturesRemedyAbility extends MKAbility {
     }
 
     public void castNaturesRemedyOnTarget(LivingEntity target, IMKEntityData casterData, int level){
-        int duration = getBuffDuration(casterData, level, baseDuration.getValue(), scaleDuration.getValue()) / GameConstants.TICKS_PER_SECOND;
+        int duration = getBuffDuration(casterData, level, baseDuration.getValue(), scaleDuration.getValue());
         SpellCast heal = NaturesRemedyEffect.Create(casterData.getEntity(), target,
-                baseValue.getValue(), scaleDuration.getValue());
+                baseValue.getValue(), scaleValue.getValue());
         target.addPotionEffect(heal.toPotionEffect(duration, level));
     }
 

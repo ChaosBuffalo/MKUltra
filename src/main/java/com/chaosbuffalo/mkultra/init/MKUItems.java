@@ -18,6 +18,9 @@ public final class MKUItems {
 
     @ObjectHolder(MKUltra.MODID + ":spirit_bomb_projectile")
     public static Item spiritBombProjectileItem;
+
+    @ObjectHolder(MKUltra.MODID + ":fireball_projectile")
+    public static Item fireballProjectileItem;
 //    public static Item manaRegenIdolIron;
 //    public static Item manaRegenIdolGold;
 //    public static Item manaRegenIdolWood;
@@ -233,6 +236,8 @@ public final class MKUItems {
                 .setRegistryName(MKUltra.MODID, "cleansing_seed_projectile"));
         event.getRegistry().register(new Item(new Item.Properties())
                 .setRegistryName(MKUltra.MODID, "spirit_bomb_projectile"));
+        event.getRegistry().register(new Item(new Item.Properties())
+                .setRegistryName(MKUltra.MODID, "fireball_projectile"));
     }
 
 }

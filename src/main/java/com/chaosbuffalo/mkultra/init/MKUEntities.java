@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.init;
 
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.entities.projectiles.CleansingSeedProjectileEntity;
+import com.chaosbuffalo.mkultra.entities.projectiles.FireballProjectileEntity;
 import com.chaosbuffalo.mkultra.entities.projectiles.SpiritBombProjectileEntity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
@@ -37,5 +38,16 @@ public class MKUEntities {
                 .disableSerialization()
                 .build("spirit_bomb_projectile")
                 .setRegistryName(new ResourceLocation(MKUltra.MODID, "spirit_bomb_projectile")));
+
+        evt.getRegistry().register(EntityType.Builder.<FireballProjectileEntity>create(
+                FireballProjectileEntity::new, EntityClassification.MISC)
+                .immuneToFire()
+                .size(0.25f, 0.25f)
+                .setTrackingRange(64)
+                .setUpdateInterval(1)
+                .setShouldReceiveVelocityUpdates(true)
+                .disableSerialization()
+                .build("fireball_projectile")
+                .setRegistryName(new ResourceLocation(MKUltra.MODID, "fireball_projectile")));
     }
 }

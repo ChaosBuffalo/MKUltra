@@ -22,5 +22,7 @@ public class MKURenderers {
             (manager) -> new SpriteRenderer<>(manager, Minecraft.getInstance().getItemRenderer()));
         RenderingRegistry.registerEntityRenderingHandler(SpiritBombProjectileEntity.TYPE,
             (manager) -> new SpriteRenderer<>(manager, Minecraft.getInstance().getItemRenderer()));
+        RenderingRegistry.registerEntityRenderingHandler(FireballProjectileEntity.TYPE,
+                (manager) -> new SpriteRenderer<>(manager, Minecraft.getInstance().getItemRenderer()));
     }
 }

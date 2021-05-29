@@ -18,7 +18,9 @@ import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.Targeting;
 import com.chaosbuffalo.targeting_api.TargetingContext;
 import com.chaosbuffalo.targeting_api.TargetingContexts;
+import com.google.common.collect.ImmutableSet;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.brain.memory.MemoryModuleType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.SoundCategory;
@@ -33,6 +35,7 @@ import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Set;
 
 @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ExplosiveGrowthAbility extends MKAbility {
@@ -66,7 +69,6 @@ public class ExplosiveGrowthAbility extends MKAbility {
     public TargetingContext getTargetContext() {
         return TargetingContexts.ALL;
     }
-
 
     @Override
     protected ITextComponent getAbilityDescription(IMKEntityData entityData) {
@@ -105,7 +107,6 @@ public class ExplosiveGrowthAbility extends MKAbility {
         SoundCategory cat = entity instanceof PlayerEntity ? SoundCategory.PLAYERS : SoundCategory.HOSTILE;
         float damage = baseDamage.getValue() + scaleDamage.getValue() * pankrationLevel;
         for (LivingEntity entHit : entityHit) {
-
             if (Targeting.isValidEnemy(entity, entHit)) {
                 entHit.attackEntityFrom(MKDamageSource.causeMeleeDamage(getAbilityId(), entity, entity), damage);
                 SoundUtils.playSoundAtEntity(entHit, ModSounds.spell_earth_1, cat);

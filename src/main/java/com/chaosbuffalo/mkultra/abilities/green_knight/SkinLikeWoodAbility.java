@@ -1,7 +1,6 @@
 package com.chaosbuffalo.mkultra.abilities.green_knight;
 
-import com.chaosbuffalo.mkcore.abilities.MKAbility;
-import com.chaosbuffalo.mkcore.abilities.MKToggleAbility;
+import com.chaosbuffalo.mkcore.abilities.*;
 import com.chaosbuffalo.mkcore.abilities.ai.conditions.NeedsBuffCondition;
 import com.chaosbuffalo.mkcore.core.IMKEntityData;
 import com.chaosbuffalo.mkcore.core.MKAttributes;
@@ -15,7 +14,9 @@ import com.chaosbuffalo.mkultra.effects.spells.SkinLikeWoodEffect;
 import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.TargetingContext;
 import com.chaosbuffalo.targeting_api.TargetingContexts;
+import com.google.common.collect.ImmutableSet;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.brain.memory.MemoryModuleType;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -24,6 +25,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
+import java.util.Set;
 
 @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class SkinLikeWoodAbility extends MKToggleAbility {
@@ -52,6 +54,18 @@ public class SkinLikeWoodAbility extends MKToggleAbility {
     public float getDistance(LivingEntity entity) {
         return 1.0f;
     }
+
+    @Override
+    public AbilityTargetSelector getTargetSelector() {
+        return AbilityTargeting.SELF;
+    }
+
+
+    @Override
+    public Set<MemoryModuleType<?>> getRequiredMemories() {
+        return ImmutableSet.of(MKAbilityMemories.ABILITY_TARGET);
+    }
+
 
     @Override
     public PassiveEffect getToggleEffect() {

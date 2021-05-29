@@ -1,8 +1,7 @@
 package com.chaosbuffalo.mkultra.abilities.green_knight;
 
 import com.chaosbuffalo.mkcore.GameConstants;
-import com.chaosbuffalo.mkcore.abilities.AbilityContext;
-import com.chaosbuffalo.mkcore.abilities.MKAbility;
+import com.chaosbuffalo.mkcore.abilities.*;
 import com.chaosbuffalo.mkcore.abilities.attributes.FloatAttribute;
 import com.chaosbuffalo.mkcore.core.IMKEntityData;
 import com.chaosbuffalo.mkcore.core.MKAttributes;
@@ -12,7 +11,9 @@ import com.chaosbuffalo.mkultra.entities.projectiles.SpiritBombProjectileEntity;
 import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.TargetingContext;
 import com.chaosbuffalo.targeting_api.TargetingContexts;
+import com.google.common.collect.ImmutableSet;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.brain.memory.MemoryModuleType;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -21,6 +22,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
+import java.util.Set;
 
 @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class SpiritBombAbility extends MKAbility {
@@ -50,7 +52,6 @@ public class SpiritBombAbility extends MKAbility {
     public TargetingContext getTargetContext() {
         return TargetingContexts.ENEMY;
     }
-
 
     @Override
     public SoundEvent getCastingSoundEvent() {
