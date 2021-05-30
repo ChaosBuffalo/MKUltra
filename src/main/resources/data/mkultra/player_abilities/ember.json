@@ -1,0 +1,15 @@
+{
+  "cooldown": 120,
+  "manaCost": 4.0,
+  "castTime": 10,
+  "attributes": {
+    "baseDuration": 6,
+    "dotModifierScaling": 0.2,
+    "modifierScaling": 1.0,
+    "scale": 3.0,
+    "scaleBurnDamage": 1.0,
+    "baseBurnDamage": 2.0,
+    "scaleDuration": 1,
+    "base": 8.0
+  }
+}

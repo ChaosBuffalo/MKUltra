@@ -1,0 +1,42 @@
+{
+  "entityType": "mkultra:hyborean_skeleton",
+  "options": [
+    {
+      "optionType": "mknpc:render_group",
+      "value": "hyborean_archer"
+    },
+    {
+      "optionType": "mknpc:attributes",
+      "attributes": [
+        {
+          "attributeName": "minecraft:generic.max_health",
+          "value": 25.0
+        }
+      ]
+    },
+    {
+      "optionType": "mknpc:name",
+      "value": "Decaying Archer"
+    },
+    {
+      "optionType": "mknpc:equipment",
+      "slotOptions": {
+        "mainhand": [
+          {
+            "weight": 1.0,
+            "dropChance": 0.0,
+            "item": "{id: \"mkweapons:longbow_stone\", Count: 1b, tag: {Damage: 0}}"
+          }
+        ]
+      }
+    },
+    {
+      "optionType": "mknpc:mk_size",
+      "value": 0.95
+    },
+    {
+      "optionType": "mknpc:faction",
+      "value": "mkfaction:undead"
+    }
+  ]
+}

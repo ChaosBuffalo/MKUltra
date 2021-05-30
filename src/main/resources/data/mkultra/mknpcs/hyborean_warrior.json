@@ -1,0 +1,62 @@
+{
+  "entityType": "mkultra:hyborean_skeleton",
+  "options": [
+    {
+      "optionType": "mknpc:render_group",
+      "value": "hyborean_warrior"
+    },
+    {
+      "optionType": "mknpc:attributes",
+      "attributes": [
+        {
+          "attributeName": "minecraft:generic.max_health",
+          "value": 30.0
+        }
+      ]
+    },
+    {
+      "optionType": "mknpc:name",
+      "value": "Hyborean Warrior"
+    },
+    {
+      "optionType": "mknpc:equipment",
+      "slotOptions": {
+        "mainhand": [
+          {
+            "weight": 1.0,
+            "dropChance": 0.0,
+            "item": "{id: \"mkweapons:battleaxe_stone\", Count: 1b, tag: {Damage: 0}}"
+          },
+          {
+            "weight": 1.0,
+            "dropChance": 0.0,
+            "item": "{id: \"mkweapons:spear_stone\", Count: 1b, tag: {Damage: 0}}"
+          },
+          {
+            "weight": 1.0,
+            "dropChance": 0.0,
+            "item": "{id: \"mkweapons:greatsword_stone\", Count: 1b, tag: {Damage: 0}}"
+          },
+          {
+            "weight": 1.0,
+            "dropChance": 0.0,
+            "item": "{id: \"mkweapons:longsword_stone\", Count: 1b, tag: {Damage: 0}}"
+          },
+          {
+            "weight": 1.0,
+            "dropChance": 0.0,
+            "item": "{id: \"mkweapons:warhammer_stone\", Count: 1b, tag: {Damage: 0}}"
+          }
+        ]
+      }
+    },
+    {
+      "optionType": "mknpc:mk_size",
+      "value": 1.0
+    },
+    {
+      "optionType": "mknpc:faction",
+      "value": "mkfaction:undead"
+    }
+  ]
+}

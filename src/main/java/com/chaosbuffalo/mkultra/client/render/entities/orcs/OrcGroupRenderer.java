@@ -13,16 +13,19 @@ import javax.annotation.Nonnull;
 
 public class OrcGroupRenderer extends BipedGroupRenderer<OrcEntity, MKBipedModel<OrcEntity>> {
 
+
+
+
     public OrcGroupRenderer(EntityRendererManager rendererManager) {
         super(rendererManager);
         putRenderer(ModelStyles.LONG_HAIR_NAME, new OrcRenderer(rendererManager, ModelStyles.LONG_HAIR_STYLE));
         putRenderer(ModelStyles.LONG_HAIR_ARMORED_NAME,
                 new OrcRenderer(rendererManager, ModelStyles.ARMORED_LONG_HAIR_STYLE));
         putRenderer(ModelStyles.BASIC_NAME, new OrcRenderer(rendererManager, ModelStyles.BASIC_STYLE));
-        putLook("default", MKUOrcs.ORC_BASE);
-        putLook("green_lady", MKUOrcs.GREEN_LADY_LOOK);
-        putLook("green_lady_guard_1", MKUOrcs.GREEN_LADY_GUARD_1_LOOK);
-        putLook("green_lady_guard_2", MKUOrcs.GREEN_LADY_GUARD_2_LOOK);
+        putLook(MKUOrcs.DEFAULT_NAME, MKUOrcs.ORC_BASE);
+        putLook(MKUOrcs.GREEN_LADY_NAME, MKUOrcs.GREEN_LADY_LOOK);
+        putLook(MKUOrcs.GREEN_LADY_GUARD_1_NAME, MKUOrcs.GREEN_LADY_GUARD_1_LOOK);
+        putLook(MKUOrcs.GREEN_LADY_GUARD_2_NAME, MKUOrcs.GREEN_LADY_GUARD_2_LOOK);
     }
 
     @Nonnull

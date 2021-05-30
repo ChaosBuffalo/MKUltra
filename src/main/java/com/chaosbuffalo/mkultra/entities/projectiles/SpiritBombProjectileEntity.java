@@ -12,6 +12,7 @@ import com.chaosbuffalo.mkcore.network.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.mkcore.utils.SoundUtils;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.abilities.green_knight.SpiritBombAbility;
+import com.chaosbuffalo.mkultra.entities.IMKRenderAsItem;
 import com.chaosbuffalo.mkultra.init.MKUItems;
 import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.Targeting;
@@ -19,7 +20,6 @@ import com.chaosbuffalo.targeting_api.TargetingContext;
 import com.chaosbuffalo.targeting_api.TargetingContexts;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.IRendersAsItem;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
@@ -35,7 +35,7 @@ import net.minecraftforge.registries.ObjectHolder;
 /**
  * Created by Jacob on 7/28/2018.
  */
-public class SpiritBombProjectileEntity extends BaseProjectileEntity implements IRendersAsItem {
+public class SpiritBombProjectileEntity extends BaseProjectileEntity implements IMKRenderAsItem {
 
     @ObjectHolder(MKUltra.MODID + ":spirit_bomb_projectile")
     public static EntityType<SpiritBombProjectileEntity> TYPE;

@@ -13,13 +13,13 @@ import com.chaosbuffalo.mkcore.utils.SoundUtils;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.abilities.misc.FireballAbility;
 import com.chaosbuffalo.mkultra.effects.spells.ResistanceEffects;
+import com.chaosbuffalo.mkultra.entities.IMKRenderAsItem;
 import com.chaosbuffalo.mkultra.init.MKUItems;
 import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.TargetingContext;
 import com.chaosbuffalo.targeting_api.TargetingContexts;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.IRendersAsItem;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
@@ -31,7 +31,7 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ObjectHolder;
 
-public class FireballProjectileEntity extends BaseProjectileEntity implements IRendersAsItem {
+public class FireballProjectileEntity extends BaseProjectileEntity implements IMKRenderAsItem {
     @ObjectHolder(MKUltra.MODID + ":fireball_projectile")
     public static EntityType<FireballProjectileEntity> TYPE;
 

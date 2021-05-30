@@ -1,0 +1,13 @@
+{
+  "cooldown": 120,
+  "manaCost": 5.0,
+  "castTime": 20,
+  "attributes": {
+    "scaleDamage": 2.0,
+    "modifierScaling": 1.0,
+    "projectileInaccuracy": 0.2,
+    "baseDamage": 6.0,
+    "projectileSpeed": 1.25,
+    "explosionRadius": 2.0
+  }
+}

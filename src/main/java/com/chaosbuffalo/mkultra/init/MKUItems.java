@@ -21,6 +21,8 @@ public final class MKUItems {
 
     @ObjectHolder(MKUltra.MODID + ":fireball_projectile")
     public static Item fireballProjectileItem;
+
+
 //    public static Item manaRegenIdolIron;
 //    public static Item manaRegenIdolGold;
 //    public static Item manaRegenIdolWood;

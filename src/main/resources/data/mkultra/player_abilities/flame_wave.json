@@ -1,0 +1,13 @@
+{
+  "cooldown": 400,
+  "manaCost": 8.0,
+  "castTime": 10,
+  "attributes": {
+    "baseDuration": 3,
+    "damageBoost": 1.5,
+    "modifierScaling": 1.0,
+    "scale": 3.0,
+    "scaleDuration": 1,
+    "base": 6.0
+  }
+}

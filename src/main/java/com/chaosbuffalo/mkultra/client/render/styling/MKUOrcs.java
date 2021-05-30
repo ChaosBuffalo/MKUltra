@@ -41,5 +41,10 @@ public class MKUOrcs {
 
     public static ModelLook ORC_BASE = new ModelLook(ModelStyles.BASIC_STYLE, GREEN_ORC);
 
+    public static final String DEFAULT_NAME = "default";
+    public static final String GREEN_LADY_NAME = "green_lady";
+    public static final String GREEN_LADY_GUARD_1_NAME = "green_lady_guard_1";
+    public static final String GREEN_LADY_GUARD_2_NAME = "green_lady_guard_2";
+
 
 }

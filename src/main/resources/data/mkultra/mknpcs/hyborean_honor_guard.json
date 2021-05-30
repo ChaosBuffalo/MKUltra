@@ -1,0 +1,72 @@
+{
+  "entityType": "mkultra:hyborean_skeleton",
+  "options": [
+    {
+      "optionType": "mknpc:render_group",
+      "value": "honor_guard"
+    },
+    {
+      "optionType": "mknpc:attributes",
+      "attributes": [
+        {
+          "attributeName": "minecraft:generic.max_health",
+          "value": 65.0
+        }
+      ]
+    },
+    {
+      "optionType": "mknpc:name",
+      "value": "Undying Honor Guard"
+    },
+    {
+      "optionType": "mknpc:equipment",
+      "slotOptions": {
+        "mainhand": [
+          {
+            "weight": 1.0,
+            "dropChance": 0.0,
+            "item": "{id: \"mkweapons:battleaxe_iron\", Count: 1b, tag: {Damage: 0}}"
+          },
+          {
+            "weight": 1.0,
+            "dropChance": 0.0,
+            "item": "{id: \"mkweapons:greatsword_iron\", Count: 1b, tag: {Damage: 0}}"
+          },
+          {
+            "weight": 1.0,
+            "dropChance": 0.0,
+            "item": "{id: \"mkweapons:warhammer_iron\", Count: 1b, tag: {Damage: 0}}"
+          }
+        ]
+      }
+    },
+    {
+      "optionType": "mknpc:abilities",
+      "options": [
+        {
+          "priority": 2,
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.natures_remedy"
+        },
+        {
+          "priority": 3,
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.sever_tendon"
+        }
+      ]
+    },
+    {
+      "optionType": "mknpc:mk_size",
+      "value": 1.0
+    },
+    {
+      "optionType": "mknpc:faction",
+      "value": "mkfaction:undead"
+    },
+    {
+      "optionType": "mknpc:mk_combo",
+      "count": 4,
+      "cooldown": 30
+    }
+  ]
+}

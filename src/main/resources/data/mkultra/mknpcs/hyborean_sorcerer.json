@@ -1,0 +1,62 @@
+{
+  "entityType": "mkultra:hyborean_skeleton",
+  "options": [
+    {
+      "optionType": "mknpc:render_group",
+      "value": "sorcerer"
+    },
+    {
+      "optionType": "mknpc:attributes",
+      "attributes": [
+        {
+          "attributeName": "minecraft:generic.max_health",
+          "value": 40.0
+        }
+      ]
+    },
+    {
+      "optionType": "mknpc:name",
+      "value": "Hyborean Sorcerer"
+    },
+    {
+      "optionType": "mknpc:equipment",
+      "slotOptions": {
+        "mainhand": [
+          {
+            "weight": 1.0,
+            "dropChance": 0.0,
+            "item": "{id: \"mkweapons:dagger_stone\", Count: 1b, tag: {Damage: 0}}"
+          }
+        ]
+      }
+    },
+    {
+      "optionType": "mknpc:abilities",
+      "options": [
+        {
+          "priority": 1,
+          "chance": 0.5,
+          "abilityName": "mkcore:ability.test_fire_armor"
+        },
+        {
+          "priority": 2,
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.fireball"
+        },
+        {
+          "priority": 3,
+          "chance": 0.75,
+          "abilityName": "mkultra:ability.ember"
+        }
+      ]
+    },
+    {
+      "optionType": "mknpc:mk_size",
+      "value": 0.9
+    },
+    {
+      "optionType": "mknpc:faction",
+      "value": "mkfaction:undead"
+    }
+  ]
+}

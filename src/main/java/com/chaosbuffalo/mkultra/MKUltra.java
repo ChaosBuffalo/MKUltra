@@ -20,6 +20,7 @@ public class MKUltra {
 
     public MKUltra(){
         CryptStructurePools.registerPatterns();
+        MKUWorldGen.registerStructurePieces();
         MinecraftForge.EVENT_BUS.addListener(MKUWorldGen::worldSetup);
         MinecraftForge.EVENT_BUS.addListener(MKUWorldGen::biomeSetup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
