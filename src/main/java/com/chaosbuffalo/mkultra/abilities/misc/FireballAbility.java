@@ -71,6 +71,11 @@ public class FireballAbility extends MKAbility {
                 (skillLevel + 1) * .1f * 100.0f, skillLevel + 1);
     }
 
+    @Override
+    public float getDistance(LivingEntity entity) {
+        return 50.0f;
+    }
+
     @Nullable
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {

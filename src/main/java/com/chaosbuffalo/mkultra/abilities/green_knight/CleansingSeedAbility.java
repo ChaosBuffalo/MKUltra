@@ -82,6 +82,11 @@ public class CleansingSeedAbility extends MKAbility {
         return ModSounds.casting_water;
     }
 
+    @Override
+    public float getDistance(LivingEntity entity) {
+        return 50.0f;
+    }
+
 
     @Override
     public void endCast(LivingEntity entity, IMKEntityData data, AbilityContext context) {

@@ -49,6 +49,11 @@ public class SpiritBombAbility extends MKAbility {
     }
 
     @Override
+    public float getDistance(LivingEntity entity) {
+        return 50.0f;
+    }
+
+    @Override
     public TargetingContext getTargetContext() {
         return TargetingContexts.ENEMY;
     }

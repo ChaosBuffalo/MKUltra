@@ -34,18 +34,18 @@
       "optionType": "mknpc:abilities",
       "options": [
         {
-          "priority": 1,
+          "priority": 2,
           "chance": 0.5,
-          "abilityName": "mkcore:ability.test_fire_armor"
+          "abilityName": "mkultra:ability.fire_armor"
         },
         {
-          "priority": 2,
+          "priority": 1,
           "chance": 1.0,
           "abilityName": "mkultra:ability.fireball"
         },
         {
           "priority": 3,
-          "chance": 0.75,
+          "chance": 1.0,
           "abilityName": "mkultra:ability.ember"
         }
       ]

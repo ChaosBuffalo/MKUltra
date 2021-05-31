@@ -3,14 +3,12 @@ package com.chaosbuffalo.mkultra.data_generators;
 
 import com.chaosbuffalo.mkcore.abilities.MKAbility;
 import com.chaosbuffalo.mkcore.core.MKAttributes;
-import com.chaosbuffalo.mkcore.test.abilities.FireArmor;
 import com.chaosbuffalo.mkfaction.init.Factions;
 import com.chaosbuffalo.mknpc.data.NpcDefinitionProvider;
 import com.chaosbuffalo.mknpc.npc.NpcAttributeEntry;
 import com.chaosbuffalo.mknpc.npc.NpcDefinition;
 import com.chaosbuffalo.mknpc.npc.NpcItemChoice;
 import com.chaosbuffalo.mknpc.npc.options.*;
-import com.chaosbuffalo.mknpc.spawn.MKSpawnerTileEntity;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.abilities.cleric.*;
 import com.chaosbuffalo.mkultra.abilities.green_knight.*;
@@ -114,7 +112,7 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                         new ResourceLocation("mkweapons:katana_iron"))), 1.0, 0.0f));
         def.addOption(equipOption);
         def.addOption(new AbilitiesOption()
-                .withAbilityOption(FireArmor.INSTANCE, 5, 1.0)
+                .withAbilityOption(FireArmorAbility.INSTANCE, 5, 1.0)
                 .withAbilityOption(FireballAbility.INSTANCE, 6, 1.0)
                 .withAbilityOption(EmberAbility.INSTANCE, 1, 1.0)
                 .withAbilityOption(IgniteAbility.INSTANCE, 2, 0.5)
@@ -173,9 +171,9 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                         new ResourceLocation("mkweapons:dagger_stone"))), 1.0, 0.0f));
         def.addOption(equipOption);
         def.addOption(new AbilitiesOption()
-                .withAbilityOption(FireArmor.INSTANCE, 1, 0.5)
-                .withAbilityOption(FireballAbility.INSTANCE, 2, 1.0)
-                .withAbilityOption(EmberAbility.INSTANCE, 3, 0.75)
+                .withAbilityOption(FireArmorAbility.INSTANCE, 2, 0.5)
+                .withAbilityOption(FireballAbility.INSTANCE, 1, 1.0)
+                .withAbilityOption(EmberAbility.INSTANCE, 3, 1.0)
         );
         return def;
     }
