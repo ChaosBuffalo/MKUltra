@@ -1,0 +1,81 @@
+{
+  "entityType": "mkultra:orc",
+  "options": [
+    {
+      "optionType": "mknpc:render_group",
+      "value": "green_lady_guard_2"
+    },
+    {
+      "optionType": "mknpc:attributes",
+      "attributes": [
+        {
+          "attributeName": "minecraft:generic.max_health",
+          "value": 150.0
+        }
+      ]
+    },
+    {
+      "optionType": "mknpc:dialogue",
+      "value": "mkultra:open_abilities"
+    },
+    {
+      "optionType": "mknpc:ability_trainings",
+      "value": [
+        "mkultra:ability.ember",
+        "mkultra:ability.flame_wave",
+        "mkultra:ability.fire_armor",
+        "mkultra:ability.warp_curse",
+        "mkultra:ability.ignite"
+      ]
+    },
+    {
+      "optionType": "mknpc:name",
+      "value": "Green Guardian"
+    },
+    {
+      "optionType": "mknpc:equipment",
+      "slotOptions": {
+        "mainhand": [
+          {
+            "weight": 1.0,
+            "dropChance": 0.0,
+            "item": "{id: \"mkweapons:dagger_stone\", Count: 1b, tag: {Damage: 0}}"
+          }
+        ]
+      }
+    },
+    {
+      "optionType": "mknpc:abilities",
+      "options": [
+        {
+          "priority": 1,
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.ember"
+        },
+        {
+          "priority": 2,
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.natures_remedy"
+        },
+        {
+          "priority": 4,
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.flame_wave"
+        },
+        {
+          "priority": 3,
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.ignite"
+        }
+      ]
+    },
+    {
+      "optionType": "mknpc:mk_size",
+      "value": 1.1
+    },
+    {
+      "optionType": "mknpc:faction",
+      "value": "mkfaction:villagers"
+    }
+  ]
+}

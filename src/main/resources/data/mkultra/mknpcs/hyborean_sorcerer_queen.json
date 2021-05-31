@@ -1,0 +1,86 @@
+{
+  "entityType": "mkultra:hyborean_skeleton",
+  "options": [
+    {
+      "optionType": "mknpc:render_group",
+      "value": "sorcerer_queen"
+    },
+    {
+      "optionType": "mknpc:attributes",
+      "attributes": [
+        {
+          "attributeName": "minecraft:generic.max_health",
+          "value": 110.0
+        },
+        {
+          "attributeName": "mkcore:evocation",
+          "value": 3.0
+        }
+      ]
+    },
+    {
+      "optionType": "mknpc:name",
+      "value": "Hyborean Sorcerer Queen"
+    },
+    {
+      "optionType": "mknpc:equipment",
+      "slotOptions": {
+        "mainhand": [
+          {
+            "weight": 1.0,
+            "dropChance": 0.0,
+            "item": "{id: \"mkweapons:katana_iron\", Count: 1b, tag: {Damage: 0}}"
+          }
+        ]
+      }
+    },
+    {
+      "optionType": "mknpc:abilities",
+      "options": [
+        {
+          "priority": 5,
+          "chance": 1.0,
+          "abilityName": "mkcore:ability.test_fire_armor"
+        },
+        {
+          "priority": 6,
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.fireball"
+        },
+        {
+          "priority": 1,
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.ember"
+        },
+        {
+          "priority": 2,
+          "chance": 0.5,
+          "abilityName": "mkultra:ability.ignite"
+        },
+        {
+          "priority": 3,
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.flame_wave"
+        },
+        {
+          "priority": 4,
+          "chance": 0.5,
+          "abilityName": "mkultra:ability.warp_curse"
+        }
+      ]
+    },
+    {
+      "optionType": "mknpc:mk_size",
+      "value": 1.1
+    },
+    {
+      "optionType": "mknpc:faction",
+      "value": "mkfaction:undead"
+    },
+    {
+      "optionType": "mknpc:mk_combo",
+      "count": 5,
+      "cooldown": 60
+    }
+  ]
+}

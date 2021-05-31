@@ -1,0 +1,73 @@
+modLoader="javafml" #mandatory
+# A version range to match for said mod loader - for regular FML @Mod it will be the forge version
+loaderVersion="[35,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
+# A list of mods - how many allowed here is determined by the individual mod loader
+license="MIT"
+[[mods]] #mandatory
+# The modid of the mod
+modId="mkultra" #mandatory
+# The version number of the mod - there's a few well known ${} variables useable here or just hardcode it
+version="${file.jarVersion}" #mandatory
+# A display name for the mod
+displayName="MK Ultra" #mandatory
+# A URL to query for updates for this mod. See the JSON update specification <here>
+# updateJSONURL="http://myurl.me/" #optional
+# A URL for the "homepage" for this mod, displayed in the mod UI
+# displayURL="http://example.com/" #optional
+# A file name (in the root of the mod JAR) containing a logo for display
+# logoFile="examplemod.png" #optional
+# A text field displayed in the mod UI
+credits="Developed by the MK Ultra Team" #optional
+# A text field displayed in the mod UI
+# authors="Love, Cheese and small house plants" #optional
+# The description text for the mod (multi line!) (#mandatory)
+description='''
+MKNpc adds new utilities, spawners, and data driven mob definitions to Minecraft.
+'''
+[[dependencies.mkultra]] #optional
+# the modid of the dependency
+modId="forge" #mandatory
+# Does this dependency have to exist - if not, ordering below must be specified
+mandatory=true #mandatory
+# The version range of the dependency
+versionRange="[35,)" #mandatory
+# An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
+ordering="NONE"
+# Side this dependency is applied on - BOTH, CLIENT or SERVER
+side="BOTH"
+[[dependencies.mkultra]]
+modId="mkcore"
+mandatory=true
+versionRange="[0.14,)"
+ordering="AFTER"
+side="BOTH"
+[[dependencies.mkultra]]
+modId="mkchat"
+mandatory=true
+versionRange="[0.13,)"
+ordering="NONE"
+side="BOTH"
+[[dependencies.mkultra]]
+modId="targeting_api"
+mandatory=true
+versionRange="[0.21,)"
+ordering="NONE"
+side="BOTH"
+[[dependencies.mkultra]]
+modId="mkfaction"
+mandatory=true
+versionRange="[0.13,)"
+ordering="NONE"
+side="BOTH"
+[[dependencies.mkultra]]
+modId="mkwidgets"
+mandatory=true
+versionRange="[1.17,)"
+ordering="AFTER"
+side="BOTH"
+[[dependencies.mkultra]]
+modId="mknpc"
+mandatory=true
+versionRange="[0.11,)"
+ordering="NONE"
+side="BOTH"

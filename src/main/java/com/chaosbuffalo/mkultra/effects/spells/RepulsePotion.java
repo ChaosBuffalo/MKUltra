@@ -1,55 +1,55 @@
-package com.chaosbuffalo.mkultra.effects.spells;
-
-import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.effects.SpellCast;
-import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
-import com.chaosbuffalo.targeting_api.Targeting;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.network.play.server.SPacketEntityVelocity;
-import net.minecraft.potion.Potion;
-import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-
-@Mod.EventBusSubscriber(modid = MKUltra.MODID)
-public class RepulsePotion extends SpellPotionBase {
-
-    public static final RepulsePotion INSTANCE = new RepulsePotion();
-
-    @SubscribeEvent
-    public static void register(RegistryEvent.Register<Potion> event) {
-        event.getRegistry().register(INSTANCE.finish());
-    }
-
-    public static SpellCast Create(Entity source, float base, float scale) {
-        return INSTANCE.newSpellCast(source).setScalingParameters(base, scale);
-    }
-
-    private RepulsePotion() {
-        // boolean isBadEffectIn, int liquidColorIn
-        super(true, 4393423);
-        setPotionName("effect.repulse");
-    }
-
-    @Override
-    public Targeting.TargetType getTargetType() {
-        return Targeting.TargetType.ENEMY;
-    }
-
-    @Override
-    public void doEffect(Entity applier, Entity caster, EntityLivingBase target, int amplifier, SpellCast cast) {
-        Vec3d casterOrigin = caster.getPositionVector();
-        Vec3d targetPos = target.getPositionVector();
-        Vec3d awayFrom = targetPos.subtract(casterOrigin).normalize().scale(cast.getScaledValue(amplifier));
-        if (target.equals(caster) || target.isOnSameTeam(caster)) {
-            return;
-        }
-        target.addVelocity(awayFrom.x, awayFrom.y, awayFrom.z);
-        if (target instanceof EntityPlayerMP && !caster.world.isRemote) {
-            ((EntityPlayerMP) target).connection.sendPacket(new SPacketEntityVelocity(target));
-        }
-    }
-}
+//package com.chaosbuffalo.mkultra.effects.spells;
+//
+//import com.chaosbuffalo.mkultra.MKUltra;
+//import com.chaosbuffalo.mkultra.effects.SpellCast;
+//import com.chaosbuffalo.mkultra.effects.SpellPotionBase;
+//import com.chaosbuffalo.targeting_api.Targeting;
+//import net.minecraft.entity.Entity;
+//import net.minecraft.entity.EntityLivingBase;
+//import net.minecraft.entity.player.EntityPlayerMP;
+//import net.minecraft.network.play.server.SPacketEntityVelocity;
+//import net.minecraft.potion.Potion;
+//import net.minecraft.util.math.Vec3d;
+//import net.minecraftforge.event.RegistryEvent;
+//import net.minecraftforge.fml.common.Mod;
+//import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+//
+//@Mod.EventBusSubscriber(modid = MKUltra.MODID)
+//public class RepulsePotion extends SpellPotionBase {
+//
+//    public static final RepulsePotion INSTANCE = new RepulsePotion();
+//
+//    @SubscribeEvent
+//    public static void register(RegistryEvent.Register<Potion> event) {
+//        event.getRegistry().register(INSTANCE.finish());
+//    }
+//
+//    public static SpellCast Create(Entity source, float base, float scale) {
+//        return INSTANCE.newSpellCast(source).setScalingParameters(base, scale);
+//    }
+//
+//    private RepulsePotion() {
+//        // boolean isBadEffectIn, int liquidColorIn
+//        super(true, 4393423);
+//        setPotionName("effect.repulse");
+//    }
+//
+//    @Override
+//    public Targeting.TargetType getTargetType() {
+//        return Targeting.TargetType.ENEMY;
+//    }
+//
+//    @Override
+//    public void doEffect(Entity applier, Entity caster, EntityLivingBase target, int amplifier, SpellCast cast) {
+//        Vec3d casterOrigin = caster.getPositionVector();
+//        Vec3d targetPos = target.getPositionVector();
+//        Vec3d awayFrom = targetPos.subtract(casterOrigin).normalize().scale(cast.getScaledValue(amplifier));
+//        if (target.equals(caster) || target.isOnSameTeam(caster)) {
+//            return;
+//        }
+//        target.addVelocity(awayFrom.x, awayFrom.y, awayFrom.z);
+//        if (target instanceof EntityPlayerMP && !caster.world.isRemote) {
+//            ((EntityPlayerMP) target).connection.sendPacket(new SPacketEntityVelocity(target));
+//        }
+//    }
+//}

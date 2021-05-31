@@ -1,0 +1,9 @@
+{
+  "cooldown": 320,
+  "manaCost": 6.0,
+  "castTime": 20,
+  "attributes": {
+    "baseDuration": 4,
+    "scaleDuration": 1
+  }
+}

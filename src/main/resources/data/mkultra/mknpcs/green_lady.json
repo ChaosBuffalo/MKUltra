@@ -1,0 +1,69 @@
+{
+  "entityType": "mkultra:orc",
+  "options": [
+    {
+      "optionType": "mknpc:render_group",
+      "value": "green_lady"
+    },
+    {
+      "optionType": "mknpc:attributes",
+      "attributes": [
+        {
+          "attributeName": "minecraft:generic.max_health",
+          "value": 400.0
+        }
+      ]
+    },
+    {
+      "optionType": "mknpc:dialogue",
+      "value": "mkultra:open_abilities"
+    },
+    {
+      "optionType": "mknpc:ability_trainings",
+      "value": [
+        "mkultra:ability.heal",
+        "mkultra:ability.galvanize",
+        "mkultra:ability.smite",
+        "mkultra:ability.power_word_summon",
+        "mkultra:ability.inspire"
+      ]
+    },
+    {
+      "optionType": "mknpc:name",
+      "value": "Green Lady"
+    },
+    {
+      "optionType": "mknpc:abilities",
+      "options": [
+        {
+          "priority": 1,
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.heal"
+        },
+        {
+          "priority": 2,
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.natures_remedy"
+        },
+        {
+          "priority": 4,
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.spirit_bomb"
+        },
+        {
+          "priority": 3,
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.inspire"
+        }
+      ]
+    },
+    {
+      "optionType": "mknpc:mk_size",
+      "value": 1.1
+    },
+    {
+      "optionType": "mknpc:faction",
+      "value": "mkfaction:villagers"
+    }
+  ]
+}

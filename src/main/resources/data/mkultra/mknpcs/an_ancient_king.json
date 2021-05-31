@@ -1,0 +1,99 @@
+{
+  "entityType": "mkultra:hyborean_skeleton",
+  "options": [
+    {
+      "optionType": "mknpc:render_group",
+      "value": "ancient_king"
+    },
+    {
+      "optionType": "mknpc:attributes",
+      "attributes": [
+        {
+          "attributeName": "minecraft:generic.max_health",
+          "value": 165.0
+        },
+        {
+          "attributeName": "mkcore:evocation",
+          "value": 2.0
+        },
+        {
+          "attributeName": "mkcore:restoration",
+          "value": 1.0
+        },
+        {
+          "attributeName": "mkcore:pankration",
+          "value": 2.0
+        }
+      ]
+    },
+    {
+      "optionType": "mknpc:name",
+      "value": "An Ancient King"
+    },
+    {
+      "optionType": "mknpc:equipment",
+      "slotOptions": {
+        "mainhand": [
+          {
+            "weight": 1.0,
+            "dropChance": 0.0,
+            "item": "{id: \"mkweapons:battleaxe_iron\", Count: 1b, tag: {Damage: 0}}"
+          },
+          {
+            "weight": 1.0,
+            "dropChance": 0.0,
+            "item": "{id: \"mkweapons:greatsword_iron\", Count: 1b, tag: {Damage: 0}}"
+          }
+        ]
+      }
+    },
+    {
+      "optionType": "mknpc:abilities",
+      "options": [
+        {
+          "priority": 2,
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.natures_remedy"
+        },
+        {
+          "priority": 3,
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.sever_tendon"
+        },
+        {
+          "priority": 1,
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.heal"
+        },
+        {
+          "priority": 4,
+          "chance": 0.5,
+          "abilityName": "mkultra:ability.power_word_summon"
+        },
+        {
+          "priority": 5,
+          "chance": 0.5,
+          "abilityName": "mkultra:ability.explosive_growth"
+        },
+        {
+          "priority": 6,
+          "chance": 0.5,
+          "abilityName": "mkultra:ability.fireball"
+        }
+      ]
+    },
+    {
+      "optionType": "mknpc:mk_size",
+      "value": 1.15
+    },
+    {
+      "optionType": "mknpc:faction",
+      "value": "mkfaction:undead"
+    },
+    {
+      "optionType": "mknpc:mk_combo",
+      "count": 2,
+      "cooldown": 10
+    }
+  ]
+}
