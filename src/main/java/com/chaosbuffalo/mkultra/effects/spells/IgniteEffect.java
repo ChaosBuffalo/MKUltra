@@ -19,7 +19,7 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(modid = MKUltra.MODID)
+@Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class IgniteEffect extends SpellEffectBase {
     public static final String SCALING_CONTRIBUTION = "ignite_scaling";
 

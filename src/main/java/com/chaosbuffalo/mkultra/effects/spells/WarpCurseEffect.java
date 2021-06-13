@@ -24,7 +24,7 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(modid = MKUltra.MODID)
+@Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class WarpCurseEffect extends SpellPeriodicEffectBase {
     public static final String SCALING_CONTRIBUTION = "warp_curse_scaling";
     private static final int DEFAULT_PERIOD = 40;

@@ -37,5 +37,11 @@
   "effect.mkultra.effect.break_fire": "Break Fire",
   "effect.mkultra.effect.fire_armor": "Fire Armor",
   "mkultra.ability.sever_tendon.name": "Sever Tendon",
-  "mkultra.ability.sever_tendon.description": "Deals %s to your target and causes them to bleed for %s seconds, dealing %s damage every %d seconds and reducing their movement speed by %.2f%%."
+  "mkultra.ability.sever_tendon.description": "Deals %s to your target and causes them to bleed for %s seconds, dealing %s damage every %d seconds and reducing their movement speed by %.2f%%.",
+  "effect.mkultra.effect.life_siphon": "Life Siphon",
+  "mkultra.ability.life_siphon.name": "Life Siphon",
+  "mkultra.ability.life_siphon.description": "Heals you for %s when you kill a target.",
+  "effect.mkultra.effect.soul_drain": "Soul Drain",
+  "mkultra.ability.soul_drain.name": "Soul Drain",
+  "mkultra.ability.soul_drain.description": "Restores %.1f mana when you kill a target."
 }
