@@ -1,0 +1,151 @@
+{
+  "version": 1,
+  "isDefault": true,
+  "lines": [
+    {
+      "name": "magic",
+      "talents": [
+        {
+          "name": "mkcore:talent.max_mana",
+          "max_points": 2,
+          "value": 1.0
+        },
+        {
+          "name": "mkcore:talent.mana_regen",
+          "max_points": 2,
+          "value": 0.25
+        },
+        {
+          "name": "mkcore:talent.ability_slot",
+          "max_points": 1
+        },
+        {
+          "name": "mkcore:talent.mana_regen",
+          "max_points": 2,
+          "value": 0.25
+        },
+        {
+          "name": "mkcore:talent.max_mana",
+          "max_points": 3,
+          "value": 1.0
+        },
+        {
+          "name": "mkcore:talent.ultimate_ability_slot",
+          "max_points": 1
+        },
+        {
+          "name": "mkcore:talent.mana_regen",
+          "max_points": 2,
+          "value": 0.25
+        },
+        {
+          "name": "mkcore:talent.mana_regen",
+          "max_points": 2,
+          "value": 0.25
+        },
+        {
+          "name": "mkcore:talent.max_health",
+          "max_points": 3,
+          "value": 1.0
+        },
+        {
+          "name": "mkcore:talent.max_health",
+          "max_points": 2,
+          "value": 1.0
+        },
+        {
+          "name": "mkcore:talent.cooldown_reduction",
+          "max_points": 5,
+          "value": 0.01
+        },
+        {
+          "name": "mkcore:talent.ultimate_ability_slot",
+          "max_points": 1
+        },
+        {
+          "name": "mkcore:talent.passive_ability_slot",
+          "max_points": 1
+        }
+      ]
+    },
+    {
+      "name": "tanking",
+      "talents": [
+        {
+          "name": "mkcore:talent.max_health",
+          "max_points": 2,
+          "value": 1.0
+        },
+        {
+          "name": "mkcore:talent.armor",
+          "max_points": 2,
+          "value": 1.0
+        },
+        {
+          "name": "mkcore:talent.ability_slot",
+          "max_points": 1
+        },
+        {
+          "name": "mkcore:talent.mana_regen",
+          "max_points": 2,
+          "value": 0.25
+        },
+        {
+          "name": "mkcore:talent.max_health",
+          "max_points": 3,
+          "value": 1.0
+        },
+        {
+          "name": "mkcore:talent.attack_damage",
+          "max_points": 1,
+          "value": 1.0
+        },
+        {
+          "name": "mkcore:talent.passive_ability_slot",
+          "max_points": 1
+        },
+        {
+          "name": "mkultra:talent.life_siphon",
+          "max_points": 1
+        }
+      ]
+    },
+    {
+      "name": "healing",
+      "talents": [
+        {
+          "name": "mkcore:talent.max_mana",
+          "max_points": 2,
+          "value": 1.0
+        },
+        {
+          "name": "mkcore:talent.mana_regen",
+          "max_points": 2,
+          "value": 0.25
+        },
+        {
+          "name": "mkcore:talent.ability_slot",
+          "max_points": 1
+        },
+        {
+          "name": "mkcore:talent.max_mana",
+          "max_points": 3,
+          "value": 1.0
+        },
+        {
+          "name": "mkcore:talent.heal_bonus",
+          "max_points": 1,
+          "value": 1.0
+        },
+        {
+          "name": "mkcore:talent.passive_ability_slot",
+          "max_points": 1
+        },
+        {
+          "name": "mkultra:talent.soul_drain",
+          "max_points": 1
+        }
+      ]
+    }
+  ]
+}

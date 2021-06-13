@@ -17,7 +17,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
+@Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class BurnEffect extends DamageTypeDotEffect {
 
     public static final BurnEffect INSTANCE = new BurnEffect(new ResourceLocation(MKUltra.MODID, "effect.burn"));
@@ -29,7 +31,7 @@ public class BurnEffect extends DamageTypeDotEffect {
 
 
     public BurnEffect(ResourceLocation loc){
-        super(CoreDamageTypes.FireDamage, 40, 0xffff0000);
+        super(() -> CoreDamageTypes.FireDamage, 40, 0xffff0000);
         setRegistryName(loc);
     }
 
