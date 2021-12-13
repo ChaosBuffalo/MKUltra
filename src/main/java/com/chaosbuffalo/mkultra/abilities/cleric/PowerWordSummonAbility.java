@@ -2,12 +2,15 @@ package com.chaosbuffalo.mkultra.abilities.cleric;
 
 import com.chaosbuffalo.mkcore.GameConstants;
 import com.chaosbuffalo.mkcore.abilities.*;
-import com.chaosbuffalo.mkcore.abilities.attributes.IntAttribute;
+import com.chaosbuffalo.mkcore.client.gui.widgets.LearnAbilityTray;
+import com.chaosbuffalo.mkcore.network.MKParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkcore.serialization.attributes.IntAttribute;
 import com.chaosbuffalo.mkcore.core.IMKEntityData;
 import com.chaosbuffalo.mkcore.core.MKAttributes;
 import com.chaosbuffalo.mkcore.fx.ParticleEffects;
 import com.chaosbuffalo.mkcore.network.PacketHandler;
 import com.chaosbuffalo.mkcore.network.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkcore.serialization.attributes.ResourceLocationAttribute;
 import com.chaosbuffalo.mkcore.utils.SoundUtils;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.spells.WarpTargetEffect;
@@ -21,6 +24,7 @@ import net.minecraft.entity.ai.brain.memory.MemoryModuleType;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
@@ -33,6 +37,8 @@ import java.util.Set;
 
 @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class PowerWordSummonAbility extends MKAbility {
+    public static final ResourceLocation CASTING_PARTICLES = new ResourceLocation(MKUltra.MODID, "power_word_summon_casting");
+    public static final ResourceLocation CAST_PARTICLES = new ResourceLocation(MKUltra.MODID, "power_word_summon_cast");
     public static final PowerWordSummonAbility INSTANCE = new PowerWordSummonAbility();
 
     @SubscribeEvent
@@ -42,14 +48,16 @@ public class PowerWordSummonAbility extends MKAbility {
 
     protected final IntAttribute base = new IntAttribute("baseDuration", 4);
     protected final IntAttribute scale = new IntAttribute("scaleDuration", 1);
+    protected final ResourceLocationAttribute cast_particles = new ResourceLocationAttribute("cast_particles", CAST_PARTICLES);
 
     public PowerWordSummonAbility(){
         super(MKUltra.MODID, "ability.power_word_summon");
         setCooldownSeconds(16);
         setCastTime(GameConstants.TICKS_PER_SECOND);
         setManaCost(6);
-        addAttributes(base, scale);
+        addAttributes(base, scale, cast_particles);
         addSkillAttribute(MKAttributes.CONJURATION);
+        casting_particles.setDefaultValue(CASTING_PARTICLES);
     }
 
     @Override
@@ -93,17 +101,13 @@ public class PowerWordSummonAbility extends MKAbility {
             if (Targeting.isValidEnemy(entity, targetEntity)){
                 int duration = getBuffDuration(data, level, base.getValue(), scale.getValue());
                 targetEntity.addPotionEffect(
-                    new EffectInstance(Effects.SLOWNESS, duration, 100, false, true));
+                    new EffectInstance(Effects.SLOWNESS, duration, 100, false, false));
             }
-            SoundUtils.playSoundAtEntity(targetEntity, ModSounds.spell_magic_whoosh_4);
-            Vector3d lookVec = entity.getLookVec();
-            PacketHandler.sendToTrackingAndSelf(
-                    new ParticleEffectSpawnPacket(
-                            ParticleTypes.ENTITY_EFFECT,
-                            ParticleEffects.CIRCLE_PILLAR_MOTION, 60, 10,
-                            targetEntity.getPosX(), targetEntity.getPosY() + 0.5f,
-                            targetEntity.getPosZ(), 1.0, 1.0, 1.0, 1.0,
-                            lookVec), targetEntity);
+            SoundUtils.serverPlaySoundAtEntity(targetEntity, ModSounds.spell_magic_whoosh_4, targetEntity.getSoundCategory());
+            PacketHandler.sendToTrackingAndSelf(new MKParticleEffectSpawnPacket(
+                            new Vector3d(0.0, 1.0, 0.0), cast_particles.getValue(),
+                            targetEntity.getEntityId()),
+                    targetEntity);
         });
     }
 }

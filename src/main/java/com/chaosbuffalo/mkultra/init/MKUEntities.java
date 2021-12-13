@@ -1,6 +1,8 @@
 package com.chaosbuffalo.mkultra.init;
 
+import com.chaosbuffalo.mknpc.MKNpc;
 import com.chaosbuffalo.mknpc.entity.MKSkeletonEntity;
+import com.chaosbuffalo.mknpc.entity.MKZombifiedPiglinEntity;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.entities.orcs.OrcEntity;
 import com.chaosbuffalo.mkultra.entities.projectiles.CleansingSeedProjectileEntity;
@@ -24,6 +26,9 @@ public class MKUEntities {
 
     public static final String ORC_NAME = "orc";
     public static EntityType<OrcEntity> ORC_TYPE;
+
+    public static final String ZOMBIFIED_PIGLIN_NAME = "zombified_piglin";
+    public static EntityType<MKZombifiedPiglinEntity> ZOMBIFIED_PIGLIN_TYPE;
 
     @SubscribeEvent
     public static void registerEntities(RegistryEvent.Register<EntityType<?>> evt) {
@@ -76,6 +81,14 @@ public class MKUEntities {
         ORC_TYPE = orc;
         evt.getRegistry().register(ORC_TYPE);
 
+        EntityType<MKZombifiedPiglinEntity> zombiePiglin = EntityType.Builder.create(
+                MKZombifiedPiglinEntity::new, EntityClassification.MONSTER)
+                .size(EntityType.ZOMBIFIED_PIGLIN.getWidth(), EntityType.ZOMBIFIED_PIGLIN.getHeight())
+                .build(new ResourceLocation(MKNpc.MODID, ZOMBIFIED_PIGLIN_NAME).toString());
+        zombiePiglin.setRegistryName(MKNpc.MODID, ZOMBIFIED_PIGLIN_NAME);
+        ZOMBIFIED_PIGLIN_TYPE = zombiePiglin;
+        evt.getRegistry().register(ZOMBIFIED_PIGLIN_TYPE);
+
     }
 
     @SubscribeEvent
@@ -83,5 +96,6 @@ public class MKUEntities {
         event.put(HYBOREAN_SKELETON_TYPE, MKSkeletonEntity.registerAttributes(1.0, 0.3)
                 .createMutableAttribute(Attributes.ARMOR, 5.0).create());
         event.put(ORC_TYPE, OrcEntity.registerAttributes(2.0, 0.35).create());
+        event.put(ZOMBIFIED_PIGLIN_TYPE, MKZombifiedPiglinEntity.registerAttributes(2.0, 0.25).create());
     }
 }

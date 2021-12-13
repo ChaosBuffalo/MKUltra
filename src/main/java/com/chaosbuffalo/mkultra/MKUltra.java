@@ -1,7 +1,6 @@
 package com.chaosbuffalo.mkultra;
 
 
-import com.chaosbuffalo.mknpc.dialogue.NPCDialogueExtension;
 import com.chaosbuffalo.mkultra.extensions.MKUNpcExtensions;
 import com.chaosbuffalo.mkultra.init.MKUWorldGen;
 import com.chaosbuffalo.mkultra.world.gen.feature.structure.CryptStructurePools;

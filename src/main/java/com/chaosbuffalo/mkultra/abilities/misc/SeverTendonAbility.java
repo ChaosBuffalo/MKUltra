@@ -1,8 +1,6 @@
 package com.chaosbuffalo.mkultra.abilities.misc;
 
 import com.chaosbuffalo.mkcore.abilities.*;
-import com.chaosbuffalo.mkcore.abilities.attributes.FloatAttribute;
-import com.chaosbuffalo.mkcore.abilities.attributes.IntAttribute;
 import com.chaosbuffalo.mkcore.core.IMKEntityData;
 import com.chaosbuffalo.mkcore.core.MKAttributes;
 import com.chaosbuffalo.mkcore.effects.SpellCast;
@@ -11,9 +9,10 @@ import com.chaosbuffalo.mkcore.fx.ParticleEffects;
 import com.chaosbuffalo.mkcore.init.CoreDamageTypes;
 import com.chaosbuffalo.mkcore.network.PacketHandler;
 import com.chaosbuffalo.mkcore.network.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkcore.serialization.attributes.FloatAttribute;
+import com.chaosbuffalo.mkcore.serialization.attributes.IntAttribute;
 import com.chaosbuffalo.mkcore.utils.SoundUtils;
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.effects.spells.BurnEffect;
 import com.chaosbuffalo.mkultra.effects.spells.SeverTendonEffect;
 import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkweapons.init.MKWeaponsParticles;
@@ -22,7 +21,6 @@ import com.chaosbuffalo.targeting_api.TargetingContexts;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.brain.memory.MemoryModuleType;
-import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
@@ -120,7 +118,7 @@ public class SeverTendonAbility extends MKAbility {
             SpellCast severTendon = SeverTendonEffect.Create(entity, baseDot.getValue(), scaleDot.getValue(),
                     dotModifierScaling.getValue()).setTarget(targetEntity);
             targetEntity.addPotionEffect(severTendon.toPotionEffect(dur, level));
-            SoundUtils.playSoundAtEntity(targetEntity, ModSounds.spell_punch_6);
+            SoundUtils.serverPlaySoundAtEntity(targetEntity, ModSounds.spell_punch_6, targetEntity.getSoundCategory());
             Vector3d lookVec = entity.getLookVec();
             PacketHandler.sendToTrackingAndSelf(
                     new ParticleEffectSpawnPacket(

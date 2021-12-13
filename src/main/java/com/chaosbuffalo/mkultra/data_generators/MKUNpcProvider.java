@@ -2,7 +2,9 @@ package com.chaosbuffalo.mkultra.data_generators;
 
 
 import com.chaosbuffalo.mkcore.abilities.MKAbility;
+import com.chaosbuffalo.mkcore.client.rendering.skeleton.BipedSkeleton;
 import com.chaosbuffalo.mkcore.core.MKAttributes;
+import com.chaosbuffalo.mkcore.fx.particles.effect_instances.BoneEffectInstance;
 import com.chaosbuffalo.mkfaction.init.Factions;
 import com.chaosbuffalo.mknpc.data.NpcDefinitionProvider;
 import com.chaosbuffalo.mknpc.npc.NpcAttributeEntry;
@@ -16,8 +18,10 @@ import com.chaosbuffalo.mkultra.abilities.misc.FireballAbility;
 import com.chaosbuffalo.mkultra.abilities.misc.SeverTendonAbility;
 import com.chaosbuffalo.mkultra.abilities.nether_mage.*;
 import com.chaosbuffalo.mkultra.client.render.styling.MKUOrcs;
+import com.chaosbuffalo.mkultra.client.render.styling.MKUPiglins;
 import com.chaosbuffalo.mkultra.client.render.styling.MKUSkeletons;
 import com.chaosbuffalo.mkultra.init.MKUEntities;
+import com.google.common.collect.Lists;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DirectoryCache;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -30,6 +34,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class MKUNpcProvider extends NpcDefinitionProvider {
 
@@ -49,6 +54,24 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
         writeDefinition(generateHyboreanSorcerer(), cache);
         writeDefinition(generateAncientKing(), cache);
         writeDefinition(generateHyboreanSorcererQueen(), cache);
+        writeDefinition(generateZombifiedPiglinTrooper(), cache);
+    }
+
+    private NpcDefinition generateZombifiedPiglinTrooper(){
+        NpcDefinition def = new NpcDefinition(new ResourceLocation(MKUltra.MODID, "zombified_piglin_trooper"),
+                MKUEntities.ZOMBIFIED_PIGLIN_TYPE.getRegistryName(), null);
+        def.addOption(new FactionOption().setValue(Factions.UNDEAD_FACTION_NAME));
+        def.addOption(new MKSizeOption().setValue(1.0f));
+        def.addOption(new RenderGroupOption().setValue(MKUPiglins.ZOMBIE_PIG_TROOPER_NAME));
+        def.addOption(new AttributesOption().addAttributeEntry(new NpcAttributeEntry(Attributes.MAX_HEALTH, 45.0)));
+        def.addOption(new NameOption().setValue("Zombified Trooper"));
+        def.addOption(new ParticleEffectsOption().withEffects(Lists.newArrayList(
+                new BoneEffectInstance(UUID.fromString("e45696e1-ddb1-4709-bc29-1733ee1bced9"),
+                        BipedSkeleton.RIGHT_HAND_BONE_NAME, new ResourceLocation(MKUltra.MODID, "flame_wave_casting")),
+                new BoneEffectInstance(UUID.fromString("02d14078-dd34-496c-b055-0f939af19403"),
+                        BipedSkeleton.LEFT_HAND_BONE_NAME, new ResourceLocation(MKUltra.MODID, "flame_wave_casting"))
+        )));
+        return def;
     }
 
     private NpcDefinition generateHyboreanWarrior(){

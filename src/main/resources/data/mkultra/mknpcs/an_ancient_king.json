@@ -77,7 +77,7 @@
         },
         {
           "priority": 6,
-          "chance": 0.5,
+          "chance": 1.0,
           "abilityName": "mkultra:ability.fireball"
         }
       ]

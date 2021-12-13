@@ -3,6 +3,7 @@ package com.chaosbuffalo.mkultra;
 import com.chaosbuffalo.mkcore.DataGenerators;
 import com.chaosbuffalo.mkultra.data_generators.MKUDialogueProvider;
 import com.chaosbuffalo.mkultra.data_generators.MKUNpcProvider;
+import com.chaosbuffalo.mkultra.data_generators.MKUTalentTreeProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -19,6 +20,7 @@ public class MKUDataGenerators {
             generator.addProvider(new DataGenerators.AbilityDataGenerator(generator, MKUltra.MODID));
             generator.addProvider(new MKUNpcProvider(generator));
             generator.addProvider(new MKUDialogueProvider(generator));
+            generator.addProvider(new MKUTalentTreeProvider(generator));
         }
     }
 }

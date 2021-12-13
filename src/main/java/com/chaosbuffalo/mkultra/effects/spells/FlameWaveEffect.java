@@ -17,7 +17,7 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(modid = MKUltra.MODID)
+@Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class FlameWaveEffect extends SpellEffectBase {
     public static final String SCALING_CONTRIBUTION = "modifier_scaling";
     public static final String WITHER_DUR_BASE = "wither_dur_base";
