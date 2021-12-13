@@ -3,16 +3,18 @@ package com.chaosbuffalo.mkultra.abilities.misc;
 import com.chaosbuffalo.mkcore.GameConstants;
 import com.chaosbuffalo.mkcore.abilities.AbilityContext;
 import com.chaosbuffalo.mkcore.abilities.MKAbility;
-import com.chaosbuffalo.mkcore.abilities.attributes.FloatAttribute;
+
 import com.chaosbuffalo.mkcore.core.IMKEntityData;
 import com.chaosbuffalo.mkcore.core.MKAttributes;
 import com.chaosbuffalo.mkcore.init.CoreDamageTypes;
+import com.chaosbuffalo.mkcore.serialization.attributes.FloatAttribute;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.entities.projectiles.FireballProjectileEntity;
 import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.TargetingContext;
 import com.chaosbuffalo.targeting_api.TargetingContexts;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -25,6 +27,7 @@ import javax.annotation.Nullable;
 
 @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class FireballAbility extends MKAbility {
+    public static final ResourceLocation CASTING_PARTICLES = new ResourceLocation(MKUltra.MODID, "fireball_casting");
     public static final FireballAbility INSTANCE = new FireballAbility();
 
     @SubscribeEvent
@@ -41,12 +44,13 @@ public class FireballAbility extends MKAbility {
 
     private FireballAbility() {
         super(MKUltra.MODID, "ability.fireball");
-        setCooldownSeconds(6);
+        setCooldownSeconds(4);
         setManaCost(5);
         setCastTime(GameConstants.TICKS_PER_SECOND);
         addAttributes(baseDamage, scaleDamage, projectileSpeed, projectileInaccuracy,
                 modifierScaling, radius);
         addSkillAttribute(MKAttributes.EVOCATION);
+        casting_particles.setDefaultValue(CASTING_PARTICLES);
     }
 
     public float getBaseDamage(){

@@ -2,26 +2,24 @@ package com.chaosbuffalo.mkultra.abilities.nether_mage;
 
 import com.chaosbuffalo.mkcore.GameConstants;
 import com.chaosbuffalo.mkcore.abilities.*;
-import com.chaosbuffalo.mkcore.abilities.attributes.IntAttribute;
 import com.chaosbuffalo.mkcore.core.IMKEntityData;
 import com.chaosbuffalo.mkcore.core.MKAttributes;
 import com.chaosbuffalo.mkcore.effects.AreaEffectBuilder;
-import com.chaosbuffalo.mkcore.effects.ParticleEffect;
+import com.chaosbuffalo.mkcore.effects.MKParticleEffect;
 import com.chaosbuffalo.mkcore.effects.SpellCast;
 import com.chaosbuffalo.mkcore.effects.instant.SoundEffect;
-import com.chaosbuffalo.mkcore.fx.ParticleEffects;
 import com.chaosbuffalo.mkcore.init.CoreDamageTypes;
-import com.chaosbuffalo.mkcore.network.PacketHandler;
-import com.chaosbuffalo.mkcore.network.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkcore.serialization.attributes.IntAttribute;
+import com.chaosbuffalo.mkcore.serialization.attributes.ResourceLocationAttribute;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.spells.ResistanceEffects;
 import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.TargetingContext;
 import com.chaosbuffalo.targeting_api.TargetingContexts;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
@@ -34,6 +32,8 @@ import javax.annotation.Nullable;
 
 @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class FireArmorAbility extends MKAbility {
+    public static final ResourceLocation CASTING_PARTICLES = new ResourceLocation(MKUltra.MODID, "fire_armor_casting");
+    public static final ResourceLocation CAST_PARTICLES = new ResourceLocation(MKUltra.MODID, "fire_armor_cast");
     public static final FireArmorAbility INSTANCE = new FireArmorAbility();
 
     @SubscribeEvent
@@ -43,6 +43,7 @@ public class FireArmorAbility extends MKAbility {
 
     protected final IntAttribute baseDuration = new IntAttribute("baseDuration", 60);
     protected final IntAttribute scaleDuration = new IntAttribute("scaleDuration", 15);
+    protected final ResourceLocationAttribute cast_particles = new ResourceLocationAttribute("cast_particles", CAST_PARTICLES);
 
     private FireArmorAbility() {
         super(MKUltra.MODID, "ability.fire_armor");
@@ -50,7 +51,8 @@ public class FireArmorAbility extends MKAbility {
         setManaCost(12);
         setCastTime(GameConstants.TICKS_PER_SECOND);
         addSkillAttribute(MKAttributes.ABJURATION);
-        addAttributes(baseDuration, scaleDuration);
+        addAttributes(baseDuration, scaleDuration, cast_particles);
+        casting_particles.setDefaultValue(CASTING_PARTICLES);
     }
 
     @Override
@@ -81,15 +83,11 @@ public class FireArmorAbility extends MKAbility {
         int level = getSkillLevel(entity, MKAttributes.ABJURATION);
         int duration = getBuffDuration(data, level, baseDuration.getValue(), scaleDuration.getValue());
 
-        EffectInstance fireResist = new EffectInstance(Effects.FIRE_RESISTANCE, duration, level, false, true);
-        EffectInstance absorb = new EffectInstance(Effects.ABSORPTION, duration, level, false, true);
+        EffectInstance fireResist = new EffectInstance(Effects.FIRE_RESISTANCE, duration, level, false, false, true, null);
+        EffectInstance absorb = new EffectInstance(Effects.ABSORPTION, duration, level, false, false, true, null);
 
-        SpellCast particlePotion = ParticleEffect.Create(entity,
-                ParticleTypes.FLAME,
-                ParticleEffects.CIRCLE_PILLAR_MOTION, false,
-                new Vector3d(1.0, 1.0, 1.0),
-                new Vector3d(0.0, 1.0, 0.0),
-                40, 5, .1f);
+        SpellCast particlePotion = MKParticleEffect.Create(entity, cast_particles.getValue(),
+                true, new Vector3d(0.0, 1.0, 0.0));
 
         SpellCast fireArmor = ResistanceEffects.FIRE_ARMOR.newSpellCast(entity);
 
@@ -100,18 +98,9 @@ public class FireArmorAbility extends MKAbility {
                         1, getTargetContext())
                 .spellCast(fireArmor, duration, level, getTargetContext())
                 .spellCast(particlePotion, level, getTargetContext())
+                .disableParticle()
                 .instant().color(16762905).radius(getDistance(entity), true)
-                .particle(ParticleTypes.DRIPPING_LAVA)
                 .spawn();
-
-        Vector3d lookVec = entity.getLookVec();
-        PacketHandler.sendToTrackingAndSelf(
-                new ParticleEffectSpawnPacket(
-                        ParticleTypes.FLAME,
-                        ParticleEffects.CIRCLE_MOTION, 50, 0,
-                        entity.getPosX(), entity.getPosY() + 1.0f,
-                        entity.getPosZ(), 1.0, 1.0, 1.0, 0.1,
-                        lookVec), entity);
     }
 
     @Override

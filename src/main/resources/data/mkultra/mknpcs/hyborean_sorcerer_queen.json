@@ -40,7 +40,7 @@
         {
           "priority": 5,
           "chance": 1.0,
-          "abilityName": "mkcore:ability.test_fire_armor"
+          "abilityName": "mkultra:ability.fire_armor"
         },
         {
           "priority": 6,

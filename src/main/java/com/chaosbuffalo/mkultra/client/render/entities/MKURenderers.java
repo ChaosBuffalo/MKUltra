@@ -1,8 +1,10 @@
 package com.chaosbuffalo.mkultra.client.render.entities;
 
 import com.chaosbuffalo.mknpc.client.render.renderers.SkeletalGroupRenderer;
+import com.chaosbuffalo.mknpc.client.render.renderers.ZombifiedPiglinGroupRenderer;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.client.render.entities.orcs.OrcGroupRenderer;
+import com.chaosbuffalo.mkultra.client.render.styling.MKUPiglins;
 import com.chaosbuffalo.mkultra.client.render.styling.MKUSkeletons;
 import com.chaosbuffalo.mkultra.entities.projectiles.*;
 import com.chaosbuffalo.mkultra.init.MKUEntities;
@@ -24,13 +26,15 @@ public class MKURenderers {
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent evt) {
         RenderingRegistry.registerEntityRenderingHandler(CleansingSeedProjectileEntity.TYPE,
-            (manager) -> new MKSpriteRenderer<>(manager, Minecraft.getInstance().getItemRenderer()));
+            (manager) -> new SpriteProjectileRenderer<>(manager, Minecraft.getInstance().getItemRenderer(), 1.0f, true));
         RenderingRegistry.registerEntityRenderingHandler(SpiritBombProjectileEntity.TYPE,
-            (manager) -> new MKSpriteRenderer<>(manager, Minecraft.getInstance().getItemRenderer()));
+            (manager) -> new SpriteProjectileRenderer<>(manager, Minecraft.getInstance().getItemRenderer(), 1.0f, true));
         RenderingRegistry.registerEntityRenderingHandler(FireballProjectileEntity.TYPE,
-                (manager) -> new MKSpriteRenderer<>(manager, Minecraft.getInstance().getItemRenderer()));
+                (manager) -> new SpriteProjectileRenderer<>(manager, Minecraft.getInstance().getItemRenderer(), 1.0f, true));
         RenderingRegistry.registerEntityRenderingHandler(MKUEntities.ORC_TYPE, OrcGroupRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(MKUEntities.HYBOREAN_SKELETON_TYPE, (manager) ->
                 new SkeletalGroupRenderer(manager, MKUSkeletons.SKELETON_STYLES));
+        RenderingRegistry.registerEntityRenderingHandler(MKUEntities.ZOMBIFIED_PIGLIN_TYPE, (renderManager)->
+                new ZombifiedPiglinGroupRenderer(renderManager, MKUPiglins.ZOMBIE_PIGLIN_STYLES));
     }
 }

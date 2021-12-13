@@ -2,10 +2,10 @@ package com.chaosbuffalo.mkultra.abilities.passives;
 
 import com.chaosbuffalo.mkcore.abilities.MKAbility;
 import com.chaosbuffalo.mkcore.abilities.PassiveTalentAbility;
-import com.chaosbuffalo.mkcore.abilities.attributes.FloatAttribute;
 import com.chaosbuffalo.mkcore.core.IMKEntityData;
 import com.chaosbuffalo.mkcore.core.MKAttributes;
 import com.chaosbuffalo.mkcore.effects.PassiveTalentEffect;
+import com.chaosbuffalo.mkcore.serialization.attributes.FloatAttribute;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.spells.SoulDrainEffect;
 import net.minecraft.entity.LivingEntity;

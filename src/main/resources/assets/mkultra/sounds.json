@@ -2,884 +2,1102 @@
     "casting_general": {
         "category": "player",
         "subtitle": "mkultra.subtitle.casting_general",
-        "sounds": [ {
+        "sounds": [
+          {
             "name": "mkultra:casting/general_loop",
-            "stream": true
-            }
+            "stream": true,
+            "attenuation_distance": 32
+          }
         ]
     },
    "casting_fire": {
         "category": "player",
         "subtitle": "mkultra.subtitle.casting_fire",
-        "sounds": [ {
+        "sounds": [
+          {
             "name": "mkultra:casting/fire_loop",
-            "stream": true
-            }
+            "stream": true,
+            "attenuation_distance": 32
+          }
         ]
     },
     "casting_holy": {
         "category": "player",
         "subtitle": "mkultra.subtitle.casting_holy",
-        "sounds": [ {
+        "sounds": [
+          {
             "name": "mkultra:casting/holy_loop",
-            "stream": true
-            }
+            "stream": true,
+            "attenuation_distance": 32
+          }
         ]
     },
     "casting_shadow": {
         "category": "player",
         "subtitle": "mkultra.subtitle.casting_shadow",
-        "sounds": [ {
+        "sounds": [
+          {
             "name": "mkultra:casting/shadow_loop",
-            "stream": true
-            }
+            "stream": true,
+            "attenuation_distance": 32
+          }
         ]
     },
     "casting_water": {
         "category": "player",
         "subtitle": "mkultra.subtitle.casting_water",
-        "sounds": [ {
+        "sounds": [
+          {
             "name": "mkultra:casting/water_loop",
-            "stream": true
-            }
+            "stream": true,
+            "attenuation_distance": 32
+          }
         ]
     },
     "casting_rain": {
         "category": "player",
         "subtitle": "mkultra.subtitle.casting_water",
-        "sounds": [ {
+        "sounds": [
+          {
             "name": "mkultra:casting/rain_loop",
-            "stream": true
-            }
+            "stream": true,
+            "attenuation_distance": 32
+          }
         ]
     },
     "hostile_casting_general": {
         "category": "player",
         "subtitle": "mkultra.subtitle.hostile_casting_general",
-        "sounds": [ {
+        "sounds": [
+          {
             "name": "mkultra:casting/hostile_general_loop",
-            "stream": true
-            }
+            "stream": true,
+            "attenuation_distance": 32
+          }
         ]
     },
    "hostile_casting_fire": {
         "category": "player",
         "subtitle": "mkultra.subtitle.hostile_casting_fire",
-        "sounds": [ {
+        "sounds": [
+          {
             "name": "mkultra:casting/hostile_fire_loop",
-            "stream": true
-            }
+            "stream": true,
+            "attenuation_distance": 32
+          }
         ]
     },
     "hostile_casting_holy": {
         "category": "player",
         "subtitle": "mkultra.subtitle.hostile_casting_holy",
-        "sounds": [ {
+        "sounds": [
+          {
             "name": "mkultra:casting/hostile_holy_loop",
-            "stream": true
-            }
+            "stream": true,
+            "attenuation_distance": 32
+          }
         ]
     },
     "hostile_casting_shadow": {
         "category": "player",
         "subtitle": "mkultra.subtitle.hostile_casting_shadow",
-        "sounds": [ {
+        "sounds": [
+          {
             "name": "mkultra:casting/hostile_shadow_loop",
-            "stream": true
-            }
+            "stream": true,
+            "attenuation_distance": 32
+          }
         ]
     },
     "hostile_casting_water": {
         "category": "player",
         "subtitle": "mkultra.subtitle.hostile_casting_water",
-        "sounds": [ {
+        "sounds": [
+          {
             "name": "mkultra:casting/hostile_water_loop",
-            "stream": true
-            }
+            "stream": true,
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_cast_2": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/cast_2"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/cast_2",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_cast_3": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/cast_3"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/cast_3",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_cast_5": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/cast_5"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/cast_5",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_cast_6": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/cast_6"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/cast_6",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_cast_7": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/cast_7"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/cast_7",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_cast_10": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/cast_10"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/cast_10",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_cast_11": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/cast_11"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/cast_11",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_fire_1": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/fire_1"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/fire_1",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_fire_2": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/fire_2"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/fire_2",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_fire_3": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/fire_3"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/fire_3",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_fire_4": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/fire_4"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/fire_4",
+            "attenuation_distance": 40
+          }
         ]
     },
     "spell_fire_6": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/fire_6"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/fire_6",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_fire_7": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/fire_7"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/fire_7",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_fire_8": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/fire_8"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/fire_8",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_thunder_1": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/thunder_1"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/thunder_1",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_thunder_3": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/thunder_3"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/thunder_3",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_thunder_8": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/thunder_8"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/thunder_8",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_heal_7": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/heal_7"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/heal_7",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_heal_8": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/heal_8"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/heal_8",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_heal_9": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/heal_9"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/heal_9",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_buff_shield_3": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/buff_shield_3"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/buff_shield_3",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_buff_shield_4": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/buff_shield_4"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/buff_shield_4",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_buff_1": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/buff_1"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/buff_1",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_buff_3": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/buff_3"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/buff_3",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_buff_4": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/buff_4"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/buff_4",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_wind_4": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/wind_4"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/wind_4",
+            "attenuation_distance": 32
+          }
         ]
     },
     "bow_arrow_2": {
         "category": "player",
         "subtitle": "mkultra.subtitle.bow_shot",
-        "sounds": [ {
-            "name": "mkultra:spells/bow_arrow_2"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/bow_arrow_2",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_fire_5": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/fire_5"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/fire_5",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_negative_effect_1": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/negative_effect_1"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/negative_effect_1",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_negative_effect_2": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/negative_effect_2"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/negative_effect_2",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_negative_effect_7": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/negative_effect_7"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/negative_effect_7",
+            "attenuation_distance": 32
+          }
         ]
     },
     "bow_arrow_1": {
         "category": "player",
         "subtitle": "mkultra.subtitle.bow_shot",
-        "sounds": [ {
-            "name": "mkultra:spells/bow_arrow_1"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/bow_arrow_1",
+            "attenuation_distance": 32
+          }
         ]
     },
     "bow_arrow_3": {
         "category": "player",
         "subtitle": "mkultra.subtitle.bow_shot",
-        "sounds": [ {
-            "name": "mkultra:spells/bow_arrow_3"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/bow_arrow_3",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_punch_6": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/punch_6"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/punch_6",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_wind_5": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/wind_5"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/wind_5",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_shadow_2": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/shadow_2"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/shadow_2",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_shadow_3": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/shadow_3"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/shadow_3",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_shadow_5": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/shadow_5"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/shadow_5",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_shadow_6": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/shadow_6"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/shadow_6",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_shadow_8": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/shadow_8"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/shadow_8",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_shadow_9": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/shadow_9"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/shadow_9",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_shadow_10": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/shadow_10"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/shadow_10",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_shadow_11": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/shadow_11"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/shadow_11",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_buff_5": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/buff_5"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/buff_5",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_buff_6": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/buff_6"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/buff_6",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_buff_7": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/buff_7"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/buff_7",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_buff_8": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/buff_8"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/buff_8",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_holy_1": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/holy_1"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/holy_1",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_holy_2": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/holy_2"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/holy_2",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_holy_3": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/holy_3"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/holy_3",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_holy_4": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/holy_4"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/holy_4",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_holy_5": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/holy_5"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/holy_5",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_holy_8": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/holy_8"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/holy_8",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_holy_9": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/holy_9"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/holy_9",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_heal_1": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/heal_1"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/heal_1",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_heal_2": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/heal_2"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/heal_2",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_heal_3": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/heal_3"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/heal_3",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_magic_whoosh_1": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/magic_whoosh_1"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/magic_whoosh_1",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_magic_whoosh_2": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/magic_whoosh_2"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/magic_whoosh_2",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_magic_whoosh_3": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/magic_whoosh_3"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/magic_whoosh_3",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_magic_whoosh_4": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/magic_whoosh_4"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/magic_whoosh_4",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_cast_12": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/cast_12"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/cast_12",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_shout_1": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/shout_1"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/shout_1",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_whirlwind_1": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/whirlwind_1"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/whirlwind_1",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_grab_1": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/grab_1"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/grab_1",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_grab_2": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/grab_2"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/grab_2",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_buff_attack_2": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/buff_attack_2"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/buff_attack_2",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_buff_attack_3": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/buff_attack_3"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/buff_attack_3",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_buff_attack_4": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/buff_attack_4"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/buff_attack_4",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_earth_1": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/earth_1"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/earth_1",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_earth_6": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/earth_6"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/earth_6",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_earth_7": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/earth_7"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/earth_7",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_earth_8": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/earth_8"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/earth_8",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_magic_explosion": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/magic_explosion"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/magic_explosion",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_water_1": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/water_1"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/water_1",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_water_2": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/water_2"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/water_2",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_water_4": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/water_4"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/water_4",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_water_5": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/water_5"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/water_5",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_water_6": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/water_6"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/water_6",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_water_7": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/water_7"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/water_7",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_water_8": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/water_8"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/water_8",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_water_9": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/water_9"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/water_9",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_dark_1": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/dark_1"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/dark_1",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_dark_3": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/dark_3"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/dark_3",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_dark_4": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/dark_4"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/dark_4",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_dark_5": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/dark_5"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/dark_5",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_dark_7": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/dark_7"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/dark_7",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_dark_8": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/dark_8"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/dark_8",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_dark_9": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/dark_9"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/dark_9",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_dark_11": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/dark_11"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/dark_11",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_dark_13": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/dark_13"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/dark_13",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_dark_14": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/dark_14"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/dark_14",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_dark_15": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/dark_15"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/dark_15",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_dark_16": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/dark_16"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/dark_16",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_debuff_1": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/debuff_1"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/debuff_1",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_debuff_2": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/debuff_2"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/debuff_2",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_debuff_4": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/debuff_4"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/debuff_4",
+            "attenuation_distance": 32
+          }
         ]
     },
     "spell_scream_1": {
         "category": "player",
         "subtitle": "mkultra.subtitle.spell_cast",
-        "sounds": [ {
-            "name": "mkultra:spells/scream_1"
-            }
+        "sounds": [
+          {
+            "name": "mkultra:spells/scream_1",
+            "attenuation_distance": 32
+          }
         ]
     }
 }

@@ -6,7 +6,10 @@ import com.chaosbuffalo.mkcore.effects.SpellCast;
 import com.chaosbuffalo.mkcore.effects.instant.MKAbilityDamageEffect;
 import com.chaosbuffalo.mkcore.entities.BaseProjectileEntity;
 import com.chaosbuffalo.mkcore.fx.ParticleEffects;
+import com.chaosbuffalo.mkcore.fx.particles.ParticleAnimation;
+import com.chaosbuffalo.mkcore.fx.particles.ParticleAnimationManager;
 import com.chaosbuffalo.mkcore.init.CoreDamageTypes;
+import com.chaosbuffalo.mkcore.network.MKParticleEffectSpawnPacket;
 import com.chaosbuffalo.mkcore.network.PacketHandler;
 import com.chaosbuffalo.mkcore.network.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.mkcore.utils.SoundUtils;
@@ -25,13 +28,18 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ObjectHolder;
 
-public class FireballProjectileEntity extends BaseProjectileEntity implements IMKRenderAsItem {
+public class FireballProjectileEntity extends TrailProjectileEntity implements IMKRenderAsItem {
+
+    public static final ResourceLocation TRAIL_PARTICLES = new ResourceLocation(MKUltra.MODID, "fireball_trail");
+    public static final ResourceLocation DETONATE_PARTICLES = new ResourceLocation(MKUltra.MODID, "fireball_detonate");
+
     @ObjectHolder(MKUltra.MODID + ":fireball_projectile")
     public static EntityType<FireballProjectileEntity> TYPE;
 
@@ -39,24 +47,21 @@ public class FireballProjectileEntity extends BaseProjectileEntity implements IM
                                          World worldIn) {
         super(entityTypeIn, worldIn);
         setDeathTime(GameConstants.TICKS_PER_SECOND * 5);
+        setTrailAnimation(ParticleAnimationManager.ANIMATIONS.get(TRAIL_PARTICLES));
     }
 
     public FireballProjectileEntity(World world){
         this(TYPE, world);
     }
 
+
     @Override
     protected boolean onImpact(Entity caster, RayTraceResult result, int amplifier) {
         if (!this.world.isRemote && caster instanceof LivingEntity) {
             SoundCategory cat = caster instanceof PlayerEntity ? SoundCategory.PLAYERS : SoundCategory.HOSTILE;
-            SoundUtils.playSoundAtEntity(this, ModSounds.spell_fire_4, cat);
-            PacketHandler.sendToTrackingAndSelf(
-                    new ParticleEffectSpawnPacket(
-                            ParticleTypes.DRIPPING_LAVA,
-                            ParticleEffects.SPHERE_MOTION, 20, 4,
-                            result.getHitVec().x, result.getHitVec().y + 1.0,
-                            result.getHitVec().z, 0.25, 0.25, 0.25, 0.25,
-                            new Vector3d(0., 1.0, 0.0)),
+            SoundUtils.serverPlaySoundAtEntity(this, ModSounds.spell_fire_4, cat);
+            PacketHandler.sendToTrackingAndSelf(new MKParticleEffectSpawnPacket(
+                            new Vector3d(0.0, 0.0, 0.0), DETONATE_PARTICLES, getEntityId()),
                     this);
             SpellCast damage = MKAbilityDamageEffect.Create(caster, CoreDamageTypes.FireDamage,
                     FireballAbility.INSTANCE,
@@ -69,6 +74,7 @@ public class FireballProjectileEntity extends BaseProjectileEntity implements IM
                     .spellCast(fireBreak, (amplifier + 1) * GameConstants.TICKS_PER_SECOND, amplifier, getTargetContext())
                     .instant()
                     .color(16737330).radius(FireballAbility.INSTANCE.getExplosionRadius(), true)
+                    .disableParticle()
                     .spawn();
             return true;
         }

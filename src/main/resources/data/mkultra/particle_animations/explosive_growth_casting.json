@@ -1,0 +1,89 @@
+{
+  "frames": [
+    {
+      "attributes": {
+        "duration": 0,
+        "tickStart": 0
+      },
+      "scaleTrack": {
+        "trackType": "mkcore:particle_anim.render_scale",
+        "attributes": {
+          "maxVariance": 0.02,
+          "renderScale": 0.05
+        }
+      },
+      "colorTrack": {
+        "trackType": "mkcore:particle_anim.lerp_color",
+        "attributes": {
+          "red": 0.0,
+          "green": 1.0,
+          "blue": 0.39215687,
+          "blueVariance": 0.5882353,
+          "redVariance": 0.0,
+          "greenVariance": 0.39215687
+        }
+      }
+    },
+    {
+      "attributes": {
+        "duration": 20,
+        "tickStart": 5
+      },
+      "scaleTrack": {
+        "trackType": "mkcore:particle_anim.render_scale",
+        "attributes": {
+          "maxVariance": 0.01,
+          "renderScale": 0.02
+        }
+      },
+      "colorTrack": {
+        "trackType": "mkcore:particle_anim.lerp_color",
+        "attributes": {
+          "red": 0.0,
+          "green": 0.78431374,
+          "blue": 0.39215687,
+          "blueVariance": 0.5882353,
+          "redVariance": 0.0,
+          "greenVariance": 0.19607843
+        }
+      }
+    },
+    {
+      "attributes": {
+        "duration": 5,
+        "tickStart": 0
+      },
+      "scaleTrack": {
+        "trackType": "mkcore:particle_anim.render_scale",
+        "attributes": {
+          "maxVariance": 0.05,
+          "renderScale": 0.2
+        }
+      }
+    },
+    {
+      "attributes": {
+        "duration": 5,
+        "tickStart": 10
+      },
+      "motionTrack": {
+        "trackType": "mkcore:particle_anim.brownian_motion",
+        "attributes": {
+          "tickInterval": 5,
+          "magnitude": 0.015,
+          "doX": true,
+          "doGravity": true,
+          "doZ": true,
+          "doY": true
+        }
+      }
+    }
+  ],
+  "spawnPattern": {
+    "type": "mkcore:particle_spawn_pattern.single",
+    "attributes": {
+      "count": 1
+    }
+  },
+  "particleType": "mkcore:magic_gradient_square"
+}
