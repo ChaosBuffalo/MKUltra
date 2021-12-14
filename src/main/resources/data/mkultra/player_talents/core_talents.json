@@ -106,11 +106,6 @@
           "value": 1.0
         },
         {
-          "name": "mkcore:talent.attack_damage",
-          "max_points": 1,
-          "value": 1.0
-        },
-        {
           "name": "mkcore:talent.passive_ability_slot",
           "max_points": 1,
           "nodeId": "95725b31-da3a-4a3e-b6cc-e5036a6e9a87"
