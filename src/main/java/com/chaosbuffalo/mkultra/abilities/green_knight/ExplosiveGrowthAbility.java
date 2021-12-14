@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.abilities.green_knight;
 
 import com.chaosbuffalo.mkcore.GameConstants;
 import com.chaosbuffalo.mkcore.abilities.*;
+import com.chaosbuffalo.mkcore.core.AbilityType;
 import com.chaosbuffalo.mkcore.network.MKParticleEffectSpawnPacket;
 import com.chaosbuffalo.mkcore.serialization.attributes.FloatAttribute;
 import com.chaosbuffalo.mkcore.core.IMKEntityData;
@@ -70,7 +71,7 @@ public class ExplosiveGrowthAbility extends MKAbility {
 
     @Override
     public AbilityType getType() {
-        return AbilityType.PooledUltimate;
+        return AbilityType.Ultimate;
     }
 
     @Override
