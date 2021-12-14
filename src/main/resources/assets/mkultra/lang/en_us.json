@@ -43,5 +43,6 @@
   "mkultra.ability.life_siphon.description": "Heals you for %s when you kill a target.",
   "effect.mkultra.effect.soul_drain": "Soul Drain",
   "mkultra.ability.soul_drain.name": "Soul Drain",
-  "mkultra.ability.soul_drain.description": "Restores %.1f mana when you kill a target."
+  "mkultra.ability.soul_drain.description": "Restores %.1f mana when you kill a target.",
+  "mkultra.talent_tree.core_talents.name": "Core"
 }
