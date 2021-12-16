@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.abilities.nether_mage;
 
 import com.chaosbuffalo.mkcore.GameConstants;
 import com.chaosbuffalo.mkcore.abilities.*;
+import com.chaosbuffalo.mkcore.core.AbilityType;
 import com.chaosbuffalo.mkcore.core.IMKEntityData;
 import com.chaosbuffalo.mkcore.core.MKAttributes;
 import com.chaosbuffalo.mkcore.effects.AreaEffectBuilder;
@@ -72,7 +73,7 @@ public class IgniteAbility extends MKAbility {
 
     @Override
     public AbilityType getType() {
-        return AbilityType.PooledUltimate;
+        return AbilityType.Ultimate;
     }
 
     @Override

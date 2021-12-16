@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.abilities.cleric;
 
 import com.chaosbuffalo.mkcore.GameConstants;
 import com.chaosbuffalo.mkcore.abilities.*;
+import com.chaosbuffalo.mkcore.core.AbilityType;
 import com.chaosbuffalo.mkcore.effects.MKParticleEffect;
 import com.chaosbuffalo.mkcore.effects.SpellCast;
 import com.chaosbuffalo.mkcore.serialization.attributes.IntAttribute;
@@ -93,7 +94,7 @@ public class InspireAbility extends MKAbility {
 
     @Override
     public AbilityType getType() {
-        return AbilityType.PooledUltimate;
+        return AbilityType.Ultimate;
     }
 
     @Override
