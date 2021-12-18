@@ -11,6 +11,11 @@
           "nodeId": "2e1ff629-b139-4303-831d-1c1bc5ebc21e"
         },
         {
+          "name": "mkcore:talent.pool_count",
+          "max_points": 1,
+          "nodeId": "9b23bee2-d159-4d32-aca8-1d726de0f875"
+        },
+        {
           "name": "mkcore:talent.max_mana",
           "max_points": 2,
           "value": 1.0
@@ -66,6 +71,11 @@
           "value": 0.01
         },
         {
+          "name": "mkcore:talent.pool_count",
+          "max_points": 1,
+          "nodeId": "93de6f66-4d6d-4721-b774-b12ee92be288"
+        },
+        {
           "name": "mkcore:talent.ultimate_ability_slot",
           "max_points": 1,
           "nodeId": "ecfaa441-35c7-46ce-aa67-f8372bc4fd7d"
@@ -79,6 +89,11 @@
           "name": "mkcore:talent.ability_slot",
           "max_points": 1,
           "nodeId": "119917ea-b852-4cb5-8bfe-2cdad488f279"
+        },
+        {
+          "name": "mkcore:talent.pool_count",
+          "max_points": 1,
+          "nodeId": "108549d0-7935-4386-bf38-2ca48329305e"
         },
         {
           "name": "mkcore:talent.max_health",
@@ -123,6 +138,11 @@
           "name": "mkcore:talent.ability_slot",
           "max_points": 1,
           "nodeId": "3a31b74d-cf08-451f-a483-8eb9e47ce89b"
+        },
+        {
+          "name": "mkcore:talent.pool_count",
+          "max_points": 1,
+          "nodeId": "fbbab80a-c3f8-460f-81cf-5184a7c7f39a"
         },
         {
           "name": "mkcore:talent.max_mana",
