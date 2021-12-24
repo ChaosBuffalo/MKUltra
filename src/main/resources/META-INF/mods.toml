@@ -1,13 +1,13 @@
 modLoader="javafml" #mandatory
 # A version range to match for said mod loader - for regular FML @Mod it will be the forge version
-loaderVersion="[35,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
+loaderVersion="[36,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
 # A list of mods - how many allowed here is determined by the individual mod loader
 license="MIT"
 [[mods]] #mandatory
 # The modid of the mod
-modId="mkultra" #mandatory
+modId="${mod_id}" #mandatory
 # The version number of the mod - there's a few well known ${} variables useable here or just hardcode it
-version="${file.jarVersion}" #mandatory
+version="${mod_version}" #mandatory
 # A display name for the mod
 displayName="MK Ultra" #mandatory
 # A URL to query for updates for this mod. See the JSON update specification <here>
@@ -24,50 +24,56 @@ credits="Developed by the MK Ultra Team" #optional
 description='''
 MKNpc adds new utilities, spawners, and data driven mob definitions to Minecraft.
 '''
-[[dependencies.mkultra]] #optional
-# the modid of the dependency
-modId="forge" #mandatory
-# Does this dependency have to exist - if not, ordering below must be specified
-mandatory=true #mandatory
-# The version range of the dependency
-versionRange="[35,)" #mandatory
-# An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
-ordering="NONE"
-# Side this dependency is applied on - BOTH, CLIENT or SERVER
-side="BOTH"
-[[dependencies.mkultra]]
-modId="mkcore"
-mandatory=true
-versionRange="[0.14,)"
-ordering="AFTER"
-side="BOTH"
-[[dependencies.mkultra]]
-modId="mkchat"
-mandatory=true
-versionRange="[0.13,)"
-ordering="NONE"
-side="BOTH"
-[[dependencies.mkultra]]
-modId="targeting_api"
-mandatory=true
-versionRange="[0.21,)"
-ordering="NONE"
-side="BOTH"
-[[dependencies.mkultra]]
-modId="mkfaction"
-mandatory=true
-versionRange="[0.13,)"
-ordering="NONE"
-side="BOTH"
-[[dependencies.mkultra]]
-modId="mkwidgets"
-mandatory=true
-versionRange="[1.17,)"
-ordering="AFTER"
-side="BOTH"
-[[dependencies.mkultra]]
-modId="mknpc"
-mandatory=true
-versionRange="[0.11,)"
-ordering="NONE"
-side="BOTH"
+[[dependencies."${mod_id}"]] #optional
+    # the modid of the dependency
+    modId="forge" #mandatory
+    # Does this dependency have to exist - if not, ordering below must be specified
+    mandatory=true #mandatory
+    # The version range of the dependency
+    versionRange="[${forge_version},)" #mandatory
+    # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
+    ordering="NONE"
+    # Side this dependency is applied on - BOTH, CLIENT or SERVER
+    side="BOTH"
+[[dependencies."${mod_id}"]] #optional
+    modId="mkcore"
+    mandatory=true
+    versionRange="[${mk_core_version},)"
+    ordering="AFTER"
+    side="BOTH"
+[[dependencies."${mod_id}"]] #optional
+    modId="mkchat"
+    mandatory=true
+    versionRange="[${mk_chat_version},)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies."${mod_id}"]] #optional
+    modId="targeting_api"
+    mandatory=true
+    versionRange="[${targeting_api_version},)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies."${mod_id}"]] #optional
+    modId="mkfaction"
+    mandatory=true
+    versionRange="[${mk_faction_version},)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies."${mod_id}"]] #optional
+    modId="mkwidgets"
+    mandatory=true
+    versionRange="[${mk_widgets_version},)"
+    ordering="AFTER"
+    side="BOTH"
+[[dependencies."${mod_id}"]] #optional
+    modId="mknpc"
+    mandatory=true
+    versionRange="[${mk_npc_version},)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies."${mod_id}"]] #optional
+    modId="mkweapons"
+    mandatory=true
+    versionRange="[${mk_weapons_version},)"
+    ordering="NONE"
+    side="BOTH"
