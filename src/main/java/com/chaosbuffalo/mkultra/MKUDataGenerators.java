@@ -22,6 +22,7 @@ public class MKUDataGenerators {
             generator.addProvider(new MKUTalentTreeProvider(generator));
             generator.addProvider(new MKULootTierProvider(generator));
             generator.addProvider(new MKUFactionProvider(generator));
+            generator.addProvider(new MKUQuestProvider(generator));
 
         }
         if (event.includeClient()){
