@@ -21,11 +21,11 @@
     {
       "optionType": "mknpc:ability_trainings",
       "value": [
-        "mkultra:ability.heal",
-        "mkultra:ability.galvanize",
-        "mkultra:ability.smite",
-        "mkultra:ability.power_word_summon",
-        "mkultra:ability.inspire"
+        "mkultra:ability.skin_like_wood",
+        "mkultra:ability.natures_remedy",
+        "mkultra:ability.cleansing_seed",
+        "mkultra:ability.spirit_bomb",
+        "mkultra:ability.explosive_growth"
       ]
     },
     {
@@ -38,7 +38,7 @@
         {
           "priority": 1,
           "chance": 1.0,
-          "abilityName": "mkultra:ability.heal"
+          "abilityName": "mkultra:ability.skin_like_wood"
         },
         {
           "priority": 2,
@@ -53,9 +53,18 @@
         {
           "priority": 3,
           "chance": 1.0,
-          "abilityName": "mkultra:ability.inspire"
+          "abilityName": "mkultra:ability.explosive_growth"
+        },
+        {
+          "priority": 5,
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.cleansing_seed"
         }
       ]
+    },
+    {
+      "optionType": "mknpc:notable",
+      "value": true
     },
     {
       "optionType": "mknpc:mk_size",

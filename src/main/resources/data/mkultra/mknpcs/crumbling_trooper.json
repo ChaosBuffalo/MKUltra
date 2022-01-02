@@ -1,0 +1,63 @@
+{
+  "entityType": "mknpc:zombified_piglin",
+  "options": [
+    {
+      "optionType": "mknpc:render_group",
+      "value": "zombie_pig_trooper"
+    },
+    {
+      "optionType": "mknpc:attributes",
+      "attributes": [
+        {
+          "attributeName": "minecraft:generic.max_health",
+          "value": 50.0
+        }
+      ]
+    },
+    {
+      "optionType": "mknpc:name",
+      "value": "Crumbling Trooper"
+    },
+    {
+      "optionType": "mknpc:extra_loot",
+      "noLootChance": 0.1,
+      "dropChances": 2,
+      "noLootIncrease": 0.25,
+      "lootOptions": [
+        {
+          "lootSlotName": "mkweapons:items",
+          "lootSlotTier": "mkultra:zombie_trooper",
+          "templateName": "mkultra:empty",
+          "weight": 1.0
+        }
+      ]
+    },
+    {
+      "optionType": "mknpc:abilities",
+      "options": [
+        {
+          "priority": 3,
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.sever_tendon"
+        },
+        {
+          "priority": 2,
+          "chance": 0.5,
+          "abilityName": "mkultra:ability.ember"
+        }
+      ]
+    },
+    {
+      "optionType": "mknpc:lunge_speed",
+      "value": 0.35
+    },
+    {
+      "optionType": "mknpc:mk_size",
+      "value": 1.1
+    },
+    {
+      "optionType": "mknpc:faction",
+      "value": "mkultra:imperial_dead"
+    }
+  ]
+}

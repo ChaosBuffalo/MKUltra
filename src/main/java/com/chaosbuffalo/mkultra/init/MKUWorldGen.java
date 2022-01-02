@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.init;
 
+
 import com.chaosbuffalo.mknpc.world.gen.feature.structure.*;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.world.gen.feature.structure.*;
@@ -41,6 +42,7 @@ public class MKUWorldGen {
                 AlphaGreenLadyStructurePieces.Piece::new);
         HYBOREAN_ALTER_TYPE = Registry.register(Registry.STRUCTURE_PIECE, HYBOREAN_ALTER_NAME.toString(),
                 HyboreanAlterStructurePieces.Piece::new);
+
     }
 
     @SubscribeEvent
@@ -57,18 +59,17 @@ public class MKUWorldGen {
         HYBOREAN_ALTER_STRUCTURE.setRegistryName(HYBOREAN_ALTER_NAME);
         HYBOREAN_ALTER_FEATURE = HYBOREAN_ALTER_STRUCTURE.withConfiguration(new NoFeatureConfig());
         Structure.NAME_STRUCTURE_BIMAP.put(HYBOREAN_ALTER_NAME.toString(), HYBOREAN_ALTER_STRUCTURE);
+
         Structure.STRUCTURE_DECORATION_STAGE_MAP.put(HYBOREAN_ALTER_STRUCTURE, GenerationStage.Decoration.SURFACE_STRUCTURES);
         evt.getRegistry().register(HYBOREAN_ALTER_STRUCTURE);
 
-        CRYPT_STRUCTURE = new MKJigsawStructure(VillageConfig.field_236533_a_, -19, true, true);
+        CRYPT_STRUCTURE = new MKJigsawStructure(VillageConfig.field_236533_a_, -19, true, true, false);
         CRYPT_STRUCTURE.setRegistryName(CRYPT_NAME);
         Structure.NAME_STRUCTURE_BIMAP.put(CRYPT_NAME.toString(), CRYPT_STRUCTURE);
         Structure.STRUCTURE_DECORATION_STAGE_MAP.put(CRYPT_STRUCTURE, GenerationStage.Decoration.SURFACE_STRUCTURES);
         CRYPT_FEATURE = CRYPT_STRUCTURE.withConfiguration(new VillageConfig(
                 () -> CryptStructurePools.CRYPT_BASE, CryptStructurePools.GEN_DEPTH));
         evt.getRegistry().register(CRYPT_STRUCTURE);
-
-
     }
 
     public static void worldSetup(FMLServerAboutToStartEvent event){

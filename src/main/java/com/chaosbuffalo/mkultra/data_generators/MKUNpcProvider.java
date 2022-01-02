@@ -10,6 +10,7 @@ import com.chaosbuffalo.mknpc.data.NpcDefinitionProvider;
 import com.chaosbuffalo.mknpc.npc.NpcAttributeEntry;
 import com.chaosbuffalo.mknpc.npc.NpcDefinition;
 import com.chaosbuffalo.mknpc.npc.NpcItemChoice;
+import com.chaosbuffalo.mknpc.npc.option_entries.LootOptionEntry;
 import com.chaosbuffalo.mknpc.npc.options.*;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.abilities.cleric.*;
@@ -21,13 +22,15 @@ import com.chaosbuffalo.mkultra.client.render.styling.MKUOrcs;
 import com.chaosbuffalo.mkultra.client.render.styling.MKUPiglins;
 import com.chaosbuffalo.mkultra.client.render.styling.MKUSkeletons;
 import com.chaosbuffalo.mkultra.init.MKUEntities;
+import com.chaosbuffalo.mkultra.init.MKUFactions;
+import com.chaosbuffalo.mkultra.init.MKUItems;
+import com.chaosbuffalo.mkweapons.items.randomization.slots.LootSlotManager;
 import com.google.common.collect.Lists;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DirectoryCache;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -54,7 +57,11 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
         writeDefinition(generateHyboreanSorcerer(), cache);
         writeDefinition(generateAncientKing(), cache);
         writeDefinition(generateHyboreanSorcererQueen(), cache);
-        writeDefinition(generateZombifiedPiglinTrooper(), cache);
+        writeDefinition(generateCrumblingTrooper(), cache);
+        writeDefinition(generateCrumblingTrooperMage(), cache);
+        writeDefinition(generateDecayingZombieArcher(), cache);
+        writeDefinition(generateDecayingZombiePiglin(), cache);
+//        writeDefinition(generateZombifiedPiglinTrooper(), cache);
     }
 
     private NpcDefinition generateZombifiedPiglinTrooper(){
@@ -73,6 +80,100 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
         )));
         return def;
     }
+
+    private NpcDefinition generateDecayingZombiePiglin(){
+        NpcDefinition def = new NpcDefinition(new ResourceLocation(MKUltra.MODID, "decaying_piglin"),
+                MKUEntities.ZOMBIFIED_PIGLIN_TYPE.getRegistryName(), null);
+        def.addOption(new FactionOption().setValue(MKUFactions.IMPERIAL_DEAD_NAME));
+        def.addOption(new MKSizeOption().setValue(0.9f));
+        def.addOption(new RenderGroupOption().setValue(MKUPiglins.ZOMBIE_PIG_NAME));
+        def.addOption(new AttributesOption().addAttributeEntry(new NpcAttributeEntry(Attributes.MAX_HEALTH, 20.0)));
+        def.addOption(new NameOption().setValue("Decaying Zombie"));
+        EquipmentOption equipOption = new EquipmentOption();
+        equipOption.addItemChoice(EquipmentSlotType.MAINHAND,
+                new NpcItemChoice(new ItemStack(ForgeRegistries.ITEMS.getValue(
+                        new ResourceLocation("mkweapons:dagger_stone"))), 1.0, 0.0f));
+        equipOption.addItemChoice(EquipmentSlotType.MAINHAND,
+                new NpcItemChoice(ItemStack.EMPTY, 1.0, 0.0f));
+        return def;
+    }
+
+    private NpcDefinition generateDecayingZombieArcher(){
+        NpcDefinition def = new NpcDefinition(new ResourceLocation(MKUltra.MODID, "decaying_piglin_archer"),
+                MKUEntities.ZOMBIFIED_PIGLIN_TYPE.getRegistryName(), null);
+        def.addOption(new FactionOption().setValue(MKUFactions.IMPERIAL_DEAD_NAME));
+        def.addOption(new MKSizeOption().setValue(0.85f));
+        def.addOption(new RenderGroupOption().setValue(MKUPiglins.ZOMBIE_PIG_NAME));
+        def.addOption(new AttributesOption().addAttributeEntry(new NpcAttributeEntry(Attributes.MAX_HEALTH, 15.0)));
+        def.addOption(new NameOption().setValue("Decaying Archer"));
+        EquipmentOption equipOption = new EquipmentOption();
+        equipOption.addItemChoice(EquipmentSlotType.MAINHAND,
+                new NpcItemChoice(new ItemStack(ForgeRegistries.ITEMS.getValue(
+                        new ResourceLocation("mkweapons:longbow_stone"))), 1.0, 0.0f));
+        return def;
+    }
+
+    private NpcDefinition generateCrumblingTrooperMage(){
+        NpcDefinition def = new NpcDefinition(new ResourceLocation(MKUltra.MODID, "crumbling_trooper_mage"),
+                MKUEntities.ZOMBIFIED_PIGLIN_TYPE.getRegistryName(), null);
+        def.addOption(new FactionOption().setValue(MKUFactions.IMPERIAL_DEAD_NAME));
+        def.addOption(new MKSizeOption().setValue(0.95f));
+        def.addOption(new RenderGroupOption().setValue(MKUPiglins.ZOMBIE_PIG_MAGUS_NAME));
+        def.addOption(new AttributesOption().addAttributeEntry(new NpcAttributeEntry(Attributes.MAX_HEALTH, 30.0)));
+        def.addOption(new NameOption().setValue("Crumbling Trooper Mage"));
+        EquipmentOption equipOption = new EquipmentOption();
+        equipOption.addItemChoice(EquipmentSlotType.MAINHAND,
+                new NpcItemChoice(new ItemStack(ForgeRegistries.ITEMS.getValue(
+                        new ResourceLocation("mkweapons:dagger_stone"))), 1.0, 0.0f));
+        def.addOption(new AbilitiesOption()
+                .withAbilityOption(FireballAbility.INSTANCE, 1, 1.0)
+                .withAbilityOption(EmberAbility.INSTANCE, 2, 0.5)
+        );
+        ResourceLocation lootTierName = new ResourceLocation(MKUltra.MODID, "zombie_trooper");
+        ResourceLocation templateName = new ResourceLocation(MKUltra.MODID, "empty");
+        def.addOption(new ExtraLootOption()
+                .withLootOptions(new LootOptionEntry(LootSlotManager.ITEMS.getName(), lootTierName, templateName, 1.0))
+                .withDropChances(2)
+                .withNoLootChance(0.1)
+                .withNoLootIncrease(0.25)
+        );
+        return def;
+    }
+
+    private NpcDefinition generateCrumblingTrooper(){
+        NpcDefinition def = new NpcDefinition(new ResourceLocation(MKUltra.MODID, "crumbling_trooper"),
+                MKUEntities.ZOMBIFIED_PIGLIN_TYPE.getRegistryName(), null);
+        def.addOption(new FactionOption().setValue(MKUFactions.IMPERIAL_DEAD_NAME));
+        def.addOption(new MKSizeOption().setValue(1.1f));
+        def.addOption(new RenderGroupOption().setValue(MKUPiglins.ZOMBIE_PIG_TROOPER_NAME));
+        def.addOption(new AttributesOption().addAttributeEntry(new NpcAttributeEntry(Attributes.MAX_HEALTH, 50.0)));
+        def.addOption(new NameOption().setValue("Crumbling Trooper"));
+        def.addOption(new LungeSpeedOption().setValue(0.35));
+        EquipmentOption equipOption = new EquipmentOption();
+        equipOption.addItemChoice(EquipmentSlotType.MAINHAND,
+                new NpcItemChoice(new ItemStack(ForgeRegistries.ITEMS.getValue(
+                        new ResourceLocation("mkweapons:longsword_stone"))), 1.0, 0.0f));
+        equipOption.addItemChoice(EquipmentSlotType.MAINHAND,
+                new NpcItemChoice(new ItemStack(ForgeRegistries.ITEMS.getValue(
+                        new ResourceLocation("mkweapons:warhammer_stone"))), 1.0, 0.0f));
+        equipOption.addItemChoice(EquipmentSlotType.MAINHAND,
+                new NpcItemChoice(new ItemStack(ForgeRegistries.ITEMS.getValue(
+                        new ResourceLocation("mkweapons:mace_stone"))), 1.0, 0.0f));
+        def.addOption(new AbilitiesOption()
+                .withAbilityOption(SeverTendonAbility.INSTANCE, 3, 1.0)
+                .withAbilityOption(EmberAbility.INSTANCE, 2, 0.5)
+        );
+        ResourceLocation lootTierName = new ResourceLocation(MKUltra.MODID, "zombie_trooper");
+        ResourceLocation templateName = new ResourceLocation(MKUltra.MODID, "empty");
+        def.addOption(new ExtraLootOption()
+                .withLootOptions(new LootOptionEntry(LootSlotManager.ITEMS.getName(), lootTierName, templateName, 1.0))
+                .withDropChances(2)
+                .withNoLootChance(0.1)
+                .withNoLootIncrease(0.25)
+        );
+        return def;
+    }
+
 
     private NpcDefinition generateHyboreanWarrior(){
         NpcDefinition def = new NpcDefinition(new ResourceLocation(MKUltra.MODID, "hyborean_warrior"),
@@ -235,61 +336,6 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
         def.addOption(new MKSizeOption().setValue(1.1f));
         def.addOption(new RenderGroupOption().setValue(MKUOrcs.GREEN_LADY_NAME));
         List<MKAbility> abilities = new ArrayList<>();
-        abilities.add(HealAbility.INSTANCE);
-        abilities.add(GalvanizeAbility.INSTANCE);
-        abilities.add(SmiteAbility.INSTANCE);
-        abilities.add(PowerWordSummonAbility.INSTANCE);
-        abilities.add(InspireAbility.INSTANCE);
-        def.addOption(new AbilityTrainingOption().withOptions(abilities));
-        def.addOption(new AbilitiesOption()
-                .withAbilityOption(HealAbility.INSTANCE, 1, 1.0)
-                .withAbilityOption(NaturesRemedyAbility.INSTANCE, 2, 1.0)
-                .withAbilityOption(SpiritBombAbility.INSTANCE, 4, 1.0)
-                .withAbilityOption(InspireAbility.INSTANCE, 3, 1.0)
-        );
-        def.addOption(new DialogueOption().setValue(new ResourceLocation(MKUltra.MODID, "open_abilities")));
-        def.addOption(new AttributesOption().addAttributeEntry(new NpcAttributeEntry(Attributes.MAX_HEALTH, 400.0)));
-        def.addOption(new NameOption().setValue("Green Lady"));
-        return def;
-    }
-
-    private NpcDefinition generateGreenLadyGuard2(){
-        NpcDefinition def = new NpcDefinition(new ResourceLocation(MKUltra.MODID, "green_lady_guard_2"),
-                MKUEntities.ORC_TYPE.getRegistryName(), null);
-        def.addOption(new FactionOption().setValue(Factions.VILLAGER_FACTION_NAME));
-        def.addOption(new MKSizeOption().setValue(1.1f));
-        def.addOption(new RenderGroupOption().setValue(MKUOrcs.GREEN_LADY_GUARD_2_NAME));
-        List<MKAbility> abilities = new ArrayList<>();
-        abilities.add(EmberAbility.INSTANCE);
-        abilities.add(FlameWaveAbility.INSTANCE);
-        abilities.add(FireArmorAbility.INSTANCE);
-        abilities.add(WarpCurseAbility.INSTANCE);
-        abilities.add(IgniteAbility.INSTANCE);
-        def.addOption(new AbilityTrainingOption().withOptions(abilities));
-        def.addOption(new AbilitiesOption()
-                .withAbilityOption(EmberAbility.INSTANCE, 1, 1.0)
-                .withAbilityOption(NaturesRemedyAbility.INSTANCE, 2, 1.0)
-                .withAbilityOption(FlameWaveAbility.INSTANCE, 4, 1.0)
-                .withAbilityOption(IgniteAbility.INSTANCE, 3, 1.0)
-        );
-        def.addOption(new DialogueOption().setValue(new ResourceLocation(MKUltra.MODID, "open_abilities")));
-        def.addOption(new AttributesOption().addAttributeEntry(new NpcAttributeEntry(Attributes.MAX_HEALTH, 150.0)));
-        def.addOption(new NameOption().setValue("Green Guardian"));
-        EquipmentOption equipOption = new EquipmentOption();
-        equipOption.addItemChoice(EquipmentSlotType.MAINHAND,
-                new NpcItemChoice(new ItemStack(ForgeRegistries.ITEMS.getValue(
-                        new ResourceLocation("mkweapons:dagger_stone"))), 1.0, 0.0f));
-        def.addOption(equipOption);
-        return def;
-    }
-
-    private NpcDefinition generateGreenLadyGuard1(){
-        NpcDefinition def = new NpcDefinition(new ResourceLocation(MKUltra.MODID, "green_lady_guard_1"),
-                MKUEntities.ORC_TYPE.getRegistryName(), null);
-        def.addOption(new FactionOption().setValue(Factions.VILLAGER_FACTION_NAME));
-        def.addOption(new MKSizeOption().setValue(1.1f));
-        def.addOption(new RenderGroupOption().setValue(MKUOrcs.GREEN_LADY_GUARD_1_NAME));
-        List<MKAbility> abilities = new ArrayList<>();
         abilities.add(SkinLikeWoodAbility.INSTANCE);
         abilities.add(NaturesRemedyAbility.INSTANCE);
         abilities.add(CleansingSeedAbility.INSTANCE);
@@ -301,24 +347,78 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                 .withAbilityOption(NaturesRemedyAbility.INSTANCE, 2, 1.0)
                 .withAbilityOption(SpiritBombAbility.INSTANCE, 4, 1.0)
                 .withAbilityOption(ExplosiveGrowthAbility.INSTANCE, 3, 1.0)
+                .withAbilityOption(CleansingSeedAbility.INSTANCE, 5, 1.0)
         );
         def.addOption(new DialogueOption().setValue(new ResourceLocation(MKUltra.MODID, "open_abilities")));
+        def.addOption(new AttributesOption().addAttributeEntry(new NpcAttributeEntry(Attributes.MAX_HEALTH, 400.0)));
+        def.addOption(new NameOption().setValue("Green Lady"));
+        def.addOption(new NotableOption());
+        return def;
+    }
+
+    private NpcDefinition generateGreenLadyGuard2(){
+        NpcDefinition def = new NpcDefinition(new ResourceLocation(MKUltra.MODID, "green_lady_guard_2"),
+                MKUEntities.ORC_TYPE.getRegistryName(), null);
+        def.addOption(new FactionOption().setValue(Factions.VILLAGER_FACTION_NAME));
+        def.addOption(new MKSizeOption().setValue(1.1f));
+        def.addOption(new RenderGroupOption().setValue(MKUOrcs.GREEN_LADY_GUARD_2_NAME));
+        def.addOption(new AbilitiesOption()
+                .withAbilityOption(SkinLikeWoodAbility.INSTANCE, 1, 1.0)
+                .withAbilityOption(NaturesRemedyAbility.INSTANCE, 2, 1.0)
+                .withAbilityOption(SpiritBombAbility.INSTANCE, 4, 1.0)
+                .withAbilityOption(ExplosiveGrowthAbility.INSTANCE, 3, 1.0)
+                .withAbilityOption(CleansingSeedAbility.INSTANCE, 5, 1.0)
+        );
+//        def.addOption(new DialogueOption().setValue(new ResourceLocation(MKUltra.MODID, "open_abilities")));
+        def.addOption(new AttributesOption().addAttributeEntry(new NpcAttributeEntry(Attributes.MAX_HEALTH, 150.0)));
+        def.addOption(new NameOption().setValue("Green Guardian"));
+        EquipmentOption equipOption = new EquipmentOption();
+        equipOption.addItemChoice(EquipmentSlotType.HEAD,
+                new NpcItemChoice(new ItemStack(MKUItems.greenKnightHelmet), 1.0, 0.05f));
+        equipOption.addItemChoice(EquipmentSlotType.CHEST,
+                new NpcItemChoice(new ItemStack(MKUItems.greenKnightChestplate), 1.0, 0.05f));
+        equipOption.addItemChoice(EquipmentSlotType.LEGS,
+                new NpcItemChoice(new ItemStack(MKUItems.greenKnightLeggings), 1.0, 0.05f));
+        equipOption.addItemChoice(EquipmentSlotType.FEET,
+                new NpcItemChoice(new ItemStack(MKUItems.greenKnightBoots), 1.0, 0.05f));
+        equipOption.addItemChoice(EquipmentSlotType.MAINHAND,
+                new NpcItemChoice(new ItemStack(ForgeRegistries.ITEMS.getValue(
+                        new ResourceLocation("mkweapons:dagger_stone"))), 1.0, 0.0f));
+        def.addOption(equipOption);
+        def.addOption(new NotableOption());
+        return def;
+    }
+
+    private NpcDefinition generateGreenLadyGuard1(){
+        NpcDefinition def = new NpcDefinition(new ResourceLocation(MKUltra.MODID, "green_lady_guard_1"),
+                MKUEntities.ORC_TYPE.getRegistryName(), null);
+        def.addOption(new FactionOption().setValue(Factions.VILLAGER_FACTION_NAME));
+        def.addOption(new MKSizeOption().setValue(1.1f));
+        def.addOption(new RenderGroupOption().setValue(MKUOrcs.GREEN_LADY_GUARD_1_NAME));
+        def.addOption(new AbilitiesOption()
+                .withAbilityOption(SkinLikeWoodAbility.INSTANCE, 1, 1.0)
+                .withAbilityOption(NaturesRemedyAbility.INSTANCE, 2, 1.0)
+                .withAbilityOption(SpiritBombAbility.INSTANCE, 4, 1.0)
+                .withAbilityOption(ExplosiveGrowthAbility.INSTANCE, 3, 1.0)
+                .withAbilityOption(CleansingSeedAbility.INSTANCE, 5, 1.0)
+        );
+//        def.addOption(new DialogueOption().setValue(new ResourceLocation(MKUltra.MODID, "open_abilities")));
         def.addOption(new AttributesOption().addAttributeEntry(new NpcAttributeEntry(Attributes.MAX_HEALTH, 150.0)));
         def.addOption(new NameOption().setValue("Green Knight"));
         EquipmentOption equipOption = new EquipmentOption();
         equipOption.addItemChoice(EquipmentSlotType.HEAD,
-                new NpcItemChoice(new ItemStack(Items.IRON_HELMET), 1.0, 0.0f));
+                new NpcItemChoice(new ItemStack(MKUItems.greenKnightHelmet), 1.0, 0.05f));
         equipOption.addItemChoice(EquipmentSlotType.CHEST,
-                new NpcItemChoice(new ItemStack(Items.IRON_CHESTPLATE), 1.0, 0.0f));
+                new NpcItemChoice(new ItemStack(MKUItems.greenKnightChestplate), 1.0, 0.05f));
         equipOption.addItemChoice(EquipmentSlotType.LEGS,
-                new NpcItemChoice(new ItemStack(Items.IRON_LEGGINGS), 1.0, 0.0f));
+                new NpcItemChoice(new ItemStack(MKUItems.greenKnightLeggings), 1.0, 0.05f));
         equipOption.addItemChoice(EquipmentSlotType.FEET,
-                new NpcItemChoice(new ItemStack(Items.IRON_BOOTS), 1.0, 0.0f));
+                new NpcItemChoice(new ItemStack(MKUItems.greenKnightBoots), 1.0, 0.05f));
         equipOption.addItemChoice(EquipmentSlotType.MAINHAND,
                 new NpcItemChoice(new ItemStack(ForgeRegistries.ITEMS.getValue(
                         new ResourceLocation("mkweapons:battleaxe_stone"))), 1.0, 0.0f));
         def.addOption(equipOption);
-
+        def.addOption(new NotableOption());
         return def;
     }
 

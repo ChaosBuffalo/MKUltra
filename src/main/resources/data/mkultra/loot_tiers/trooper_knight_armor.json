@@ -1,0 +1,527 @@
+{
+  "slotItems": {
+    "mkweapons:legs": [
+      {
+        "itemStack": "{id: \"mkultra:trooper_knight_leggings\", Count: 1b, tag: {Damage: 0}}",
+        "weight": 1.0
+      }
+    ],
+    "mkweapons:head": [
+      {
+        "itemStack": "{id: \"mkultra:trooper_knight_helmet\", Count: 1b, tag: {Damage: 0}}",
+        "weight": 1.0
+      }
+    ],
+    "mkweapons:feet": [
+      {
+        "itemStack": "{id: \"mkultra:trooper_knight_boots\", Count: 1b, tag: {Damage: 0}}",
+        "weight": 1.0
+      }
+    ],
+    "mkweapons:chest": [
+      {
+        "itemStack": "{id: \"mkultra:trooper_knight_chestplate\", Count: 1b, tag: {Damage: 0}}",
+        "weight": 1.0
+      }
+    ]
+  },
+  "options": [
+    {
+      "optionType": "mkweapons:attributes",
+      "slotName": "mkweapons:randomization.attributes",
+      "slots": [
+        "mkweapons:chest"
+      ],
+      "weight": 1.0,
+      "modifiers": [
+        {
+          "Name": "mkultra:trooper_knight_armor",
+          "Amount": 2.0,
+          "Operation": 0,
+          "UUID": "d478e8c7-34ec-432e-b4da-d052e06c7ab4",
+          "AttributeName": "minecraft:generic.max_health"
+        }
+      ]
+    },
+    {
+      "optionType": "mkweapons:attributes",
+      "slotName": "mkweapons:randomization.attributes",
+      "slots": [
+        "mkweapons:chest"
+      ],
+      "weight": 1.0,
+      "modifiers": [
+        {
+          "Name": "mkultra:trooper_knight_armor",
+          "Amount": 2.0,
+          "Operation": 0,
+          "UUID": "99b80ed5-9b87-479c-9dd5-28274a1fdbe9",
+          "AttributeName": "mkcore:max_mana"
+        }
+      ]
+    },
+    {
+      "optionType": "mkweapons:attributes",
+      "slotName": "mkweapons:randomization.attributes",
+      "slots": [
+        "mkweapons:chest"
+      ],
+      "weight": 1.0,
+      "modifiers": [
+        {
+          "Name": "mkultra:trooper_knight_armor",
+          "Amount": 0.25,
+          "Operation": 0,
+          "UUID": "bf9d0b96-7a9f-4f40-ba8c-d94ae593cf63",
+          "AttributeName": "mkcore:mana_regen"
+        }
+      ]
+    },
+    {
+      "optionType": "mkweapons:attributes",
+      "slotName": "mkweapons:randomization.attributes",
+      "slots": [
+        "mkweapons:chest"
+      ],
+      "weight": 1.0,
+      "modifiers": [
+        {
+          "Name": "mkultra:trooper_knight_armor",
+          "Amount": 0.05,
+          "Operation": 2,
+          "UUID": "9919dba7-2421-4435-a51e-386c59153137",
+          "AttributeName": "minecraft:generic.movement_speed"
+        }
+      ]
+    },
+    {
+      "optionType": "mkweapons:attributes",
+      "slotName": "mkweapons:randomization.attributes",
+      "slots": [
+        "mkweapons:chest"
+      ],
+      "weight": 1.0,
+      "modifiers": [
+        {
+          "Name": "mkultra:trooper_knight_armor",
+          "Amount": 1.0,
+          "Operation": 0,
+          "UUID": "e61583f6-3768-4765-9cd1-10d006da25cc",
+          "AttributeName": "minecraft:generic.attack_damage"
+        }
+      ]
+    },
+    {
+      "optionType": "mkweapons:attributes",
+      "slotName": "mkweapons:randomization.attributes",
+      "slots": [
+        "mkweapons:chest"
+      ],
+      "weight": 1.0,
+      "modifiers": [
+        {
+          "Name": "mkultra:trooper_knight_armor",
+          "Amount": 1.0,
+          "Operation": 0,
+          "UUID": "1e04a064-2b87-4461-a1bd-8d9a3e7c83d2",
+          "AttributeName": "minecraft:generic.armor"
+        }
+      ]
+    },
+    {
+      "optionType": "mkweapons:attributes",
+      "slotName": "mkweapons:randomization.attributes",
+      "slots": [
+        "mkweapons:chest"
+      ],
+      "weight": 1.0,
+      "modifiers": [
+        {
+          "Name": "mkultra:trooper_knight_armor",
+          "Amount": 1.0,
+          "Operation": 0,
+          "UUID": "c129b8a4-ae27-4e74-b0ff-f34b955c6973",
+          "AttributeName": "mkcore:nature_damage"
+        }
+      ]
+    },
+    {
+      "optionType": "mkweapons:attributes",
+      "slotName": "mkweapons:randomization.attributes",
+      "slots": [
+        "mkweapons:feet"
+      ],
+      "weight": 1.0,
+      "modifiers": [
+        {
+          "Name": "mkultra:trooper_knight_armor",
+          "Amount": 2.0,
+          "Operation": 0,
+          "UUID": "308b7f6a-4145-4af4-b4af-ed8c2b7a70c9",
+          "AttributeName": "minecraft:generic.max_health"
+        }
+      ]
+    },
+    {
+      "optionType": "mkweapons:attributes",
+      "slotName": "mkweapons:randomization.attributes",
+      "slots": [
+        "mkweapons:feet"
+      ],
+      "weight": 1.0,
+      "modifiers": [
+        {
+          "Name": "mkultra:trooper_knight_armor",
+          "Amount": 2.0,
+          "Operation": 0,
+          "UUID": "fced5fc2-3a40-4cdc-b2d8-752a275c378f",
+          "AttributeName": "mkcore:max_mana"
+        }
+      ]
+    },
+    {
+      "optionType": "mkweapons:attributes",
+      "slotName": "mkweapons:randomization.attributes",
+      "slots": [
+        "mkweapons:feet"
+      ],
+      "weight": 1.0,
+      "modifiers": [
+        {
+          "Name": "mkultra:trooper_knight_armor",
+          "Amount": 0.25,
+          "Operation": 0,
+          "UUID": "2af8fcbc-f364-4597-8ef9-9260bd852e1a",
+          "AttributeName": "mkcore:mana_regen"
+        }
+      ]
+    },
+    {
+      "optionType": "mkweapons:attributes",
+      "slotName": "mkweapons:randomization.attributes",
+      "slots": [
+        "mkweapons:feet"
+      ],
+      "weight": 1.0,
+      "modifiers": [
+        {
+          "Name": "mkultra:trooper_knight_armor",
+          "Amount": 0.05,
+          "Operation": 2,
+          "UUID": "4c8d8751-c007-4f1e-8a6d-7f5b8238e189",
+          "AttributeName": "minecraft:generic.movement_speed"
+        }
+      ]
+    },
+    {
+      "optionType": "mkweapons:attributes",
+      "slotName": "mkweapons:randomization.attributes",
+      "slots": [
+        "mkweapons:feet"
+      ],
+      "weight": 1.0,
+      "modifiers": [
+        {
+          "Name": "mkultra:trooper_knight_armor",
+          "Amount": 1.0,
+          "Operation": 0,
+          "UUID": "5f140e82-6fa6-4344-9d9e-eefbdddb353b",
+          "AttributeName": "minecraft:generic.attack_damage"
+        }
+      ]
+    },
+    {
+      "optionType": "mkweapons:attributes",
+      "slotName": "mkweapons:randomization.attributes",
+      "slots": [
+        "mkweapons:feet"
+      ],
+      "weight": 1.0,
+      "modifiers": [
+        {
+          "Name": "mkultra:trooper_knight_armor",
+          "Amount": 1.0,
+          "Operation": 0,
+          "UUID": "5b062dbb-e716-4450-8e96-7bd848963f81",
+          "AttributeName": "minecraft:generic.armor"
+        }
+      ]
+    },
+    {
+      "optionType": "mkweapons:attributes",
+      "slotName": "mkweapons:randomization.attributes",
+      "slots": [
+        "mkweapons:feet"
+      ],
+      "weight": 1.0,
+      "modifiers": [
+        {
+          "Name": "mkultra:trooper_knight_armor",
+          "Amount": 1.0,
+          "Operation": 0,
+          "UUID": "2bc6bd83-65ad-4acc-9d41-83846834bd94",
+          "AttributeName": "mkcore:nature_damage"
+        }
+      ]
+    },
+    {
+      "optionType": "mkweapons:attributes",
+      "slotName": "mkweapons:randomization.attributes",
+      "slots": [
+        "mkweapons:head"
+      ],
+      "weight": 1.0,
+      "modifiers": [
+        {
+          "Name": "mkultra:trooper_knight_armor",
+          "Amount": 2.0,
+          "Operation": 0,
+          "UUID": "26c26a4d-57e3-4c9c-8b34-f216769b52c9",
+          "AttributeName": "minecraft:generic.max_health"
+        }
+      ]
+    },
+    {
+      "optionType": "mkweapons:attributes",
+      "slotName": "mkweapons:randomization.attributes",
+      "slots": [
+        "mkweapons:head"
+      ],
+      "weight": 1.0,
+      "modifiers": [
+        {
+          "Name": "mkultra:trooper_knight_armor",
+          "Amount": 2.0,
+          "Operation": 0,
+          "UUID": "f7c855ae-5f02-4151-bfd2-c1e6173a0702",
+          "AttributeName": "mkcore:max_mana"
+        }
+      ]
+    },
+    {
+      "optionType": "mkweapons:attributes",
+      "slotName": "mkweapons:randomization.attributes",
+      "slots": [
+        "mkweapons:head"
+      ],
+      "weight": 1.0,
+      "modifiers": [
+        {
+          "Name": "mkultra:trooper_knight_armor",
+          "Amount": 0.25,
+          "Operation": 0,
+          "UUID": "a4e925b6-4729-47bf-aae1-33944972b868",
+          "AttributeName": "mkcore:mana_regen"
+        }
+      ]
+    },
+    {
+      "optionType": "mkweapons:attributes",
+      "slotName": "mkweapons:randomization.attributes",
+      "slots": [
+        "mkweapons:head"
+      ],
+      "weight": 1.0,
+      "modifiers": [
+        {
+          "Name": "mkultra:trooper_knight_armor",
+          "Amount": 0.05,
+          "Operation": 2,
+          "UUID": "b82d2695-a73c-40cc-ab0f-024dbc887456",
+          "AttributeName": "minecraft:generic.movement_speed"
+        }
+      ]
+    },
+    {
+      "optionType": "mkweapons:attributes",
+      "slotName": "mkweapons:randomization.attributes",
+      "slots": [
+        "mkweapons:head"
+      ],
+      "weight": 1.0,
+      "modifiers": [
+        {
+          "Name": "mkultra:trooper_knight_armor",
+          "Amount": 1.0,
+          "Operation": 0,
+          "UUID": "9f586288-930f-438a-83d0-1851ea76eb98",
+          "AttributeName": "minecraft:generic.attack_damage"
+        }
+      ]
+    },
+    {
+      "optionType": "mkweapons:attributes",
+      "slotName": "mkweapons:randomization.attributes",
+      "slots": [
+        "mkweapons:head"
+      ],
+      "weight": 1.0,
+      "modifiers": [
+        {
+          "Name": "mkultra:trooper_knight_armor",
+          "Amount": 1.0,
+          "Operation": 0,
+          "UUID": "e3fdd3f0-2bc6-4e88-bab2-87b1f95075d4",
+          "AttributeName": "minecraft:generic.armor"
+        }
+      ]
+    },
+    {
+      "optionType": "mkweapons:attributes",
+      "slotName": "mkweapons:randomization.attributes",
+      "slots": [
+        "mkweapons:head"
+      ],
+      "weight": 1.0,
+      "modifiers": [
+        {
+          "Name": "mkultra:trooper_knight_armor",
+          "Amount": 1.0,
+          "Operation": 0,
+          "UUID": "5e9115be-9711-4a64-b003-cb5619b45848",
+          "AttributeName": "mkcore:nature_damage"
+        }
+      ]
+    },
+    {
+      "optionType": "mkweapons:attributes",
+      "slotName": "mkweapons:randomization.attributes",
+      "slots": [
+        "mkweapons:legs"
+      ],
+      "weight": 1.0,
+      "modifiers": [
+        {
+          "Name": "mkultra:trooper_knight_armor",
+          "Amount": 2.0,
+          "Operation": 0,
+          "UUID": "f8383618-6fea-41a5-9d9a-944683d643b5",
+          "AttributeName": "minecraft:generic.max_health"
+        }
+      ]
+    },
+    {
+      "optionType": "mkweapons:attributes",
+      "slotName": "mkweapons:randomization.attributes",
+      "slots": [
+        "mkweapons:legs"
+      ],
+      "weight": 1.0,
+      "modifiers": [
+        {
+          "Name": "mkultra:trooper_knight_armor",
+          "Amount": 2.0,
+          "Operation": 0,
+          "UUID": "d7158f33-a518-41c7-8919-a72a1eab3d9a",
+          "AttributeName": "mkcore:max_mana"
+        }
+      ]
+    },
+    {
+      "optionType": "mkweapons:attributes",
+      "slotName": "mkweapons:randomization.attributes",
+      "slots": [
+        "mkweapons:legs"
+      ],
+      "weight": 1.0,
+      "modifiers": [
+        {
+          "Name": "mkultra:trooper_knight_armor",
+          "Amount": 0.25,
+          "Operation": 0,
+          "UUID": "f9dbca89-cf35-4996-9944-8e08855f68a5",
+          "AttributeName": "mkcore:mana_regen"
+        }
+      ]
+    },
+    {
+      "optionType": "mkweapons:attributes",
+      "slotName": "mkweapons:randomization.attributes",
+      "slots": [
+        "mkweapons:legs"
+      ],
+      "weight": 1.0,
+      "modifiers": [
+        {
+          "Name": "mkultra:trooper_knight_armor",
+          "Amount": 0.05,
+          "Operation": 2,
+          "UUID": "bffc7228-c352-48bf-9847-2259797b6066",
+          "AttributeName": "minecraft:generic.movement_speed"
+        }
+      ]
+    },
+    {
+      "optionType": "mkweapons:attributes",
+      "slotName": "mkweapons:randomization.attributes",
+      "slots": [
+        "mkweapons:legs"
+      ],
+      "weight": 1.0,
+      "modifiers": [
+        {
+          "Name": "mkultra:trooper_knight_armor",
+          "Amount": 1.0,
+          "Operation": 0,
+          "UUID": "b5e3b468-cd5d-44a3-bb5d-3337c3571c45",
+          "AttributeName": "minecraft:generic.attack_damage"
+        }
+      ]
+    },
+    {
+      "optionType": "mkweapons:attributes",
+      "slotName": "mkweapons:randomization.attributes",
+      "slots": [
+        "mkweapons:legs"
+      ],
+      "weight": 1.0,
+      "modifiers": [
+        {
+          "Name": "mkultra:trooper_knight_armor",
+          "Amount": 1.0,
+          "Operation": 0,
+          "UUID": "2eba3dc1-e7a0-466e-8b57-cbf529e38db6",
+          "AttributeName": "minecraft:generic.armor"
+        }
+      ]
+    },
+    {
+      "optionType": "mkweapons:attributes",
+      "slotName": "mkweapons:randomization.attributes",
+      "slots": [
+        "mkweapons:legs"
+      ],
+      "weight": 1.0,
+      "modifiers": [
+        {
+          "Name": "mkultra:trooper_knight_armor",
+          "Amount": 1.0,
+          "Operation": 0,
+          "UUID": "d9504cfb-2021-4668-8551-ded515b36daa",
+          "AttributeName": "mkcore:nature_damage"
+        }
+      ]
+    }
+  ],
+  "templates": [
+    {
+      "template": {
+        "templateType": "mkultra:one_effect",
+        "slots": [
+          "mkweapons:randomization.attributes"
+        ]
+      },
+      "weight": 90.0
+    },
+    {
+      "template": {
+        "templateType": "mkultra:two_effect",
+        "slots": [
+          "mkweapons:randomization.attributes",
+          "mkweapons:randomization.attributes"
+        ]
+      },
+      "weight": 10.0
+    }
+  ]
+}

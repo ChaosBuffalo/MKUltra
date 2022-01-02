@@ -1,0 +1,30 @@
+{
+  "entityType": "mknpc:zombified_piglin",
+  "options": [
+    {
+      "optionType": "mknpc:render_group",
+      "value": "zombie_pig"
+    },
+    {
+      "optionType": "mknpc:attributes",
+      "attributes": [
+        {
+          "attributeName": "minecraft:generic.max_health",
+          "value": 20.0
+        }
+      ]
+    },
+    {
+      "optionType": "mknpc:name",
+      "value": "Decaying Zombie"
+    },
+    {
+      "optionType": "mknpc:mk_size",
+      "value": 0.9
+    },
+    {
+      "optionType": "mknpc:faction",
+      "value": "mkultra:imperial_dead"
+    }
+  ]
+}

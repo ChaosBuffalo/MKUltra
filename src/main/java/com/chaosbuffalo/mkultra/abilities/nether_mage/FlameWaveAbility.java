@@ -121,7 +121,7 @@ public class FlameWaveAbility extends MKAbility {
                 .spellCast(SoundEffect.Create(entity, ModSounds.spell_fire_1, entity.getSoundCategory()),
                         1, getTargetContext())
                 .instant().color(16737305).radius(getDistance(entity), true)
-                .particle(ParticleTypes.LAVA)
+                .disableParticle()
                 .spawn();
 
         PacketHandler.sendToTrackingAndSelf(new MKParticleEffectSpawnPacket(

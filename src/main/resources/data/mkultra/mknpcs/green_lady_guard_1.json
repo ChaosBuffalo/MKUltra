@@ -15,26 +15,19 @@
       ]
     },
     {
-      "optionType": "mknpc:dialogue",
-      "value": "mkultra:open_abilities"
-    },
-    {
-      "optionType": "mknpc:ability_trainings",
-      "value": [
-        "mkultra:ability.skin_like_wood",
-        "mkultra:ability.natures_remedy",
-        "mkultra:ability.cleansing_seed",
-        "mkultra:ability.spirit_bomb",
-        "mkultra:ability.explosive_growth"
-      ]
-    },
-    {
       "optionType": "mknpc:name",
       "value": "Green Knight"
     },
     {
       "optionType": "mknpc:equipment",
       "slotOptions": {
+        "head": [
+          {
+            "weight": 1.0,
+            "dropChance": 0.05,
+            "item": "{id: \"mkultra:green_knight_helmet\", Count: 1b, tag: {Damage: 0}}"
+          }
+        ],
         "mainhand": [
           {
             "weight": 1.0,
@@ -42,32 +35,25 @@
             "item": "{id: \"mkweapons:battleaxe_stone\", Count: 1b, tag: {Damage: 0}}"
           }
         ],
-        "head": [
-          {
-            "weight": 1.0,
-            "dropChance": 0.0,
-            "item": "{id: \"minecraft:iron_helmet\", Count: 1b, tag: {Damage: 0}}"
-          }
-        ],
         "feet": [
           {
             "weight": 1.0,
-            "dropChance": 0.0,
-            "item": "{id: \"minecraft:iron_boots\", Count: 1b, tag: {Damage: 0}}"
+            "dropChance": 0.05,
+            "item": "{id: \"mkultra:green_knight_boots\", Count: 1b, tag: {Damage: 0}}"
           }
         ],
         "chest": [
           {
             "weight": 1.0,
-            "dropChance": 0.0,
-            "item": "{id: \"minecraft:iron_chestplate\", Count: 1b, tag: {Damage: 0}}"
+            "dropChance": 0.05,
+            "item": "{id: \"mkultra:green_knight_chestplate\", Count: 1b, tag: {Damage: 0}}"
           }
         ],
         "legs": [
           {
             "weight": 1.0,
-            "dropChance": 0.0,
-            "item": "{id: \"minecraft:iron_leggings\", Count: 1b, tag: {Damage: 0}}"
+            "dropChance": 0.05,
+            "item": "{id: \"mkultra:green_knight_leggings\", Count: 1b, tag: {Damage: 0}}"
           }
         ]
       }
@@ -94,8 +80,17 @@
           "priority": 3,
           "chance": 1.0,
           "abilityName": "mkultra:ability.explosive_growth"
+        },
+        {
+          "priority": 5,
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.cleansing_seed"
         }
       ]
+    },
+    {
+      "optionType": "mknpc:notable",
+      "value": true
     },
     {
       "optionType": "mknpc:mk_size",

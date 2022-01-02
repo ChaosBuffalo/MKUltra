@@ -89,8 +89,7 @@ minecraft {
             // Recommended logging level for the console
             property 'forge.logging.console.level', 'debug'
 
-            args '--mod', 'mkultra', '--all', '--output', file('src/generated/resources/')
-
+            args '--mod', 'mkultra', '--all', '--output', file('src/generated/resources/'), "--validate", "--existing", "\"" + sourceSets.main.resources.srcDirs[0] + "\""
             mods {
                 mkultra {
                     source sourceSets.main

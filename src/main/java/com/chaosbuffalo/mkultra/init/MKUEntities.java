@@ -93,9 +93,9 @@ public class MKUEntities {
 
     @SubscribeEvent
     public static void registerEntityAttributes(EntityAttributeCreationEvent event){
-        event.put(HYBOREAN_SKELETON_TYPE, MKSkeletonEntity.registerAttributes(1.0, 0.3)
+        event.put(HYBOREAN_SKELETON_TYPE, MKSkeletonEntity.registerAttributes(1.0, 0.22)
                 .createMutableAttribute(Attributes.ARMOR, 5.0).create());
         event.put(ORC_TYPE, OrcEntity.registerAttributes(2.0, 0.35).create());
-        event.put(ZOMBIFIED_PIGLIN_TYPE, MKZombifiedPiglinEntity.registerAttributes(2.0, 0.25).create());
+        event.put(ZOMBIFIED_PIGLIN_TYPE, MKZombifiedPiglinEntity.registerAttributes(2.0, 0.2).create());
     }
 }

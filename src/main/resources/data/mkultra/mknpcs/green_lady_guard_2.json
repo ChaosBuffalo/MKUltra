@@ -15,31 +15,45 @@
       ]
     },
     {
-      "optionType": "mknpc:dialogue",
-      "value": "mkultra:open_abilities"
-    },
-    {
-      "optionType": "mknpc:ability_trainings",
-      "value": [
-        "mkultra:ability.ember",
-        "mkultra:ability.flame_wave",
-        "mkultra:ability.fire_armor",
-        "mkultra:ability.warp_curse",
-        "mkultra:ability.ignite"
-      ]
-    },
-    {
       "optionType": "mknpc:name",
       "value": "Green Guardian"
     },
     {
       "optionType": "mknpc:equipment",
       "slotOptions": {
+        "head": [
+          {
+            "weight": 1.0,
+            "dropChance": 0.05,
+            "item": "{id: \"mkultra:green_knight_helmet\", Count: 1b, tag: {Damage: 0}}"
+          }
+        ],
         "mainhand": [
           {
             "weight": 1.0,
             "dropChance": 0.0,
             "item": "{id: \"mkweapons:dagger_stone\", Count: 1b, tag: {Damage: 0}}"
+          }
+        ],
+        "feet": [
+          {
+            "weight": 1.0,
+            "dropChance": 0.05,
+            "item": "{id: \"mkultra:green_knight_boots\", Count: 1b, tag: {Damage: 0}}"
+          }
+        ],
+        "chest": [
+          {
+            "weight": 1.0,
+            "dropChance": 0.05,
+            "item": "{id: \"mkultra:green_knight_chestplate\", Count: 1b, tag: {Damage: 0}}"
+          }
+        ],
+        "legs": [
+          {
+            "weight": 1.0,
+            "dropChance": 0.05,
+            "item": "{id: \"mkultra:green_knight_leggings\", Count: 1b, tag: {Damage: 0}}"
           }
         ]
       }
@@ -50,7 +64,7 @@
         {
           "priority": 1,
           "chance": 1.0,
-          "abilityName": "mkultra:ability.ember"
+          "abilityName": "mkultra:ability.skin_like_wood"
         },
         {
           "priority": 2,
@@ -60,14 +74,23 @@
         {
           "priority": 4,
           "chance": 1.0,
-          "abilityName": "mkultra:ability.flame_wave"
+          "abilityName": "mkultra:ability.spirit_bomb"
         },
         {
           "priority": 3,
           "chance": 1.0,
-          "abilityName": "mkultra:ability.ignite"
+          "abilityName": "mkultra:ability.explosive_growth"
+        },
+        {
+          "priority": 5,
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.cleansing_seed"
         }
       ]
+    },
+    {
+      "optionType": "mknpc:notable",
+      "value": true
     },
     {
       "optionType": "mknpc:mk_size",

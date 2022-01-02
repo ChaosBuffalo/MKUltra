@@ -65,14 +65,6 @@ public class CureEffect extends SpellEffectBase {
     @Override
     public void doEffect(Entity applier, Entity caster, LivingEntity target, int amplifier, SpellCast cast) {
         apply(target, amplifier);
-        PacketHandler.sendToTrackingAndSelf(
-                new ParticleEffectSpawnPacket(
-                        ParticleTypes.HAPPY_VILLAGER,
-                        ParticleEffects.CIRCLE_PILLAR_MOTION, 30, 0,
-                        target.getPosX(), target.getPosY() + 0.05,
-                        target.getPosZ(), 1.0, 1.0, 1.0,
-                        3.0, 0.0, 0.0, 0.0),
-                target);
     }
 
 }
