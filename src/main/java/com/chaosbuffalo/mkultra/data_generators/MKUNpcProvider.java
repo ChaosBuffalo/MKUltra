@@ -10,7 +10,7 @@ import com.chaosbuffalo.mknpc.data.NpcDefinitionProvider;
 import com.chaosbuffalo.mknpc.npc.NpcAttributeEntry;
 import com.chaosbuffalo.mknpc.npc.NpcDefinition;
 import com.chaosbuffalo.mknpc.npc.NpcItemChoice;
-import com.chaosbuffalo.mknpc.npc.option_entries.LootOptionEntry;
+import com.chaosbuffalo.mknpc.npc.entries.LootOptionEntry;
 import com.chaosbuffalo.mknpc.npc.options.*;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.abilities.cleric.*;
@@ -31,6 +31,7 @@ import net.minecraft.data.DirectoryCache;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -61,6 +62,7 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
         writeDefinition(generateCrumblingTrooperMage(), cache);
         writeDefinition(generateDecayingZombieArcher(), cache);
         writeDefinition(generateDecayingZombiePiglin(), cache);
+        writeDefinition(generateGreenSmith(), cache);
 //        writeDefinition(generateZombifiedPiglinTrooper(), cache);
     }
 
@@ -95,6 +97,7 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                         new ResourceLocation("mkweapons:dagger_stone"))), 1.0, 0.0f));
         equipOption.addItemChoice(EquipmentSlotType.MAINHAND,
                 new NpcItemChoice(ItemStack.EMPTY, 1.0, 0.0f));
+        def.addOption(equipOption);
         return def;
     }
 
@@ -105,11 +108,11 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
         def.addOption(new MKSizeOption().setValue(0.85f));
         def.addOption(new RenderGroupOption().setValue(MKUPiglins.ZOMBIE_PIG_NAME));
         def.addOption(new AttributesOption().addAttributeEntry(new NpcAttributeEntry(Attributes.MAX_HEALTH, 15.0)));
-        def.addOption(new NameOption().setValue("Decaying Archer"));
+        def.addOption(new NameOption().setValue("Shambling Archer"));
         EquipmentOption equipOption = new EquipmentOption();
         equipOption.addItemChoice(EquipmentSlotType.MAINHAND,
-                new NpcItemChoice(new ItemStack(ForgeRegistries.ITEMS.getValue(
-                        new ResourceLocation("mkweapons:longbow_stone"))), 1.0, 0.0f));
+                new NpcItemChoice(new ItemStack(Items.BOW), 1.0, 0.0f));
+        def.addOption(equipOption);
         return def;
     }
 
@@ -125,6 +128,7 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
         equipOption.addItemChoice(EquipmentSlotType.MAINHAND,
                 new NpcItemChoice(new ItemStack(ForgeRegistries.ITEMS.getValue(
                         new ResourceLocation("mkweapons:dagger_stone"))), 1.0, 0.0f));
+        def.addOption(equipOption);
         def.addOption(new AbilitiesOption()
                 .withAbilityOption(FireballAbility.INSTANCE, 1, 1.0)
                 .withAbilityOption(EmberAbility.INSTANCE, 2, 0.5)
@@ -159,6 +163,7 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
         equipOption.addItemChoice(EquipmentSlotType.MAINHAND,
                 new NpcItemChoice(new ItemStack(ForgeRegistries.ITEMS.getValue(
                         new ResourceLocation("mkweapons:mace_stone"))), 1.0, 0.0f));
+        def.addOption(equipOption);
         def.addOption(new AbilitiesOption()
                 .withAbilityOption(SeverTendonAbility.INSTANCE, 3, 1.0)
                 .withAbilityOption(EmberAbility.INSTANCE, 2, 0.5)
@@ -329,10 +334,32 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
         return def;
     }
 
+    private NpcDefinition generateGreenSmith(){
+        NpcDefinition def = new NpcDefinition(new ResourceLocation(MKUltra.MODID, "green_smith"),
+                MKUEntities.ORC_TYPE.getRegistryName(), null);
+        def.addOption(new FactionOption().setValue(MKUFactions.GREEN_KNIGHT_FACTION_NAME));
+        def.addOption(new MKSizeOption().setValue(1.5f));
+        def.addOption(new RenderGroupOption().setValue(MKUOrcs.GREEN_SMITH_NAME));
+        def.addOption(new AbilitiesOption()
+                .withAbilityOption(SkinLikeWoodAbility.INSTANCE, 1, 1.0)
+                .withAbilityOption(NaturesRemedyAbility.INSTANCE, 2, 1.0)
+        );
+        def.addOption(new AttributesOption().addAttributeEntry(new NpcAttributeEntry(Attributes.MAX_HEALTH, 400.0)));
+        def.addOption(new NameOption().setValue("Green Smith"));
+        def.addOption(new NotableOption());
+        EquipmentOption equipOption = new EquipmentOption();
+        equipOption.addItemChoice(EquipmentSlotType.MAINHAND,
+                new NpcItemChoice(new ItemStack(ForgeRegistries.ITEMS.getValue(
+                        new ResourceLocation("mkweapons:warhammer_iron"))), 1.0, 0.0f));
+        def.addOption(equipOption);
+        return def;
+    }
+
+
     private NpcDefinition generateGreenLady(){
         NpcDefinition def = new NpcDefinition(new ResourceLocation(MKUltra.MODID, "green_lady"),
                 MKUEntities.ORC_TYPE.getRegistryName(), null);
-        def.addOption(new FactionOption().setValue(Factions.VILLAGER_FACTION_NAME));
+        def.addOption(new FactionOption().setValue(MKUFactions.GREEN_KNIGHT_FACTION_NAME));
         def.addOption(new MKSizeOption().setValue(1.1f));
         def.addOption(new RenderGroupOption().setValue(MKUOrcs.GREEN_LADY_NAME));
         List<MKAbility> abilities = new ArrayList<>();
@@ -353,13 +380,14 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
         def.addOption(new AttributesOption().addAttributeEntry(new NpcAttributeEntry(Attributes.MAX_HEALTH, 400.0)));
         def.addOption(new NameOption().setValue("Green Lady"));
         def.addOption(new NotableOption());
+        def.addOption(new QuestOfferingOption(new ResourceLocation("mkultra", "intro_quest")));
         return def;
     }
 
     private NpcDefinition generateGreenLadyGuard2(){
         NpcDefinition def = new NpcDefinition(new ResourceLocation(MKUltra.MODID, "green_lady_guard_2"),
                 MKUEntities.ORC_TYPE.getRegistryName(), null);
-        def.addOption(new FactionOption().setValue(Factions.VILLAGER_FACTION_NAME));
+        def.addOption(new FactionOption().setValue(MKUFactions.GREEN_KNIGHT_FACTION_NAME));
         def.addOption(new MKSizeOption().setValue(1.1f));
         def.addOption(new RenderGroupOption().setValue(MKUOrcs.GREEN_LADY_GUARD_2_NAME));
         def.addOption(new AbilitiesOption()
@@ -392,7 +420,7 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
     private NpcDefinition generateGreenLadyGuard1(){
         NpcDefinition def = new NpcDefinition(new ResourceLocation(MKUltra.MODID, "green_lady_guard_1"),
                 MKUEntities.ORC_TYPE.getRegistryName(), null);
-        def.addOption(new FactionOption().setValue(Factions.VILLAGER_FACTION_NAME));
+        def.addOption(new FactionOption().setValue(MKUFactions.GREEN_KNIGHT_FACTION_NAME));
         def.addOption(new MKSizeOption().setValue(1.1f));
         def.addOption(new RenderGroupOption().setValue(MKUOrcs.GREEN_LADY_GUARD_1_NAME));
         def.addOption(new AbilitiesOption()

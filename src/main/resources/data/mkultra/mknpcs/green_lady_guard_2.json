@@ -98,7 +98,7 @@
     },
     {
       "optionType": "mknpc:faction",
-      "value": "mkfaction:villagers"
+      "value": "mkultra:green_knights"
     }
   ]
 }

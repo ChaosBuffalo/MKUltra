@@ -72,7 +72,13 @@
     },
     {
       "optionType": "mknpc:faction",
-      "value": "mkfaction:villagers"
+      "value": "mkultra:green_knights"
+    },
+    {
+      "optionType": "mknpc:offer_quests",
+      "offerings": [
+        "mkultra:intro_quest"
+      ]
     }
   ]
 }

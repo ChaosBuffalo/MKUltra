@@ -1,36 +1,22 @@
 {
-  "entityType": "mknpc:zombified_piglin",
+  "entityType": "mkultra:orc",
   "options": [
     {
       "optionType": "mknpc:render_group",
-      "value": "zombie_pig_magus"
+      "value": "green_smith"
     },
     {
       "optionType": "mknpc:attributes",
       "attributes": [
         {
           "attributeName": "minecraft:generic.max_health",
-          "value": 30.0
+          "value": 400.0
         }
       ]
     },
     {
       "optionType": "mknpc:name",
-      "value": "Crumbling Trooper Mage"
-    },
-    {
-      "optionType": "mknpc:extra_loot",
-      "noLootChance": 0.1,
-      "dropChances": 2,
-      "noLootIncrease": 0.25,
-      "lootOptions": [
-        {
-          "lootSlotName": "mkweapons:items",
-          "lootSlotTier": "mkultra:zombie_trooper",
-          "templateName": "mkultra:empty",
-          "weight": 1.0
-        }
-      ]
+      "value": "Green Smith"
     },
     {
       "optionType": "mknpc:equipment",
@@ -39,7 +25,7 @@
           {
             "weight": 1.0,
             "dropChance": 0.0,
-            "item": "{id: \"mkweapons:dagger_stone\", Count: 1b, tag: {Damage: 0}}"
+            "item": "{id: \"mkweapons:warhammer_iron\", Count: 1b, tag: {Damage: 0}}"
           }
         ]
       }
@@ -50,22 +36,26 @@
         {
           "priority": 1,
           "chance": 1.0,
-          "abilityName": "mkultra:ability.fireball"
+          "abilityName": "mkultra:ability.skin_like_wood"
         },
         {
           "priority": 2,
-          "chance": 0.5,
-          "abilityName": "mkultra:ability.ember"
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.natures_remedy"
         }
       ]
     },
     {
+      "optionType": "mknpc:notable",
+      "value": true
+    },
+    {
       "optionType": "mknpc:mk_size",
-      "value": 0.95
+      "value": 1.5
     },
     {
       "optionType": "mknpc:faction",
-      "value": "mkultra:imperial_dead"
+      "value": "mkultra:green_knights"
     }
   ]
 }

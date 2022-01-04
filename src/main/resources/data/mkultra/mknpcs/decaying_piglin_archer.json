@@ -16,7 +16,19 @@
     },
     {
       "optionType": "mknpc:name",
-      "value": "Decaying Archer"
+      "value": "Shambling Archer"
+    },
+    {
+      "optionType": "mknpc:equipment",
+      "slotOptions": {
+        "mainhand": [
+          {
+            "weight": 1.0,
+            "dropChance": 0.0,
+            "item": "{id: \"minecraft:bow\", Count: 1b, tag: {Damage: 0}}"
+          }
+        ]
+      }
     },
     {
       "optionType": "mknpc:mk_size",
