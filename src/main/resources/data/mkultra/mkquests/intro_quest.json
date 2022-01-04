@@ -1,0 +1,75 @@
+{
+  "quests": [
+    {
+      "questName": "talk_to_smith",
+      "objectives": [
+        {
+          "objectiveType": "mknpc:objective.talk_to_npc",
+          "attributes": {
+            "structureIndex": 0,
+            "npcDefinition": "mkultra:green_smith",
+            "structure": "mkultra:intro_castle",
+            "objectiveName": "talk_to_smith"
+          },
+          "nodes": [],
+          "prompts": [],
+          "hailResponse": {
+            "message": "We ain't got much left after the crash. Check that chest over there we got a few things. We're going to need you to 'gather' up some supplies to put together anything fancier.",
+            "id": "hail",
+            "effects": [
+              {
+                "dialogueEffectType": "mknpc:advance_quest_chain",
+                "chainId": "d405dfa0-68cf-41d8-9ab0-f578e08b2391"
+              }
+            ]
+          }
+        }
+      ],
+      "autoComplete": false
+    },
+    {
+      "questName": "equip_yourself",
+      "objectives": [
+        {
+          "objectiveType": "mknpc:objective.loot_chest",
+          "attributes": {
+            "structureIndex": 0,
+            "chestTag": "intro_chest",
+            "structure": "mkultra:intro_castle",
+            "objectiveName": "loot_chest"
+          },
+          "items": [
+            "{id: \"minecraft:cobblestone\", Count: 20b}",
+            "{id: \"minecraft:oak_planks\", Count: 20b}",
+            "{id: \"minecraft:string\", Count: 10b}",
+            "{id: \"minecraft:leather\", Count: 40b}",
+            "{id: \"minecraft:coal\", Count: 10b}",
+            "{id: \"minecraft:flint\", Count: 10b}",
+            "{id: \"minecraft:porkchop\", Count: 10b}"
+          ]
+        }
+      ],
+      "autoComplete": false
+    }
+  ],
+  "repeatable": false,
+  "startQuestResponse": {
+    "message": "I can explain more later. We gotta take care of these zombies; go talk to our smith and get equipped.",
+    "id": "start_quest"
+  },
+  "hailQuestResponse": {
+    "message": "Welcome to this cursed ground, you're lucky we were able to grab you before you drifted too far into the aether. {prompt:start_quest} in an archival zone?",
+    "id": "hail"
+  },
+  "hailPrompt": {
+    "message": "I don't know",
+    "id": "start_quest",
+    "promptPhrase": "don't know",
+    "promptText": "What are you doing",
+    "responses": [
+      {
+        "responseNodeId": "start_quest"
+      }
+    ]
+  }
+}

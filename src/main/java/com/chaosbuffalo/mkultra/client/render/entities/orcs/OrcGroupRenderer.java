@@ -26,6 +26,7 @@ public class OrcGroupRenderer extends BipedGroupRenderer<OrcEntity, MKBipedModel
         putLook(MKUOrcs.GREEN_LADY_NAME, MKUOrcs.GREEN_LADY_LOOK);
         putLook(MKUOrcs.GREEN_LADY_GUARD_1_NAME, MKUOrcs.GREEN_LADY_GUARD_1_LOOK);
         putLook(MKUOrcs.GREEN_LADY_GUARD_2_NAME, MKUOrcs.GREEN_LADY_GUARD_2_LOOK);
+        putLook(MKUOrcs.GREEN_SMITH_NAME, MKUOrcs.GREEN_SMITH_LOOK);
     }
 
     @Nonnull

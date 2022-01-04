@@ -1,0 +1,13 @@
+{
+  "defaultPlayerScore": -5000,
+  "allies": [
+    "mkfaction:undead"
+  ],
+  "enemies": [
+    "mkfaction:domesticated_animals",
+    "mkultra:green_knights",
+    "mkfaction:villagers"
+  ],
+  "firstNames": [],
+  "lastNames": []
+}

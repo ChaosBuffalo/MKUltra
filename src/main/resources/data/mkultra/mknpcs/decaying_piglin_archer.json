@@ -1,0 +1,42 @@
+{
+  "entityType": "mknpc:zombified_piglin",
+  "options": [
+    {
+      "optionType": "mknpc:render_group",
+      "value": "zombie_pig"
+    },
+    {
+      "optionType": "mknpc:attributes",
+      "attributes": [
+        {
+          "attributeName": "minecraft:generic.max_health",
+          "value": 15.0
+        }
+      ]
+    },
+    {
+      "optionType": "mknpc:name",
+      "value": "Shambling Archer"
+    },
+    {
+      "optionType": "mknpc:equipment",
+      "slotOptions": {
+        "mainhand": [
+          {
+            "weight": 1.0,
+            "dropChance": 0.0,
+            "item": "{id: \"minecraft:bow\", Count: 1b, tag: {Damage: 0}}"
+          }
+        ]
+      }
+    },
+    {
+      "optionType": "mknpc:mk_size",
+      "value": 0.85
+    },
+    {
+      "optionType": "mknpc:faction",
+      "value": "mkultra:imperial_dead"
+    }
+  ]
+}

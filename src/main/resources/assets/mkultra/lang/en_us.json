@@ -44,5 +44,18 @@
   "effect.mkultra.effect.soul_drain": "Soul Drain",
   "mkultra.ability.soul_drain.name": "Soul Drain",
   "mkultra.ability.soul_drain.description": "Restores %.1f mana when you kill a target.",
-  "mkultra.talent_tree.core_talents.name": "Core"
+  "mkultra.talent_tree.core_talents.name": "Core",
+  "item.mkultra.corrupted_pig_iron_plate": "Corrupted Pig Iron Plate",
+  "item.mkultra.trooper_knight_chestplate": "Salvaged Trooper Chestplate",
+  "item.mkultra.trooper_knight_leggings": "Salvaged Trooper Leggings",
+  "item.mkultra.trooper_knight_helmet": "Salvaged Trooper Helmet",
+  "item.mkultra.trooper_knight_boots": "Salvaged Trooper Boots",
+  "item.mkultra.green_knight_chestplate": "Green Knight Chestplate",
+  "item.mkultra.green_knight_leggings": "Green Knight Leggings",
+  "item.mkultra.green_knight_helmet": "Green Knight Helmet",
+  "item.mkultra.green_knight_boots": "Green Knight Boots",
+  "item.mkultra.destroyed_trooper_chestplate": "Destroyed Trooper Chestplate",
+  "item.mkultra.destroyed_trooper_leggings": "Destroyed Trooper Leggings",
+  "item.mkultra.destroyed_trooper_helmet": "Destroyed Trooper Helmet",
+  "item.mkultra.destroyed_trooper_boots": "Destroyed Trooper Boots"
 }

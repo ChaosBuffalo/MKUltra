@@ -137,7 +137,7 @@ public class IgniteAbility extends MKAbility {
                         .spellCast(SoundEffect.Create(entity, ModSounds.spell_fire_8, entity.getSoundCategory()),
                                 1, getTargetContext())
                         .instant().color(16737305).radius(igniteDistance.getValue(), true)
-                        .particle(ParticleTypes.FLAME)
+                        .disableParticle()
                         .spawn();
 
             } else {

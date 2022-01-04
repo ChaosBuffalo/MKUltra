@@ -39,12 +39,16 @@ public class MKUOrcs {
     public static ModelLook GREEN_LADY_GUARD_2_LOOK = new ModelLook(ModelStyles.LONG_HAIR_STYLE, GREEN_ORC,
             ORC_HAIR_1, MKUClothes.LOINCLOTH_2, ORC_LONG_HAIR_1_LAYER_2);
 
+    public static ModelLook GREEN_SMITH_LOOK = new ModelLook(ModelStyles.LONG_HAIR_STYLE, GREEN_ORC,
+            ORC_HAIR_2, MKUClothes.LOINCLOTH, ORC_LONG_HAIR_2_LAYER_2);
+
     public static ModelLook ORC_BASE = new ModelLook(ModelStyles.BASIC_STYLE, GREEN_ORC);
 
     public static final String DEFAULT_NAME = "default";
     public static final String GREEN_LADY_NAME = "green_lady";
     public static final String GREEN_LADY_GUARD_1_NAME = "green_lady_guard_1";
     public static final String GREEN_LADY_GUARD_2_NAME = "green_lady_guard_2";
+    public static final String GREEN_SMITH_NAME = "green_smith";
 
 
 }

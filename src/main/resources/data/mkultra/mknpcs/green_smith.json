@@ -1,0 +1,61 @@
+{
+  "entityType": "mkultra:orc",
+  "options": [
+    {
+      "optionType": "mknpc:render_group",
+      "value": "green_smith"
+    },
+    {
+      "optionType": "mknpc:attributes",
+      "attributes": [
+        {
+          "attributeName": "minecraft:generic.max_health",
+          "value": 400.0
+        }
+      ]
+    },
+    {
+      "optionType": "mknpc:name",
+      "value": "Green Smith"
+    },
+    {
+      "optionType": "mknpc:equipment",
+      "slotOptions": {
+        "mainhand": [
+          {
+            "weight": 1.0,
+            "dropChance": 0.0,
+            "item": "{id: \"mkweapons:warhammer_iron\", Count: 1b, tag: {Damage: 0}}"
+          }
+        ]
+      }
+    },
+    {
+      "optionType": "mknpc:abilities",
+      "options": [
+        {
+          "priority": 1,
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.skin_like_wood"
+        },
+        {
+          "priority": 2,
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.natures_remedy"
+        }
+      ]
+    },
+    {
+      "optionType": "mknpc:notable",
+      "value": true
+    },
+    {
+      "optionType": "mknpc:mk_size",
+      "value": 1.5
+    },
+    {
+      "optionType": "mknpc:faction",
+      "value": "mkultra:green_knights"
+    }
+  ]
+}

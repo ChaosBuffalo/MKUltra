@@ -1,0 +1,16 @@
+{
+  "defaultPlayerScore": 1000,
+  "allies": [
+    "mkfaction:domesticated_animals",
+    "mkfaction:villagers"
+  ],
+  "enemies": [
+    "mkfaction:hostile_animals",
+    "mkfaction:monsters",
+    "mkfaction:undead",
+    "mkultra:hyborean_dead",
+    "mkfaction:illagers"
+  ],
+  "firstNames": [],
+  "lastNames": []
+}

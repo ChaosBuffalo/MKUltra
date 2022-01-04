@@ -1,14 +1,25 @@
 package com.chaosbuffalo.mkultra.init;
 
+import com.chaosbuffalo.mkcore.core.MKAttributes;
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.item.MKUArmorMaterial;
+import com.chaosbuffalo.mkweapons.items.armor.MKArmorItem;
+import com.chaosbuffalo.mkweapons.items.effects.armor.ArmorModifierEffect;
+import com.chaosbuffalo.mkweapons.items.randomization.options.AttributeOptionEntry;
+import com.google.common.collect.Lists;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ObjectHolder;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class MKUItems {
@@ -22,224 +33,123 @@ public final class MKUItems {
     @ObjectHolder(MKUltra.MODID + ":fireball_projectile")
     public static Item fireballProjectileItem;
 
+    @ObjectHolder(MKUltra.MODID + ":green_knight_helmet")
+    public static Item greenKnightHelmet;
 
-//    public static Item manaRegenIdolIron;
-//    public static Item manaRegenIdolGold;
-//    public static Item manaRegenIdolWood;
-//    public static Item chainmailChestplate;
-//    public static Item chainmailHelmet;
-//    public static Item chainmailBoots;
-//    public static Item chainmailLeggings;
-//    public static Item gold_threaded_helmet;
-//    public static Item gold_threaded_boots;
-//    public static Item gold_threaded_chestplate;
-//    public static Item gold_threaded_leggings;
-//    public static Item forgetfulnessBread;
-//    public static Item gold_threaded_cloth;
-//    public static Item pipe;
+    @ObjectHolder(MKUltra.MODID + ":green_knight_leggings")
+    public static Item greenKnightLeggings;
 
-//    public static Item bonedLeather;
-//    public static Item bonedLeatherLeggings;
-//    public static Item bonedLeatherChestplate;
-//    public static Item bonedLeatherHelmet;
-//    public static Item bonedLeatherBoots;
+    @ObjectHolder(MKUltra.MODID + ":green_knight_chestplate")
+    public static Item greenKnightChestplate;
 
-//    public static Item iron_threaded_cloth;
-//    public static Item iron_threaded_leggings;
-//    public static Item iron_threaded_chestplate;
-//    public static Item iron_threaded_helmet;
-//    public static Item iron_threaded_boots;
+    @ObjectHolder(MKUltra.MODID + ":green_knight_boots")
+    public static Item greenKnightBoots;
 
+    @ObjectHolder(MKUltra.MODID + ":corrupted_pig_iron_plate")
+    public static Item corruptedPigIronPlate;
 
+    @ObjectHolder(MKUltra.MODID + ":trooper_knight_helmet")
+    public static Item trooperKnightHelmet;
 
-//    public static Item fire_extinguisher_flask;
+    @ObjectHolder(MKUltra.MODID + ":trooper_knight_leggings")
+    public static Item trooperKnightLeggings;
 
+    @ObjectHolder(MKUltra.MODID + ":trooper_knight_chestplate")
+    public static Item trooperKnightChestplate;
 
+    @ObjectHolder(MKUltra.MODID + ":trooper_knight_boots")
+    public static Item trooperKnightBoots;
 
-//    public static ItemArmor.ArmorMaterial CHAINMAT = EnumHelper.addArmorMaterial(
-//            "mkultra_chain",
-//            "mkultra:chainmail", 30,
-//            new int[]{1, 4, 5, 2}, 12, null, 0);
-//    public static ItemArmor.ArmorMaterial ROBEMAT = EnumHelper.addArmorMaterial(
-//            "mkultra_gold_threaded",
-//            "mkultra:gold_threaded", 65,
-//            new int[]{1, 1, 1, 1}, 35, null, 0);
-//    public static ItemArmor.ArmorMaterial BONED_LEATHER_MAT = EnumHelper.addArmorMaterial(
-//            "mkultra_boned_leather",
-//            "mkultra:boned_leather", 35,
-//            new int[]{2, 3, 2, 1}, 2, null, 0);
-//
-//
-//    public static ItemArmor.ArmorMaterial IRON_THREADED_MAT = EnumHelper.addArmorMaterial(
-//            "mkultra_iron_threaded",
-//            "mkultra:iron_threaded", 45,
-//            new int[]{1, 2, 2, 1}, 20, null, 0);
+    @ObjectHolder(MKUltra.MODID + ":destroyed_trooper_helmet")
+    public static Item destroyedTrooperHelmet;
 
+    @ObjectHolder(MKUltra.MODID + ":destroyed_trooper_leggings")
+    public static Item destroyedTrooperLeggings;
 
-    // can't be public because this is an ObjectHolder
-    private static final Set<Item> ALL_ITEMS = new HashSet<>();
+    @ObjectHolder(MKUltra.MODID + ":destroyed_trooper_chestplate")
+    public static Item destroyedTrooperChestplate;
 
-//    private static void regInternal(Item item, String pathName) {
-//        item.setTranslationKey(pathName);
-//        item.setRegistryName(MKUltra.MODID, pathName);
-//        ALL_ITEMS.add(item);
-//    }
-//
-//    private static void regInternal(Item item) {
-//        // skip 'item.'
-//        regInternal(item, item.getTranslationKey().substring(5));
-//    }
-
-    public static void initItems() {
-        // Class-related
-//        regInternal(diamond_dust = new DiamondDust("diamond_dust")
-//                .setCreativeTab(MKUltra.MKULTRA_TAB));
-//
-//        regInternal(new ClassIcon("sun_icon",
-//                "The Sun God will bestow on you great powers. Choose your class: ", 8,
-//                new ResourceLocation(MKUltra.MODID, "provider.sun_icon")
-//        ).setCreativeTab(MKUltra.MKULTRA_TAB), "sun_icon");
-//        regInternal(new ClassIcon("moon_icon",
-//                "The Mysterious Moon Goddess offers her arts to you. Choose your class: ", 1,
-//                new ResourceLocation(MKUltra.MODID, "provider.moon_icon")
-//        ).setCreativeTab(MKUltra.MKULTRA_TAB), "moon_icon");
-//        regInternal(new ClassIcon("desperate_icon",
-//                "The Enigmatic Wood Spirit offers her power to you. Choose your class: ", 1,
-//                new ResourceLocation(MKUltra.MODID, "provider.desperate_icon")
-//        ).setCreativeTab(MKUltra.MKULTRA_TAB), "desperate_icon");
-//        regInternal(forgetfulnessBread = new ForgetfulnessBread(8, 1.0f, false)
-//                .setCreativeTab(MKUltra.MKULTRA_TAB), "forgetfulness_bread");
-
-
-        //Projectile items
-//        regInternal(drownProjectile = new Item().setCreativeTab(MKUltra.MKULTRA_TAB),
-//                "drown_projectile");
-//        regInternal(geyserProjectile = new Item().setCreativeTab(MKUltra.MKULTRA_TAB),
-//                "geyser_projectile");
-//        regInternal(duality_rune_projectile = new Item().setCreativeTab(MKUltra.MKULTRA_TAB),
-//                "duality_rune_projectile");
-//        regInternal(ballLightning = new Item().setCreativeTab(MKUltra.MKULTRA_TAB),
-//                "ballLightning");
-//        regInternal(whirlpool_projectile = new Item().setCreativeTab(MKUltra.MKULTRA_TAB),
-//                "whirlpool_projectile");
-//        regInternal(flame_blade_projectile = new Item().setCreativeTab(MKUltra.MKULTRA_TAB),
-//                "flame_blade_projectile");
-//        regInternal(fairy_fire_projectile = new Item().setCreativeTab(MKUltra.MKULTRA_TAB),
-//                "fairy_fire_projectile");
-//        regInternal(cleansing_seed_projectile = new Item().setCreativeTab(MKUltra.MKULTRA_TAB),
-//                "cleansing_seed_projectile");
-//        regInternal(spirit_bomb_projectile = new Item().setCreativeTab(MKUltra.MKULTRA_TAB),
-//                "spirit_bomb_projectile");
-//        regInternal(mob_fireball_projectile = new Item().setCreativeTab(MKUltra.MKULTRA_TAB),
-//                "mob_fireball_projectile");
-//        regInternal(grasping_roots_projectile = new Item().setCreativeTab(MKUltra.MKULTRA_TAB),
-//                "grasping_roots_projectile");
-
-
-//        regInternal(manaRegenIdolIron = new ManaRegenIdol(
-//                "mana_regen_idol_iron", .5f, 0, 2, 0, 350)
-//                .setCreativeTab(MKUltra.MKULTRA_TAB));
-//        regInternal(manaRegenIdolWood = new ManaRegenIdol(
-//                "mana_regen_idol_wood", .25f, 5, 0, 1, 150)
-//                .setCreativeTab(MKUltra.MKULTRA_TAB));
-//        regInternal(manaRegenIdolGold = new ManaRegenIdol(
-//                "mana_regen_idol_gold", 1.0f, 5, 0, 4, 500)
-//                .setCreativeTab(MKUltra.MKULTRA_TAB));
-
-
-//        regInternal(iron_threaded_cloth = new Item().setCreativeTab(MKUltra.MKULTRA_TAB),
-//                "iron_threaded_cloth");
-//        IRON_THREADED_MAT.setRepairItem(new ItemStack(iron_threaded_cloth));
-//        regInternal(iron_threaded_chestplate = new ItemAttributeArmor(
-//                "iron_threaded_chestplate", IRON_THREADED_MAT, 1,
-//                EntityEquipmentSlot.CHEST,
-//                new ItemAttributeEntry(1.0, PlayerAttributes.OP_INCREMENT, PlayerAttributes.MAGIC_ATTACK_DAMAGE))
-//                .setCreativeTab(MKUltra.MKULTRA_TAB));
-//        regInternal(iron_threaded_helmet = new ItemAttributeArmor(
-//                "iron_threaded_helmet", IRON_THREADED_MAT, 1,
-//                EntityEquipmentSlot.HEAD,
-//                new ItemAttributeEntry(1.0, PlayerAttributes.OP_INCREMENT, PlayerAttributes.MANA_REGEN))
-//                .setCreativeTab(MKUltra.MKULTRA_TAB));
-//        regInternal(iron_threaded_leggings = new ItemAttributeArmor(
-//                "iron_threaded_leggings", IRON_THREADED_MAT, 2,
-//                EntityEquipmentSlot.LEGS,
-//                new ItemAttributeEntry(3, PlayerAttributes.OP_INCREMENT, PlayerAttributes.MAX_MANA))
-//                .setCreativeTab(MKUltra.MKULTRA_TAB));
-//        regInternal(iron_threaded_boots = new ItemAttributeArmor(
-//                "iron_threaded_boots", IRON_THREADED_MAT, 2,
-//                EntityEquipmentSlot.FEET,
-//                new ItemAttributeEntry(2, PlayerAttributes.OP_INCREMENT, PlayerAttributes.MAX_MANA))
-//                .setCreativeTab(MKUltra.MKULTRA_TAB));
-//
-//
-//        CHAINMAT.setRepairItem(new ItemStack(Items.IRON_INGOT));
-//        regInternal(chainmailChestplate = new ItemModArmor(
-//                "chainmail_chestplate", CHAINMAT, 1, EntityEquipmentSlot.CHEST)
-//                .setCreativeTab(MKUltra.MKULTRA_TAB));
-//        regInternal(chainmailHelmet = new ItemModArmor(
-//                "chainmail_helmet", CHAINMAT, 1, EntityEquipmentSlot.HEAD)
-//                .setCreativeTab(MKUltra.MKULTRA_TAB));
-//        regInternal(chainmailLeggings = new ItemModArmor(
-//                "chainmail_leggings", CHAINMAT, 2, EntityEquipmentSlot.LEGS)
-//                .setCreativeTab(MKUltra.MKULTRA_TAB));
-//        regInternal(chainmailBoots = new ItemModArmor(
-//                "chainmail_boots", CHAINMAT, 2, EntityEquipmentSlot.FEET)
-//                .setCreativeTab(MKUltra.MKULTRA_TAB));
-//
-//        regInternal(gold_threaded_cloth = new Item()
-//                .setCreativeTab(MKUltra.MKULTRA_TAB), "gold_threaded_cloth");
-//        ROBEMAT.setRepairItem(new ItemStack(MKUItems.gold_threaded_cloth));
-//
-//        regInternal(gold_threaded_chestplate = new ItemAttributeArmor(
-//                "gold_threaded_chestplate", ROBEMAT, 1, EntityEquipmentSlot.CHEST,
-//                new ItemAttributeEntry(2.0, PlayerAttributes.OP_INCREMENT, PlayerAttributes.MAGIC_ATTACK_DAMAGE))
-//                .setCreativeTab(MKUltra.MKULTRA_TAB));
-//        regInternal(gold_threaded_helmet = new ItemAttributeArmor(
-//                "gold_threaded_helmet", ROBEMAT, 1, EntityEquipmentSlot.HEAD,
-//                new ItemAttributeEntry(1.5, PlayerAttributes.OP_INCREMENT, PlayerAttributes.MANA_REGEN))
-//                .setCreativeTab(MKUltra.MKULTRA_TAB));
-//        regInternal(gold_threaded_leggings = new ItemAttributeArmor(
-//                "gold_threaded_leggings", ROBEMAT, 2, EntityEquipmentSlot.LEGS,
-//                new ItemAttributeEntry(5.0, PlayerAttributes.OP_INCREMENT, PlayerAttributes.MAX_MANA))
-//                .setCreativeTab(MKUltra.MKULTRA_TAB));
-//        regInternal(gold_threaded_boots = new ItemAttributeArmor(
-//                "gold_threaded_boots", ROBEMAT, 2, EntityEquipmentSlot.FEET,
-//                new ItemAttributeEntry(5.0, PlayerAttributes.OP_INCREMENT, PlayerAttributes.MAX_MANA))
-//                .setCreativeTab(MKUltra.MKULTRA_TAB));
-//
-//
-//        regInternal(bonedLeather = new Item().setCreativeTab(MKUltra.MKULTRA_TAB), "boned_leather");
-//        BONED_LEATHER_MAT.setRepairItem(new ItemStack(MKUItems.bonedLeather));
-//        regInternal(bonedLeatherChestplate = new ItemModArmor(
-//                "boned_leather_chestplate", BONED_LEATHER_MAT, 1, EntityEquipmentSlot.CHEST)
-//                .setCreativeTab(MKUltra.MKULTRA_TAB));
-//        regInternal(bonedLeatherHelmet = new ItemModArmor(
-//                "boned_leather_helmet", BONED_LEATHER_MAT, 1, EntityEquipmentSlot.HEAD)
-//                .setCreativeTab(MKUltra.MKULTRA_TAB));
-//        regInternal(bonedLeatherLeggings = new ItemModArmor(
-//                "boned_leather_leggings", BONED_LEATHER_MAT, 2, EntityEquipmentSlot.LEGS)
-//                .setCreativeTab(MKUltra.MKULTRA_TAB));
-//        regInternal(bonedLeatherBoots = new ItemModArmor(
-//                "boned_leather_boots", BONED_LEATHER_MAT, 2, EntityEquipmentSlot.FEET)
-//                .setCreativeTab(MKUltra.MKULTRA_TAB));
-//
-//        regInternal(pipe = new Pipe("hemp_pipe").setCreativeTab(MKUltra.MKULTRA_TAB), "hemp_pipe");
-//        regInternal(fire_extinguisher_flask = new FireExtinguisherFlask(), "fire_extinguisher_flask");
-//        regInternal(new NPCSpawnerIcon("ranger_icon",
-//                new ResourceLocation(MKUltra.MODID, "ranger")));
-//        regInternal(new NPCSpawnerIcon("orb_mother_icon",
-//                new ResourceLocation(MKUltra.MODID, "orb_mother")));
-    }
-
+    @ObjectHolder(MKUltra.MODID + ":destroyed_trooper_boots")
+    public static Item destroyedTrooperBoots;
 
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event) {
+        //projectiles
         event.getRegistry().register(new Item(new Item.Properties())
                 .setRegistryName(MKUltra.MODID, "cleansing_seed_projectile"));
         event.getRegistry().register(new Item(new Item.Properties())
                 .setRegistryName(MKUltra.MODID, "spirit_bomb_projectile"));
         event.getRegistry().register(new Item(new Item.Properties())
                 .setRegistryName(MKUltra.MODID, "fireball_projectile"));
+
+        //quest items
+        Item pigIronPlate = new Item(new Item.Properties().group(ItemGroup.MISC))
+                .setRegistryName(new ResourceLocation(MKUltra.MODID, "corrupted_pig_iron_plate"));
+        event.getRegistry().register(pigIronPlate);
+        Item destroyedTrooperHelmet = new Item(new Item.Properties().group(ItemGroup.MISC))
+                .setRegistryName(MKUltra.MODID, "destroyed_trooper_helmet");
+        Item destroyedTrooperChestplate = new Item(new Item.Properties().group(ItemGroup.MISC))
+                .setRegistryName(MKUltra.MODID, "destroyed_trooper_chestplate");
+        Item destroyedTrooperBoots = new Item(new Item.Properties().group(ItemGroup.MISC))
+                .setRegistryName(MKUltra.MODID, "destroyed_trooper_boots");
+        Item destroyedTrooperLeggings = new Item(new Item.Properties().group(ItemGroup.MISC))
+                .setRegistryName(MKUltra.MODID, "destroyed_trooper_leggings");
+        event.getRegistry().registerAll(destroyedTrooperBoots, destroyedTrooperHelmet,
+                destroyedTrooperChestplate, destroyedTrooperLeggings);
+
+        // green knight armor
+        List<AttributeOptionEntry> gkHelmetAttrs = Lists.newArrayList(
+                new AttributeOptionEntry(MKAttributes.COOLDOWN,
+                        new AttributeModifier(UUID.fromString("2013a410-ca6d-48a9-a12d-a70a65ec8190"),
+                        "Bonus", 0.25, AttributeModifier.Operation.MULTIPLY_TOTAL)));
+
+        List<AttributeOptionEntry> gkLegsAttrs = Lists.newArrayList(
+                new AttributeOptionEntry(MKAttributes.MAX_MANA,
+                        new AttributeModifier(UUID.fromString("9b184106-1a7b-444c-8bbe-538bff1f66cd"),
+                                "Bonus", 6, AttributeModifier.Operation.ADDITION)),
+                new AttributeOptionEntry(MKAttributes.MANA_REGEN,
+                        new AttributeModifier(UUID.fromString("25f12c51-a841-4ac9-8fbb-02000a19e563"),
+                                "Bonus", 1.0, AttributeModifier.Operation.ADDITION)));
+
+        List<AttributeOptionEntry> gkChestAttrs = Lists.newArrayList(
+                new AttributeOptionEntry(Attributes.MAX_HEALTH,
+                        new AttributeModifier(UUID.fromString("ea84d132-3e14-40d7-acda-2f8ab0d5f3ad"),
+                                "Bonus", 10, AttributeModifier.Operation.ADDITION)),
+                new AttributeOptionEntry(MKAttributes.HEAL_BONUS,
+                        new AttributeModifier(UUID.fromString("c6359e08-8e0c-4721-b8aa-d55d978f4798"),
+                                "Bonus", 2, AttributeModifier.Operation.ADDITION)));
+
+        List<AttributeOptionEntry> gkBootsAttrs = Lists.newArrayList(
+                new AttributeOptionEntry(Attributes.ATTACK_SPEED,
+                        new AttributeModifier(UUID.fromString("f0d94451-5a80-4669-954d-bc6f6c39ccd0"),
+                                "Bonus", 0.10, AttributeModifier.Operation.MULTIPLY_TOTAL)));
+
+        Item gkHelmet = new MKArmorItem(MKUArmorMaterial.GREEN_KNIGHT_ARMOR, EquipmentSlotType.HEAD,
+                (new Item.Properties()).group(ItemGroup.COMBAT), new ArmorModifierEffect(gkHelmetAttrs))
+                .setRegistryName(MKUltra.MODID, "green_knight_helmet");
+        Item gkLeggings = new MKArmorItem(MKUArmorMaterial.GREEN_KNIGHT_ARMOR, EquipmentSlotType.LEGS,
+                (new Item.Properties()).group(ItemGroup.COMBAT), new ArmorModifierEffect(gkLegsAttrs))
+                .setRegistryName(MKUltra.MODID, "green_knight_leggings");
+        Item gkChestplate = new MKArmorItem(MKUArmorMaterial.GREEN_KNIGHT_ARMOR, EquipmentSlotType.CHEST,
+                (new Item.Properties()).group(ItemGroup.COMBAT), new ArmorModifierEffect(gkChestAttrs))
+                .setRegistryName(MKUltra.MODID, "green_knight_chestplate");
+        Item gkBoots = new MKArmorItem(MKUArmorMaterial.GREEN_KNIGHT_ARMOR, EquipmentSlotType.FEET,
+                (new Item.Properties()).group(ItemGroup.COMBAT), new ArmorModifierEffect(gkBootsAttrs))
+                .setRegistryName(MKUltra.MODID, "green_knight_boots");
+        event.getRegistry().registerAll(gkChestplate, gkHelmet, gkBoots, gkLeggings);
+
+        // trooper knight armor
+        Item tkHelmet = new MKArmorItem(MKUArmorMaterial.TROOPER_KNIGHT_ARMOR, EquipmentSlotType.HEAD,
+                (new Item.Properties()).group(ItemGroup.COMBAT)).setRegistryName(MKUltra.MODID, "trooper_knight_helmet");
+        Item tkLeggings = new MKArmorItem(MKUArmorMaterial.TROOPER_KNIGHT_ARMOR, EquipmentSlotType.LEGS,
+                (new Item.Properties()).group(ItemGroup.COMBAT)).setRegistryName(MKUltra.MODID, "trooper_knight_leggings");
+        Item tkChestplate = new MKArmorItem(MKUArmorMaterial.TROOPER_KNIGHT_ARMOR, EquipmentSlotType.CHEST,
+                (new Item.Properties()).group(ItemGroup.COMBAT)).setRegistryName(MKUltra.MODID, "trooper_knight_chestplate");
+        Item tkBoots = new MKArmorItem(MKUArmorMaterial.TROOPER_KNIGHT_ARMOR, EquipmentSlotType.FEET,
+                (new Item.Properties()).group(ItemGroup.COMBAT)).setRegistryName(MKUltra.MODID, "trooper_knight_boots");
+        event.getRegistry().registerAll(tkBoots, tkChestplate, tkHelmet, tkLeggings);
+
+
     }
 
 }

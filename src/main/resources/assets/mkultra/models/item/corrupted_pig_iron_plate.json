@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "mkultra:items/corrupted_pig_iron_plate"
+  }
+}

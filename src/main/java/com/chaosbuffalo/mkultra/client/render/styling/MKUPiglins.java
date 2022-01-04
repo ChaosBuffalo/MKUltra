@@ -2,6 +2,8 @@ package com.chaosbuffalo.mkultra.client.render.styling;
 
 import com.chaosbuffalo.mknpc.client.render.models.styling.ModelLook;
 import com.chaosbuffalo.mknpc.client.render.models.styling.ModelStyles;
+import com.chaosbuffalo.mknpc.mixins.StructureMixins;
+import com.chaosbuffalo.mknpc.world.gen.feature.structure.MKStructureStart;
 import com.chaosbuffalo.mkultra.MKUltra;
 import net.minecraft.util.ResourceLocation;
 
@@ -38,15 +40,18 @@ public class MKUPiglins {
             VANILLA_ZOMBIFIED_PIGLIN_TEXTURE, IMPERIAL_TROOPER_ARMOR_DAMAGED);
     public static final ModelLook ZOMBIE_PIG_MAGE_LOOK = new ModelLook(ModelStyles.CLOTHES_ARMOR_TRANSLUCENT_STYLE,
             VANILLA_ZOMBIFIED_PIGLIN_TEXTURE, IMPERIAL_MAGUS_ARMOR_DAMAGED);
+    public static final ModelLook BASE_LOOK = new ModelLook(ModelStyles.BASIC_STYLE, VANILLA_ZOMBIFIED_PIGLIN_TEXTURE);
 
     public static final Map<String, ModelLook> ZOMBIE_PIGLIN_STYLES = new HashMap<>();
 
     public static final String ZOMBIE_PIG_TROOPER_NAME = "zombie_pig_trooper";
     public static final String ZOMBIE_PIG_MAGUS_NAME = "zombie_pig_magus";
+    public static final String ZOMBIE_PIG_NAME = "zombie_pig";
 
     static {
         ZOMBIE_PIGLIN_STYLES.put(ZOMBIE_PIG_TROOPER_NAME, ZOMBIE_PIG_TROOPER_LOOK);
         ZOMBIE_PIGLIN_STYLES.put(ZOMBIE_PIG_MAGUS_NAME, ZOMBIE_PIG_MAGE_LOOK);
+        ZOMBIE_PIGLIN_STYLES.put(ZOMBIE_PIG_NAME, BASE_LOOK);
     }
 }
 

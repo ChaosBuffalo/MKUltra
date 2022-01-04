@@ -285,6 +285,7 @@ public class ModSounds {
         registerSound(evt, createSound("spell_wind_5"));
         registerSound(evt, createSound("spell_holy_1"));
         registerSound(evt, createSound("spell_holy_2"));
+        registerSound(evt, createSound("spell_holy_3"));
         registerSound(evt, createSound("spell_holy_4"));
         registerSound(evt, createSound("spell_holy_5"));
         registerSound(evt, createSound("spell_holy_8"));
