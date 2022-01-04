@@ -26,6 +26,10 @@ repositories {
         url = 'https://minecraft.curseforge.com/api/maven/'
     }
     mavenLocal()
+    maven {
+        name = "world-edit"
+        url = 'https://maven.enginehub.org/repo/'
+    }
 }
 
 minecraft {
