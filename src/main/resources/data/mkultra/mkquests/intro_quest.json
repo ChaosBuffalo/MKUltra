@@ -5,6 +5,7 @@
       "objectives": [
         {
           "objectiveType": "mknpc:objective.talk_to_npc",
+          "description": "{\"text\":\"Talk to the smith\"}",
           "attributes": {
             "structureIndex": 0,
             "npcDefinition": "mkultra:green_smith",
@@ -18,20 +19,22 @@
             "id": "hail",
             "effects": [
               {
-                "dialogueEffectType": "mknpc:advance_quest_chain",
-                "chainId": "d405dfa0-68cf-41d8-9ab0-f578e08b2391"
+                "dialogueEffectType": "mknpc:objective_completion",
+                "chainId": "7ce7a88c-721d-4c34-abc3-54468f4ffa13",
+                "objectiveName": "talk_to_smith"
               }
             ]
           }
         }
       ],
-      "autoComplete": false
+      "autoComplete": true
     },
     {
       "questName": "equip_yourself",
       "objectives": [
         {
           "objectiveType": "mknpc:objective.loot_chest",
+          "description": "{\"text\":\"Loot the smith's chest\"}",
           "attributes": {
             "structureIndex": 0,
             "chestTag": "intro_chest",
@@ -62,14 +65,15 @@
     "id": "hail"
   },
   "hailPrompt": {
-    "message": "I don't know",
+    "message": "What are you doing",
     "id": "start_quest",
     "promptPhrase": "don't know",
-    "promptText": "What are you doing",
+    "promptText": "I don't know",
     "responses": [
       {
         "responseNodeId": "start_quest"
       }
     ]
-  }
+  },
+  "questName": "{\"text\":\"Intro Quest\"}"
 }

@@ -7,6 +7,7 @@ import com.chaosbuffalo.mknpc.data.QuestDefinitionProvider;
 import com.chaosbuffalo.mknpc.quest.Quest;
 import com.chaosbuffalo.mknpc.quest.QuestDefinition;
 import com.chaosbuffalo.mknpc.quest.dialogue.effects.AdvanceQuestChainEffect;
+import com.chaosbuffalo.mknpc.quest.dialogue.effects.ObjectiveCompleteEffect;
 import com.chaosbuffalo.mknpc.quest.objectives.LootChestObjective;
 import com.chaosbuffalo.mknpc.quest.objectives.TalkToNpcObjective;
 import com.chaosbuffalo.mkultra.MKUltra;
@@ -36,8 +37,9 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
     private QuestDefinition generateIntroQuest(){
 
         QuestDefinition def = new QuestDefinition(new ResourceLocation(MKUltra.MODID, "intro_quest"));
+        def.setQuestName(new StringTextComponent("Intro Quest"));
         DialoguePrompt startQuestPrompt = new DialoguePrompt("start_quest", "don't know",
-                "What are you doing", "I don't know");
+                "I don't know", "What are you doing");
         startQuestPrompt.addResponse(new DialogueResponse("start_quest"));
         DialogueNode hailNode = new DialogueNode("hail", String.format("Welcome to this cursed ground, " +
                 "you're lucky we were able to grab you before you drifted too far into the aether. %s in an archival zone?",
@@ -48,16 +50,15 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
         def.setStartQuestResponse(questStart);
         def.setStartQuestHail(hailNode);
         Quest talk1 = new Quest("talk_to_smith");
+        talk1.setAutoComplete(true);
         TalkToNpcObjective talkObj = new TalkToNpcObjective("talk_to_smith", MKUWorldGen.INTRO_CASTLE_NAME, 0,
                 new ResourceLocation("mkultra", "green_smith"), new StringTextComponent("Talk to the smith"));
         DialogueNode smithHail = new DialogueNode("hail", "We ain't got much left after the crash. " +
                 "Check that chest over there we got a few things. We're going to need you to 'gather' up some supplies to put together anything fancier.");
-        smithHail.addEffect(new AdvanceQuestChainEffect());
+        smithHail.addEffect(new ObjectiveCompleteEffect("talk_to_smith"));
         talkObj.withHailResponse(smithHail);
         talk1.addObjective(talkObj);
         def.addQuest(talk1);
-
-
 
 
 
