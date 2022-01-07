@@ -1,26 +1,26 @@
 package com.chaosbuffalo.mkultra.abilities.cleric;
 
 import com.chaosbuffalo.mkcore.GameConstants;
-import com.chaosbuffalo.mkcore.abilities.*;
-import com.chaosbuffalo.mkcore.effects.MKParticleEffect;
-import com.chaosbuffalo.mkcore.effects.SpellCast;
-import com.chaosbuffalo.mkcore.network.MKParticleEffectSpawnPacket;
-import com.chaosbuffalo.mkcore.serialization.attributes.IntAttribute;
+import com.chaosbuffalo.mkcore.abilities.AbilityContext;
+import com.chaosbuffalo.mkcore.abilities.AbilityTargetSelector;
+import com.chaosbuffalo.mkcore.abilities.AbilityTargeting;
+import com.chaosbuffalo.mkcore.abilities.MKAbility;
 import com.chaosbuffalo.mkcore.core.IMKEntityData;
 import com.chaosbuffalo.mkcore.core.MKAttributes;
 import com.chaosbuffalo.mkcore.effects.AreaEffectBuilder;
-import com.chaosbuffalo.mkcore.effects.instant.SoundEffect;
-import com.chaosbuffalo.mkcore.fx.ParticleEffects;
+import com.chaosbuffalo.mkcore.effects.MKEffectBuilder;
+import com.chaosbuffalo.mkcore.effects.MKParticleEffectNew;
+import com.chaosbuffalo.mkcore.effects.instant.SoundEffectNew;
+import com.chaosbuffalo.mkcore.network.MKParticleEffectSpawnPacket;
 import com.chaosbuffalo.mkcore.network.PacketHandler;
-import com.chaosbuffalo.mkcore.network.ParticleEffectSpawnPacket;
+import com.chaosbuffalo.mkcore.serialization.attributes.IntAttribute;
 import com.chaosbuffalo.mkcore.serialization.attributes.ResourceLocationAttribute;
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.effects.spells.CureEffect;
+import com.chaosbuffalo.mkultra.effects.spells.CureEffectV2;
 import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.TargetingContext;
 import com.chaosbuffalo.targeting_api.TargetingContexts;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.ResourceLocation;
@@ -62,7 +62,7 @@ public class GalvanizeAbility extends MKAbility {
     @Override
     protected ITextComponent getAbilityDescription(IMKEntityData entityData) {
         int level = getSkillLevel(entityData.getEntity(), MKAttributes.ABJURATION);
-        int duration = getBuffDuration(entityData, level, base.getValue(), scale.getValue()) / GameConstants.TICKS_PER_SECOND;
+        int duration = getBuffDuration(entityData, level, base.value(), scale.value()) / GameConstants.TICKS_PER_SECOND;
         return new TranslationTextComponent(getDescriptionTranslationKey(), duration);
     }
 
@@ -91,18 +91,25 @@ public class GalvanizeAbility extends MKAbility {
     public void endCast(LivingEntity entity, IMKEntityData data, AbilityContext context) {
         super.endCast(entity, data, context);
         int level = getSkillLevel(entity, MKAttributes.ABJURATION);
-        int duration = getBuffDuration(data, level, base.getValue(), scale.getValue());
+        int duration = getBuffDuration(data, level, base.value(), scale.value());
 
         EffectInstance jump = new EffectInstance(Effects.JUMP_BOOST, duration, level, false, false);
-        SpellCast particles = MKParticleEffect.Create(entity, cast_2_particles.getValue(),
-                false, new Vector3d(0.0, 1.0, 0.0));
+        MKEffectBuilder<?> cure = CureEffectV2.INSTANCE.builder(entity.getUniqueID())
+                .ability(this)
+                .amplify(level);
+        MKEffectBuilder<?> sound = SoundEffectNew.INSTANCE.builder(entity.getUniqueID())
+                .ability(this)
+                .state(s -> s.setup(ModSounds.spell_buff_5, entity.getSoundCategory()));
+        MKEffectBuilder<?> particles = MKParticleEffectNew.INSTANCE.builder(entity.getUniqueID())
+                .ability(this)
+                .state(s -> s.setup(cast_2_particles.getValue(), false, new Vector3d(0.0, 1.0, 0.0)))
+                .amplify(level);
 
         AreaEffectBuilder.Create(entity, entity)
                 .effect(jump, getTargetContext())
-                .spellCast(CureEffect.Create(entity), level, getTargetContext())
-                .spellCast(SoundEffect.Create(entity, ModSounds.spell_buff_5, entity.getSoundCategory()),
-                        1, getTargetContext())
-                .spellCast(particles, level, getTargetContext())
+                .effect(cure, getTargetContext())
+                .effect(sound, getTargetContext())
+                .effect(particles, getTargetContext())
                 .instant().color(1048370).radius(getDistance(entity), true)
                 .disableParticle()
                 .spawn();
