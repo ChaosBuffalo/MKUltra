@@ -2,9 +2,8 @@ package com.chaosbuffalo.mkultra.effects.spells;
 
 import com.chaosbuffalo.mkcore.core.IMKEntityData;
 import com.chaosbuffalo.mkcore.core.MKPlayerData;
-import com.chaosbuffalo.mkcore.effects.PassiveEffect;
-import com.chaosbuffalo.mkcore.effects.SpellCast;
-import com.chaosbuffalo.mkcore.effects.SpellTriggers;
+import com.chaosbuffalo.mkcore.effects.*;
+import com.chaosbuffalo.mkcore.test.v2.SkinLikeWoodEffectV2;
 import com.chaosbuffalo.mkultra.MKUltra;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -20,38 +19,35 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.UUID;
 
-/**
- * Created by Jacob on 7/28/2018.
- */
 @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class SkinLikeWoodEffect extends PassiveEffect {
-    public static final UUID MODIFIER_ID = UUID.fromString("60f31ee6-4a8e-4c35-8746-6c5950187e77");
-
-    public static final SkinLikeWoodEffect INSTANCE = (SkinLikeWoodEffect) (new SkinLikeWoodEffect()
-            .addAttributesModifier(Attributes.ARMOR, MODIFIER_ID.toString(), 2,
-                    AttributeModifier.Operation.ADDITION));
+public class SkinLikeWoodEffect extends MKEffect {
+    public static final SkinLikeWoodEffect INSTANCE = new SkinLikeWoodEffect();
 
     @SubscribeEvent
-    public static void register(RegistryEvent.Register<Effect> event) {
+    public static void register(RegistryEvent.Register<MKEffect> event) {
         event.getRegistry().register(INSTANCE);
     }
 
-    public static SpellCast Create(Entity source) {
-        return INSTANCE.newSpellCast(source);
-    }
+    public final UUID MODIFIER_ID = UUID.fromString("60f31ee6-4a8e-4c35-8746-6c5950187e77");
 
     private SkinLikeWoodEffect() {
-        super(EffectType.BENEFICIAL, 1665535);
-        setRegistryName(MKUltra.MODID, "effect.skin_like_wood");
+        super(EffectType.BENEFICIAL);
+        setRegistryName("effect.skin_like_wood");
+        addAttribute(Attributes.ARMOR, MODIFIER_ID, 2, AttributeModifier.Operation.ADDITION);
         SpellTriggers.ENTITY_HURT_PLAYER.registerPreScale(this::playerHurtPreScale);
+    }
+
+    @Override
+    public MKEffectState makeState() {
+        return MKSimplePassiveState.INSTANCE;
     }
 
     private void playerHurtPreScale(LivingHurtEvent event, DamageSource source, PlayerEntity livingTarget,
                                     IMKEntityData targetData) {
-        if (livingTarget.isPotionActive(SkinLikeWoodEffect.INSTANCE)) {
-            if (targetData instanceof MKPlayerData){
-                if (!((MKPlayerData)targetData).getStats().consumeMana(1)){
-                    livingTarget.removePotionEffect(SkinLikeWoodEffect.INSTANCE);
+        if (targetData.getEffects().isEffectActive(INSTANCE)) {
+            if (targetData instanceof MKPlayerData) {
+                if (!((MKPlayerData) targetData).getStats().consumeMana(1)) {
+                    targetData.getEffects().removeEffect(INSTANCE);
                 }
             }
         }
