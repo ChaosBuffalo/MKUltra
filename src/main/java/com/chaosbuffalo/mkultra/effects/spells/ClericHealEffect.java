@@ -1,68 +1,67 @@
 package com.chaosbuffalo.mkultra.effects.spells;
 
-import com.chaosbuffalo.mkcore.MKConfig;
+import com.chaosbuffalo.mkcore.core.IMKEntityData;
 import com.chaosbuffalo.mkcore.core.healing.MKHealSource;
 import com.chaosbuffalo.mkcore.core.healing.MKHealing;
-import com.chaosbuffalo.mkcore.effects.SpellCast;
-import com.chaosbuffalo.mkcore.effects.SpellEffectBase;
+import com.chaosbuffalo.mkcore.effects.MKActiveEffect;
+import com.chaosbuffalo.mkcore.effects.MKEffect;
+import com.chaosbuffalo.mkcore.effects.MKEffectBuilder;
+import com.chaosbuffalo.mkcore.effects.ScalingValueEffectState;
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.abilities.cleric.HealAbility;
 import com.chaosbuffalo.targeting_api.TargetingContext;
-import com.chaosbuffalo.targeting_api.TargetingContexts;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.UUID;
 
 
 @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class ClericHealEffect extends SpellEffectBase {
+public class ClericHealEffect extends MKEffect {
 
     public static final ClericHealEffect INSTANCE = new ClericHealEffect();
 
     @SubscribeEvent
-    public static void register(RegistryEvent.Register<Effect> event) {
+    public static void register(RegistryEvent.Register<MKEffect> event) {
         event.getRegistry().register(INSTANCE);
     }
 
-    public static SpellCast Create(Entity source, LivingEntity target, float base, float scaling) {
-        return Create(source, base, scaling).setTarget(target);
-    }
-
-    public static SpellCast Create(Entity source, float base, float scaling) {
-        return INSTANCE.newSpellCast(source).setScalingParameters(base, scaling);
-    }
-
     private ClericHealEffect() {
-        // boolean isBadEffectIn, int liquidColorIn
-        super(EffectType.BENEFICIAL, 4393481);
+        super(EffectType.BENEFICIAL);
         setRegistryName(MKUltra.MODID, "effect.cleric_heal");
     }
 
     @Override
-    public TargetingContext getTargetContext() {
-        return TargetingContexts.FRIENDLY;
+    public boolean isValidTarget(TargetingContext targetContext, IMKEntityData sourceData, IMKEntityData targetData) {
+        return super.isValidTarget(targetContext, sourceData, targetData) || MKHealing.isEnemyUndead(targetData.getEntity());
     }
 
     @Override
-    public boolean isValidTarget(TargetingContext targetContext, Entity caster, LivingEntity target) {
-        return super.isValidTarget(targetContext, caster, target) ||
-                (MKConfig.SERVER.healsDamageUndead.get() && target.isEntityUndead() &&
-                        MKHealing.isEnemyUndead(caster, target));
+    public MKEffectBuilder<State> builder(UUID sourceId) {
+        return new MKEffectBuilder<>(this, sourceId, this::makeState);
     }
-
 
     @Override
-    public void doEffect(Entity applier, Entity caster, LivingEntity target, int amplifier, SpellCast cast) {
-        float value = cast.getScaledValue(amplifier);
-        MKHealing.healEntityFrom(target, value,
-                MKHealSource.getHolyHeal(HealAbility.INSTANCE.getAbilityId(), applier, caster,
-                        HealAbility.INSTANCE.getModifierScaling().getValue()));
+    public State makeState() {
+        return new State();
     }
 
+    public static class State extends ScalingValueEffectState {
+        private Entity source;
 
+        @Override
+        public boolean performEffect(IMKEntityData targetData, MKActiveEffect instance) {
+            source = findEntity(source, instance.getSourceId(), targetData);
+
+            LivingEntity target = targetData.getEntity();
+            float value = getScaledValue(instance.getStackCount());
+//            MKUltra.LOGGER.info("ClericHealEffect.performEffect {} on {} from {} {}", value, target, source, instance);
+            MKHealSource heal = MKHealSource.getHolyHeal(instance.getAbilityId(), source, getModifierScale());
+            MKHealing.healEntityFrom(target, value, heal);
+            return true;
+        }
+    }
 }
