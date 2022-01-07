@@ -115,6 +115,8 @@ public class ExplosiveGrowthAbility extends MKAbility {
         MKEffectBuilder<?> cure = CureEffectV2.INSTANCE.builder(castingEntity.getUniqueID())
                 .ability(this)
                 .amplify(restoLevel);
+        MKEffectBuilder<?> remedy = NaturesRemedyAbility.INSTANCE.createNaturesRemedyEffect(casterData, restoLevel)
+                .ability(this);
 
         Vector3d look = castingEntity.getLookVec().scale(getDistance(castingEntity));
         Vector3d from = castingEntity.getPositionVec().add(0, castingEntity.getEyeHeight(), 0);
@@ -125,9 +127,11 @@ public class ExplosiveGrowthAbility extends MKAbility {
             Targeting.TargetRelation relation = Targeting.getTargetRelation(castingEntity, entHit);
             switch (relation) {
                 case FRIEND: {
-                    MKCore.getEntityData(entHit).ifPresent(targetData -> targetData.getEffects().addEffect(cure));
+                    MKCore.getEntityData(entHit).ifPresent(targetData -> {
+                        targetData.getEffects().addEffect(cure);
+                        targetData.getEffects().addEffect(remedy);
+                    });
 
-                    NaturesRemedyAbility.INSTANCE.castNaturesRemedyOnTarget(entHit, casterData, restoLevel);
                     SoundUtils.serverPlaySoundAtEntity(entHit, ModSounds.spell_earth_6, cat);
                     break;
                 }
@@ -149,7 +153,7 @@ public class ExplosiveGrowthAbility extends MKAbility {
         }
 
         casterData.getEffects().addEffect(cure);
-        NaturesRemedyAbility.INSTANCE.castNaturesRemedyOnTarget(castingEntity, casterData, restoLevel);
+        casterData.getEffects().addEffect(remedy);
         castingEntity.setPositionAndUpdate(to.x, to.y, to.z);
         MKParticleEffectSpawnPacket spawn = new MKParticleEffectSpawnPacket(from, CAST_PARTICLES);
         spawn.addLoc(to);
