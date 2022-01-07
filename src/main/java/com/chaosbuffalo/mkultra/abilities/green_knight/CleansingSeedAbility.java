@@ -48,15 +48,15 @@ public class CleansingSeedAbility extends MKAbility {
         casting_particles.setDefaultValue(CASTING_PARTICLES);
     }
 
-    public float getDamageForLevel(int level){
-        return baseDamage.getValue() + scaleDamage.getValue() * level;
+    public float getDamageForLevel(int level) {
+        return baseDamage.value() + scaleDamage.value() * level;
     }
 
     @Override
     protected ITextComponent getAbilityDescription(IMKEntityData entityData) {
-        ITextComponent damageStr = getDamageDescription(entityData, CoreDamageTypes.NatureDamage, baseDamage.getValue(),
-                scaleDamage.getValue(), getSkillLevel(entityData.getEntity(), MKAttributes.RESTORATION),
-                modifierScaling.getValue());
+        ITextComponent damageStr = getDamageDescription(entityData, CoreDamageTypes.NatureDamage, baseDamage.value(),
+                scaleDamage.value(), getSkillLevel(entityData.getEntity(), MKAttributes.RESTORATION),
+                modifierScaling.value());
         return new TranslationTextComponent(getDescriptionTranslationKey(), damageStr);
     }
 
@@ -72,7 +72,7 @@ public class CleansingSeedAbility extends MKAbility {
     }
 
     public float getModifierScaling() {
-        return modifierScaling.getValue();
+        return modifierScaling.value();
     }
 
     @Override
@@ -85,18 +85,15 @@ public class CleansingSeedAbility extends MKAbility {
         return 50.0f;
     }
 
-
     @Override
     public void endCast(LivingEntity entity, IMKEntityData data, AbilityContext context) {
         super.endCast(entity, data, context);
+
         int level = getSkillLevel(entity, MKAttributes.RESTORATION);
         CleansingSeedProjectileEntity proj = new CleansingSeedProjectileEntity(entity.world);
         proj.setShooter(entity);
         proj.setAmplifier(level);
-        shootProjectile(proj, projectileSpeed.getValue(), projectileInaccuracy.getValue(), entity, context);
+        shootProjectile(proj, projectileSpeed.value(), projectileInaccuracy.value(), entity, context);
         entity.world.addEntity(proj);
     }
-
 }
-
-
