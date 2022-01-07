@@ -54,23 +54,23 @@ public class FireballAbility extends MKAbility {
     }
 
     public float getBaseDamage(){
-        return baseDamage.getValue();
+        return baseDamage.value();
     }
 
     public float getScaleDamage(){
-        return scaleDamage.getValue();
+        return scaleDamage.value();
     }
 
     public float getExplosionRadius(){
-        return radius.getValue();
+        return radius.value();
     }
 
     @Override
     protected ITextComponent getAbilityDescription(IMKEntityData entityData) {
         int skillLevel = getSkillLevel(entityData.getEntity(), MKAttributes.EVOCATION);
-        ITextComponent damageStr = getDamageDescription(entityData, CoreDamageTypes.FireDamage, baseDamage.getValue(),
-                scaleDamage.getValue(), skillLevel,
-                modifierScaling.getValue());
+        ITextComponent damageStr = getDamageDescription(entityData, CoreDamageTypes.FireDamage, baseDamage.value(),
+                scaleDamage.value(), skillLevel,
+                modifierScaling.value());
         return new TranslationTextComponent(getDescriptionTranslationKey(), damageStr, getExplosionRadius(),
                 (skillLevel + 1) * .1f * 100.0f, skillLevel + 1);
     }
@@ -92,7 +92,7 @@ public class FireballAbility extends MKAbility {
     }
 
     public float getModifierScaling() {
-        return modifierScaling.getValue();
+        return modifierScaling.value();
     }
 
     @Override
@@ -108,7 +108,7 @@ public class FireballAbility extends MKAbility {
         FireballProjectileEntity proj = new FireballProjectileEntity(entity.world);
         proj.setShooter(entity);
         proj.setAmplifier(level);
-        shootProjectile(proj, projectileSpeed.getValue(), projectileInaccuracy.getValue(), entity, context);
+        shootProjectile(proj, projectileSpeed.value(), projectileInaccuracy.value(), entity, context);
         entity.world.addEntity(proj);
     }
 

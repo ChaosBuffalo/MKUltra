@@ -23,17 +23,12 @@ public class ResistanceEffects {
 
     public static final MKResistanceNew FIRE_ARMOR = new MKResistanceNew(new ResourceLocation(MKUltra.MODID, "effect.fire_armor"),
             MKAttributes.FIRE_RESISTANCE, FIRE_RESISTANCE_UUID, 0.2f);
-    public static final MKResistance BREAK_FIRE = new MKResistance(new ResourceLocation(MKUltra.MODID, "effect.break_fire"),
-            MKAttributes.FIRE_RESISTANCE, BREAK_FIRE_UUID, 0xffff0000, -0.1f);
-
-    @SubscribeEvent
-    public static void register(RegistryEvent.Register<Effect> event) {
-        event.getRegistry().register(BREAK_FIRE);
-    }
+    public static final MKResistanceNew BREAK_FIRE = new MKResistanceNew(new ResourceLocation(MKUltra.MODID, "effect.break_fire"),
+            MKAttributes.FIRE_RESISTANCE, BREAK_FIRE_UUID, -0.1f);
 
     @SubscribeEvent
     public static void registerMK(RegistryEvent.Register<MKEffect> event) {
         event.getRegistry().register(FIRE_ARMOR);
+        event.getRegistry().register(BREAK_FIRE);
     }
-
 }

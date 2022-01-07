@@ -2,16 +2,12 @@ package com.chaosbuffalo.mkultra.entities.projectiles;
 
 import com.chaosbuffalo.mkcore.GameConstants;
 import com.chaosbuffalo.mkcore.effects.AreaEffectBuilder;
-import com.chaosbuffalo.mkcore.effects.SpellCast;
-import com.chaosbuffalo.mkcore.effects.instant.MKAbilityDamageEffect;
-import com.chaosbuffalo.mkcore.entities.BaseProjectileEntity;
-import com.chaosbuffalo.mkcore.fx.ParticleEffects;
-import com.chaosbuffalo.mkcore.fx.particles.ParticleAnimation;
+import com.chaosbuffalo.mkcore.effects.MKEffectBuilder;
+import com.chaosbuffalo.mkcore.effects.instant.MKAbilityDamageEffectNew;
 import com.chaosbuffalo.mkcore.fx.particles.ParticleAnimationManager;
 import com.chaosbuffalo.mkcore.init.CoreDamageTypes;
 import com.chaosbuffalo.mkcore.network.MKParticleEffectSpawnPacket;
 import com.chaosbuffalo.mkcore.network.PacketHandler;
-import com.chaosbuffalo.mkcore.network.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.mkcore.utils.SoundUtils;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.abilities.misc.FireballAbility;
@@ -27,7 +23,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.RayTraceResult;
@@ -44,16 +39,15 @@ public class FireballProjectileEntity extends TrailProjectileEntity implements I
     public static EntityType<FireballProjectileEntity> TYPE;
 
     public FireballProjectileEntity(EntityType<? extends ProjectileEntity> entityTypeIn,
-                                         World worldIn) {
+                                    World worldIn) {
         super(entityTypeIn, worldIn);
         setDeathTime(GameConstants.TICKS_PER_SECOND * 5);
         setTrailAnimation(ParticleAnimationManager.ANIMATIONS.get(TRAIL_PARTICLES));
     }
 
-    public FireballProjectileEntity(World world){
+    public FireballProjectileEntity(World world) {
         this(TYPE, world);
     }
-
 
     @Override
     protected boolean onImpact(Entity caster, RayTraceResult result, int amplifier) {
@@ -61,17 +55,22 @@ public class FireballProjectileEntity extends TrailProjectileEntity implements I
             SoundCategory cat = caster instanceof PlayerEntity ? SoundCategory.PLAYERS : SoundCategory.HOSTILE;
             SoundUtils.serverPlaySoundAtEntity(this, ModSounds.spell_fire_4, cat);
             PacketHandler.sendToTrackingAndSelf(new MKParticleEffectSpawnPacket(
-                            new Vector3d(0.0, 0.0, 0.0), DETONATE_PARTICLES, getEntityId()),
-                    this);
-            SpellCast damage = MKAbilityDamageEffect.Create(caster, CoreDamageTypes.FireDamage,
-                    FireballAbility.INSTANCE,
-                    FireballAbility.INSTANCE.getBaseDamage(),
-                    FireballAbility.INSTANCE.getScaleDamage(),
-                    FireballAbility.INSTANCE.getModifierScaling());
-            SpellCast fireBreak = ResistanceEffects.BREAK_FIRE.newSpellCast(caster);
+                            new Vector3d(0.0, 0.0, 0.0), DETONATE_PARTICLES, getEntityId()), this);
+
+            MKEffectBuilder<?> damage = MKAbilityDamageEffectNew.INSTANCE.builder(caster.getUniqueID())
+                    .state(s -> {
+                        s.damageType = CoreDamageTypes.FireDamage;
+                        s.setScalingParameters(FireballAbility.INSTANCE.getBaseDamage(), FireballAbility.INSTANCE.getScaleDamage(), FireballAbility.INSTANCE.getModifierScaling());
+                    })
+                    .amplify(amplifier);
+
+            MKEffectBuilder<?> fireBreak = ResistanceEffects.BREAK_FIRE.builder(caster.getUniqueID())
+                    .timed((amplifier + 1) * GameConstants.TICKS_PER_SECOND)
+                    .amplify(amplifier);
+
             AreaEffectBuilder.Create((LivingEntity) caster, this)
-                    .spellCast(damage, amplifier, getTargetContext())
-                    .spellCast(fireBreak, (amplifier + 1) * GameConstants.TICKS_PER_SECOND, amplifier, getTargetContext())
+                    .effect(damage, getTargetContext())
+                    .effect(fireBreak, getTargetContext())
                     .instant()
                     .color(16737330).radius(FireballAbility.INSTANCE.getExplosionRadius(), true)
                     .disableParticle()
