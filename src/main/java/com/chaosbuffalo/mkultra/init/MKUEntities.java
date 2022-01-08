@@ -84,8 +84,8 @@ public class MKUEntities {
         EntityType<MKZombifiedPiglinEntity> zombiePiglin = EntityType.Builder.create(
                 MKZombifiedPiglinEntity::new, EntityClassification.MONSTER)
                 .size(EntityType.ZOMBIFIED_PIGLIN.getWidth(), EntityType.ZOMBIFIED_PIGLIN.getHeight())
-                .build(new ResourceLocation(MKNpc.MODID, ZOMBIFIED_PIGLIN_NAME).toString());
-        zombiePiglin.setRegistryName(MKNpc.MODID, ZOMBIFIED_PIGLIN_NAME);
+                .build(new ResourceLocation(MKUltra.MODID, ZOMBIFIED_PIGLIN_NAME).toString());
+        zombiePiglin.setRegistryName(MKUltra.MODID, ZOMBIFIED_PIGLIN_NAME);
         ZOMBIFIED_PIGLIN_TYPE = zombiePiglin;
         evt.getRegistry().register(ZOMBIFIED_PIGLIN_TYPE);
 
