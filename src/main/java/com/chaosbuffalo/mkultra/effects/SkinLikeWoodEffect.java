@@ -1,15 +1,12 @@
-package com.chaosbuffalo.mkultra.effects.spells;
+package com.chaosbuffalo.mkultra.effects;
 
 import com.chaosbuffalo.mkcore.core.IMKEntityData;
 import com.chaosbuffalo.mkcore.core.MKPlayerData;
 import com.chaosbuffalo.mkcore.effects.*;
-import com.chaosbuffalo.mkcore.test.v2.SkinLikeWoodEffectV2;
 import com.chaosbuffalo.mkultra.MKUltra;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectType;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.event.RegistryEvent;

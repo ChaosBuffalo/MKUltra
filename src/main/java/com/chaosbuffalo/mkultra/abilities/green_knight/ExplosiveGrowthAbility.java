@@ -18,7 +18,7 @@ import com.chaosbuffalo.mkcore.utils.RayTraceUtils;
 import com.chaosbuffalo.mkcore.utils.SoundUtils;
 import com.chaosbuffalo.mkcore.utils.TargetUtil;
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.effects.spells.CureEffectV2;
+import com.chaosbuffalo.mkultra.effects.CureEffect;
 import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.Targeting;
 import com.chaosbuffalo.targeting_api.TargetingContext;
@@ -112,7 +112,7 @@ public class ExplosiveGrowthAbility extends MKAbility {
         SoundCategory cat = castingEntity instanceof PlayerEntity ? SoundCategory.PLAYERS : SoundCategory.HOSTILE;
         float damage = baseDamage.value() + scaleDamage.value() * pankrationLevel;
 
-        MKEffectBuilder<?> cure = CureEffectV2.INSTANCE.builder(castingEntity.getUniqueID())
+        MKEffectBuilder<?> cure = CureEffect.INSTANCE.builder(castingEntity.getUniqueID())
                 .ability(this)
                 .amplify(restoLevel);
         MKEffectBuilder<?> remedy = NaturesRemedyAbility.INSTANCE.createNaturesRemedyEffect(casterData, restoLevel)

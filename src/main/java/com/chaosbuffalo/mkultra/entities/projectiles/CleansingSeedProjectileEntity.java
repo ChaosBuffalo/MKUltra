@@ -10,7 +10,7 @@ import com.chaosbuffalo.mkcore.network.PacketHandler;
 import com.chaosbuffalo.mkcore.utils.SoundUtils;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.abilities.green_knight.CleansingSeedAbility;
-import com.chaosbuffalo.mkultra.effects.spells.CureEffectV2;
+import com.chaosbuffalo.mkultra.effects.CureEffect;
 import com.chaosbuffalo.mkultra.entities.IMKRenderAsItem;
 import com.chaosbuffalo.mkultra.init.MKUItems;
 import com.chaosbuffalo.mkultra.init.ModSounds;
@@ -69,7 +69,7 @@ public class CleansingSeedProjectileEntity extends TrailProjectileEntity impleme
                 Targeting.TargetRelation relation = Targeting.getTargetRelation(caster, target);
                 switch (relation) {
                     case FRIEND: {
-                        MKEffectBuilder<?> cure = CureEffectV2.INSTANCE.builder(caster.getUniqueID())
+                        MKEffectBuilder<?> cure = CureEffect.INSTANCE.builder(caster.getUniqueID())
                                 .ability(CleansingSeedAbility.INSTANCE)
                                 .amplify(amplifier);
 

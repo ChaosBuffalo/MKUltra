@@ -1,7 +1,7 @@
 package com.chaosbuffalo.mkultra.abilities;
 
 import com.chaosbuffalo.mkcore.MKCore;
-import com.chaosbuffalo.mkultra.effects.spells.BurnEffect;
+import com.chaosbuffalo.mkultra.effects.BurnEffect;
 import net.minecraft.entity.LivingEntity;
 
 public class MKUAbilityUtils {

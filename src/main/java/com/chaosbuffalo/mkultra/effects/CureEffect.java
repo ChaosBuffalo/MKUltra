@@ -1,4 +1,4 @@
-package com.chaosbuffalo.mkultra.effects.spells;
+package com.chaosbuffalo.mkultra.effects;
 
 import com.chaosbuffalo.mkcore.core.IMKEntityData;
 import com.chaosbuffalo.mkcore.effects.MKActiveEffect;
@@ -14,15 +14,15 @@ import net.minecraftforge.fml.common.Mod;
 import java.util.ArrayList;
 
 @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class CureEffectV2 extends MKEffect {
-    public static final CureEffectV2 INSTANCE = new CureEffectV2();
+public class CureEffect extends MKEffect {
+    public static final CureEffect INSTANCE = new CureEffect();
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<MKEffect> event) {
         event.getRegistry().register(INSTANCE);
     }
 
-    private CureEffectV2() {
+    private CureEffect() {
         super(EffectType.BENEFICIAL);
         setRegistryName(MKUltra.MODID, "effect.cure");
     }

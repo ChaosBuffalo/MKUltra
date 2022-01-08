@@ -1,4 +1,4 @@
-package com.chaosbuffalo.mkultra.effects.spells;
+package com.chaosbuffalo.mkultra.effects;
 
 import com.chaosbuffalo.mkcore.MKCore;
 import com.chaosbuffalo.mkcore.core.IMKEntityData;

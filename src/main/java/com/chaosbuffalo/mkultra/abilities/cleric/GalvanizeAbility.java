@@ -16,7 +16,7 @@ import com.chaosbuffalo.mkcore.network.PacketHandler;
 import com.chaosbuffalo.mkcore.serialization.attributes.IntAttribute;
 import com.chaosbuffalo.mkcore.serialization.attributes.ResourceLocationAttribute;
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.effects.spells.CureEffectV2;
+import com.chaosbuffalo.mkultra.effects.CureEffect;
 import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.TargetingContext;
 import com.chaosbuffalo.targeting_api.TargetingContexts;
@@ -94,7 +94,7 @@ public class GalvanizeAbility extends MKAbility {
         int duration = getBuffDuration(data, level, base.value(), scale.value());
 
         EffectInstance jump = new EffectInstance(Effects.JUMP_BOOST, duration, level, false, false);
-        MKEffectBuilder<?> cure = CureEffectV2.INSTANCE.builder(entity.getUniqueID())
+        MKEffectBuilder<?> cure = CureEffect.INSTANCE.builder(entity.getUniqueID())
                 .ability(this)
                 .amplify(level);
         MKEffectBuilder<?> sound = SoundEffectNew.INSTANCE.builder(entity.getUniqueID())
