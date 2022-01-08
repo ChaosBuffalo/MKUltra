@@ -1,10 +1,11 @@
 package com.chaosbuffalo.mkultra.abilities.misc;
 
+import com.chaosbuffalo.mkcore.MKCore;
 import com.chaosbuffalo.mkcore.abilities.*;
 import com.chaosbuffalo.mkcore.core.IMKEntityData;
 import com.chaosbuffalo.mkcore.core.MKAttributes;
-import com.chaosbuffalo.mkcore.effects.SpellCast;
-import com.chaosbuffalo.mkcore.effects.instant.MKAbilityDamageEffect;
+import com.chaosbuffalo.mkcore.effects.MKEffectBuilder;
+import com.chaosbuffalo.mkcore.effects.instant.MKAbilityDamageEffectNew;
 import com.chaosbuffalo.mkcore.fx.ParticleEffects;
 import com.chaosbuffalo.mkcore.init.CoreDamageTypes;
 import com.chaosbuffalo.mkcore.network.PacketHandler;
@@ -18,9 +19,7 @@ import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkweapons.init.MKWeaponsParticles;
 import com.chaosbuffalo.targeting_api.TargetingContext;
 import com.chaosbuffalo.targeting_api.TargetingContexts;
-import com.google.common.collect.ImmutableSet;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.brain.memory.MemoryModuleType;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
@@ -28,8 +27,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-
-import java.util.Set;
 
 
 @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -64,14 +61,14 @@ public class SeverTendonAbility extends MKAbility {
     protected ITextComponent getAbilityDescription(IMKEntityData entityData) {
         int level = getSkillLevel(entityData.getEntity(), MKAttributes.PANKRATION);
         ITextComponent valueStr = getDamageDescription(entityData,
-                CoreDamageTypes.MeleeDamage, base.getValue(), scale.getValue(), level, modifierScaling.getValue());
+                CoreDamageTypes.MeleeDamage, base.value(), scale.value(), level, modifierScaling.value());
         ITextComponent dotStr = getDamageDescription(entityData,
-                CoreDamageTypes.BleedDamage, baseDot.getValue(), scaleDot.getValue(), level, dotModifierScaling.getValue());
+                CoreDamageTypes.BleedDamage, baseDot.value(), scaleDot.value(), level, dotModifierScaling.value());
+        int periodSeconds = SeverTendonEffect.DEFAULT_PERIOD / 20;
         return new TranslationTextComponent(getDescriptionTranslationKey(), valueStr,
-                getBuffDuration(entityData, level, baseDuration.getValue(), scaleDuration.getValue()) / 20,
-                dotStr, SeverTendonEffect.INSTANCE.getPeriod() / 20, (level + 1) * .05f * 100.0f);
+                getBuffDuration(entityData, level, baseDuration.value(), scaleDuration.value()) / 20,
+                dotStr, periodSeconds, (level + 1) * .05f * 100.0f);
     }
-
 
     @Override
     public float getDistance(LivingEntity entity) {
@@ -81,11 +78,6 @@ public class SeverTendonAbility extends MKAbility {
     @Override
     public TargetingContext getTargetContext() {
         return TargetingContexts.ENEMY;
-    }
-
-    @Override
-    public Set<MemoryModuleType<?>> getRequiredMemories() {
-        return ImmutableSet.of(MKAbilityMemories.ABILITY_TARGET);
     }
 
     @Override
@@ -108,16 +100,26 @@ public class SeverTendonAbility extends MKAbility {
         super.endCast(entity, data, context);
         int level = getSkillLevel(entity, MKAttributes.PANKRATION);
         context.getMemory(MKAbilityMemories.ABILITY_TARGET).ifPresent(targetEntity -> {
-            SpellCast damage = MKAbilityDamageEffect.Create(entity, CoreDamageTypes.MeleeDamage,
-                    this,
-                    base.getValue(),
-                    scale.getValue(),
-                    modifierScaling.getValue()).setTarget(targetEntity);
-            targetEntity.addPotionEffect(damage.toPotionEffect(level));
-            int dur = getBuffDuration(data, level, baseDuration.getValue(), scaleDuration.getValue());
-            SpellCast severTendon = SeverTendonEffect.Create(entity, baseDot.getValue(), scaleDot.getValue(),
-                    dotModifierScaling.getValue()).setTarget(targetEntity);
-            targetEntity.addPotionEffect(severTendon.toPotionEffect(dur, level));
+            MKEffectBuilder<?> damage = MKAbilityDamageEffectNew.INSTANCE.builder(entity.getUniqueID())
+                    .ability(this)
+                    .state(s -> {
+                        s.damageType = CoreDamageTypes.MeleeDamage;
+                        s.setScalingParameters(base.value(), scale.value(), modifierScaling.value());
+                    })
+                    .amplify(level);
+
+
+            int dur = getBuffDuration(data, level, baseDuration.value(), scaleDuration.value());
+            MKEffectBuilder<?> severTendon = SeverTendonEffect.from(entity, baseDot.value(), scaleDot.value(), dotModifierScaling.value())
+                    .ability(this)
+                    .timed(dur)
+                    .amplify(level);
+
+            MKCore.getEntityData(targetEntity).ifPresent(targetData -> {
+                targetData.getEffects().addEffect(damage);
+                targetData.getEffects().addEffect(severTendon);
+            });
+
             SoundUtils.serverPlaySoundAtEntity(targetEntity, ModSounds.spell_punch_6, targetEntity.getSoundCategory());
             Vector3d lookVec = entity.getLookVec();
             PacketHandler.sendToTrackingAndSelf(
