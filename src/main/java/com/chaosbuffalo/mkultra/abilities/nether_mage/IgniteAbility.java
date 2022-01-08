@@ -1,21 +1,17 @@
 package com.chaosbuffalo.mkultra.abilities.nether_mage;
 
 import com.chaosbuffalo.mkcore.GameConstants;
+import com.chaosbuffalo.mkcore.MKCore;
 import com.chaosbuffalo.mkcore.abilities.*;
 import com.chaosbuffalo.mkcore.core.AbilityType;
 import com.chaosbuffalo.mkcore.core.IMKEntityData;
 import com.chaosbuffalo.mkcore.core.MKAttributes;
-import com.chaosbuffalo.mkcore.effects.AreaEffectBuilder;
-import com.chaosbuffalo.mkcore.effects.MKParticleEffect;
-import com.chaosbuffalo.mkcore.effects.ParticleEffect;
-import com.chaosbuffalo.mkcore.effects.SpellCast;
+import com.chaosbuffalo.mkcore.effects.*;
 import com.chaosbuffalo.mkcore.effects.instant.MKAbilityDamageEffect;
 import com.chaosbuffalo.mkcore.effects.instant.SoundEffect;
-import com.chaosbuffalo.mkcore.fx.ParticleEffects;
 import com.chaosbuffalo.mkcore.init.CoreDamageTypes;
 import com.chaosbuffalo.mkcore.network.MKParticleEffectSpawnPacket;
 import com.chaosbuffalo.mkcore.network.PacketHandler;
-import com.chaosbuffalo.mkcore.network.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.mkcore.serialization.attributes.FloatAttribute;
 import com.chaosbuffalo.mkcore.serialization.attributes.ResourceLocationAttribute;
 import com.chaosbuffalo.mkcore.utils.SoundUtils;
@@ -28,8 +24,6 @@ import com.chaosbuffalo.targeting_api.TargetingContexts;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.brain.memory.MemoryModuleType;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.vector.Vector3d;
@@ -141,8 +135,11 @@ public class IgniteAbility extends MKAbility {
                         .spawn();
 
             } else {
-                EffectInstance burn = EmberAbility.INSTANCE.getBurnCast(entity, targetEntity, data, level);
-                targetEntity.addPotionEffect(burn);
+                MKCore.getEntityData(targetEntity).ifPresent(targetData -> {
+                    MKEffectBuilder<?> burn = EmberAbility.INSTANCE.getBurnCast(entity, data, level).ability(this);
+                    targetData.getEffects().addEffect(burn);
+                });
+
                 PacketHandler.sendToTrackingAndSelf(new MKParticleEffectSpawnPacket(
                                 new Vector3d(0.0, 1.0, 0.0),
                                 cast_1_particles.getValue(), targetEntity.getEntityId()),

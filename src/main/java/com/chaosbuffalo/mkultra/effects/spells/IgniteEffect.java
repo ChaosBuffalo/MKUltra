@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.effects.spells;
 
 import com.chaosbuffalo.mkcore.MKCore;
 import com.chaosbuffalo.mkcore.core.damage.MKDamageSource;
+import com.chaosbuffalo.mkcore.effects.MKEffectBuilder;
 import com.chaosbuffalo.mkcore.effects.SpellCast;
 import com.chaosbuffalo.mkcore.effects.SpellEffectBase;
 import com.chaosbuffalo.mkcore.init.CoreDamageTypes;
@@ -13,7 +14,6 @@ import com.chaosbuffalo.targeting_api.TargetingContexts;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.potion.Effect;
-import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.EffectType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -53,8 +53,10 @@ public class IgniteEffect extends SpellEffectBase {
                 IgniteAbility.INSTANCE.getAbilityId(), applier, caster, scaling), damage);
         if (caster instanceof LivingEntity){
             MKCore.getEntityData(caster).ifPresent(data -> {
-                EffectInstance burn = EmberAbility.INSTANCE.getBurnCast((LivingEntity) caster, target, data, i);
-                target.addPotionEffect(burn);
+                MKCore.getEntityData(target).ifPresent(targetData -> {
+                    MKEffectBuilder<?> burn = EmberAbility.INSTANCE.getBurnCast(data.getEntity(), data, i);
+                    targetData.getEffects().addEffect(burn);
+                });
             });
         }
     }
