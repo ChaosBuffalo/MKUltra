@@ -10,8 +10,8 @@ import com.chaosbuffalo.mkcore.core.IMKEntityData;
 import com.chaosbuffalo.mkcore.core.MKAttributes;
 import com.chaosbuffalo.mkcore.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkcore.effects.MKEffectBuilder;
-import com.chaosbuffalo.mkcore.effects.MKParticleEffectNew;
-import com.chaosbuffalo.mkcore.effects.instant.SoundEffectNew;
+import com.chaosbuffalo.mkcore.effects.utility.MKParticleEffect;
+import com.chaosbuffalo.mkcore.effects.utility.SoundEffect;
 import com.chaosbuffalo.mkcore.serialization.attributes.IntAttribute;
 import com.chaosbuffalo.mkcore.serialization.attributes.ResourceLocationAttribute;
 import com.chaosbuffalo.mkultra.MKUltra;
@@ -102,12 +102,10 @@ public class InspireAbility extends MKAbility {
 
         EffectInstance hasteEffect = new EffectInstance(Effects.HASTE, duration, level, false, false);
         EffectInstance regenEffect = new EffectInstance(Effects.REGENERATION, duration, level, false, false);
-        MKEffectBuilder<?> sound = SoundEffectNew.INSTANCE.builder(castingEntity.getUniqueID())
+        MKEffectBuilder<?> sound = SoundEffect.from(castingEntity, ModSounds.spell_holy_8, castingEntity.getSoundCategory())
+                .ability(this);
+        MKEffectBuilder<?> particles = MKParticleEffect.from(castingEntity, cast_particles.getValue(), true, new Vector3d(0.0, 1.0, 0.0))
                 .ability(this)
-                .state(s -> s.setup(ModSounds.spell_holy_8, castingEntity.getSoundCategory()));
-        MKEffectBuilder<?> particles = MKParticleEffectNew.INSTANCE.builder(castingEntity.getUniqueID())
-                .ability(this)
-                .state(s -> s.setup(cast_particles.getValue(), true, new Vector3d(0.0, 1.0, 0.0)))
                 .amplify(level);
 
         AreaEffectBuilder.createOnCaster(castingEntity)

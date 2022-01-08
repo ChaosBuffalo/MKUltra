@@ -9,8 +9,8 @@ import com.chaosbuffalo.mkcore.core.IMKEntityData;
 import com.chaosbuffalo.mkcore.core.MKAttributes;
 import com.chaosbuffalo.mkcore.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkcore.effects.MKEffectBuilder;
-import com.chaosbuffalo.mkcore.effects.MKParticleEffectNew;
-import com.chaosbuffalo.mkcore.effects.instant.SoundEffectNew;
+import com.chaosbuffalo.mkcore.effects.utility.MKParticleEffect;
+import com.chaosbuffalo.mkcore.effects.utility.SoundEffect;
 import com.chaosbuffalo.mkcore.network.MKParticleEffectSpawnPacket;
 import com.chaosbuffalo.mkcore.network.PacketHandler;
 import com.chaosbuffalo.mkcore.serialization.attributes.IntAttribute;
@@ -97,12 +97,10 @@ public class GalvanizeAbility extends MKAbility {
         MKEffectBuilder<?> cure = CureEffect.INSTANCE.builder(entity.getUniqueID())
                 .ability(this)
                 .amplify(level);
-        MKEffectBuilder<?> sound = SoundEffectNew.INSTANCE.builder(entity.getUniqueID())
+        MKEffectBuilder<?> sound = SoundEffect.from(entity, ModSounds.spell_buff_5, entity.getSoundCategory())
+                .ability(this);
+        MKEffectBuilder<?> particles = MKParticleEffect.from(entity, cast_2_particles.getValue(), false, new Vector3d(0.0, 1.0, 0.0))
                 .ability(this)
-                .state(s -> s.setup(ModSounds.spell_buff_5, entity.getSoundCategory()));
-        MKEffectBuilder<?> particles = MKParticleEffectNew.INSTANCE.builder(entity.getUniqueID())
-                .ability(this)
-                .state(s -> s.setup(cast_2_particles.getValue(), false, new Vector3d(0.0, 1.0, 0.0)))
                 .amplify(level);
 
         AreaEffectBuilder.Create(entity, entity)

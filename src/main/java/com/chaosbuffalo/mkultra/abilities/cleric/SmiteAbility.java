@@ -6,7 +6,7 @@ import com.chaosbuffalo.mkcore.abilities.*;
 import com.chaosbuffalo.mkcore.core.IMKEntityData;
 import com.chaosbuffalo.mkcore.core.MKAttributes;
 import com.chaosbuffalo.mkcore.effects.MKEffectBuilder;
-import com.chaosbuffalo.mkcore.effects.instant.MKAbilityDamageEffectNew;
+import com.chaosbuffalo.mkcore.effects.instant.MKAbilityDamageEffect;
 import com.chaosbuffalo.mkcore.effects.status.StunEffect;
 import com.chaosbuffalo.mkcore.init.CoreDamageTypes;
 import com.chaosbuffalo.mkcore.network.MKParticleEffectSpawnPacket;
@@ -95,12 +95,9 @@ public class SmiteAbility extends MKAbility {
         int level = getSkillLevel(entity, MKAttributes.EVOCATION);
         context.getMemory(MKAbilityMemories.ABILITY_TARGET).ifPresent(targetEntity -> {
 
-            MKEffectBuilder<?> damage = MKAbilityDamageEffectNew.INSTANCE.builder(entity.getUniqueID())
+            MKEffectBuilder<?> damage = MKAbilityDamageEffect.from(entity, CoreDamageTypes.HolyDamage,
+                            base.value(), scale.value(), modifierScaling.value())
                     .ability(this)
-                    .state(s -> {
-                        s.damageType = CoreDamageTypes.HolyDamage;
-                        s.setScalingParameters(base.value(), scale.value(), modifierScaling.value());
-                    })
                     .amplify(level);
 
             MKEffectBuilder<?> stun = StunEffect.INSTANCE.builder(entity.getUniqueID())

@@ -8,7 +8,8 @@ import com.chaosbuffalo.mkcore.abilities.MKAbility;
 import com.chaosbuffalo.mkcore.core.IMKEntityData;
 import com.chaosbuffalo.mkcore.core.MKAttributes;
 import com.chaosbuffalo.mkcore.effects.*;
-import com.chaosbuffalo.mkcore.effects.instant.SoundEffectNew;
+import com.chaosbuffalo.mkcore.effects.utility.MKParticleEffect;
+import com.chaosbuffalo.mkcore.effects.utility.SoundEffect;
 import com.chaosbuffalo.mkcore.init.CoreDamageTypes;
 import com.chaosbuffalo.mkcore.network.MKParticleEffectSpawnPacket;
 import com.chaosbuffalo.mkcore.network.PacketHandler;
@@ -111,14 +112,12 @@ public class FlameWaveAbility extends MKAbility {
                 .ability(this)
                 .amplify(level);
 
-        MKEffectBuilder<?> particles = MKParticleEffectNew.INSTANCE.builder(entity.getUniqueID())
+        MKEffectBuilder<?> particles = MKParticleEffect.from(entity, cast_2_particles.getValue(), false, new Vector3d(0.0, 1.0, 0.0))
                 .ability(this)
-                .state(s -> s.setup(cast_2_particles.getValue(), false, new Vector3d(0.0, 1.0, 0.0)))
                 .amplify(level);
 
-        MKEffectBuilder<?> sound = SoundEffectNew.INSTANCE.builder(entity.getUniqueID())
-                .ability(this)
-                .state(s -> s.setup(ModSounds.spell_fire_1, entity.getSoundCategory()));
+        MKEffectBuilder<?> sound = SoundEffect.from(entity, ModSounds.spell_fire_1, entity.getSoundCategory())
+                .ability(this);
 
         AreaEffectBuilder.createOnCaster(entity)
                 .effect(flames, getTargetContext())

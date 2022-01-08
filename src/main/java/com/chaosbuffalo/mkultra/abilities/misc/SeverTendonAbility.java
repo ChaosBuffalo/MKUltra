@@ -5,7 +5,7 @@ import com.chaosbuffalo.mkcore.abilities.*;
 import com.chaosbuffalo.mkcore.core.IMKEntityData;
 import com.chaosbuffalo.mkcore.core.MKAttributes;
 import com.chaosbuffalo.mkcore.effects.MKEffectBuilder;
-import com.chaosbuffalo.mkcore.effects.instant.MKAbilityDamageEffectNew;
+import com.chaosbuffalo.mkcore.effects.instant.MKAbilityDamageEffect;
 import com.chaosbuffalo.mkcore.fx.ParticleEffects;
 import com.chaosbuffalo.mkcore.init.CoreDamageTypes;
 import com.chaosbuffalo.mkcore.network.PacketHandler;
@@ -100,12 +100,9 @@ public class SeverTendonAbility extends MKAbility {
         super.endCast(entity, data, context);
         int level = getSkillLevel(entity, MKAttributes.PANKRATION);
         context.getMemory(MKAbilityMemories.ABILITY_TARGET).ifPresent(targetEntity -> {
-            MKEffectBuilder<?> damage = MKAbilityDamageEffectNew.INSTANCE.builder(entity.getUniqueID())
+            MKEffectBuilder<?> damage = MKAbilityDamageEffect.from(entity, CoreDamageTypes.MeleeDamage,
+                            base.value(), scale.value(), modifierScaling.value())
                     .ability(this)
-                    .state(s -> {
-                        s.damageType = CoreDamageTypes.MeleeDamage;
-                        s.setScalingParameters(base.value(), scale.value(), modifierScaling.value());
-                    })
                     .amplify(level);
 
 

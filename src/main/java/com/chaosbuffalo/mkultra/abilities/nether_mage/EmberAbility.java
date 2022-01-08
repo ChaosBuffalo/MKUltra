@@ -6,7 +6,7 @@ import com.chaosbuffalo.mkcore.abilities.*;
 import com.chaosbuffalo.mkcore.core.IMKEntityData;
 import com.chaosbuffalo.mkcore.core.MKAttributes;
 import com.chaosbuffalo.mkcore.effects.MKEffectBuilder;
-import com.chaosbuffalo.mkcore.effects.instant.MKAbilityDamageEffectNew;
+import com.chaosbuffalo.mkcore.effects.instant.MKAbilityDamageEffect;
 import com.chaosbuffalo.mkcore.init.CoreDamageTypes;
 import com.chaosbuffalo.mkcore.network.MKParticleEffectSpawnPacket;
 import com.chaosbuffalo.mkcore.network.PacketHandler;
@@ -114,12 +114,9 @@ public class EmberAbility extends MKAbility {
         super.endCast(entity, data, context);
         int level = getSkillLevel(entity, MKAttributes.EVOCATION);
         context.getMemory(MKAbilityMemories.ABILITY_TARGET).ifPresent(targetEntity -> {
-            MKEffectBuilder<?> damage = MKAbilityDamageEffectNew.INSTANCE.builder(entity.getUniqueID())
+            MKEffectBuilder<?> damage = MKAbilityDamageEffect.from(entity, CoreDamageTypes.FireDamage,
+                            base.value(), scale.value(), modifierScaling.value())
                     .ability(this)
-                    .state(s -> {
-                        s.damageType = CoreDamageTypes.FireDamage;
-                        s.setScalingParameters(base.value(), scale.value(), modifierScaling.value());
-                    })
                     .amplify(level);
             MKEffectBuilder<?> burn = getBurnCast(entity, data, level);
 

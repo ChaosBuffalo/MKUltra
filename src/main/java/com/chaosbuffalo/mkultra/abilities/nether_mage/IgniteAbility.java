@@ -8,9 +8,9 @@ import com.chaosbuffalo.mkcore.core.IMKEntityData;
 import com.chaosbuffalo.mkcore.core.MKAttributes;
 import com.chaosbuffalo.mkcore.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkcore.effects.MKEffectBuilder;
-import com.chaosbuffalo.mkcore.effects.MKParticleEffectNew;
-import com.chaosbuffalo.mkcore.effects.instant.MKAbilityDamageEffectNew;
-import com.chaosbuffalo.mkcore.effects.instant.SoundEffectNew;
+import com.chaosbuffalo.mkcore.effects.instant.MKAbilityDamageEffect;
+import com.chaosbuffalo.mkcore.effects.utility.MKParticleEffect;
+import com.chaosbuffalo.mkcore.effects.utility.SoundEffect;
 import com.chaosbuffalo.mkcore.init.CoreDamageTypes;
 import com.chaosbuffalo.mkcore.network.MKParticleEffectSpawnPacket;
 import com.chaosbuffalo.mkcore.network.PacketHandler;
@@ -106,7 +106,7 @@ public class IgniteAbility extends MKAbility {
         super.endCast(entity, data, context);
         int level = getSkillLevel(entity, MKAttributes.EVOCATION);
         context.getMemory(MKAbilityMemories.ABILITY_TARGET).ifPresent(targetEntity -> {
-            MKEffectBuilder<?> damage = MKAbilityDamageEffectNew.from(entity, CoreDamageTypes.FireDamage,
+            MKEffectBuilder<?> damage = MKAbilityDamageEffect.from(entity, CoreDamageTypes.FireDamage,
                             base.value(),
                             scale.value(),
                             modifierScaling.value())
@@ -122,11 +122,11 @@ public class IgniteAbility extends MKAbility {
                     MKEffectBuilder<?> ignite = IgniteEffect.from(entity, base.value(), scale.value(), modifierScaling.value())
                             .ability(this)
                             .amplify(level);
-                    MKEffectBuilder<?> particle = MKParticleEffectNew.from(entity, cast_2_particles.getValue(),
+                    MKEffectBuilder<?> particle = MKParticleEffect.from(entity, cast_2_particles.getValue(),
                                     true, new Vector3d(0.0, 1.0, 0.0))
                             .ability(this)
                             .amplify(level);
-                    MKEffectBuilder<?> sound = SoundEffectNew.from(entity, ModSounds.spell_fire_8, entity.getSoundCategory())
+                    MKEffectBuilder<?> sound = SoundEffect.from(entity, ModSounds.spell_fire_8, entity.getSoundCategory())
                             .ability(this);
 
                     AreaEffectBuilder.Create(entity, targetEntity)

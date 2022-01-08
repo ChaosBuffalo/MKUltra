@@ -2,7 +2,7 @@ package com.chaosbuffalo.mkultra.effects;
 
 import com.chaosbuffalo.mkcore.core.IMKEntityData;
 import com.chaosbuffalo.mkcore.effects.*;
-import com.chaosbuffalo.mkcore.effects.status.DamageTypeDotEffectNew;
+import com.chaosbuffalo.mkcore.effects.status.DamageTypeDotEffect;
 import com.chaosbuffalo.mkcore.init.CoreDamageTypes;
 import com.chaosbuffalo.mkcore.network.MKParticleEffectSpawnPacket;
 import com.chaosbuffalo.mkcore.network.PacketHandler;
@@ -19,7 +19,7 @@ import net.minecraftforge.fml.common.Mod;
 import java.util.UUID;
 
 @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class BurnEffect extends DamageTypeDotEffectNew {
+public class BurnEffect extends DamageTypeDotEffect {
 
     public static int DEFAULT_PERIOD = 40;
 
@@ -55,7 +55,7 @@ public class BurnEffect extends DamageTypeDotEffectNew {
         return new MKEffectBuilder<>(this, sourceId, this::makeState);
     }
 
-    public static class State extends DamageTypeDotEffectNew.State {
+    public static class State extends DamageTypeDotEffect.State {
         public ResourceLocation particles;
 
         public State() {

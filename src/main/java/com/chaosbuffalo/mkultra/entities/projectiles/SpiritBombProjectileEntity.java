@@ -3,7 +3,7 @@ package com.chaosbuffalo.mkultra.entities.projectiles;
 import com.chaosbuffalo.mkcore.GameConstants;
 import com.chaosbuffalo.mkcore.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkcore.effects.MKEffectBuilder;
-import com.chaosbuffalo.mkcore.effects.instant.MKAbilityDamageEffectNew;
+import com.chaosbuffalo.mkcore.effects.instant.MKAbilityDamageEffect;
 import com.chaosbuffalo.mkcore.fx.particles.ParticleAnimationManager;
 import com.chaosbuffalo.mkcore.init.CoreDamageTypes;
 import com.chaosbuffalo.mkcore.network.MKParticleEffectSpawnPacket;
@@ -104,14 +104,11 @@ public class SpiritBombProjectileEntity extends TrailProjectileEntity implements
 
     private boolean doEffect(Entity caster, int amplifier) {
         if (!this.world.isRemote && caster instanceof LivingEntity) {
-            MKEffectBuilder<?> damage = MKAbilityDamageEffectNew.INSTANCE.builder(caster.getUniqueID())
+            MKEffectBuilder<?> damage = MKAbilityDamageEffect.from(caster, CoreDamageTypes.NatureDamage,
+                            SpiritBombAbility.INSTANCE.getBaseDamage(),
+                            SpiritBombAbility.INSTANCE.getScaleDamage(),
+                            SpiritBombAbility.INSTANCE.getModifierScaling())
                     .ability(SpiritBombAbility.INSTANCE)
-                    .state(s -> {
-                        s.damageType = CoreDamageTypes.NatureDamage;
-                        s.setScalingParameters(SpiritBombAbility.INSTANCE.getBaseDamage(),
-                                SpiritBombAbility.INSTANCE.getScaleDamage(),
-                                SpiritBombAbility.INSTANCE.getModifierScaling());
-                    })
                     .amplify(amplifier);
 
             AreaEffectBuilder.Create((LivingEntity) caster, this)

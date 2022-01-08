@@ -5,7 +5,8 @@ import com.chaosbuffalo.mkcore.abilities.*;
 import com.chaosbuffalo.mkcore.core.IMKEntityData;
 import com.chaosbuffalo.mkcore.core.MKAttributes;
 import com.chaosbuffalo.mkcore.effects.*;
-import com.chaosbuffalo.mkcore.effects.instant.SoundEffectNew;
+import com.chaosbuffalo.mkcore.effects.utility.MKParticleEffect;
+import com.chaosbuffalo.mkcore.effects.utility.SoundEffect;
 import com.chaosbuffalo.mkcore.init.CoreDamageTypes;
 import com.chaosbuffalo.mkcore.serialization.attributes.IntAttribute;
 import com.chaosbuffalo.mkcore.serialization.attributes.ResourceLocationAttribute;
@@ -83,14 +84,12 @@ public class FireArmorAbility extends MKAbility {
         EffectInstance fireResist = new EffectInstance(Effects.FIRE_RESISTANCE, duration, level, false, false, true, null);
         EffectInstance absorb = new EffectInstance(Effects.ABSORPTION, duration, level, false, false, true, null);
 
-        MKEffectBuilder<?> particles = MKParticleEffectNew.INSTANCE.builder(entity.getUniqueID())
+        MKEffectBuilder<?> particles = MKParticleEffect.from(entity, cast_particles.getValue(), true, new Vector3d(0.0, 1.0, 0.0))
                 .ability(this)
-                .state(s -> s.setup(cast_particles.getValue(), true, new Vector3d(0.0, 1.0, 0.0)))
                 .amplify(level);
 
-        MKEffectBuilder<?> sound = SoundEffectNew.INSTANCE.builder(entity.getUniqueID())
-                .ability(this)
-                .state(s -> s.setup(ModSounds.spell_fire_2, entity.getSoundCategory()));
+        MKEffectBuilder<?> sound = SoundEffect.from(entity, ModSounds.spell_fire_2, entity.getSoundCategory())
+                .ability(this);
 
         MKEffectBuilder<?> fireArmor = ResistanceEffects.FIRE_ARMOR.builder(entity.getUniqueID())
                 .ability(this)

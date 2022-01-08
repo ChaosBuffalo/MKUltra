@@ -3,7 +3,7 @@ package com.chaosbuffalo.mkultra.entities.projectiles;
 import com.chaosbuffalo.mkcore.GameConstants;
 import com.chaosbuffalo.mkcore.effects.AreaEffectBuilder;
 import com.chaosbuffalo.mkcore.effects.MKEffectBuilder;
-import com.chaosbuffalo.mkcore.effects.instant.MKAbilityDamageEffectNew;
+import com.chaosbuffalo.mkcore.effects.instant.MKAbilityDamageEffect;
 import com.chaosbuffalo.mkcore.fx.particles.ParticleAnimationManager;
 import com.chaosbuffalo.mkcore.init.CoreDamageTypes;
 import com.chaosbuffalo.mkcore.network.MKParticleEffectSpawnPacket;
@@ -57,11 +57,10 @@ public class FireballProjectileEntity extends TrailProjectileEntity implements I
             PacketHandler.sendToTrackingAndSelf(new MKParticleEffectSpawnPacket(
                             new Vector3d(0.0, 0.0, 0.0), DETONATE_PARTICLES, getEntityId()), this);
 
-            MKEffectBuilder<?> damage = MKAbilityDamageEffectNew.INSTANCE.builder(caster.getUniqueID())
-                    .state(s -> {
-                        s.damageType = CoreDamageTypes.FireDamage;
-                        s.setScalingParameters(FireballAbility.INSTANCE.getBaseDamage(), FireballAbility.INSTANCE.getScaleDamage(), FireballAbility.INSTANCE.getModifierScaling());
-                    })
+            MKEffectBuilder<?> damage = MKAbilityDamageEffect.from(caster, CoreDamageTypes.FireDamage,
+                            FireballAbility.INSTANCE.getBaseDamage(),
+                            FireballAbility.INSTANCE.getScaleDamage(),
+                            FireballAbility.INSTANCE.getModifierScaling())
                     .amplify(amplifier);
 
             MKEffectBuilder<?> fireBreak = ResistanceEffects.BREAK_FIRE.builder(caster.getUniqueID())

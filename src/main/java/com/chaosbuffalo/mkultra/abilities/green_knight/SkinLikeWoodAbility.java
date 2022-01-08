@@ -3,7 +3,7 @@ package com.chaosbuffalo.mkultra.abilities.green_knight;
 import com.chaosbuffalo.mkcore.abilities.AbilityTargetSelector;
 import com.chaosbuffalo.mkcore.abilities.AbilityTargeting;
 import com.chaosbuffalo.mkcore.abilities.MKAbility;
-import com.chaosbuffalo.mkcore.abilities.MKToggleAbilityNew;
+import com.chaosbuffalo.mkcore.abilities.MKToggleAbility;
 import com.chaosbuffalo.mkcore.abilities.ai.conditions.NeedsBuffCondition;
 import com.chaosbuffalo.mkcore.core.IMKEntityData;
 import com.chaosbuffalo.mkcore.core.MKAttributes;
@@ -29,7 +29,7 @@ import net.minecraftforge.fml.common.Mod;
 import javax.annotation.Nullable;
 
 @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class SkinLikeWoodAbility extends MKToggleAbilityNew {
+public class SkinLikeWoodAbility extends MKToggleAbility {
     public static final ResourceLocation CASTING_PARTICLES = new ResourceLocation(MKUltra.MODID, "skin_like_wood_casting");
     public static final ResourceLocation CAST_PARTICLES = new ResourceLocation(MKUltra.MODID, "skin_like_wood_cast");
     public static final SkinLikeWoodAbility INSTANCE = new SkinLikeWoodAbility();
