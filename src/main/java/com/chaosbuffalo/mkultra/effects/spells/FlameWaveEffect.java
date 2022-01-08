@@ -1,65 +1,76 @@
 package com.chaosbuffalo.mkultra.effects.spells;
 
 import com.chaosbuffalo.mkcore.GameConstants;
+import com.chaosbuffalo.mkcore.core.IMKEntityData;
 import com.chaosbuffalo.mkcore.core.damage.MKDamageSource;
-import com.chaosbuffalo.mkcore.effects.SpellCast;
-import com.chaosbuffalo.mkcore.effects.SpellEffectBase;
+import com.chaosbuffalo.mkcore.effects.*;
 import com.chaosbuffalo.mkcore.init.CoreDamageTypes;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.abilities.MKUAbilityUtils;
-import com.chaosbuffalo.mkultra.abilities.nether_mage.FlameWaveAbility;
-import com.chaosbuffalo.targeting_api.TargetingContext;
-import com.chaosbuffalo.targeting_api.TargetingContexts;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.potion.*;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.UUID;
+
 @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class FlameWaveEffect extends SpellEffectBase {
-    public static final String SCALING_CONTRIBUTION = "modifier_scaling";
-    public static final String WITHER_DUR_BASE = "wither_dur_base";
-    public static final String WITHER_DUR_SCALE = "wither_dur_scale";
-    public static final String DAMAGE_BOOST = "damage_boost";
+public class FlameWaveEffect extends MKEffect {
 
     public static final FlameWaveEffect INSTANCE = new FlameWaveEffect();
 
     @SubscribeEvent
-    public static void register(RegistryEvent.Register<Effect> event) {
+    public static void register(RegistryEvent.Register<MKEffect> event) {
         event.getRegistry().register(INSTANCE);
     }
 
-    public static SpellCast Create(Entity source, float baseDamage, float scaling, float modifierScaling,
-                                   int witherBase, int witherScale, float damageMultiplier) {
-        return INSTANCE.newSpellCast(source).setScalingParameters(baseDamage, scaling)
-                .setFloat(SCALING_CONTRIBUTION, modifierScaling).setInt(WITHER_DUR_BASE, witherBase)
-                .setInt(WITHER_DUR_SCALE, witherScale).setFloat(DAMAGE_BOOST, damageMultiplier);
+    public static MKEffectBuilder<?> from(Entity source, float baseDamage, float scaling, float modifierScaling,
+                                          int witherBase, int witherScale, float damageMultiplier) {
+        return INSTANCE.builder(source.getUniqueID()).state(s -> {
+            s.witherDurationBase = witherBase;
+            s.witherDurationScale = witherScale;
+            s.damageBoost = damageMultiplier;
+            s.setScalingParameters(baseDamage, scaling, modifierScaling);
+        });
     }
 
     private FlameWaveEffect() {
-        super(EffectType.HARMFUL, 123);
-        setRegistryName(MKUltra.MODID, "effect.flame_wave");
+        super(EffectType.HARMFUL);
+        setRegistryName("effect.flame_wave");
     }
 
     @Override
-    public TargetingContext getTargetContext() {
-        return TargetingContexts.ENEMY;
+    public State makeState() {
+        return new State();
     }
 
     @Override
-    public void doEffect(Entity applier, Entity caster, LivingEntity target, int amplifier, SpellCast spellCast) {
-        float damage = spellCast.getScaledValue(amplifier);
-        if (MKUAbilityUtils.isBurning(target)){
-            int dur = spellCast.getInt(WITHER_DUR_BASE) + amplifier * spellCast.getInt(WITHER_DUR_SCALE);
-            EffectInstance witherEffect = new EffectInstance(Effects.WITHER,
-                    dur * GameConstants.TICKS_PER_SECOND, 0);
-            damage *= spellCast.getFloat(DAMAGE_BOOST);
-            target.addPotionEffect(witherEffect);
+    public MKEffectBuilder<State> builder(UUID sourceId) {
+        return new MKEffectBuilder<>(this, sourceId, this::makeState);
+    }
+
+    public static class State extends ScalingValueEffectState {
+        private Entity source;
+        public int witherDurationBase;
+        public int witherDurationScale;
+        public float damageBoost;
+
+        @Override
+        public boolean performEffect(IMKEntityData targetData, MKActiveEffect activeEffect) {
+            source = findEntity(source, activeEffect.getSourceId(), targetData);
+
+            float damage = getScaledValue(activeEffect.getStackCount());
+            if (MKUAbilityUtils.isBurning(targetData.getEntity())) {
+                int dur = witherDurationBase + activeEffect.getStackCount() * witherDurationScale;
+                EffectInstance witherEffect = new EffectInstance(Effects.WITHER, dur * GameConstants.TICKS_PER_SECOND, 0);
+                damage *= damageBoost;
+                targetData.getEntity().addPotionEffect(witherEffect);
+            }
+
+            targetData.getEntity().attackEntityFrom(MKDamageSource.causeAbilityDamage(CoreDamageTypes.FireDamage,
+                    activeEffect.getAbilityId(), source, source, getModifierScale()), damage);
+            return true;
         }
-        target.attackEntityFrom(MKDamageSource.causeAbilityDamage(CoreDamageTypes.FireDamage,
-                FlameWaveAbility.INSTANCE.getAbilityId(), applier, caster,
-                spellCast.getFloat(SCALING_CONTRIBUTION)), damage);
     }
 }
