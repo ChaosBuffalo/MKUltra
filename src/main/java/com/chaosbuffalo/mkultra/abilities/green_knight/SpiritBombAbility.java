@@ -70,22 +70,24 @@ public class SpiritBombAbility extends MKAbility {
     }
 
     public float getBaseDamage() {
-        return baseDamage.getValue();
+        return baseDamage.value();
     }
 
     public float getScaleDamage() {
-        return scaleDamage.getValue();
+        return scaleDamage.value();
     }
 
     public float getModifierScaling() {
-        return modifierScaling.getValue();
+        return modifierScaling.value();
     }
 
     @Override
     protected ITextComponent getAbilityDescription(IMKEntityData entityData) {
-        ITextComponent damageStr = getDamageDescription(entityData, CoreDamageTypes.NatureDamage, baseDamage.getValue(),
-                scaleDamage.getValue(), getSkillLevel(entityData.getEntity(), MKAttributes.EVOCATION),
-                modifierScaling.getValue());
+        ITextComponent damageStr = getDamageDescription(entityData, CoreDamageTypes.NatureDamage,
+                baseDamage.value(),
+                scaleDamage.value(),
+                getSkillLevel(entityData.getEntity(), MKAttributes.EVOCATION),
+                modifierScaling.value());
         return new TranslationTextComponent(getDescriptionTranslationKey(), damageStr);
     }
 
@@ -96,7 +98,7 @@ public class SpiritBombAbility extends MKAbility {
         SpiritBombProjectileEntity proj = new SpiritBombProjectileEntity(entity.world);
         proj.setShooter(entity);
         proj.setAmplifier(level);
-        shootProjectile(proj, projectileSpeed.getValue(), projectileInaccuracy.getValue(), entity, context);
+        shootProjectile(proj, projectileSpeed.value(), projectileInaccuracy.value(), entity, context);
         entity.world.addEntity(proj);
     }
 }
