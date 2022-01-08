@@ -1,10 +1,10 @@
 package com.chaosbuffalo.mkultra.abilities.passives;
 
 import com.chaosbuffalo.mkcore.abilities.MKAbility;
-import com.chaosbuffalo.mkcore.abilities.PassiveTalentAbility;
+import com.chaosbuffalo.mkcore.abilities.MKPassiveAbility;
 import com.chaosbuffalo.mkcore.core.IMKEntityData;
 import com.chaosbuffalo.mkcore.core.MKAttributes;
-import com.chaosbuffalo.mkcore.effects.PassiveTalentEffect;
+import com.chaosbuffalo.mkcore.effects.MKEffect;
 import com.chaosbuffalo.mkcore.serialization.attributes.FloatAttribute;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.spells.SoulDrainEffect;
@@ -17,7 +17,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class SoulDrainAbility extends PassiveTalentAbility {
+public class SoulDrainAbility extends MKPassiveAbility {
 
     public static final SoulDrainAbility INSTANCE = new SoulDrainAbility();
 
@@ -29,16 +29,16 @@ public class SoulDrainAbility extends PassiveTalentAbility {
         event.getRegistry().register(INSTANCE);
     }
 
-    public float getDrainValue(LivingEntity entity){
+    public float getDrainValue(LivingEntity entity) {
         int skillLevel = MKAbility.getSkillLevel(entity, MKAttributes.EVOCATION);
-        return base.getValue() + scale.getValue() * skillLevel;
+        return base.value() + scale.value() * skillLevel;
     }
 
 
     @Override
     protected ITextComponent getAbilityDescription(IMKEntityData entityData) {
         int level = getSkillLevel(entityData.getEntity(), MKAttributes.EVOCATION);
-        float value = base.getValue() + level * scale.getValue();
+        float value = base.value() + level * scale.value();
         return new TranslationTextComponent(getDescriptionTranslationKey(), value);
     }
 
@@ -49,7 +49,7 @@ public class SoulDrainAbility extends PassiveTalentAbility {
     }
 
     @Override
-    public PassiveTalentEffect getPassiveEffect() {
+    public MKEffect getPassiveEffect() {
         return SoulDrainEffect.INSTANCE;
     }
 }
