@@ -14,20 +14,29 @@
           },
           "nodes": [],
           "prompts": [],
-          "hailResponse": {
-            "message": "We ain't got much left after the crash. Check that chest over there we got a few things. We're going to need you to 'gather' up some supplies to put together anything fancier.",
-            "id": "hail",
-            "effects": [
-              {
-                "dialogueEffectType": "mknpc:objective_completion",
-                "chainId": "7ce7a88c-721d-4c34-abc3-54468f4ffa13",
-                "objectiveName": "talk_to_smith"
+          "hailResponses": [
+            {
+              "node": {
+                "message": "We ain't got much left after the crash. Check that chest over there we got a few things. You can use my crafting table as well. Talk to me again when you have made a weapon.",
+                "id": "hail",
+                "effects": [
+                  {
+                    "dialogueEffectType": "mknpc:objective_completion",
+                    "chainId": "b9eee9d5-bc90-4ebd-bcf7-b7ea62e95715",
+                    "objectiveName": "talk_to_smith"
+                  }
+                ]
+              },
+              "response": {
+                "responseNodeId": "hail"
               }
-            ]
-          }
+            }
+          ]
         }
       ],
-      "autoComplete": true
+      "description": "{\"text\":\"The Green Lady wants you to go talk to the smith and equip yourself for an unknown task.\"}",
+      "autoComplete": true,
+      "rewards": []
     },
     {
       "questName": "equip_yourself",
@@ -52,16 +61,77 @@
           ]
         }
       ],
-      "autoComplete": false
+      "description": "{\"text\":\"The Green Smith points you towards a chest in his workshop.\"}",
+      "autoComplete": true,
+      "rewards": []
+    },
+    {
+      "questName": "return_to_smith",
+      "objectives": [
+        {
+          "objectiveType": "mknpc:objective.talk_to_npc",
+          "description": "{\"text\":\"Talk to the Green Smith with a weapon in your hand.\"}",
+          "attributes": {
+            "structureIndex": 0,
+            "npcDefinition": "mkultra:green_smith",
+            "structure": "mkultra:intro_castle",
+            "objectiveName": "return_to_smith"
+          },
+          "nodes": [],
+          "prompts": [],
+          "hailResponses": [
+            {
+              "node": {
+                "message": "Great, but you're going to need more than just a sharp rock where we're going. Go back and talk to the Green Lady, ask her about learning to develop your magical talents.",
+                "id": "hail_w_weapon",
+                "effects": [
+                  {
+                    "dialogueEffectType": "mknpc:objective_completion",
+                    "chainId": "3980fed3-6c65-4582-8151-8e91fdd998d8",
+                    "objectiveName": "return_to_smith"
+                  }
+                ]
+              },
+              "response": {
+                "responseNodeId": "hail_w_weapon",
+                "conditions": [
+                  {
+                    "dialogueConditionType": "mknpc:has_weapon_in_hand",
+                    "invert": false
+                  }
+                ]
+              }
+            },
+            {
+              "node": {
+                "message": "Come back to me with a weapon in your hand.",
+                "id": "hail_wo_weapon"
+              },
+              "response": {
+                "responseNodeId": "hail_wo_weapon",
+                "conditions": [
+                  {
+                    "dialogueConditionType": "mknpc:has_weapon_in_hand",
+                    "invert": true
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "description": "{\"text\":\"Use the Green Smith's supplies to craft your desired weapon and perhaps some armor for the battle ahead.\"}",
+      "autoComplete": true,
+      "rewards": []
     }
   ],
   "repeatable": false,
   "startQuestResponse": {
-    "message": "I can explain more later. We gotta take care of these zombies; go talk to our smith and get equipped.",
+    "message": "This world is on the verge of deletion, the dead rise from the ground everywhere, there may still be time to save it if we act now. We're in need of another hero: go talk to our smith and get equipped.",
     "id": "start_quest"
   },
   "hailQuestResponse": {
-    "message": "Welcome to this cursed ground, you're lucky we were able to grab you before you drifted too far into the aether. {prompt:start_quest} in an archival zone?",
+    "message": "Hail and well met. You're lucky we were able to grab you before your soul drifted too far into the aether. {prompt:start_quest} in an archival zone?",
     "id": "hail"
   },
   "hailPrompt": {

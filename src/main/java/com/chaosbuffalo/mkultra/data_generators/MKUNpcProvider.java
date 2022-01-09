@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.data_generators;
 
 
 import com.chaosbuffalo.mkcore.abilities.MKAbility;
+import com.chaosbuffalo.mkcore.abilities.training.requirements.HasEntitlementRequirement;
 import com.chaosbuffalo.mkcore.client.rendering.skeleton.BipedSkeleton;
 import com.chaosbuffalo.mkcore.core.MKAttributes;
 import com.chaosbuffalo.mkcore.fx.particles.effect_instances.BoneEffectInstance;
@@ -22,6 +23,7 @@ import com.chaosbuffalo.mkultra.client.render.styling.MKUOrcs;
 import com.chaosbuffalo.mkultra.client.render.styling.MKUPiglins;
 import com.chaosbuffalo.mkultra.client.render.styling.MKUSkeletons;
 import com.chaosbuffalo.mkultra.init.MKUEntities;
+import com.chaosbuffalo.mkultra.init.MKUEntitlements;
 import com.chaosbuffalo.mkultra.init.MKUFactions;
 import com.chaosbuffalo.mkultra.init.MKUItems;
 import com.chaosbuffalo.mkweapons.items.randomization.slots.LootSlotManager;
@@ -362,13 +364,13 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
         def.addOption(new FactionOption().setValue(MKUFactions.GREEN_KNIGHT_FACTION_NAME));
         def.addOption(new MKSizeOption().setValue(1.1f));
         def.addOption(new RenderGroupOption().setValue(MKUOrcs.GREEN_LADY_NAME));
-        List<MKAbility> abilities = new ArrayList<>();
-        abilities.add(SkinLikeWoodAbility.INSTANCE);
-        abilities.add(NaturesRemedyAbility.INSTANCE);
-        abilities.add(CleansingSeedAbility.INSTANCE);
-        abilities.add(SpiritBombAbility.INSTANCE);
-        abilities.add(ExplosiveGrowthAbility.INSTANCE);
-        def.addOption(new AbilityTrainingOption().withOptions(abilities));
+        def.addOption(new AbilityTrainingOption()
+                .withTrainingOption(SkinLikeWoodAbility.INSTANCE, new HasEntitlementRequirement(MKUEntitlements.GreenKnightTier1))
+                .withTrainingOption(NaturesRemedyAbility.INSTANCE, new HasEntitlementRequirement(MKUEntitlements.GreenKnightTier1))
+                .withTrainingOption(SpiritBombAbility.INSTANCE, new HasEntitlementRequirement(MKUEntitlements.GreenKnightTier2))
+                .withTrainingOption(CleansingSeedAbility.INSTANCE, new HasEntitlementRequirement(MKUEntitlements.GreenKnightTier2))
+                .withTrainingOption(ExplosiveGrowthAbility.INSTANCE, new HasEntitlementRequirement(MKUEntitlements.GreenKnightTier3))
+        );
         def.addOption(new AbilitiesOption()
                 .withAbilityOption(SkinLikeWoodAbility.INSTANCE, 1, 1.0)
                 .withAbilityOption(NaturesRemedyAbility.INSTANCE, 2, 1.0)

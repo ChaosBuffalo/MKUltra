@@ -57,5 +57,10 @@
   "item.mkultra.destroyed_trooper_chestplate": "Destroyed Trooper Chestplate",
   "item.mkultra.destroyed_trooper_leggings": "Destroyed Trooper Leggings",
   "item.mkultra.destroyed_trooper_helmet": "Destroyed Trooper Helmet",
-  "item.mkultra.destroyed_trooper_boots": "Destroyed Trooper Boots"
+  "item.mkultra.destroyed_trooper_boots": "Destroyed Trooper Boots",
+  "faction.mkultra.green_knights.name": "Green Knights",
+  "faction.mkultra.imperial_dead.name": "Imperial Dead",
+  "mkultra.entitlement.green_knight.tier_1.name": "Green Knight Tier 1",
+  "mkultra.entitlement.green_knight.tier_2.name": "Green Knight Tier 2",
+  "mkultra.entitlement.green_knight.tier_3.name": "Green Knight Tier 3"
 }
