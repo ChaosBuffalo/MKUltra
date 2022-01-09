@@ -24,16 +24,9 @@ import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
 
-
-@Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class FireballAbility extends MKAbility {
     public static final ResourceLocation CASTING_PARTICLES = new ResourceLocation(MKUltra.MODID, "fireball_casting");
     public static final FireballAbility INSTANCE = new FireballAbility();
-
-    @SubscribeEvent
-    public static void register(RegistryEvent.Register<MKAbility> event) {
-        event.getRegistry().register(INSTANCE);
-    }
 
     protected final FloatAttribute baseDamage = new FloatAttribute("baseDamage", 6.0f);
     protected final FloatAttribute scaleDamage = new FloatAttribute("scaleDamage", 2.0f);
@@ -53,24 +46,24 @@ public class FireballAbility extends MKAbility {
         casting_particles.setDefaultValue(CASTING_PARTICLES);
     }
 
-    public float getBaseDamage(){
-        return baseDamage.getValue();
+    public float getBaseDamage() {
+        return baseDamage.value();
     }
 
-    public float getScaleDamage(){
-        return scaleDamage.getValue();
+    public float getScaleDamage() {
+        return scaleDamage.value();
     }
 
-    public float getExplosionRadius(){
-        return radius.getValue();
+    public float getExplosionRadius() {
+        return radius.value();
     }
 
     @Override
     protected ITextComponent getAbilityDescription(IMKEntityData entityData) {
         int skillLevel = getSkillLevel(entityData.getEntity(), MKAttributes.EVOCATION);
-        ITextComponent damageStr = getDamageDescription(entityData, CoreDamageTypes.FireDamage, baseDamage.getValue(),
-                scaleDamage.getValue(), skillLevel,
-                modifierScaling.getValue());
+        ITextComponent damageStr = getDamageDescription(entityData, CoreDamageTypes.FireDamage, baseDamage.value(),
+                scaleDamage.value(), skillLevel,
+                modifierScaling.value());
         return new TranslationTextComponent(getDescriptionTranslationKey(), damageStr, getExplosionRadius(),
                 (skillLevel + 1) * .1f * 100.0f, skillLevel + 1);
     }
@@ -92,14 +85,13 @@ public class FireballAbility extends MKAbility {
     }
 
     public float getModifierScaling() {
-        return modifierScaling.getValue();
+        return modifierScaling.value();
     }
 
     @Override
     public SoundEvent getCastingSoundEvent() {
         return ModSounds.hostile_casting_fire;
     }
-
 
     @Override
     public void endCast(LivingEntity entity, IMKEntityData data, AbilityContext context) {
@@ -108,8 +100,16 @@ public class FireballAbility extends MKAbility {
         FireballProjectileEntity proj = new FireballProjectileEntity(entity.world);
         proj.setShooter(entity);
         proj.setAmplifier(level);
-        shootProjectile(proj, projectileSpeed.getValue(), projectileInaccuracy.getValue(), entity, context);
+        shootProjectile(proj, projectileSpeed.value(), projectileInaccuracy.value(), entity, context);
         entity.world.addEntity(proj);
     }
 
+    @SuppressWarnings("unused")
+    @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    private static class RegisterMe {
+        @SubscribeEvent
+        public static void register(RegistryEvent.Register<MKAbility> event) {
+            event.getRegistry().register(INSTANCE);
+        }
+    }
 }

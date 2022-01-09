@@ -2,15 +2,12 @@ package com.chaosbuffalo.mkultra.entities.projectiles;
 
 import com.chaosbuffalo.mkcore.GameConstants;
 import com.chaosbuffalo.mkcore.effects.AreaEffectBuilder;
-import com.chaosbuffalo.mkcore.effects.SpellCast;
+import com.chaosbuffalo.mkcore.effects.MKEffectBuilder;
 import com.chaosbuffalo.mkcore.effects.instant.MKAbilityDamageEffect;
-import com.chaosbuffalo.mkcore.entities.BaseProjectileEntity;
-import com.chaosbuffalo.mkcore.fx.ParticleEffects;
 import com.chaosbuffalo.mkcore.fx.particles.ParticleAnimationManager;
 import com.chaosbuffalo.mkcore.init.CoreDamageTypes;
 import com.chaosbuffalo.mkcore.network.MKParticleEffectSpawnPacket;
 import com.chaosbuffalo.mkcore.network.PacketHandler;
-import com.chaosbuffalo.mkcore.network.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.mkcore.utils.SoundUtils;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.abilities.green_knight.SpiritBombAbility;
@@ -23,10 +20,8 @@ import com.chaosbuffalo.targeting_api.TargetingContexts;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.EntityRayTraceResult;
@@ -58,7 +53,7 @@ public class SpiritBombProjectileEntity extends TrailProjectileEntity implements
         setTrailAnimation(ParticleAnimationManager.ANIMATIONS.get(TRAIL_PARTICLES));
     }
 
-    public SpiritBombProjectileEntity(World world){
+    public SpiritBombProjectileEntity(World world) {
         this(TYPE, world);
     }
 
@@ -109,22 +104,24 @@ public class SpiritBombProjectileEntity extends TrailProjectileEntity implements
 
     private boolean doEffect(Entity caster, int amplifier) {
         if (!this.world.isRemote && caster instanceof LivingEntity) {
-            SpellCast damage = MKAbilityDamageEffect.Create(caster, CoreDamageTypes.NatureDamage,
-                    SpiritBombAbility.INSTANCE,
-                    SpiritBombAbility.INSTANCE.getBaseDamage(),
-                    SpiritBombAbility.INSTANCE.getScaleDamage(),
-                    SpiritBombAbility.INSTANCE.getModifierScaling());
+            MKEffectBuilder<?> damage = MKAbilityDamageEffect.from(caster, CoreDamageTypes.NatureDamage,
+                            SpiritBombAbility.INSTANCE.getBaseDamage(),
+                            SpiritBombAbility.INSTANCE.getScaleDamage(),
+                            SpiritBombAbility.INSTANCE.getModifierScaling())
+                    .ability(SpiritBombAbility.INSTANCE)
+                    .amplify(amplifier);
+
             AreaEffectBuilder.Create((LivingEntity) caster, this)
-                    .spellCast(damage, amplifier, getTargetContext())
+                    .effect(damage, getTargetContext())
                     .instant()
-                    .color(65535).radius(4.0f, true)
+                    .color(65535)
+                    .radius(4.0f, true)
                     .disableParticle()
                     .spawn();
             SoundCategory cat = caster.getSoundCategory();
             SoundUtils.serverPlaySoundAtEntity(this, ModSounds.spell_magic_explosion, cat);
-            PacketHandler.sendToTrackingAndSelf(new MKParticleEffectSpawnPacket(
-                            new Vector3d(0.0, 0.0, 0.0), DETONATE_PARTICLES, getEntityId()),
-                    this);
+            PacketHandler.sendToTrackingAndSelf(
+                    new MKParticleEffectSpawnPacket(new Vector3d(0.0, 0.0, 0.0), DETONATE_PARTICLES, getEntityId()), this);
             return true;
         }
         return false;
@@ -134,5 +131,4 @@ public class SpiritBombProjectileEntity extends TrailProjectileEntity implements
     protected boolean onGroundProc(Entity caster, int amplifier) {
         return doEffect(caster, amplifier);
     }
-
 }

@@ -1,28 +1,24 @@
 package com.chaosbuffalo.mkultra.abilities.nether_mage;
 
 import com.chaosbuffalo.mkcore.GameConstants;
+import com.chaosbuffalo.mkcore.MKCore;
 import com.chaosbuffalo.mkcore.abilities.*;
 import com.chaosbuffalo.mkcore.core.IMKEntityData;
 import com.chaosbuffalo.mkcore.core.MKAttributes;
-import com.chaosbuffalo.mkcore.effects.SpellCast;
-import com.chaosbuffalo.mkcore.fx.ParticleEffects;
+import com.chaosbuffalo.mkcore.effects.MKEffectBuilder;
 import com.chaosbuffalo.mkcore.init.CoreDamageTypes;
 import com.chaosbuffalo.mkcore.network.MKParticleEffectSpawnPacket;
 import com.chaosbuffalo.mkcore.network.PacketHandler;
-import com.chaosbuffalo.mkcore.network.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.mkcore.serialization.attributes.FloatAttribute;
 import com.chaosbuffalo.mkcore.serialization.attributes.IntAttribute;
 import com.chaosbuffalo.mkcore.serialization.attributes.ResourceLocationAttribute;
 import com.chaosbuffalo.mkcore.utils.SoundUtils;
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.effects.spells.WarpCurseEffect;
+import com.chaosbuffalo.mkultra.effects.WarpCurseEffect;
 import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.TargetingContext;
 import com.chaosbuffalo.targeting_api.TargetingContexts;
-import com.google.common.collect.ImmutableSet;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.brain.memory.MemoryModuleType;
-import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.ResourceLocation;
@@ -34,19 +30,10 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import java.util.Set;
-
-
-@Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class WarpCurseAbility extends MKAbility {
     public static final ResourceLocation CASTING_PARTICLES = new ResourceLocation(MKUltra.MODID, "warp_curse_casting");
     public static final ResourceLocation CAST_PARTICLES = new ResourceLocation(MKUltra.MODID, "warp_curse_cast");
     public static final WarpCurseAbility INSTANCE = new WarpCurseAbility();
-
-    @SubscribeEvent
-    public static void register(RegistryEvent.Register<MKAbility> event) {
-        event.getRegistry().register(INSTANCE);
-    }
 
     protected final FloatAttribute base = new FloatAttribute("base", 4.0f);
     protected final FloatAttribute scale = new FloatAttribute("scale", 2.0f);
@@ -68,11 +55,12 @@ public class WarpCurseAbility extends MKAbility {
     @Override
     protected ITextComponent getAbilityDescription(IMKEntityData entityData) {
         int level = getSkillLevel(entityData.getEntity(), MKAttributes.ALTERATON);
+        int duration = getBuffDuration(entityData, level, baseDuration.value(), scaleDuration.value());
         ITextComponent valueStr = getDamageDescription(entityData,
-                CoreDamageTypes.ShadowDamage, base.getValue(), scale.getValue(), level, modifierScaling.getValue());
+                CoreDamageTypes.ShadowDamage, base.value(), scale.value(), level, modifierScaling.value());
         return new TranslationTextComponent(getDescriptionTranslationKey(), valueStr,
-                WarpCurseEffect.INSTANCE.getPeriod() / 20,
-                getBuffDuration(entityData, level, baseDuration.getValue(), scaleDuration.getValue()) / 20);
+                WarpCurseEffect.DEFAULT_PERIOD / 20,
+                duration / 20);
     }
 
     @Override
@@ -83,11 +71,6 @@ public class WarpCurseAbility extends MKAbility {
     @Override
     public TargetingContext getTargetContext() {
         return TargetingContexts.ENEMY;
-    }
-
-    @Override
-    public Set<MemoryModuleType<?>> getRequiredMemories() {
-        return ImmutableSet.of(MKAbilityMemories.ABILITY_TARGET);
     }
 
     @Override
@@ -106,19 +89,32 @@ public class WarpCurseAbility extends MKAbility {
     }
 
     @Override
-    public void endCast(LivingEntity entity, IMKEntityData data, AbilityContext context) {
-        super.endCast(entity, data, context);
-        int level = getSkillLevel(entity, MKAttributes.ALTERATON);
+    public void endCast(LivingEntity castingEntity, IMKEntityData casterData, AbilityContext context) {
+        super.endCast(castingEntity, casterData, context);
         context.getMemory(MKAbilityMemories.ABILITY_TARGET).ifPresent(targetEntity -> {
-            int dur = getBuffDuration(data, level, baseDuration.getValue(), scaleDuration.getValue());
-            SpellCast warpCast = WarpCurseEffect.Create(entity, base.getValue(), scale.getValue(),
-                    modifierScaling.getValue(), cast_particles.getValue()).setTarget(targetEntity);
-            targetEntity.addPotionEffect(warpCast.toPotionEffect(dur, level));
-            targetEntity.addPotionEffect(new EffectInstance(Effects.SLOWNESS, dur, level,  false, false, true, null));
+            int level = getSkillLevel(castingEntity, MKAttributes.ALTERATON);
+            int duration = getBuffDuration(casterData, level, baseDuration.value(), scaleDuration.value());
+            MKEffectBuilder<?> warpCast = WarpCurseEffect.from(castingEntity, base.value(), scale.value(),
+                            modifierScaling.value(), cast_particles.getValue())
+                    .ability(this)
+                    .timed(duration)
+                    .amplify(level);
+
+            MKCore.getEntityData(targetEntity).ifPresent(targetData -> targetData.getEffects().addEffect(warpCast));
+            targetEntity.addPotionEffect(new EffectInstance(Effects.SLOWNESS, duration, level, false, false, true, null));
+
             SoundUtils.serverPlaySoundAtEntity(targetEntity, ModSounds.spell_fire_5, targetEntity.getSoundCategory());
             PacketHandler.sendToTrackingAndSelf(new MKParticleEffectSpawnPacket(
-                            new Vector3d(0.0, 1.0, 0.0), cast_particles.getValue(), entity.getEntityId()),
-                    entity);
+                    new Vector3d(0.0, 1.0, 0.0), cast_particles.getValue(), castingEntity.getEntityId()), castingEntity);
         });
+    }
+
+    @SuppressWarnings("unused")
+    @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    private static class RegisterMe {
+        @SubscribeEvent
+        public static void register(RegistryEvent.Register<MKAbility> event) {
+            event.getRegistry().register(INSTANCE);
+        }
     }
 }
