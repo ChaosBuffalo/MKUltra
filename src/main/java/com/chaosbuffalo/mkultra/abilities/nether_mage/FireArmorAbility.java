@@ -4,15 +4,14 @@ import com.chaosbuffalo.mkcore.GameConstants;
 import com.chaosbuffalo.mkcore.abilities.*;
 import com.chaosbuffalo.mkcore.core.IMKEntityData;
 import com.chaosbuffalo.mkcore.core.MKAttributes;
-import com.chaosbuffalo.mkcore.effects.AreaEffectBuilder;
-import com.chaosbuffalo.mkcore.effects.MKParticleEffect;
-import com.chaosbuffalo.mkcore.effects.SpellCast;
-import com.chaosbuffalo.mkcore.effects.instant.SoundEffect;
+import com.chaosbuffalo.mkcore.effects.*;
+import com.chaosbuffalo.mkcore.effects.utility.MKParticleEffect;
+import com.chaosbuffalo.mkcore.effects.utility.SoundEffect;
 import com.chaosbuffalo.mkcore.init.CoreDamageTypes;
 import com.chaosbuffalo.mkcore.serialization.attributes.IntAttribute;
 import com.chaosbuffalo.mkcore.serialization.attributes.ResourceLocationAttribute;
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.effects.spells.ResistanceEffects;
+import com.chaosbuffalo.mkultra.effects.ResistanceEffects;
 import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.TargetingContext;
 import com.chaosbuffalo.targeting_api.TargetingContexts;
@@ -30,16 +29,10 @@ import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
 
-@Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class FireArmorAbility extends MKAbility {
     public static final ResourceLocation CASTING_PARTICLES = new ResourceLocation(MKUltra.MODID, "fire_armor_casting");
     public static final ResourceLocation CAST_PARTICLES = new ResourceLocation(MKUltra.MODID, "fire_armor_cast");
     public static final FireArmorAbility INSTANCE = new FireArmorAbility();
-
-    @SubscribeEvent
-    public static void register(RegistryEvent.Register<MKAbility> event) {
-        event.getRegistry().register(INSTANCE);
-    }
 
     protected final IntAttribute baseDuration = new IntAttribute("baseDuration", 60);
     protected final IntAttribute scaleDuration = new IntAttribute("scaleDuration", 15);
@@ -64,11 +57,10 @@ public class FireArmorAbility extends MKAbility {
     protected ITextComponent getAbilityDescription(IMKEntityData entityData) {
         int level = getSkillLevel(entityData.getEntity(), MKAttributes.ABJURATION);
         float amount = ResistanceEffects.FIRE_ARMOR.getPerLevel() * (level + 1) * 100.0f;
-        int duration = getBuffDuration(entityData, level, baseDuration.getValue(), scaleDuration.getValue()) / GameConstants.TICKS_PER_SECOND;
+        int duration = getBuffDuration(entityData, level, baseDuration.value(), scaleDuration.value()) / GameConstants.TICKS_PER_SECOND;
         return new TranslationTextComponent(getDescriptionTranslationKey(), amount,
                 CoreDamageTypes.FireDamage.getDisplayName().mergeStyle(CoreDamageTypes.FireDamage.getFormatting()), duration);
     }
-
 
     @Nullable
     @Override
@@ -76,30 +68,37 @@ public class FireArmorAbility extends MKAbility {
         return ModSounds.spell_buff_5;
     }
 
-
     @Override
     public void endCast(LivingEntity entity, IMKEntityData data, AbilityContext context) {
         super.endCast(entity, data, context);
         int level = getSkillLevel(entity, MKAttributes.ABJURATION);
-        int duration = getBuffDuration(data, level, baseDuration.getValue(), scaleDuration.getValue());
+        int duration = getBuffDuration(data, level, baseDuration.value(), scaleDuration.value());
 
         EffectInstance fireResist = new EffectInstance(Effects.FIRE_RESISTANCE, duration, level, false, false, true, null);
         EffectInstance absorb = new EffectInstance(Effects.ABSORPTION, duration, level, false, false, true, null);
 
-        SpellCast particlePotion = MKParticleEffect.Create(entity, cast_particles.getValue(),
-                true, new Vector3d(0.0, 1.0, 0.0));
+        MKEffectBuilder<?> particles = MKParticleEffect.from(entity, cast_particles.getValue(), true, new Vector3d(0.0, 1.0, 0.0))
+                .ability(this)
+                .amplify(level);
 
-        SpellCast fireArmor = ResistanceEffects.FIRE_ARMOR.newSpellCast(entity);
+        MKEffectBuilder<?> sound = SoundEffect.from(entity, ModSounds.spell_fire_2, entity.getSoundCategory())
+                .ability(this);
 
-        AreaEffectBuilder.Create(entity, entity)
+        MKEffectBuilder<?> fireArmor = ResistanceEffects.FIRE_ARMOR.builder(entity.getUniqueID())
+                .ability(this)
+                .timed(duration)
+                .amplify(level);
+
+        AreaEffectBuilder.createOnCaster(entity)
                 .effect(fireResist, getTargetContext())
                 .effect(absorb, getTargetContext())
-                .spellCast(SoundEffect.Create(entity, ModSounds.spell_fire_2, entity.getSoundCategory()),
-                        1, getTargetContext())
-                .spellCast(fireArmor, duration, level, getTargetContext())
-                .spellCast(particlePotion, level, getTargetContext())
+                .effect(sound, getTargetContext())
+                .effect(fireArmor, getTargetContext())
+                .effect(particles, getTargetContext())
                 .disableParticle()
-                .instant().color(16762905).radius(getDistance(entity), true)
+                .instant()
+                .color(16762905)
+                .radius(getDistance(entity), true)
                 .spawn();
     }
 
@@ -108,9 +107,17 @@ public class FireArmorAbility extends MKAbility {
         return TargetingContexts.FRIENDLY;
     }
 
-
     @Override
     public AbilityTargetSelector getTargetSelector() {
         return AbilityTargeting.PBAOE;
+    }
+
+    @SuppressWarnings("unused")
+    @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    private static class RegisterMe {
+        @SubscribeEvent
+        public static void register(RegistryEvent.Register<MKAbility> event) {
+            event.getRegistry().register(INSTANCE);
+        }
     }
 }
