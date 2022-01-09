@@ -33,18 +33,11 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-
-@Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class IgniteAbility extends MKAbility {
     public static final ResourceLocation CASTING_PARTICLES = new ResourceLocation(MKUltra.MODID, "ignite_casting");
     public static final ResourceLocation CAST_1_PARTICLES = new ResourceLocation(MKUltra.MODID, "ignite_cast_1");
     public static final ResourceLocation CAST_2_PARTICLES = new ResourceLocation(MKUltra.MODID, "ignite_cast_2");
     public static final IgniteAbility INSTANCE = new IgniteAbility();
-
-    @SubscribeEvent
-    public static void register(RegistryEvent.Register<MKAbility> event) {
-        event.getRegistry().register(INSTANCE);
-    }
 
     protected final FloatAttribute base = new FloatAttribute("base", 8.0f);
     protected final FloatAttribute scale = new FloatAttribute("scale", 1.0f);
@@ -149,5 +142,14 @@ public class IgniteAbility extends MKAbility {
                 }
             });
         });
+    }
+
+    @SuppressWarnings("unused")
+    @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    private static class RegisterMe {
+        @SubscribeEvent
+        public static void register(RegistryEvent.Register<MKAbility> event) {
+            event.getRegistry().register(INSTANCE);
+        }
     }
 }

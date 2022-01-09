@@ -29,16 +29,10 @@ import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
 
-@Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class FireArmorAbility extends MKAbility {
     public static final ResourceLocation CASTING_PARTICLES = new ResourceLocation(MKUltra.MODID, "fire_armor_casting");
     public static final ResourceLocation CAST_PARTICLES = new ResourceLocation(MKUltra.MODID, "fire_armor_cast");
     public static final FireArmorAbility INSTANCE = new FireArmorAbility();
-
-    @SubscribeEvent
-    public static void register(RegistryEvent.Register<MKAbility> event) {
-        event.getRegistry().register(INSTANCE);
-    }
 
     protected final IntAttribute baseDuration = new IntAttribute("baseDuration", 60);
     protected final IntAttribute scaleDuration = new IntAttribute("scaleDuration", 15);
@@ -73,7 +67,6 @@ public class FireArmorAbility extends MKAbility {
     public SoundEvent getSpellCompleteSoundEvent() {
         return ModSounds.spell_buff_5;
     }
-
 
     @Override
     public void endCast(LivingEntity entity, IMKEntityData data, AbilityContext context) {
@@ -114,9 +107,17 @@ public class FireArmorAbility extends MKAbility {
         return TargetingContexts.FRIENDLY;
     }
 
-
     @Override
     public AbilityTargetSelector getTargetSelector() {
         return AbilityTargeting.PBAOE;
+    }
+
+    @SuppressWarnings("unused")
+    @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    private static class RegisterMe {
+        @SubscribeEvent
+        public static void register(RegistryEvent.Register<MKAbility> event) {
+            event.getRegistry().register(INSTANCE);
+        }
     }
 }

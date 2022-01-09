@@ -21,18 +21,11 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.UUID;
 
-
-@Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class NaturesRemedyEffect extends MKEffect {
 
     public static final int DEFAULT_PERIOD = 20;
 
     public static final NaturesRemedyEffect INSTANCE = new NaturesRemedyEffect();
-
-    @SubscribeEvent
-    public static void register(RegistryEvent.Register<MKEffect> event) {
-        event.getRegistry().register(INSTANCE);
-    }
 
     private NaturesRemedyEffect() {
         super(EffectType.BENEFICIAL);
@@ -70,6 +63,15 @@ public class NaturesRemedyEffect extends MKEffect {
             PacketHandler.sendToTrackingAndSelf(new MKParticleEffectSpawnPacket(
                     new Vector3d(0.0, 1.0, 0.0), particles, target.getEntityId()), target);
             return true;
+        }
+    }
+
+    @SuppressWarnings("unused")
+    @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    private static class RegisterMe {
+        @SubscribeEvent
+        public static void register(RegistryEvent.Register<MKEffect> event) {
+            event.getRegistry().register(INSTANCE);
         }
     }
 }

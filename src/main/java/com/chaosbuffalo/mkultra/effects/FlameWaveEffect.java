@@ -15,15 +15,9 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.UUID;
 
-@Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class FlameWaveEffect extends MKEffect {
 
     public static final FlameWaveEffect INSTANCE = new FlameWaveEffect();
-
-    @SubscribeEvent
-    public static void register(RegistryEvent.Register<MKEffect> event) {
-        event.getRegistry().register(INSTANCE);
-    }
 
     public static MKEffectBuilder<?> from(Entity source, float baseDamage, float scaling, float modifierScaling,
                                           int witherBase, int witherScale, float damageMultiplier) {
@@ -71,6 +65,15 @@ public class FlameWaveEffect extends MKEffect {
             targetData.getEntity().attackEntityFrom(MKDamageSource.causeAbilityDamage(CoreDamageTypes.FireDamage,
                     activeEffect.getAbilityId(), source, source, getModifierScale()), damage);
             return true;
+        }
+    }
+
+    @SuppressWarnings("unused")
+    @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    private static class RegisterMe {
+        @SubscribeEvent
+        public static void register(RegistryEvent.Register<MKEffect> event) {
+            event.getRegistry().register(INSTANCE);
         }
     }
 }

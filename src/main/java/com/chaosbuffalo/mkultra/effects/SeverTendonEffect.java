@@ -24,8 +24,6 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.UUID;
 
-
-@Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class SeverTendonEffect extends MKEffect {
     public static final int DEFAULT_PERIOD = GameConstants.TICKS_PER_SECOND * 2;
 
@@ -36,11 +34,6 @@ public class SeverTendonEffect extends MKEffect {
         super(EffectType.HARMFUL);
         setRegistryName(MKUltra.MODID, "effect.sever_tendon");
         addAttribute(Attributes.MOVEMENT_SPEED, modUUID, -0.05, AttributeModifier.Operation.MULTIPLY_TOTAL);
-    }
-
-    @SubscribeEvent
-    public static void register(RegistryEvent.Register<MKEffect> event) {
-        event.getRegistry().register(INSTANCE);
     }
 
     public static MKEffectBuilder<?> from(Entity source, float baseDamage, float scaling, float modifierScaling) {
@@ -78,6 +71,15 @@ public class SeverTendonEffect extends MKEffect {
                             target.getPosZ(), target.getWidth() / 2.0, 0.5, target.getWidth() / 2.0, 3,
                             target.getUpVector(0)), target);
             return true;
+        }
+    }
+
+    @SuppressWarnings("unused")
+    @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    private static class RegisterMe {
+        @SubscribeEvent
+        public static void register(RegistryEvent.Register<MKEffect> event) {
+            event.getRegistry().register(INSTANCE);
         }
     }
 }

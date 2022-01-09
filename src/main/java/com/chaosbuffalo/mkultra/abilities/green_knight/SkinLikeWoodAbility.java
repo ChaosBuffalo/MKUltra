@@ -28,18 +28,12 @@ import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
 
-@Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class SkinLikeWoodAbility extends MKToggleAbility {
     public static final ResourceLocation CASTING_PARTICLES = new ResourceLocation(MKUltra.MODID, "skin_like_wood_casting");
     public static final ResourceLocation CAST_PARTICLES = new ResourceLocation(MKUltra.MODID, "skin_like_wood_cast");
     public static final SkinLikeWoodAbility INSTANCE = new SkinLikeWoodAbility();
 
     protected final ResourceLocationAttribute cast_particles = new ResourceLocationAttribute("cast_particles", CAST_PARTICLES);
-
-    @SubscribeEvent
-    public static void register(RegistryEvent.Register<MKAbility> event) {
-        event.getRegistry().register(INSTANCE);
-    }
 
     private SkinLikeWoodAbility() {
         super(new ResourceLocation(MKUltra.MODID, "ability.skin_like_wood"));
@@ -86,5 +80,14 @@ public class SkinLikeWoodAbility extends MKToggleAbility {
         PacketHandler.sendToTrackingAndSelf(new MKParticleEffectSpawnPacket(
                         new Vector3d(0.0, 1.0, 0.0), cast_particles.getValue(),
                         entity.getEntityId()), entity);
+    }
+
+    @SuppressWarnings("unused")
+    @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    private static class RegisterMe {
+        @SubscribeEvent
+        public static void register(RegistryEvent.Register<MKAbility> event) {
+            event.getRegistry().register(INSTANCE);
+        }
     }
 }

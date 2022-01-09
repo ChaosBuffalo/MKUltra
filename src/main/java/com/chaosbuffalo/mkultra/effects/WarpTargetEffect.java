@@ -15,15 +15,9 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.UUID;
 
-@Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class WarpTargetEffect extends MKEffect {
 
     public static final WarpTargetEffect INSTANCE = new WarpTargetEffect();
-
-    @SubscribeEvent
-    public static void register(RegistryEvent.Register<MKEffect> event) {
-        event.getRegistry().register(INSTANCE);
-    }
 
     private WarpTargetEffect() {
         super(EffectType.HARMFUL);
@@ -56,6 +50,15 @@ public class WarpTargetEffect extends MKEffect {
                     playerOrigin.y + heading.y + 1.0,
                     playerOrigin.z + heading.z);
             return true;
+        }
+    }
+
+    @SuppressWarnings("unused")
+    @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    private static class RegisterMe {
+        @SubscribeEvent
+        public static void register(RegistryEvent.Register<MKEffect> event) {
+            event.getRegistry().register(INSTANCE);
         }
     }
 }

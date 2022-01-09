@@ -28,16 +28,9 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-
-@Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class SeverTendonAbility extends MKAbility {
 
     public static final SeverTendonAbility INSTANCE = new SeverTendonAbility();
-
-    @SubscribeEvent
-    public static void register(RegistryEvent.Register<MKAbility> event) {
-        event.getRegistry().register(INSTANCE);
-    }
 
     protected final FloatAttribute base = new FloatAttribute("base", 4.0f);
     protected final FloatAttribute scale = new FloatAttribute("scale", 2.0f);
@@ -127,5 +120,14 @@ public class SeverTendonAbility extends MKAbility {
                             targetEntity.getPosZ(), 0.75, 0.75, 0.75, 1.0,
                             lookVec), targetEntity);
         });
+    }
+
+    @SuppressWarnings("unused")
+    @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    private static class RegisterMe {
+        @SubscribeEvent
+        public static void register(RegistryEvent.Register<MKAbility> event) {
+            event.getRegistry().register(INSTANCE);
+        }
     }
 }

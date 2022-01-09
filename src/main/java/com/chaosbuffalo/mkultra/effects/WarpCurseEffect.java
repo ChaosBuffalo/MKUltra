@@ -25,16 +25,10 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.UUID;
 
-@Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class WarpCurseEffect extends MKEffect {
     public static final int DEFAULT_PERIOD = 40;
 
     public static final WarpCurseEffect INSTANCE = new WarpCurseEffect();
-
-    @SubscribeEvent
-    public static void register(RegistryEvent.Register<MKEffect> event) {
-        event.getRegistry().register(INSTANCE);
-    }
 
     public static MKEffectBuilder<?> from(Entity source, float base, float scaling, float modifier, ResourceLocation castParticles) {
         return INSTANCE.builder(source.getUniqueID()).state(s -> {
@@ -85,6 +79,15 @@ public class WarpCurseEffect extends MKEffect {
                             particles, target.getEntityId()),
                     target);
             return true;
+        }
+    }
+
+    @SuppressWarnings("unused")
+    @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    private static class RegisterMe {
+        @SubscribeEvent
+        public static void register(RegistryEvent.Register<MKEffect> event) {
+            event.getRegistry().register(INSTANCE);
         }
     }
 }

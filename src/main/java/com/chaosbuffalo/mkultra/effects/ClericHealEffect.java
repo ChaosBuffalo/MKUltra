@@ -18,16 +18,9 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.UUID;
 
-
-@Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ClericHealEffect extends MKEffect {
 
     public static final ClericHealEffect INSTANCE = new ClericHealEffect();
-
-    @SubscribeEvent
-    public static void register(RegistryEvent.Register<MKEffect> event) {
-        event.getRegistry().register(INSTANCE);
-    }
 
     private ClericHealEffect() {
         super(EffectType.BENEFICIAL);
@@ -62,6 +55,15 @@ public class ClericHealEffect extends MKEffect {
             MKHealSource heal = MKHealSource.getHolyHeal(instance.getAbilityId(), source, getModifierScale());
             MKHealing.healEntityFrom(target, value, heal);
             return true;
+        }
+    }
+
+    @SuppressWarnings("unused")
+    @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    private static class RegisterMe {
+        @SubscribeEvent
+        public static void register(RegistryEvent.Register<MKEffect> event) {
+            event.getRegistry().register(INSTANCE);
         }
     }
 }

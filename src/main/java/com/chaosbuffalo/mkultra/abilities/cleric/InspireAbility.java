@@ -30,15 +30,9 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class InspireAbility extends MKAbility {
 
     public static final InspireAbility INSTANCE = new InspireAbility();
-
-    @SubscribeEvent
-    public static void register(RegistryEvent.Register<MKAbility> event) {
-        event.getRegistry().register(INSTANCE);
-    }
 
     protected final ResourceLocation CASTING_PARTICLES = new ResourceLocation(MKUltra.MODID, "inspire_casting");
     protected final ResourceLocation CAST_PARTICLES = new ResourceLocation(MKUltra.MODID, "inspire_cast");
@@ -46,7 +40,7 @@ public class InspireAbility extends MKAbility {
     protected final IntAttribute scale = new IntAttribute("scaleDuration", 2);
     protected final ResourceLocationAttribute cast_particles = new ResourceLocationAttribute("cast_particles", CAST_PARTICLES);
 
-    public InspireAbility(){
+    public InspireAbility() {
         super(MKUltra.MODID, "ability.inspire");
         setCooldownSeconds(35);
         setManaCost(8);
@@ -72,7 +66,6 @@ public class InspireAbility extends MKAbility {
     public TargetingContext getTargetContext() {
         return TargetingContexts.FRIENDLY;
     }
-
 
     @Override
     public AbilityTargetSelector getTargetSelector() {
@@ -118,5 +111,14 @@ public class InspireAbility extends MKAbility {
                 .radius(getDistance(castingEntity), true)
                 .disableParticle()
                 .spawn();
+    }
+
+    @SuppressWarnings("unused")
+    @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    private static class RegisterMe {
+        @SubscribeEvent
+        public static void register(RegistryEvent.Register<MKAbility> event) {
+            event.getRegistry().register(INSTANCE);
+        }
     }
 }

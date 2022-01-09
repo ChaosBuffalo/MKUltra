@@ -15,15 +15,9 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.UUID;
 
-@Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class IgniteEffect extends MKEffect {
 
     public static final IgniteEffect INSTANCE = new IgniteEffect();
-
-    @SubscribeEvent
-    public static void register(RegistryEvent.Register<MKEffect> event) {
-        event.getRegistry().register(INSTANCE);
-    }
 
     public static MKEffectBuilder<?> from(Entity source, float baseDamage, float scaling, float modifierScaling) {
         return INSTANCE.builder(source.getUniqueID())
@@ -64,6 +58,15 @@ public class IgniteEffect extends MKEffect {
             });
 
             return true;
+        }
+    }
+
+    @SuppressWarnings("unused")
+    @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    private static class RegisterMe {
+        @SubscribeEvent
+        public static void register(RegistryEvent.Register<MKEffect> event) {
+            event.getRegistry().register(INSTANCE);
         }
     }
 }

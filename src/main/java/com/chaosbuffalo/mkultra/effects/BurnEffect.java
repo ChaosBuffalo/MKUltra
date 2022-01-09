@@ -18,17 +18,11 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.UUID;
 
-@Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class BurnEffect extends DamageTypeDotEffect {
 
     public static int DEFAULT_PERIOD = 40;
 
     public static final BurnEffect INSTANCE = new BurnEffect();
-
-    @SubscribeEvent
-    public static void register(RegistryEvent.Register<MKEffect> event) {
-        event.getRegistry().register(INSTANCE);
-    }
 
 
     public BurnEffect() {
@@ -69,6 +63,15 @@ public class BurnEffect extends DamageTypeDotEffect {
             PacketHandler.sendToTrackingAndSelf(
                     new MKParticleEffectSpawnPacket(new Vector3d(0.0, 1.0, 0.0), particles, imkEntityData.getEntity().getEntityId()), imkEntityData.getEntity());
             return true;
+        }
+    }
+
+    @SuppressWarnings("unused")
+    @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    private static class RegisterMe {
+        @SubscribeEvent
+        public static void register(RegistryEvent.Register<MKEffect> event) {
+            event.getRegistry().register(INSTANCE);
         }
     }
 }

@@ -24,16 +24,9 @@ import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
 
-
-@Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class FireballAbility extends MKAbility {
     public static final ResourceLocation CASTING_PARTICLES = new ResourceLocation(MKUltra.MODID, "fireball_casting");
     public static final FireballAbility INSTANCE = new FireballAbility();
-
-    @SubscribeEvent
-    public static void register(RegistryEvent.Register<MKAbility> event) {
-        event.getRegistry().register(INSTANCE);
-    }
 
     protected final FloatAttribute baseDamage = new FloatAttribute("baseDamage", 6.0f);
     protected final FloatAttribute scaleDamage = new FloatAttribute("scaleDamage", 2.0f);
@@ -53,15 +46,15 @@ public class FireballAbility extends MKAbility {
         casting_particles.setDefaultValue(CASTING_PARTICLES);
     }
 
-    public float getBaseDamage(){
+    public float getBaseDamage() {
         return baseDamage.value();
     }
 
-    public float getScaleDamage(){
+    public float getScaleDamage() {
         return scaleDamage.value();
     }
 
-    public float getExplosionRadius(){
+    public float getExplosionRadius() {
         return radius.value();
     }
 
@@ -100,7 +93,6 @@ public class FireballAbility extends MKAbility {
         return ModSounds.hostile_casting_fire;
     }
 
-
     @Override
     public void endCast(LivingEntity entity, IMKEntityData data, AbilityContext context) {
         super.endCast(entity, data, context);
@@ -112,4 +104,12 @@ public class FireballAbility extends MKAbility {
         entity.world.addEntity(proj);
     }
 
+    @SuppressWarnings("unused")
+    @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    private static class RegisterMe {
+        @SubscribeEvent
+        public static void register(RegistryEvent.Register<MKAbility> event) {
+            event.getRegistry().register(INSTANCE);
+        }
+    }
 }
