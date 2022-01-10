@@ -21,18 +21,18 @@
     {
       "optionType": "mknpc:equipment",
       "slotOptions": {
-        "head": [
-          {
-            "weight": 1.0,
-            "dropChance": 0.05,
-            "item": "{id: \"mkultra:green_knight_helmet\", Count: 1b, tag: {Damage: 0}}"
-          }
-        ],
         "mainhand": [
           {
             "weight": 1.0,
             "dropChance": 0.0,
             "item": "{id: \"mkweapons:battleaxe_stone\", Count: 1b, tag: {Damage: 0}}"
+          }
+        ],
+        "head": [
+          {
+            "weight": 1.0,
+            "dropChance": 0.05,
+            "item": "{id: \"mkultra:green_knight_helmet\", Count: 1b, tag: {Damage: 0}}"
           }
         ],
         "feet": [

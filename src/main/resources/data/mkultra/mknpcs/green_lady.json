@@ -21,11 +21,56 @@
     {
       "optionType": "mknpc:ability_trainings",
       "value": [
-        "mkultra:ability.skin_like_wood",
-        "mkultra:ability.natures_remedy",
-        "mkultra:ability.cleansing_seed",
-        "mkultra:ability.spirit_bomb",
-        "mkultra:ability.explosive_growth"
+        {
+          "ability": "mkultra:ability.skin_like_wood",
+          "reqs": [
+            {
+              "reqType": "mkcore:training_req.has_entitlement",
+              "attributes": {},
+              "entitlement": "mkultra:green_knight.tier_1"
+            }
+          ]
+        },
+        {
+          "ability": "mkultra:ability.natures_remedy",
+          "reqs": [
+            {
+              "reqType": "mkcore:training_req.has_entitlement",
+              "attributes": {},
+              "entitlement": "mkultra:green_knight.tier_1"
+            }
+          ]
+        },
+        {
+          "ability": "mkultra:ability.spirit_bomb",
+          "reqs": [
+            {
+              "reqType": "mkcore:training_req.has_entitlement",
+              "attributes": {},
+              "entitlement": "mkultra:green_knight.tier_2"
+            }
+          ]
+        },
+        {
+          "ability": "mkultra:ability.cleansing_seed",
+          "reqs": [
+            {
+              "reqType": "mkcore:training_req.has_entitlement",
+              "attributes": {},
+              "entitlement": "mkultra:green_knight.tier_2"
+            }
+          ]
+        },
+        {
+          "ability": "mkultra:ability.explosive_growth",
+          "reqs": [
+            {
+              "reqType": "mkcore:training_req.has_entitlement",
+              "attributes": {},
+              "entitlement": "mkultra:green_knight.tier_3"
+            }
+          ]
+        }
       ]
     },
     {

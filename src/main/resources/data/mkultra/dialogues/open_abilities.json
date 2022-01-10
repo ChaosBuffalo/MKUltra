@@ -1,10 +1,12 @@
 {
   "nodes": {
     "root": {
-      "message": "Hello {context:player_name}, welcome to the MKU alpha. Do you {prompt:need_training}"
+      "message": "Hello {context:player_name}, welcome to the MKU alpha. Do you {prompt:need_training}",
+      "id": "root"
     },
     "open_training": {
       "message": "Let me see what I can teach you.",
+      "id": "open_training",
       "effects": [
         {
           "dialogueEffectType": "mknpc:open_learn_abilities"
@@ -15,6 +17,7 @@
   "prompts": {
     "need_training": {
       "message": "need training?",
+      "id": "need_training",
       "promptPhrase": "need training",
       "promptText": "I need training.",
       "responses": [
@@ -25,6 +28,7 @@
     },
     "hail": {
       "message": "",
+      "id": "hail",
       "promptPhrase": "",
       "promptText": "",
       "responses": [
