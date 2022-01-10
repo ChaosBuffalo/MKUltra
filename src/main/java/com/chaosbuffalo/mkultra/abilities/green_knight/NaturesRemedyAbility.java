@@ -82,11 +82,8 @@ public class NaturesRemedyAbility extends MKAbility {
 
     public MKEffectBuilder<?> createNaturesRemedyEffect(IMKEntityData casterData, int level) {
         int duration = getBuffDuration(casterData, level, baseDuration.value(), scaleDuration.value());
-        return NaturesRemedyEffect.INSTANCE.builder(casterData.getEntity().getUniqueID())
-                .state(s -> {
-                    s.particles = tick_particles.getValue();
-                    s.setScalingParameters(baseValue.value(), scaleValue.value(), modifierScaling.value());
-                })
+        return NaturesRemedyEffect.from(casterData.getEntity(), baseValue.value(), scaleValue.value(),
+                        modifierScaling.value(), tick_particles.getValue())
                 .amplify(level)
                 .timed(duration)
                 .periodic(NaturesRemedyEffect.DEFAULT_PERIOD);

@@ -106,7 +106,7 @@ public class ExplosiveGrowthAbility extends MKAbility {
         SoundCategory cat = castingEntity instanceof PlayerEntity ? SoundCategory.PLAYERS : SoundCategory.HOSTILE;
         float damage = baseDamage.value() + scaleDamage.value() * pankrationLevel;
 
-        MKEffectBuilder<?> cure = CureEffect.INSTANCE.builder(castingEntity.getUniqueID())
+        MKEffectBuilder<?> cure = CureEffect.from(castingEntity)
                 .ability(this)
                 .amplify(restoLevel);
         MKEffectBuilder<?> remedy = NaturesRemedyAbility.INSTANCE.createNaturesRemedyEffect(casterData, restoLevel)

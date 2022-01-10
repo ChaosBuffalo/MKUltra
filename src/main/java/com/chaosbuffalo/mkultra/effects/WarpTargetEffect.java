@@ -24,6 +24,10 @@ public class WarpTargetEffect extends MKEffect {
         setRegistryName(MKUltra.MODID, "effect.warp_target");
     }
 
+    public static MKEffectBuilder<?> from(Entity source) {
+        return INSTANCE.builder(source.getUniqueID());
+    }
+
     @Override
     public State makeState() {
         return new State();

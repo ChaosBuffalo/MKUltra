@@ -69,7 +69,7 @@ public class CleansingSeedProjectileEntity extends TrailProjectileEntity impleme
                 Targeting.TargetRelation relation = Targeting.getTargetRelation(caster, target);
                 switch (relation) {
                     case FRIEND: {
-                        MKEffectBuilder<?> cure = CureEffect.INSTANCE.builder(caster.getUniqueID())
+                        MKEffectBuilder<?> cure = CureEffect.from(caster)
                                 .ability(CleansingSeedAbility.INSTANCE)
                                 .amplify(amplifier);
 

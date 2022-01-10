@@ -27,6 +27,10 @@ public class ClericHealEffect extends MKEffect {
         setRegistryName(MKUltra.MODID, "effect.cleric_heal");
     }
 
+    public static MKEffectBuilder<?> from(Entity source, float base, float scale, float modScale) {
+        return INSTANCE.builder(source.getUniqueID()).state(s -> s.setScalingParameters(base, scale, modScale));
+    }
+
     @Override
     public boolean isValidTarget(TargetingContext targetContext, IMKEntityData sourceData, IMKEntityData targetData) {
         return super.isValidTarget(targetContext, sourceData, targetData) || MKHealing.isEnemyUndead(targetData.getEntity());

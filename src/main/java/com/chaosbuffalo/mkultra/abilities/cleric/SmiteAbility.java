@@ -94,7 +94,7 @@ public class SmiteAbility extends MKAbility {
                     .ability(this)
                     .amplify(level);
 
-            MKEffectBuilder<?> stun = StunEffect.INSTANCE.builder(entity.getUniqueID())
+            MKEffectBuilder<?> stun = StunEffect.from(entity)
                     .ability(this)
                     .timed(GameConstants.TICKS_PER_SECOND * level)
                     .amplify(level);

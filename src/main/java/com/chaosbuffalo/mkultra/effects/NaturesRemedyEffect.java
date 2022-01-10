@@ -32,6 +32,14 @@ public class NaturesRemedyEffect extends MKEffect {
         setRegistryName(MKUltra.MODID, "effect.natures_remedy");
     }
 
+    public static MKEffectBuilder<?> from(Entity source, float base, float scale, float modScale,
+                                          ResourceLocation castParticles) {
+        return INSTANCE.builder(source.getUniqueID()).state(s -> {
+            s.particles = castParticles;
+            s.setScalingParameters(base, scale, modScale);
+        });
+    }
+
     @Override
     public State makeState() {
         return new State();

@@ -82,7 +82,7 @@ public class PowerWordSummonAbility extends MKAbility {
         int level = getSkillLevel(castingEntity, MKAttributes.CONJURATION);
 
         context.getMemory(MKAbilityMemories.ABILITY_TARGET).ifPresent(targetEntity -> {
-            MKEffectBuilder<?> warp = WarpTargetEffect.INSTANCE.builder(castingEntity.getUniqueID())
+            MKEffectBuilder<?> warp = WarpTargetEffect.from(castingEntity)
                     .ability(this)
                     .amplify(level);
 

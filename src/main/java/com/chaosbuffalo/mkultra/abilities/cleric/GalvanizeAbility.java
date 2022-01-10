@@ -87,7 +87,7 @@ public class GalvanizeAbility extends MKAbility {
         int duration = getBuffDuration(data, level, base.value(), scale.value());
 
         EffectInstance jump = new EffectInstance(Effects.JUMP_BOOST, duration, level, false, false);
-        MKEffectBuilder<?> cure = CureEffect.INSTANCE.builder(entity.getUniqueID())
+        MKEffectBuilder<?> cure = CureEffect.from(entity)
                 .ability(this)
                 .amplify(level);
         MKEffectBuilder<?> sound = SoundEffect.from(entity, ModSounds.spell_buff_5, entity.getSoundCategory())
