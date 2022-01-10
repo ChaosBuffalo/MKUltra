@@ -1,5 +1,5 @@
 {
-  "entityType": "mknpc:zombified_piglin",
+  "entityType": "mkultra:zombified_piglin",
   "options": [
     {
       "optionType": "mknpc:render_group",

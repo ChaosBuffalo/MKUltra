@@ -22,7 +22,7 @@
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "b9eee9d5-bc90-4ebd-bcf7-b7ea62e95715",
+                    "chainId": "9e86cce6-d8b3-4267-836d-d710ab8bcc5b",
                     "objectiveName": "talk_to_smith"
                   }
                 ]
@@ -36,7 +36,15 @@
       ],
       "description": "{\"text\":\"The Green Lady wants you to go talk to the smith and equip yourself for an unknown task.\"}",
       "autoComplete": true,
-      "rewards": []
+      "rewards": [
+        {
+          "rewardType": "mknpc:quest_reward.xp",
+          "description": "{\"translate\":\"mknpc.quest_reward.xp.name\",\"with\":[\"25\"]}",
+          "attributes": {
+            "xp": 25
+          }
+        }
+      ]
     },
     {
       "questName": "equip_yourself",
@@ -63,7 +71,15 @@
       ],
       "description": "{\"text\":\"The Green Smith points you towards a chest in his workshop.\"}",
       "autoComplete": true,
-      "rewards": []
+      "rewards": [
+        {
+          "rewardType": "mknpc:quest_reward.xp",
+          "description": "{\"translate\":\"mknpc.quest_reward.xp.name\",\"with\":[\"25\"]}",
+          "attributes": {
+            "xp": 25
+          }
+        }
+      ]
     },
     {
       "questName": "return_to_smith",
@@ -87,7 +103,7 @@
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "3980fed3-6c65-4582-8151-8e91fdd998d8",
+                    "chainId": "be61745e-b4b4-40fd-b3aa-925cc623c6d1",
                     "objectiveName": "return_to_smith"
                   }
                 ]
@@ -122,7 +138,262 @@
       ],
       "description": "{\"text\":\"Use the Green Smith's supplies to craft your desired weapon and perhaps some armor for the battle ahead.\"}",
       "autoComplete": true,
-      "rewards": []
+      "rewards": [
+        {
+          "rewardType": "mknpc:quest_reward.xp",
+          "description": "{\"translate\":\"mknpc.quest_reward.xp.name\",\"with\":[\"25\"]}",
+          "attributes": {
+            "xp": 25
+          }
+        }
+      ]
+    },
+    {
+      "questName": "green_lady_talent",
+      "objectives": [
+        {
+          "objectiveType": "mknpc:objective.talk_to_npc",
+          "description": "{\"text\":\"Talk to the Green Lady about the talent system.\"}",
+          "attributes": {
+            "structureIndex": 0,
+            "npcDefinition": "mkultra:green_lady",
+            "structure": "mkultra:intro_castle",
+            "objectiveName": "green_lady_talent"
+          },
+          "nodes": [],
+          "prompts": [],
+          "hailResponses": [
+            {
+              "node": {
+                "message": "We can help you awaken your magical gifts, the first step is learning how to train your talents. You should have gained a talent point upon initiating this conversation. Open your player screen and go to the talent section, train any of the first talents in order to unlock your first ability slot. Talk to me again when you have finished this.",
+                "id": "talent_1",
+                "effects": [
+                  {
+                    "dialogueEffectType": "mknpc:objective_completion",
+                    "chainId": "902588da-45b6-47b8-bf80-4c2ad0149fb8",
+                    "objectiveName": "green_lady_talent"
+                  }
+                ]
+              },
+              "response": {
+                "responseNodeId": "talent_1"
+              }
+            }
+          ]
+        }
+      ],
+      "description": "{\"text\":\"Talk to the Green Lady to learn more about developing your magical abilities\"}",
+      "autoComplete": true,
+      "rewards": [
+        {
+          "rewardType": "mknpc:quest_reward.xp",
+          "description": "{\"translate\":\"mknpc.quest_reward.xp.name\",\"with\":[\"25\"]}",
+          "attributes": {
+            "xp": 25
+          }
+        }
+      ]
+    },
+    {
+      "questName": "return_to_green_lady",
+      "objectives": [
+        {
+          "objectiveType": "mknpc:objective.talk_to_npc",
+          "description": "{\"text\":\"Talk to the Green Lady after training a talent.\"}",
+          "attributes": {
+            "structureIndex": 0,
+            "npcDefinition": "mkultra:green_lady",
+            "structure": "mkultra:intro_castle",
+            "objectiveName": "return_to_green_lady"
+          },
+          "nodes": [
+            {
+              "message": "Let me see what I can teach you. Talk to me again when you're done.",
+              "id": "open_training",
+              "effects": [
+                {
+                  "dialogueEffectType": "mknpc:open_learn_abilities"
+                }
+              ]
+            }
+          ],
+          "prompts": [
+            {
+              "message": "ready to learn",
+              "id": "need_training",
+              "promptPhrase": "want to learn",
+              "promptText": "I want to learn.",
+              "responses": [
+                {
+                  "responseNodeId": "open_training"
+                }
+              ]
+            }
+          ],
+          "hailResponses": [
+            {
+              "node": {
+                "message": "Alright you're now {prompt:need_training} your first ability.",
+                "id": "hail_w_training",
+                "effects": [
+                  {
+                    "dialogueEffectType": "mknpc:objective_completion",
+                    "chainId": "cd2a2051-352c-4c98-ae2c-9930aa8c0291",
+                    "objectiveName": "return_to_green_lady"
+                  },
+                  {
+                    "dialogueEffectType": "mknpc:grant_entitlement",
+                    "entitlement": "mkultra:green_knight.tier_1"
+                  }
+                ]
+              },
+              "response": {
+                "responseNodeId": "hail_w_training",
+                "conditions": [
+                  {
+                    "dialogueConditionType": "mknpc:has_spent_talents",
+                    "invert": false,
+                    "talentCount": 1
+                  }
+                ]
+              }
+            },
+            {
+              "node": {
+                "message": "Come back to me when you have spent your first talent point.",
+                "id": "hail_wo_training"
+              },
+              "response": {
+                "responseNodeId": "hail_wo_training",
+                "conditions": [
+                  {
+                    "dialogueConditionType": "mknpc:has_spent_talents",
+                    "invert": true,
+                    "talentCount": 1
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "description": "{\"text\":\"The Green Lady wants you to learn about spending talent points.\"}",
+      "autoComplete": true,
+      "rewards": [
+        {
+          "rewardType": "mknpc:quest_reward.xp",
+          "description": "{\"translate\":\"mknpc.quest_reward.xp.name\",\"with\":[\"50\"]}",
+          "attributes": {
+            "xp": 50
+          }
+        }
+      ]
+    },
+    {
+      "questName": "after_ability",
+      "objectives": [
+        {
+          "objectiveType": "mknpc:objective.talk_to_npc",
+          "description": "{\"text\":\"Talk to the Green Lady after learning your first ability.\"}",
+          "attributes": {
+            "structureIndex": 0,
+            "npcDefinition": "mkultra:green_lady",
+            "structure": "mkultra:intro_castle",
+            "objectiveName": "afterGreenLady"
+          },
+          "nodes": [],
+          "prompts": [],
+          "hailResponses": [
+            {
+              "node": {
+                "message": "Now we must test your mettle in combat. Go kill some of the zombies on the first floor to try out your new magic, and don't forget you can always return to me to learn more.",
+                "id": "hail_w_ability",
+                "effects": [
+                  {
+                    "dialogueEffectType": "mknpc:objective_completion",
+                    "chainId": "6714881b-e392-42cd-838a-9e96259662c2",
+                    "objectiveName": "afterGreenLady"
+                  }
+                ]
+              },
+              "response": {
+                "responseNodeId": "hail_w_ability",
+                "conditions": [
+                  {
+                    "dialogueConditionType": "mknpc:has_trained_abilities",
+                    "invert": false,
+                    "allMatch": false,
+                    "abilities": [
+                      "mkultra:ability.skin_like_wood",
+                      "mkultra:ability.natures_remedy"
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "node": {
+                "message": "Come back to me once you've learned one of our abilities.",
+                "id": "hail_wo_abilities"
+              },
+              "response": {
+                "responseNodeId": "hail_wo_abilities",
+                "conditions": [
+                  {
+                    "dialogueConditionType": "mknpc:has_weapon_in_hand",
+                    "invert": true
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "description": "{\"text\":\"Talk to the Green Lady and learn your first ability, then speak to her again.\"}",
+      "autoComplete": true,
+      "rewards": [
+        {
+          "rewardType": "mknpc:quest_reward.xp",
+          "description": "{\"translate\":\"mknpc.quest_reward.xp.name\",\"with\":[\"50\"]}",
+          "attributes": {
+            "xp": 50
+          }
+        }
+      ]
+    },
+    {
+      "questName": "first_kill",
+      "objectives": [
+        {
+          "objectiveType": "mknpc:objective.kill_npc_def",
+          "description": "{\"text\":\"Placeholder\"}",
+          "attributes": {
+            "npcDefinition": "mkultra:decaying_piglin",
+            "count": 4,
+            "objectiveName": "kill_zombies"
+          }
+        },
+        {
+          "objectiveType": "mknpc:objective.kill_npc_def",
+          "description": "{\"text\":\"Placeholder\"}",
+          "attributes": {
+            "npcDefinition": "mkultra:decaying_piglin_archer",
+            "count": 4,
+            "objectiveName": "kill_archers"
+          }
+        }
+      ],
+      "description": "{\"text\":\"The Green Lady wants you to clear out some of the zombies on the first floor of the castle\"}",
+      "autoComplete": false,
+      "rewards": [
+        {
+          "rewardType": "mknpc:quest_reward.xp",
+          "description": "{\"translate\":\"mknpc.quest_reward.xp.name\",\"with\":[\"50\"]}",
+          "attributes": {
+            "xp": 50
+          }
+        }
+      ]
     }
   ],
   "repeatable": false,
