@@ -22,7 +22,7 @@
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "9e86cce6-d8b3-4267-836d-d710ab8bcc5b",
+                    "chainId": "63ca7724-c01f-47c5-8cc3-3be909fc79de",
                     "objectiveName": "talk_to_smith"
                   }
                 ]
@@ -103,7 +103,7 @@
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "be61745e-b4b4-40fd-b3aa-925cc623c6d1",
+                    "chainId": "05a886d5-a3ce-46da-b114-add7eac657ce",
                     "objectiveName": "return_to_smith"
                   }
                 ]
@@ -170,7 +170,7 @@
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "902588da-45b6-47b8-bf80-4c2ad0149fb8",
+                    "chainId": "0aa04133-3983-412f-b1d4-266023a1bfc3",
                     "objectiveName": "green_lady_talent"
                   }
                 ]
@@ -238,7 +238,7 @@
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "cd2a2051-352c-4c98-ae2c-9930aa8c0291",
+                    "chainId": "adcd333e-8157-492a-96c1-e373bad379f0",
                     "objectiveName": "return_to_green_lady"
                   },
                   {
@@ -299,10 +299,32 @@
             "structureIndex": 0,
             "npcDefinition": "mkultra:green_lady",
             "structure": "mkultra:intro_castle",
-            "objectiveName": "afterGreenLady"
+            "objectiveName": "after_green_lady"
           },
-          "nodes": [],
-          "prompts": [],
+          "nodes": [
+            {
+              "message": "Let me see what I can teach you. Talk to me again when you're done.",
+              "id": "open_training",
+              "effects": [
+                {
+                  "dialogueEffectType": "mknpc:open_learn_abilities"
+                }
+              ]
+            }
+          ],
+          "prompts": [
+            {
+              "message": "ready to learn",
+              "id": "need_training",
+              "promptPhrase": "want to learn",
+              "promptText": "I want to learn.",
+              "responses": [
+                {
+                  "responseNodeId": "open_training"
+                }
+              ]
+            }
+          ],
           "hailResponses": [
             {
               "node": {
@@ -311,8 +333,8 @@
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "6714881b-e392-42cd-838a-9e96259662c2",
-                    "objectiveName": "afterGreenLady"
+                    "chainId": "a57ba5f7-e698-4fa5-ba9a-a6c6ee95a6b5",
+                    "objectiveName": "after_green_lady"
                   }
                 ]
               },
@@ -381,10 +403,71 @@
             "count": 4,
             "objectiveName": "kill_archers"
           }
+        },
+        {
+          "objectiveType": "mknpc:objective.talk_to_npc",
+          "description": "{\"text\":\"Talk to the Green Lady after completing the other objectives.\"}",
+          "attributes": {
+            "structureIndex": 0,
+            "npcDefinition": "mkultra:green_lady",
+            "structure": "mkultra:intro_castle",
+            "objectiveName": "after_kill"
+          },
+          "nodes": [],
+          "prompts": [],
+          "hailResponses": [
+            {
+              "node": {
+                "message": "Good: it is done. The dead rise everywhere, to cull the damned is a blessed pursuit. Our order is dedicated to cleansing this land. You are welcome to stay here and learn of our ways or go as you please.",
+                "id": "hail_w_kills",
+                "effects": [
+                  {
+                    "dialogueEffectType": "mknpc:objective_completion",
+                    "chainId": "620e969e-f66f-457e-b71a-fdc694332612",
+                    "objectiveName": "after_kill"
+                  }
+                ]
+              },
+              "response": {
+                "responseNodeId": "hail_w_kills",
+                "conditions": [
+                  {
+                    "dialogueConditionType": "mknpc:objectives_complete",
+                    "invert": false,
+                    "objectiveNames": [
+                      "kill_zombies",
+                      "kill_archers"
+                    ],
+                    "chainId": "f7fe8b53-5c66-4d67-960f-6b9d1f96b531"
+                  }
+                ]
+              }
+            },
+            {
+              "node": {
+                "message": "Come back to me after you've proven yourself.",
+                "id": "hail_wo_kill"
+              },
+              "response": {
+                "responseNodeId": "hail_wo_kill",
+                "conditions": [
+                  {
+                    "dialogueConditionType": "mknpc:objectives_complete",
+                    "invert": true,
+                    "objectiveNames": [
+                      "kill_zombies",
+                      "kill_archers"
+                    ],
+                    "chainId": "807c85f1-e5e6-44a0-b22e-424275003bba"
+                  }
+                ]
+              }
+            }
+          ]
         }
       ],
       "description": "{\"text\":\"The Green Lady wants you to clear out some of the zombies on the first floor of the castle\"}",
-      "autoComplete": false,
+      "autoComplete": true,
       "rewards": [
         {
           "rewardType": "mknpc:quest_reward.xp",
