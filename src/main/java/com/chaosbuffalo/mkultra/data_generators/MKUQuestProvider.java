@@ -10,6 +10,7 @@ import com.chaosbuffalo.mknpc.quest.QuestDefinition;
 import com.chaosbuffalo.mknpc.quest.dialogue.conditions.HasSpentTalentPointsCondition;
 import com.chaosbuffalo.mknpc.quest.dialogue.conditions.HasTrainedAbilitiesCondition;
 import com.chaosbuffalo.mknpc.quest.dialogue.conditions.HasWeaponInHandCondition;
+import com.chaosbuffalo.mknpc.quest.dialogue.conditions.ObjectivesCompleteCondition;
 import com.chaosbuffalo.mknpc.quest.dialogue.effects.AdvanceQuestChainEffect;
 import com.chaosbuffalo.mknpc.quest.dialogue.effects.GrantEntitlementEffect;
 import com.chaosbuffalo.mknpc.quest.dialogue.effects.ObjectiveCompleteEffect;
@@ -170,12 +171,14 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
                 new StringTextComponent("Talk to the Green Lady and learn your first ability, then speak to her again."));
         afterAbility.setAutoComplete(true);
         TalkToNpcObjective afterGreenLady = new TalkToNpcObjective(
-                "afterGreenLady",
+                "after_green_lady",
                 MKUWorldGen.INTRO_CASTLE_NAME, 0,
                 new ResourceLocation("mkultra", "green_lady"),
                 new StringTextComponent("Talk to the Green Lady after learning your first ability."));
         DialogueNode hailWithAbilities = new DialogueNode("hail_w_ability", "Now we must test your mettle in combat. " +
                 "Go kill some of the zombies on the first floor to try out your new magic, and don't forget you can always return to me to learn more.");
+        afterGreenLady.withAdditionalPrompts(needTraining);
+        afterGreenLady.withAdditionalNode(open_training);
         DialogueResponse hailWithAbilityResp = new DialogueResponse(hailWithAbilities.getId());
         hailWithAbilities.addEffect(new ObjectiveCompleteEffect(afterGreenLady.getObjectiveName()));
         hailWithAbilityResp.addCondition(new HasTrainedAbilitiesCondition(false, SkinLikeWoodAbility.INSTANCE.getAbilityId(), NaturesRemedyAbility.INSTANCE.getAbilityId()));
@@ -191,6 +194,7 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
 
         Quest killQuest = new Quest("first_kill",
                 new StringTextComponent("The Green Lady wants you to clear out some of the zombies on the first floor of the castle"));
+        killQuest.setAutoComplete(true);
         KillNpcDefObjective killObjective = new KillNpcDefObjective("kill_zombies",
                 new ResourceLocation(MKUltra.MODID, "decaying_piglin"), 4);
         KillNpcDefObjective killArcherObjective = new KillNpcDefObjective("kill_archers",
@@ -198,8 +202,25 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
         killQuest.addObjective(killObjective);
         killQuest.addObjective(killArcherObjective);
         killQuest.addReward(new XpReward(50));
+        TalkToNpcObjective talkAfterKill = new TalkToNpcObjective(
+                "after_kill",
+                MKUWorldGen.INTRO_CASTLE_NAME, 0,
+                new ResourceLocation("mkultra", "green_lady"),
+                new StringTextComponent("Talk to the Green Lady after completing the other objectives.")
+        );
+        DialogueNode talkAfterKillComplete = new DialogueNode("hail_w_kills", "Good: it is done. " +
+                "The dead rise everywhere, to cull the damned is a blessed pursuit. Our order is dedicated to cleansing " +
+                "this land. You are welcome to stay here and learn of our ways or go as you please.");
+        DialogueResponse talkAfterKillCompleteResp = new DialogueResponse(talkAfterKillComplete.getId());
+        talkAfterKillComplete.addEffect(new ObjectiveCompleteEffect(talkAfterKill.getObjectiveName()));
+        talkAfterKillCompleteResp.addCondition(new ObjectivesCompleteCondition(killObjective.getObjectiveName(), killArcherObjective.getObjectiveName()));
+        DialogueNode withoutKill = new DialogueNode("hail_wo_kill", "Come back to me after you've proven yourself.");
+        DialogueResponse withoutKillResp = new DialogueResponse(withoutKill.getId());
+        withoutKillResp.addCondition(new ObjectivesCompleteCondition(killObjective.getObjectiveName(), killArcherObjective.getObjectiveName()).setInvert(true));
+        talkAfterKill.withHailResponse(talkAfterKillComplete, talkAfterKillCompleteResp);
+        talkAfterKill.withHailResponse(withoutKill, withoutKillResp);
+        killQuest.addObjective(talkAfterKill);
         def.addQuest(killQuest);
-
 
         return def;
     }
