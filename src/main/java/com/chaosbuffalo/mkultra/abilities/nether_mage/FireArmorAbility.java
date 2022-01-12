@@ -84,7 +84,7 @@ public class FireArmorAbility extends MKAbility {
         MKEffectBuilder<?> sound = SoundEffect.from(entity, ModSounds.spell_fire_2, entity.getSoundCategory())
                 .ability(this);
 
-        MKEffectBuilder<?> fireArmor = ResistanceEffects.FIRE_ARMOR.builder(entity.getUniqueID())
+        MKEffectBuilder<?> fireArmor = ResistanceEffects.FIRE_ARMOR.builder(entity)
                 .ability(this)
                 .timed(duration)
                 .amplify(level);

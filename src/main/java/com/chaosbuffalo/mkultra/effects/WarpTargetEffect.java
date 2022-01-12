@@ -6,7 +6,7 @@ import com.chaosbuffalo.mkcore.effects.MKEffect;
 import com.chaosbuffalo.mkcore.effects.MKEffectBuilder;
 import com.chaosbuffalo.mkcore.effects.MKEffectState;
 import com.chaosbuffalo.mkultra.MKUltra;
-import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.potion.EffectType;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.event.RegistryEvent;
@@ -24,8 +24,8 @@ public class WarpTargetEffect extends MKEffect {
         setRegistryName(MKUltra.MODID, "effect.warp_target");
     }
 
-    public static MKEffectBuilder<?> from(Entity source) {
-        return INSTANCE.builder(source.getUniqueID());
+    public static MKEffectBuilder<?> from(LivingEntity source) {
+        return INSTANCE.builder(source);
     }
 
     @Override
@@ -39,11 +39,10 @@ public class WarpTargetEffect extends MKEffect {
     }
 
     public static class State extends MKEffectState {
-        private Entity source;
 
         @Override
         public boolean performEffect(IMKEntityData targetData, MKActiveEffect activeEffect) {
-            source = findEntity(source, activeEffect.getSourceId(), targetData);
+            LivingEntity source = activeEffect.getSourceEntity();
             if (source == null) {
                 return false;
             }

@@ -133,7 +133,7 @@ public class IgniteAbility extends MKAbility {
                             .spawn();
 
                 } else {
-                    MKEffectBuilder<?> burn = EmberAbility.INSTANCE.getBurnCast(entity, data, level)
+                    MKEffectBuilder<?> burn = EmberAbility.INSTANCE.getBurnCast(data, level)
                             .ability(this);
                     targetData.getEffects().addEffect(burn);
 

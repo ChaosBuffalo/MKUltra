@@ -7,14 +7,10 @@ import com.chaosbuffalo.mkcore.effects.MKActiveEffect;
 import com.chaosbuffalo.mkcore.effects.MKEffect;
 import com.chaosbuffalo.mkcore.effects.MKEffectBuilder;
 import com.chaosbuffalo.mkcore.effects.ScalingValueEffectState;
-import com.chaosbuffalo.mkcore.network.MKParticleEffectSpawnPacket;
-import com.chaosbuffalo.mkcore.network.PacketHandler;
 import com.chaosbuffalo.mkultra.MKUltra;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.potion.EffectType;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -32,10 +28,10 @@ public class NaturesRemedyEffect extends MKEffect {
         setRegistryName(MKUltra.MODID, "effect.natures_remedy");
     }
 
-    public static MKEffectBuilder<?> from(Entity source, float base, float scale, float modScale,
+    public static MKEffectBuilder<?> from(LivingEntity source, float base, float scale, float modScale,
                                           ResourceLocation castParticles) {
-        return INSTANCE.builder(source.getUniqueID()).state(s -> {
-            s.particles = castParticles;
+        return INSTANCE.builder(source).state(s -> {
+            s.setEffectParticles(castParticles);
             s.setScalingParameters(base, scale, modScale);
         });
     }
@@ -50,9 +46,12 @@ public class NaturesRemedyEffect extends MKEffect {
         return new MKEffectBuilder<>(this, sourceId, this::makeState);
     }
 
+    @Override
+    public MKEffectBuilder<State> builder(LivingEntity sourceEntity) {
+        return new MKEffectBuilder<>(this, sourceEntity, this::makeState);
+    }
+
     public static class State extends ScalingValueEffectState {
-        private Entity source;
-        public ResourceLocation particles;
 
         @Override
         public boolean validateOnApply(IMKEntityData targetData, MKActiveEffect activeEffect) {
@@ -61,15 +60,15 @@ public class NaturesRemedyEffect extends MKEffect {
 
         @Override
         public boolean performEffect(IMKEntityData targetData, MKActiveEffect activeEffect) {
-            source = findEntity(source, activeEffect.getSourceId(), targetData);
-
             LivingEntity target = targetData.getEntity();
 
             float value = getScaledValue(activeEffect.getStackCount());
-            MKHealSource heal = MKHealSource.getNatureHeal(activeEffect.getAbilityId(), source, source, getModifierScale());
+            MKHealSource heal = MKHealSource.getNatureHeal(activeEffect.getAbilityId(),
+                    activeEffect.getDirectEntity(),
+                    activeEffect.getSourceEntity(),
+                    getModifierScale());
             MKHealing.healEntityFrom(target, value, heal);
-            PacketHandler.sendToTrackingAndSelf(new MKParticleEffectSpawnPacket(
-                    new Vector3d(0.0, 1.0, 0.0), particles, target.getEntityId()), target);
+            sendEffectParticles(targetData.getEntity());
             return true;
         }
     }

@@ -10,6 +10,7 @@ import com.chaosbuffalo.mkcore.utils.SoundUtils;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.init.ModSounds;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.event.RegistryEvent;
@@ -29,11 +30,11 @@ public class BurnEffect extends DamageTypeDotEffect {
         setRegistryName("effect.burn");
     }
 
-    public static MKEffectBuilder<?> from(Entity source, float base, float scaling, float modifierScaling,
+    public static MKEffectBuilder<?> from(LivingEntity source, float base, float scaling, float modifierScaling,
                                           ResourceLocation castParticles) {
-        return INSTANCE.builder(source.getUniqueID())
+        return INSTANCE.builder(source)
                 .state(s -> {
-                    s.particles = castParticles;
+                    s.setEffectParticles(castParticles);
                     s.setScalingParameters(base, scaling, modifierScaling);
                 })
                 .periodic(DEFAULT_PERIOD);
@@ -49,19 +50,22 @@ public class BurnEffect extends DamageTypeDotEffect {
         return new MKEffectBuilder<>(this, sourceId, this::makeState);
     }
 
+    @Override
+    public MKEffectBuilder<State> builder(LivingEntity sourceEntity) {
+        return new MKEffectBuilder<>(this, sourceEntity, this::makeState);
+    }
+
     public static class State extends DamageTypeDotEffect.State {
-        public ResourceLocation particles;
 
         public State() {
             super();
-            damageType = CoreDamageTypes.FireDamage;
+            setDamageType(CoreDamageTypes.FireDamage);
         }
 
         @Override
-        public boolean performEffect(IMKEntityData imkEntityData, MKActiveEffect mkActiveEffect) {
-            SoundUtils.serverPlaySoundAtEntity(imkEntityData.getEntity(), ModSounds.spell_fire_6, imkEntityData.getEntity().getSoundCategory());
-            PacketHandler.sendToTrackingAndSelf(
-                    new MKParticleEffectSpawnPacket(new Vector3d(0.0, 1.0, 0.0), particles, imkEntityData.getEntity().getEntityId()), imkEntityData.getEntity());
+        public boolean performEffect(IMKEntityData targetData, MKActiveEffect activeEffect) {
+            SoundUtils.serverPlaySoundAtEntity(targetData.getEntity(), ModSounds.spell_fire_6, targetData.getEntity().getSoundCategory());
+            sendEffectParticles(targetData.getEntity());
             return true;
         }
     }

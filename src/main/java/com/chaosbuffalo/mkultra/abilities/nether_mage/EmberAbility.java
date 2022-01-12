@@ -70,9 +70,9 @@ public class EmberAbility extends MKAbility {
                 dotStr, BurnEffect.DEFAULT_PERIOD / 20);
     }
 
-    public MKEffectBuilder<?> getBurnCast(LivingEntity caster, IMKEntityData data, int level) {
-        int burnTicks = getBuffDuration(data, level, baseDuration.value(), scaleDuration.value());
-        return BurnEffect.from(caster, baseDot.value(), scaleDot.value(), dotModifierScaling.value(), burn_cast_particles.getValue())
+    public MKEffectBuilder<?> getBurnCast(IMKEntityData casterData, int level) {
+        int burnTicks = getBuffDuration(casterData, level, baseDuration.value(), scaleDuration.value());
+        return BurnEffect.from(casterData.getEntity(), baseDot.value(), scaleDot.value(), dotModifierScaling.value(), burn_cast_particles.getValue())
                 .ability(this)
                 .amplify(level)
                 .timed(burnTicks);
@@ -112,7 +112,7 @@ public class EmberAbility extends MKAbility {
                             base.value(), scale.value(), modifierScaling.value())
                     .ability(this)
                     .amplify(level);
-            MKEffectBuilder<?> burn = getBurnCast(entity, data, level);
+            MKEffectBuilder<?> burn = getBurnCast(data, level);
 
             MKCore.getEntityData(targetEntity).ifPresent(targetData -> {
                 targetData.getEffects().addEffect(damage);

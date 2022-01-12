@@ -6,7 +6,7 @@ import com.chaosbuffalo.mkcore.effects.MKEffect;
 import com.chaosbuffalo.mkcore.effects.MKEffectBuilder;
 import com.chaosbuffalo.mkcore.effects.MKEffectState;
 import com.chaosbuffalo.mkultra.MKUltra;
-import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.EffectType;
 import net.minecraftforge.event.RegistryEvent;
@@ -23,8 +23,8 @@ public class CureEffect extends MKEffect {
         setRegistryName(MKUltra.MODID, "effect.cure");
     }
 
-    public static MKEffectBuilder<?> from(Entity source) {
-        return INSTANCE.builder(source.getUniqueID());
+    public static MKEffectBuilder<?> from(LivingEntity source) {
+        return INSTANCE.builder(source);
     }
 
     @Override

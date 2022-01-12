@@ -7,7 +7,7 @@ import com.chaosbuffalo.mkcore.effects.*;
 import com.chaosbuffalo.mkcore.init.CoreDamageTypes;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.abilities.nether_mage.EmberAbility;
-import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.potion.EffectType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -19,8 +19,8 @@ public class IgniteEffect extends MKEffect {
 
     public static final IgniteEffect INSTANCE = new IgniteEffect();
 
-    public static MKEffectBuilder<?> from(Entity source, float baseDamage, float scaling, float modifierScaling) {
-        return INSTANCE.builder(source.getUniqueID())
+    public static MKEffectBuilder<?> from(LivingEntity source, float baseDamage, float scaling, float modifierScaling) {
+        return INSTANCE.builder(source)
                 .state(s -> s.setScalingParameters(baseDamage, scaling, modifierScaling));
     }
 
@@ -39,20 +39,23 @@ public class IgniteEffect extends MKEffect {
         return new MKEffectBuilder<>(this, sourceId, this::makeState);
     }
 
+    @Override
+    public MKEffectBuilder<State> builder(LivingEntity sourceEntity) {
+        return new MKEffectBuilder<>(this, sourceEntity, this::makeState);
+    }
+
     public static class State extends ScalingValueEffectState {
-        private Entity source;
 
         @Override
         public boolean performEffect(IMKEntityData targetData, MKActiveEffect activeEffect) {
-            source = findEntity(source, activeEffect.getSourceId(), targetData);
 
             float damage = getScaledValue(activeEffect.getStackCount());
             float scaling = getModifierScale();
             targetData.getEntity().attackEntityFrom(MKDamageSource.causeAbilityDamage(CoreDamageTypes.FireDamage,
-                    activeEffect.getAbilityId(), source, source, scaling), damage);
+                    activeEffect.getAbilityId(), activeEffect.getDirectEntity(), activeEffect.getSourceEntity(), scaling), damage);
 
-            MKCore.getEntityData(source).ifPresent(casterData -> {
-                MKEffectBuilder<?> burn = EmberAbility.INSTANCE.getBurnCast(casterData.getEntity(), casterData, activeEffect.getStackCount())
+            MKCore.getEntityData(activeEffect.getSourceEntity()).ifPresent(casterData -> {
+                MKEffectBuilder<?> burn = EmberAbility.INSTANCE.getBurnCast(casterData, activeEffect.getStackCount())
                         .ability(activeEffect.getAbilityId());
                 targetData.getEffects().addEffect(burn);
             });

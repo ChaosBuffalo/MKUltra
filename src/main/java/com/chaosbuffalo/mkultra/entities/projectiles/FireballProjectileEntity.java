@@ -52,22 +52,25 @@ public class FireballProjectileEntity extends TrailProjectileEntity implements I
     @Override
     protected boolean onImpact(Entity caster, RayTraceResult result, int amplifier) {
         if (!this.world.isRemote && caster instanceof LivingEntity) {
+            LivingEntity casterLiving = (LivingEntity) caster;
             SoundCategory cat = caster instanceof PlayerEntity ? SoundCategory.PLAYERS : SoundCategory.HOSTILE;
             SoundUtils.serverPlaySoundAtEntity(this, ModSounds.spell_fire_4, cat);
             PacketHandler.sendToTrackingAndSelf(new MKParticleEffectSpawnPacket(
                             new Vector3d(0.0, 0.0, 0.0), DETONATE_PARTICLES, getEntityId()), this);
 
-            MKEffectBuilder<?> damage = MKAbilityDamageEffect.from(caster, CoreDamageTypes.FireDamage,
+            MKEffectBuilder<?> damage = MKAbilityDamageEffect.from(casterLiving, CoreDamageTypes.FireDamage,
                             FireballAbility.INSTANCE.getBaseDamage(),
                             FireballAbility.INSTANCE.getScaleDamage(),
                             FireballAbility.INSTANCE.getModifierScaling())
+                    .ability(FireballAbility.INSTANCE)
+                    .directEntity(this)
                     .amplify(amplifier);
 
-            MKEffectBuilder<?> fireBreak = ResistanceEffects.BREAK_FIRE.builder(caster.getUniqueID())
+            MKEffectBuilder<?> fireBreak = ResistanceEffects.BREAK_FIRE.builder(casterLiving)
                     .timed((amplifier + 1) * GameConstants.TICKS_PER_SECOND)
                     .amplify(amplifier);
 
-            AreaEffectBuilder.Create((LivingEntity) caster, this)
+            AreaEffectBuilder.createOnEntity(casterLiving, this)
                     .effect(damage, getTargetContext())
                     .effect(fireBreak, getTargetContext())
                     .instant()

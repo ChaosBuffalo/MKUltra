@@ -104,14 +104,15 @@ public class SpiritBombProjectileEntity extends TrailProjectileEntity implements
 
     private boolean doEffect(Entity caster, int amplifier) {
         if (!this.world.isRemote && caster instanceof LivingEntity) {
-            MKEffectBuilder<?> damage = MKAbilityDamageEffect.from(caster, CoreDamageTypes.NatureDamage,
+            MKEffectBuilder<?> damage = MKAbilityDamageEffect.from((LivingEntity) caster, CoreDamageTypes.NatureDamage,
                             SpiritBombAbility.INSTANCE.getBaseDamage(),
                             SpiritBombAbility.INSTANCE.getScaleDamage(),
                             SpiritBombAbility.INSTANCE.getModifierScaling())
                     .ability(SpiritBombAbility.INSTANCE)
+                    .directEntity(this)
                     .amplify(amplifier);
 
-            AreaEffectBuilder.Create((LivingEntity) caster, this)
+            AreaEffectBuilder.createOnEntity((LivingEntity) caster, this)
                     .effect(damage, getTargetContext())
                     .instant()
                     .color(65535)

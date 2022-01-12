@@ -13,7 +13,6 @@ import com.chaosbuffalo.mkcore.network.PacketHandler;
 import com.chaosbuffalo.mkcore.network.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkweapons.init.MKWeaponsParticles;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -36,8 +35,8 @@ public class SeverTendonEffect extends MKEffect {
         addAttribute(Attributes.MOVEMENT_SPEED, modUUID, -0.05, AttributeModifier.Operation.MULTIPLY_TOTAL);
     }
 
-    public static MKEffectBuilder<?> from(Entity source, float baseDamage, float scaling, float modifierScaling) {
-        return INSTANCE.builder(source.getUniqueID())
+    public static MKEffectBuilder<?> from(LivingEntity source, float baseDamage, float scaling, float modifierScaling) {
+        return INSTANCE.builder(source)
                 .state(s -> s.setScalingParameters(baseDamage, scaling, modifierScaling))
                 .periodic(DEFAULT_PERIOD);
     }
@@ -52,17 +51,21 @@ public class SeverTendonEffect extends MKEffect {
         return new MKEffectBuilder<>(this, sourceId, this::makeState);
     }
 
+    @Override
+    public MKEffectBuilder<State> builder(LivingEntity sourceEntity) {
+        return new MKEffectBuilder<>(this, sourceEntity, this::makeState);
+    }
+
     public static class State extends ScalingValueEffectState {
-        private Entity source;
 
         @Override
         public boolean performEffect(IMKEntityData targetData, MKActiveEffect activeEffect) {
-            source = findEntity(source, activeEffect.getSourceId(), targetData);
 
             float damage = getScaledValue(activeEffect.getStackCount());
             LivingEntity target = targetData.getEntity();
             target.attackEntityFrom(MKDamageSource.causeAbilityDamage(CoreDamageTypes.BleedDamage,
-                    activeEffect.getAbilityId(), source, source, getModifierScale()), damage);
+                    activeEffect.getAbilityId(), activeEffect.getDirectEntity(), activeEffect.getSourceEntity(),
+                    getModifierScale()), damage);
             PacketHandler.sendToTrackingAndSelf(
                     new ParticleEffectSpawnPacket(
                             MKWeaponsParticles.DRIPPING_BLOOD,

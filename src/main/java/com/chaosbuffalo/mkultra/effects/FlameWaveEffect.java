@@ -7,7 +7,7 @@ import com.chaosbuffalo.mkcore.effects.*;
 import com.chaosbuffalo.mkcore.init.CoreDamageTypes;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.abilities.MKUAbilityUtils;
-import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.potion.*;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -19,9 +19,9 @@ public class FlameWaveEffect extends MKEffect {
 
     public static final FlameWaveEffect INSTANCE = new FlameWaveEffect();
 
-    public static MKEffectBuilder<?> from(Entity source, float baseDamage, float scaling, float modifierScaling,
+    public static MKEffectBuilder<?> from(LivingEntity source, float baseDamage, float scaling, float modifierScaling,
                                           int witherBase, int witherScale, float damageMultiplier) {
-        return INSTANCE.builder(source.getUniqueID()).state(s -> {
+        return INSTANCE.builder(source).state(s -> {
             s.witherDurationBase = witherBase;
             s.witherDurationScale = witherScale;
             s.damageBoost = damageMultiplier;
@@ -44,15 +44,18 @@ public class FlameWaveEffect extends MKEffect {
         return new MKEffectBuilder<>(this, sourceId, this::makeState);
     }
 
+    @Override
+    public MKEffectBuilder<State> builder(LivingEntity sourceEntity) {
+        return new MKEffectBuilder<>(this, sourceEntity, this::makeState);
+    }
+
     public static class State extends ScalingValueEffectState {
-        private Entity source;
         public int witherDurationBase;
         public int witherDurationScale;
         public float damageBoost;
 
         @Override
         public boolean performEffect(IMKEntityData targetData, MKActiveEffect activeEffect) {
-            source = findEntity(source, activeEffect.getSourceId(), targetData);
 
             float damage = getScaledValue(activeEffect.getStackCount());
             if (MKUAbilityUtils.isBurning(targetData.getEntity())) {
@@ -63,7 +66,7 @@ public class FlameWaveEffect extends MKEffect {
             }
 
             targetData.getEntity().attackEntityFrom(MKDamageSource.causeAbilityDamage(CoreDamageTypes.FireDamage,
-                    activeEffect.getAbilityId(), source, source, getModifierScale()), damage);
+                    activeEffect.getAbilityId(), activeEffect.getDirectEntity(), activeEffect.getSourceEntity(), getModifierScale()), damage);
             return true;
         }
     }

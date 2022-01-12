@@ -62,15 +62,16 @@ public class CleansingSeedProjectileEntity extends TrailProjectileEntity impleme
 
         SoundCategory cat = caster instanceof PlayerEntity ? SoundCategory.PLAYERS : SoundCategory.HOSTILE;
         SoundUtils.serverPlaySoundAtEntity(this, ModSounds.spell_water_6, cat);
-        if (caster != null && trace.getType() == RayTraceResult.Type.ENTITY) {
+        if (caster instanceof LivingEntity && trace.getType() == RayTraceResult.Type.ENTITY) {
             EntityRayTraceResult entityTrace = (EntityRayTraceResult) trace;
             if (entityTrace.getEntity() instanceof LivingEntity) {
                 LivingEntity target = (LivingEntity) entityTrace.getEntity();
                 Targeting.TargetRelation relation = Targeting.getTargetRelation(caster, target);
                 switch (relation) {
                     case FRIEND: {
-                        MKEffectBuilder<?> cure = CureEffect.from(caster)
+                        MKEffectBuilder<?> cure = CureEffect.from((LivingEntity) caster)
                                 .ability(CleansingSeedAbility.INSTANCE)
+                                .directEntity(this)
                                 .amplify(amplifier);
 
                         MKCore.getEntityData(target).ifPresent(targetData -> targetData.getEffects().addEffect(cure));
@@ -80,7 +81,7 @@ public class CleansingSeedProjectileEntity extends TrailProjectileEntity impleme
                     }
                     case ENEMY: {
                         target.attackEntityFrom(MKDamageSource.causeAbilityDamage(CoreDamageTypes.NatureDamage,
-                                        CleansingSeedAbility.INSTANCE.getAbilityId(), caster, this,
+                                        CleansingSeedAbility.INSTANCE.getAbilityId(), this, caster,
                                         CleansingSeedAbility.INSTANCE.getModifierScaling()),
                                 CleansingSeedAbility.INSTANCE.getDamageForLevel(amplifier));
                         SoundUtils.serverPlaySoundAtEntity(target, ModSounds.spell_water_8, cat);
