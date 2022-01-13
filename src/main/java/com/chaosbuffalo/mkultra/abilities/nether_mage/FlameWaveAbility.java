@@ -61,10 +61,10 @@ public class FlameWaveAbility extends MKAbility {
 
     @Override
     protected ITextComponent getAbilityDescription(IMKEntityData entityData) {
-        int level = getSkillLevel(entityData.getEntity(), MKAttributes.EVOCATION);
+        float level = getSkillLevel(entityData.getEntity(), MKAttributes.EVOCATION);
         ITextComponent dmgStr = getDamageDescription(entityData, CoreDamageTypes.FireDamage, base.value(), scale.value(),
                 level, modifierScaling.value());
-        int dur = baseDuration.value() + scaleDuration.value() * level;
+        int dur = Math.round(baseDuration.value() + scaleDuration.value() * level);
         float mult = damageBoost.value() * 100.0f;
         return new TranslationTextComponent(getDescriptionTranslationKey(), dmgStr, mult, dur);
     }
@@ -99,16 +99,15 @@ public class FlameWaveAbility extends MKAbility {
     @Override
     public void endCast(LivingEntity entity, IMKEntityData data, AbilityContext context) {
         super.endCast(entity, data, context);
-        int level = getSkillLevel(entity, MKAttributes.EVOCATION);
+        float level = getSkillLevel(entity, MKAttributes.EVOCATION);
 
         MKEffectBuilder<?> flames = FlameWaveEffect.from(entity, base.value(), scale.value(), modifierScaling.value(),
                         baseDuration.value(), scaleDuration.value(), damageBoost.value())
                 .ability(this)
-                .amplify(level);
+                .skillLevel(level);
 
         MKEffectBuilder<?> particles = MKParticleEffect.from(entity, cast_2_particles.getValue(), false, new Vector3d(0.0, 1.0, 0.0))
-                .ability(this)
-                .amplify(level);
+                .ability(this);
 
         MKEffectBuilder<?> sound = SoundEffect.from(entity, ModSounds.spell_fire_1, entity.getSoundCategory())
                 .ability(this);

@@ -54,7 +54,7 @@ public class WarpCurseAbility extends MKAbility {
 
     @Override
     protected ITextComponent getAbilityDescription(IMKEntityData entityData) {
-        int level = getSkillLevel(entityData.getEntity(), MKAttributes.ALTERATON);
+        float level = getSkillLevel(entityData.getEntity(), MKAttributes.ALTERATON);
         int duration = getBuffDuration(entityData, level, baseDuration.value(), scaleDuration.value());
         ITextComponent valueStr = getDamageDescription(entityData,
                 CoreDamageTypes.ShadowDamage, base.value(), scale.value(), level, modifierScaling.value());
@@ -92,16 +92,17 @@ public class WarpCurseAbility extends MKAbility {
     public void endCast(LivingEntity castingEntity, IMKEntityData casterData, AbilityContext context) {
         super.endCast(castingEntity, casterData, context);
         context.getMemory(MKAbilityMemories.ABILITY_TARGET).ifPresent(targetEntity -> {
-            int level = getSkillLevel(castingEntity, MKAttributes.ALTERATON);
+            float level = getSkillLevel(castingEntity, MKAttributes.ALTERATON);
             int duration = getBuffDuration(casterData, level, baseDuration.value(), scaleDuration.value());
             MKEffectBuilder<?> warpCast = WarpCurseEffect.from(castingEntity, base.value(), scale.value(),
                             modifierScaling.value(), cast_particles.getValue())
                     .ability(this)
                     .timed(duration)
-                    .amplify(level);
+                    .skillLevel(level);
 
+            int oldAmp = Math.round(level);
             MKCore.getEntityData(targetEntity).ifPresent(targetData -> targetData.getEffects().addEffect(warpCast));
-            targetEntity.addPotionEffect(new EffectInstance(Effects.SLOWNESS, duration, level, false, false, true, null));
+            targetEntity.addPotionEffect(new EffectInstance(Effects.SLOWNESS, duration, oldAmp, false, false, true, null));
 
             SoundUtils.serverPlaySoundAtEntity(targetEntity, ModSounds.spell_fire_5, targetEntity.getSoundCategory());
             PacketHandler.sendToTrackingAndSelf(new MKParticleEffectSpawnPacket(

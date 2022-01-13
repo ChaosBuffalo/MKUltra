@@ -57,14 +57,16 @@ public class FireballProjectileEntity extends TrailProjectileEntity implements I
             PacketHandler.sendToTrackingAndSelf(new MKParticleEffectSpawnPacket(
                             new Vector3d(0.0, 0.0, 0.0), DETONATE_PARTICLES, getEntityId()), this);
 
-            MKEffectBuilder<?> damage = MKAbilityDamageEffect.from(caster, CoreDamageTypes.FireDamage,
+            MKEffectBuilder<?> damage = MKAbilityDamageEffect.from((LivingEntity) caster, CoreDamageTypes.FireDamage,
                             FireballAbility.INSTANCE.getBaseDamage(),
                             FireballAbility.INSTANCE.getScaleDamage(),
                             FireballAbility.INSTANCE.getModifierScaling())
+                    .skillLevel(getSkillLevel())
                     .amplify(amplifier);
 
             MKEffectBuilder<?> fireBreak = ResistanceEffects.BREAK_FIRE.builder(caster.getUniqueID())
                     .timed((amplifier + 1) * GameConstants.TICKS_PER_SECOND)
+                    .skillLevel(getSkillLevel())
                     .amplify(amplifier);
 
             AreaEffectBuilder.Create((LivingEntity) caster, this)

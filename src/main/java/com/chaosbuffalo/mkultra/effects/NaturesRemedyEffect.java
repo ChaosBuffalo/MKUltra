@@ -57,7 +57,7 @@ public class NaturesRemedyEffect extends MKEffect {
 
             LivingEntity target = targetData.getEntity();
 
-            float value = getScaledValue(activeEffect.getStackCount());
+            float value = getScaledValue(activeEffect.getStackCount(), activeEffect.getSkillLevel());
             MKHealSource heal = MKHealSource.getNatureHeal(activeEffect.getAbilityId(), source, source, getModifierScale());
             MKHealing.healEntityFrom(target, value, heal);
             PacketHandler.sendToTrackingAndSelf(new MKParticleEffectSpawnPacket(

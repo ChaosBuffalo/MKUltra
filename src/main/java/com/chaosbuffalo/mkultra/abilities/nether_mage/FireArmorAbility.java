@@ -55,7 +55,7 @@ public class FireArmorAbility extends MKAbility {
 
     @Override
     protected ITextComponent getAbilityDescription(IMKEntityData entityData) {
-        int level = getSkillLevel(entityData.getEntity(), MKAttributes.ABJURATION);
+        float level = getSkillLevel(entityData.getEntity(), MKAttributes.ABJURATION);
         float amount = ResistanceEffects.FIRE_ARMOR.getPerLevel() * (level + 1) * 100.0f;
         int duration = getBuffDuration(entityData, level, baseDuration.value(), scaleDuration.value()) / GameConstants.TICKS_PER_SECOND;
         return new TranslationTextComponent(getDescriptionTranslationKey(), amount,
@@ -71,15 +71,15 @@ public class FireArmorAbility extends MKAbility {
     @Override
     public void endCast(LivingEntity entity, IMKEntityData data, AbilityContext context) {
         super.endCast(entity, data, context);
-        int level = getSkillLevel(entity, MKAttributes.ABJURATION);
+        float level = getSkillLevel(entity, MKAttributes.ABJURATION);
         int duration = getBuffDuration(data, level, baseDuration.value(), scaleDuration.value());
 
-        EffectInstance fireResist = new EffectInstance(Effects.FIRE_RESISTANCE, duration, level, false, false, true, null);
-        EffectInstance absorb = new EffectInstance(Effects.ABSORPTION, duration, level, false, false, true, null);
+        int oldAmp = Math.round(level);
+        EffectInstance fireResist = new EffectInstance(Effects.FIRE_RESISTANCE, duration, oldAmp, false, false, true, null);
+        EffectInstance absorb = new EffectInstance(Effects.ABSORPTION, duration, oldAmp, false, false, true, null);
 
         MKEffectBuilder<?> particles = MKParticleEffect.from(entity, cast_particles.getValue(), true, new Vector3d(0.0, 1.0, 0.0))
-                .ability(this)
-                .amplify(level);
+                .ability(this);
 
         MKEffectBuilder<?> sound = SoundEffect.from(entity, ModSounds.spell_fire_2, entity.getSoundCategory())
                 .ability(this);
@@ -87,7 +87,7 @@ public class FireArmorAbility extends MKAbility {
         MKEffectBuilder<?> fireArmor = ResistanceEffects.FIRE_ARMOR.builder(entity.getUniqueID())
                 .ability(this)
                 .timed(duration)
-                .amplify(level);
+                .skillLevel(level);
 
         AreaEffectBuilder.createOnCaster(entity)
                 .effect(fireResist, getTargetContext())

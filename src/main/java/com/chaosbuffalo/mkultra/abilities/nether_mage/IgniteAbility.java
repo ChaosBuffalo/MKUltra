@@ -63,7 +63,7 @@ public class IgniteAbility extends MKAbility {
 
     @Override
     protected ITextComponent getAbilityDescription(IMKEntityData entityData) {
-        int level = getSkillLevel(entityData.getEntity(), MKAttributes.EVOCATION);
+        float level = getSkillLevel(entityData.getEntity(), MKAttributes.EVOCATION);
         ITextComponent valueStr = getDamageDescription(entityData,
                 CoreDamageTypes.FireDamage, base.value(), scale.value(), level, modifierScaling.value());
         return new TranslationTextComponent(getDescriptionTranslationKey(), valueStr, igniteDistance.value());
@@ -97,14 +97,14 @@ public class IgniteAbility extends MKAbility {
     @Override
     public void endCast(LivingEntity entity, IMKEntityData data, AbilityContext context) {
         super.endCast(entity, data, context);
-        int level = getSkillLevel(entity, MKAttributes.EVOCATION);
+        float level = getSkillLevel(entity, MKAttributes.EVOCATION);
         context.getMemory(MKAbilityMemories.ABILITY_TARGET).ifPresent(targetEntity -> {
             MKEffectBuilder<?> damage = MKAbilityDamageEffect.from(entity, CoreDamageTypes.FireDamage,
                             base.value(),
                             scale.value(),
                             modifierScaling.value())
                     .ability(this)
-                    .amplify(level);
+                    .skillLevel(level);
 
             MKCore.getEntityData(targetEntity).ifPresent(targetData -> {
                 targetData.getEffects().addEffect(damage);
@@ -114,11 +114,10 @@ public class IgniteAbility extends MKAbility {
                 if (MKUAbilityUtils.isBurning(targetEntity)) {
                     MKEffectBuilder<?> ignite = IgniteEffect.from(entity, base.value(), scale.value(), modifierScaling.value())
                             .ability(this)
-                            .amplify(level);
+                            .skillLevel(level);
                     MKEffectBuilder<?> particle = MKParticleEffect.from(entity, cast_2_particles.getValue(),
                                     true, new Vector3d(0.0, 1.0, 0.0))
-                            .ability(this)
-                            .amplify(level);
+                            .ability(this);
                     MKEffectBuilder<?> sound = SoundEffect.from(entity, ModSounds.spell_fire_8, entity.getSoundCategory())
                             .ability(this);
 

@@ -61,7 +61,7 @@ public class PowerWordSummonAbility extends MKAbility {
 
     @Override
     protected ITextComponent getAbilityDescription(IMKEntityData entityData) {
-        int level = getSkillLevel(entityData.getEntity(), MKAttributes.CONJURATION);
+        float level = getSkillLevel(entityData.getEntity(), MKAttributes.CONJURATION);
         int duration = getBuffDuration(entityData, level, base.value(), scale.value()) / GameConstants.TICKS_PER_SECOND;
         return new TranslationTextComponent(getDescriptionTranslationKey(), duration);
     }
@@ -79,12 +79,12 @@ public class PowerWordSummonAbility extends MKAbility {
     @Override
     public void endCast(LivingEntity castingEntity, IMKEntityData casterData, AbilityContext context) {
         super.endCast(castingEntity, casterData, context);
-        int level = getSkillLevel(castingEntity, MKAttributes.CONJURATION);
+        float level = getSkillLevel(castingEntity, MKAttributes.CONJURATION);
 
         context.getMemory(MKAbilityMemories.ABILITY_TARGET).ifPresent(targetEntity -> {
             MKEffectBuilder<?> warp = WarpTargetEffect.INSTANCE.builder(castingEntity.getUniqueID())
                     .ability(this)
-                    .amplify(level);
+                    .skillLevel(level);
 
             MKCore.getEntityData(targetEntity).ifPresent(targetData -> targetData.getEffects().addEffect(warp));
 

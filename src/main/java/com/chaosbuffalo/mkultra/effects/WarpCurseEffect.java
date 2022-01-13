@@ -65,7 +65,7 @@ public class WarpCurseEffect extends MKEffect {
             Vector3d targetOrigin = target.getPositionVec();
             target.attackEntityFrom(MKDamageSource.causeAbilityDamage(CoreDamageTypes.ShadowDamage,
                     WarpCurseAbility.INSTANCE.getAbilityId(), source, source,
-                    getModifierScale()), getScaledValue(activeEffect.getStackCount()));
+                    getModifierScale()), getScaledValue(activeEffect.getStackCount(), activeEffect.getSkillLevel()));
 
             SoundUtils.serverPlaySoundAtEntity(target, ModSounds.spell_fire_5, target.getSoundCategory());
             if (EntityUtils.canTeleportEntity(target)) {

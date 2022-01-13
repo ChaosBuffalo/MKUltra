@@ -71,7 +71,7 @@ public class CleansingSeedProjectileEntity extends TrailProjectileEntity impleme
                     case FRIEND: {
                         MKEffectBuilder<?> cure = CureEffect.INSTANCE.builder(caster.getUniqueID())
                                 .ability(CleansingSeedAbility.INSTANCE)
-                                .amplify(amplifier);
+                                .skillLevel(getSkillLevel());
 
                         MKCore.getEntityData(target).ifPresent(targetData -> targetData.getEffects().addEffect(cure));
 
@@ -82,7 +82,7 @@ public class CleansingSeedProjectileEntity extends TrailProjectileEntity impleme
                         target.attackEntityFrom(MKDamageSource.causeAbilityDamage(CoreDamageTypes.NatureDamage,
                                         CleansingSeedAbility.INSTANCE.getAbilityId(), caster, this,
                                         CleansingSeedAbility.INSTANCE.getModifierScaling()),
-                                CleansingSeedAbility.INSTANCE.getDamageForLevel(amplifier));
+                                CleansingSeedAbility.INSTANCE.getDamageForLevel(getSkillLevel()));
                         SoundUtils.serverPlaySoundAtEntity(target, ModSounds.spell_water_8, cat);
                         break;
                     }

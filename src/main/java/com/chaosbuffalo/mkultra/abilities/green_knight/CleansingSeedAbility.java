@@ -42,7 +42,7 @@ public class CleansingSeedAbility extends MKAbility {
         casting_particles.setDefaultValue(CASTING_PARTICLES);
     }
 
-    public float getDamageForLevel(int level) {
+    public float getDamageForLevel(float level) {
         return baseDamage.value() + scaleDamage.value() * level;
     }
 
@@ -83,10 +83,10 @@ public class CleansingSeedAbility extends MKAbility {
     public void endCast(LivingEntity entity, IMKEntityData data, AbilityContext context) {
         super.endCast(entity, data, context);
 
-        int level = getSkillLevel(entity, MKAttributes.RESTORATION);
+        float level = getSkillLevel(entity, MKAttributes.RESTORATION);
         CleansingSeedProjectileEntity proj = new CleansingSeedProjectileEntity(entity.world);
         proj.setShooter(entity);
-        proj.setAmplifier(level);
+        proj.setSkillLevel(level);
         shootProjectile(proj, projectileSpeed.value(), projectileInaccuracy.value(), entity, context);
         entity.world.addEntity(proj);
     }

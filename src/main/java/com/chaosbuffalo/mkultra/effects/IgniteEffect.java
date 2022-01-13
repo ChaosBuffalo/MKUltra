@@ -46,7 +46,7 @@ public class IgniteEffect extends MKEffect {
         public boolean performEffect(IMKEntityData targetData, MKActiveEffect activeEffect) {
             source = findEntity(source, activeEffect.getSourceId(), targetData);
 
-            float damage = getScaledValue(activeEffect.getStackCount());
+            float damage = getScaledValue(activeEffect.getStackCount(), activeEffect.getSkillLevel());
             float scaling = getModifierScale();
             targetData.getEntity().attackEntityFrom(MKDamageSource.causeAbilityDamage(CoreDamageTypes.FireDamage,
                     activeEffect.getAbilityId(), source, source, scaling), damage);

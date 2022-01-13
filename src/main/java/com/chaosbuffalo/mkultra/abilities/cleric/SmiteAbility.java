@@ -51,7 +51,7 @@ public class SmiteAbility extends MKAbility {
 
     @Override
     protected ITextComponent getAbilityDescription(IMKEntityData entityData) {
-        int level = getSkillLevel(entityData.getEntity(), MKAttributes.EVOCATION);
+        float level = getSkillLevel(entityData.getEntity(), MKAttributes.EVOCATION);
         ITextComponent valueStr = getDamageDescription(entityData,
                 CoreDamageTypes.HolyDamage, base.value(), scale.value(), level, modifierScaling.value());
         return new TranslationTextComponent(getDescriptionTranslationKey(), valueStr,
@@ -86,18 +86,18 @@ public class SmiteAbility extends MKAbility {
     @Override
     public void endCast(LivingEntity entity, IMKEntityData data, AbilityContext context) {
         super.endCast(entity, data, context);
-        int level = getSkillLevel(entity, MKAttributes.EVOCATION);
+        float level = getSkillLevel(entity, MKAttributes.EVOCATION);
         context.getMemory(MKAbilityMemories.ABILITY_TARGET).ifPresent(targetEntity -> {
 
             MKEffectBuilder<?> damage = MKAbilityDamageEffect.from(entity, CoreDamageTypes.HolyDamage,
                             base.value(), scale.value(), modifierScaling.value())
                     .ability(this)
-                    .amplify(level);
+                    .skillLevel(level);
 
             MKEffectBuilder<?> stun = StunEffect.INSTANCE.builder(entity.getUniqueID())
                     .ability(this)
-                    .timed(GameConstants.TICKS_PER_SECOND * level)
-                    .amplify(level);
+                    .timed(Math.round(GameConstants.TICKS_PER_SECOND * (level + 1.0f)))
+                    .skillLevel(level);
 
             MKCore.getEntityData(targetEntity).ifPresent(targetData -> {
                 targetData.getEffects().addEffect(damage);

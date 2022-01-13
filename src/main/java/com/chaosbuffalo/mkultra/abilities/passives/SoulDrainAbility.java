@@ -35,7 +35,7 @@ public class SoulDrainAbility extends MKPassiveAbility {
     }
 
     public float getDrainValue(LivingEntity entity) {
-        int skillLevel = MKAbility.getSkillLevel(entity, MKAttributes.EVOCATION);
+        float skillLevel = MKAbility.getSkillLevel(entity, MKAttributes.EVOCATION);
         return base.value() + scale.value() * skillLevel;
     }
 
