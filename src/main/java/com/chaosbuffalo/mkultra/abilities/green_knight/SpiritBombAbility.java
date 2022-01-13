@@ -88,10 +88,10 @@ public class SpiritBombAbility extends MKAbility {
     @Override
     public void endCast(LivingEntity entity, IMKEntityData data, AbilityContext context) {
         super.endCast(entity, data, context);
-        int level = getSkillLevel(entity, MKAttributes.EVOCATION);
+        float level = getSkillLevel(entity, MKAttributes.EVOCATION);
         SpiritBombProjectileEntity proj = new SpiritBombProjectileEntity(entity.world);
         proj.setShooter(entity);
-        proj.setAmplifier(level);
+        proj.setSkillLevel(level);
         shootProjectile(proj, projectileSpeed.value(), projectileInaccuracy.value(), entity, context);
         entity.world.addEntity(proj);
     }

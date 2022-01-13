@@ -61,8 +61,7 @@ public class NaturesRemedyEffect extends MKEffect {
         @Override
         public boolean performEffect(IMKEntityData targetData, MKActiveEffect activeEffect) {
             LivingEntity target = targetData.getEntity();
-
-            float value = getScaledValue(activeEffect.getStackCount());
+            float value = getScaledValue(activeEffect.getStackCount(), activeEffect.getSkillLevel());
             MKHealSource heal = MKHealSource.getNatureHeal(activeEffect.getAbilityId(),
                     activeEffect.getDirectEntity(),
                     activeEffect.getSourceEntity(),

@@ -55,7 +55,7 @@ public class ClericHealEffect extends MKEffect {
         @Override
         public boolean performEffect(IMKEntityData targetData, MKActiveEffect instance) {
             LivingEntity target = targetData.getEntity();
-            float value = getScaledValue(instance.getStackCount());
+            float value = getScaledValue(instance.getStackCount(), instance.getSkillLevel());
 //            MKUltra.LOGGER.info("ClericHealEffect.performEffect {} on {} from {} {}", value, target, source, instance);
             MKHealSource heal = MKHealSource.getHolyHeal(instance.getAbilityId(), instance.getDirectEntity(), instance.getSourceEntity(), getModifierScale());
             MKHealing.healEntityFrom(target, value, heal);

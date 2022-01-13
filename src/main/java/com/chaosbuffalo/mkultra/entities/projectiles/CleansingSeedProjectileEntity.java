@@ -63,15 +63,17 @@ public class CleansingSeedProjectileEntity extends TrailProjectileEntity impleme
         SoundCategory cat = caster instanceof PlayerEntity ? SoundCategory.PLAYERS : SoundCategory.HOSTILE;
         SoundUtils.serverPlaySoundAtEntity(this, ModSounds.spell_water_6, cat);
         if (caster instanceof LivingEntity && trace.getType() == RayTraceResult.Type.ENTITY) {
+            LivingEntity casterLiving = (LivingEntity) caster;
             EntityRayTraceResult entityTrace = (EntityRayTraceResult) trace;
             if (entityTrace.getEntity() instanceof LivingEntity) {
                 LivingEntity target = (LivingEntity) entityTrace.getEntity();
                 Targeting.TargetRelation relation = Targeting.getTargetRelation(caster, target);
                 switch (relation) {
                     case FRIEND: {
-                        MKEffectBuilder<?> cure = CureEffect.from((LivingEntity) caster)
+                        MKEffectBuilder<?> cure = CureEffect.from(casterLiving)
                                 .ability(CleansingSeedAbility.INSTANCE)
                                 .directEntity(this)
+                                .skillLevel(getSkillLevel())
                                 .amplify(amplifier);
 
                         MKCore.getEntityData(target).ifPresent(targetData -> targetData.getEffects().addEffect(cure));
@@ -83,7 +85,7 @@ public class CleansingSeedProjectileEntity extends TrailProjectileEntity impleme
                         target.attackEntityFrom(MKDamageSource.causeAbilityDamage(CoreDamageTypes.NatureDamage,
                                         CleansingSeedAbility.INSTANCE.getAbilityId(), this, caster,
                                         CleansingSeedAbility.INSTANCE.getModifierScaling()),
-                                CleansingSeedAbility.INSTANCE.getDamageForLevel(amplifier));
+                                CleansingSeedAbility.INSTANCE.getDamageForLevel(getSkillLevel()));
                         SoundUtils.serverPlaySoundAtEntity(target, ModSounds.spell_water_8, cat);
                         break;
                     }

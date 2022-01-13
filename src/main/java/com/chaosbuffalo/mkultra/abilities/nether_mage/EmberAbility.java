@@ -60,7 +60,7 @@ public class EmberAbility extends MKAbility {
 
     @Override
     protected ITextComponent getAbilityDescription(IMKEntityData entityData) {
-        int level = getSkillLevel(entityData.getEntity(), MKAttributes.EVOCATION);
+        float level = getSkillLevel(entityData.getEntity(), MKAttributes.EVOCATION);
         ITextComponent valueStr = getDamageDescription(entityData,
                 CoreDamageTypes.FireDamage, base.value(), scale.value(), level, modifierScaling.value());
         ITextComponent dotStr = getDamageDescription(entityData,
@@ -70,11 +70,11 @@ public class EmberAbility extends MKAbility {
                 dotStr, BurnEffect.DEFAULT_PERIOD / 20);
     }
 
-    public MKEffectBuilder<?> getBurnCast(IMKEntityData casterData, int level) {
+    public MKEffectBuilder<?> getBurnCast(IMKEntityData casterData, float level) {
         int burnTicks = getBuffDuration(casterData, level, baseDuration.value(), scaleDuration.value());
         return BurnEffect.from(casterData.getEntity(), baseDot.value(), scaleDot.value(), dotModifierScaling.value(), burn_cast_particles.getValue())
                 .ability(this)
-                .amplify(level)
+                .skillLevel(level)
                 .timed(burnTicks);
     }
 
@@ -106,13 +106,15 @@ public class EmberAbility extends MKAbility {
     @Override
     public void endCast(LivingEntity entity, IMKEntityData data, AbilityContext context) {
         super.endCast(entity, data, context);
-        int level = getSkillLevel(entity, MKAttributes.EVOCATION);
+        float level = getSkillLevel(entity, MKAttributes.EVOCATION);
         context.getMemory(MKAbilityMemories.ABILITY_TARGET).ifPresent(targetEntity -> {
             MKEffectBuilder<?> damage = MKAbilityDamageEffect.from(entity, CoreDamageTypes.FireDamage,
                             base.value(), scale.value(), modifierScaling.value())
                     .ability(this)
-                    .amplify(level);
-            MKEffectBuilder<?> burn = getBurnCast(data, level);
+                    .skillLevel(level);
+            MKEffectBuilder<?> burn = getBurnCast(data, level)
+                    .ability(this)
+                    .skillLevel(level);
 
             MKCore.getEntityData(targetEntity).ifPresent(targetData -> {
                 targetData.getEffects().addEffect(damage);
