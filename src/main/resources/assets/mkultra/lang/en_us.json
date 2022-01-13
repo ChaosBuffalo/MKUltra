@@ -62,5 +62,6 @@
   "faction.mkultra.imperial_dead.name": "Imperial Dead",
   "mkultra.entitlement.green_knight.tier_1.name": "Green Knight Tier 1",
   "mkultra.entitlement.green_knight.tier_2.name": "Green Knight Tier 2",
-  "mkultra.entitlement.green_knight.tier_3.name": "Green Knight Tier 3"
+  "mkultra.entitlement.green_knight.tier_3.name": "Green Knight Tier 3",
+  "mkultra.quest_reward.receive_item.name": "You Will Receive a %s"
 }

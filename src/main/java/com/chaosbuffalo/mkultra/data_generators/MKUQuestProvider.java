@@ -3,6 +3,7 @@ package com.chaosbuffalo.mkultra.data_generators;
 import com.chaosbuffalo.mkchat.dialogue.DialogueNode;
 import com.chaosbuffalo.mkchat.dialogue.DialoguePrompt;
 import com.chaosbuffalo.mkchat.dialogue.DialogueResponse;
+import com.chaosbuffalo.mkchat.dialogue.DialogueUtils;
 import com.chaosbuffalo.mknpc.data.QuestDefinitionProvider;
 import com.chaosbuffalo.mknpc.dialogue.effects.OpenLearnAbilitiesEffect;
 import com.chaosbuffalo.mknpc.quest.Quest;
@@ -11,18 +12,22 @@ import com.chaosbuffalo.mknpc.quest.dialogue.conditions.HasSpentTalentPointsCond
 import com.chaosbuffalo.mknpc.quest.dialogue.conditions.HasTrainedAbilitiesCondition;
 import com.chaosbuffalo.mknpc.quest.dialogue.conditions.HasWeaponInHandCondition;
 import com.chaosbuffalo.mknpc.quest.dialogue.conditions.ObjectivesCompleteCondition;
-import com.chaosbuffalo.mknpc.quest.dialogue.effects.AdvanceQuestChainEffect;
 import com.chaosbuffalo.mknpc.quest.dialogue.effects.GrantEntitlementEffect;
 import com.chaosbuffalo.mknpc.quest.dialogue.effects.ObjectiveCompleteEffect;
 import com.chaosbuffalo.mknpc.quest.objectives.KillNpcDefObjective;
 import com.chaosbuffalo.mknpc.quest.objectives.LootChestObjective;
 import com.chaosbuffalo.mknpc.quest.objectives.TalkToNpcObjective;
+import com.chaosbuffalo.mknpc.quest.objectives.TradeItemsObjective;
+import com.chaosbuffalo.mknpc.quest.requirements.HasEntitlementRequirement;
+import com.chaosbuffalo.mknpc.quest.rewards.MKLootReward;
 import com.chaosbuffalo.mknpc.quest.rewards.XpReward;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.abilities.green_knight.NaturesRemedyAbility;
 import com.chaosbuffalo.mkultra.abilities.green_knight.SkinLikeWoodAbility;
 import com.chaosbuffalo.mkultra.init.MKUEntitlements;
+import com.chaosbuffalo.mkultra.init.MKUItems;
 import com.chaosbuffalo.mkultra.init.MKUWorldGen;
+import com.chaosbuffalo.mkweapons.items.randomization.slots.LootSlotManager;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DirectoryCache;
@@ -30,6 +35,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
 import java.io.IOException;
 
@@ -43,6 +49,91 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
     @Override
     public void act(DirectoryCache cache) throws IOException {
         writeDefinition(generateIntroQuest(), cache);
+        writeDefinition(generateTrooperArmorQuest(), cache);
+    }
+
+    private QuestDefinition generateTrooperArmorQuest(){
+        QuestDefinition def = new QuestDefinition(new ResourceLocation(MKUltra.MODID, "trooper_armor"));
+        def.addRequirement(new HasEntitlementRequirement(MKUEntitlements.GreenKnightTier1));
+        def.setRepeatable(true);
+        def.setQuestName(new StringTextComponent("Salvaged Trooper Armor"));
+        def.setMode(QuestDefinition.QuestMode.UNSORTED);
+        DialoguePrompt startQuestPrompt = new DialoguePrompt("start_quest", "need some armor",
+                "I need some armor", "need some armor.");
+        startQuestPrompt.addResponse(new DialogueResponse("start_quest"));
+        DialogueNode hailNode = new DialogueNode("hail", String.format("I make armor for the Green Knights. " +
+                        "We're running low on supplies but if you can salvage some parts from the zombies in the castle " +
+                        "If you %s I should be able to put something together.",
+                startQuestPrompt.getPromptEmbed()));
+        DialogueNode questStart = new DialogueNode("start_quest",
+                String.format("For the full set I will need %s, a %s, a %s, a %s, and a %s.", DialogueUtils.getStackCountItemProvider(new ItemStack(MKUItems.corruptedPigIronPlate, 20)),
+                        DialogueUtils.getItemNameProvider(MKUItems.destroyedTrooperHelmet), DialogueUtils.getItemNameProvider(MKUItems.destroyedTrooperLeggings),
+                        DialogueUtils.getItemNameProvider(MKUItems.destroyedTrooperChestplate), DialogueUtils.getItemNameProvider(MKUItems.destroyedTrooperBoots)));
+        def.setHailPrompt(startQuestPrompt);
+        def.setStartQuestResponse(questStart);
+        def.setStartQuestHail(hailNode);
+
+        Quest helmet = new Quest("tradeHelmet", new StringTextComponent("The Green Smith needs " +
+                "some scrap metal and a helmet from the pigs in the castle."));
+        helmet.setAutoComplete(true);
+        TradeItemsObjective helmetTrade = new TradeItemsObjective(
+                "tradeHelmetObj",
+                MKUWorldGen.INTRO_CASTLE_NAME, 0,
+                new ResourceLocation(MKUltra.MODID, "green_smith"));
+        helmetTrade.addItemStack(new ItemStack(MKUItems.corruptedPigIronPlate, 2));
+        helmetTrade.addItemStack(new ItemStack(MKUItems.destroyedTrooperHelmet));
+        helmet.addObjective(helmetTrade);
+        helmet.addReward(new XpReward(25));
+        helmet.addReward(new MKLootReward(new ResourceLocation(MKUltra.MODID, "trooper_knight_armor"), LootSlotManager.HEAD.getName(),
+                new TranslationTextComponent("mkultra.quest_reward.receive_item.name", MKUItems.trooperKnightHelmet.getName())));
+        def.addQuest(helmet);
+
+        Quest leggings = new Quest("tradeLeggings", new StringTextComponent("The Green Smith needs " +
+                "some scrap metal and a pair of leggings from the pigs in the castle."));
+        leggings.setAutoComplete(true);
+        TradeItemsObjective leggingsTrade = new TradeItemsObjective(
+                "tradeHelmetObj",
+                MKUWorldGen.INTRO_CASTLE_NAME, 0,
+                new ResourceLocation(MKUltra.MODID, "green_smith"));
+        leggingsTrade.addItemStack(new ItemStack(MKUItems.corruptedPigIronPlate, 6));
+        leggingsTrade.addItemStack(new ItemStack(MKUItems.destroyedTrooperLeggings));
+        leggings.addObjective(leggingsTrade);
+        leggings.addReward(new XpReward(25));
+        leggings.addReward(new MKLootReward(new ResourceLocation(MKUltra.MODID, "trooper_knight_armor"), LootSlotManager.LEGS.getName(),
+                new TranslationTextComponent("mkultra.quest_reward.receive_item.name", MKUItems.trooperKnightLeggings.getName())));
+        def.addQuest(leggings);
+
+        Quest boots = new Quest("tradeBoots", new StringTextComponent("The Green Smith needs " +
+                "some scrap metal and a pair of boots from the pigs in the castle."));
+        boots.setAutoComplete(true);
+        TradeItemsObjective bootTrade = new TradeItemsObjective(
+                "tradeLeggingsObj",
+                MKUWorldGen.INTRO_CASTLE_NAME, 0,
+                new ResourceLocation(MKUltra.MODID, "green_smith"));
+        bootTrade.addItemStack(new ItemStack(MKUItems.corruptedPigIronPlate, 4));
+        bootTrade.addItemStack(new ItemStack(MKUItems.destroyedTrooperBoots));
+        boots.addObjective(bootTrade);
+        boots.addReward(new XpReward(25));
+        boots.addReward(new MKLootReward(new ResourceLocation(MKUltra.MODID, "trooper_knight_armor"), LootSlotManager.FEET.getName(),
+                new TranslationTextComponent("mkultra.quest_reward.receive_item.name", MKUItems.trooperKnightBoots.getName())));
+        def.addQuest(boots);
+
+        Quest chestplate = new Quest("tradeChestplate", new StringTextComponent("The Green Smith needs " +
+                "some scrap metal and the chestplate from the pigs in the castle."));
+        chestplate.setAutoComplete(true);
+        TradeItemsObjective chestplateTrade = new TradeItemsObjective(
+                "tradeChestObj",
+                MKUWorldGen.INTRO_CASTLE_NAME, 0,
+                new ResourceLocation(MKUltra.MODID, "green_smith"));
+        chestplateTrade.addItemStack(new ItemStack(MKUItems.corruptedPigIronPlate, 8));
+        chestplateTrade.addItemStack(new ItemStack(MKUItems.destroyedTrooperChestplate));
+        chestplate.addObjective(chestplateTrade);
+        chestplate.addReward(new XpReward(25));
+        chestplate.addReward(new MKLootReward(new ResourceLocation(MKUltra.MODID, "trooper_knight_armor"), LootSlotManager.CHEST.getName(),
+                new TranslationTextComponent("mkultra.quest_reward.receive_item.name", MKUItems.trooperKnightChestplate.getName())));
+        def.addQuest(chestplate);
+
+        return def;
     }
 
     private QuestDefinition generateIntroQuest(){
@@ -72,7 +163,7 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
                 new StringTextComponent("Talk to the smith"));
         DialogueNode smithHail = new DialogueNode("hail", "We ain't got much left after the crash. " +
                 "Check that chest over there we got a few things. You can use my crafting table as well. Talk to me again when you have made a weapon.");
-        smithHail.addEffect(new ObjectiveCompleteEffect(talkObj.getObjectiveName()));
+        smithHail.addEffect(new ObjectiveCompleteEffect(talkObj.getObjectiveName(), talk1.getQuestName()));
         talkObj.withHailResponse(smithHail, new DialogueResponse(smithHail.getId()));
         talk1.addObjective(talkObj);
         talk1.addReward(new XpReward(25));
@@ -104,7 +195,7 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
         DialogueNode hailWithWeapon = new DialogueNode("hail_w_weapon", "Great, but you're going to need more than just a sharp rock where we're going. " +
                 "Go back and talk to the Green Lady, ask her about learning to develop your magical talents.");
         DialogueResponse hailWithWeaponResp = new DialogueResponse(hailWithWeapon.getId());
-        hailWithWeapon.addEffect(new ObjectiveCompleteEffect(retSmithTalk.getObjectiveName()));
+        hailWithWeapon.addEffect(new ObjectiveCompleteEffect(retSmithTalk.getObjectiveName(), returnToSmith.getQuestName()));
         hailWithWeaponResp.addCondition(new HasWeaponInHandCondition());
         DialogueNode hailWithoutWeapon = new DialogueNode("hail_wo_weapon", "Come back to me with a weapon in your hand.");
         DialogueResponse hailWithoutWeaponResp = new DialogueResponse(hailWithoutWeapon.getId());
@@ -127,7 +218,7 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
         DialogueNode greenLadyTalentConvoStart = new DialogueNode("talent_1","We can help you awaken your magical gifts, the first step is learning how " +
                 "to train your talents. You should have gained a talent point upon initiating this conversation. " +
                 "Open your player screen and go to the talent section, train any of the first talents in order to unlock your first ability slot. Talk to me again when you have finished this.");
-        greenLadyTalentConvoStart.addEffect(new ObjectiveCompleteEffect(greenLadyTalent.getObjectiveName()));
+        greenLadyTalentConvoStart.addEffect(new ObjectiveCompleteEffect(greenLadyTalent.getObjectiveName(), greenLadyTrainTalent.getQuestName()));
         greenLadyTalent.withHailResponse(greenLadyTalentConvoStart, new DialogueResponse(greenLadyTalentConvoStart.getId()));
         greenLadyTrainTalent.addReward(new XpReward(25));
         greenLadyTrainTalent.addObjective(greenLadyTalent);
@@ -153,7 +244,7 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
         DialogueNode hailWithTraining = new DialogueNode("hail_w_training", String.format(
                 "Alright you're now %s your first ability.", needTraining.getPromptEmbed()));
         DialogueResponse hailWithTrainingResp = new DialogueResponse(hailWithTraining.getId());
-        hailWithTraining.addEffect(new ObjectiveCompleteEffect(retGreenLady.getObjectiveName()));
+        hailWithTraining.addEffect(new ObjectiveCompleteEffect(retGreenLady.getObjectiveName(), returnToGreenLady.getQuestName()));
         hailWithTraining.addEffect(new GrantEntitlementEffect(MKUEntitlements.GreenKnightTier1));
         hailWithTrainingResp.addCondition(new HasSpentTalentPointsCondition(1));
         DialogueNode hailWithoutTraining = new DialogueNode("hail_wo_training",
@@ -180,7 +271,7 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
         afterGreenLady.withAdditionalPrompts(needTraining);
         afterGreenLady.withAdditionalNode(open_training);
         DialogueResponse hailWithAbilityResp = new DialogueResponse(hailWithAbilities.getId());
-        hailWithAbilities.addEffect(new ObjectiveCompleteEffect(afterGreenLady.getObjectiveName()));
+        hailWithAbilities.addEffect(new ObjectiveCompleteEffect(afterGreenLady.getObjectiveName(), afterAbility.getQuestName()));
         hailWithAbilityResp.addCondition(new HasTrainedAbilitiesCondition(false, SkinLikeWoodAbility.INSTANCE.getAbilityId(), NaturesRemedyAbility.INSTANCE.getAbilityId()));
         DialogueNode hailWithoutAbilities = new DialogueNode("hail_wo_abilities", "Come back to me once you've learned one of our abilities.");
         DialogueResponse hailWithoutAbilitiesResp = new DialogueResponse(hailWithoutAbilities.getId());
@@ -212,11 +303,11 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
                 "The dead rise everywhere, to cull the damned is a blessed pursuit. Our order is dedicated to cleansing " +
                 "this land. You are welcome to stay here and learn of our ways or go as you please.");
         DialogueResponse talkAfterKillCompleteResp = new DialogueResponse(talkAfterKillComplete.getId());
-        talkAfterKillComplete.addEffect(new ObjectiveCompleteEffect(talkAfterKill.getObjectiveName()));
-        talkAfterKillCompleteResp.addCondition(new ObjectivesCompleteCondition(killObjective.getObjectiveName(), killArcherObjective.getObjectiveName()));
+        talkAfterKillComplete.addEffect(new ObjectiveCompleteEffect(talkAfterKill.getObjectiveName(), killQuest.getQuestName()));
+        talkAfterKillCompleteResp.addCondition(new ObjectivesCompleteCondition(killQuest.getQuestName(), killObjective.getObjectiveName(), killArcherObjective.getObjectiveName()));
         DialogueNode withoutKill = new DialogueNode("hail_wo_kill", "Come back to me after you've proven yourself.");
         DialogueResponse withoutKillResp = new DialogueResponse(withoutKill.getId());
-        withoutKillResp.addCondition(new ObjectivesCompleteCondition(killObjective.getObjectiveName(), killArcherObjective.getObjectiveName()).setInvert(true));
+        withoutKillResp.addCondition(new ObjectivesCompleteCondition(killQuest.getQuestName(), killObjective.getObjectiveName(), killArcherObjective.getObjectiveName()).setInvert(true));
         talkAfterKill.withHailResponse(talkAfterKillComplete, talkAfterKillCompleteResp);
         talkAfterKill.withHailResponse(withoutKill, withoutKillResp);
         killQuest.addObjective(talkAfterKill);
