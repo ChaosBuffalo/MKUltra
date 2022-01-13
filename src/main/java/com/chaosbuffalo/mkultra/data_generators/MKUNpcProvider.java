@@ -354,6 +354,7 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                 new NpcItemChoice(new ItemStack(ForgeRegistries.ITEMS.getValue(
                         new ResourceLocation("mkweapons:warhammer_iron"))), 1.0, 0.0f));
         def.addOption(equipOption);
+        def.addOption(new QuestOfferingOption(new ResourceLocation("mkultra", "trooper_armor")));
         return def;
     }
 

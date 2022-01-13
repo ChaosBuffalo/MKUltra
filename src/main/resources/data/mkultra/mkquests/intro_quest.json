@@ -5,7 +5,9 @@
       "objectives": [
         {
           "objectiveType": "mknpc:objective.talk_to_npc",
-          "description": "{\"text\":\"Talk to the smith\"}",
+          "description": [
+            "{\"text\":\"Talk to the smith\"}"
+          ],
           "attributes": {
             "structureIndex": 0,
             "npcDefinition": "mkultra:green_smith",
@@ -22,8 +24,9 @@
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "63ca7724-c01f-47c5-8cc3-3be909fc79de",
-                    "objectiveName": "talk_to_smith"
+                    "chainId": "e2dd493b-8443-4890-ab8e-12a8e20083e5",
+                    "objectiveName": "talk_to_smith",
+                    "questName": "talk_to_smith"
                   }
                 ]
               },
@@ -51,7 +54,9 @@
       "objectives": [
         {
           "objectiveType": "mknpc:objective.loot_chest",
-          "description": "{\"text\":\"Loot the smith's chest\"}",
+          "description": [
+            "{\"text\":\"Loot the smith's chest\"}"
+          ],
           "attributes": {
             "structureIndex": 0,
             "chestTag": "intro_chest",
@@ -86,7 +91,9 @@
       "objectives": [
         {
           "objectiveType": "mknpc:objective.talk_to_npc",
-          "description": "{\"text\":\"Talk to the Green Smith with a weapon in your hand.\"}",
+          "description": [
+            "{\"text\":\"Talk to the Green Smith with a weapon in your hand.\"}"
+          ],
           "attributes": {
             "structureIndex": 0,
             "npcDefinition": "mkultra:green_smith",
@@ -103,8 +110,9 @@
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "05a886d5-a3ce-46da-b114-add7eac657ce",
-                    "objectiveName": "return_to_smith"
+                    "chainId": "18a733d7-b377-4ab1-af46-d7fcfbb69646",
+                    "objectiveName": "return_to_smith",
+                    "questName": "return_to_smith"
                   }
                 ]
               },
@@ -153,7 +161,9 @@
       "objectives": [
         {
           "objectiveType": "mknpc:objective.talk_to_npc",
-          "description": "{\"text\":\"Talk to the Green Lady about the talent system.\"}",
+          "description": [
+            "{\"text\":\"Talk to the Green Lady about the talent system.\"}"
+          ],
           "attributes": {
             "structureIndex": 0,
             "npcDefinition": "mkultra:green_lady",
@@ -170,8 +180,9 @@
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "0aa04133-3983-412f-b1d4-266023a1bfc3",
-                    "objectiveName": "green_lady_talent"
+                    "chainId": "b2ad6976-8770-4d8f-bbed-c2407fc503c2",
+                    "objectiveName": "green_lady_talent",
+                    "questName": "green_lady_talent"
                   }
                 ]
               },
@@ -199,7 +210,9 @@
       "objectives": [
         {
           "objectiveType": "mknpc:objective.talk_to_npc",
-          "description": "{\"text\":\"Talk to the Green Lady after training a talent.\"}",
+          "description": [
+            "{\"text\":\"Talk to the Green Lady after training a talent.\"}"
+          ],
           "attributes": {
             "structureIndex": 0,
             "npcDefinition": "mkultra:green_lady",
@@ -238,8 +251,9 @@
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "adcd333e-8157-492a-96c1-e373bad379f0",
-                    "objectiveName": "return_to_green_lady"
+                    "chainId": "b9750a2f-d68a-4e23-8fbc-38e4d005f442",
+                    "objectiveName": "return_to_green_lady",
+                    "questName": "return_to_green_lady"
                   },
                   {
                     "dialogueEffectType": "mknpc:grant_entitlement",
@@ -294,7 +308,9 @@
       "objectives": [
         {
           "objectiveType": "mknpc:objective.talk_to_npc",
-          "description": "{\"text\":\"Talk to the Green Lady after learning your first ability.\"}",
+          "description": [
+            "{\"text\":\"Talk to the Green Lady after learning your first ability.\"}"
+          ],
           "attributes": {
             "structureIndex": 0,
             "npcDefinition": "mkultra:green_lady",
@@ -333,8 +349,9 @@
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "a57ba5f7-e698-4fa5-ba9a-a6c6ee95a6b5",
-                    "objectiveName": "after_green_lady"
+                    "chainId": "12441987-9627-4eed-928d-d63df75478e0",
+                    "objectiveName": "after_green_lady",
+                    "questName": "after_ability"
                   }
                 ]
               },
@@ -388,7 +405,9 @@
       "objectives": [
         {
           "objectiveType": "mknpc:objective.kill_npc_def",
-          "description": "{\"text\":\"Placeholder\"}",
+          "description": [
+            "{\"text\":\"Placeholder\"}"
+          ],
           "attributes": {
             "npcDefinition": "mkultra:decaying_piglin",
             "count": 4,
@@ -397,7 +416,9 @@
         },
         {
           "objectiveType": "mknpc:objective.kill_npc_def",
-          "description": "{\"text\":\"Placeholder\"}",
+          "description": [
+            "{\"text\":\"Placeholder\"}"
+          ],
           "attributes": {
             "npcDefinition": "mkultra:decaying_piglin_archer",
             "count": 4,
@@ -406,7 +427,9 @@
         },
         {
           "objectiveType": "mknpc:objective.talk_to_npc",
-          "description": "{\"text\":\"Talk to the Green Lady after completing the other objectives.\"}",
+          "description": [
+            "{\"text\":\"Talk to the Green Lady after completing the other objectives.\"}"
+          ],
           "attributes": {
             "structureIndex": 0,
             "npcDefinition": "mkultra:green_lady",
@@ -423,8 +446,9 @@
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "620e969e-f66f-457e-b71a-fdc694332612",
-                    "objectiveName": "after_kill"
+                    "chainId": "36e5cd4b-d92b-468c-9156-3e2e5ac751b2",
+                    "objectiveName": "after_kill",
+                    "questName": "first_kill"
                   }
                 ]
               },
@@ -438,7 +462,8 @@
                       "kill_zombies",
                       "kill_archers"
                     ],
-                    "chainId": "f7fe8b53-5c66-4d67-960f-6b9d1f96b531"
+                    "chainId": "91b7aca8-fcf8-4f06-ae77-3adc1d937190",
+                    "questName": "first_kill"
                   }
                 ]
               }
@@ -458,7 +483,8 @@
                       "kill_zombies",
                       "kill_archers"
                     ],
-                    "chainId": "807c85f1-e5e6-44a0-b22e-424275003bba"
+                    "chainId": "e22ab304-edd1-4642-8423-9eb765372afe",
+                    "questName": "first_kill"
                   }
                 ]
               }
@@ -499,5 +525,7 @@
       }
     ]
   },
-  "questName": "{\"text\":\"Intro Quest\"}"
+  "questName": "{\"text\":\"Intro Quest\"}",
+  "requirements": [],
+  "questMode": 0
 }

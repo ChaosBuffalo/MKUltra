@@ -1,0 +1,197 @@
+{
+  "quests": [
+    {
+      "questName": "tradeHelmet",
+      "objectives": [
+        {
+          "objectiveType": "mknpc:objective.trade_with_npc",
+          "description": [
+            "{\"translate\":\"mknpc.trade.item_needed\",\"with\":[\"2\",{\"translate\":\"item.mkultra.corrupted_pig_iron_plate\"}]}",
+            "{\"translate\":\"mknpc.trade.item_needed\",\"with\":[\"1\",{\"translate\":\"item.mkultra.destroyed_trooper_helmet\"}]}"
+          ],
+          "attributes": {
+            "structureIndex": 0,
+            "npcDefinition": "mkultra:green_smith",
+            "structure": "mkultra:intro_castle",
+            "objectiveName": "tradeHelmetObj"
+          },
+          "items": [
+            "{id: \"mkultra:corrupted_pig_iron_plate\", Count: 2b}",
+            "{id: \"mkultra:destroyed_trooper_helmet\", Count: 1b}"
+          ]
+        }
+      ],
+      "description": "{\"text\":\"The Green Smith needs some scrap metal and a helmet from the pigs in the castle.\"}",
+      "autoComplete": true,
+      "rewards": [
+        {
+          "rewardType": "mknpc:quest_reward.xp",
+          "description": "{\"translate\":\"mknpc.quest_reward.xp.name\",\"with\":[\"25\"]}",
+          "attributes": {
+            "xp": 25
+          }
+        },
+        {
+          "rewardType": "mknpc:quest_reward.mk_loot",
+          "description": "{\"translate\":\"mkultra.quest_reward.receive_item.name\",\"with\":[{\"translate\":\"item.mkultra.trooper_knight_helmet\"}]}",
+          "attributes": {
+            "loot_tier": "mkultra:trooper_knight_armor",
+            "loot_slot": "mkweapons:head"
+          }
+        }
+      ]
+    },
+    {
+      "questName": "tradeLeggings",
+      "objectives": [
+        {
+          "objectiveType": "mknpc:objective.trade_with_npc",
+          "description": [
+            "{\"translate\":\"mknpc.trade.item_needed\",\"with\":[\"6\",{\"translate\":\"item.mkultra.corrupted_pig_iron_plate\"}]}",
+            "{\"translate\":\"mknpc.trade.item_needed\",\"with\":[\"1\",{\"translate\":\"item.mkultra.destroyed_trooper_leggings\"}]}"
+          ],
+          "attributes": {
+            "structureIndex": 0,
+            "npcDefinition": "mkultra:green_smith",
+            "structure": "mkultra:intro_castle",
+            "objectiveName": "tradeHelmetObj"
+          },
+          "items": [
+            "{id: \"mkultra:corrupted_pig_iron_plate\", Count: 6b}",
+            "{id: \"mkultra:destroyed_trooper_leggings\", Count: 1b}"
+          ]
+        }
+      ],
+      "description": "{\"text\":\"The Green Smith needs some scrap metal and a pair of leggings from the pigs in the castle.\"}",
+      "autoComplete": true,
+      "rewards": [
+        {
+          "rewardType": "mknpc:quest_reward.xp",
+          "description": "{\"translate\":\"mknpc.quest_reward.xp.name\",\"with\":[\"25\"]}",
+          "attributes": {
+            "xp": 25
+          }
+        },
+        {
+          "rewardType": "mknpc:quest_reward.mk_loot",
+          "description": "{\"translate\":\"mkultra.quest_reward.receive_item.name\",\"with\":[{\"translate\":\"item.mkultra.trooper_knight_leggings\"}]}",
+          "attributes": {
+            "loot_tier": "mkultra:trooper_knight_armor",
+            "loot_slot": "mkweapons:legs"
+          }
+        }
+      ]
+    },
+    {
+      "questName": "tradeBoots",
+      "objectives": [
+        {
+          "objectiveType": "mknpc:objective.trade_with_npc",
+          "description": [
+            "{\"translate\":\"mknpc.trade.item_needed\",\"with\":[\"4\",{\"translate\":\"item.mkultra.corrupted_pig_iron_plate\"}]}",
+            "{\"translate\":\"mknpc.trade.item_needed\",\"with\":[\"1\",{\"translate\":\"item.mkultra.destroyed_trooper_boots\"}]}"
+          ],
+          "attributes": {
+            "structureIndex": 0,
+            "npcDefinition": "mkultra:green_smith",
+            "structure": "mkultra:intro_castle",
+            "objectiveName": "tradeLeggingsObj"
+          },
+          "items": [
+            "{id: \"mkultra:corrupted_pig_iron_plate\", Count: 4b}",
+            "{id: \"mkultra:destroyed_trooper_boots\", Count: 1b}"
+          ]
+        }
+      ],
+      "description": "{\"text\":\"The Green Smith needs some scrap metal and a pair of boots from the pigs in the castle.\"}",
+      "autoComplete": true,
+      "rewards": [
+        {
+          "rewardType": "mknpc:quest_reward.xp",
+          "description": "{\"translate\":\"mknpc.quest_reward.xp.name\",\"with\":[\"25\"]}",
+          "attributes": {
+            "xp": 25
+          }
+        },
+        {
+          "rewardType": "mknpc:quest_reward.mk_loot",
+          "description": "{\"translate\":\"mkultra.quest_reward.receive_item.name\",\"with\":[{\"translate\":\"item.mkultra.trooper_knight_boots\"}]}",
+          "attributes": {
+            "loot_tier": "mkultra:trooper_knight_armor",
+            "loot_slot": "mkweapons:feet"
+          }
+        }
+      ]
+    },
+    {
+      "questName": "tradeChestplate",
+      "objectives": [
+        {
+          "objectiveType": "mknpc:objective.trade_with_npc",
+          "description": [
+            "{\"translate\":\"mknpc.trade.item_needed\",\"with\":[\"8\",{\"translate\":\"item.mkultra.corrupted_pig_iron_plate\"}]}",
+            "{\"translate\":\"mknpc.trade.item_needed\",\"with\":[\"1\",{\"translate\":\"item.mkultra.destroyed_trooper_chestplate\"}]}"
+          ],
+          "attributes": {
+            "structureIndex": 0,
+            "npcDefinition": "mkultra:green_smith",
+            "structure": "mkultra:intro_castle",
+            "objectiveName": "tradeChestObj"
+          },
+          "items": [
+            "{id: \"mkultra:corrupted_pig_iron_plate\", Count: 8b}",
+            "{id: \"mkultra:destroyed_trooper_chestplate\", Count: 1b}"
+          ]
+        }
+      ],
+      "description": "{\"text\":\"The Green Smith needs some scrap metal and the chestplate from the pigs in the castle.\"}",
+      "autoComplete": true,
+      "rewards": [
+        {
+          "rewardType": "mknpc:quest_reward.xp",
+          "description": "{\"translate\":\"mknpc.quest_reward.xp.name\",\"with\":[\"25\"]}",
+          "attributes": {
+            "xp": 25
+          }
+        },
+        {
+          "rewardType": "mknpc:quest_reward.mk_loot",
+          "description": "{\"translate\":\"mkultra.quest_reward.receive_item.name\",\"with\":[{\"translate\":\"item.mkultra.trooper_knight_chestplate\"}]}",
+          "attributes": {
+            "loot_tier": "mkultra:trooper_knight_armor",
+            "loot_slot": "mkweapons:chest"
+          }
+        }
+      ]
+    }
+  ],
+  "repeatable": true,
+  "startQuestResponse": {
+    "message": "For the full set I will need 20 {item:mkultra:corrupted_pig_iron_plate}, a {item:mkultra:destroyed_trooper_helmet}, a {item:mkultra:destroyed_trooper_leggings}, a {item:mkultra:destroyed_trooper_chestplate}, and a {item:mkultra:destroyed_trooper_boots}.",
+    "id": "start_quest"
+  },
+  "hailQuestResponse": {
+    "message": "I make armor for the Green Knights. We're running low on supplies but if you can salvage some parts from the zombies in the castle If you {prompt:start_quest} I should be able to put something together.",
+    "id": "hail"
+  },
+  "hailPrompt": {
+    "message": "need some armor.",
+    "id": "start_quest",
+    "promptPhrase": "need some armor",
+    "promptText": "I need some armor",
+    "responses": [
+      {
+        "responseNodeId": "start_quest"
+      }
+    ]
+  },
+  "questName": "{\"text\":\"Salvaged Trooper Armor\"}",
+  "requirements": [
+    {
+      "questReqType": "mknpc:quest_requirement.has_entitlement",
+      "attributes": {},
+      "entitlement": "mkultra:green_knight.tier_1"
+    }
+  ],
+  "questMode": 1
+}

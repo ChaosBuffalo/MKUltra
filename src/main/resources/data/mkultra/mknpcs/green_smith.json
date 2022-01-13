@@ -56,6 +56,12 @@
     {
       "optionType": "mknpc:faction",
       "value": "mkultra:green_knights"
+    },
+    {
+      "optionType": "mknpc:offer_quests",
+      "offerings": [
+        "mkultra:trooper_armor"
+      ]
     }
   ]
 }
