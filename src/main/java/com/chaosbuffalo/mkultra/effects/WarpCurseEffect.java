@@ -57,10 +57,10 @@ public class WarpCurseEffect extends MKEffect {
     public static class State extends ScalingValueEffectState {
 
         @Override
-        public boolean performEffect(IMKEntityData imkEntityData, MKActiveEffect activeEffect) {
-            LivingEntity target = imkEntityData.getEntity();
+        public boolean performEffect(IMKEntityData targetData, MKActiveEffect activeEffect) {
+            LivingEntity target = targetData.getEntity();
 
-            float damage = getScaledValue(activeEffect.getStackCount());
+            float damage = getScaledValue(activeEffect.getStackCount(), activeEffect.getSkillLevel());
             target.attackEntityFrom(MKDamageSource.causeAbilityDamage(CoreDamageTypes.ShadowDamage,
                     activeEffect.getAbilityId(), activeEffect.getDirectEntity(), activeEffect.getSourceEntity(),
                     getModifierScale()), damage);

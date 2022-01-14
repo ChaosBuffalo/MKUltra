@@ -55,7 +55,7 @@ public class GalvanizeAbility extends MKAbility {
 
     @Override
     protected ITextComponent getAbilityDescription(IMKEntityData entityData) {
-        int level = getSkillLevel(entityData.getEntity(), MKAttributes.ABJURATION);
+        float level = getSkillLevel(entityData.getEntity(), MKAttributes.ABJURATION);
         int duration = getBuffDuration(entityData, level, base.value(), scale.value()) / GameConstants.TICKS_PER_SECOND;
         return new TranslationTextComponent(getDescriptionTranslationKey(), duration);
     }
@@ -83,18 +83,18 @@ public class GalvanizeAbility extends MKAbility {
     @Override
     public void endCast(LivingEntity entity, IMKEntityData data, AbilityContext context) {
         super.endCast(entity, data, context);
-        int level = getSkillLevel(entity, MKAttributes.ABJURATION);
+        float level = getSkillLevel(entity, MKAttributes.ABJURATION);
         int duration = getBuffDuration(data, level, base.value(), scale.value());
 
-        EffectInstance jump = new EffectInstance(Effects.JUMP_BOOST, duration, level, false, false);
+        int oldAmp = Math.round(level);
+        EffectInstance jump = new EffectInstance(Effects.JUMP_BOOST, duration, oldAmp, false, false);
         MKEffectBuilder<?> cure = CureEffect.from(entity)
                 .ability(this)
-                .amplify(level);
+                .skillLevel(level);
         MKEffectBuilder<?> sound = SoundEffect.from(entity, ModSounds.spell_buff_5, entity.getSoundCategory())
                 .ability(this);
         MKEffectBuilder<?> particles = MKParticleEffect.from(entity, cast_2_particles.getValue(), false, new Vector3d(0.0, 1.0, 0.0))
-                .ability(this)
-                .amplify(level);
+                .ability(this);
 
         AreaEffectBuilder.createOnCaster(entity)
                 .effect(jump, getTargetContext())

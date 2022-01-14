@@ -100,15 +100,15 @@ public class ExplosiveGrowthAbility extends MKAbility {
     @Override
     public void endCast(LivingEntity castingEntity, IMKEntityData casterData, AbilityContext context) {
         super.endCast(castingEntity, casterData, context);
-        int restoLevel = getSkillLevel(castingEntity, MKAttributes.RESTORATION);
-        int pankrationLevel = getSkillLevel(castingEntity, MKAttributes.PANKRATION);
+        float restoLevel = getSkillLevel(castingEntity, MKAttributes.RESTORATION);
+        float pankrationLevel = getSkillLevel(castingEntity, MKAttributes.PANKRATION);
 
         SoundCategory cat = castingEntity instanceof PlayerEntity ? SoundCategory.PLAYERS : SoundCategory.HOSTILE;
         float damage = baseDamage.value() + scaleDamage.value() * pankrationLevel;
 
         MKEffectBuilder<?> cure = CureEffect.from(castingEntity)
                 .ability(this)
-                .amplify(restoLevel);
+                .skillLevel(restoLevel);
         MKEffectBuilder<?> remedy = NaturesRemedyAbility.INSTANCE.createNaturesRemedyEffect(casterData, restoLevel)
                 .ability(this);
 

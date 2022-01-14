@@ -11,11 +11,6 @@
           "nodeId": "2e1ff629-b139-4303-831d-1c1bc5ebc21e"
         },
         {
-          "name": "mkcore:talent.pool_count",
-          "max_points": 1,
-          "nodeId": "9b23bee2-d159-4d32-aca8-1d726de0f875"
-        },
-        {
           "name": "mkcore:talent.max_mana",
           "max_points": 2,
           "value": 1.0
@@ -39,6 +34,11 @@
           "name": "mkcore:talent.ultimate_ability_slot",
           "max_points": 1,
           "nodeId": "0c751a99-a186-439c-83f1-abb55f67b17e"
+        },
+        {
+          "name": "mkcore:talent.pool_count",
+          "max_points": 1,
+          "nodeId": "9b23bee2-d159-4d32-aca8-1d726de0f875"
         },
         {
           "name": "mkcore:talent.mana_regen",
@@ -91,11 +91,6 @@
           "nodeId": "119917ea-b852-4cb5-8bfe-2cdad488f279"
         },
         {
-          "name": "mkcore:talent.pool_count",
-          "max_points": 1,
-          "nodeId": "108549d0-7935-4386-bf38-2ca48329305e"
-        },
-        {
           "name": "mkcore:talent.max_health",
           "max_points": 2,
           "value": 1.0
@@ -109,6 +104,11 @@
           "name": "mkcore:talent.ability_slot",
           "max_points": 1,
           "nodeId": "121817fa-1cfc-4334-aa77-13c02ede83ff"
+        },
+        {
+          "name": "mkcore:talent.pool_count",
+          "max_points": 1,
+          "nodeId": "108549d0-7935-4386-bf38-2ca48329305e"
         },
         {
           "name": "mkcore:talent.mana_regen",
@@ -140,11 +140,6 @@
           "nodeId": "3a31b74d-cf08-451f-a483-8eb9e47ce89b"
         },
         {
-          "name": "mkcore:talent.pool_count",
-          "max_points": 1,
-          "nodeId": "fbbab80a-c3f8-460f-81cf-5184a7c7f39a"
-        },
-        {
           "name": "mkcore:talent.max_mana",
           "max_points": 2,
           "value": 1.0
@@ -158,6 +153,11 @@
           "name": "mkcore:talent.ability_slot",
           "max_points": 1,
           "nodeId": "de5a37a4-b7e5-4565-9217-2d5d8de5d448"
+        },
+        {
+          "name": "mkcore:talent.pool_count",
+          "max_points": 1,
+          "nodeId": "fbbab80a-c3f8-460f-81cf-5184a7c7f39a"
         },
         {
           "name": "mkcore:talent.max_mana",

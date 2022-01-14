@@ -52,7 +52,7 @@ public class SeverTendonAbility extends MKAbility {
 
     @Override
     protected ITextComponent getAbilityDescription(IMKEntityData entityData) {
-        int level = getSkillLevel(entityData.getEntity(), MKAttributes.PANKRATION);
+        float level = getSkillLevel(entityData.getEntity(), MKAttributes.PANKRATION);
         ITextComponent valueStr = getDamageDescription(entityData,
                 CoreDamageTypes.MeleeDamage, base.value(), scale.value(), level, modifierScaling.value());
         ITextComponent dotStr = getDamageDescription(entityData,
@@ -91,19 +91,19 @@ public class SeverTendonAbility extends MKAbility {
     @Override
     public void endCast(LivingEntity entity, IMKEntityData data, AbilityContext context) {
         super.endCast(entity, data, context);
-        int level = getSkillLevel(entity, MKAttributes.PANKRATION);
+        float level = getSkillLevel(entity, MKAttributes.PANKRATION);
         context.getMemory(MKAbilityMemories.ABILITY_TARGET).ifPresent(targetEntity -> {
             MKEffectBuilder<?> damage = MKAbilityDamageEffect.from(entity, CoreDamageTypes.MeleeDamage,
                             base.value(), scale.value(), modifierScaling.value())
                     .ability(this)
-                    .amplify(level);
+                    .skillLevel(level);
 
 
             int dur = getBuffDuration(data, level, baseDuration.value(), scaleDuration.value());
             MKEffectBuilder<?> severTendon = SeverTendonEffect.from(entity, baseDot.value(), scaleDot.value(), dotModifierScaling.value())
                     .ability(this)
                     .timed(dur)
-                    .amplify(level);
+                    .skillLevel(level);
 
             MKCore.getEntityData(targetEntity).ifPresent(targetData -> {
                 targetData.getEffects().addEffect(damage);

@@ -52,7 +52,7 @@ public class InspireAbility extends MKAbility {
 
     @Override
     protected ITextComponent getAbilityDescription(IMKEntityData entityData) {
-        int level = getSkillLevel(entityData.getEntity(), MKAttributes.ALTERATON);
+        float level = getSkillLevel(entityData.getEntity(), MKAttributes.ALTERATON);
         int duration = getBuffDuration(entityData, level, base.value(), scale.value()) / GameConstants.TICKS_PER_SECOND;
         return new TranslationTextComponent(getDescriptionTranslationKey(), duration);
     }
@@ -90,16 +90,16 @@ public class InspireAbility extends MKAbility {
     @Override
     public void endCast(LivingEntity castingEntity, IMKEntityData casterData, AbilityContext context) {
         super.endCast(castingEntity, casterData, context);
-        int level = getSkillLevel(castingEntity, MKAttributes.ALTERATON);
+        float level = getSkillLevel(castingEntity, MKAttributes.ALTERATON);
         int duration = getBuffDuration(casterData, level, base.value(), scale.value());
+        int oldAmp = Math.round(level);
 
-        EffectInstance hasteEffect = new EffectInstance(Effects.HASTE, duration, level, false, false);
-        EffectInstance regenEffect = new EffectInstance(Effects.REGENERATION, duration, level, false, false);
+        EffectInstance hasteEffect = new EffectInstance(Effects.HASTE, duration, oldAmp, false, false);
+        EffectInstance regenEffect = new EffectInstance(Effects.REGENERATION, duration, oldAmp, false, false);
         MKEffectBuilder<?> sound = SoundEffect.from(castingEntity, ModSounds.spell_holy_8, castingEntity.getSoundCategory())
                 .ability(this);
         MKEffectBuilder<?> particles = MKParticleEffect.from(castingEntity, cast_particles.getValue(), true, new Vector3d(0.0, 1.0, 0.0))
-                .ability(this)
-                .amplify(level);
+                .ability(this);
 
         AreaEffectBuilder.createOnCaster(castingEntity)
                 .effect(hasteEffect, getTargetContext())

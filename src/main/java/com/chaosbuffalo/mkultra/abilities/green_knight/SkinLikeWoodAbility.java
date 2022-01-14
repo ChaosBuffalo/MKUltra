@@ -69,11 +69,11 @@ public class SkinLikeWoodAbility extends MKToggleAbility {
     @Override
     public void applyEffect(LivingEntity entity, IMKEntityData entityData) {
         super.applyEffect(entity, entityData);
-        int amplifier = getSkillLevel(entity, MKAttributes.ABJURATION);
+        float level = getSkillLevel(entity, MKAttributes.ABJURATION);
         SoundUtils.serverPlaySoundAtEntity(entity, ModSounds.spell_earth_7, entity.getSoundCategory());
 
         MKEffectBuilder<?> instance = getToggleEffect().builder(entity)
-                .amplify(amplifier)
+                .skillLevel(level)
                 .infinite();
         entityData.getEffects().addEffect(instance);
 

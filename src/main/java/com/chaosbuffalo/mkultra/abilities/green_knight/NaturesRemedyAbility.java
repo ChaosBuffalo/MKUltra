@@ -67,7 +67,7 @@ public class NaturesRemedyAbility extends MKAbility {
 
     @Override
     protected ITextComponent getAbilityDescription(IMKEntityData entityData) {
-        int level = getSkillLevel(entityData.getEntity(), MKAttributes.RESTORATION);
+        float level = getSkillLevel(entityData.getEntity(), MKAttributes.RESTORATION);
         ITextComponent damageStr = getHealDescription(entityData, baseValue.value(),
                 scaleValue.value(), level, modifierScaling.value());
         int duration = getBuffDuration(entityData, level, baseDuration.value(), scaleDuration.value()) / GameConstants.TICKS_PER_SECOND;
@@ -80,11 +80,11 @@ public class NaturesRemedyAbility extends MKAbility {
         return ModSounds.spell_cast_5;
     }
 
-    public MKEffectBuilder<?> createNaturesRemedyEffect(IMKEntityData casterData, int level) {
+    public MKEffectBuilder<?> createNaturesRemedyEffect(IMKEntityData casterData, float level) {
         int duration = getBuffDuration(casterData, level, baseDuration.value(), scaleDuration.value());
         return NaturesRemedyEffect.from(casterData.getEntity(), baseValue.value(), scaleValue.value(),
                         modifierScaling.value(), tick_particles.getValue())
-                .amplify(level)
+                .skillLevel(level)
                 .timed(duration)
                 .periodic(NaturesRemedyEffect.DEFAULT_PERIOD);
     }
@@ -92,7 +92,7 @@ public class NaturesRemedyAbility extends MKAbility {
     @Override
     public void endCast(LivingEntity castingEntity, IMKEntityData casterData, AbilityContext context) {
         super.endCast(castingEntity, casterData, context);
-        int level = getSkillLevel(castingEntity, MKAttributes.RESTORATION);
+        float level = getSkillLevel(castingEntity, MKAttributes.RESTORATION);
         context.getMemory(MKAbilityMemories.ABILITY_TARGET).ifPresent(targetEntity -> {
             MKEffectBuilder<?> heal = createNaturesRemedyEffect(casterData, level).ability(this);
 
