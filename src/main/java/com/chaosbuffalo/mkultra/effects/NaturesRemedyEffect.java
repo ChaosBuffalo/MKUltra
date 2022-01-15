@@ -30,10 +30,12 @@ public class NaturesRemedyEffect extends MKEffect {
 
     public static MKEffectBuilder<?> from(LivingEntity source, float base, float scale, float modScale,
                                           ResourceLocation castParticles) {
-        return INSTANCE.builder(source).state(s -> {
-            s.setEffectParticles(castParticles);
-            s.setScalingParameters(base, scale, modScale);
-        });
+        return INSTANCE.builder(source)
+                .state(s -> {
+                    s.setEffectParticles(castParticles);
+                    s.setScalingParameters(base, scale, modScale);
+                })
+                .periodic(DEFAULT_PERIOD);
     }
 
     @Override

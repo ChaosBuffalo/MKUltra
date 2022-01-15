@@ -111,7 +111,7 @@ public class IgniteAbility extends MKAbility {
 
                 SoundUtils.serverPlaySoundAtEntity(targetEntity, ModSounds.spell_fire_4, targetEntity.getSoundCategory());
 
-                if (MKUAbilityUtils.isBurning(targetEntity)) {
+                if (MKUAbilityUtils.isBurning(targetData)) {
                     MKEffectBuilder<?> ignite = IgniteEffect.from(entity, base.value(), scale.value(), modifierScaling.value())
                             .ability(this)
                             .skillLevel(level);

@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.effects;
 
+import com.chaosbuffalo.mkcore.core.CastInterruptReason;
 import com.chaosbuffalo.mkcore.core.IMKEntityData;
 import com.chaosbuffalo.mkcore.effects.MKActiveEffect;
 import com.chaosbuffalo.mkcore.effects.MKEffect;
@@ -42,12 +43,17 @@ public class WarpTargetEffect extends MKEffect {
 
         @Override
         public boolean performEffect(IMKEntityData targetData, MKActiveEffect activeEffect) {
+            // We definitely need the source for this effect so make an attempt to recover the casting entity
+            if (!activeEffect.hasSourceEntity()) {
+                activeEffect.recoverState(targetData);
+            }
             LivingEntity source = activeEffect.getSourceEntity();
             if (source == null) {
                 return false;
             }
             Vector3d playerOrigin = source.getPositionVec();
             Vector3d heading = source.getLookVec();
+            targetData.getAbilityExecutor().interruptCast(CastInterruptReason.Teleport);
             targetData.getEntity().setPositionAndUpdate(
                     playerOrigin.x + heading.x,
                     playerOrigin.y + heading.y + 1.0,

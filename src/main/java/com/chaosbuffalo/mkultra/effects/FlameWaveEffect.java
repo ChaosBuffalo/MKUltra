@@ -58,7 +58,7 @@ public class FlameWaveEffect extends MKEffect {
         public boolean performEffect(IMKEntityData targetData, MKActiveEffect activeEffect) {
 
             float damage = getScaledValue(activeEffect.getStackCount(), activeEffect.getSkillLevel());
-            if (MKUAbilityUtils.isBurning(targetData.getEntity())) {
+            if (MKUAbilityUtils.isBurning(targetData)) {
                 int dur = witherDurationBase + activeEffect.getStackCount() * witherDurationScale;
                 EffectInstance witherEffect = new EffectInstance(Effects.WITHER, dur * GameConstants.TICKS_PER_SECOND, 0);
                 damage *= damageBoost;

@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.effects;
 
+import com.chaosbuffalo.mkcore.core.CastInterruptReason;
 import com.chaosbuffalo.mkcore.core.IMKEntityData;
 import com.chaosbuffalo.mkcore.core.damage.MKDamageSource;
 import com.chaosbuffalo.mkcore.effects.MKActiveEffect;
@@ -71,6 +72,7 @@ public class WarpCurseEffect extends MKEffect {
                 double nextX = targetOrigin.x + (target.getRNG().nextInt(8) - target.getRNG().nextInt(8));
                 double nextY = targetOrigin.y + 5.0;
                 double nextZ = targetOrigin.z + (target.getRNG().nextInt(8) - target.getRNG().nextInt(8));
+                targetData.getAbilityExecutor().interruptCast(CastInterruptReason.Teleport);
                 EntityUtils.safeTeleportEntity(target, new Vector3d(nextX, nextY, nextZ));
             }
 

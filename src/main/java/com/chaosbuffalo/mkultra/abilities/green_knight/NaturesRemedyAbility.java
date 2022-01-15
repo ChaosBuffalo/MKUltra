@@ -84,9 +84,9 @@ public class NaturesRemedyAbility extends MKAbility {
         int duration = getBuffDuration(casterData, level, baseDuration.value(), scaleDuration.value());
         return NaturesRemedyEffect.from(casterData.getEntity(), baseValue.value(), scaleValue.value(),
                         modifierScaling.value(), tick_particles.getValue())
+                .ability(this)
                 .skillLevel(level)
-                .timed(duration)
-                .periodic(NaturesRemedyEffect.DEFAULT_PERIOD);
+                .timed(duration);
     }
 
     @Override
