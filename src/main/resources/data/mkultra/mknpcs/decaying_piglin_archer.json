@@ -35,6 +35,10 @@
       "value": 0.85
     },
     {
+      "optionType": "mknpc:experience",
+      "value": 5
+    },
+    {
       "optionType": "mknpc:faction",
       "value": "mkultra:imperial_dead"
     }
