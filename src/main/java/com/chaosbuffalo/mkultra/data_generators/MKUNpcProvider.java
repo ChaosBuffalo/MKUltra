@@ -100,6 +100,7 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
         equipOption.addItemChoice(EquipmentSlotType.MAINHAND,
                 new NpcItemChoice(ItemStack.EMPTY, 1.0, 0.0f));
         def.addOption(equipOption);
+        def.addOption(new ExperienceOption().setValue(5));
         return def;
     }
 
@@ -115,6 +116,7 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
         equipOption.addItemChoice(EquipmentSlotType.MAINHAND,
                 new NpcItemChoice(new ItemStack(Items.BOW), 1.0, 0.0f));
         def.addOption(equipOption);
+        def.addOption(new ExperienceOption().setValue(5));
         return def;
     }
 
@@ -143,6 +145,7 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                 .withNoLootChance(0.1)
                 .withNoLootIncrease(0.25)
         );
+        def.addOption(new ExperienceOption().setValue(10));
         return def;
     }
 
@@ -178,6 +181,7 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                 .withNoLootChance(0.1)
                 .withNoLootIncrease(0.25)
         );
+        def.addOption(new ExperienceOption().setValue(10));
         return def;
     }
 
