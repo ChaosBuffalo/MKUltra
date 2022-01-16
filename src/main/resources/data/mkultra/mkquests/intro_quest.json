@@ -24,7 +24,7 @@
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "e2dd493b-8443-4890-ab8e-12a8e20083e5",
+                    "chainId": "94e4d138-a47f-4f1f-a000-fc1eda14ecbb",
                     "objectiveName": "talk_to_smith",
                     "questName": "talk_to_smith"
                   }
@@ -110,7 +110,7 @@
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "18a733d7-b377-4ab1-af46-d7fcfbb69646",
+                    "chainId": "b21b0f04-9675-46b5-8350-d8b36eaad560",
                     "objectiveName": "return_to_smith",
                     "questName": "return_to_smith"
                   }
@@ -180,7 +180,7 @@
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "b2ad6976-8770-4d8f-bbed-c2407fc503c2",
+                    "chainId": "25fff380-d361-4470-8608-fa78d9c6dcc2",
                     "objectiveName": "green_lady_talent",
                     "questName": "green_lady_talent"
                   }
@@ -251,7 +251,7 @@
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "b9750a2f-d68a-4e23-8fbc-38e4d005f442",
+                    "chainId": "07a8c14a-ff0e-4d92-92ec-bac94158c67f",
                     "objectiveName": "return_to_green_lady",
                     "questName": "return_to_green_lady"
                   },
@@ -349,7 +349,7 @@
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "12441987-9627-4eed-928d-d63df75478e0",
+                    "chainId": "6fe7230f-0e6f-4971-b16a-d27b6eef5645",
                     "objectiveName": "after_green_lady",
                     "questName": "after_ability"
                   }
@@ -446,7 +446,7 @@
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "36e5cd4b-d92b-468c-9156-3e2e5ac751b2",
+                    "chainId": "b18ac4ce-012e-4ac6-a7e8-9287aac82668",
                     "objectiveName": "after_kill",
                     "questName": "first_kill"
                   }
@@ -462,7 +462,7 @@
                       "kill_zombies",
                       "kill_archers"
                     ],
-                    "chainId": "91b7aca8-fcf8-4f06-ae77-3adc1d937190",
+                    "chainId": "eb5eff02-ca0e-4e94-8ada-523bc51ce82b",
                     "questName": "first_kill"
                   }
                 ]
@@ -483,7 +483,7 @@
                       "kill_zombies",
                       "kill_archers"
                     ],
-                    "chainId": "e22ab304-edd1-4642-8423-9eb765372afe",
+                    "chainId": "5f742685-4fd0-428c-955b-2d973be19172",
                     "questName": "first_kill"
                   }
                 ]
