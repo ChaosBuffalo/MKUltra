@@ -32,7 +32,8 @@ public class ClericHealEffect extends MKEffect {
 
     @Override
     public boolean isValidTarget(TargetingContext targetContext, IMKEntityData sourceData, IMKEntityData targetData) {
-        return super.isValidTarget(targetContext, sourceData, targetData) || MKHealing.isEnemyUndead(targetData.getEntity());
+        return super.isValidTarget(targetContext, sourceData, targetData) ||
+                MKHealing.wouldHealHurtUndead(sourceData.getEntity(), targetData.getEntity());
     }
 
     @Override
@@ -53,11 +54,13 @@ public class ClericHealEffect extends MKEffect {
     public static class State extends ScalingValueEffectState {
 
         @Override
-        public boolean performEffect(IMKEntityData targetData, MKActiveEffect instance) {
+        public boolean performEffect(IMKEntityData targetData, MKActiveEffect activeEffect) {
             LivingEntity target = targetData.getEntity();
-            float value = getScaledValue(instance.getStackCount(), instance.getSkillLevel());
+            float value = getScaledValue(activeEffect.getStackCount(), activeEffect.getSkillLevel());
 //            MKUltra.LOGGER.info("ClericHealEffect.performEffect {} on {} from {} {}", value, target, source, instance);
-            MKHealSource heal = MKHealSource.getHolyHeal(instance.getAbilityId(), instance.getDirectEntity(), instance.getSourceEntity(), getModifierScale());
+            MKHealSource heal = MKHealSource.getHolyHeal(activeEffect.getAbilityId(),
+                    activeEffect.getDirectEntity(), activeEffect.getSourceEntity(), getModifierScale());
+            heal.setDamageUndead(activeEffect.hasSourceEntity() && !activeEffect.getSourceEntity().isEntityUndead());
             MKHealing.healEntityFrom(target, value, heal);
             return true;
         }

@@ -68,6 +68,7 @@ public class NaturesRemedyEffect extends MKEffect {
                     activeEffect.getDirectEntity(),
                     activeEffect.getSourceEntity(),
                     getModifierScale());
+            heal.setDamageUndead(activeEffect.hasSourceEntity() && !activeEffect.getSourceEntity().isEntityUndead());
             MKHealing.healEntityFrom(target, value, heal);
             sendEffectParticles(targetData.getEntity());
             return true;
