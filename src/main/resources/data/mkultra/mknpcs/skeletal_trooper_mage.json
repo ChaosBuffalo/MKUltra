@@ -1,0 +1,76 @@
+{
+  "entityType": "mkultra:zombified_piglin",
+  "options": [
+    {
+      "optionType": "mknpc:render_group",
+      "value": "destroyed_skeletal_mage"
+    },
+    {
+      "optionType": "mknpc:attributes",
+      "attributes": [
+        {
+          "attributeName": "minecraft:generic.max_health",
+          "value": 50.0
+        }
+      ]
+    },
+    {
+      "optionType": "mknpc:name",
+      "value": "Skeletal Magus"
+    },
+    {
+      "optionType": "mknpc:equipment",
+      "slotOptions": {
+        "mainhand": [
+          {
+            "weight": 1.0,
+            "dropChance": 0.0,
+            "item": "{id: \"mkweapons:dagger_stone\", Count: 1b, tag: {Damage: 0}}"
+          }
+        ]
+      }
+    },
+    {
+      "optionType": "mknpc:abilities",
+      "options": [
+        {
+          "priority": 1,
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.fireball"
+        },
+        {
+          "priority": 2,
+          "chance": 0.75,
+          "abilityName": "mkultra:ability.ember"
+        },
+        {
+          "priority": 3,
+          "chance": 0.5,
+          "abilityName": "mkultra:ability.flame_wave"
+        },
+        {
+          "priority": 4,
+          "chance": 0.25,
+          "abilityName": "mkultra:ability.smite"
+        },
+        {
+          "priority": 5,
+          "chance": 0.75,
+          "abilityName": "mkultra:ability.fire_armor"
+        }
+      ]
+    },
+    {
+      "optionType": "mknpc:mk_size",
+      "value": 1.0
+    },
+    {
+      "optionType": "mknpc:experience",
+      "value": 15
+    },
+    {
+      "optionType": "mknpc:faction",
+      "value": "mkultra:imperial_dead"
+    }
+  ]
+}

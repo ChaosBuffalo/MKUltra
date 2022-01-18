@@ -13,6 +13,9 @@ import com.chaosbuffalo.mknpc.npc.NpcItemChoice;
 import com.chaosbuffalo.mknpc.npc.entries.LootOptionEntry;
 import com.chaosbuffalo.mknpc.npc.options.*;
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.abilities.brawler.FuriousBrooding;
+import com.chaosbuffalo.mkultra.abilities.brawler.WhirlwindBlades;
+import com.chaosbuffalo.mkultra.abilities.brawler.YankAbility;
 import com.chaosbuffalo.mkultra.abilities.cleric.*;
 import com.chaosbuffalo.mkultra.abilities.green_knight.*;
 import com.chaosbuffalo.mkultra.abilities.misc.FireballAbility;
@@ -64,6 +67,10 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
         writeDefinition(generateDecayingZombieArcher(), cache);
         writeDefinition(generateDecayingZombiePiglin(), cache);
         writeDefinition(generateGreenSmith(), cache);
+        writeDefinition(generateImperialMagus(), cache);
+        writeDefinition(generateTrooperCaptain(), cache);
+        writeDefinition(generateTrooperExecution(), cache);
+        writeDefinition(generateSkeletalTrooperMage(), cache);
 //        writeDefinition(generateZombifiedPiglinTrooper(), cache);
     }
 
@@ -145,6 +152,122 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                 .withNoLootIncrease(0.25)
         );
         def.addOption(new ExperienceOption().setValue(10));
+        return def;
+    }
+
+    private NpcDefinition generateTrooperExecution(){
+        NpcDefinition def = new NpcDefinition(new ResourceLocation(MKUltra.MODID, "trooper_executioner"),
+                MKUEntities.ZOMBIFIED_PIGLIN_TYPE.getRegistryName(), null);
+        def.addOption(new FactionOption().setValue(MKUFactions.IMPERIAL_DEAD_NAME));
+        def.addOption(new MKSizeOption().setValue(1.0f));
+        def.addOption(new RenderGroupOption().setValue(MKUPiglins.DESTROYED_SKELETAL_TROOPER_NAME));
+        def.addOption(new MKComboSettingsOption().setComboDelay(20).setComboCount(3));
+        def.addOption(new AttributesOption().addAttributeEntry(new NpcAttributeEntry(Attributes.MAX_HEALTH, 65.0)));
+        def.addOption(new NameOption().setValue("Trooper Executioner"));
+        def.addOption(new LungeSpeedOption().setValue(0.75));
+        def.addOption(new NotableOption());
+        EquipmentOption equipOption = new EquipmentOption();
+        equipOption.addItemChoice(EquipmentSlotType.MAINHAND,
+                new NpcItemChoice(new ItemStack(ForgeRegistries.ITEMS.getValue(
+                        new ResourceLocation("mkweapons:battleaxe_stone"))), 1.0, 0.0f));
+        def.addOption(equipOption);
+        def.addOption(new AbilitiesOption()
+                .withAbilityOption(FuriousBrooding.INSTANCE, 3, 1.0)
+                .withAbilityOption(WhirlwindBlades.INSTANCE, 1, 1.0)
+                .withAbilityOption(YankAbility.INSTANCE, 2, 1.0)
+        );
+        def.addOption(new ExperienceOption().setValue(20));
+        return def;
+    }
+
+    private NpcDefinition generateImperialMagus(){
+        NpcDefinition def = new NpcDefinition(new ResourceLocation(MKUltra.MODID, "imperial_magus"),
+                MKUEntities.ZOMBIFIED_PIGLIN_TYPE.getRegistryName(), null);
+        def.addOption(new FactionOption().setValue(MKUFactions.IMPERIAL_DEAD_NAME));
+        def.addOption(new MKSizeOption().setValue(1.0f));
+        def.addOption(new RenderGroupOption().setValue(MKUPiglins.SKELETAL_MAGE_NAME));
+        def.addOption(new AttributesOption().addAttributeEntry(new NpcAttributeEntry(Attributes.MAX_HEALTH, 75.0)));
+        def.addOption(new FactionNameOption().setTitle("Imperial Magus").setHasLastName(true));
+        def.addOption(new NotableOption());
+        def.addOption(new LungeSpeedOption().setValue(0.5));
+        EquipmentOption equipOption = new EquipmentOption();
+        equipOption.addItemChoice(EquipmentSlotType.MAINHAND,
+                new NpcItemChoice(new ItemStack(ForgeRegistries.ITEMS.getValue(
+                        new ResourceLocation("mkweapons:mace_stone"))), 1.0, 0.0f));
+        def.addOption(equipOption);
+        def.addOption(new AbilitiesOption()
+                .withAbilityOption(FireballAbility.INSTANCE, 3, 1.0)
+                .withAbilityOption(FlameWaveAbility.INSTANCE, 6, 1.0)
+                .withAbilityOption(SmiteAbility.INSTANCE, 4, 1.0)
+                .withAbilityOption(FireArmorAbility.INSTANCE, 5, 1.0)
+                .withAbilityOption(HealAbility.INSTANCE, 1, 1.0)
+                .withAbilityOption(NaturesRemedyAbility.INSTANCE, 2, 1.0)
+                .withAbilityOption(PowerWordSummonAbility.INSTANCE, 7, 1.0)
+        );
+        def.addOption(new ExperienceOption().setValue(25));
+        return def;
+    }
+
+    private NpcDefinition generateTrooperCaptain(){
+        NpcDefinition def = new NpcDefinition(new ResourceLocation(MKUltra.MODID, "trooper_captain"),
+                MKUEntities.ZOMBIFIED_PIGLIN_TYPE.getRegistryName(), null);
+        def.addOption(new FactionOption().setValue(MKUFactions.IMPERIAL_DEAD_NAME));
+        def.addOption(new MKSizeOption().setValue(1.2f));
+        def.addOption(new RenderGroupOption().setValue(MKUPiglins.SKELETAL_TROOPER_NAME));
+        def.addOption(new MKComboSettingsOption().setComboDelay(10).setComboCount(3));
+        def.addOption(new AttributesOption().addAttributeEntry(new NpcAttributeEntry(Attributes.MAX_HEALTH, 100.0)));
+        def.addOption(new FactionNameOption().setTitle("Captain").setHasLastName(true));
+        def.addOption(new LungeSpeedOption().setValue(1.0));
+        def.addOption(new NotableOption());
+        EquipmentOption equipOption = new EquipmentOption();
+        equipOption.addItemChoice(EquipmentSlotType.MAINHAND,
+                new NpcItemChoice(new ItemStack(ForgeRegistries.ITEMS.getValue(
+                        new ResourceLocation("mkweapons:greatsword_stone"))), 1.0, 0.0f));
+        equipOption.addItemChoice(EquipmentSlotType.MAINHAND,
+                new NpcItemChoice(new ItemStack(ForgeRegistries.ITEMS.getValue(
+                        new ResourceLocation("mkweapons:katana_stone"))), 1.0, 0.0f));
+        equipOption.addItemChoice(EquipmentSlotType.MAINHAND,
+                new NpcItemChoice(new ItemStack(ForgeRegistries.ITEMS.getValue(
+                        new ResourceLocation("mkweapons:warhammer_stone"))), 1.0, 0.0f));
+        def.addOption(equipOption);
+        def.addOption(new AbilitiesOption()
+                .withAbilityOption(HealAbility.INSTANCE, 2, 1.0)
+                .withAbilityOption(FuriousBrooding.INSTANCE, 3, 1.0)
+                .withAbilityOption(SmiteAbility.INSTANCE, 1, 1.0)
+        );
+        def.addOption(new ExperienceOption().setValue(25));
+        return def;
+    }
+
+    private NpcDefinition generateSkeletalTrooperMage(){
+        NpcDefinition def = new NpcDefinition(new ResourceLocation(MKUltra.MODID, "skeletal_trooper_mage"),
+                MKUEntities.ZOMBIFIED_PIGLIN_TYPE.getRegistryName(), null);
+        def.addOption(new FactionOption().setValue(MKUFactions.IMPERIAL_DEAD_NAME));
+        def.addOption(new MKSizeOption().setValue(1.0f));
+        def.addOption(new RenderGroupOption().setValue(MKUPiglins.DESTROYED_SKELETAL_MAGE_NAME));
+        def.addOption(new AttributesOption().addAttributeEntry(new NpcAttributeEntry(Attributes.MAX_HEALTH, 50.0)));
+        def.addOption(new NameOption().setValue("Skeletal Magus"));
+        EquipmentOption equipOption = new EquipmentOption();
+        equipOption.addItemChoice(EquipmentSlotType.MAINHAND,
+                new NpcItemChoice(new ItemStack(ForgeRegistries.ITEMS.getValue(
+                        new ResourceLocation("mkweapons:dagger_stone"))), 1.0, 0.0f));
+        def.addOption(equipOption);
+        def.addOption(new AbilitiesOption()
+                .withAbilityOption(FireballAbility.INSTANCE, 1, 1.0)
+                .withAbilityOption(EmberAbility.INSTANCE, 2, 0.75)
+                .withAbilityOption(FlameWaveAbility.INSTANCE, 3, 0.5)
+                .withAbilityOption(SmiteAbility.INSTANCE, 4, 0.25)
+                .withAbilityOption(FireArmorAbility.INSTANCE, 5, 0.75)
+        );
+//        ResourceLocation lootTierName = new ResourceLocation(MKUltra.MODID, "zombie_trooper");
+//        ResourceLocation templateName = new ResourceLocation(MKUltra.MODID, "empty");
+//        def.addOption(new ExtraLootOption()
+//                .withLootOptions(new LootOptionEntry(LootSlotManager.ITEMS.getName(), lootTierName, templateName, 1.0))
+//                .withDropChances(2)
+//                .withNoLootChance(0.1)
+//                .withNoLootIncrease(0.25)
+//        );
+        def.addOption(new ExperienceOption().setValue(15));
         return def;
     }
 
