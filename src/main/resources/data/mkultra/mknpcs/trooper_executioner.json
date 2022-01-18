@@ -1,0 +1,79 @@
+{
+  "entityType": "mkultra:zombified_piglin",
+  "options": [
+    {
+      "optionType": "mknpc:render_group",
+      "value": "destroyed_skeletal_trooper"
+    },
+    {
+      "optionType": "mknpc:attributes",
+      "attributes": [
+        {
+          "attributeName": "minecraft:generic.max_health",
+          "value": 65.0
+        }
+      ]
+    },
+    {
+      "optionType": "mknpc:name",
+      "value": "Trooper Executioner"
+    },
+    {
+      "optionType": "mknpc:equipment",
+      "slotOptions": {
+        "mainhand": [
+          {
+            "weight": 1.0,
+            "dropChance": 0.0,
+            "item": "{id: \"mkweapons:battleaxe_stone\", Count: 1b, tag: {Damage: 0}}"
+          }
+        ]
+      }
+    },
+    {
+      "optionType": "mknpc:notable",
+      "value": true
+    },
+    {
+      "optionType": "mknpc:abilities",
+      "options": [
+        {
+          "priority": 3,
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.furious_brooding"
+        },
+        {
+          "priority": 1,
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.whirlwind_blades"
+        },
+        {
+          "priority": 2,
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.yank"
+        }
+      ]
+    },
+    {
+      "optionType": "mknpc:lunge_speed",
+      "value": 0.75
+    },
+    {
+      "optionType": "mknpc:mk_size",
+      "value": 1.0
+    },
+    {
+      "optionType": "mknpc:experience",
+      "value": 20
+    },
+    {
+      "optionType": "mknpc:faction",
+      "value": "mkultra:imperial_dead"
+    },
+    {
+      "optionType": "mknpc:mk_combo",
+      "count": 3,
+      "cooldown": 20
+    }
+  ]
+}

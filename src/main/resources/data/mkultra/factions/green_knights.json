@@ -7,6 +7,7 @@
   "enemies": [
     "mkfaction:hostile_animals",
     "mkfaction:monsters",
+    "mkultra:imperial_dead",
     "mkfaction:undead",
     "mkultra:hyborean_dead",
     "mkfaction:illagers"

@@ -1,0 +1,95 @@
+{
+  "entityType": "mkultra:zombified_piglin",
+  "options": [
+    {
+      "optionType": "mknpc:render_group",
+      "value": "skeletal_mage"
+    },
+    {
+      "optionType": "mknpc:attributes",
+      "attributes": [
+        {
+          "attributeName": "minecraft:generic.max_health",
+          "value": 75.0
+        }
+      ]
+    },
+    {
+      "optionType": "mknpc:equipment",
+      "slotOptions": {
+        "mainhand": [
+          {
+            "weight": 1.0,
+            "dropChance": 0.0,
+            "item": "{id: \"mkweapons:mace_stone\", Count: 1b, tag: {Damage: 0}}"
+          }
+        ]
+      }
+    },
+    {
+      "optionType": "mknpc:notable",
+      "value": true
+    },
+    {
+      "optionType": "mknpc:abilities",
+      "options": [
+        {
+          "priority": 3,
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.fireball"
+        },
+        {
+          "priority": 6,
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.flame_wave"
+        },
+        {
+          "priority": 4,
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.smite"
+        },
+        {
+          "priority": 5,
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.fire_armor"
+        },
+        {
+          "priority": 1,
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.heal"
+        },
+        {
+          "priority": 2,
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.natures_remedy"
+        },
+        {
+          "priority": 7,
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.power_word_summon"
+        }
+      ]
+    },
+    {
+      "optionType": "mknpc:lunge_speed",
+      "value": 0.5
+    },
+    {
+      "optionType": "mknpc:mk_size",
+      "value": 1.0
+    },
+    {
+      "optionType": "mknpc:faction_name",
+      "title": "Imperial Magus",
+      "hasLastName": true
+    },
+    {
+      "optionType": "mknpc:experience",
+      "value": 25
+    },
+    {
+      "optionType": "mknpc:faction",
+      "value": "mkultra:imperial_dead"
+    }
+  ]
+}

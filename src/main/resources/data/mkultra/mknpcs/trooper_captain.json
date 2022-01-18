@@ -1,0 +1,90 @@
+{
+  "entityType": "mkultra:zombified_piglin",
+  "options": [
+    {
+      "optionType": "mknpc:render_group",
+      "value": "skeletal_trooper"
+    },
+    {
+      "optionType": "mknpc:attributes",
+      "attributes": [
+        {
+          "attributeName": "minecraft:generic.max_health",
+          "value": 100.0
+        }
+      ]
+    },
+    {
+      "optionType": "mknpc:equipment",
+      "slotOptions": {
+        "mainhand": [
+          {
+            "weight": 1.0,
+            "dropChance": 0.0,
+            "item": "{id: \"mkweapons:greatsword_stone\", Count: 1b, tag: {Damage: 0}}"
+          },
+          {
+            "weight": 1.0,
+            "dropChance": 0.0,
+            "item": "{id: \"mkweapons:katana_stone\", Count: 1b, tag: {Damage: 0}}"
+          },
+          {
+            "weight": 1.0,
+            "dropChance": 0.0,
+            "item": "{id: \"mkweapons:warhammer_stone\", Count: 1b, tag: {Damage: 0}}"
+          }
+        ]
+      }
+    },
+    {
+      "optionType": "mknpc:notable",
+      "value": true
+    },
+    {
+      "optionType": "mknpc:abilities",
+      "options": [
+        {
+          "priority": 2,
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.heal"
+        },
+        {
+          "priority": 3,
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.furious_brooding"
+        },
+        {
+          "priority": 1,
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.smite"
+        }
+      ]
+    },
+    {
+      "optionType": "mknpc:lunge_speed",
+      "value": 1.0
+    },
+    {
+      "optionType": "mknpc:mk_size",
+      "value": 1.2
+    },
+    {
+      "optionType": "mknpc:faction_name",
+      "title": "Captain",
+      "hasLastName": true
+    },
+    {
+      "optionType": "mknpc:experience",
+      "value": 25
+    },
+    {
+      "optionType": "mknpc:faction",
+      "value": "mkultra:imperial_dead"
+    },
+    {
+      "optionType": "mknpc:mk_combo",
+      "count": 3,
+      "cooldown": 10
+    }
+  ]
+}
