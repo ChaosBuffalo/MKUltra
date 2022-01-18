@@ -63,5 +63,11 @@
   "mkultra.entitlement.green_knight.tier_1.name": "Green Knight Tier 1",
   "mkultra.entitlement.green_knight.tier_2.name": "Green Knight Tier 2",
   "mkultra.entitlement.green_knight.tier_3.name": "Green Knight Tier 3",
-  "mkultra.quest_reward.receive_item.name": "You Will Receive a %s"
+  "mkultra.quest_reward.receive_item.name": "You Will Receive a %s",
+  "mkultra.ability.whirlwind_blades.name": "Whirlwind Blades",
+  "mkultra.ability.whirlwind_blades.description": "Strikes all targets around you every %s seconds for %s seconds. Each hit increases the damage contribution from your weapon by %s, dealing from %s on first hit to %s damage on the last.",
+  "mkultra.ability.furious_brooding.name": "Furious Brooding",
+  "mkultra.ability.furious_brooding.description": "Restores %s health every second for %s seconds. Reduces your movement speed by %s.",
+  "mkultra.ability.yank.name": "Yank",
+  "mkultra.ability.yank.description": "Pulls the target towards you, applying %s force."
 }

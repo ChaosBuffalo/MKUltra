@@ -1,0 +1,93 @@
+{
+  "frames": [
+    {
+      "attributes": {
+        "duration": 0,
+        "tickStart": 0
+      },
+      "scaleTrack": {
+        "trackType": "mkcore:particle_anim.render_scale",
+        "attributes": {
+          "maxVariance": 0.1,
+          "renderScale": 0.15
+        }
+      },
+      "colorTrack": {
+        "trackType": "mkcore:particle_anim.lerp_color",
+        "attributes": {
+          "red": 0.60784316,
+          "green": 0.60784316,
+          "blue": 0.60784316,
+          "blueVariance": 0.29411766,
+          "redVariance": 0.21568628,
+          "greenVariance": 0.09803922
+        }
+      }
+    },
+    {
+      "attributes": {
+        "duration": 20,
+        "tickStart": 0
+      },
+      "motionTrack": {
+        "trackType": "mkcore:particle_anim.orbit_in_plane",
+        "attributes": {
+          "ramp": -1.0,
+          "rpmVariance": 10.0,
+          "rpm": 60.0
+        }
+      }
+    },
+    {
+      "attributes": {
+        "duration": 10,
+        "tickStart": 10
+      },
+      "scaleTrack": {
+        "trackType": "mkcore:particle_anim.render_scale",
+        "attributes": {
+          "maxVariance": 0.0,
+          "renderScale": 0.01
+        }
+      },
+      "colorTrack": {
+        "trackType": "mkcore:particle_anim.lerp_color",
+        "attributes": {
+          "red": 0.60784316,
+          "green": 0.0,
+          "blue": 0.0,
+          "blueVariance": 0.0,
+          "redVariance": 0.0,
+          "greenVariance": 0.0
+        }
+      }
+    },
+    {
+      "attributes": {
+        "duration": 10,
+        "tickStart": 0
+      },
+      "scaleTrack": {
+        "trackType": "mkcore:particle_anim.render_scale",
+        "attributes": {
+          "maxVariance": 0.25,
+          "renderScale": 0.6
+        }
+      }
+    }
+  ],
+  "spawnPattern": {
+    "type": "mkcore:particle_spawn_pattern.spiral",
+    "attributes": {
+      "xRadius": 1.5,
+      "zRadius": 1.5,
+      "layers": 2,
+      "count": 60,
+      "rots": 1,
+      "layerHeight": 0.25,
+      "speed": 0.0,
+      "yRadius": 0.0
+    }
+  },
+  "particleType": "mkcore:magic_sideways_line"
+}
