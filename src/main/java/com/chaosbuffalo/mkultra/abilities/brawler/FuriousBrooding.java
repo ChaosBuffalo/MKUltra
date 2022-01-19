@@ -65,7 +65,7 @@ public class FuriousBrooding extends MKAbility {
         ITextComponent damageStr = getHealDescription(casterData, baseValue.value(),
                 scaleValue.value(), level, modifierScaling.value());
         int duration = getBuffDuration(casterData, level, baseDuration.value(), scaleDuration.value()) / GameConstants.TICKS_PER_SECOND;
-        float speedReduction = (10.0f - level) * 0.06f + 0.06f;
+        float speedReduction = -0.6f + 0.05f * level;
         return new TranslationTextComponent(getDescriptionTranslationKey(), damageStr, INTEGER_FORMATTER.format(duration), PERCENT_FORMATTER.format(speedReduction));
     }
 
@@ -78,9 +78,9 @@ public class FuriousBrooding extends MKAbility {
     public MKEffectBuilder<?> createFuriousBroodingEffect(IMKEntityData casterData, float level) {
         int duration = getBuffDuration(casterData, level, baseDuration.value(), scaleDuration.value());
         return FuriousBroodingEffect.from(casterData.getEntity(), baseValue.value(), scaleValue.value(),
-                modifierScaling.value(), tick_particles.getValue(), level)
+                modifierScaling.value(), tick_particles.getValue())
                 .ability(this)
-                .skillLevel(10.0f - level)
+                .skillLevel(level)
                 .timed(duration);
     }
 

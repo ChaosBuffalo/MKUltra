@@ -1,6 +1,7 @@
 package com.chaosbuffalo.mkultra.effects;
 
 import com.chaosbuffalo.mkcore.core.IMKEntityData;
+import com.chaosbuffalo.mkcore.core.MKAttributes;
 import com.chaosbuffalo.mkcore.core.MKPlayerData;
 import com.chaosbuffalo.mkcore.effects.*;
 import com.chaosbuffalo.mkultra.MKUltra;
@@ -24,7 +25,8 @@ public class SkinLikeWoodEffect extends MKEffect {
     private SkinLikeWoodEffect() {
         super(EffectType.BENEFICIAL);
         setRegistryName("effect.skin_like_wood");
-        addAttribute(Attributes.ARMOR, MODIFIER_ID, 2, AttributeModifier.Operation.ADDITION);
+        addAttribute(Attributes.ARMOR, MODIFIER_ID, 4, 1, AttributeModifier.Operation.ADDITION,
+                MKAttributes.ABJURATION);
         SpellTriggers.ENTITY_HURT_PLAYER.registerPreScale(this::playerHurtPreScale);
     }
 

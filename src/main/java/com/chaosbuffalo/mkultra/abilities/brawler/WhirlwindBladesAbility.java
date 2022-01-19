@@ -19,7 +19,6 @@ import com.chaosbuffalo.mkcore.init.CoreDamageTypes;
 import com.chaosbuffalo.mkcore.serialization.attributes.FloatAttribute;
 import com.chaosbuffalo.mkcore.serialization.attributes.ResourceLocationAttribute;
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.effects.SeverTendonEffect;
 import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.TargetingContext;
 import com.chaosbuffalo.targeting_api.TargetingContexts;
@@ -34,12 +33,11 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
-import java.text.DecimalFormat;
 
 
-public class WhirlwindBlades extends MKAbility {
+public class WhirlwindBladesAbility extends MKAbility {
     public static final ResourceLocation CAST_PARTICLES = new ResourceLocation(MKUltra.MODID, "whirlwind_blades_pulse");
-    public static WhirlwindBlades INSTANCE = new WhirlwindBlades();
+    public static WhirlwindBladesAbility INSTANCE = new WhirlwindBladesAbility();
     protected final ResourceLocationAttribute cast_particles = new ResourceLocationAttribute("cast_particles", CAST_PARTICLES);
 
     protected final FloatAttribute modifierScaling = new FloatAttribute("modifierScaling", 1.0f);
@@ -47,7 +45,7 @@ public class WhirlwindBlades extends MKAbility {
     protected final FloatAttribute scale = new FloatAttribute("scale", 1.0f);
     protected final FloatAttribute perTick = new FloatAttribute("perTick", 0.15f);
 
-    private WhirlwindBlades() {
+    private WhirlwindBladesAbility() {
         super(MKUltra.MODID, "ability.whirlwind_blades");
         addAttributes(cast_particles, base, scale, modifierScaling, perTick);
         setCastTime(GameConstants.TICKS_PER_SECOND * 3);
