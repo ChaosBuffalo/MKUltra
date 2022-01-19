@@ -69,5 +69,9 @@
   "mkultra.ability.furious_brooding.name": "Furious Brooding",
   "mkultra.ability.furious_brooding.description": "Restores %s health every second for %s seconds. Reduces your movement speed by %s.",
   "mkultra.ability.yank.name": "Yank",
-  "mkultra.ability.yank.description": "Pulls the target towards you, applying %s force."
+  "mkultra.ability.yank.description": "Pulls the target towards you, applying %s force.",
+  "mkultra.ability.yaup.name": "Yaup",
+  "mkultra.ability.yaup.description": "Let loose a mighty yaup increases you and your allies' attack speed and strength for %s seconds.",
+  "mkultra.ability.stunning_shout.name": "Stunning Shout",
+  "mkultra.ability.stunning_shout.description": "Focuses your Pneuma into a mighty shout. Stunning for %s seconds and dealing %s to all enemies in a line."
 }

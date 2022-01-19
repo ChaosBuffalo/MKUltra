@@ -2,6 +2,7 @@ package com.chaosbuffalo.mkultra.effects;
 
 import com.chaosbuffalo.mkcore.GameConstants;
 import com.chaosbuffalo.mkcore.core.IMKEntityData;
+import com.chaosbuffalo.mkcore.core.MKAttributes;
 import com.chaosbuffalo.mkcore.core.healing.MKHealSource;
 import com.chaosbuffalo.mkcore.core.healing.MKHealing;
 import com.chaosbuffalo.mkcore.effects.*;
@@ -27,16 +28,15 @@ public class FuriousBroodingEffect extends MKEffect {
     protected FuriousBroodingEffect() {
         super(EffectType.BENEFICIAL);
         setRegistryName(MKUltra.MODID, "effect.furious_brooding");
-        addAttribute(Attributes.MOVEMENT_SPEED, modUUID, -0.06, AttributeModifier.Operation.MULTIPLY_TOTAL);
+        addAttribute(Attributes.MOVEMENT_SPEED, modUUID, -0.60, 0.05, AttributeModifier.Operation.MULTIPLY_TOTAL, MKAttributes.PNEUMA);
     }
 
     public static MKEffectBuilder<?> from(LivingEntity source, float baseHealing, float scaling, float modifierScaling,
-                                          ResourceLocation castParticles, float healingSkill) {
+                                          ResourceLocation castParticles) {
         return INSTANCE.builder(source)
                 .state(s -> {
                     s.setEffectParticles(castParticles);
                     s.setScalingParameters(baseHealing, scaling, modifierScaling);
-                    s.setHealingSkill(healingSkill);
                 })
                 .periodic(DEFAULT_PERIOD);
     }
@@ -57,36 +57,15 @@ public class FuriousBroodingEffect extends MKEffect {
     }
 
     public static class State extends ScalingValueEffectState {
-        protected float healingSkill = 0.0f;
 
         @Override
         public boolean performEffect(IMKEntityData targetData, MKActiveEffect activeEffect) {
-            float healing = getScaledValue(activeEffect.getStackCount(), getHealingSkill());
+            float healing = getScaledValue(activeEffect.getStackCount(), activeEffect.getSkillLevel());
             LivingEntity target = targetData.getEntity();
             MKHealing.healEntityFrom(target, healing, MKHealSource.getNatureHeal(activeEffect.getAbilityId(),
                     activeEffect.getDirectEntity(), activeEffect.getSourceEntity(), getModifierScale()));
             sendEffectParticles(targetData.getEntity());
             return true;
-        }
-
-        public void setHealingSkill(float healingSkill) {
-            this.healingSkill = healingSkill;
-        }
-
-        public float getHealingSkill() {
-            return healingSkill;
-        }
-
-        @Override
-        public void deserializeStorage(CompoundNBT stateTag) {
-            super.deserializeStorage(stateTag);
-            healingSkill = stateTag.getFloat("healSkill");
-        }
-
-        @Override
-        public void serializeStorage(CompoundNBT stateTag) {
-            super.serializeStorage(stateTag);
-            stateTag.putFloat("healSkill", healingSkill);
         }
     }
 

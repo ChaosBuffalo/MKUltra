@@ -14,7 +14,7 @@ import com.chaosbuffalo.mknpc.npc.entries.LootOptionEntry;
 import com.chaosbuffalo.mknpc.npc.options.*;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.abilities.brawler.FuriousBrooding;
-import com.chaosbuffalo.mkultra.abilities.brawler.WhirlwindBlades;
+import com.chaosbuffalo.mkultra.abilities.brawler.WhirlwindBladesAbility;
 import com.chaosbuffalo.mkultra.abilities.brawler.YankAbility;
 import com.chaosbuffalo.mkultra.abilities.cleric.*;
 import com.chaosbuffalo.mkultra.abilities.green_knight.*;
@@ -40,8 +40,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 public class MKUNpcProvider extends NpcDefinitionProvider {
@@ -173,7 +171,7 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
         def.addOption(equipOption);
         def.addOption(new AbilitiesOption()
                 .withAbilityOption(FuriousBrooding.INSTANCE, 3, 1.0)
-                .withAbilityOption(WhirlwindBlades.INSTANCE, 1, 1.0)
+                .withAbilityOption(WhirlwindBladesAbility.INSTANCE, 1, 1.0)
                 .withAbilityOption(YankAbility.INSTANCE, 2, 1.0)
         );
         def.addOption(new ExperienceOption().setValue(20));
