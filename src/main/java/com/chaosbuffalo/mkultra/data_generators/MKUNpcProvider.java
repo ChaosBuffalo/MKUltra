@@ -28,6 +28,7 @@ import com.chaosbuffalo.mkultra.init.MKUEntities;
 import com.chaosbuffalo.mkultra.init.MKUEntitlements;
 import com.chaosbuffalo.mkultra.init.MKUFactions;
 import com.chaosbuffalo.mkultra.init.MKUItems;
+import com.chaosbuffalo.mkweapons.items.randomization.LootTierManager;
 import com.chaosbuffalo.mkweapons.items.randomization.slots.LootSlotManager;
 import com.google.common.collect.Lists;
 import net.minecraft.data.DataGenerator;
@@ -160,7 +161,7 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
         def.addOption(new MKSizeOption().setValue(1.0f));
         def.addOption(new RenderGroupOption().setValue(MKUPiglins.DESTROYED_SKELETAL_TROOPER_NAME));
         def.addOption(new MKComboSettingsOption().setComboDelay(20).setComboCount(3));
-        def.addOption(new AttributesOption().addAttributeEntry(new NpcAttributeEntry(Attributes.MAX_HEALTH, 65.0)));
+        def.addOption(new AttributesOption().addAttributeEntry(new NpcAttributeEntry(Attributes.MAX_HEALTH, 180.0)));
         def.addOption(new NameOption().setValue("Trooper Executioner"));
         def.addOption(new LungeSpeedOption().setValue(0.75));
         def.addOption(new NotableOption());
@@ -174,6 +175,16 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                 .withAbilityOption(WhirlwindBladesAbility.INSTANCE, 1, 1.0)
                 .withAbilityOption(YankAbility.INSTANCE, 2, 1.0)
         );
+        ResourceLocation lootTierName = new ResourceLocation(MKUltra.MODID, "trooper_executioner");
+        def.addOption(new ExtraLootOption()
+                .withLootOptions(new LootOptionEntry(LootSlotManager.MAIN_HAND.getName(), lootTierName,
+                        LootTierManager.INVALID_RANDOMIZATION_TEMPLATE, 1.0))
+                .withLootOptions(new LootOptionEntry(LootSlotManager.RINGS.getName(), lootTierName,
+                        LootTierManager.INVALID_RANDOMIZATION_TEMPLATE, 3.0))
+                .withDropChances(2)
+                .withNoLootChance(0.2)
+                .withNoLootIncrease(0.25)
+        );
         def.addOption(new ExperienceOption().setValue(20));
         return def;
     }
@@ -184,7 +195,7 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
         def.addOption(new FactionOption().setValue(MKUFactions.IMPERIAL_DEAD_NAME));
         def.addOption(new MKSizeOption().setValue(1.0f));
         def.addOption(new RenderGroupOption().setValue(MKUPiglins.SKELETAL_MAGE_NAME));
-        def.addOption(new AttributesOption().addAttributeEntry(new NpcAttributeEntry(Attributes.MAX_HEALTH, 75.0)));
+        def.addOption(new AttributesOption().addAttributeEntry(new NpcAttributeEntry(Attributes.MAX_HEALTH, 150.0)));
         def.addOption(new FactionNameOption().setTitle("Imperial Magus").setHasLastName(true));
         def.addOption(new NotableOption());
         def.addOption(new LungeSpeedOption().setValue(0.5));
@@ -201,6 +212,18 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                 .withAbilityOption(HealAbility.INSTANCE, 1, 1.0)
                 .withAbilityOption(NaturesRemedyAbility.INSTANCE, 2, 1.0)
                 .withAbilityOption(PowerWordSummonAbility.INSTANCE, 7, 1.0)
+        );
+        ResourceLocation lootTierName = new ResourceLocation(MKUltra.MODID, "trooper_magus");
+        def.addOption(new ExtraLootOption()
+                .withLootOptions(new LootOptionEntry(LootSlotManager.MAIN_HAND.getName(), lootTierName,
+                        LootTierManager.INVALID_RANDOMIZATION_TEMPLATE, 1.0))
+                .withLootOptions(new LootOptionEntry(LootSlotManager.RINGS.getName(), lootTierName,
+                        LootTierManager.INVALID_RANDOMIZATION_TEMPLATE, 2.0))
+                .withLootOptions(new LootOptionEntry(LootSlotManager.EARRINGS.getName(), lootTierName,
+                        LootTierManager.INVALID_RANDOMIZATION_TEMPLATE, 1.0))
+                .withDropChances(2)
+                .withNoLootChance(0.2)
+                .withNoLootIncrease(0.25)
         );
         def.addOption(new ExperienceOption().setValue(25));
         return def;
@@ -232,6 +255,16 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                 .withAbilityOption(HealAbility.INSTANCE, 2, 1.0)
                 .withAbilityOption(FuriousBrooding.INSTANCE, 3, 1.0)
                 .withAbilityOption(SmiteAbility.INSTANCE, 1, 1.0)
+        );
+        ResourceLocation lootTierName = new ResourceLocation(MKUltra.MODID, "trooper_captain");
+        def.addOption(new ExtraLootOption()
+                .withLootOptions(new LootOptionEntry(LootSlotManager.MAIN_HAND.getName(), lootTierName,
+                        LootTierManager.INVALID_RANDOMIZATION_TEMPLATE, 1.0))
+                .withLootOptions(new LootOptionEntry(LootSlotManager.EARRINGS.getName(), lootTierName,
+                        LootTierManager.INVALID_RANDOMIZATION_TEMPLATE, 3.0))
+                .withDropChances(2)
+                .withNoLootChance(0.2)
+                .withNoLootIncrease(0.25)
         );
         def.addOption(new ExperienceOption().setValue(25));
         return def;
