@@ -28,6 +28,9 @@ repositories {
         name = "world-edit"
         url = 'https://maven.enginehub.org/repo/'
     }
+    maven {
+        url = "https://maven.theillusivec4.top/"
+    }
 }
 
 minecraft {
@@ -133,6 +136,7 @@ dependencies {
     implementation fg.deobf("com.chaosbuffalo.mkfaction:mkfaction-${mc_version}:${mk_faction_version}")
     implementation fg.deobf("com.chaosbuffalo.mkweapons:mkweapons-${mc_version}:${mk_weapons_version}")
     implementation fg.deobf("com.chaosbuffalo.mknpc:mknpc-${mc_version}:${mk_npc_version}")
+    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${mc_version}-${curios_version}")
 
 }
 

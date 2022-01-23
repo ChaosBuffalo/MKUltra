@@ -1,0 +1,230 @@
+{
+  "slotItems": {
+    "mkweapons:earrings": [
+      {
+        "itemStack": "{id: \"mkweapons:gold_earring\", Count: 1b}",
+        "weight": 1.0
+      }
+    ],
+    "mkweapons:main_hand": [
+      {
+        "itemStack": "{id: \"mkweapons:katana_iron\", Count: 1b, tag: {Damage: 0}}",
+        "weight": 1.0
+      }
+    ]
+  },
+  "options": [
+    {
+      "randomizationType": "mkweapons:melee_effect",
+      "slotName": "mkweapons:randomization.effect",
+      "slots": [
+        "mkweapons:main_hand"
+      ],
+      "weight": 1.0,
+      "effects": [
+        {
+          "itemEffectType": "mkweapons:weapon_effect.undead_damage",
+          "multiplier": 1.25
+        }
+      ]
+    },
+    {
+      "randomizationType": "mkweapons:name",
+      "slotName": "mkweapons:randomization.name",
+      "slots": [
+        "mkweapons:main_hand"
+      ],
+      "weight": 1.0,
+      "name": "{\"text\":\"Stinging Blade\"}"
+    },
+    {
+      "randomizationType": "mkweapons:attributes",
+      "slotName": "mkweapons:randomization.attributes",
+      "slots": [
+        "mkweapons:main_hand"
+      ],
+      "weight": 1.0,
+      "modifiers": [
+        {
+          "Name": "mkultra:trooper_captain",
+          "Amount": 2.0,
+          "Operation": 0,
+          "UUID": "4503e3b6-8633-4e3f-8bbd-322568f05ffa",
+          "AttributeName": "minecraft:generic.max_health"
+        }
+      ],
+      "unique": true
+    },
+    {
+      "randomizationType": "mkweapons:attributes",
+      "slotName": "mkweapons:randomization.attributes",
+      "slots": [
+        "mkweapons:main_hand"
+      ],
+      "weight": 1.0,
+      "modifiers": [
+        {
+          "Name": "mkultra:trooper_captain",
+          "Amount": 2.0,
+          "Operation": 0,
+          "UUID": "9d759d67-838d-4426-aa5e-80ffae772d58",
+          "AttributeName": "mkcore:max_mana"
+        }
+      ],
+      "unique": true
+    },
+    {
+      "randomizationType": "mkweapons:attributes",
+      "slotName": "mkweapons:randomization.attributes",
+      "slots": [
+        "mkweapons:main_hand"
+      ],
+      "weight": 1.0,
+      "modifiers": [
+        {
+          "Name": "mkultra:trooper_captain",
+          "Amount": 0.25,
+          "Operation": 0,
+          "UUID": "7e1062d9-db68-4675-a74d-c818689485b2",
+          "AttributeName": "mkcore:mana_regen"
+        }
+      ],
+      "unique": true
+    },
+    {
+      "randomizationType": "mkweapons:attributes",
+      "slotName": "mkweapons:randomization.attributes",
+      "slots": [
+        "mkweapons:main_hand"
+      ],
+      "weight": 1.0,
+      "modifiers": [
+        {
+          "Name": "mkultra:trooper_captain",
+          "Amount": 0.05,
+          "Operation": 2,
+          "UUID": "1658af56-bba6-4349-b343-fcf07430676e",
+          "AttributeName": "minecraft:generic.movement_speed"
+        }
+      ],
+      "unique": true
+    },
+    {
+      "randomizationType": "mkweapons:attributes",
+      "slotName": "mkweapons:randomization.attributes",
+      "slots": [
+        "mkweapons:main_hand"
+      ],
+      "weight": 1.0,
+      "modifiers": [
+        {
+          "Name": "mkultra:trooper_captain",
+          "Amount": 1.0,
+          "Operation": 0,
+          "UUID": "fc6fda45-9a3c-4245-9d81-7722c7fa91ea",
+          "AttributeName": "minecraft:generic.attack_damage"
+        }
+      ],
+      "unique": true
+    },
+    {
+      "randomizationType": "mkweapons:attributes",
+      "slotName": "mkweapons:randomization.attributes",
+      "slots": [
+        "mkweapons:main_hand"
+      ],
+      "weight": 1.0,
+      "modifiers": [
+        {
+          "Name": "mkultra:trooper_captain",
+          "Amount": 1.0,
+          "Operation": 0,
+          "UUID": "832b54ac-ec13-4dc8-ad3d-5382f91a13d1",
+          "AttributeName": "minecraft:generic.armor"
+        }
+      ],
+      "unique": true
+    },
+    {
+      "randomizationType": "mkweapons:attributes",
+      "slotName": "mkweapons:randomization.attributes",
+      "slots": [
+        "mkweapons:main_hand"
+      ],
+      "weight": 1.0,
+      "modifiers": [
+        {
+          "Name": "mkultra:trooper_captain",
+          "Amount": 1.0,
+          "Operation": 0,
+          "UUID": "0023baf6-dc10-4b5d-ae05-6583b316eab0",
+          "AttributeName": "mkcore:nature_damage"
+        }
+      ],
+      "unique": true
+    },
+    {
+      "randomizationType": "mkweapons:attributes",
+      "slotName": "mkweapons:randomization.attributes",
+      "slots": [
+        "mkweapons:earrings"
+      ],
+      "weight": 1.0,
+      "modifiers": [
+        {
+          "Name": "mkultra:trooper_captain",
+          "Amount": 4.0,
+          "Operation": 0,
+          "UUID": "33fcbef6-81ab-4777-95e1-5ada9a0587c8",
+          "AttributeName": "minecraft:generic.max_health"
+        }
+      ],
+      "unique": true
+    },
+    {
+      "randomizationType": "mkweapons:name",
+      "slotName": "mkweapons:randomization.name",
+      "slots": [
+        "mkweapons:earrings"
+      ],
+      "weight": 1.0,
+      "name": "{\"text\":\"Earring of Minor Health\"}"
+    }
+  ],
+  "templates": [
+    {
+      "template": {
+        "templateType": "mkultra:blade_crit",
+        "lootSlot": "mkweapons:main_hand",
+        "slots": [
+          "mkweapons:randomization.effect",
+          "mkweapons:randomization.name",
+          "mkweapons:randomization.attributes"
+        ]
+      },
+      "weight": 1.0
+    },
+    {
+      "template": {
+        "templateType": "mkultra:earring",
+        "lootSlot": "mkweapons:earrings",
+        "slots": [
+          "mkweapons:randomization.attributes",
+          "mkweapons:randomization.name"
+        ]
+      },
+      "weight": 15.0
+    },
+    {
+      "template": {
+        "templateType": "mkultra:blade",
+        "lootSlot": "mkweapons:main_hand",
+        "slots": [
+          "mkweapons:randomization.effect",
+          "mkweapons:randomization.name"
+        ]
+      },
+      "weight": 10.0
+    }
+  ]
+}

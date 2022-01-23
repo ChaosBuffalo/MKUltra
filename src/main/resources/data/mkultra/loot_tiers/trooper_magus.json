@@ -1,0 +1,269 @@
+{
+  "slotItems": {
+    "mkweapons:rings": [
+      {
+        "itemStack": "{id: \"mkweapons:silver_ring\", Count: 1b}",
+        "weight": 1.0
+      }
+    ],
+    "mkweapons:earrings": [
+      {
+        "itemStack": "{id: \"mkweapons:silver_earring\", Count: 1b}",
+        "weight": 1.0
+      }
+    ],
+    "mkweapons:main_hand": [
+      {
+        "itemStack": "{id: \"mkweapons:staff_iron\", Count: 1b, tag: {Damage: 0}}",
+        "weight": 1.0
+      }
+    ]
+  },
+  "options": [
+    {
+      "randomizationType": "mkweapons:option.ability",
+      "slotName": "mkweapons:randomization.ability",
+      "slots": [
+        "mkweapons:main_hand"
+      ],
+      "weight": 1.0,
+      "abilityId": "mkultra:ability.fireball"
+    },
+    {
+      "randomizationType": "mkweapons:name",
+      "slotName": "mkweapons:randomization.name",
+      "slots": [
+        "mkweapons:main_hand"
+      ],
+      "weight": 1.0,
+      "name": "{\"text\":\"Burning Staff\"}"
+    },
+    {
+      "randomizationType": "mkweapons:attributes",
+      "slotName": "mkweapons:randomization.attributes",
+      "slots": [
+        "mkweapons:main_hand"
+      ],
+      "weight": 1.0,
+      "modifiers": [
+        {
+          "Name": "mkultra:trooper_magus",
+          "Amount": 2.0,
+          "Operation": 0,
+          "UUID": "7a44da64-de87-4956-b4d8-7aa7fabc182f",
+          "AttributeName": "minecraft:generic.max_health"
+        }
+      ],
+      "unique": true
+    },
+    {
+      "randomizationType": "mkweapons:attributes",
+      "slotName": "mkweapons:randomization.attributes",
+      "slots": [
+        "mkweapons:main_hand"
+      ],
+      "weight": 1.0,
+      "modifiers": [
+        {
+          "Name": "mkultra:trooper_magus",
+          "Amount": 2.0,
+          "Operation": 0,
+          "UUID": "c19a9318-cd1b-4c58-81d1-0b9e1b72c70a",
+          "AttributeName": "mkcore:max_mana"
+        }
+      ],
+      "unique": true
+    },
+    {
+      "randomizationType": "mkweapons:attributes",
+      "slotName": "mkweapons:randomization.attributes",
+      "slots": [
+        "mkweapons:main_hand"
+      ],
+      "weight": 1.0,
+      "modifiers": [
+        {
+          "Name": "mkultra:trooper_magus",
+          "Amount": 0.25,
+          "Operation": 0,
+          "UUID": "e86e012d-2f04-41a4-adc9-5538b6e796c5",
+          "AttributeName": "mkcore:mana_regen"
+        }
+      ],
+      "unique": true
+    },
+    {
+      "randomizationType": "mkweapons:attributes",
+      "slotName": "mkweapons:randomization.attributes",
+      "slots": [
+        "mkweapons:main_hand"
+      ],
+      "weight": 1.0,
+      "modifiers": [
+        {
+          "Name": "mkultra:trooper_magus",
+          "Amount": 0.05,
+          "Operation": 2,
+          "UUID": "7572f38f-299f-4c2a-b2a8-0340e2ea38b9",
+          "AttributeName": "minecraft:generic.movement_speed"
+        }
+      ],
+      "unique": true
+    },
+    {
+      "randomizationType": "mkweapons:attributes",
+      "slotName": "mkweapons:randomization.attributes",
+      "slots": [
+        "mkweapons:main_hand"
+      ],
+      "weight": 1.0,
+      "modifiers": [
+        {
+          "Name": "mkultra:trooper_magus",
+          "Amount": 1.0,
+          "Operation": 0,
+          "UUID": "f5292b89-4268-41a1-a209-c3d186e5da79",
+          "AttributeName": "minecraft:generic.attack_damage"
+        }
+      ],
+      "unique": true
+    },
+    {
+      "randomizationType": "mkweapons:attributes",
+      "slotName": "mkweapons:randomization.attributes",
+      "slots": [
+        "mkweapons:main_hand"
+      ],
+      "weight": 1.0,
+      "modifiers": [
+        {
+          "Name": "mkultra:trooper_magus",
+          "Amount": 1.0,
+          "Operation": 0,
+          "UUID": "4f26be44-e0f4-47bc-aa12-6e86df492822",
+          "AttributeName": "minecraft:generic.armor"
+        }
+      ],
+      "unique": true
+    },
+    {
+      "randomizationType": "mkweapons:attributes",
+      "slotName": "mkweapons:randomization.attributes",
+      "slots": [
+        "mkweapons:main_hand"
+      ],
+      "weight": 1.0,
+      "modifiers": [
+        {
+          "Name": "mkultra:trooper_magus",
+          "Amount": 1.0,
+          "Operation": 0,
+          "UUID": "28e88a92-3432-409b-bb06-f9d442bb9ff6",
+          "AttributeName": "mkcore:nature_damage"
+        }
+      ],
+      "unique": true
+    },
+    {
+      "randomizationType": "mkweapons:attributes",
+      "slotName": "mkweapons:randomization.attributes",
+      "slots": [
+        "mkweapons:rings"
+      ],
+      "weight": 1.0,
+      "modifiers": [
+        {
+          "Name": "mkultra:trooper_magus",
+          "Amount": 4.0,
+          "Operation": 0,
+          "UUID": "2b0dc6e7-9208-4a84-91c6-e2b32e1c0b2c",
+          "AttributeName": "mkcore:max_mana"
+        }
+      ],
+      "unique": true
+    },
+    {
+      "randomizationType": "mkweapons:name",
+      "slotName": "mkweapons:randomization.name",
+      "slots": [
+        "mkweapons:rings"
+      ],
+      "weight": 1.0,
+      "name": "{\"text\":\"Ring of Minor Mana\"}"
+    },
+    {
+      "randomizationType": "mkweapons:attributes",
+      "slotName": "mkweapons:randomization.attributes",
+      "slots": [
+        "mkweapons:earrings"
+      ],
+      "weight": 1.0,
+      "modifiers": [
+        {
+          "Name": "mkultra:trooper_magus",
+          "Amount": 0.25,
+          "Operation": 0,
+          "UUID": "f8afeba8-b2f4-46d2-8381-ea81cfad3001",
+          "AttributeName": "mkcore:mana_regen"
+        }
+      ],
+      "unique": true
+    },
+    {
+      "randomizationType": "mkweapons:name",
+      "slotName": "mkweapons:randomization.name",
+      "slots": [
+        "mkweapons:earrings"
+      ],
+      "weight": 1.0,
+      "name": "{\"text\":\"Earring of Quickening Thoughts\"}"
+    }
+  ],
+  "templates": [
+    {
+      "template": {
+        "templateType": "mkultra:blade_crit",
+        "lootSlot": "mkweapons:main_hand",
+        "slots": [
+          "mkweapons:randomization.ability",
+          "mkweapons:randomization.name",
+          "mkweapons:randomization.attributes"
+        ]
+      },
+      "weight": 1.0
+    },
+    {
+      "template": {
+        "templateType": "mkultra:earring",
+        "lootSlot": "mkweapons:earrings",
+        "slots": [
+          "mkweapons:randomization.attributes",
+          "mkweapons:randomization.name"
+        ]
+      },
+      "weight": 15.0
+    },
+    {
+      "template": {
+        "templateType": "mkultra:blade",
+        "lootSlot": "mkweapons:main_hand",
+        "slots": [
+          "mkweapons:randomization.ability",
+          "mkweapons:randomization.name"
+        ]
+      },
+      "weight": 10.0
+    },
+    {
+      "template": {
+        "templateType": "mkultra:ring",
+        "lootSlot": "mkweapons:rings",
+        "slots": [
+          "mkweapons:randomization.attributes",
+          "mkweapons:randomization.name"
+        ]
+      },
+      "weight": 15.0
+    }
+  ]
+}

@@ -15,6 +15,26 @@
       ]
     },
     {
+      "optionType": "mknpc:extra_loot",
+      "noLootChance": 0.2,
+      "dropChances": 2,
+      "noLootIncrease": 0.25,
+      "lootOptions": [
+        {
+          "lootSlotName": "mkweapons:main_hand",
+          "lootSlotTier": "mkultra:trooper_captain",
+          "templateName": "mkweapons:randomization_template.invalid",
+          "weight": 1.0
+        },
+        {
+          "lootSlotName": "mkweapons:earrings",
+          "lootSlotTier": "mkultra:trooper_captain",
+          "templateName": "mkweapons:randomization_template.invalid",
+          "weight": 3.0
+        }
+      ]
+    },
+    {
       "optionType": "mknpc:equipment",
       "slotOptions": {
         "mainhand": [

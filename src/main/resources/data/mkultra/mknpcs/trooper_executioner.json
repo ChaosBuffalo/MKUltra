@@ -10,13 +10,33 @@
       "attributes": [
         {
           "attributeName": "minecraft:generic.max_health",
-          "value": 65.0
+          "value": 180.0
         }
       ]
     },
     {
       "optionType": "mknpc:name",
       "value": "Trooper Executioner"
+    },
+    {
+      "optionType": "mknpc:extra_loot",
+      "noLootChance": 0.2,
+      "dropChances": 2,
+      "noLootIncrease": 0.25,
+      "lootOptions": [
+        {
+          "lootSlotName": "mkweapons:main_hand",
+          "lootSlotTier": "mkultra:trooper_executioner",
+          "templateName": "mkweapons:randomization_template.invalid",
+          "weight": 1.0
+        },
+        {
+          "lootSlotName": "mkweapons:rings",
+          "lootSlotTier": "mkultra:trooper_executioner",
+          "templateName": "mkweapons:randomization_template.invalid",
+          "weight": 3.0
+        }
+      ]
     },
     {
       "optionType": "mknpc:equipment",

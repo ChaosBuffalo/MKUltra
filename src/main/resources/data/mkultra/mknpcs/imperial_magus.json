@@ -10,7 +10,33 @@
       "attributes": [
         {
           "attributeName": "minecraft:generic.max_health",
-          "value": 75.0
+          "value": 150.0
+        }
+      ]
+    },
+    {
+      "optionType": "mknpc:extra_loot",
+      "noLootChance": 0.2,
+      "dropChances": 2,
+      "noLootIncrease": 0.25,
+      "lootOptions": [
+        {
+          "lootSlotName": "mkweapons:main_hand",
+          "lootSlotTier": "mkultra:trooper_magus",
+          "templateName": "mkweapons:randomization_template.invalid",
+          "weight": 1.0
+        },
+        {
+          "lootSlotName": "mkweapons:rings",
+          "lootSlotTier": "mkultra:trooper_magus",
+          "templateName": "mkweapons:randomization_template.invalid",
+          "weight": 2.0
+        },
+        {
+          "lootSlotName": "mkweapons:earrings",
+          "lootSlotTier": "mkultra:trooper_magus",
+          "templateName": "mkweapons:randomization_template.invalid",
+          "weight": 1.0
         }
       ]
     },

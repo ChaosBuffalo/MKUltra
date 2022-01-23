@@ -28,6 +28,7 @@
     {
       "template": {
         "templateType": "mkultra:empty",
+        "lootSlot": "mkweapons:items",
         "slots": []
       },
       "weight": 1.0
