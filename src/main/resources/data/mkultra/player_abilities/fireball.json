@@ -1,5 +1,5 @@
 {
-  "cooldown": 120,
+  "cooldown": 80,
   "manaCost": 5.0,
   "castTime": 20,
   "attributes": {
@@ -8,6 +8,7 @@
     "projectileInaccuracy": 0.2,
     "baseDamage": 6.0,
     "projectileSpeed": 1.25,
+    "casting_particles": "mkultra:fireball_casting",
     "explosionRadius": 2.0
   }
 }

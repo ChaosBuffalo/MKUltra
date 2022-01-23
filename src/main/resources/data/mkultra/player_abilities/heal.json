@@ -4,7 +4,9 @@
   "castTime": 5,
   "attributes": {
     "modifierScaling": 1.0,
+    "cast_particles": "mkultra:heal_cast",
     "scale": 5.0,
+    "casting_particles": "mkultra:heal_casting",
     "base": 5.0
   }
 }

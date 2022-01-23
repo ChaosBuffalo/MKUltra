@@ -2,5 +2,8 @@
   "cooldown": 60,
   "manaCost": 2.0,
   "castTime": 0,
-  "attributes": {}
+  "attributes": {
+    "cast_particles": "mkultra:skin_like_wood_cast",
+    "casting_particles": "mkultra:skin_like_wood_casting"
+  }
 }

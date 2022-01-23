@@ -4,6 +4,8 @@
   "castTime": 20,
   "attributes": {
     "baseDuration": 60,
-    "scaleDuration": 15
+    "cast_particles": "mkultra:fire_armor_cast",
+    "scaleDuration": 15,
+    "casting_particles": "mkultra:fire_armor_casting"
   }
 }

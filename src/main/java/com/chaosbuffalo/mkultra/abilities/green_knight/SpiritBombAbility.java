@@ -34,7 +34,7 @@ public class SpiritBombAbility extends MKAbility {
 
     private SpiritBombAbility() {
         super(MKUltra.MODID, "ability.spirit_bomb");
-        setCooldownSeconds(16);
+        setCooldownSeconds(10);
         setCastTime(GameConstants.TICKS_PER_SECOND + (GameConstants.TICKS_PER_SECOND / 4));
         setManaCost(4);
         addAttributes(baseDamage, scaleDamage, projectileSpeed, projectileInaccuracy, modifierScaling);

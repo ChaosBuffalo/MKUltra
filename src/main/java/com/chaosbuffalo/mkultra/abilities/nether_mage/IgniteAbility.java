@@ -48,8 +48,8 @@ public class IgniteAbility extends MKAbility {
 
     public IgniteAbility() {
         super(MKUltra.MODID, "ability.ignite");
-        setCooldownSeconds(16);
-        setManaCost(8);
+        setCooldownSeconds(12);
+        setManaCost(6);
         setCastTime(GameConstants.TICKS_PER_SECOND / 4);
         addAttributes(base, scale, modifierScaling, cast_1_particles, cast_2_particles);
         addSkillAttribute(MKAttributes.EVOCATION);

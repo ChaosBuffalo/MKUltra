@@ -48,7 +48,7 @@ public class NaturesRemedyAbility extends MKAbility {
         super(MKUltra.MODID, "ability.natures_remedy");
         setCooldownSeconds(10);
         setManaCost(4);
-        setCastTime(GameConstants.TICKS_PER_SECOND);
+        setCastTime(GameConstants.TICKS_PER_SECOND / 2);
         addSkillAttribute(MKAttributes.RESTORATION);
         addAttributes(baseValue, scaleValue, baseDuration, scaleDuration, modifierScaling, cast_particles, tick_particles);
         setUseCondition(new HealCondition(this, .75f));

@@ -1,0 +1,14 @@
+{
+  "cooldown": 240,
+  "manaCost": 4.0,
+  "castTime": 0,
+  "attributes": {
+    "baseDuration": 1,
+    "scaleDamage": 2.0,
+    "tick_particles": "mkultra:stunning_shout_tick",
+    "cast_particles": "mkultra:stunning_shout_cast",
+    "baseDamage": 4.0,
+    "scaleDuration": 1,
+    "casting_particles": "mkcore:fx.casting.empty"
+  }
+}

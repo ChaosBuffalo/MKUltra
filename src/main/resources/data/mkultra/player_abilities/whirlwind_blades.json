@@ -1,0 +1,13 @@
+{
+  "cooldown": 400,
+  "manaCost": 6.0,
+  "castTime": 60,
+  "attributes": {
+    "modifierScaling": 1.0,
+    "cast_particles": "mkultra:whirlwind_blades_pulse",
+    "scale": 1.0,
+    "perTick": 0.15,
+    "casting_particles": "mkcore:fx.casting.empty",
+    "base": 2.0
+  }
+}

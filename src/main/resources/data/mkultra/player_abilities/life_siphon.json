@@ -1,0 +1,11 @@
+{
+  "cooldown": 20,
+  "manaCost": 1.0,
+  "castTime": 0,
+  "attributes": {
+    "modifierScaling": 1.0,
+    "scale": 4.0,
+    "casting_particles": "mkcore:fx.casting.empty",
+    "base": 4.0
+  }
+}

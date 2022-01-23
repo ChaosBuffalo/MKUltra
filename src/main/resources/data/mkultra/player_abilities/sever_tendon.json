@@ -10,6 +10,7 @@
     "scaleBleedDamage": 1.0,
     "baseBleedDamage": 1.0,
     "scaleDuration": 1,
+    "casting_particles": "mkcore:fx.casting.empty",
     "base": 4.0
   }
 }
