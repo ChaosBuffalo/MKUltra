@@ -45,7 +45,7 @@ public class WarpCurseAbility extends MKAbility {
     public WarpCurseAbility() {
         super(MKUltra.MODID, "ability.warp_curse");
         setCooldownSeconds(16);
-        setManaCost(6);
+        setManaCost(8);
         setCastTime(GameConstants.TICKS_PER_SECOND + 10);
         addAttributes(base, scale, modifierScaling, baseDuration, scaleDuration, cast_particles);
         addSkillAttribute(MKAttributes.ALTERATON);

@@ -1,10 +1,13 @@
 {
-  "cooldown": 320,
-  "manaCost": 8.0,
+  "cooldown": 240,
+  "manaCost": 6.0,
   "castTime": 5,
   "attributes": {
     "modifierScaling": 1.0,
+    "cast_2_particles": "mkultra:ignite_cast_2",
     "scale": 1.0,
+    "cast_1_particles": "mkultra:ignite_cast_1",
+    "casting_particles": "mkultra:ignite_casting",
     "base": 8.0
   }
 }

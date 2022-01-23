@@ -1,0 +1,14 @@
+{
+  "cooldown": 360,
+  "manaCost": 6.0,
+  "castTime": 0,
+  "attributes": {
+    "baseDuration": 6,
+    "baseValue": 2.0,
+    "modifierScaling": 1.0,
+    "cast_particles": "mkultra:furious_brooding_pulse",
+    "scaleValue": 1.0,
+    "scaleDuration": 5,
+    "casting_particles": "mkcore:fx.casting.empty"
+  }
+}

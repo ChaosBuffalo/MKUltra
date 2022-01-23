@@ -51,8 +51,8 @@ public class FlameWaveAbility extends MKAbility {
 
     public FlameWaveAbility() {
         super(MKUltra.MODID, "ability.flame_wave");
-        setCooldownSeconds(20);
-        setManaCost(8);
+        setCooldownSeconds(14);
+        setManaCost(6);
         setCastTime(GameConstants.TICKS_PER_SECOND / 2);
         addAttributes(base, scale, modifierScaling, baseDuration, scaleDuration, damageBoost, cast_1_particles, cast_2_particles);
         addSkillAttribute(MKAttributes.EVOCATION);

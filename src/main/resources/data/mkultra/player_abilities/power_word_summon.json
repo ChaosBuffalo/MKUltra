@@ -4,6 +4,8 @@
   "castTime": 20,
   "attributes": {
     "baseDuration": 4,
-    "scaleDuration": 1
+    "cast_particles": "mkultra:power_word_summon_cast",
+    "scaleDuration": 1,
+    "casting_particles": "mkultra:power_word_summon_casting"
   }
 }

@@ -1,0 +1,11 @@
+{
+  "cooldown": 100,
+  "manaCost": 4.0,
+  "castTime": 0,
+  "attributes": {
+    "cast_particles": "mkultra:yank_cast",
+    "scale": 0.75,
+    "casting_particles": "mkcore:fx.casting.empty",
+    "base": 1.0
+  }
+}

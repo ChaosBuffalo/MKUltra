@@ -1,0 +1,12 @@
+{
+  "cooldown": 900,
+  "manaCost": 2.0,
+  "castTime": 0,
+  "attributes": {
+    "baseDuration": 15,
+    "tick_particles": "mkultra:yaup_tick",
+    "cast_particles": "mkultra:yaup_cast",
+    "scaleDuration": 5,
+    "casting_particles": "mkcore:fx.casting.empty"
+  }
+}

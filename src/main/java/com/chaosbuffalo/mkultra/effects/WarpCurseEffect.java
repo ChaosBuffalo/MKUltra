@@ -67,15 +67,17 @@ public class WarpCurseEffect extends MKEffect {
                     getModifierScale()), damage);
 
             SoundUtils.serverPlaySoundAtEntity(target, ModSounds.spell_fire_5, target.getSoundCategory());
-            if (EntityUtils.canTeleportEntity(target)) {
+            boolean hasTeleported = false;
+            int attempts = 5;
+            while (!hasTeleported && attempts > 0){
                 Vector3d targetOrigin = target.getPositionVec();
                 double nextX = targetOrigin.x + (target.getRNG().nextInt(8) - target.getRNG().nextInt(8));
-                double nextY = targetOrigin.y + 5.0;
+                double nextY = targetOrigin.y + 1.0;
                 double nextZ = targetOrigin.z + (target.getRNG().nextInt(8) - target.getRNG().nextInt(8));
-                targetData.getAbilityExecutor().interruptCast(CastInterruptReason.Teleport);
-                EntityUtils.safeTeleportEntity(target, new Vector3d(nextX, nextY, nextZ));
+                hasTeleported = EntityUtils.safeTeleportEntity(target, new Vector3d(nextX, nextY, nextZ));
+                attempts--;
             }
-
+            targetData.getAbilityExecutor().interruptCast(CastInterruptReason.Teleport);
             sendEffectParticles(target);
             return true;
         }

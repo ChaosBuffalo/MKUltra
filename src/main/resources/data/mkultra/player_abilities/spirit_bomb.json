@@ -1,5 +1,5 @@
 {
-  "cooldown": 320,
+  "cooldown": 200,
   "manaCost": 4.0,
   "castTime": 25,
   "attributes": {
@@ -7,6 +7,7 @@
     "modifierScaling": 1.0,
     "projectileInaccuracy": 0.2,
     "baseDamage": 4.0,
-    "projectileSpeed": 1.25
+    "projectileSpeed": 1.25,
+    "casting_particles": "mkultra:spirit_bomb_casting"
   }
 }

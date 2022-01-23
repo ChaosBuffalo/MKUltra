@@ -4,6 +4,9 @@
   "castTime": 5,
   "attributes": {
     "baseDuration": 5,
-    "scaleDuration": 2
+    "cast_2_particles": "mkultra:galvanize_cast_2",
+    "cast_1_particles": "mkultra:galvanize_cast_1",
+    "scaleDuration": 2,
+    "casting_particles": "mkultra:galvanize_casting"
   }
 }

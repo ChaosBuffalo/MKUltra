@@ -1,13 +1,16 @@
 {
-  "cooldown": 400,
-  "manaCost": 8.0,
+  "cooldown": 280,
+  "manaCost": 6.0,
   "castTime": 10,
   "attributes": {
     "baseDuration": 3,
     "damageBoost": 1.5,
     "modifierScaling": 1.0,
+    "cast_2_particles": "mkultra:flame_wave_cast_2",
     "scale": 3.0,
+    "cast_1_particles": "mkultra:flame_wave_cast_1",
     "scaleDuration": 1,
+    "casting_particles": "mkultra:flame_wave_casting",
     "base": 6.0
   }
 }

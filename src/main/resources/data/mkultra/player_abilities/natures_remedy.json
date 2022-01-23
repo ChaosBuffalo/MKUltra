@@ -1,12 +1,15 @@
 {
   "cooldown": 200,
   "manaCost": 4.0,
-  "castTime": 20,
+  "castTime": 10,
   "attributes": {
     "baseDuration": 4,
+    "tick_particles": "mkultra:natures_remedy_tick",
     "baseValue": 2.0,
     "modifierScaling": 1.0,
+    "cast_particles": "mkultra:natures_remedy_cast",
     "scaleValue": 1.0,
-    "scaleDuration": 1
+    "scaleDuration": 1,
+    "casting_particles": "mkultra:natures_remedy_casting"
   }
 }

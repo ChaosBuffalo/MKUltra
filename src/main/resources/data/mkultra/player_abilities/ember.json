@@ -4,12 +4,15 @@
   "castTime": 10,
   "attributes": {
     "baseDuration": 6,
+    "burn_cast_particles": "mkultra:burn_tick",
     "dotModifierScaling": 0.2,
     "modifierScaling": 1.0,
+    "cast_particles": "mkultra:ember_cast",
     "scale": 3.0,
     "scaleBurnDamage": 1.0,
     "baseBurnDamage": 2.0,
     "scaleDuration": 1,
+    "casting_particles": "mkultra:ember_casting",
     "base": 8.0
   }
 }
