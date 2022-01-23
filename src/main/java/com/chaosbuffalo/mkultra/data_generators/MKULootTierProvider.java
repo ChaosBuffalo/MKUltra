@@ -59,10 +59,10 @@ public class MKULootTierProvider extends LootTierProvider {
     }
 
     private void addTemplateTrooperKnight(LootSlot slot, LootTier tier){
-        tier.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "one_effect"),
+        tier.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, String.format("one_effect_%s", slot.getName().getPath())),
                 slot,
                 RandomizationSlotManager.ATTRIBUTE_SLOT), 90);
-        tier.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "two_effect"),
+        tier.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, String.format("two_effect_%s", slot.getName().getPath())),
                 slot,
                 RandomizationSlotManager.ATTRIBUTE_SLOT, RandomizationSlotManager.ATTRIBUTE_SLOT), 10);
     }
