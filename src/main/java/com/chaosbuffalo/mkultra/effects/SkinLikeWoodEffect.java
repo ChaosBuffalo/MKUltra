@@ -5,6 +5,7 @@ import com.chaosbuffalo.mkcore.core.MKAttributes;
 import com.chaosbuffalo.mkcore.core.MKPlayerData;
 import com.chaosbuffalo.mkcore.effects.*;
 import com.chaosbuffalo.mkultra.MKUltra;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.player.PlayerEntity;
@@ -27,7 +28,7 @@ public class SkinLikeWoodEffect extends MKEffect {
         setRegistryName("effect.skin_like_wood");
         addAttribute(Attributes.ARMOR, MODIFIER_ID, 4, 1, AttributeModifier.Operation.ADDITION,
                 MKAttributes.ABJURATION);
-        SpellTriggers.ENTITY_HURT_PLAYER.registerPreScale(this::playerHurtPreScale);
+        SpellTriggers.ENTITY_HURT_LIVING.registerPreScale(this::playerHurtPreScale);
     }
 
     @Override
@@ -35,7 +36,7 @@ public class SkinLikeWoodEffect extends MKEffect {
         return MKSimplePassiveState.INSTANCE;
     }
 
-    private void playerHurtPreScale(LivingHurtEvent event, DamageSource source, PlayerEntity livingTarget,
+    private void playerHurtPreScale(LivingHurtEvent event, DamageSource source, LivingEntity livingTarget,
                                     IMKEntityData targetData) {
         if (targetData.getEffects().isEffectActive(INSTANCE)) {
             if (targetData instanceof MKPlayerData) {

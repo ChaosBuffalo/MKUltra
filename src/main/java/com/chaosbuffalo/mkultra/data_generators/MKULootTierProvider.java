@@ -33,7 +33,6 @@ public class MKULootTierProvider extends LootTierProvider {
 
     @Override
     public void act(@Nonnull DirectoryCache cache) {
-
         writeLootTier(trooperKnightLootTier(), cache);
         writeLootTier(zombieTrooperTier(), cache);
         writeLootTier(trooperCaptain(), cache);
