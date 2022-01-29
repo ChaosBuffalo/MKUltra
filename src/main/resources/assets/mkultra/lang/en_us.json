@@ -73,5 +73,7 @@
   "mkultra.ability.yaup.name": "Yaup",
   "mkultra.ability.yaup.description": "Let loose a mighty yaup increases you and your allies' attack speed and strength for %s seconds.",
   "mkultra.ability.stunning_shout.name": "Stunning Shout",
-  "mkultra.ability.stunning_shout.description": "Focuses your Pneuma into a mighty shout. Stunning for %s seconds and dealing %s to all enemies in a line."
+  "mkultra.ability.stunning_shout.description": "Focuses your Pneuma into a mighty shout. Stunning for %s seconds and dealing %s to all enemies in a line.",
+  "mkultra.ability.wrath_beam.name": "Wrath Beam",
+  "mkultra.ability.wrath_beam.description": "Calls down a beam of energy dealing %s and applying Break Fire for %s seconds every %s seconds for %s seconds."
 }
