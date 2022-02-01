@@ -8,18 +8,22 @@ import com.chaosbuffalo.mkcore.core.MKAttributes;
 import com.chaosbuffalo.mkcore.effects.LineEffectBuilder;
 import com.chaosbuffalo.mkcore.effects.MKEffectBuilder;
 import com.chaosbuffalo.mkcore.effects.instant.MKAbilityDamageEffect;
+import com.chaosbuffalo.mkcore.effects.utility.SoundEffect;
 import com.chaosbuffalo.mkcore.init.CoreDamageTypes;
 import com.chaosbuffalo.mkcore.serialization.attributes.FloatAttribute;
 import com.chaosbuffalo.mkcore.serialization.attributes.IntAttribute;
 import com.chaosbuffalo.mkcore.serialization.attributes.ResourceLocationAttribute;
+import com.chaosbuffalo.mkcore.utils.SoundUtils;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.ResistanceEffects;
+import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.TargetingContext;
 import com.chaosbuffalo.targeting_api.TargetingContexts;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.brain.memory.MemoryModuleType;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -27,10 +31,12 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import javax.annotation.Nullable;
 import java.util.Set;
 
 public class WrathBeamAbility extends MKAbility {
     private static final ResourceLocation PULSE_PARTICLES = new ResourceLocation(MKUltra.MODID, "wrath_beam_pulse");
+    public static final ResourceLocation CASTING_PARTICLES = new ResourceLocation(MKUltra.MODID, "flame_wave_casting");
     private static final ResourceLocation WAIT_PARTICLES = new ResourceLocation(MKUltra.MODID, "wrath_beam_wait");
     public static final WrathBeamAbility INSTANCE = new WrathBeamAbility();
     protected final FloatAttribute base = new FloatAttribute("base", 5.0f);
@@ -46,9 +52,11 @@ public class WrathBeamAbility extends MKAbility {
 
     private WrathBeamAbility() {
         super(MKUltra.MODID, "ability.wrath_beam");
-        setCastTime(GameConstants.TICKS_PER_SECOND * 2);
-        setCooldownSeconds(10);
+        setCastTime(GameConstants.TICKS_PER_SECOND);
+        setCooldownSeconds(5);
         setManaCost(6);
+        addSkillAttribute(MKAttributes.EVOCATION);
+        casting_particles.setDefaultValue(CASTING_PARTICLES);
         addAttributes(base, scale, modifierScaling, tickRate, pulse_particles, wait_particles, duration, breakDuration);
     }
 
@@ -72,34 +80,46 @@ public class WrathBeamAbility extends MKAbility {
         return 20.0f;
     }
 
+    @Nullable
+    @Override
+    public SoundEvent getCastingSoundEvent() {
+        return ModSounds.hostile_casting_fire;
+    }
+
+    public void castWrathBeam(LivingEntity castingEntity, LivingEntity targetEntity){
+        Vector3d linePos = targetEntity.getPositionVec();
+        float level = getSkillLevel(castingEntity, MKAttributes.EVOCATION);
+        MKEffectBuilder<?> damage = MKAbilityDamageEffect.from(castingEntity, CoreDamageTypes.FireDamage,
+                base.value(), scale.value(), modifierScaling.value())
+                .ability(this)
+                .skillLevel(level);
+        MKEffectBuilder<?> fireBreak = ResistanceEffects.BREAK_FIRE.builder(castingEntity)
+                .ability(this)
+                .timed(breakDuration.value())
+                .skillLevel(level);
+        MKEffectBuilder<?> sound = SoundEffect.from(castingEntity, ModSounds.spell_fire_7, castingEntity.getSoundCategory())
+                .ability(this);
+        LineEffectBuilder lineBuilder = LineEffectBuilder.createOnEntity(castingEntity, targetEntity,
+                linePos.subtract(0.0, 0.1, 0.0),
+                linePos.add(0.0, 4.1, 0.0))
+                .effect(damage, getTargetContext())
+                .effect(fireBreak, getTargetContext())
+                .effect(sound, getTargetContext())
+                .setParticles(pulse_particles.getValue())
+                .setWaitingParticles(wait_particles.getValue())
+                .duration(duration.value())
+                .waitTime(duration.value() / 2)
+                .tickRate(tickRate.value())
+                .visualTickRate(tickRate.value());
+        SoundUtils.serverPlaySoundAtEntity(targetEntity, ModSounds.spell_dark_13, castingEntity.getSoundCategory());
+        lineBuilder.spawn();
+    }
 
     @Override
     public void endCast(LivingEntity castingEntity, IMKEntityData casterData, AbilityContext context) {
         super.endCast(castingEntity, casterData, context);
-        context.getMemory(MKAbilityMemories.ABILITY_TARGET).ifPresent(targetEntity -> {
-            Vector3d linePos = targetEntity.getPositionVec();
-            float level = getSkillLevel(castingEntity, MKAttributes.EVOCATION);
-            MKEffectBuilder<?> damage = MKAbilityDamageEffect.from(castingEntity, CoreDamageTypes.FireDamage,
-                    base.value(), scale.value(), modifierScaling.value())
-                    .ability(this)
-                    .skillLevel(level);
-            MKEffectBuilder<?> fireBreak = ResistanceEffects.BREAK_FIRE.builder(castingEntity)
-                    .ability(this)
-                    .timed(breakDuration.value())
-                    .skillLevel(level);
-            LineEffectBuilder lineBuilder = LineEffectBuilder.createOnEntity(castingEntity, targetEntity,
-                    linePos.subtract(0.0, 0.1, 0.0),
-                    linePos.add(0.0, 4.1, 0.0))
-                    .effect(damage, getTargetContext())
-                    .effect(fireBreak, getTargetContext())
-                    .setParticles(pulse_particles.getValue())
-                    .setWaitingParticles(wait_particles.getValue())
-                    .duration(duration.value())
-                    .waitTime(duration.value() / 2)
-                    .tickRate(tickRate.value())
-                    .visualTickRate(tickRate.value());
-            lineBuilder.spawn();
-        });
+        context.getMemory(MKAbilityMemories.ABILITY_TARGET).ifPresent(
+                targetEntity -> castWrathBeam(castingEntity, targetEntity));
     }
 
     @Override
