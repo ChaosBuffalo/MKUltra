@@ -7,6 +7,7 @@ import com.chaosbuffalo.mkcore.core.MKAttributes;
 import com.chaosbuffalo.mkcore.fx.particles.effect_instances.BoneEffectInstance;
 import com.chaosbuffalo.mkfaction.init.Factions;
 import com.chaosbuffalo.mknpc.data.NpcDefinitionProvider;
+import com.chaosbuffalo.mknpc.entity.boss.BossStage;
 import com.chaosbuffalo.mknpc.npc.NpcAttributeEntry;
 import com.chaosbuffalo.mknpc.npc.NpcDefinition;
 import com.chaosbuffalo.mknpc.npc.NpcItemChoice;
@@ -20,14 +21,13 @@ import com.chaosbuffalo.mkultra.abilities.cleric.*;
 import com.chaosbuffalo.mkultra.abilities.green_knight.*;
 import com.chaosbuffalo.mkultra.abilities.misc.FireballAbility;
 import com.chaosbuffalo.mkultra.abilities.misc.SeverTendonAbility;
+import com.chaosbuffalo.mkultra.abilities.misc.WrathBeamAbility;
+import com.chaosbuffalo.mkultra.abilities.misc.WrathBeamFlurryAbility;
 import com.chaosbuffalo.mkultra.abilities.nether_mage.*;
 import com.chaosbuffalo.mkultra.client.render.styling.MKUOrcs;
 import com.chaosbuffalo.mkultra.client.render.styling.MKUPiglins;
 import com.chaosbuffalo.mkultra.client.render.styling.MKUSkeletons;
-import com.chaosbuffalo.mkultra.init.MKUEntities;
-import com.chaosbuffalo.mkultra.init.MKUEntitlements;
-import com.chaosbuffalo.mkultra.init.MKUFactions;
-import com.chaosbuffalo.mkultra.init.MKUItems;
+import com.chaosbuffalo.mkultra.init.*;
 import com.chaosbuffalo.mkweapons.items.randomization.LootTierManager;
 import com.chaosbuffalo.mkweapons.items.randomization.slots.LootSlotManager;
 import com.google.common.collect.Lists;
@@ -41,6 +41,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
+import java.util.Collections;
 import java.util.UUID;
 
 public class MKUNpcProvider extends NpcDefinitionProvider {
@@ -70,6 +71,7 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
         writeDefinition(generateTrooperCaptain(), cache);
         writeDefinition(generateTrooperExecution(), cache);
         writeDefinition(generateSkeletalTrooperMage(), cache);
+        writeDefinition(generateBurningSkeleton(), cache);
 //        writeDefinition(generateZombifiedPiglinTrooper(), cache);
     }
 
@@ -86,6 +88,55 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                         BipedSkeleton.RIGHT_HAND_BONE_NAME, new ResourceLocation(MKUltra.MODID, "flame_wave_casting")),
                 new BoneEffectInstance(UUID.fromString("02d14078-dd34-496c-b055-0f939af19403"),
                         BipedSkeleton.LEFT_HAND_BONE_NAME, new ResourceLocation(MKUltra.MODID, "flame_wave_casting"))
+        )));
+        return def;
+    }
+
+    private NpcDefinition generateBurningSkeleton(){
+        NpcDefinition def = new NpcDefinition(new ResourceLocation(MKUltra.MODID, "burning_skeleton"),
+                MKUEntities.HYBOREAN_SKELETON_TYPE.getRegistryName(), null);
+        def.addOption(new FactionOption().setValue(MKUFactions.HYBOREAN_DEAD_NAME));
+        def.addOption(new MKSizeOption().setValue(1.0f));
+        def.addOption(new RenderGroupOption().setValue(MKUSkeletons.BURNING_NAME));
+        def.addOption(new AttributesOption()
+                .addAttributeEntry(new NpcAttributeEntry(Attributes.MAX_HEALTH, 250.0))
+                .addAttributeEntry(new NpcAttributeEntry(Attributes.ARMOR, 10.0))
+                .addAttributeEntry(new NpcAttributeEntry(Attributes.ATTACK_DAMAGE, 5.0))
+                .addAttributeEntry(new NpcAttributeEntry(MKAttributes.BLEED_RESISTANCE, 0.25))
+        );
+        def.addOption(new NameOption().setValue("Burning Revenant"));
+        EquipmentOption equipOption = new EquipmentOption();
+        equipOption.addItemChoice(EquipmentSlotType.MAINHAND,
+                new NpcItemChoice(new ItemStack(ForgeRegistries.ITEMS.getValue(
+                        new ResourceLocation("mkweapons:dagger_stone"))), 1.0, 0.0f));
+        def.addOption(new NotableOption());
+        def.addOption(equipOption);
+        def.addOption(new BossStageOption()
+                .withStage(new BossStage()
+                        .withOption(new TempAbilitiesOption()
+                                .withAbilityOption(FireArmorAbility.INSTANCE, 3, 1.0)
+                                .withAbilityOption(FireballAbility.INSTANCE, 2, 1.0)
+                                .withAbilityOption(WrathBeamAbility.INSTANCE, 1, 1.0))
+//                        .withOption(new ParticleEffectsOption().withEffects(Collections.singletonList(
+//                                new BoneEffectInstance(UUID.fromString("3e7496f1-f5bf-45e6-b8e5-64192633ae9f"),
+//                                        BipedSkeleton.HEAD_BONE_NAME, new ResourceLocation(MKUltra.MODID, "flame_wave_casting")))))
+                )
+                .withStage(new BossStage()
+                        .withOption(new TempAbilitiesOption()
+                                .withAbilityOption(FireballAbility.INSTANCE, 3, 1.0)
+                                .withAbilityOption(WrathBeamFlurryAbility.INSTANCE, 1, 1.0))
+//                        .withOption(new ParticleEffectsOption().withEffects(Collections.singletonList(
+//                                new BoneEffectInstance(UUID.fromString("e45696e1-ddb1-4709-bc29-1733ee1bced9"),
+//                                BipedSkeleton.HEAD_BONE_NAME, new ResourceLocation(MKUltra.MODID, "flame_wave_casting")))))
+                        .withParticleMode(BossStage.ParticleMode.LINE_HEIGHT)
+                        .withTransitionParticles(new ResourceLocation(MKUltra.MODID, "wrath_skeleton_transition"))
+                        .withTransitionSound(ModSounds.spell_dark_8.getRegistryName())
+                )
+        );
+        def.addOption(new ExperienceOption().setValue(50));
+        def.addOption(new ParticleEffectsOption().withEffects(Collections.singletonList(
+                new BoneEffectInstance(UUID.fromString("3e7496f1-f5bf-45e6-b8e5-64192633ae9f"),
+                        BipedSkeleton.HEAD_BONE_NAME, new ResourceLocation(MKUltra.MODID, "burning_skeleton_head"))
         )));
         return def;
     }

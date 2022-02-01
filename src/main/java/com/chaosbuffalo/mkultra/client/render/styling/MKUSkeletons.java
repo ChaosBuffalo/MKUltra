@@ -27,11 +27,16 @@ public class MKUSkeletons {
     public static final ModelLook ANCIENT_KING = new ModelLook(ModelStyles.CLOTHES_ONLY_STYLE,
             SkeletonStyles.WITHER_SKELETON_TEXTURES, MKUClothes.FUR_LINED_SCRAPS);
 
+    public static final ModelLook BURNING_SKELETON = new ModelLook(ModelStyles.CLOTHES_ONLY_STYLE,
+            SkeletonStyles.WITHER_SKELETON_TEXTURES, MKUClothes.IRON_PONCHO);
+
     public static final Map<String, ModelLook> SKELETON_STYLES = new HashMap<>();
 
     public static final String ANCIENT_KING_NAME = "ancient_king";
 
     public static final String SORCERER_NAME = "sorcerer";
+
+    public static final String BURNING_NAME = "burning_skeleton";
 
     public static final String SORCERER_QUEEN_NAME = "sorcerer_queen";
 
@@ -48,6 +53,8 @@ public class MKUSkeletons {
         SKELETON_STYLES.put(HONOR_GUARD_NAME, HONOR_GUARD);
         SKELETON_STYLES.put(HYBOREAN_ARCHER_NAME, HYBOREAN_ARCHER);
         SKELETON_STYLES.put(HYBOREAN_WARRIOR_NAME, HYBOREAN_WARRIOR);
+        SKELETON_STYLES.put(BURNING_NAME, BURNING_SKELETON);
+
 
     }
 }

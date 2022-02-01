@@ -75,5 +75,7 @@
   "mkultra.ability.stunning_shout.name": "Stunning Shout",
   "mkultra.ability.stunning_shout.description": "Focuses your Pneuma into a mighty shout. Stunning for %s seconds and dealing %s to all enemies in a line.",
   "mkultra.ability.wrath_beam.name": "Wrath Beam",
-  "mkultra.ability.wrath_beam.description": "Calls down a beam of energy dealing %s and applying Break Fire for %s seconds every %s seconds for %s seconds."
+  "mkultra.ability.wrath_beam.description": "Calls down a beam of energy dealing %s and applying Break Fire for %s seconds every %s seconds for %s seconds.",
+  "mkultra.ability.wrath_beam_flurry.name": "Wrath Beam Flurry",
+  "mkultra.ability.wrath_beam_flurry.description": "Casts a Wrath Beam on every enemy within %s blocks every %s seconds"
 }
