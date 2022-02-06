@@ -19,12 +19,12 @@
           "hailResponses": [
             {
               "node": {
-                "message": "We ain't got much left after the crash. Check that chest over there we got a few things. You can use my crafting table as well. Talk to me again when you have made a weapon.",
                 "id": "hail",
+                "message": "We ain't got much left after the crash. Check that chest over there we got a few things. You can use my crafting table as well. Talk to me again when you have made a weapon.",
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "94e4d138-a47f-4f1f-a000-fc1eda14ecbb",
+                    "chainId": "7b58badd-14b3-4655-ab7c-928920866c07",
                     "objectiveName": "talk_to_smith",
                     "questName": "talk_to_smith"
                   }
@@ -105,12 +105,12 @@
           "hailResponses": [
             {
               "node": {
-                "message": "Great, but you're going to need more than just a sharp rock where we're going. Go back and talk to the Green Lady, ask her about learning to develop your magical talents.",
                 "id": "hail_w_weapon",
+                "message": "Great, but you're going to need more than just a sharp rock where we're going. Go back and talk to the Green Lady, ask her about learning to develop your magical talents.",
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "b21b0f04-9675-46b5-8350-d8b36eaad560",
+                    "chainId": "9ef4dd15-9ce8-496e-a9df-3e1de02ce267",
                     "objectiveName": "return_to_smith",
                     "questName": "return_to_smith"
                   }
@@ -128,8 +128,8 @@
             },
             {
               "node": {
-                "message": "Come back to me with a weapon in your hand.",
-                "id": "hail_wo_weapon"
+                "id": "hail_wo_weapon",
+                "message": "Come back to me with a weapon in your hand."
               },
               "response": {
                 "responseNodeId": "hail_wo_weapon",
@@ -175,12 +175,12 @@
           "hailResponses": [
             {
               "node": {
-                "message": "We can help you awaken your magical gifts, the first step is learning how to train your talents. You should have gained a talent point upon initiating this conversation. Open your player screen and go to the talent section, train any of the first talents in order to unlock your first ability slot. Talk to me again when you have finished this.",
                 "id": "talent_1",
+                "message": "We can help you awaken your magical gifts, the first step is learning how to train your talents. You should have gained a talent point upon initiating this conversation. Open your player screen and go to the talent section, train any of the first talents in order to unlock your first ability slot. Talk to me again when you have finished this.",
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "25fff380-d361-4470-8608-fa78d9c6dcc2",
+                    "chainId": "ed0c03c7-a8c4-4d02-bfe7-d3cce415e77d",
                     "objectiveName": "green_lady_talent",
                     "questName": "green_lady_talent"
                   }
@@ -221,8 +221,8 @@
           },
           "nodes": [
             {
-              "message": "Let me see what I can teach you. Talk to me again when you're done.",
               "id": "open_training",
+              "message": "Let me see what I can teach you. Talk to me again when you're done.",
               "effects": [
                 {
                   "dialogueEffectType": "mknpc:open_learn_abilities"
@@ -232,10 +232,10 @@
           ],
           "prompts": [
             {
-              "message": "ready to learn",
               "id": "need_training",
-              "promptPhrase": "want to learn",
-              "promptText": "I want to learn.",
+              "message": "ready to learn",
+              "triggerPhrase": "want to learn",
+              "suggestedText": "I want to learn.",
               "responses": [
                 {
                   "responseNodeId": "open_training"
@@ -246,12 +246,12 @@
           "hailResponses": [
             {
               "node": {
-                "message": "Alright you're now {prompt:need_training} your first ability.",
                 "id": "hail_w_training",
+                "message": "Alright you're now {prompt:need_training} your first ability.",
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "07a8c14a-ff0e-4d92-92ec-bac94158c67f",
+                    "chainId": "50b0af8f-f907-4ebe-b687-a0a8c5dcd6ca",
                     "objectiveName": "return_to_green_lady",
                     "questName": "return_to_green_lady"
                   },
@@ -274,8 +274,8 @@
             },
             {
               "node": {
-                "message": "Come back to me when you have spent your first talent point.",
-                "id": "hail_wo_training"
+                "id": "hail_wo_training",
+                "message": "Come back to me when you have spent your first talent point."
               },
               "response": {
                 "responseNodeId": "hail_wo_training",
@@ -319,8 +319,8 @@
           },
           "nodes": [
             {
-              "message": "Let me see what I can teach you. Talk to me again when you're done.",
               "id": "open_training",
+              "message": "Let me see what I can teach you. Talk to me again when you're done.",
               "effects": [
                 {
                   "dialogueEffectType": "mknpc:open_learn_abilities"
@@ -330,10 +330,10 @@
           ],
           "prompts": [
             {
-              "message": "ready to learn",
               "id": "need_training",
-              "promptPhrase": "want to learn",
-              "promptText": "I want to learn.",
+              "message": "ready to learn",
+              "triggerPhrase": "want to learn",
+              "suggestedText": "I want to learn.",
               "responses": [
                 {
                   "responseNodeId": "open_training"
@@ -344,12 +344,12 @@
           "hailResponses": [
             {
               "node": {
-                "message": "Now we must test your mettle in combat. Go kill some of the zombies on the first floor to try out your new magic, and don't forget you can always return to me to learn more.",
                 "id": "hail_w_ability",
+                "message": "Now we must test your mettle in combat. Go kill some of the zombies on the first floor to try out your new magic, and don't forget you can always return to me to learn more.",
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "6fe7230f-0e6f-4971-b16a-d27b6eef5645",
+                    "chainId": "8b87a579-adcf-46f2-91cf-8569d29d466b",
                     "objectiveName": "after_green_lady",
                     "questName": "after_ability"
                   }
@@ -372,8 +372,8 @@
             },
             {
               "node": {
-                "message": "Come back to me once you've learned one of our abilities.",
-                "id": "hail_wo_abilities"
+                "id": "hail_wo_abilities",
+                "message": "Come back to me once you've learned one of our abilities."
               },
               "response": {
                 "responseNodeId": "hail_wo_abilities",
@@ -441,12 +441,12 @@
           "hailResponses": [
             {
               "node": {
-                "message": "Good: it is done. The dead rise everywhere, to cull the damned is a blessed pursuit. Our order is dedicated to cleansing this land. You are welcome to stay here and learn of our ways or go as you please.",
                 "id": "hail_w_kills",
+                "message": "Good: it is done. The dead rise everywhere, to cull the damned is a blessed pursuit. Our order is dedicated to cleansing this land. You are welcome to stay here and learn of our ways or go as you please.",
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "b18ac4ce-012e-4ac6-a7e8-9287aac82668",
+                    "chainId": "35525d9e-317b-4c90-838e-d5436205de4a",
                     "objectiveName": "after_kill",
                     "questName": "first_kill"
                   }
@@ -462,7 +462,7 @@
                       "kill_zombies",
                       "kill_archers"
                     ],
-                    "chainId": "eb5eff02-ca0e-4e94-8ada-523bc51ce82b",
+                    "chainId": "6fdab4d4-8e25-4fa8-a064-ed92484d9e7a",
                     "questName": "first_kill"
                   }
                 ]
@@ -470,8 +470,8 @@
             },
             {
               "node": {
-                "message": "Come back to me after you've proven yourself.",
-                "id": "hail_wo_kill"
+                "id": "hail_wo_kill",
+                "message": "Come back to me after you've proven yourself."
               },
               "response": {
                 "responseNodeId": "hail_wo_kill",
@@ -483,7 +483,7 @@
                       "kill_zombies",
                       "kill_archers"
                     ],
-                    "chainId": "5f742685-4fd0-428c-955b-2d973be19172",
+                    "chainId": "b3450bc5-2c06-4ab5-a5fb-6c1ddf192b8a",
                     "questName": "first_kill"
                   }
                 ]
@@ -507,18 +507,18 @@
   ],
   "repeatable": false,
   "startQuestResponse": {
-    "message": "This world is on the verge of deletion, the dead rise from the ground everywhere, there may still be time to save it if we act now. We're in need of another hero: go talk to our smith and get equipped.",
-    "id": "start_quest"
+    "id": "start_quest",
+    "message": "This world is on the verge of deletion, the dead rise from the ground everywhere, there may still be time to save it if we act now. We're in need of another hero: go talk to our smith and get equipped."
   },
   "hailQuestResponse": {
-    "message": "Hail and well met. You're lucky we were able to grab you before your soul drifted too far into the aether. {prompt:start_quest} in an archival zone?",
-    "id": "hail"
+    "id": "hail",
+    "message": "Hail and well met. You're lucky we were able to grab you before your soul drifted too far into the aether. {prompt:start_quest} in an archival zone?"
   },
   "hailPrompt": {
-    "message": "What are you doing",
     "id": "start_quest",
-    "promptPhrase": "don't know",
-    "promptText": "I don't know",
+    "message": "What are you doing",
+    "triggerPhrase": "don't know",
+    "suggestedText": "I don't know",
     "responses": [
       {
         "responseNodeId": "start_quest"

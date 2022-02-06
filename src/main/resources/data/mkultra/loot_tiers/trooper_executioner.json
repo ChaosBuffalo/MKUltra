@@ -52,7 +52,7 @@
           "Name": "mkultra:trooper_executioner",
           "Amount": 2.0,
           "Operation": 0,
-          "UUID": "5e65d172-b7e1-4cf2-9ca2-712e80b4d967",
+          "UUID": "4f244d65-3b8a-4920-8aa2-6e0c29f8fd70",
           "AttributeName": "minecraft:generic.max_health"
         }
       ],
@@ -70,7 +70,7 @@
           "Name": "mkultra:trooper_executioner",
           "Amount": 2.0,
           "Operation": 0,
-          "UUID": "c49a0a17-3be0-42dd-a8e0-16df7450fed5",
+          "UUID": "d97b59f0-a009-428d-ba0b-854a169e370f",
           "AttributeName": "mkcore:max_mana"
         }
       ],
@@ -88,7 +88,7 @@
           "Name": "mkultra:trooper_executioner",
           "Amount": 0.25,
           "Operation": 0,
-          "UUID": "6052a817-a74c-4515-8bf1-60f81a313a80",
+          "UUID": "fae953df-b4c3-4f39-99f1-c59e6004715c",
           "AttributeName": "mkcore:mana_regen"
         }
       ],
@@ -106,7 +106,7 @@
           "Name": "mkultra:trooper_executioner",
           "Amount": 0.05,
           "Operation": 2,
-          "UUID": "4c370b85-ee87-4c73-b3cc-e3dddbeb04fa",
+          "UUID": "fa44b549-d598-4d6f-9319-cdb4959a2271",
           "AttributeName": "minecraft:generic.movement_speed"
         }
       ],
@@ -124,7 +124,7 @@
           "Name": "mkultra:trooper_executioner",
           "Amount": 1.0,
           "Operation": 0,
-          "UUID": "171173b4-730d-4018-a6e7-5237d77624f5",
+          "UUID": "5678e6e1-acc0-4884-8927-ebf7765934ee",
           "AttributeName": "minecraft:generic.attack_damage"
         }
       ],
@@ -142,7 +142,7 @@
           "Name": "mkultra:trooper_executioner",
           "Amount": 1.0,
           "Operation": 0,
-          "UUID": "6acd2a08-cb8e-49b1-8f9f-55e2b9f3472a",
+          "UUID": "2ec58bfd-ee8c-455c-ad0f-1ab3d88f221e",
           "AttributeName": "minecraft:generic.armor"
         }
       ],
@@ -160,7 +160,7 @@
           "Name": "mkultra:trooper_executioner",
           "Amount": 1.0,
           "Operation": 0,
-          "UUID": "5dac0617-86d5-49fc-b9d9-84291069b07c",
+          "UUID": "0b9dfbf7-58fe-4333-aaf7-0b9b8a0a0a5c",
           "AttributeName": "mkcore:nature_damage"
         }
       ],
@@ -178,7 +178,7 @@
           "Name": "mkultra:trooper_executioner",
           "Amount": 4.0,
           "Operation": 0,
-          "UUID": "b2479eed-d00c-418a-aeea-e13263ab6e5d",
+          "UUID": "09f67cb1-deba-4499-b8b2-f6739c546fb3",
           "AttributeName": "minecraft:generic.max_health"
         }
       ],

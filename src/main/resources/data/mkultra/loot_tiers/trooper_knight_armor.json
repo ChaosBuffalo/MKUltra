@@ -38,7 +38,7 @@
           "Name": "mkultra:trooper_knight_armor",
           "Amount": 2.0,
           "Operation": 0,
-          "UUID": "f462ce96-01af-4a51-a093-e3829e8f7e93",
+          "UUID": "0b0797de-ff24-47a1-9e85-1af364afad83",
           "AttributeName": "minecraft:generic.max_health"
         }
       ],
@@ -56,7 +56,7 @@
           "Name": "mkultra:trooper_knight_armor",
           "Amount": 2.0,
           "Operation": 0,
-          "UUID": "7b224343-e90b-4262-b167-aa7dbe04d80e",
+          "UUID": "60f17d62-88e5-46f4-b207-044316f9aeb3",
           "AttributeName": "mkcore:max_mana"
         }
       ],
@@ -74,7 +74,7 @@
           "Name": "mkultra:trooper_knight_armor",
           "Amount": 0.25,
           "Operation": 0,
-          "UUID": "6bfa9e4f-7c35-422c-9304-060b7b78e403",
+          "UUID": "83137385-d54b-4a13-ba1f-df0406b12c82",
           "AttributeName": "mkcore:mana_regen"
         }
       ],
@@ -92,7 +92,7 @@
           "Name": "mkultra:trooper_knight_armor",
           "Amount": 0.05,
           "Operation": 2,
-          "UUID": "54a8d122-fa3f-4845-bd05-b6dffe988c59",
+          "UUID": "b37b8e6a-b76c-47f3-9586-e66716f2f2d4",
           "AttributeName": "minecraft:generic.movement_speed"
         }
       ],
@@ -110,7 +110,7 @@
           "Name": "mkultra:trooper_knight_armor",
           "Amount": 1.0,
           "Operation": 0,
-          "UUID": "b1fa871d-534c-4e7f-b7a1-2e26a3ed678c",
+          "UUID": "58d4867f-11fc-408a-9095-6a8486557780",
           "AttributeName": "minecraft:generic.attack_damage"
         }
       ],
@@ -128,7 +128,7 @@
           "Name": "mkultra:trooper_knight_armor",
           "Amount": 1.0,
           "Operation": 0,
-          "UUID": "f0114b62-5099-4d24-9627-59709395c78a",
+          "UUID": "95ccaf84-ee91-484c-bba8-ef923aa8db78",
           "AttributeName": "minecraft:generic.armor"
         }
       ],
@@ -146,7 +146,7 @@
           "Name": "mkultra:trooper_knight_armor",
           "Amount": 1.0,
           "Operation": 0,
-          "UUID": "6651b7ec-7c0f-4e82-9b76-b9e89c3452de",
+          "UUID": "500ccced-ccef-47f2-9a2b-8c52f7535a2d",
           "AttributeName": "mkcore:nature_damage"
         }
       ],
@@ -164,7 +164,7 @@
           "Name": "mkultra:trooper_knight_armor",
           "Amount": 2.0,
           "Operation": 0,
-          "UUID": "382e01e5-0603-46a9-860a-3acbb4dd8c10",
+          "UUID": "c9d7576c-a0cd-447c-851f-3bcce7facb31",
           "AttributeName": "minecraft:generic.max_health"
         }
       ],
@@ -182,7 +182,7 @@
           "Name": "mkultra:trooper_knight_armor",
           "Amount": 2.0,
           "Operation": 0,
-          "UUID": "971c7738-6c6d-4372-a67a-7b17844beb4a",
+          "UUID": "b1de07cb-3de9-4379-a0a0-163e41121a1d",
           "AttributeName": "mkcore:max_mana"
         }
       ],
@@ -200,7 +200,7 @@
           "Name": "mkultra:trooper_knight_armor",
           "Amount": 0.25,
           "Operation": 0,
-          "UUID": "fdffc162-e5c8-48c4-af5d-7e8355096e3e",
+          "UUID": "d764baf6-fe40-4f86-b29c-a54fffebd8b4",
           "AttributeName": "mkcore:mana_regen"
         }
       ],
@@ -218,7 +218,7 @@
           "Name": "mkultra:trooper_knight_armor",
           "Amount": 0.05,
           "Operation": 2,
-          "UUID": "dc500192-6b3b-4d12-9bbb-f9ae6fc7c247",
+          "UUID": "92a60360-60de-4113-b142-c78c6a614f48",
           "AttributeName": "minecraft:generic.movement_speed"
         }
       ],
@@ -236,7 +236,7 @@
           "Name": "mkultra:trooper_knight_armor",
           "Amount": 1.0,
           "Operation": 0,
-          "UUID": "54b119e9-55ea-4a27-8912-ad99cd0e6cce",
+          "UUID": "0bdefb87-618a-4f6c-a492-d70bd52faf5c",
           "AttributeName": "minecraft:generic.attack_damage"
         }
       ],
@@ -254,7 +254,7 @@
           "Name": "mkultra:trooper_knight_armor",
           "Amount": 1.0,
           "Operation": 0,
-          "UUID": "5093b820-8275-4625-9649-865aeff895ef",
+          "UUID": "53ad2dce-c67c-4df7-8f72-077456234c8a",
           "AttributeName": "minecraft:generic.armor"
         }
       ],
@@ -272,7 +272,7 @@
           "Name": "mkultra:trooper_knight_armor",
           "Amount": 1.0,
           "Operation": 0,
-          "UUID": "2e43f555-c040-48ca-9971-7109eb32595b",
+          "UUID": "3ec2a596-89c9-49ba-8cb0-2f226642ffa7",
           "AttributeName": "mkcore:nature_damage"
         }
       ],
@@ -290,7 +290,7 @@
           "Name": "mkultra:trooper_knight_armor",
           "Amount": 2.0,
           "Operation": 0,
-          "UUID": "c1a19f1e-67fa-40f5-95b5-1cfe99ffc17f",
+          "UUID": "0aa17d89-8c98-4b20-a304-6fa386ac1824",
           "AttributeName": "minecraft:generic.max_health"
         }
       ],
@@ -308,7 +308,7 @@
           "Name": "mkultra:trooper_knight_armor",
           "Amount": 2.0,
           "Operation": 0,
-          "UUID": "9eeb7ddc-82d4-4e68-88f8-1c3ee715d0e5",
+          "UUID": "6a517f34-a23e-4ffc-bb47-7169caf17fb7",
           "AttributeName": "mkcore:max_mana"
         }
       ],
@@ -326,7 +326,7 @@
           "Name": "mkultra:trooper_knight_armor",
           "Amount": 0.25,
           "Operation": 0,
-          "UUID": "a3c82c57-2959-43cf-a063-173324b03dda",
+          "UUID": "fe17a7d8-b62a-41ce-8569-26bbb3d6f439",
           "AttributeName": "mkcore:mana_regen"
         }
       ],
@@ -344,7 +344,7 @@
           "Name": "mkultra:trooper_knight_armor",
           "Amount": 0.05,
           "Operation": 2,
-          "UUID": "324c5486-2b33-4501-8bd3-079b72d4c451",
+          "UUID": "c160a681-d877-4c44-8e0b-49ed1f6b7bd1",
           "AttributeName": "minecraft:generic.movement_speed"
         }
       ],
@@ -362,7 +362,7 @@
           "Name": "mkultra:trooper_knight_armor",
           "Amount": 1.0,
           "Operation": 0,
-          "UUID": "6d6765ac-a77b-4585-9d0c-aec0945f3207",
+          "UUID": "538ca757-9ec8-4802-9f89-0ad0be147752",
           "AttributeName": "minecraft:generic.attack_damage"
         }
       ],
@@ -380,7 +380,7 @@
           "Name": "mkultra:trooper_knight_armor",
           "Amount": 1.0,
           "Operation": 0,
-          "UUID": "2b1d17ab-c49e-4b57-aff4-baf15f7f90e7",
+          "UUID": "6c5c0033-ca10-4da5-88c7-9f6a994cf6e1",
           "AttributeName": "minecraft:generic.armor"
         }
       ],
@@ -398,7 +398,7 @@
           "Name": "mkultra:trooper_knight_armor",
           "Amount": 1.0,
           "Operation": 0,
-          "UUID": "00834f95-f748-49ea-8820-5027cd0613af",
+          "UUID": "60a19275-11d8-4505-81b2-abeacef334db",
           "AttributeName": "mkcore:nature_damage"
         }
       ],
@@ -416,7 +416,7 @@
           "Name": "mkultra:trooper_knight_armor",
           "Amount": 2.0,
           "Operation": 0,
-          "UUID": "5ae13980-4d48-4971-9518-e80a116ea8d2",
+          "UUID": "80d8f614-6352-44ba-8c02-b5d5dd385af5",
           "AttributeName": "minecraft:generic.max_health"
         }
       ],
@@ -434,7 +434,7 @@
           "Name": "mkultra:trooper_knight_armor",
           "Amount": 2.0,
           "Operation": 0,
-          "UUID": "b1c5ab9a-8c89-4e5a-94e9-bd18cd5857a0",
+          "UUID": "ce8bc1f5-a1e8-45e1-be1b-168645e4f5a3",
           "AttributeName": "mkcore:max_mana"
         }
       ],
@@ -452,7 +452,7 @@
           "Name": "mkultra:trooper_knight_armor",
           "Amount": 0.25,
           "Operation": 0,
-          "UUID": "7cb82684-fb2b-451a-b33c-35244f32cba3",
+          "UUID": "18528580-e04d-4020-b0b0-20d51de6b9be",
           "AttributeName": "mkcore:mana_regen"
         }
       ],
@@ -470,7 +470,7 @@
           "Name": "mkultra:trooper_knight_armor",
           "Amount": 0.05,
           "Operation": 2,
-          "UUID": "4d8906da-aca4-462f-9dab-fefbc7aeb24c",
+          "UUID": "e3f34771-38dd-41e6-95bd-6e1566428060",
           "AttributeName": "minecraft:generic.movement_speed"
         }
       ],
@@ -488,7 +488,7 @@
           "Name": "mkultra:trooper_knight_armor",
           "Amount": 1.0,
           "Operation": 0,
-          "UUID": "a37abc11-d4ff-4662-9b52-d76ccc23cecf",
+          "UUID": "a3e89deb-8238-48f7-8b5f-864207cf9d12",
           "AttributeName": "minecraft:generic.attack_damage"
         }
       ],
@@ -506,7 +506,7 @@
           "Name": "mkultra:trooper_knight_armor",
           "Amount": 1.0,
           "Operation": 0,
-          "UUID": "34c71886-0702-474d-8117-296c47e9e84a",
+          "UUID": "d6b9b3d3-7dee-4f27-b6a3-577999cff229",
           "AttributeName": "minecraft:generic.armor"
         }
       ],
@@ -524,7 +524,7 @@
           "Name": "mkultra:trooper_knight_armor",
           "Amount": 1.0,
           "Operation": 0,
-          "UUID": "58a10ed3-4870-4c1c-8d47-fd8c2dcff62c",
+          "UUID": "bc3ccf5a-3332-4f65-bc91-30acfeca676c",
           "AttributeName": "mkcore:nature_damage"
         }
       ],
