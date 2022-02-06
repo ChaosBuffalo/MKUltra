@@ -24,11 +24,36 @@ public class MKUEntitlements {
     @ObjectHolder("green_knight.tier_3")
     public static MKEntitlement GreenKnightTier3;
 
+    @ObjectHolder("cleric.tier_1")
+    public static MKEntitlement ClericTier1;
+
+    @ObjectHolder("cleric.tier_2")
+    public static MKEntitlement ClericTier2;
+
+    @ObjectHolder("cleric.tier_3")
+    public static MKEntitlement ClericTier3;
+
+    @ObjectHolder("nether_mage.tier_1")
+    public static MKEntitlement NetherMageTier1;
+
+    @ObjectHolder("nether_mage.tier_2")
+    public static MKEntitlement NetherMageTier2;
+
+    @ObjectHolder("nether_mage.tier_3")
+    public static MKEntitlement NetherMageTier3;
+
 
     @SubscribeEvent
     public static void registerEntitlements(RegistryEvent.Register<MKEntitlement> evt) {
         evt.getRegistry().register(new SimpleEntitlement(new ResourceLocation(MKUltra.MODID, "green_knight.tier_1"), 1));
         evt.getRegistry().register(new SimpleEntitlement(new ResourceLocation(MKUltra.MODID, "green_knight.tier_2"), 1));
         evt.getRegistry().register(new SimpleEntitlement(new ResourceLocation(MKUltra.MODID, "green_knight.tier_3"), 1));
+        evt.getRegistry().register(new SimpleEntitlement(new ResourceLocation(MKUltra.MODID, "cleric.tier_1"), 1));
+        evt.getRegistry().register(new SimpleEntitlement(new ResourceLocation(MKUltra.MODID, "cleric.tier_2"), 1));
+        evt.getRegistry().register(new SimpleEntitlement(new ResourceLocation(MKUltra.MODID, "cleric.tier_3"), 1));
+        evt.getRegistry().register(new SimpleEntitlement(new ResourceLocation(MKUltra.MODID, "nether_mage.tier_1"), 1));
+        evt.getRegistry().register(new SimpleEntitlement(new ResourceLocation(MKUltra.MODID, "nether_mage.tier_2"), 1));
+        evt.getRegistry().register(new SimpleEntitlement(new ResourceLocation(MKUltra.MODID, "nether_mage.tier_3"), 1));
+
     }
 }

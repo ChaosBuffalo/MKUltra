@@ -24,6 +24,7 @@ import com.chaosbuffalo.mkultra.abilities.misc.SeverTendonAbility;
 import com.chaosbuffalo.mkultra.abilities.misc.WrathBeamAbility;
 import com.chaosbuffalo.mkultra.abilities.misc.WrathBeamFlurryAbility;
 import com.chaosbuffalo.mkultra.abilities.nether_mage.*;
+import com.chaosbuffalo.mkultra.client.render.styling.MKUHumans;
 import com.chaosbuffalo.mkultra.client.render.styling.MKUOrcs;
 import com.chaosbuffalo.mkultra.client.render.styling.MKUPiglins;
 import com.chaosbuffalo.mkultra.client.render.styling.MKUSkeletons;
@@ -72,6 +73,9 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
         writeDefinition(generateTrooperExecution(), cache);
         writeDefinition(generateSkeletalTrooperMage(), cache);
         writeDefinition(generateBurningSkeleton(), cache);
+        writeDefinition(generateClericAcolyte(), cache);
+        writeDefinition(generateClericApprentice(), cache);
+        writeDefinition(generateForlornGhost(), cache);
 //        writeDefinition(generateZombifiedPiglinTrooper(), cache);
     }
 
@@ -89,6 +93,71 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                 new BoneEffectInstance(UUID.fromString("02d14078-dd34-496c-b055-0f939af19403"),
                         BipedSkeleton.LEFT_HAND_BONE_NAME, new ResourceLocation(MKUltra.MODID, "flame_wave_casting"))
         )));
+        return def;
+    }
+
+    private NpcDefinition generateClericAcolyte(){
+        NpcDefinition def = new NpcDefinition(new ResourceLocation(MKUltra.MODID, "solangian_acolyte"),
+                MKUEntities.HUMAN_TYPE.getRegistryName(), null);
+        def.addOption(new FactionOption().setValue(MKUFactions.SEE_OF_SOLANG_NAME));
+        def.addOption(new RenderGroupOption().setValue(MKUHumans.CLERIC_1_NAME));
+        def.addOption(new MKSizeOption().setValue(1.05f));
+        def.addOption(new AttributesOption().addAttributeEntry(new NpcAttributeEntry(Attributes.MAX_HEALTH, 150.0)));
+        def.addOption(new FactionNameOption().setTitle("Acolyte"));
+        def.addOption(new NotableOption());
+        def.addOption(new AbilitiesOption()
+                .withAbilityOption(HealAbility.INSTANCE, 1, 1.0)
+                .withAbilityOption(SmiteAbility.INSTANCE, 2, 1.0)
+                .withAbilityOption(GalvanizeAbility.INSTANCE, 3, 1.0)
+        );
+        EquipmentOption equipOption = new EquipmentOption();
+        equipOption.addItemChoice(EquipmentSlotType.MAINHAND,
+                new NpcItemChoice(new ItemStack(ForgeRegistries.ITEMS.getValue(
+                        new ResourceLocation("mkweapons:mace_iron"))), 1.0, 0.0f));
+        def.addOption(equipOption);
+        return def;
+    }
+
+    private NpcDefinition generateForlornGhost(){
+        NpcDefinition def = new NpcDefinition(new ResourceLocation(MKUltra.MODID, "forlorn_ghost"),
+                MKUEntities.HUMAN_TYPE.getRegistryName(), null);
+        def.addOption(new FactionOption().setValue(MKUFactions.SEE_OF_SOLANG_NAME));
+        def.addOption(new RenderGroupOption().setValue(MKUHumans.GHOST_1_NAME));
+        def.addOption(new MKSizeOption().setValue(1.0f));
+        def.addOption(new AttributesOption().addAttributeEntry(new NpcAttributeEntry(Attributes.MAX_HEALTH, 100.0)));
+        def.addOption(new NameOption().setValue("Forlorn Ghost"));
+        def.addOption(new NotableOption());
+        def.addOption(new GhostOption().setValue(1.0f));
+//        def.addOption(new AbilitiesOption()
+//                .withAbilityOption(HealAbility.INSTANCE, 1, 1.0)
+//                .withAbilityOption(SmiteAbility.INSTANCE, 2, 1.0)
+//        );
+//        EquipmentOption equipOption = new EquipmentOption();
+//        equipOption.addItemChoice(EquipmentSlotType.MAINHAND,
+//                new NpcItemChoice(new ItemStack(ForgeRegistries.ITEMS.getValue(
+//                        new ResourceLocation("mkweapons:mace_iron"))), 1.0, 0.0f));
+//        def.addOption(equipOption);
+        return def;
+    }
+
+    private NpcDefinition generateClericApprentice(){
+        NpcDefinition def = new NpcDefinition(new ResourceLocation(MKUltra.MODID, "solangian_apprentice"),
+                MKUEntities.HUMAN_TYPE.getRegistryName(), null);
+        def.addOption(new FactionOption().setValue(MKUFactions.SEE_OF_SOLANG_NAME));
+        def.addOption(new RenderGroupOption().setValue(MKUHumans.CLERIC_2_NAME));
+        def.addOption(new MKSizeOption().setValue(0.85f));
+        def.addOption(new AttributesOption().addAttributeEntry(new NpcAttributeEntry(Attributes.MAX_HEALTH, 100.0)));
+        def.addOption(new FactionNameOption().setTitle("Apprentice"));
+        def.addOption(new NotableOption());
+        def.addOption(new AbilitiesOption()
+                .withAbilityOption(HealAbility.INSTANCE, 1, 1.0)
+                .withAbilityOption(SmiteAbility.INSTANCE, 2, 1.0)
+        );
+        EquipmentOption equipOption = new EquipmentOption();
+        equipOption.addItemChoice(EquipmentSlotType.MAINHAND,
+                new NpcItemChoice(new ItemStack(ForgeRegistries.ITEMS.getValue(
+                        new ResourceLocation("mkweapons:mace_iron"))), 1.0, 0.0f));
+        def.addOption(equipOption);
         return def;
     }
 
