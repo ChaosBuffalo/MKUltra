@@ -30,18 +30,16 @@ public class MKUDialogueProvider extends DialogueDataProvider {
         DialoguePrompt hail = new DialoguePrompt("hail", "", "", "")
                 .addResponse(new DialogueResponse("root"));
 
-        tree.addPrompt(hail);
-
-        DialoguePrompt needTraining = new DialoguePrompt("need_training", "need training",
-                "I need training.", "need training?");
-        needTraining.addResponse(new DialogueResponse("open_training"));
-        tree.addPrompt(needTraining);
-
+        DialoguePrompt needTraining =
+                new DialoguePrompt("need_training", "need training", "I need training.", "need training?")
+                        .addResponse(new DialogueResponse(open_training));
 
         DialogueNode root = new DialogueNode("root", String.format("Hello %s, welcome to the MKU alpha. Do you %s",
                 DialogueContexts.PLAYER_NAME_CONTEXT, needTraining.getPromptEmbed()));
         tree.addNode(root);
 
+        tree.addPrompt(needTraining);
+        tree.addPrompt(hail);
         tree.setHailPrompt(hail);
 
         return tree;
