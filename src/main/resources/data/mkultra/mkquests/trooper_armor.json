@@ -167,18 +167,18 @@
   ],
   "repeatable": true,
   "startQuestResponse": {
-    "message": "For the full set I will need 20 {item:mkultra:corrupted_pig_iron_plate}, a {item:mkultra:destroyed_trooper_helmet}, a {item:mkultra:destroyed_trooper_leggings}, a {item:mkultra:destroyed_trooper_chestplate}, and a {item:mkultra:destroyed_trooper_boots}.",
-    "id": "start_quest"
+    "id": "start_quest",
+    "message": "For the full set I will need 20 {item:mkultra:corrupted_pig_iron_plate}, a {item:mkultra:destroyed_trooper_helmet}, a {item:mkultra:destroyed_trooper_leggings}, a {item:mkultra:destroyed_trooper_chestplate}, and a {item:mkultra:destroyed_trooper_boots}."
   },
   "hailQuestResponse": {
-    "message": "I make armor for the Green Knights. We're running low on supplies but if you can salvage some parts from the zombies in the castle If you {prompt:start_quest} I should be able to put something together.",
-    "id": "hail"
+    "id": "hail",
+    "message": "I make armor for the Green Knights. We're running low on supplies but if you can salvage some parts from the zombies in the castle If you {prompt:start_quest} I should be able to put something together."
   },
   "hailPrompt": {
-    "message": "need some armor.",
     "id": "start_quest",
-    "promptPhrase": "need some armor",
-    "promptText": "I need some armor",
+    "message": "need some armor.",
+    "triggerPhrase": "need some armor",
+    "suggestedText": "I need some armor",
     "responses": [
       {
         "responseNodeId": "start_quest"
