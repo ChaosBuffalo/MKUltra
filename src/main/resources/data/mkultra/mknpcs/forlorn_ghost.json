@@ -23,6 +23,10 @@
       "value": true
     },
     {
+      "optionType": "mknpc:ghost",
+      "value": 1.0
+    },
+    {
       "optionType": "mknpc:mk_size",
       "value": 1.0
     },
