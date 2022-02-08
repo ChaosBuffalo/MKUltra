@@ -22,6 +22,10 @@ public class MKUFactions {
             "hyborean_dead");
     public static final ResourceLocation IMPERIAL_DEAD_NAME = new ResourceLocation(MKUltra.MODID,
             "imperial_dead");
+    public static final ResourceLocation SEE_OF_SOLANG_NAME = new ResourceLocation(MKUltra.MODID,
+            "see_of_solang");
+    public static final ResourceLocation GHOSTS_OF_HYBORIA_NAME = new ResourceLocation(MKUltra.MODID,
+            "ghosts_of_hyboria");
 
     protected static Set<ResourceLocation> getDefaultGoodFactionSet(){
         Set<ResourceLocation> factions = new HashSet<>();
@@ -48,10 +52,15 @@ public class MKUFactions {
     @ObjectHolder("mkultra:imperial_dead")
     public static MKFaction IMPERIAL_DEAD;
 
+    @ObjectHolder("mkultra:see_of_solang")
+    public static MKFaction SEE_OF_SOLANG;
+
+    @ObjectHolder("mkultra:ghosts_of_hyboria")
+    public static MKFaction GHOSTS_OF_HYBORIA;
+
 
     @SubscribeEvent
     public static void registerFactions(RegistryEvent.Register<MKFaction> event) {
-
         MKFaction greenKnightFaction = new MKFaction(GREEN_KNIGHT_FACTION_NAME,
                 FactionConstants.FRIENDLY_THRESHOLD,
                 getDefaultGoodFactionSet(),
@@ -76,6 +85,75 @@ public class MKUFactions {
         imperialDeadFaction.addAlly(Factions.UNDEAD_FACTION_NAME);
         setupImperialNames(imperialDeadFaction);
         event.getRegistry().register(imperialDeadFaction);
+        MKFaction seeFaction = new MKFaction(SEE_OF_SOLANG_NAME,
+                FactionConstants.FRIENDLY_THRESHOLD,
+                getDefaultGoodFactionSet(),
+                getDefaultBadFactionSet());
+        seeFaction.addAlly(GREEN_KNIGHT_FACTION_NAME);
+        seeFaction.addEnemy(HYBOREAN_DEAD_NAME);
+        seeFaction.addEnemy(IMPERIAL_DEAD_NAME);
+        setupSeeNames(seeFaction);
+        event.getRegistry().register(seeFaction);
+        MKFaction ghosts = new MKFaction(GHOSTS_OF_HYBORIA_NAME,
+                FactionConstants.TRUE_NEUTRAL);
+        event.getRegistry().register(ghosts);
+    }
+
+    private static void setupSeeNames(MKFaction faction){
+        String[] names = {
+                "Bodo","Bonauito","Bonaventura","Bonfilio","Bonizo","Brizio","Bruno","Callisto","Calogero","Camaino",
+                "Cambio","Camillo","Carlito","Carlo","Cesare","Cipriano","Ciro","Claudio","Columbano","Constanzo","Coppo",
+                "Corfino","Corrado","Cosimo","Cristoforo","Curzio","Damiano","Dario","Daniele","Demetrio","Dino","Dionigi",
+                "Domenico","Donato","Eduardo","Efisio","Elio","Elpidio","Emiliano","Ennio","Enrico","Enzio","Enzo","Erberto",
+                "Ercole","Ermanno","Ettore","Eugenio","Eustachio","Evaristo","Ezzo","Fabiano","Fabio","Federico","Felice",
+                "Feliciano","Ferdinando","Ferrando","Ferranti","Ferrucio","Filiberto","Fiorenzo","Francesco","Franco","Frederico",
+                "Fulvio","Furio","Gabriel","Gabriele","Galeazzo","Galileo","Galimberto","Garibaldo","Gaspare","Gavino","Geronimo",
+                "Giacomo","Giambattista","Giampaolo","Giampietro","Gian","Gianfranco","Gianlorenzo","Gianluca","Gianluigi",
+                "Gianni","Gianpiero","Gilberto","Gino","Giorgio","Giotto","Giovane","Giovanni","Giraldo","Giuliano","Giulio",
+                "Giuseppe","Giusto","Goffredo","Gregorio","Gualberto","Gualtieri","Guglielmo","Guido","Guilio","Iachimo",
+                "Ignazio","Ilario","Italo","Jacopo","Javier","Lando","Leandro","Leonardo","Leone","Leopoldo","Lorenzo",
+                "Lotario","Luca","Luciano","Lucio","Ludovico","Luigi","Macario","Manfredo","Marcellino","Marcello",
+                "Marco","Marcovaldo","Mariano","Mario","Massimiliano","Massimo","Matteo","Maurizio","Mauro","Melchiorre",
+                "Mercurino","Michelangelo","Michele","Modesto","Moreno","Mosé","Nardo","Nataniele","Nazario","Nero",
+                "Nestore","Niccolo","Nicodemo","Nicola","Nicoletto","Nunzio","Odilon","Onofrio","Orfeo","Orlando","Pacifico",
+                "Palmiro","Pancrazio","Pao","Paolo","Pasquale","Pellegrino","Peppe","Pietro","Ponzio","Primo",
+                "Prospero","Quirino","Raffaele","Raffaello","Raimondo","Rainieri","Raniero","Raul","Renzo","Rico",
+                "Rinaldo","Roberto","Rocco","Roderico","Rodrigo","Romero","Rossano","Ruffino","Ruggiero","Salvatore",
+                "Sandro","Santo","Saverio","Sergio","Severiano","Severino","Silvano","Silvestro","Silvio","Simone",
+                "Sperandeo","Stefano","Taddeo","Tammaro","Tancredo","Teodosio","Thaddeo","Timoteo","Tino","Tito",
+                "Tiziano","Tommaso","Tomme","Torquato","Toto","Tullio","Ubaldo","Ugo","Ugolino","Umberto","Valentino",
+                "Vasco","Vespasiano","Viaro","Vincenzo","Virgilio","Vitale","Vito","Viviano","Xaverio","Adalgisa",
+                "Addolorata","Adriana","Agata","Agnesca","Agnese","Alessandra","Alessia","Aletea","Allegra",
+                "Amadea","Amalia","Amelia","Amica","Amina","Ammanata","Angela","Angelica","Aniella","Anna",
+                "AnnaMaria","Annabella","Annunziata","Antonia","Argento","Arianna","Armida","Arminia","Artemisia",
+                "Assunta","Assuntina","Aurea","Aurelia","Barbara","Bartolomaea","Beatrice","Benedetta","Bertana",
+                "Bertilla","Bettina","Bianca","Bibiana","Bice","Brigita","Brunella","Camilla","Caprice","Carissa",
+                "Carita","Carlotta","Carmela","Caterina","Cecilia","Cella","Cesira","Chiara","Christina","Cinzia",
+                "Citha","Claricia","Claudia","Clementia","Conccetta","Consilia","Consolata","Costante","Cristina",
+                "Daniela","Deborah","Delfina","Detta","Diana","Domenica","Domitilla","Donata","Donatella","Dora",
+                "Edetta","Elda","Eleonora","Elettra","Eliana","Elisa","Elisabetta","Eloisa","Elvira","Emerenzia",
+                "Emilia","Enrichetta","Esmeralda","Etheria","Eugenia","Eusapia","Eva","Evelina","Fabia","Fabiola",
+                "Fabrizia","Federica","Felicita","Fiametta","Fiammetta","Filomena","Fiora","Fiorella","Fiorenza",
+                "Fioretta","Franca","Francesca","Gaetana","Gemma","Giachetta","Giada","Gianetta","Gianna","Giannina",
+                "Gilberta","Gilda","Gina","Ginevra","Gioconda","Gisela","Gisella","Giulia","Giuliana","Giulietta",
+                "Giuseppina","Gravina","Grazia","Graziella","Griselda","Illaria","Ilvia","Imelda","Immacolata",
+                "Innocenza","Isabella","Isolde","Jolanda","Julitta","Jutta","Lara","Laura","Lauretta","Lavinia",
+                "Lea","Leda","Lena","Leonara","Leontina","Letizia","Lia","Lidia","Liliana","Lisa","Lisabetta",
+                "Lisetta","Lizia","Loredana","Loretta","Luana","Lucia","Luciella","Lucretzia","Luigina","Luisa",
+                "Maddelena","Mafalda","Maia","Mara","Marcella","Margherita","Maria","Mariella","Marietta","Marisa",
+                "Maura","Melina","Melissa","Michela","Miuccia","Monica","Morena","Natalia","Nerina","Nicoletta",
+                "Nina","Noemi","Nunziatella","Nunziatina","Olimpia","Olinda","Oriana","Ornella","Ornetta","Orsola",
+                "Pamela","Paola","Paolina","Patrizia","Pelagia","Perla","Perna","Petronilla","Pia","Piacenza","Pina",
+                "Porzia","Prada","Prasede","Pudenziana","Rachele","Raimonda","Renata","Rina","Rita","Romilda","Rosa",
+                "Rosalba","Rosalia","Rosangela","Rosetta","Rosina","Sabina","Sabrina","Samantha","Sandra","Santuzza",
+                "Sara","Savina","Scevola","Serafina","Serena","Silvana","Silvia","Simona","Simonetta","Sitha","Smeralda",
+                "Sofia","Sophonsiba","Stefania","Stefanina","Susanna","Teà","Teodora","Teresina","Theresa","Tita","Tiziana",
+                "Tommasa","Tommasina","Tullia","Valencia","Vanozza","Venezia","Veronica","Viola","Violante","Vittoria",
+                "Viviana","Zaira","Zita"
+        };
+        for (String name : names){
+            faction.addFirstName(name);
+        }
     }
 
     private static void setupImperialNames(MKFaction faction){

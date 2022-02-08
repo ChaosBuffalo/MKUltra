@@ -23,5 +23,12 @@ public class MKUClothes {
             "textures/entity/clothes/loincloth.png");
     public static final ResourceLocation LOINCLOTH_2 = new ResourceLocation(MKUltra.MODID,
             "textures/entity/clothes/loincloth_2.png");
+    public static final ResourceLocation SOLANG_ROBES_1 = new ResourceLocation(MKUltra.MODID,
+            "textures/entity/clothes/solang_robes_layer_1.png");
+    public static final ResourceLocation SOLANG_ROBES_2 = new ResourceLocation(MKUltra.MODID,
+            "textures/entity/clothes/solang_robes_layer_2.png");
+
+    public static final ResourceLocation GHOST_LEATHERS_1 = new ResourceLocation(MKUltra.MODID,
+            "textures/entity/clothes/ghost_leathers_1.png");
 
 }

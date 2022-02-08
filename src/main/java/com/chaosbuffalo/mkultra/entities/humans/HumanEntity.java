@@ -1,4 +1,4 @@
-package com.chaosbuffalo.mkultra.entities.orcs;
+package com.chaosbuffalo.mkultra.entities.humans;
 
 import com.chaosbuffalo.mkcore.GameConstants;
 import com.chaosbuffalo.mkcore.abilities.training.EntityAbilityTrainer;
@@ -10,12 +10,10 @@ import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.world.World;
 
-
-
-public class OrcEntity extends MKEntity implements IAbilityTrainingEntity {
+public class HumanEntity extends MKEntity implements IAbilityTrainingEntity {
     private final EntityAbilityTrainer abilityTrainer;
 
-    public OrcEntity(EntityType<? extends OrcEntity> type, World worldIn) {
+    public HumanEntity(EntityType<? extends HumanEntity> type, World worldIn) {
         super(type, worldIn);
         abilityTrainer = new EntityAbilityTrainer(this);
         if (!worldIn.isRemote()){
@@ -27,8 +25,7 @@ public class OrcEntity extends MKEntity implements IAbilityTrainingEntity {
 
     public static AttributeModifierMap.MutableAttribute registerAttributes(double attackDamage, double movementSpeed) {
         return MKEntity.registerAttributes(attackDamage, movementSpeed)
-                .createMutableAttribute(Attributes.MAX_HEALTH, 100.0)
-                .createMutableAttribute(Attributes.ARMOR, 4);
+                .createMutableAttribute(Attributes.MAX_HEALTH, 100.0);
     }
 
     @Override

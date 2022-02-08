@@ -28,6 +28,7 @@ public class MKUFactionProvider implements IDataProvider {
         writeFaction(MKUFactions.GREEN_KNIGHTS_FACTION, cache);
         writeFaction(MKUFactions.HYBOREAN_DEAD, cache);
         writeFaction(MKUFactions.IMPERIAL_DEAD, cache);
+        writeFaction(MKUFactions.SEE_OF_SOLANG, cache);
 
     }
 

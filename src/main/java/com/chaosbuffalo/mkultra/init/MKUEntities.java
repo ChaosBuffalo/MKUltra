@@ -1,9 +1,9 @@
 package com.chaosbuffalo.mkultra.init;
 
-import com.chaosbuffalo.mknpc.MKNpc;
 import com.chaosbuffalo.mknpc.entity.MKSkeletonEntity;
 import com.chaosbuffalo.mknpc.entity.MKZombifiedPiglinEntity;
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.entities.humans.HumanEntity;
 import com.chaosbuffalo.mkultra.entities.orcs.OrcEntity;
 import com.chaosbuffalo.mkultra.entities.projectiles.CleansingSeedProjectileEntity;
 import com.chaosbuffalo.mkultra.entities.projectiles.FireballProjectileEntity;
@@ -29,6 +29,9 @@ public class MKUEntities {
 
     public static final String ZOMBIFIED_PIGLIN_NAME = "zombified_piglin";
     public static EntityType<MKZombifiedPiglinEntity> ZOMBIFIED_PIGLIN_TYPE;
+
+    public static final String HUMAN_NAME = "human";
+    public static EntityType<HumanEntity> HUMAN_TYPE;
 
     @SubscribeEvent
     public static void registerEntities(RegistryEvent.Register<EntityType<?>> evt) {
@@ -81,6 +84,14 @@ public class MKUEntities {
         ORC_TYPE = orc;
         evt.getRegistry().register(ORC_TYPE);
 
+        EntityType<HumanEntity> human = EntityType.Builder.create(
+                HumanEntity::new, EntityClassification.CREATURE)
+                .size(EntityType.ZOMBIE.getWidth(), EntityType.ZOMBIE.getHeight())
+                .build(new ResourceLocation(MKUltra.MODID, HUMAN_NAME).toString());
+        human.setRegistryName(MKUltra.MODID, HUMAN_NAME);
+        HUMAN_TYPE = human;
+        evt.getRegistry().register(HUMAN_TYPE);
+
         EntityType<MKZombifiedPiglinEntity> zombiePiglin = EntityType.Builder.create(
                 MKZombifiedPiglinEntity::new, EntityClassification.MONSTER)
                 .size(EntityType.ZOMBIFIED_PIGLIN.getWidth(), EntityType.ZOMBIFIED_PIGLIN.getHeight())
@@ -93,9 +104,10 @@ public class MKUEntities {
 
     @SubscribeEvent
     public static void registerEntityAttributes(EntityAttributeCreationEvent event){
-        event.put(HYBOREAN_SKELETON_TYPE, MKSkeletonEntity.registerAttributes(1.0, 0.22)
+        event.put(HYBOREAN_SKELETON_TYPE, MKSkeletonEntity.registerAttributes(2.0, 0.22)
                 .createMutableAttribute(Attributes.ARMOR, 5.0).create());
         event.put(ORC_TYPE, OrcEntity.registerAttributes(2.0, 0.35).create());
         event.put(ZOMBIFIED_PIGLIN_TYPE, MKZombifiedPiglinEntity.registerAttributes(2.0, 0.2).create());
+        event.put(HUMAN_TYPE, HumanEntity.registerAttributes(2.0, 0.35).create());
     }
 }
