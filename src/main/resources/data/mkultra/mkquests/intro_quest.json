@@ -24,7 +24,7 @@
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "7b58badd-14b3-4655-ab7c-928920866c07",
+                    "chainId": "00e75b62-0fc7-4cfa-961f-547662de38c3",
                     "objectiveName": "talk_to_smith",
                     "questName": "talk_to_smith"
                   }
@@ -110,7 +110,7 @@
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "9ef4dd15-9ce8-496e-a9df-3e1de02ce267",
+                    "chainId": "0596dc33-b2e4-4494-903e-1d3d75a467db",
                     "objectiveName": "return_to_smith",
                     "questName": "return_to_smith"
                   }
@@ -180,7 +180,7 @@
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "ed0c03c7-a8c4-4d02-bfe7-d3cce415e77d",
+                    "chainId": "1928411e-02c6-4a40-b6e8-6f2de9c9709b",
                     "objectiveName": "green_lady_talent",
                     "questName": "green_lady_talent"
                   }
@@ -251,7 +251,7 @@
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "50b0af8f-f907-4ebe-b687-a0a8c5dcd6ca",
+                    "chainId": "218ebcfc-e05d-4033-9edc-f3c7b4bd328f",
                     "objectiveName": "return_to_green_lady",
                     "questName": "return_to_green_lady"
                   },
@@ -319,7 +319,7 @@
           },
           "nodes": [
             {
-              "id": "open_training",
+              "id": "open_training_ability",
               "message": "Let me see what I can teach you. Talk to me again when you're done.",
               "effects": [
                 {
@@ -330,13 +330,13 @@
           ],
           "prompts": [
             {
-              "id": "need_training",
+              "id": "need_training_ability",
               "message": "ready to learn",
               "triggerPhrase": "want to learn",
               "suggestedText": "I want to learn.",
               "responses": [
                 {
-                  "responseNodeId": "open_training"
+                  "responseNodeId": "open_training_ability"
                 }
               ]
             }
@@ -349,7 +349,7 @@
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "8b87a579-adcf-46f2-91cf-8569d29d466b",
+                    "chainId": "54515528-dc20-4cf2-9620-97bcf29ad0a7",
                     "objectiveName": "after_green_lady",
                     "questName": "after_ability"
                   }
@@ -379,8 +379,13 @@
                 "responseNodeId": "hail_wo_abilities",
                 "conditions": [
                   {
-                    "dialogueConditionType": "mknpc:has_weapon_in_hand",
-                    "invert": true
+                    "dialogueConditionType": "mknpc:has_trained_abilities",
+                    "invert": true,
+                    "allMatch": false,
+                    "abilities": [
+                      "mkultra:ability.skin_like_wood",
+                      "mkultra:ability.natures_remedy"
+                    ]
                   }
                 ]
               }
@@ -442,11 +447,11 @@
             {
               "node": {
                 "id": "hail_w_kills",
-                "message": "Good: it is done. The dead rise everywhere, to cull the damned is a blessed pursuit. Our order is dedicated to cleansing this land. You are welcome to stay here and learn of our ways or go as you please.",
+                "message": "Good: it is done. The dead rise everywhere, to cull the damned is a blessed pursuit. Would you be willing to go back into that cursed hall and destroy {mk_quest_notable:mkultra:intro_castle#0#mkultra:trooper_captain}.",
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "35525d9e-317b-4c90-838e-d5436205de4a",
+                    "chainId": "47c72d88-a2ec-4a16-8988-f311cc349ed6",
                     "objectiveName": "after_kill",
                     "questName": "first_kill"
                   }
@@ -462,7 +467,7 @@
                       "kill_zombies",
                       "kill_archers"
                     ],
-                    "chainId": "6fdab4d4-8e25-4fa8-a064-ed92484d9e7a",
+                    "chainId": "bd173fb3-4233-4f45-a093-41bae54926a8",
                     "questName": "first_kill"
                   }
                 ]
@@ -483,7 +488,7 @@
                       "kill_zombies",
                       "kill_archers"
                     ],
-                    "chainId": "b3450bc5-2c06-4ab5-a5fb-6c1ddf192b8a",
+                    "chainId": "12b202a4-fc9d-414d-bbe3-bf5402ad83f2",
                     "questName": "first_kill"
                   }
                 ]
@@ -501,6 +506,102 @@
           "attributes": {
             "xp": 50
           }
+        }
+      ]
+    },
+    {
+      "questName": "kill_captain",
+      "objectives": [
+        {
+          "objectiveType": "mknpc:objective.kill_notable",
+          "description": [],
+          "attributes": {
+            "structureIndex": 0,
+            "npcDefinition": "mkultra:trooper_captain",
+            "structure": "mkultra:intro_castle",
+            "objectiveName": "kill_captain"
+          }
+        },
+        {
+          "objectiveType": "mknpc:objective.talk_to_npc",
+          "description": [
+            "{\"text\":\"Talk to the Green Lady after completing the other objectives.\"}"
+          ],
+          "attributes": {
+            "structureIndex": 0,
+            "npcDefinition": "mkultra:green_lady",
+            "structure": "mkultra:intro_castle",
+            "objectiveName": "after_kill_2"
+          },
+          "nodes": [],
+          "prompts": [],
+          "hailResponses": [
+            {
+              "node": {
+                "id": "hail_w_captain",
+                "message": "Good: it is done. Our order is dedicated to cleansing this land. You are welcome to stay here and learn of our ways or go as you please.",
+                "effects": [
+                  {
+                    "dialogueEffectType": "mknpc:objective_completion",
+                    "chainId": "90d7ca7e-f52e-480e-8a34-200665dcf546",
+                    "objectiveName": "after_kill_2",
+                    "questName": "kill_captain"
+                  }
+                ]
+              },
+              "response": {
+                "responseNodeId": "hail_w_captain",
+                "conditions": [
+                  {
+                    "dialogueConditionType": "mknpc:objectives_complete",
+                    "invert": false,
+                    "objectiveNames": [
+                      "kill_captain"
+                    ],
+                    "chainId": "968b8b0f-6a2d-4d89-af18-12fed2a01a81",
+                    "questName": "kill_captain"
+                  }
+                ]
+              }
+            },
+            {
+              "node": {
+                "id": "hail_wo_captain",
+                "message": "Come back to me after you've taken care of {mk_quest_notable:mkultra:intro_castle#0#mkultra:trooper_captain}."
+              },
+              "response": {
+                "responseNodeId": "hail_wo_captain",
+                "conditions": [
+                  {
+                    "dialogueConditionType": "mknpc:objectives_complete",
+                    "invert": true,
+                    "objectiveNames": [
+                      "kill_captain"
+                    ],
+                    "chainId": "7438d350-6b68-4c28-a2e2-ce110527f9fc",
+                    "questName": "kill_captain"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "description": "{\"text\":\"The Green Lady wants you to find and kill the Piglin Captain\"}",
+      "autoComplete": true,
+      "rewards": [
+        {
+          "rewardType": "mknpc:quest_reward.xp",
+          "description": "{\"translate\":\"mknpc.quest_reward.xp.name\",\"with\":[\"100\"]}",
+          "attributes": {
+            "xp": 100
+          }
+        },
+        {
+          "rewardType": "mknpc:quest_reward.entitlement",
+          "description": "{\"translate\":\"mknpc.grant_entitlement.message\",\"with\":[{\"translate\":\"mkultra.entitlement.green_knight.tier_2.name\"}]}",
+          "attributes": {},
+          "entitlement": "mkultra:green_knight.tier_2"
         }
       ]
     }
