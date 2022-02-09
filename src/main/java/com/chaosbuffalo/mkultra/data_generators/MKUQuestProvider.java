@@ -8,17 +8,16 @@ import com.chaosbuffalo.mknpc.data.QuestDefinitionProvider;
 import com.chaosbuffalo.mknpc.dialogue.effects.OpenLearnAbilitiesEffect;
 import com.chaosbuffalo.mknpc.quest.Quest;
 import com.chaosbuffalo.mknpc.quest.QuestDefinition;
+import com.chaosbuffalo.mknpc.quest.dialogue.NpcDialogueUtils;
 import com.chaosbuffalo.mknpc.quest.dialogue.conditions.HasSpentTalentPointsCondition;
 import com.chaosbuffalo.mknpc.quest.dialogue.conditions.HasTrainedAbilitiesCondition;
 import com.chaosbuffalo.mknpc.quest.dialogue.conditions.HasWeaponInHandCondition;
 import com.chaosbuffalo.mknpc.quest.dialogue.conditions.ObjectivesCompleteCondition;
 import com.chaosbuffalo.mknpc.quest.dialogue.effects.GrantEntitlementEffect;
 import com.chaosbuffalo.mknpc.quest.dialogue.effects.ObjectiveCompleteEffect;
-import com.chaosbuffalo.mknpc.quest.objectives.KillNpcDefObjective;
-import com.chaosbuffalo.mknpc.quest.objectives.LootChestObjective;
-import com.chaosbuffalo.mknpc.quest.objectives.TalkToNpcObjective;
-import com.chaosbuffalo.mknpc.quest.objectives.TradeItemsObjective;
+import com.chaosbuffalo.mknpc.quest.objectives.*;
 import com.chaosbuffalo.mknpc.quest.requirements.HasEntitlementRequirement;
+import com.chaosbuffalo.mknpc.quest.rewards.GrantEntitlementReward;
 import com.chaosbuffalo.mknpc.quest.rewards.MKLootReward;
 import com.chaosbuffalo.mknpc.quest.rewards.XpReward;
 import com.chaosbuffalo.mkultra.MKUltra;
@@ -268,14 +267,22 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
                 new StringTextComponent("Talk to the Green Lady after learning your first ability."));
         DialogueNode hailWithAbilities = new DialogueNode("hail_w_ability", "Now we must test your mettle in combat. " +
                 "Go kill some of the zombies on the first floor to try out your new magic, and don't forget you can always return to me to learn more.");
-        afterGreenLady.withAdditionalPrompts(needTraining);
-        afterGreenLady.withAdditionalNode(open_training);
+
+        DialogueNode open_training2 = new DialogueNode("open_training_ability",
+                "Let me see what I can teach you. Talk to me again when you're done.");
+        open_training2.addEffect(new OpenLearnAbilitiesEffect());
+        afterGreenLady.withAdditionalNode(open_training2);
+        DialoguePrompt needTraining2 = new DialoguePrompt("need_training_ability", "want to learn",
+                "I want to learn.", "ready to learn");
+        needTraining2.addResponse(new DialogueResponse(open_training2.getId()));
+        afterGreenLady.withAdditionalPrompts(needTraining2);
         DialogueResponse hailWithAbilityResp = new DialogueResponse(hailWithAbilities.getId());
         hailWithAbilities.addEffect(new ObjectiveCompleteEffect(afterGreenLady.getObjectiveName(), afterAbility.getQuestName()));
         hailWithAbilityResp.addCondition(new HasTrainedAbilitiesCondition(false, SkinLikeWoodAbility.INSTANCE.getAbilityId(), NaturesRemedyAbility.INSTANCE.getAbilityId()));
         DialogueNode hailWithoutAbilities = new DialogueNode("hail_wo_abilities", "Come back to me once you've learned one of our abilities.");
         DialogueResponse hailWithoutAbilitiesResp = new DialogueResponse(hailWithoutAbilities.getId());
-        hailWithoutAbilitiesResp.addCondition(new HasWeaponInHandCondition().setInvert(true));
+        hailWithoutAbilitiesResp.addCondition(new HasTrainedAbilitiesCondition(false, SkinLikeWoodAbility.INSTANCE.getAbilityId(),
+                NaturesRemedyAbility.INSTANCE.getAbilityId()).setInvert(true));
         afterGreenLady.withHailResponse(hailWithAbilities, hailWithAbilityResp);
         afterGreenLady.withHailResponse(hailWithoutAbilities, hailWithoutAbilitiesResp);
         afterAbility.addObjective(afterGreenLady);
@@ -299,9 +306,9 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
                 new ResourceLocation("mkultra", "green_lady"),
                 new StringTextComponent("Talk to the Green Lady after completing the other objectives.")
         );
-        DialogueNode talkAfterKillComplete = new DialogueNode("hail_w_kills", "Good: it is done. " +
-                "The dead rise everywhere, to cull the damned is a blessed pursuit. Our order is dedicated to cleansing " +
-                "this land. You are welcome to stay here and learn of our ways or go as you please.");
+        DialogueNode talkAfterKillComplete = new DialogueNode("hail_w_kills", String.format("Good: it is done. " +
+                "The dead rise everywhere, to cull the damned is a blessed pursuit. Would you be willing to go back into that cursed hall and destroy %s.",
+                NpcDialogueUtils.getNotableNpcRaw(MKUWorldGen.INTRO_CASTLE_NAME, 0, new ResourceLocation(MKUltra.MODID, "trooper_captain"))));
         DialogueResponse talkAfterKillCompleteResp = new DialogueResponse(talkAfterKillComplete.getId());
         talkAfterKillComplete.addEffect(new ObjectiveCompleteEffect(talkAfterKill.getObjectiveName(), killQuest.getQuestName()));
         talkAfterKillCompleteResp.addCondition(new ObjectivesCompleteCondition(killQuest.getQuestName(), killObjective.getObjectiveName(), killArcherObjective.getObjectiveName()));
@@ -313,6 +320,34 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
         killQuest.addObjective(talkAfterKill);
         def.addQuest(killQuest);
 
+        Quest killCaptain = new Quest("kill_captain",
+                new StringTextComponent("The Green Lady wants you to find and kill the Piglin Captain"));
+        killCaptain.setAutoComplete(true);
+        KillNotableNpcObjective notableObjective = new KillNotableNpcObjective("kill_captain", MKUWorldGen.INTRO_CASTLE_NAME, 0,
+                new ResourceLocation(MKUltra.MODID, "trooper_captain"));
+        killCaptain.addReward(new XpReward(100));
+        TalkToNpcObjective talkAfterKill2 = new TalkToNpcObjective(
+                "after_kill_2",
+                MKUWorldGen.INTRO_CASTLE_NAME, 0,
+                new ResourceLocation("mkultra", "green_lady"),
+                new StringTextComponent("Talk to the Green Lady after completing the other objectives.")
+        );
+        DialogueNode talkAfterKillComplete2 = new DialogueNode("hail_w_captain", "Good: it is done. " +
+                "Our order is dedicated to cleansing this land. You are welcome to stay here and learn of our ways or go as you please.");
+        DialogueResponse talkAfterKillCompleteResp2 = new DialogueResponse(talkAfterKillComplete2.getId());
+        talkAfterKillCompleteResp2.addCondition(new ObjectivesCompleteCondition(killCaptain.getQuestName(), notableObjective.getObjectiveName()));
+        talkAfterKillComplete2.addEffect(new ObjectiveCompleteEffect(talkAfterKill2.getObjectiveName(), killCaptain.getQuestName()));
+        DialogueNode withoutKill2 = new DialogueNode("hail_wo_captain", String.format("Come back to me after you've taken care of %s.",
+                NpcDialogueUtils.getNotableNpcRaw(MKUWorldGen.INTRO_CASTLE_NAME, 0, new ResourceLocation(MKUltra.MODID, "trooper_captain"))));
+        DialogueResponse withoutKillResp2 = new DialogueResponse(withoutKill2.getId());
+        withoutKillResp2.addCondition(new ObjectivesCompleteCondition(killCaptain.getQuestName(), notableObjective.getObjectiveName()).setInvert(true));
+        talkAfterKill2.withHailResponse(talkAfterKillComplete2, talkAfterKillCompleteResp2);
+        talkAfterKill2.withHailResponse(withoutKill2, withoutKillResp2);
+        killCaptain.addObjective(notableObjective);
+        killCaptain.addObjective(talkAfterKill2);
+        killCaptain.addReward(new GrantEntitlementReward(MKUEntitlements.GreenKnightTier2));
+        def.addQuest(killCaptain);
         return def;
     }
+
 }
