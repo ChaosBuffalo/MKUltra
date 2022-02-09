@@ -19,19 +19,19 @@
           "hailResponses": [
             {
               "node": {
-                "id": "hail",
+                "id": "talk_to_smith_hail",
                 "message": "We ain't got much left after the crash. Check that chest over there we got a few things. You can use my crafting table as well. Talk to me again when you have made a weapon.",
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "00e75b62-0fc7-4cfa-961f-547662de38c3",
+                    "chainId": "2ad1f6c6-8dbf-41c0-955a-18707fcba7a7",
                     "objectiveName": "talk_to_smith",
                     "questName": "talk_to_smith"
                   }
                 ]
               },
               "response": {
-                "responseNodeId": "hail"
+                "responseNodeId": "talk_to_smith_hail"
               }
             }
           ]
@@ -105,19 +105,19 @@
           "hailResponses": [
             {
               "node": {
-                "id": "hail_w_weapon",
+                "id": "return_to_smith_w_cond",
                 "message": "Great, but you're going to need more than just a sharp rock where we're going. Go back and talk to the Green Lady, ask her about learning to develop your magical talents.",
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "0596dc33-b2e4-4494-903e-1d3d75a467db",
+                    "chainId": "2ed6c243-fb82-4600-83dc-2300db76b227",
                     "objectiveName": "return_to_smith",
                     "questName": "return_to_smith"
                   }
                 ]
               },
               "response": {
-                "responseNodeId": "hail_w_weapon",
+                "responseNodeId": "return_to_smith_w_cond",
                 "conditions": [
                   {
                     "dialogueConditionType": "mknpc:has_weapon_in_hand",
@@ -128,11 +128,11 @@
             },
             {
               "node": {
-                "id": "hail_wo_weapon",
+                "id": "return_to_smith_wo_cond",
                 "message": "Come back to me with a weapon in your hand."
               },
               "response": {
-                "responseNodeId": "hail_wo_weapon",
+                "responseNodeId": "return_to_smith_wo_cond",
                 "conditions": [
                   {
                     "dialogueConditionType": "mknpc:has_weapon_in_hand",
@@ -175,19 +175,19 @@
           "hailResponses": [
             {
               "node": {
-                "id": "talent_1",
+                "id": "green_lady_talent_hail",
                 "message": "We can help you awaken your magical gifts, the first step is learning how to train your talents. You should have gained a talent point upon initiating this conversation. Open your player screen and go to the talent section, train any of the first talents in order to unlock your first ability slot. Talk to me again when you have finished this.",
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "1928411e-02c6-4a40-b6e8-6f2de9c9709b",
+                    "chainId": "118f217b-5a2d-4ed1-bffd-31576c755c8b",
                     "objectiveName": "green_lady_talent",
                     "questName": "green_lady_talent"
                   }
                 ]
               },
               "response": {
-                "responseNodeId": "talent_1"
+                "responseNodeId": "green_lady_talent_hail"
               }
             }
           ]
@@ -246,23 +246,19 @@
           "hailResponses": [
             {
               "node": {
-                "id": "hail_w_training",
+                "id": "return_to_green_lady_w_cond",
                 "message": "Alright you're now {prompt:need_training} your first ability.",
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "218ebcfc-e05d-4033-9edc-f3c7b4bd328f",
+                    "chainId": "df036b8c-2e8a-4f00-8de2-ec66b5f745aa",
                     "objectiveName": "return_to_green_lady",
                     "questName": "return_to_green_lady"
-                  },
-                  {
-                    "dialogueEffectType": "mknpc:grant_entitlement",
-                    "entitlement": "mkultra:green_knight.tier_1"
                   }
                 ]
               },
               "response": {
-                "responseNodeId": "hail_w_training",
+                "responseNodeId": "return_to_green_lady_w_cond",
                 "conditions": [
                   {
                     "dialogueConditionType": "mknpc:has_spent_talents",
@@ -274,11 +270,11 @@
             },
             {
               "node": {
-                "id": "hail_wo_training",
+                "id": "return_to_green_lady_wo_cond",
                 "message": "Come back to me when you have spent your first talent point."
               },
               "response": {
-                "responseNodeId": "hail_wo_training",
+                "responseNodeId": "return_to_green_lady_wo_cond",
                 "conditions": [
                   {
                     "dialogueConditionType": "mknpc:has_spent_talents",
@@ -300,6 +296,12 @@
           "attributes": {
             "xp": 50
           }
+        },
+        {
+          "rewardType": "mknpc:quest_reward.entitlement",
+          "description": "{\"translate\":\"mknpc.quest_reward.entitlement.message\",\"with\":[{\"translate\":\"mkultra.entitlement.green_knight.tier_1.name\"}]}",
+          "attributes": {},
+          "entitlement": "mkultra:green_knight.tier_1"
         }
       ]
     },
@@ -344,19 +346,19 @@
           "hailResponses": [
             {
               "node": {
-                "id": "hail_w_ability",
+                "id": "after_green_lady_w_cond",
                 "message": "Now we must test your mettle in combat. Go kill some of the zombies on the first floor to try out your new magic, and don't forget you can always return to me to learn more.",
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "54515528-dc20-4cf2-9620-97bcf29ad0a7",
+                    "chainId": "d97479e1-a3e9-48b8-a509-fa01f1673af0",
                     "objectiveName": "after_green_lady",
                     "questName": "after_ability"
                   }
                 ]
               },
               "response": {
-                "responseNodeId": "hail_w_ability",
+                "responseNodeId": "after_green_lady_w_cond",
                 "conditions": [
                   {
                     "dialogueConditionType": "mknpc:has_trained_abilities",
@@ -372,11 +374,11 @@
             },
             {
               "node": {
-                "id": "hail_wo_abilities",
+                "id": "after_green_lady_wo_cond",
                 "message": "Come back to me once you've learned one of our abilities."
               },
               "response": {
-                "responseNodeId": "hail_wo_abilities",
+                "responseNodeId": "after_green_lady_wo_cond",
                 "conditions": [
                   {
                     "dialogueConditionType": "mknpc:has_trained_abilities",
@@ -446,19 +448,19 @@
           "hailResponses": [
             {
               "node": {
-                "id": "hail_w_kills",
+                "id": "after_kill_complete",
                 "message": "Good: it is done. The dead rise everywhere, to cull the damned is a blessed pursuit. Would you be willing to go back into that cursed hall and destroy {mk_quest_notable:mkultra:intro_castle#0#mkultra:trooper_captain}.",
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "47c72d88-a2ec-4a16-8988-f311cc349ed6",
+                    "chainId": "10df0efd-0b55-44a6-8f6e-1f7d9f8bb43f",
                     "objectiveName": "after_kill",
                     "questName": "first_kill"
                   }
                 ]
               },
               "response": {
-                "responseNodeId": "hail_w_kills",
+                "responseNodeId": "after_kill_complete",
                 "conditions": [
                   {
                     "dialogueConditionType": "mknpc:objectives_complete",
@@ -467,7 +469,7 @@
                       "kill_zombies",
                       "kill_archers"
                     ],
-                    "chainId": "bd173fb3-4233-4f45-a093-41bae54926a8",
+                    "chainId": "f016820e-10b7-49b4-a152-e41d4cfcf056",
                     "questName": "first_kill"
                   }
                 ]
@@ -475,11 +477,11 @@
             },
             {
               "node": {
-                "id": "hail_wo_kill",
+                "id": "after_kill_wo_complete",
                 "message": "Come back to me after you've proven yourself."
               },
               "response": {
-                "responseNodeId": "hail_wo_kill",
+                "responseNodeId": "after_kill_wo_complete",
                 "conditions": [
                   {
                     "dialogueConditionType": "mknpc:objectives_complete",
@@ -488,7 +490,7 @@
                       "kill_zombies",
                       "kill_archers"
                     ],
-                    "chainId": "12b202a4-fc9d-414d-bbe3-bf5402ad83f2",
+                    "chainId": "c356965e-63b7-4ce8-91c4-14679fdee48b",
                     "questName": "first_kill"
                   }
                 ]
@@ -531,26 +533,26 @@
             "structureIndex": 0,
             "npcDefinition": "mkultra:green_lady",
             "structure": "mkultra:intro_castle",
-            "objectiveName": "after_kill_2"
+            "objectiveName": "after_kill_captain"
           },
           "nodes": [],
           "prompts": [],
           "hailResponses": [
             {
               "node": {
-                "id": "hail_w_captain",
+                "id": "after_kill_captain_complete",
                 "message": "Good: it is done. Our order is dedicated to cleansing this land. You are welcome to stay here and learn of our ways or go as you please.",
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "90d7ca7e-f52e-480e-8a34-200665dcf546",
-                    "objectiveName": "after_kill_2",
+                    "chainId": "04596f84-ced0-4780-a9ba-868b51659635",
+                    "objectiveName": "after_kill_captain",
                     "questName": "kill_captain"
                   }
                 ]
               },
               "response": {
-                "responseNodeId": "hail_w_captain",
+                "responseNodeId": "after_kill_captain_complete",
                 "conditions": [
                   {
                     "dialogueConditionType": "mknpc:objectives_complete",
@@ -558,7 +560,7 @@
                     "objectiveNames": [
                       "kill_captain"
                     ],
-                    "chainId": "968b8b0f-6a2d-4d89-af18-12fed2a01a81",
+                    "chainId": "08e97ede-6b1a-4d05-a983-a04e92479743",
                     "questName": "kill_captain"
                   }
                 ]
@@ -566,11 +568,11 @@
             },
             {
               "node": {
-                "id": "hail_wo_captain",
+                "id": "after_kill_captain_wo_complete",
                 "message": "Come back to me after you've taken care of {mk_quest_notable:mkultra:intro_castle#0#mkultra:trooper_captain}."
               },
               "response": {
-                "responseNodeId": "hail_wo_captain",
+                "responseNodeId": "after_kill_captain_wo_complete",
                 "conditions": [
                   {
                     "dialogueConditionType": "mknpc:objectives_complete",
@@ -578,7 +580,7 @@
                     "objectiveNames": [
                       "kill_captain"
                     ],
-                    "chainId": "7438d350-6b68-4c28-a2e2-ce110527f9fc",
+                    "chainId": "70149823-0bad-443c-bce1-9f42f5b1a5c6",
                     "questName": "kill_captain"
                   }
                 ]
@@ -599,7 +601,7 @@
         },
         {
           "rewardType": "mknpc:quest_reward.entitlement",
-          "description": "{\"translate\":\"mknpc.grant_entitlement.message\",\"with\":[{\"translate\":\"mkultra.entitlement.green_knight.tier_2.name\"}]}",
+          "description": "{\"translate\":\"mknpc.quest_reward.entitlement.message\",\"with\":[{\"translate\":\"mkultra.entitlement.green_knight.tier_2.name\"}]}",
           "attributes": {},
           "entitlement": "mkultra:green_knight.tier_2"
         }
