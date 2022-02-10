@@ -24,7 +24,7 @@
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "2ad1f6c6-8dbf-41c0-955a-18707fcba7a7",
+                    "chainId": "c7536d4e-2453-43a2-95f8-4a222717ad0e",
                     "objectiveName": "talk_to_smith",
                     "questName": "talk_to_smith"
                   }
@@ -110,7 +110,7 @@
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "2ed6c243-fb82-4600-83dc-2300db76b227",
+                    "chainId": "79d7c5fe-7b7b-42d5-93fd-a19e95814267",
                     "objectiveName": "return_to_smith",
                     "questName": "return_to_smith"
                   }
@@ -132,13 +132,7 @@
                 "message": "Come back to me with a weapon in your hand."
               },
               "response": {
-                "responseNodeId": "return_to_smith_wo_cond",
-                "conditions": [
-                  {
-                    "dialogueConditionType": "mknpc:has_weapon_in_hand",
-                    "invert": true
-                  }
-                ]
+                "responseNodeId": "return_to_smith_wo_cond"
               }
             }
           ]
@@ -180,7 +174,7 @@
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "118f217b-5a2d-4ed1-bffd-31576c755c8b",
+                    "chainId": "95d22a49-d567-4176-8f0a-345d14ebcd29",
                     "objectiveName": "green_lady_talent",
                     "questName": "green_lady_talent"
                   }
@@ -251,7 +245,7 @@
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "df036b8c-2e8a-4f00-8de2-ec66b5f745aa",
+                    "chainId": "dd2f38bc-c909-4422-a4f9-d45b1c91cf51",
                     "objectiveName": "return_to_green_lady",
                     "questName": "return_to_green_lady"
                   }
@@ -274,14 +268,7 @@
                 "message": "Come back to me when you have spent your first talent point."
               },
               "response": {
-                "responseNodeId": "return_to_green_lady_wo_cond",
-                "conditions": [
-                  {
-                    "dialogueConditionType": "mknpc:has_spent_talents",
-                    "invert": true,
-                    "talentCount": 1
-                  }
-                ]
+                "responseNodeId": "return_to_green_lady_wo_cond"
               }
             }
           ]
@@ -351,7 +338,7 @@
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "d97479e1-a3e9-48b8-a509-fa01f1673af0",
+                    "chainId": "8d07f47d-8c38-43e4-9a0a-93766a8bb15e",
                     "objectiveName": "after_green_lady",
                     "questName": "after_ability"
                   }
@@ -378,18 +365,7 @@
                 "message": "Come back to me once you've learned one of our abilities."
               },
               "response": {
-                "responseNodeId": "after_green_lady_wo_cond",
-                "conditions": [
-                  {
-                    "dialogueConditionType": "mknpc:has_trained_abilities",
-                    "invert": true,
-                    "allMatch": false,
-                    "abilities": [
-                      "mkultra:ability.skin_like_wood",
-                      "mkultra:ability.natures_remedy"
-                    ]
-                  }
-                ]
+                "responseNodeId": "after_green_lady_wo_cond"
               }
             }
           ]
@@ -453,7 +429,7 @@
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "10df0efd-0b55-44a6-8f6e-1f7d9f8bb43f",
+                    "chainId": "7069f9b6-8c5f-476c-84d4-0fcc0d0844fc",
                     "objectiveName": "after_kill",
                     "questName": "first_kill"
                   }
@@ -469,7 +445,7 @@
                       "kill_zombies",
                       "kill_archers"
                     ],
-                    "chainId": "f016820e-10b7-49b4-a152-e41d4cfcf056",
+                    "chainId": "b30b52ec-ac0e-4d60-bda7-ff6c28679407",
                     "questName": "first_kill"
                   }
                 ]
@@ -481,19 +457,7 @@
                 "message": "Come back to me after you've proven yourself."
               },
               "response": {
-                "responseNodeId": "after_kill_wo_complete",
-                "conditions": [
-                  {
-                    "dialogueConditionType": "mknpc:objectives_complete",
-                    "invert": true,
-                    "objectiveNames": [
-                      "kill_zombies",
-                      "kill_archers"
-                    ],
-                    "chainId": "c356965e-63b7-4ce8-91c4-14679fdee48b",
-                    "questName": "first_kill"
-                  }
-                ]
+                "responseNodeId": "after_kill_wo_complete"
               }
             }
           ]
@@ -545,7 +509,7 @@
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "04596f84-ced0-4780-a9ba-868b51659635",
+                    "chainId": "06b14384-0af2-41ad-8db2-c516cb64292c",
                     "objectiveName": "after_kill_captain",
                     "questName": "kill_captain"
                   }
@@ -560,7 +524,7 @@
                     "objectiveNames": [
                       "kill_captain"
                     ],
-                    "chainId": "08e97ede-6b1a-4d05-a983-a04e92479743",
+                    "chainId": "8ff95c42-b35b-4905-813a-4c65caa0fd86",
                     "questName": "kill_captain"
                   }
                 ]
@@ -572,18 +536,7 @@
                 "message": "Come back to me after you've taken care of {mk_quest_notable:mkultra:intro_castle#0#mkultra:trooper_captain}."
               },
               "response": {
-                "responseNodeId": "after_kill_captain_wo_complete",
-                "conditions": [
-                  {
-                    "dialogueConditionType": "mknpc:objectives_complete",
-                    "invert": true,
-                    "objectiveNames": [
-                      "kill_captain"
-                    ],
-                    "chainId": "70149823-0bad-443c-bce1-9f42f5b1a5c6",
-                    "questName": "kill_captain"
-                  }
-                ]
+                "responseNodeId": "after_kill_captain_wo_complete"
               }
             }
           ]

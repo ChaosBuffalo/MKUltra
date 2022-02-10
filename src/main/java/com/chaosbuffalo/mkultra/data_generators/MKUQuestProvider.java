@@ -206,7 +206,6 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
                                 "Go back and talk to the Green Lady, ask her about learning to develop your magical talents.",
                         "Come back to me with a weapon in your hand.",
                         new HasWeaponInHandCondition(),
-                        new HasWeaponInHandCondition().setInvert(true),
                         null
                         )
                 .reward(new XpReward(25))
@@ -247,7 +246,6 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
                                 "Alright you're now %s your first ability.", needTraining.getPromptEmbed()),
                         "Come back to me when you have spent your first talent point.",
                         new HasSpentTalentPointsCondition(1),
-                        new HasSpentTalentPointsCondition(1).setInvert(true),
                         (convo) ->{
                             convo.withAdditionalNode(openTraining);
                             convo.withAdditionalPrompts(needTraining);
@@ -276,7 +274,6 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
                                 "Go kill some of the zombies on the first floor to try out your new magic, and don't forget you can always return to me to learn more.",
                         "Come back to me once you've learned one of our abilities.",
                         new HasTrainedAbilitiesCondition(false, SkinLikeWoodAbility.INSTANCE.getAbilityId(), NaturesRemedyAbility.INSTANCE.getAbilityId()),
-                        new HasTrainedAbilitiesCondition(false, SkinLikeWoodAbility.INSTANCE.getAbilityId(), NaturesRemedyAbility.INSTANCE.getAbilityId()).setInvert(true),
                         (convo) ->{
                             convo.withAdditionalNode(openTraining2);
                             convo.withAdditionalPrompts(needTraining2);
@@ -392,11 +389,10 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
                     talkTo.location.structureName, talkTo.location.structureIndex, talkTo.npcDef, description);
             DialogueNode completeNode = new DialogueNode(String.format("%s_complete", objectiveName), withComplete);
             DialogueResponse completeResponse = new DialogueResponse(completeNode.getId());
-            completeResponse.addCondition(new ObjectivesCompleteCondition(quest.getQuestName(), objectives.toArray(new String[]{})));
+            completeResponse.addCondition(new ObjectivesCompleteCondition(quest.getQuestName(), objectives.toArray(new String[0])));
             completeNode.addEffect(new ObjectiveCompleteEffect(talkObj.getObjectiveName(), quest.getQuestName()));
             DialogueNode withoutCompleteNode = new DialogueNode(String.format("%s_wo_complete", objectiveName), withoutComplete);
             DialogueResponse withoutResponse = new DialogueResponse(withoutCompleteNode.getId());
-            withoutResponse.addCondition(new ObjectivesCompleteCondition(quest.getQuestName(), objectives.toArray(new String[]{})).setInvert(true));
             talkObj.withHailResponse(completeNode, completeResponse);
             talkObj.withHailResponse(withoutCompleteNode, withoutResponse);
             if (additionalLogic != null){
@@ -408,7 +404,7 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
 
         public QuestBuilder hailWithCondition(String objectiveName, IFormattableTextComponent description,
                                               QuestNpc talkTo, String withCondition, String withoutCondition,
-                                              DialogueCondition withCond, DialogueCondition withoutCond,
+                                              DialogueCondition withCond,
                                               @Nullable Consumer<TalkToNpcObjective> additionalLogic){
             TalkToNpcObjective talkObj = new TalkToNpcObjective(objectiveName,
                     talkTo.location.structureName, talkTo.location.structureIndex, talkTo.npcDef, description);
@@ -418,7 +414,6 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
             conditionNode.addEffect(new ObjectiveCompleteEffect(talkObj.getObjectiveName(), quest.getQuestName()));
             DialogueNode withoutConditionNode = new DialogueNode(String.format("%s_wo_cond", objectiveName), withoutCondition);
             DialogueResponse withoutConditionResponse = new DialogueResponse(withoutConditionNode.getId());
-            withoutConditionResponse.addCondition(withoutCond);
             talkObj.withHailResponse(conditionNode, conditionResponse);
             talkObj.withHailResponse(withoutConditionNode, withoutConditionResponse);
             if (additionalLogic != null){
