@@ -4,6 +4,7 @@ import com.chaosbuffalo.mkchat.dialogue.DialogueNode;
 import com.chaosbuffalo.mkchat.dialogue.DialoguePrompt;
 import com.chaosbuffalo.mkchat.dialogue.DialogueResponse;
 import com.chaosbuffalo.mkchat.dialogue.DialogueUtils;
+import com.chaosbuffalo.mkchat.dialogue.conditions.DialogueCondition;
 import com.chaosbuffalo.mknpc.data.QuestDefinitionProvider;
 import com.chaosbuffalo.mknpc.dialogue.effects.OpenLearnAbilitiesEffect;
 import com.chaosbuffalo.mknpc.quest.Quest;
@@ -13,12 +14,12 @@ import com.chaosbuffalo.mknpc.quest.dialogue.conditions.HasSpentTalentPointsCond
 import com.chaosbuffalo.mknpc.quest.dialogue.conditions.HasTrainedAbilitiesCondition;
 import com.chaosbuffalo.mknpc.quest.dialogue.conditions.HasWeaponInHandCondition;
 import com.chaosbuffalo.mknpc.quest.dialogue.conditions.ObjectivesCompleteCondition;
-import com.chaosbuffalo.mknpc.quest.dialogue.effects.GrantEntitlementEffect;
 import com.chaosbuffalo.mknpc.quest.dialogue.effects.ObjectiveCompleteEffect;
 import com.chaosbuffalo.mknpc.quest.objectives.*;
 import com.chaosbuffalo.mknpc.quest.requirements.HasEntitlementRequirement;
 import com.chaosbuffalo.mknpc.quest.rewards.GrantEntitlementReward;
 import com.chaosbuffalo.mknpc.quest.rewards.MKLootReward;
+import com.chaosbuffalo.mknpc.quest.rewards.QuestReward;
 import com.chaosbuffalo.mknpc.quest.rewards.XpReward;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.abilities.green_knight.NaturesRemedyAbility;
@@ -33,10 +34,16 @@ import net.minecraft.data.DirectoryCache;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Consumer;
 
 public class MKUQuestProvider extends QuestDefinitionProvider {
 
@@ -137,6 +144,11 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
 
     private QuestDefinition generateIntroQuest(){
 
+        QuestBuilder.QuestLocation introCastle = new QuestBuilder.QuestLocation(MKUWorldGen.INTRO_CASTLE_NAME, 0);
+        QuestBuilder.QuestNpc greenLady = new QuestBuilder.QuestNpc(introCastle, new ResourceLocation("mkultra", "green_lady"));
+        QuestBuilder.QuestNpc piglinCaptain = new QuestBuilder.QuestNpc(introCastle, new ResourceLocation(MKUltra.MODID, "trooper_captain"));
+        QuestBuilder.QuestNpc greenSmith = new QuestBuilder.QuestNpc(introCastle, new ResourceLocation("mkultra", "green_smith"));
+
         QuestDefinition def = new QuestDefinition(new ResourceLocation(MKUltra.MODID, "intro_quest"));
         def.setQuestName(new StringTextComponent("Intro Quest"));
         DialoguePrompt startQuestPrompt = new DialoguePrompt("start_quest", "don't know",
@@ -153,201 +165,292 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
         def.setStartQuestHail(hailNode);
 
 
-        Quest talk1 = new Quest("talk_to_smith", new StringTextComponent("The Green Lady wants you to go talk to the smith and equip yourself for an unknown task."));
-        talk1.setAutoComplete(true);
-        TalkToNpcObjective talkObj = new TalkToNpcObjective(
-                "talk_to_smith",
-                MKUWorldGen.INTRO_CASTLE_NAME, 0,
-                new ResourceLocation("mkultra", "green_smith"),
-                new StringTextComponent("Talk to the smith"));
-        DialogueNode smithHail = new DialogueNode("hail", "We ain't got much left after the crash. " +
-                "Check that chest over there we got a few things. You can use my crafting table as well. Talk to me again when you have made a weapon.");
-        smithHail.addEffect(new ObjectiveCompleteEffect(talkObj.getObjectiveName(), talk1.getQuestName()));
-        talkObj.withHailResponse(smithHail, new DialogueResponse(smithHail.getId()));
-        talk1.addObjective(talkObj);
-        talk1.addReward(new XpReward(25));
+        Quest talk1 = new QuestBuilder("talk_to_smith",
+                new StringTextComponent("The Green Lady wants you to go talk to the smith and equip yourself for an unknown task."))
+                .autoComplete(true)
+                .simpleHail("talk_to_smith",
+                        new StringTextComponent("Talk to the smith"),
+                        greenSmith,
+                        "We ain't got much left after the crash. " +
+                                "Check that chest over there we got a few things. You can use my crafting table as well. " +
+                                "Talk to me again when you have made a weapon.",
+                        null
+                )
+                .reward(new XpReward(25))
+                .quest();
         def.addQuest(talk1);
 
 
-        Quest lootSmithChest = new Quest("equip_yourself", new StringTextComponent("The Green Smith points you towards a chest in his workshop."));
-        LootChestObjective chestObj = new LootChestObjective("loot_chest", MKUWorldGen.INTRO_CASTLE_NAME, "intro_chest", new StringTextComponent("Loot the smith's chest"));
-        chestObj.addItemStack(new ItemStack(Blocks.COBBLESTONE, 20));
-        chestObj.addItemStack(new ItemStack(Blocks.OAK_PLANKS, 20));
-        chestObj.addItemStack(new ItemStack(Items.STRING, 10));
-        chestObj.addItemStack(new ItemStack(Items.LEATHER, 40));
-        chestObj.addItemStack(new ItemStack(Items.COAL, 10));
-        chestObj.addItemStack(new ItemStack(Items.FLINT, 10));
-        chestObj.addItemStack(new ItemStack(Items.PORKCHOP, 10));
-        lootSmithChest.addObjective(chestObj);
-        lootSmithChest.setAutoComplete(true);
-        lootSmithChest.addReward(new XpReward(25));
+        Quest lootSmithChest = new QuestBuilder("equip_yourself", new StringTextComponent("The Green Smith points you towards a chest in his workshop."))
+                .autoComplete(true)
+                .lootChest("loot_chest", new StringTextComponent("Loot the smith's chest"), introCastle, "intro_chest",
+                        new ItemStack(Blocks.COBBLESTONE, 20),
+                        new ItemStack(Blocks.OAK_PLANKS, 20),
+                        new ItemStack(Items.STRING, 10),
+                        new ItemStack(Items.LEATHER, 40),
+                        new ItemStack(Items.COAL, 10),
+                        new ItemStack(Items.FLINT, 10),
+                        new ItemStack(Items.PORKCHOP, 10)
+                )
+                .reward(new XpReward(25))
+                .quest();
         def.addQuest(lootSmithChest);
 
-
-        Quest returnToSmith = new Quest("return_to_smith", new StringTextComponent("Use the Green Smith's supplies to craft your desired weapon and perhaps some armor for the battle ahead."));
-        returnToSmith.setAutoComplete(true);
-        TalkToNpcObjective retSmithTalk = new TalkToNpcObjective(
-                "return_to_smith",
-                MKUWorldGen.INTRO_CASTLE_NAME, 0,
-                new ResourceLocation("mkultra", "green_smith"),
-                new StringTextComponent("Talk to the Green Smith with a weapon in your hand."));
-        DialogueNode hailWithWeapon = new DialogueNode("hail_w_weapon", "Great, but you're going to need more than just a sharp rock where we're going. " +
-                "Go back and talk to the Green Lady, ask her about learning to develop your magical talents.");
-        DialogueResponse hailWithWeaponResp = new DialogueResponse(hailWithWeapon.getId());
-        hailWithWeapon.addEffect(new ObjectiveCompleteEffect(retSmithTalk.getObjectiveName(), returnToSmith.getQuestName()));
-        hailWithWeaponResp.addCondition(new HasWeaponInHandCondition());
-        DialogueNode hailWithoutWeapon = new DialogueNode("hail_wo_weapon", "Come back to me with a weapon in your hand.");
-        DialogueResponse hailWithoutWeaponResp = new DialogueResponse(hailWithoutWeapon.getId());
-        hailWithoutWeaponResp.addCondition(new HasWeaponInHandCondition().setInvert(true));
-        retSmithTalk.withHailResponse(hailWithWeapon, hailWithWeaponResp);
-        retSmithTalk.withHailResponse(hailWithoutWeapon, hailWithoutWeaponResp);
-        returnToSmith.addObjective(retSmithTalk);
-        returnToSmith.addReward(new XpReward(25));
+        Quest returnToSmith = new QuestBuilder("return_to_smith", new StringTextComponent("Use the Green Smith's supplies to craft your desired weapon and perhaps some armor for the battle ahead."))
+                .autoComplete(true)
+                .hailWithCondition("return_to_smith",
+                        new StringTextComponent("Talk to the Green Smith with a weapon in your hand."),
+                        greenSmith,
+                        "Great, but you're going to need more than just a sharp rock where we're going. " +
+                                "Go back and talk to the Green Lady, ask her about learning to develop your magical talents.",
+                        "Come back to me with a weapon in your hand.",
+                        new HasWeaponInHandCondition(),
+                        null
+                        )
+                .reward(new XpReward(25))
+                .quest();
         def.addQuest(returnToSmith);
 
-
-        Quest greenLadyTrainTalent = new Quest("green_lady_talent",
-                new StringTextComponent("Talk to the Green Lady to learn more about developing your magical abilities"));
-        greenLadyTrainTalent.setAutoComplete(true);
-        TalkToNpcObjective greenLadyTalent = new TalkToNpcObjective(
-                "green_lady_talent",
-                MKUWorldGen.INTRO_CASTLE_NAME, 0,
-                new ResourceLocation("mkultra", "green_lady"),
-                new StringTextComponent("Talk to the Green Lady about the talent system."));
-        DialogueNode greenLadyTalentConvoStart = new DialogueNode("talent_1","We can help you awaken your magical gifts, the first step is learning how " +
-                "to train your talents. You should have gained a talent point upon initiating this conversation. " +
-                "Open your player screen and go to the talent section, train any of the first talents in order to unlock your first ability slot. Talk to me again when you have finished this.");
-        greenLadyTalentConvoStart.addEffect(new ObjectiveCompleteEffect(greenLadyTalent.getObjectiveName(), greenLadyTrainTalent.getQuestName()));
-        greenLadyTalent.withHailResponse(greenLadyTalentConvoStart, new DialogueResponse(greenLadyTalentConvoStart.getId()));
-        greenLadyTrainTalent.addReward(new XpReward(25));
-        greenLadyTrainTalent.addObjective(greenLadyTalent);
+        Quest greenLadyTrainTalent = new QuestBuilder("green_lady_talent",
+                new StringTextComponent("Talk to the Green Lady to learn more about developing your magical abilities"))
+                .autoComplete(true)
+                .simpleHail(
+                        "green_lady_talent",
+                        new StringTextComponent("Talk to the Green Lady about the talent system."),
+                        greenLady,
+                        "We can help you awaken your magical gifts, the first step is learning how " +
+                                "to train your talents. You should have gained a talent point upon initiating this conversation. " +
+                                "Open your player screen and go to the talent section, train any of the first talents in " +
+                                "order to unlock your first ability slot. Talk to me again when you have finished this.",
+                        null
+                        )
+                .reward(new XpReward(25))
+                .quest();
         def.addQuest(greenLadyTrainTalent);
 
-
-        Quest returnToGreenLady = new Quest("return_to_green_lady",
-                new StringTextComponent("The Green Lady wants you to learn about spending talent points."));
-        returnToGreenLady.setAutoComplete(true);
-        TalkToNpcObjective retGreenLady = new TalkToNpcObjective(
-                "return_to_green_lady",
-                MKUWorldGen.INTRO_CASTLE_NAME, 0,
-                new ResourceLocation("mkultra", "green_lady"),
-                new StringTextComponent("Talk to the Green Lady after training a talent."));
-        DialogueNode open_training = new DialogueNode("open_training",
+        DialogueNode openTraining = new DialogueNode("open_training",
                 "Let me see what I can teach you. Talk to me again when you're done.");
-        open_training.addEffect(new OpenLearnAbilitiesEffect());
-        retGreenLady.withAdditionalNode(open_training);
+        openTraining.addEffect(new OpenLearnAbilitiesEffect());
         DialoguePrompt needTraining = new DialoguePrompt("need_training", "want to learn",
                 "I want to learn.", "ready to learn");
-        needTraining.addResponse(new DialogueResponse(open_training.getId()));
-        retGreenLady.withAdditionalPrompts(needTraining);
-        DialogueNode hailWithTraining = new DialogueNode("hail_w_training", String.format(
-                "Alright you're now %s your first ability.", needTraining.getPromptEmbed()));
-        DialogueResponse hailWithTrainingResp = new DialogueResponse(hailWithTraining.getId());
-        hailWithTraining.addEffect(new ObjectiveCompleteEffect(retGreenLady.getObjectiveName(), returnToGreenLady.getQuestName()));
-        hailWithTraining.addEffect(new GrantEntitlementEffect(MKUEntitlements.GreenKnightTier1));
-        hailWithTrainingResp.addCondition(new HasSpentTalentPointsCondition(1));
-        DialogueNode hailWithoutTraining = new DialogueNode("hail_wo_training",
-                "Come back to me when you have spent your first talent point.");
-        DialogueResponse hailWithoutTrainingResp = new DialogueResponse(hailWithoutTraining.getId());
-        hailWithoutTrainingResp.addCondition(new HasSpentTalentPointsCondition(1).setInvert(true));
-        retGreenLady.withHailResponse(hailWithTraining, hailWithTrainingResp);
-        retGreenLady.withHailResponse(hailWithoutTraining, hailWithoutTrainingResp);
-        returnToGreenLady.addObjective(retGreenLady);
-        returnToGreenLady.addReward(new XpReward(50));
+        needTraining.addResponse(new DialogueResponse(openTraining.getId()));
+
+        Quest returnToGreenLady = new QuestBuilder("return_to_green_lady",
+                new StringTextComponent("The Green Lady wants you to learn about spending talent points."))
+                .autoComplete(true)
+                .hailWithCondition("return_to_green_lady",
+                        new StringTextComponent("Talk to the Green Lady after training a talent."),
+                        greenLady,
+                        String.format(
+                                "Alright you're now %s your first ability.", needTraining.getPromptEmbed()),
+                        "Come back to me when you have spent your first talent point.",
+                        new HasSpentTalentPointsCondition(1),
+                        (convo) ->{
+                            convo.withAdditionalNode(openTraining);
+                            convo.withAdditionalPrompts(needTraining);
+                        }
+                        )
+                .reward(new XpReward(50))
+                .reward(new GrantEntitlementReward(MKUEntitlements.GreenKnightTier1))
+                .quest();
         def.addQuest(returnToGreenLady);
 
 
-        Quest afterAbility = new Quest("after_ability",
-                new StringTextComponent("Talk to the Green Lady and learn your first ability, then speak to her again."));
-        afterAbility.setAutoComplete(true);
-        TalkToNpcObjective afterGreenLady = new TalkToNpcObjective(
-                "after_green_lady",
-                MKUWorldGen.INTRO_CASTLE_NAME, 0,
-                new ResourceLocation("mkultra", "green_lady"),
-                new StringTextComponent("Talk to the Green Lady after learning your first ability."));
-        DialogueNode hailWithAbilities = new DialogueNode("hail_w_ability", "Now we must test your mettle in combat. " +
-                "Go kill some of the zombies on the first floor to try out your new magic, and don't forget you can always return to me to learn more.");
-
-        DialogueNode open_training2 = new DialogueNode("open_training_ability",
+        DialogueNode openTraining2 = new DialogueNode("open_training_ability",
                 "Let me see what I can teach you. Talk to me again when you're done.");
-        open_training2.addEffect(new OpenLearnAbilitiesEffect());
-        afterGreenLady.withAdditionalNode(open_training2);
+        openTraining2.addEffect(new OpenLearnAbilitiesEffect());
         DialoguePrompt needTraining2 = new DialoguePrompt("need_training_ability", "want to learn",
                 "I want to learn.", "ready to learn");
-        needTraining2.addResponse(new DialogueResponse(open_training2.getId()));
-        afterGreenLady.withAdditionalPrompts(needTraining2);
-        DialogueResponse hailWithAbilityResp = new DialogueResponse(hailWithAbilities.getId());
-        hailWithAbilities.addEffect(new ObjectiveCompleteEffect(afterGreenLady.getObjectiveName(), afterAbility.getQuestName()));
-        hailWithAbilityResp.addCondition(new HasTrainedAbilitiesCondition(false, SkinLikeWoodAbility.INSTANCE.getAbilityId(), NaturesRemedyAbility.INSTANCE.getAbilityId()));
-        DialogueNode hailWithoutAbilities = new DialogueNode("hail_wo_abilities", "Come back to me once you've learned one of our abilities.");
-        DialogueResponse hailWithoutAbilitiesResp = new DialogueResponse(hailWithoutAbilities.getId());
-        hailWithoutAbilitiesResp.addCondition(new HasTrainedAbilitiesCondition(false, SkinLikeWoodAbility.INSTANCE.getAbilityId(),
-                NaturesRemedyAbility.INSTANCE.getAbilityId()).setInvert(true));
-        afterGreenLady.withHailResponse(hailWithAbilities, hailWithAbilityResp);
-        afterGreenLady.withHailResponse(hailWithoutAbilities, hailWithoutAbilitiesResp);
-        afterAbility.addObjective(afterGreenLady);
-        afterAbility.addReward(new XpReward(50));
+        needTraining2.addResponse(new DialogueResponse(openTraining2.getId()));
+
+        Quest afterAbility = new QuestBuilder("after_ability",
+                new StringTextComponent("Talk to the Green Lady and learn your first ability, then speak to her again."))
+                .autoComplete(true)
+                .hailWithCondition("after_green_lady",
+                        new StringTextComponent("Talk to the Green Lady after learning your first ability."),
+                        greenLady,
+                        "Now we must test your mettle in combat. " +
+                                "Go kill some of the zombies on the first floor to try out your new magic, and don't forget you can always return to me to learn more.",
+                        "Come back to me once you've learned one of our abilities.",
+                        new HasTrainedAbilitiesCondition(false, SkinLikeWoodAbility.INSTANCE.getAbilityId(), NaturesRemedyAbility.INSTANCE.getAbilityId()),
+                        (convo) ->{
+                            convo.withAdditionalNode(openTraining2);
+                            convo.withAdditionalPrompts(needTraining2);
+                        })
+                .reward(new XpReward(50))
+                .quest();
         def.addQuest(afterAbility);
 
-
-        Quest killQuest = new Quest("first_kill",
-                new StringTextComponent("The Green Lady wants you to clear out some of the zombies on the first floor of the castle"));
-        killQuest.setAutoComplete(true);
-        KillNpcDefObjective killObjective = new KillNpcDefObjective("kill_zombies",
-                new ResourceLocation(MKUltra.MODID, "decaying_piglin"), 4);
-        KillNpcDefObjective killArcherObjective = new KillNpcDefObjective("kill_archers",
-                new ResourceLocation(MKUltra.MODID, "decaying_piglin_archer"), 4);
-        killQuest.addObjective(killObjective);
-        killQuest.addObjective(killArcherObjective);
-        killQuest.addReward(new XpReward(50));
-        TalkToNpcObjective talkAfterKill = new TalkToNpcObjective(
-                "after_kill",
-                MKUWorldGen.INTRO_CASTLE_NAME, 0,
-                new ResourceLocation("mkultra", "green_lady"),
-                new StringTextComponent("Talk to the Green Lady after completing the other objectives.")
-        );
-        DialogueNode talkAfterKillComplete = new DialogueNode("hail_w_kills", String.format("Good: it is done. " +
-                "The dead rise everywhere, to cull the damned is a blessed pursuit. Would you be willing to go back into that cursed hall and destroy %s.",
-                NpcDialogueUtils.getNotableNpcRaw(MKUWorldGen.INTRO_CASTLE_NAME, 0, new ResourceLocation(MKUltra.MODID, "trooper_captain"))));
-        DialogueResponse talkAfterKillCompleteResp = new DialogueResponse(talkAfterKillComplete.getId());
-        talkAfterKillComplete.addEffect(new ObjectiveCompleteEffect(talkAfterKill.getObjectiveName(), killQuest.getQuestName()));
-        talkAfterKillCompleteResp.addCondition(new ObjectivesCompleteCondition(killQuest.getQuestName(), killObjective.getObjectiveName(), killArcherObjective.getObjectiveName()));
-        DialogueNode withoutKill = new DialogueNode("hail_wo_kill", "Come back to me after you've proven yourself.");
-        DialogueResponse withoutKillResp = new DialogueResponse(withoutKill.getId());
-        withoutKillResp.addCondition(new ObjectivesCompleteCondition(killQuest.getQuestName(), killObjective.getObjectiveName(), killArcherObjective.getObjectiveName()).setInvert(true));
-        talkAfterKill.withHailResponse(talkAfterKillComplete, talkAfterKillCompleteResp);
-        talkAfterKill.withHailResponse(withoutKill, withoutKillResp);
-        killQuest.addObjective(talkAfterKill);
+        Quest killQuest = new QuestBuilder("first_kill",
+                new StringTextComponent("The Green Lady wants you to clear out some of the zombies on the first floor of the castle"))
+                .autoComplete(true)
+                .killNpc("kill_zombies", new ResourceLocation(MKUltra.MODID, "decaying_piglin"), 4)
+                .killNpc("kill_archers", new ResourceLocation(MKUltra.MODID, "decaying_piglin_archer"), 4)
+                .hailWithObjectives("after_kill",
+                        new StringTextComponent("Talk to the Green Lady after completing the other objectives."),
+                        greenLady,
+                        String.format("Good: it is done. " +
+                                        "The dead rise everywhere, to cull the damned is a blessed pursuit. " +
+                                        "Would you be willing to go back into that cursed hall and destroy %s.",
+                                piglinCaptain.getDialogueLink()),
+                        "Come back to me after you've proven yourself.",
+                        Arrays.asList("kill_zombies", "kill_archers"),
+                        null)
+                .reward(new XpReward(50))
+                .quest();
         def.addQuest(killQuest);
 
-        Quest killCaptain = new Quest("kill_captain",
-                new StringTextComponent("The Green Lady wants you to find and kill the Piglin Captain"));
-        killCaptain.setAutoComplete(true);
-        KillNotableNpcObjective notableObjective = new KillNotableNpcObjective("kill_captain", MKUWorldGen.INTRO_CASTLE_NAME, 0,
-                new ResourceLocation(MKUltra.MODID, "trooper_captain"));
-        killCaptain.addReward(new XpReward(100));
-        TalkToNpcObjective talkAfterKill2 = new TalkToNpcObjective(
-                "after_kill_2",
-                MKUWorldGen.INTRO_CASTLE_NAME, 0,
-                new ResourceLocation("mkultra", "green_lady"),
-                new StringTextComponent("Talk to the Green Lady after completing the other objectives.")
-        );
-        DialogueNode talkAfterKillComplete2 = new DialogueNode("hail_w_captain", "Good: it is done. " +
-                "Our order is dedicated to cleansing this land. You are welcome to stay here and learn of our ways or go as you please.");
-        DialogueResponse talkAfterKillCompleteResp2 = new DialogueResponse(talkAfterKillComplete2.getId());
-        talkAfterKillCompleteResp2.addCondition(new ObjectivesCompleteCondition(killCaptain.getQuestName(), notableObjective.getObjectiveName()));
-        talkAfterKillComplete2.addEffect(new ObjectiveCompleteEffect(talkAfterKill2.getObjectiveName(), killCaptain.getQuestName()));
-        DialogueNode withoutKill2 = new DialogueNode("hail_wo_captain", String.format("Come back to me after you've taken care of %s.",
-                NpcDialogueUtils.getNotableNpcRaw(MKUWorldGen.INTRO_CASTLE_NAME, 0, new ResourceLocation(MKUltra.MODID, "trooper_captain"))));
-        DialogueResponse withoutKillResp2 = new DialogueResponse(withoutKill2.getId());
-        withoutKillResp2.addCondition(new ObjectivesCompleteCondition(killCaptain.getQuestName(), notableObjective.getObjectiveName()).setInvert(true));
-        talkAfterKill2.withHailResponse(talkAfterKillComplete2, talkAfterKillCompleteResp2);
-        talkAfterKill2.withHailResponse(withoutKill2, withoutKillResp2);
-        killCaptain.addObjective(notableObjective);
-        killCaptain.addObjective(talkAfterKill2);
-        killCaptain.addReward(new GrantEntitlementReward(MKUEntitlements.GreenKnightTier2));
+        Quest killCaptain = new QuestBuilder("kill_captain", new StringTextComponent("The Green Lady wants you to find and kill the Piglin Captain"))
+                .autoComplete(true)
+                .killNotable("kill_captain", piglinCaptain)
+                .hailWithObjectives(
+                        "after_kill_captain",
+                        new StringTextComponent("Talk to the Green Lady after completing the other objectives."),
+                        greenLady,
+                        "Good: it is done. " +
+                                "Our order is dedicated to cleansing this land. You are welcome to stay here and learn of our ways or go as you please.",
+                        String.format("Come back to me after you've taken care of %s.", piglinCaptain.getDialogueLink()),
+                        Collections.singletonList("kill_captain"),
+                        null
+                        )
+                .reward(new XpReward(100))
+                .reward(new GrantEntitlementReward(MKUEntitlements.GreenKnightTier2))
+                .quest();
+
         def.addQuest(killCaptain);
         return def;
     }
 
+    public static class QuestBuilder {
+        private Quest quest;
+
+        public QuestBuilder(String questName, IFormattableTextComponent description){
+            this.quest = new Quest(questName, description);
+        }
+
+        public QuestBuilder autoComplete(boolean value){
+            quest.setAutoComplete(value);
+            return this;
+        }
+
+        public QuestBuilder objective(QuestObjective<?> objective){
+            quest.addObjective(objective);
+            return this;
+        }
+
+        public QuestBuilder reward(QuestReward reward){
+            quest.addReward(reward);
+            return this;
+        }
+
+        public QuestBuilder killNotable(String objectiveName, QuestNpc npc){
+            KillNotableNpcObjective kill = new KillNotableNpcObjective(objectiveName, npc.location.structureName,
+                    npc.location.structureIndex, npc.npcDef);
+            objective(kill);
+            return this;
+        }
+
+        public QuestBuilder killNpc(String objectiveName, ResourceLocation npcDef, int count){
+            KillNpcDefObjective kill = new KillNpcDefObjective(objectiveName, npcDef, count);
+            objective(kill);
+            return this;
+        }
+
+        public QuestBuilder hailWithObjectives(String objectiveName, IFormattableTextComponent description,
+                                               QuestNpc talkTo, String withComplete,
+                                               String withoutComplete, List<String> objectives,
+                                               @Nullable Consumer<TalkToNpcObjective> additionalLogic){
+            TalkToNpcObjective talkObj = new TalkToNpcObjective(objectiveName,
+                    talkTo.location.structureName, talkTo.location.structureIndex, talkTo.npcDef, description);
+            DialogueNode completeNode = new DialogueNode(String.format("%s_complete", objectiveName), withComplete);
+            DialogueResponse completeResponse = new DialogueResponse(completeNode.getId());
+            completeResponse.addCondition(new ObjectivesCompleteCondition(quest.getQuestName(), objectives.toArray(new String[0])));
+            completeNode.addEffect(new ObjectiveCompleteEffect(talkObj.getObjectiveName(), quest.getQuestName()));
+            DialogueNode withoutCompleteNode = new DialogueNode(String.format("%s_wo_complete", objectiveName), withoutComplete);
+            DialogueResponse withoutResponse = new DialogueResponse(withoutCompleteNode.getId());
+            talkObj.withHailResponse(completeNode, completeResponse);
+            talkObj.withHailResponse(withoutCompleteNode, withoutResponse);
+            if (additionalLogic != null){
+                additionalLogic.accept(talkObj);
+            }
+            objective(talkObj);
+            return this;
+        }
+
+        public QuestBuilder hailWithCondition(String objectiveName, IFormattableTextComponent description,
+                                              QuestNpc talkTo, String withCondition, String withoutCondition,
+                                              DialogueCondition withCond,
+                                              @Nullable Consumer<TalkToNpcObjective> additionalLogic){
+            TalkToNpcObjective talkObj = new TalkToNpcObjective(objectiveName,
+                    talkTo.location.structureName, talkTo.location.structureIndex, talkTo.npcDef, description);
+            DialogueNode conditionNode = new DialogueNode(String.format("%s_w_cond", objectiveName), withCondition);
+            DialogueResponse conditionResponse = new DialogueResponse(conditionNode.getId());
+            conditionResponse.addCondition(withCond);
+            conditionNode.addEffect(new ObjectiveCompleteEffect(talkObj.getObjectiveName(), quest.getQuestName()));
+            DialogueNode withoutConditionNode = new DialogueNode(String.format("%s_wo_cond", objectiveName), withoutCondition);
+            DialogueResponse withoutConditionResponse = new DialogueResponse(withoutConditionNode.getId());
+            talkObj.withHailResponse(conditionNode, conditionResponse);
+            talkObj.withHailResponse(withoutConditionNode, withoutConditionResponse);
+            if (additionalLogic != null){
+                additionalLogic.accept(talkObj);
+            }
+            objective(talkObj);
+            return this;
+        }
+
+        public QuestBuilder simpleHail(String objectiveName, IFormattableTextComponent description,
+                                       QuestNpc talkTo, String hailMessage, @Nullable Consumer<TalkToNpcObjective> additionalLogic){
+            TalkToNpcObjective talkObj = new TalkToNpcObjective(
+                    objectiveName,
+                    talkTo.location.structureName, talkTo.location.structureIndex, talkTo.npcDef,
+                    description);
+            DialogueNode hailNode = new DialogueNode(String.format("%s_hail", objectiveName), hailMessage);
+            hailNode.addEffect(new ObjectiveCompleteEffect(talkObj.getObjectiveName(), quest.getQuestName()));
+            talkObj.withHailResponse(hailNode, new DialogueResponse(hailNode.getId()));
+            if (additionalLogic != null){
+                additionalLogic.accept(talkObj);
+            }
+            objective(talkObj);
+            return this;
+        }
+
+        public QuestBuilder lootChest(String objectiveName, IFormattableTextComponent description, QuestLocation location,
+                                      String chestTag, ItemStack... items){
+            LootChestObjective chestObj = new LootChestObjective(objectiveName, location.structureName,
+                    location.structureIndex, chestTag, description);
+            for (ItemStack item : items){
+                chestObj.addItemStack(item);
+            }
+            objective(chestObj);
+            return this;
+        }
+
+        public Quest quest(){
+            return quest;
+        }
+
+        public static class QuestLocation {
+            ResourceLocation structureName;
+            int structureIndex;
+
+            public QuestLocation(ResourceLocation structureName, int structureIndex){
+                this.structureIndex = structureIndex;
+                this.structureName = structureName;
+            }
+        }
+
+        public static class QuestNpc {
+            QuestLocation location;
+            ResourceLocation npcDef;
+
+            public QuestNpc(QuestLocation location, ResourceLocation npcDef){
+                this.location = location;
+                this.npcDef = npcDef;
+            }
+
+            public String getDialogueLink(){
+                return NpcDialogueUtils.getNotableNpcRaw(location.structureName, location.structureIndex, npcDef);
+            }
+        }
+    }
 }
