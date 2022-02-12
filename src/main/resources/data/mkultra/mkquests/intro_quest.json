@@ -22,7 +22,6 @@
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "18fa49fd-1aa4-4c61-8fe4-2ae6bc41d477",
                     "objectiveName": "talk_to_smith",
                     "questName": "talk_to_smith"
                   }
@@ -121,7 +120,6 @@
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "fe4a76ef-8385-4be2-8efa-7d1300f4f506",
                     "objectiveName": "return_to_smith",
                     "questName": "return_to_smith"
                   }
@@ -188,7 +186,6 @@
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "0565b92a-8d0e-4d2f-908f-6f05919757b8",
                     "objectiveName": "green_lady_talent",
                     "questName": "green_lady_talent"
                   }
@@ -259,7 +256,6 @@
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "e0b0f9e8-8803-4293-a52d-46ffd1019fc7",
                     "objectiveName": "return_to_green_lady",
                     "questName": "return_to_green_lady"
                   }
@@ -348,7 +344,6 @@
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "c62fb044-041b-44cb-81ef-0ae319cac32b",
                     "objectiveName": "after_green_lady",
                     "questName": "after_ability"
                   }
@@ -462,11 +457,10 @@
               },
               {
                 "id": "after_kill_complete",
-                "message": "Good: it is done. The dead rise everywhere, to cull the damned is a blessed pursuit. Would you be willing to go back into that cursed hall and destroy {mk_quest_notable:mkultra:intro_castle#0#mkultra:trooper_captain}.",
+                "message": "Your skills have not gone unnoticed. The dead rise everywhere, to cull the damned is a blessed pursuit. Would you be willing to go back into that cursed hall and destroy {mk_quest_notable:mkultra:intro_castle#0#mkultra:trooper_captain}.",
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "fdacccd1-b78c-4360-9501-e711e995315a",
                     "objectiveName": "after_kill",
                     "questName": "first_kill"
                   }
@@ -490,7 +484,6 @@
                           "kill_zombies",
                           "kill_archers"
                         ],
-                        "chainId": "6adf4bc7-17d9-439d-a517-72fe4cd14e20",
                         "questName": "first_kill"
                       }
                     ]
@@ -545,11 +538,10 @@
             "nodes": [
               {
                 "id": "after_kill_captain_complete",
-                "message": "Good: it is done. Our order is dedicated to cleansing this land. You are welcome to stay here and learn of our ways or go as you please.",
+                "message": "I need you to return to the castle and delve even deeper. I know not why it appeared here at this time, but I do sense a residual life force beneath the castle. Perhaps this spirit will be amiable to conversation. Go find it.",
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "ef2f5a0f-8d2b-4629-a2d0-639f7cd1c80f",
                     "objectiveName": "after_kill_captain",
                     "questName": "kill_captain"
                   }
@@ -576,7 +568,6 @@
                         "objectiveNames": [
                           "kill_captain"
                         ],
-                        "chainId": "f4bf6296-d59e-4179-8af8-dabcecdbf4a6",
                         "questName": "kill_captain"
                       }
                     ]
@@ -606,6 +597,258 @@
           "description": "{\"translate\":\"mknpc.quest_reward.entitlement.message\",\"with\":[{\"translate\":\"mkultra.entitlement.green_knight.tier_2.name\"}]}",
           "attributes": {},
           "entitlement": "mkultra:green_knight.tier_2"
+        }
+      ]
+    },
+    {
+      "questName": "talk_to_ghost",
+      "objectives": [
+        {
+          "objectiveType": "mknpc:objective.talk_to_npc",
+          "description": [
+            "{\"text\":\"Find the spirit in the castle.\"}"
+          ],
+          "attributes": {
+            "structureIndex": 0,
+            "npcDefinition": "mkultra:forlorn_ghost",
+            "structure": "mkultra:intro_castle",
+            "objectiveName": "talk_to_ghost"
+          },
+          "dialogue": {
+            "nodes": [
+              {
+                "id": "offer",
+                "message": "The skeleton that stands ever-burning in the chamber beyond. Destroy this revenant and return to your Green Lady. Leave me to infinity.",
+                "effects": [
+                  {
+                    "dialogueEffectType": "mknpc:objective_completion",
+                    "objectiveName": "talk_to_ghost",
+                    "questName": "talk_to_ghost"
+                  }
+                ]
+              },
+              {
+                "id": "my_time",
+                "message": "Best I can tell, that was 500 or so years ago. This castle dates back to the {prompt:empire} of my time. We were in the early days of the first invasion."
+              },
+              {
+                "id": "talk_to_ghost_hail",
+                "message": "Those {prompt:crusaders} sent you after me didn't they?"
+              },
+              {
+                "id": "green_lady_desc",
+                "message": "There's always only one Green Lady. I don't know if it's always the same one. The Green Lady is in charge, whatever that means. The GK's are a secretive bunch. I never dealt with them when I was alive."
+              },
+              {
+                "id": "empire",
+                "message": "Those pigs just can't stop killing and stealing. Been doing it for 500 years or so. I died here in an early {prompt:attempt} at banishing a Piglin Castle back to their home-plane."
+              },
+              {
+                "id": "peril",
+                "message": "Oh the same old hogwash about the world being overrun by the undead and then deleted. In the Hyborean religion we believe the world, which is a giant cube, travels around in the dice bag of an interplanar vagrant. Obviously the world will end when said villain abandons, forgets, or perhaps loses us in a game of chance to an even iller-suited caretaker."
+              },
+              {
+                "id": "attempt",
+                "message": "I was mortally wounded when the time came, and something went wrong. My partner and I were unable to complete the ritual. My body was destroyed immediately, leaving my soul bound to the castle grounds. My partner's spirit was shorn from their body as the spell completed, leaving only a {prompt:offer} to stalk the depths of this cursed castle."
+              },
+              {
+                "id": "crusaders",
+                "message": "They call themselves the Green Knights, we had them in {prompt:my_time} as well. Serve some orc called the {prompt:green_lady_desc}. They're laser-focused on seeking out and destroying corruption throughout the known planes; think we're all in {prompt:peril} and so on."
+              }
+            ],
+            "prompts": [
+              {
+                "id": "offer",
+                "message": "soulless husk",
+                "triggerPhrase": "soulless husk",
+                "suggestedText": "a soulless husk?",
+                "responses": [
+                  {
+                    "responseNodeId": "offer"
+                  }
+                ]
+              },
+              {
+                "id": "my_time",
+                "message": "my time",
+                "triggerPhrase": "your time",
+                "suggestedText": "When was your time?",
+                "responses": [
+                  {
+                    "responseNodeId": "my_time"
+                  }
+                ]
+              },
+              {
+                "id": "green_lady_desc",
+                "message": "Green Lady",
+                "triggerPhrase": "Green Lady",
+                "suggestedText": "What do you know about the Green Lady?",
+                "responses": [
+                  {
+                    "responseNodeId": "green_lady_desc"
+                  }
+                ]
+              },
+              {
+                "id": "empire",
+                "message": "Piglin Empire",
+                "triggerPhrase": "Piglin Empire",
+                "suggestedText": "the Piglin Empire?",
+                "responses": [
+                  {
+                    "responseNodeId": "empire"
+                  }
+                ]
+              },
+              {
+                "id": "peril",
+                "message": "grave peril",
+                "triggerPhrase": "grave peril",
+                "suggestedText": "What grave peril?",
+                "responses": [
+                  {
+                    "responseNodeId": "peril"
+                  }
+                ]
+              },
+              {
+                "id": "hail",
+                "message": "",
+                "triggerPhrase": "",
+                "suggestedText": "",
+                "responses": [
+                  {
+                    "responseNodeId": "talk_to_ghost_hail"
+                  }
+                ]
+              },
+              {
+                "id": "attempt",
+                "message": "attempt",
+                "triggerPhrase": "the attempt",
+                "suggestedText": "What happened during the attempt?",
+                "responses": [
+                  {
+                    "responseNodeId": "attempt"
+                  }
+                ]
+              },
+              {
+                "id": "crusaders",
+                "message": "dimension-hopping crusaders",
+                "triggerPhrase": "crusaders",
+                "suggestedText": "What crusaders?",
+                "responses": [
+                  {
+                    "responseNodeId": "crusaders"
+                  }
+                ]
+              }
+            ],
+            "hailPrompt": "hail"
+          }
+        }
+      ],
+      "description": "{\"text\":\"The Green Lady wants you to seek out a spirit in the depths.\"}",
+      "autoComplete": true,
+      "rewards": [
+        {
+          "rewardType": "mknpc:quest_reward.xp",
+          "description": "{\"translate\":\"mknpc.quest_reward.xp.name\",\"with\":[\"25\"]}",
+          "attributes": {
+            "xp": 25
+          }
+        }
+      ]
+    },
+    {
+      "questName": "kill_burning",
+      "objectives": [
+        {
+          "objectiveType": "mknpc:objective.kill_notable",
+          "description": [],
+          "attributes": {
+            "structureIndex": 0,
+            "npcDefinition": "mkultra:burning_skeleton",
+            "structure": "mkultra:intro_castle",
+            "objectiveName": "kill_burning"
+          }
+        },
+        {
+          "objectiveType": "mknpc:objective.talk_to_npc",
+          "description": [
+            "{\"text\":\"Return to the Green Lady after completing the other objectives.\"}"
+          ],
+          "attributes": {
+            "structureIndex": 0,
+            "npcDefinition": "mkultra:green_lady",
+            "structure": "mkultra:intro_castle",
+            "objectiveName": "after_kill_burning"
+          },
+          "dialogue": {
+            "nodes": [
+              {
+                "id": "after_kill_burning_complete",
+                "message": "Good: it is done. Our order is dedicated to cleansing this land. You are welcome to stay here and learn of our ways or go as you please.",
+                "effects": [
+                  {
+                    "dialogueEffectType": "mknpc:objective_completion",
+                    "objectiveName": "after_kill_burning",
+                    "questName": "kill_burning"
+                  }
+                ]
+              },
+              {
+                "id": "after_kill_burning_wo_complete",
+                "message": "Has the castle been cleansed, is the {mk_quest_notable:mkultra:intro_castle#0#mkultra:burning_skeleton} dead?"
+              }
+            ],
+            "prompts": [
+              {
+                "id": "hail",
+                "message": "",
+                "triggerPhrase": "",
+                "suggestedText": "",
+                "responses": [
+                  {
+                    "responseNodeId": "after_kill_burning_complete",
+                    "conditions": [
+                      {
+                        "dialogueConditionType": "mknpc:objectives_complete",
+                        "invert": false,
+                        "objectiveNames": [
+                          "kill_burning"
+                        ],
+                        "questName": "kill_burning"
+                      }
+                    ]
+                  },
+                  {
+                    "responseNodeId": "after_kill_burning_wo_complete"
+                  }
+                ]
+              }
+            ],
+            "hailPrompt": "hail"
+          }
+        }
+      ],
+      "description": "{\"text\":\"The Forlorn Ghost has asked you you to kill the Burning Revenant\"}",
+      "autoComplete": true,
+      "rewards": [
+        {
+          "rewardType": "mknpc:quest_reward.xp",
+          "description": "{\"translate\":\"mknpc.quest_reward.xp.name\",\"with\":[\"100\"]}",
+          "attributes": {
+            "xp": 100
+          }
+        },
+        {
+          "rewardType": "mknpc:quest_reward.entitlement",
+          "description": "{\"translate\":\"mknpc.quest_reward.entitlement.message\",\"with\":[{\"translate\":\"mkultra.entitlement.green_knight.tier_3.name\"}]}",
+          "attributes": {},
+          "entitlement": "mkultra:green_knight.tier_3"
         }
       ]
     }
