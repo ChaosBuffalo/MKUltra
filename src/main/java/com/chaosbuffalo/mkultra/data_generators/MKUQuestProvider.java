@@ -14,7 +14,6 @@ import com.chaosbuffalo.mknpc.quest.dialogue.conditions.HasSpentTalentPointsCond
 import com.chaosbuffalo.mknpc.quest.dialogue.conditions.HasTrainedAbilitiesCondition;
 import com.chaosbuffalo.mknpc.quest.dialogue.conditions.HasWeaponInHandCondition;
 import com.chaosbuffalo.mknpc.quest.dialogue.conditions.ObjectivesCompleteCondition;
-import com.chaosbuffalo.mknpc.quest.dialogue.effects.GrantEntitlementEffect;
 import com.chaosbuffalo.mknpc.quest.dialogue.effects.ObjectiveCompleteEffect;
 import com.chaosbuffalo.mknpc.quest.objectives.*;
 import com.chaosbuffalo.mknpc.quest.requirements.HasEntitlementRequirement;
@@ -145,10 +144,10 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
 
     private QuestDefinition generateIntroQuest(){
 
-        QuestLocation introCastle = new QuestLocation(MKUWorldGen.INTRO_CASTLE_NAME, 0);
-        QuestNpc greenLady = new QuestNpc(introCastle, new ResourceLocation("mkultra", "green_lady"));
-        QuestNpc piglinCaptain = new QuestNpc(introCastle, new ResourceLocation(MKUltra.MODID, "trooper_captain"));
-        QuestNpc greenSmith = new QuestNpc(introCastle, new ResourceLocation("mkultra", "green_smith"));
+        QuestBuilder.QuestLocation introCastle = new QuestBuilder.QuestLocation(MKUWorldGen.INTRO_CASTLE_NAME, 0);
+        QuestBuilder.QuestNpc greenLady = new QuestBuilder.QuestNpc(introCastle, new ResourceLocation("mkultra", "green_lady"));
+        QuestBuilder.QuestNpc piglinCaptain = new QuestBuilder.QuestNpc(introCastle, new ResourceLocation(MKUltra.MODID, "trooper_captain"));
+        QuestBuilder.QuestNpc greenSmith = new QuestBuilder.QuestNpc(introCastle, new ResourceLocation("mkultra", "green_smith"));
 
         QuestDefinition def = new QuestDefinition(new ResourceLocation(MKUltra.MODID, "intro_quest"));
         def.setQuestName(new StringTextComponent("Intro Quest"));
@@ -322,30 +321,6 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
         return def;
     }
 
-    public static class QuestLocation {
-        ResourceLocation structureName;
-        int structureIndex;
-
-        public QuestLocation(ResourceLocation structureName, int structureIndex){
-            this.structureIndex = structureIndex;
-            this.structureName = structureName;
-        }
-    }
-
-    public static class QuestNpc {
-        QuestLocation location;
-        ResourceLocation npcDef;
-
-        public QuestNpc(QuestLocation location, ResourceLocation npcDef){
-            this.location = location;
-            this.npcDef = npcDef;
-        }
-
-        public String getDialogueLink(){
-            return NpcDialogueUtils.getNotableNpcRaw(location.structureName, location.structureIndex, npcDef);
-        }
-    }
-
     public static class QuestBuilder {
         private Quest quest;
 
@@ -452,6 +427,30 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
 
         public Quest quest(){
             return quest;
+        }
+
+        public static class QuestLocation {
+            ResourceLocation structureName;
+            int structureIndex;
+
+            public QuestLocation(ResourceLocation structureName, int structureIndex){
+                this.structureIndex = structureIndex;
+                this.structureName = structureName;
+            }
+        }
+
+        public static class QuestNpc {
+            QuestLocation location;
+            ResourceLocation npcDef;
+
+            public QuestNpc(QuestLocation location, ResourceLocation npcDef){
+                this.location = location;
+                this.npcDef = npcDef;
+            }
+
+            public String getDialogueLink(){
+                return NpcDialogueUtils.getNotableNpcRaw(location.structureName, location.structureIndex, npcDef);
+            }
         }
     }
 }
