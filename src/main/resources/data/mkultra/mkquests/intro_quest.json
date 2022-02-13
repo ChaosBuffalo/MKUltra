@@ -22,7 +22,6 @@
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "18fa49fd-1aa4-4c61-8fe4-2ae6bc41d477",
                     "objectiveName": "talk_to_smith",
                     "questName": "talk_to_smith"
                   }
@@ -51,7 +50,6 @@
       "rewards": [
         {
           "rewardType": "mknpc:quest_reward.xp",
-          "description": "{\"translate\":\"mknpc.quest_reward.xp.name\",\"with\":[\"25\"]}",
           "attributes": {
             "xp": 25
           }
@@ -88,7 +86,6 @@
       "rewards": [
         {
           "rewardType": "mknpc:quest_reward.xp",
-          "description": "{\"translate\":\"mknpc.quest_reward.xp.name\",\"with\":[\"25\"]}",
           "attributes": {
             "xp": 25
           }
@@ -121,7 +118,6 @@
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "fe4a76ef-8385-4be2-8efa-7d1300f4f506",
                     "objectiveName": "return_to_smith",
                     "questName": "return_to_smith"
                   }
@@ -159,7 +155,6 @@
       "rewards": [
         {
           "rewardType": "mknpc:quest_reward.xp",
-          "description": "{\"translate\":\"mknpc.quest_reward.xp.name\",\"with\":[\"25\"]}",
           "attributes": {
             "xp": 25
           }
@@ -188,7 +183,6 @@
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "0565b92a-8d0e-4d2f-908f-6f05919757b8",
                     "objectiveName": "green_lady_talent",
                     "questName": "green_lady_talent"
                   }
@@ -217,7 +211,6 @@
       "rewards": [
         {
           "rewardType": "mknpc:quest_reward.xp",
-          "description": "{\"translate\":\"mknpc.quest_reward.xp.name\",\"with\":[\"25\"]}",
           "attributes": {
             "xp": 25
           }
@@ -259,7 +252,6 @@
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "e0b0f9e8-8803-4293-a52d-46ffd1019fc7",
                     "objectiveName": "return_to_green_lady",
                     "questName": "return_to_green_lady"
                   }
@@ -309,16 +301,15 @@
       "rewards": [
         {
           "rewardType": "mknpc:quest_reward.xp",
-          "description": "{\"translate\":\"mknpc.quest_reward.xp.name\",\"with\":[\"50\"]}",
           "attributes": {
             "xp": 50
           }
         },
         {
           "rewardType": "mknpc:quest_reward.entitlement",
-          "description": "{\"translate\":\"mknpc.quest_reward.entitlement.message\",\"with\":[{\"translate\":\"mkultra.entitlement.green_knight.tier_1.name\"}]}",
-          "attributes": {},
-          "entitlement": "mkultra:green_knight.tier_1"
+          "attributes": {
+            "entitlement": "mkultra:green_knight.tier_1"
+          }
         }
       ]
     },
@@ -348,7 +339,6 @@
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "c62fb044-041b-44cb-81ef-0ae319cac32b",
                     "objectiveName": "after_green_lady",
                     "questName": "after_ability"
                   }
@@ -411,7 +401,6 @@
       "rewards": [
         {
           "rewardType": "mknpc:quest_reward.xp",
-          "description": "{\"translate\":\"mknpc.quest_reward.xp.name\",\"with\":[\"50\"]}",
           "attributes": {
             "xp": 50
           }
@@ -466,7 +455,6 @@
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "fdacccd1-b78c-4360-9501-e711e995315a",
                     "objectiveName": "after_kill",
                     "questName": "first_kill"
                   }
@@ -490,7 +478,6 @@
                           "kill_zombies",
                           "kill_archers"
                         ],
-                        "chainId": "6adf4bc7-17d9-439d-a517-72fe4cd14e20",
                         "questName": "first_kill"
                       }
                     ]
@@ -510,7 +497,6 @@
       "rewards": [
         {
           "rewardType": "mknpc:quest_reward.xp",
-          "description": "{\"translate\":\"mknpc.quest_reward.xp.name\",\"with\":[\"50\"]}",
           "attributes": {
             "xp": 50
           }
@@ -549,7 +535,6 @@
                 "effects": [
                   {
                     "dialogueEffectType": "mknpc:objective_completion",
-                    "chainId": "ef2f5a0f-8d2b-4629-a2d0-639f7cd1c80f",
                     "objectiveName": "after_kill_captain",
                     "questName": "kill_captain"
                   }
@@ -576,7 +561,6 @@
                         "objectiveNames": [
                           "kill_captain"
                         ],
-                        "chainId": "f4bf6296-d59e-4179-8af8-dabcecdbf4a6",
                         "questName": "kill_captain"
                       }
                     ]
@@ -596,16 +580,15 @@
       "rewards": [
         {
           "rewardType": "mknpc:quest_reward.xp",
-          "description": "{\"translate\":\"mknpc.quest_reward.xp.name\",\"with\":[\"100\"]}",
           "attributes": {
             "xp": 100
           }
         },
         {
           "rewardType": "mknpc:quest_reward.entitlement",
-          "description": "{\"translate\":\"mknpc.quest_reward.entitlement.message\",\"with\":[{\"translate\":\"mkultra.entitlement.green_knight.tier_2.name\"}]}",
-          "attributes": {},
-          "entitlement": "mkultra:green_knight.tier_2"
+          "attributes": {
+            "entitlement": "mkultra:green_knight.tier_2"
+          }
         }
       ]
     }

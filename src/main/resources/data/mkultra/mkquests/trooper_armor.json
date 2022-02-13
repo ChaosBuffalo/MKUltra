@@ -26,7 +26,6 @@
       "rewards": [
         {
           "rewardType": "mknpc:quest_reward.xp",
-          "description": "{\"translate\":\"mknpc.quest_reward.xp.name\",\"with\":[\"25\"]}",
           "attributes": {
             "xp": 25
           }
@@ -67,7 +66,6 @@
       "rewards": [
         {
           "rewardType": "mknpc:quest_reward.xp",
-          "description": "{\"translate\":\"mknpc.quest_reward.xp.name\",\"with\":[\"25\"]}",
           "attributes": {
             "xp": 25
           }
@@ -108,7 +106,6 @@
       "rewards": [
         {
           "rewardType": "mknpc:quest_reward.xp",
-          "description": "{\"translate\":\"mknpc.quest_reward.xp.name\",\"with\":[\"25\"]}",
           "attributes": {
             "xp": 25
           }
@@ -149,7 +146,6 @@
       "rewards": [
         {
           "rewardType": "mknpc:quest_reward.xp",
-          "description": "{\"translate\":\"mknpc.quest_reward.xp.name\",\"with\":[\"25\"]}",
           "attributes": {
             "xp": 25
           }

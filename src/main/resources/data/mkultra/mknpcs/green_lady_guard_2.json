@@ -21,18 +21,11 @@
     {
       "optionType": "mknpc:equipment",
       "slotOptions": {
-        "head": [
+        "chest": [
           {
             "weight": 1.0,
             "dropChance": 0.05,
-            "item": "{id: \"mkultra:green_knight_helmet\", Count: 1b, tag: {Damage: 0}}"
-          }
-        ],
-        "mainhand": [
-          {
-            "weight": 1.0,
-            "dropChance": 0.0,
-            "item": "{id: \"mkweapons:dagger_stone\", Count: 1b, tag: {Damage: 0}}"
+            "item": "{id: \"mkultra:green_knight_chestplate\", Count: 1b, tag: {Damage: 0}}"
           }
         ],
         "feet": [
@@ -42,11 +35,11 @@
             "item": "{id: \"mkultra:green_knight_boots\", Count: 1b, tag: {Damage: 0}}"
           }
         ],
-        "chest": [
+        "head": [
           {
             "weight": 1.0,
             "dropChance": 0.05,
-            "item": "{id: \"mkultra:green_knight_chestplate\", Count: 1b, tag: {Damage: 0}}"
+            "item": "{id: \"mkultra:green_knight_helmet\", Count: 1b, tag: {Damage: 0}}"
           }
         ],
         "legs": [
@@ -54,6 +47,13 @@
             "weight": 1.0,
             "dropChance": 0.05,
             "item": "{id: \"mkultra:green_knight_leggings\", Count: 1b, tag: {Damage: 0}}"
+          }
+        ],
+        "mainhand": [
+          {
+            "weight": 1.0,
+            "dropChance": 0.0,
+            "item": "{id: \"mkweapons:dagger_stone\", Count: 1b, tag: {Damage: 0}}"
           }
         ]
       }

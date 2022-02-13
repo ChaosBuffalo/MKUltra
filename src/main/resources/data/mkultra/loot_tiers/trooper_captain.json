@@ -1,14 +1,14 @@
 {
   "slotItems": {
-    "mkweapons:main_hand": [
-      {
-        "itemStack": "{id: \"mkweapons:katana_iron\", Count: 1b, tag: {Damage: 0}}",
-        "weight": 1.0
-      }
-    ],
     "mkweapons:earrings": [
       {
         "itemStack": "{id: \"mkweapons:gold_earring\", Count: 1b}",
+        "weight": 1.0
+      }
+    ],
+    "mkweapons:main_hand": [
+      {
+        "itemStack": "{id: \"mkweapons:katana_iron\", Count: 1b, tag: {Damage: 0}}",
         "weight": 1.0
       }
     ]
@@ -49,7 +49,7 @@
           "Name": "mkultra:trooper_captain",
           "Amount": 2.0,
           "Operation": 0,
-          "UUID": "fc632dd9-9a95-46fb-a1e0-338f8143a6fa",
+          "UUID": "4e03ef55-541b-427e-8a59-69c4de06ec66",
           "AttributeName": "minecraft:generic.max_health"
         }
       ],
@@ -67,7 +67,7 @@
           "Name": "mkultra:trooper_captain",
           "Amount": 2.0,
           "Operation": 0,
-          "UUID": "b5c648e4-c2ac-4713-bf1a-71d5bd4b446a",
+          "UUID": "ca1c6e3a-28a9-4997-9b1f-566389e10575",
           "AttributeName": "mkcore:max_mana"
         }
       ],
@@ -85,7 +85,7 @@
           "Name": "mkultra:trooper_captain",
           "Amount": 0.25,
           "Operation": 0,
-          "UUID": "0d1bd89b-1bfb-4a7c-8ec9-29a1fa91b234",
+          "UUID": "b5bebd81-663c-493f-817d-29017a37984f",
           "AttributeName": "mkcore:mana_regen"
         }
       ],
@@ -103,7 +103,7 @@
           "Name": "mkultra:trooper_captain",
           "Amount": 0.05,
           "Operation": 2,
-          "UUID": "3337273a-9d0f-43ae-98c3-d535f71da94e",
+          "UUID": "c00dacb8-66fc-4bbb-b917-1439dc95a9c6",
           "AttributeName": "minecraft:generic.movement_speed"
         }
       ],
@@ -121,7 +121,7 @@
           "Name": "mkultra:trooper_captain",
           "Amount": 1.0,
           "Operation": 0,
-          "UUID": "729389fc-2a71-470b-8834-01efbafde71a",
+          "UUID": "8d399753-2d6d-4d01-ba2e-95c77a5f680f",
           "AttributeName": "minecraft:generic.attack_damage"
         }
       ],
@@ -139,7 +139,7 @@
           "Name": "mkultra:trooper_captain",
           "Amount": 1.0,
           "Operation": 0,
-          "UUID": "c8cd131c-e179-4567-ac8b-22773bbe657e",
+          "UUID": "f33dd6ad-093c-4e6a-9b4a-62261e36d795",
           "AttributeName": "minecraft:generic.armor"
         }
       ],
@@ -157,7 +157,7 @@
           "Name": "mkultra:trooper_captain",
           "Amount": 1.0,
           "Operation": 0,
-          "UUID": "c929d13b-150f-4aca-8fc6-d03119367154",
+          "UUID": "c474d04b-fbc8-41a5-99fe-e679ec3df909",
           "AttributeName": "mkcore:nature_damage"
         }
       ],
@@ -175,7 +175,7 @@
           "Name": "mkultra:trooper_captain",
           "Amount": 4.0,
           "Operation": 0,
-          "UUID": "84a72fe1-809a-4574-b133-2ff7f6b74305",
+          "UUID": "44682468-d841-4eee-a7a2-84afa20cbcbd",
           "AttributeName": "minecraft:generic.max_health"
         }
       ],

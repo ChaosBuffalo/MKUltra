@@ -6,15 +6,15 @@
         "weight": 1.0
       }
     ],
-    "mkweapons:main_hand": [
-      {
-        "itemStack": "{id: \"mkweapons:staff_iron\", Count: 1b, tag: {Damage: 0}}",
-        "weight": 1.0
-      }
-    ],
     "mkweapons:earrings": [
       {
         "itemStack": "{id: \"mkweapons:silver_earring\", Count: 1b}",
+        "weight": 1.0
+      }
+    ],
+    "mkweapons:main_hand": [
+      {
+        "itemStack": "{id: \"mkweapons:staff_iron\", Count: 1b, tag: {Damage: 0}}",
         "weight": 1.0
       }
     ]
@@ -50,7 +50,7 @@
           "Name": "mkultra:trooper_magus",
           "Amount": 2.0,
           "Operation": 0,
-          "UUID": "4192127e-8e51-44be-954a-1f06ef1f76c4",
+          "UUID": "070f745d-1a6f-4387-8edb-a3ee377d4d18",
           "AttributeName": "minecraft:generic.max_health"
         }
       ],
@@ -68,7 +68,7 @@
           "Name": "mkultra:trooper_magus",
           "Amount": 2.0,
           "Operation": 0,
-          "UUID": "b4bcf921-23df-4cef-9cae-4659f295d1ec",
+          "UUID": "f9e5ffee-d6aa-4b7a-a421-01c4ad3cf1c7",
           "AttributeName": "mkcore:max_mana"
         }
       ],
@@ -86,7 +86,7 @@
           "Name": "mkultra:trooper_magus",
           "Amount": 0.25,
           "Operation": 0,
-          "UUID": "8a0d1a2d-77bc-4e60-abcb-7b227a4fbaa5",
+          "UUID": "48c36788-2e63-4f45-b414-8b498a8c15cc",
           "AttributeName": "mkcore:mana_regen"
         }
       ],
@@ -104,7 +104,7 @@
           "Name": "mkultra:trooper_magus",
           "Amount": 0.05,
           "Operation": 2,
-          "UUID": "b0831497-61cd-442b-a3df-fd79a2429d2c",
+          "UUID": "da40e6dd-6786-4c81-b7a6-35ddabe3c36d",
           "AttributeName": "minecraft:generic.movement_speed"
         }
       ],
@@ -122,7 +122,7 @@
           "Name": "mkultra:trooper_magus",
           "Amount": 1.0,
           "Operation": 0,
-          "UUID": "20fba988-aa01-4198-8fc2-29cfaf8d5a64",
+          "UUID": "45bd63c4-2bed-43b9-ac16-2a3ea86c9194",
           "AttributeName": "minecraft:generic.attack_damage"
         }
       ],
@@ -140,7 +140,7 @@
           "Name": "mkultra:trooper_magus",
           "Amount": 1.0,
           "Operation": 0,
-          "UUID": "8e8aa276-3c33-409f-9da5-9f2019ac43fa",
+          "UUID": "11d6843a-b06b-4018-befa-f42e829e449f",
           "AttributeName": "minecraft:generic.armor"
         }
       ],
@@ -158,7 +158,7 @@
           "Name": "mkultra:trooper_magus",
           "Amount": 1.0,
           "Operation": 0,
-          "UUID": "af55846e-d3cd-44aa-9b50-146483ae36c9",
+          "UUID": "6e4ea0ad-c20b-4664-b288-8852cff82873",
           "AttributeName": "mkcore:nature_damage"
         }
       ],
@@ -176,7 +176,7 @@
           "Name": "mkultra:trooper_magus",
           "Amount": 4.0,
           "Operation": 0,
-          "UUID": "1a15a4b5-7b1f-459e-acc1-914b02b6777e",
+          "UUID": "20e91679-1bb2-4f2b-a0a7-445d8d1c77d7",
           "AttributeName": "mkcore:max_mana"
         }
       ],
@@ -203,7 +203,7 @@
           "Name": "mkultra:trooper_magus",
           "Amount": 0.25,
           "Operation": 0,
-          "UUID": "96ce728d-96bb-471c-855a-fe2825ad357f",
+          "UUID": "8d5abeaa-46e4-403b-bab8-4d6e2d6a64fe",
           "AttributeName": "mkcore:mana_regen"
         }
       ],
