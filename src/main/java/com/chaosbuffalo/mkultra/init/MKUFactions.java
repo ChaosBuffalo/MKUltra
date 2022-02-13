@@ -114,7 +114,7 @@ public class MKUFactions {
                 "Ignazio","Ilario","Italo","Jacopo","Javier","Lando","Leandro","Leonardo","Leone","Leopoldo","Lorenzo",
                 "Lotario","Luca","Luciano","Lucio","Ludovico","Luigi","Macario","Manfredo","Marcellino","Marcello",
                 "Marco","Marcovaldo","Mariano","Mario","Massimiliano","Massimo","Matteo","Maurizio","Mauro","Melchiorre",
-                "Mercurino","Michelangelo","Michele","Modesto","Moreno","Mosé","Nardo","Nataniele","Nazario","Nero",
+                "Mercurino","Michelangelo","Michele","Modesto","Moreno","Nardo","Nataniele","Nazario","Nero",
                 "Nestore","Niccolo","Nicodemo","Nicola","Nicoletto","Nunzio","Odilon","Onofrio","Orfeo","Orlando","Pacifico",
                 "Palmiro","Pancrazio","Pao","Paolo","Pasquale","Pellegrino","Peppe","Pietro","Ponzio","Primo",
                 "Prospero","Quirino","Raffaele","Raffaello","Raimondo","Rainieri","Raniero","Raul","Renzo","Rico",
@@ -147,7 +147,7 @@ public class MKUFactions {
                 "Porzia","Prada","Prasede","Pudenziana","Rachele","Raimonda","Renata","Rina","Rita","Romilda","Rosa",
                 "Rosalba","Rosalia","Rosangela","Rosetta","Rosina","Sabina","Sabrina","Samantha","Sandra","Santuzza",
                 "Sara","Savina","Scevola","Serafina","Serena","Silvana","Silvia","Simona","Simonetta","Sitha","Smeralda",
-                "Sofia","Sophonsiba","Stefania","Stefanina","Susanna","Teà","Teodora","Teresina","Theresa","Tita","Tiziana",
+                "Sofia","Sophonsiba","Stefania","Stefanina","Susanna", "Teodora","Teresina","Theresa","Tita","Tiziana",
                 "Tommasa","Tommasina","Tullia","Valencia","Vanozza","Venezia","Veronica","Viola","Violante","Vittoria",
                 "Viviana","Zaira","Zita"
         };
