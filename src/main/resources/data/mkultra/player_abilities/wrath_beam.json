@@ -1,0 +1,16 @@
+{
+  "cooldown": 100,
+  "manaCost": 6.0,
+  "castTime": 20,
+  "attributes": {
+    "duration": 40,
+    "modifierScaling": 1.0,
+    "breakDuration": 40,
+    "scale": 5.0,
+    "pulse_particles": "mkultra:wrath_beam_pulse",
+    "wait_particles": "mkultra:wrath_beam_wait",
+    "tickRate": 10,
+    "casting_particles": "mkultra:flame_wave_casting",
+    "base": 5.0
+  }
+}

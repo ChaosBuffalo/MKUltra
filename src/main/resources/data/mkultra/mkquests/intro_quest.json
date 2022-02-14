@@ -747,7 +747,6 @@
       "rewards": [
         {
           "rewardType": "mknpc:quest_reward.xp",
-          "description": "{\"translate\":\"mknpc.quest_reward.xp.name\",\"with\":[\"25\"]}",
           "attributes": {
             "xp": 25
           }
@@ -831,16 +830,15 @@
       "rewards": [
         {
           "rewardType": "mknpc:quest_reward.xp",
-          "description": "{\"translate\":\"mknpc.quest_reward.xp.name\",\"with\":[\"100\"]}",
           "attributes": {
             "xp": 100
           }
         },
         {
           "rewardType": "mknpc:quest_reward.entitlement",
-          "description": "{\"translate\":\"mknpc.quest_reward.entitlement.message\",\"with\":[{\"translate\":\"mkultra.entitlement.green_knight.tier_3.name\"}]}",
-          "attributes": {},
-          "entitlement": "mkultra:green_knight.tier_3"
+          "attributes": {
+            "entitlement": "mkultra:green_knight.tier_3"
+          }
         }
       ]
     }

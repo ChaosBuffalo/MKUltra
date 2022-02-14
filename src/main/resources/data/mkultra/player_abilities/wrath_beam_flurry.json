@@ -1,0 +1,9 @@
+{
+  "cooldown": 100,
+  "manaCost": 10.0,
+  "castTime": 40,
+  "attributes": {
+    "tickRate": 10,
+    "casting_particles": "mkultra:flame_wave_casting"
+  }
+}
