@@ -145,9 +145,11 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
     private QuestDefinition generateIntroQuest(){
 
         QuestBuilder.QuestLocation introCastle = new QuestBuilder.QuestLocation(MKUWorldGen.INTRO_CASTLE_NAME, 0);
-        QuestBuilder.QuestNpc greenLady = new QuestBuilder.QuestNpc(introCastle, new ResourceLocation("mkultra", "green_lady"));
+        QuestBuilder.QuestNpc greenLady = new QuestBuilder.QuestNpc(introCastle, new ResourceLocation(MKUltra.MODID, "green_lady"));
         QuestBuilder.QuestNpc piglinCaptain = new QuestBuilder.QuestNpc(introCastle, new ResourceLocation(MKUltra.MODID, "trooper_captain"));
-        QuestBuilder.QuestNpc greenSmith = new QuestBuilder.QuestNpc(introCastle, new ResourceLocation("mkultra", "green_smith"));
+        QuestBuilder.QuestNpc greenSmith = new QuestBuilder.QuestNpc(introCastle, new ResourceLocation(MKUltra.MODID, "green_smith"));
+        QuestBuilder.QuestNpc forlornGhost = new QuestBuilder.QuestNpc(introCastle, new ResourceLocation(MKUltra.MODID, "forlorn_ghost"));
+        QuestBuilder.QuestNpc burningRevenant = new QuestBuilder.QuestNpc(introCastle, new ResourceLocation(MKUltra.MODID, "burning_skeleton"));
 
         QuestDefinition def = new QuestDefinition(new ResourceLocation(MKUltra.MODID, "intro_quest"));
         def.setQuestName(new StringTextComponent("Intro Quest"));
@@ -174,6 +176,7 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
                         "We ain't got much left after the crash. " +
                                 "Check that chest over there we got a few things. You can use my crafting table as well. " +
                                 "Talk to me again when you have made a weapon.",
+                        true,
                         null
                 )
                 .reward(new XpReward(25))
@@ -222,6 +225,7 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
                                 "to train your talents. You should have gained a talent point upon initiating this conversation. " +
                                 "Open your player screen and go to the talent section, train any of the first talents in " +
                                 "order to unlock your first ability slot. Talk to me again when you have finished this.",
+                        true,
                         null
                         )
                 .reward(new XpReward(25))
@@ -289,7 +293,7 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
                 .hailWithObjectives("after_kill",
                         new StringTextComponent("Talk to the Green Lady after completing the other objectives."),
                         greenLady,
-                        String.format("Good: it is done. " +
+                        String.format("Your skills have not gone unnoticed. " +
                                         "The dead rise everywhere, to cull the damned is a blessed pursuit. " +
                                         "Would you be willing to go back into that cursed hall and destroy %s.",
                                 piglinCaptain.getDialogueLink()),
@@ -307,8 +311,8 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
                         "after_kill_captain",
                         new StringTextComponent("Talk to the Green Lady after completing the other objectives."),
                         greenLady,
-                        "Good: it is done. " +
-                                "Our order is dedicated to cleansing this land. You are welcome to stay here and learn of our ways or go as you please.",
+                        "I need you to return to the castle and delve even deeper. I know not why it appeared here at this time, but I do sense a residual life force beneath the castle. " +
+                                "Perhaps this spirit will be amiable to conversation. Go find it.",
                         String.format("Come back to me after you've taken care of %s.", piglinCaptain.getDialogueLink()),
                         Collections.singletonList("kill_captain"),
                         null
@@ -316,8 +320,87 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
                 .reward(new XpReward(100))
                 .reward(new GrantEntitlementReward(MKUEntitlements.GreenKnightTier2))
                 .quest();
-
         def.addQuest(killCaptain);
+
+        DialogueNode finalOffer = new DialogueNode("offer", "The skeleton that stands ever-burning in the chamber beyond. Destroy this revenant and return to your Green Lady. Leave me to infinity.");
+        DialoguePrompt offerPrompt = new DialoguePrompt("offer", "soulless husk", "a soulless husk?", "soulless husk");
+        offerPrompt.addResponse(new DialogueResponse(finalOffer));
+        finalOffer.addEffect(new ObjectiveCompleteEffect("talk_to_ghost", "talk_to_ghost"));
+
+        DialogueNode attempt = new DialogueNode("attempt", String.format("I was mortally wounded when the time came, and something went wrong. My partner and I were unable to complete the ritual. " +
+                "My body was destroyed immediately, leaving my soul bound to the castle grounds. My partner's spirit was shorn from their body as the spell completed, " +
+                "leaving only a %s to stalk the depths of this cursed castle.", offerPrompt.getPromptEmbed()));
+        DialoguePrompt attemptPrompt = new DialoguePrompt("attempt", "the attempt", "What happened during the attempt?", "attempt");
+        attemptPrompt.addResponse(new DialogueResponse(attempt));
+
+        DialogueNode empire = new DialogueNode("empire", String.format("Those pigs just can't stop killing and stealing. Been doing it for 500 years or so. " +
+                "I died here in an early %s at banishing a Piglin Castle back to their home-plane.", attemptPrompt.getPromptEmbed()));
+        DialoguePrompt empirePrompt = new DialoguePrompt("empire", "Piglin Empire", "the Piglin Empire?", "Piglin Empire");
+        empirePrompt.addResponse(new DialogueResponse(empire));
+
+        DialogueNode myTime = new DialogueNode("my_time", String.format("Best I can tell, that was 500 or so years ago. " +
+                "This castle dates back to the %s of my time. We were in the early days of the first invasion.", empirePrompt.getPromptEmbed()));
+        DialoguePrompt myTimePrompt = new DialoguePrompt("my_time", "your time", "When was your time?", "my time");
+        myTimePrompt.addResponse(new DialogueResponse(myTime));
+
+        DialogueNode greenLadyDesc = new DialogueNode("green_lady_desc", "There's always only one Green Lady. " +
+                "I don't know if it's always the same one. The Green Lady is in charge, whatever that means. The GK's are a secretive bunch. I never dealt with them when I was alive.");
+        DialoguePrompt greenLadyPrompt = new DialoguePrompt("green_lady_desc", "Green Lady", "What do you know about the Green Lady?", "Green Lady");
+        greenLadyPrompt.addResponse(new DialogueResponse(greenLadyDesc));
+
+        DialogueNode peril = new DialogueNode("peril", "Oh the same old hogwash about the world being overrun by the undead and then deleted. " +
+                "In the Hyborean religion we believe the world, which is a giant cube, travels around in the dice bag of an interplanar vagrant." +
+                " Obviously the world will end when said villain abandons, forgets, or perhaps loses us in a game of chance to an even iller-suited caretaker.");
+        DialoguePrompt perilPrompt = new DialoguePrompt("peril", "grave peril", "What grave peril?", "grave peril");
+        perilPrompt.addResponse(new DialogueResponse(peril));
+
+        DialogueNode crusaders = new DialogueNode("crusaders", String.format("They call themselves the Green Knights, we had them in %s as well. " +
+                "Serve some orc called the %s. They're laser-focused on seeking out and destroying corruption throughout the known planes; " +
+                "think we're all in %s and so on.", myTimePrompt.getPromptEmbed(), greenLadyPrompt.getPromptEmbed(), perilPrompt.getPromptEmbed()));
+        DialoguePrompt crusadersPrompt = new DialoguePrompt("crusaders", "crusaders", "What crusaders?", "dimension-hopping crusaders");
+        crusadersPrompt.addResponse(new DialogueResponse(crusaders));
+
+        Quest talkToGhost = new QuestBuilder("talk_to_ghost", new StringTextComponent("The Green Lady wants you to seek out a spirit in the depths."))
+                .autoComplete(true)
+                .simpleHail("talk_to_ghost", new StringTextComponent("Find the spirit in the castle."), forlornGhost,
+                        String.format("Those %s sent you after me didn't they?", crusadersPrompt.getPromptEmbed()), false,
+                        obj -> obj
+                                .withAdditionalNode(finalOffer)
+                                .withAdditionalPrompts(offerPrompt)
+                                .withAdditionalNode(attempt)
+                                .withAdditionalPrompts(attemptPrompt)
+                                .withAdditionalNode(empire)
+                                .withAdditionalPrompts(empirePrompt)
+                                .withAdditionalNode(myTime)
+                                .withAdditionalPrompts(myTimePrompt)
+                                .withAdditionalNode(greenLadyDesc)
+                                .withAdditionalPrompts(greenLadyPrompt)
+                                .withAdditionalNode(peril)
+                                .withAdditionalPrompts(perilPrompt)
+                                .withAdditionalNode(crusaders)
+                                .withAdditionalPrompts(crusadersPrompt)
+                )
+                .reward(new XpReward(25))
+                .quest();
+        def.addQuest(talkToGhost);
+
+        Quest killBurning = new QuestBuilder("kill_burning", new StringTextComponent("The Forlorn Ghost has asked you you to kill the Burning Revenant"))
+                .autoComplete(true)
+                .killNotable("kill_burning", burningRevenant)
+                .hailWithObjectives(
+                        "after_kill_burning",
+                        new StringTextComponent("Return to the Green Lady after completing the other objectives."),
+                        greenLady,
+                        "Good: it is done. Our order is dedicated to cleansing this land. You are welcome to stay here and learn of our ways or go as you please.",
+                        String.format("Has the castle been cleansed, is the %s dead?", burningRevenant.getDialogueLink()),
+                        Collections.singletonList("kill_burning"),
+                        null
+                )
+                .reward(new XpReward(100))
+                .reward(new GrantEntitlementReward(MKUEntitlements.GreenKnightTier3))
+                .quest();
+        def.addQuest(killBurning);
+
         return def;
     }
 
@@ -399,13 +482,16 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
         }
 
         public QuestBuilder simpleHail(String objectiveName, IFormattableTextComponent description,
-                                       QuestNpc talkTo, String hailMessage, @Nullable Consumer<TalkToNpcObjective> additionalLogic){
+                                       QuestNpc talkTo, String hailMessage,
+                                       boolean immediateComplete, @Nullable Consumer<TalkToNpcObjective> additionalLogic){
             TalkToNpcObjective talkObj = new TalkToNpcObjective(
                     objectiveName,
                     talkTo.location.structureName, talkTo.location.structureIndex, talkTo.npcDef,
                     description);
             DialogueNode hailNode = new DialogueNode(String.format("%s_hail", objectiveName), hailMessage);
-            hailNode.addEffect(new ObjectiveCompleteEffect(talkObj.getObjectiveName(), quest.getQuestName()));
+            if (immediateComplete){
+                hailNode.addEffect(new ObjectiveCompleteEffect(talkObj.getObjectiveName(), quest.getQuestName()));
+            }
             talkObj.withHailResponse(hailNode, new DialogueResponse(hailNode.getId()));
             if (additionalLogic != null){
                 additionalLogic.accept(talkObj);
