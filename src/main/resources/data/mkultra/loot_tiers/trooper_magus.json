@@ -6,15 +6,15 @@
         "weight": 1.0
       }
     ],
-    "mkweapons:earrings": [
-      {
-        "itemStack": "{id: \"mkweapons:silver_earring\", Count: 1b}",
-        "weight": 1.0
-      }
-    ],
     "mkweapons:main_hand": [
       {
         "itemStack": "{id: \"mkweapons:staff_iron\", Count: 1b, tag: {Damage: 0}}",
+        "weight": 1.0
+      }
+    ],
+    "mkweapons:earrings": [
+      {
+        "itemStack": "{id: \"mkweapons:silver_earring\", Count: 1b}",
         "weight": 1.0
       }
     ]
@@ -50,11 +50,9 @@
           "Name": "mkultra:trooper_magus",
           "Amount": 2.0,
           "Operation": 0,
-          "UUID": "eb51b0e0-c15d-4f08-9ce9-0d3d157e9376",
           "AttributeName": "minecraft:generic.max_health"
         }
-      ],
-      "unique": true
+      ]
     },
     {
       "randomizationType": "mkweapons:attributes",
@@ -68,11 +66,9 @@
           "Name": "mkultra:trooper_magus",
           "Amount": 2.0,
           "Operation": 0,
-          "UUID": "00c00c94-3507-403b-adb0-0a590b0fe0d2",
           "AttributeName": "mkcore:max_mana"
         }
-      ],
-      "unique": true
+      ]
     },
     {
       "randomizationType": "mkweapons:attributes",
@@ -86,11 +82,9 @@
           "Name": "mkultra:trooper_magus",
           "Amount": 0.25,
           "Operation": 0,
-          "UUID": "4fff91fd-2de9-4dc0-b973-1a1f5163636b",
           "AttributeName": "mkcore:mana_regen"
         }
-      ],
-      "unique": true
+      ]
     },
     {
       "randomizationType": "mkweapons:attributes",
@@ -104,11 +98,9 @@
           "Name": "mkultra:trooper_magus",
           "Amount": 0.05,
           "Operation": 2,
-          "UUID": "a536050e-5050-4ba5-9e8c-92e4247e222f",
           "AttributeName": "minecraft:generic.movement_speed"
         }
-      ],
-      "unique": true
+      ]
     },
     {
       "randomizationType": "mkweapons:attributes",
@@ -122,11 +114,9 @@
           "Name": "mkultra:trooper_magus",
           "Amount": 1.0,
           "Operation": 0,
-          "UUID": "b8c18bfc-c564-49ac-8025-aea5af53d5e7",
           "AttributeName": "minecraft:generic.attack_damage"
         }
-      ],
-      "unique": true
+      ]
     },
     {
       "randomizationType": "mkweapons:attributes",
@@ -140,11 +130,9 @@
           "Name": "mkultra:trooper_magus",
           "Amount": 1.0,
           "Operation": 0,
-          "UUID": "4e586925-12e1-415f-8cfc-b193ee6fe767",
           "AttributeName": "minecraft:generic.armor"
         }
-      ],
-      "unique": true
+      ]
     },
     {
       "randomizationType": "mkweapons:attributes",
@@ -158,11 +146,9 @@
           "Name": "mkultra:trooper_magus",
           "Amount": 1.0,
           "Operation": 0,
-          "UUID": "fb4fef28-8fcf-4168-b588-74d350739d01",
           "AttributeName": "mkcore:nature_damage"
         }
-      ],
-      "unique": true
+      ]
     },
     {
       "randomizationType": "mkweapons:attributes",
@@ -176,11 +162,9 @@
           "Name": "mkultra:trooper_magus",
           "Amount": 4.0,
           "Operation": 0,
-          "UUID": "581c135d-c18e-4a1e-aa83-597eed452b3a",
           "AttributeName": "mkcore:max_mana"
         }
-      ],
-      "unique": true
+      ]
     },
     {
       "randomizationType": "mkweapons:name",
@@ -203,11 +187,9 @@
           "Name": "mkultra:trooper_magus",
           "Amount": 0.25,
           "Operation": 0,
-          "UUID": "464b4269-a84c-4f63-b503-e7ef32529cc0",
           "AttributeName": "mkcore:mana_regen"
         }
-      ],
-      "unique": true
+      ]
     },
     {
       "randomizationType": "mkweapons:name",
