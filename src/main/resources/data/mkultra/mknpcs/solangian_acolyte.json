@@ -62,6 +62,12 @@
     {
       "optionType": "mknpc:faction",
       "value": "mkultra:see_of_solang"
+    },
+    {
+      "optionType": "mknpc:offer_quests",
+      "offerings": [
+        "mkultra:cleric_intro"
+      ]
     }
   ]
 }

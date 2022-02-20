@@ -38,6 +38,67 @@ public class MKULootTierProvider extends LootTierProvider {
         writeLootTier(trooperCaptain(), cache);
         writeLootTier(trooperExecutioner(), cache);
         writeLootTier(trooperMagus(), cache);
+        writeLootTier(burningSkeletonLoot(), cache);
+    }
+
+    private LootTier burningSkeletonLoot(){
+        LootTier tier = new LootTier(new ResourceLocation(MKUltra.MODID, "burning_skeleton"));
+        addBloodyRing(tier);
+        addEarringOfFireDamage(tier);
+        addSacrificialDagger(tier);
+        return tier;
+
+    }
+
+    private void addSacrificialDagger(LootTier tier){
+        tier.addItemToSlot(LootSlotManager.MAIN_HAND, MKWeaponsItems.lookupWeapon(MKWeaponsItems.IRON_TIER, MeleeWeaponTypes.DAGGER_TYPE));
+
+        for (int i = 0; i < 3; i++){
+            for (int x = 0; x < 3; x++){
+                AttributeOption option = new AttributeOption();
+                option.addAttributeModifier(MKAttributes.BLEED_DAMAGE, tier.getName().toString(), i + 1.0, AttributeModifier.Operation.ADDITION);
+                option.addAttributeModifier(MKAttributes.FIRE_DAMAGE, tier.getName().toString(), x + 1.0, AttributeModifier.Operation.ADDITION);
+                option.setWeight(10 - ((x + 1) * (i + 1)));
+                option.addApplicableSlot(LootSlotManager.MAIN_HAND);
+                tier.addRandomizationOption(option);
+            }
+        }
+        NameOption name = new NameOption(new StringTextComponent("Sacrificial Dagger"));
+        name.addApplicableSlot(LootSlotManager.MAIN_HAND);
+        tier.addRandomizationOption(name);
+        tier.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "blade"),
+                LootSlotManager.MAIN_HAND,
+                RandomizationSlotManager.ATTRIBUTE_SLOT, RandomizationSlotManager.NAME_SLOT), 10);
+    }
+
+    private void addEarringOfFireDamage(LootTier tier){
+        tier.addItemToSlot(LootSlotManager.EARRINGS, MKWeaponsItems.SilverEarring);
+        AttributeOption option = new AttributeOption();
+        option.addApplicableSlot(LootSlotManager.EARRINGS);
+        option.addAttributeModifier(MKAttributes.FIRE_DAMAGE, tier.getName().toString(),
+                2, AttributeModifier.Operation.ADDITION);
+        tier.addRandomizationOption(option);
+        NameOption name = new NameOption(new StringTextComponent("Earring of Minor Firepower"));
+        name.addApplicableSlot(LootSlotManager.EARRINGS);
+        tier.addRandomizationOption(name);
+        tier.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "earring"),
+                LootSlotManager.EARRINGS,
+                RandomizationSlotManager.ATTRIBUTE_SLOT, RandomizationSlotManager.NAME_SLOT), 15);
+    }
+
+    private void addBloodyRing(LootTier tier){
+        tier.addItemToSlot(LootSlotManager.RINGS, MKWeaponsItems.RoseGoldRing);
+        AttributeOption option = new AttributeOption();
+        option.addApplicableSlot(LootSlotManager.RINGS);
+        option.addAttributeModifier(MKAttributes.BLEED_DAMAGE, tier.getName().toString(),
+                3, AttributeModifier.Operation.ADDITION);
+        tier.addRandomizationOption(option);
+        NameOption name = new NameOption(new StringTextComponent("Bloody Ring"));
+        name.addApplicableSlot(LootSlotManager.RINGS);
+        tier.addRandomizationOption(name);
+        tier.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "ring"),
+                LootSlotManager.RINGS,
+                RandomizationSlotManager.ATTRIBUTE_SLOT, RandomizationSlotManager.NAME_SLOT), 15);
     }
 
     private LootTier trooperKnightLootTier(){

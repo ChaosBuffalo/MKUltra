@@ -162,25 +162,6 @@
     }
   ],
   "repeatable": true,
-  "startQuestResponse": {
-    "id": "start_quest",
-    "message": "For the full set I will need 20 {item:mkultra:corrupted_pig_iron_plate}, a {item:mkultra:destroyed_trooper_helmet}, a {item:mkultra:destroyed_trooper_leggings}, a {item:mkultra:destroyed_trooper_chestplate}, and a {item:mkultra:destroyed_trooper_boots}."
-  },
-  "hailQuestResponse": {
-    "id": "hail",
-    "message": "I make armor for the Green Knights. We're running low on supplies but if you can salvage some parts from the zombies in the castle If you {prompt:start_quest} I should be able to put something together."
-  },
-  "hailPrompt": {
-    "id": "start_quest",
-    "message": "need some armor.",
-    "triggerPhrase": "need some armor",
-    "suggestedText": "I need some armor",
-    "responses": [
-      {
-        "responseNodeId": "start_quest"
-      }
-    ]
-  },
   "questName": "{\"text\":\"Salvaged Trooper Armor\"}",
   "requirements": [
     {
@@ -189,5 +170,64 @@
       "entitlement": "mkultra:green_knight.tier_1"
     }
   ],
-  "questMode": 1
+  "questMode": 1,
+  "dialogue": {
+    "nodes": [
+      {
+        "id": "start_quest",
+        "message": "For the full set I will need 20 {item:mkultra:corrupted_pig_iron_plate}, a {item:mkultra:destroyed_trooper_helmet}, a {item:mkultra:destroyed_trooper_leggings}, a {item:mkultra:destroyed_trooper_chestplate}, and a {item:mkultra:destroyed_trooper_boots}.",
+        "effects": [
+          {
+            "dialogueEffectType": "mknpc:start_quest_chain"
+          }
+        ]
+      },
+      {
+        "id": "hail",
+        "message": "I make armor for the Green Knights. We're running low on supplies but if you can salvage some parts from the zombies in the castle If you {prompt:start_quest} I should be able to put something together."
+      }
+    ],
+    "prompts": [
+      {
+        "id": "start_quest",
+        "message": "need some armor.",
+        "triggerPhrase": "need some armor",
+        "suggestedText": "I need some armor",
+        "responses": [
+          {
+            "responseNodeId": "start_quest"
+          },
+          {
+            "responseNodeId": "start_quest",
+            "conditions": [
+              {
+                "dialogueConditionType": "mknpc:can_start_chain_condition",
+                "invert": false,
+                "allowRepeat": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "hail",
+        "message": "",
+        "triggerPhrase": "",
+        "suggestedText": "",
+        "responses": [
+          {
+            "responseNodeId": "hail",
+            "conditions": [
+              {
+                "dialogueConditionType": "mknpc:can_start_chain_condition",
+                "invert": false,
+                "allowRepeat": true
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "hailPrompt": "hail"
+  }
 }

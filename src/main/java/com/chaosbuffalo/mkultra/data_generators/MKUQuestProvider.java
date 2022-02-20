@@ -1,9 +1,6 @@
 package com.chaosbuffalo.mkultra.data_generators;
 
-import com.chaosbuffalo.mkchat.dialogue.DialogueNode;
-import com.chaosbuffalo.mkchat.dialogue.DialoguePrompt;
-import com.chaosbuffalo.mkchat.dialogue.DialogueResponse;
-import com.chaosbuffalo.mkchat.dialogue.DialogueUtils;
+import com.chaosbuffalo.mkchat.dialogue.*;
 import com.chaosbuffalo.mkchat.dialogue.conditions.DialogueCondition;
 import com.chaosbuffalo.mknpc.data.QuestDefinitionProvider;
 import com.chaosbuffalo.mknpc.dialogue.effects.OpenLearnAbilitiesEffect;
@@ -56,6 +53,74 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
     public void act(DirectoryCache cache) throws IOException {
         writeDefinition(generateIntroQuest(), cache);
         writeDefinition(generateTrooperArmorQuest(), cache);
+        writeDefinition(generateIntroClericQuest(), cache);
+    }
+
+    private QuestDefinition generateIntroClericQuest(){
+        QuestBuilder.QuestLocation introCastle = new QuestBuilder.QuestLocation(MKUWorldGen.INTRO_CASTLE_NAME, 0);
+        QuestBuilder.QuestNpc acolyte = new QuestBuilder.QuestNpc(introCastle, new ResourceLocation(MKUltra.MODID, "solangian_acolyte"));
+        QuestBuilder.QuestNpc apprentice = new QuestBuilder.QuestNpc(introCastle, new ResourceLocation(MKUltra.MODID, "solangian_apprentice"));
+
+        QuestDefinition def = new QuestDefinition(new ResourceLocation(MKUltra.MODID, "cleric_intro"));
+        def.setRepeatable(false);
+        def.setQuestName(new StringTextComponent("A Missing Apprentice"));
+
+        DialogueNode councilNode = new DialogueNode("council",
+                "The leadership of my order is called the Council of the Nine. " +
+                        "They are tasked with overseeing all affairs of the church.");
+        DialoguePrompt councilPrompt = new DialoguePrompt("council",  "Council", "the Council?", "Council");
+        councilPrompt.addResponse(new DialogueResponse(councilNode));
+
+        DialogueNode holySeeNode = new DialogueNode("holySee", String.format(
+                "Our order is dedicated to the worship of the Sun God, Solang. We work to preserve order and prosperity in the realm. " +
+                "This plague of undeath is of great concern to the %s and we believe that this castle is somehow connected.", councilPrompt.getPromptEmbed()));
+        DialoguePrompt holySeePrompt = new DialoguePrompt("holySee", "the Holy See", "Who are the Holy See?", "Holy See of Solang");
+        holySeePrompt.addResponse(new DialogueResponse(holySeeNode));
+
+        DialoguePrompt startQuestPrompt = new DialoguePrompt("start_quest", "task",
+                "What task?", "task");
+        DialogueNode hailNode = new DialogueNode("hail", String.format(
+                "I am %s, sent here under the authority of the %s " +
+                "to investigate the appearance of this castle. I hear you are going into the castle; " +
+                "if you're interested, I have a %s for you.", DialogueContexts.ENTITY_NAME_CONTEXT, holySeePrompt.getPromptEmbed(), startQuestPrompt.getPromptEmbed()));
+
+
+        DialoguePrompt apprenticePrompt = new DialoguePrompt("apprentice", "apprentice", "Where did you last see your apprentice?", "my apprentice");
+        DialogueNode apprenticeNode = new DialogueNode("apprentice", String.format("I last saw %s in the library on the upper floors of the castle.", apprentice.getDialogueLink()));
+        apprenticePrompt.addResponse(new DialogueResponse(apprenticeNode));
+
+        DialogueNode findMyApprentice = new DialogueNode("start_quest",
+                String.format("While you are exploring the castle, could you search for %s?" +
+                        " We were ambushed by zombies while investigating the library and had to split up. " +
+                        "I made it back but %s has yet to return.", apprenticePrompt.getPromptEmbed(), apprentice.getDialogueLink()));
+        startQuestPrompt.addResponse(new DialogueResponse(findMyApprentice));
+
+        def.setupStartQuestResponse(apprenticeNode, apprenticePrompt);
+        def.addHailResponse(hailNode);
+        def.addStartNode(councilNode);
+        def.addStartNode(holySeeNode);
+        def.addStartNode(findMyApprentice);
+        def.addStartPrompt(councilPrompt);
+        def.addStartPrompt(holySeePrompt);
+        def.addStartPrompt(apprenticePrompt);
+        def.addStartPrompt(startQuestPrompt);
+
+        Quest talkToApprentice = new QuestBuilder("talk_to_apprentice",
+                new StringTextComponent("You need to find the Apprentice somewhere in the castle. Perhaps near the library.."))
+                .autoComplete(true)
+                .simpleHail("talk_to_apprentice",
+                        new StringTextComponent("Talk to the apprentice"),
+                        apprentice,
+                        "Oh thank goodness, it is good to see a friendly face. One of the zombies chased me into " +
+                                "here and I wasn't certain if I'd ever get out. ",
+                        false,
+                        null
+                )
+                .reward(new XpReward(25))
+                .quest();
+        def.addQuest(talkToApprentice);
+
+        return def;
     }
 
     private QuestDefinition generateTrooperArmorQuest(){
@@ -75,9 +140,10 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
                 String.format("For the full set I will need %s, a %s, a %s, a %s, and a %s.", DialogueUtils.getStackCountItemProvider(new ItemStack(MKUItems.corruptedPigIronPlate, 20)),
                         DialogueUtils.getItemNameProvider(MKUItems.destroyedTrooperHelmet), DialogueUtils.getItemNameProvider(MKUItems.destroyedTrooperLeggings),
                         DialogueUtils.getItemNameProvider(MKUItems.destroyedTrooperChestplate), DialogueUtils.getItemNameProvider(MKUItems.destroyedTrooperBoots)));
-        def.setHailPrompt(startQuestPrompt);
-        def.setStartQuestResponse(questStart);
-        def.setStartQuestHail(hailNode);
+        def.setupStartQuestResponse(questStart, startQuestPrompt);
+        def.addHailResponse(hailNode);
+
+
 
         Quest helmet = new Quest("tradeHelmet", new StringTextComponent("The Green Smith needs " +
                 "some scrap metal and a helmet from the pigs in the castle."));
@@ -152,7 +218,7 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
         QuestBuilder.QuestNpc burningRevenant = new QuestBuilder.QuestNpc(introCastle, new ResourceLocation(MKUltra.MODID, "burning_skeleton"));
 
         QuestDefinition def = new QuestDefinition(new ResourceLocation(MKUltra.MODID, "intro_quest"));
-        def.setQuestName(new StringTextComponent("Intro Quest"));
+        def.setQuestName(new StringTextComponent("The Green Knights"));
         DialoguePrompt startQuestPrompt = new DialoguePrompt("start_quest", "don't know",
                 "I don't know", "What are you doing");
         startQuestPrompt.addResponse(new DialogueResponse("start_quest"));
@@ -162,9 +228,8 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
         DialogueNode questStart = new DialogueNode("start_quest", "This world is on the verge of deletion, the dead rise from the ground everywhere, " +
                 "there may still be time to save it if we act now. " +
                 "We're in need of another hero: go talk to our smith and get equipped.");
-        def.setHailPrompt(startQuestPrompt);
-        def.setStartQuestResponse(questStart);
-        def.setStartQuestHail(hailNode);
+        def.addHailResponse(hailNode);
+        def.setupStartQuestResponse(questStart, startQuestPrompt);
 
 
         Quest talk1 = new QuestBuilder("talk_to_smith",
