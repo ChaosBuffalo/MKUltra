@@ -3,7 +3,9 @@ package com.chaosbuffalo.mkultra.data_generators;
 import com.chaosbuffalo.mkchat.data.DialogueDataProvider;
 import com.chaosbuffalo.mkchat.dialogue.*;
 import com.chaosbuffalo.mknpc.dialogue.effects.OpenLearnAbilitiesEffect;
+import com.chaosbuffalo.mknpc.quest.dialogue.conditions.HasEntitlementCondition;
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.init.MKUEntitlements;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DirectoryCache;
 import net.minecraft.util.ResourceLocation;
@@ -18,7 +20,9 @@ public class MKUDialogueProvider extends DialogueDataProvider {
 
     @Override
     public void act(@Nonnull DirectoryCache cache) {
+
         writeDialogue(getAlphaMovePrompt(), cache);
+        writeDialogue(getClericAcolyteDefault(), cache);
     }
 
     private DialogueTree getAlphaMovePrompt(){
@@ -42,6 +46,41 @@ public class MKUDialogueProvider extends DialogueDataProvider {
         tree.addPrompt(hail);
         tree.setHailPrompt(hail);
 
+        return tree;
+    }
+
+    private DialogueTree getClericAcolyteDefault(){
+        DialogueTree tree = new DialogueTree(new ResourceLocation(MKUltra.MODID, "intro_cleric_acolyte"));
+
+        DialogueNode open_training = new DialogueNode("open_training", "Let me see what I can teach you.");
+        open_training.addEffect(new OpenLearnAbilitiesEffect());
+
+        DialoguePrompt openTraining = new DialoguePrompt("open_training", "magical abilities", "what magical abilities?", "magical abilities");
+        DialogueResponse resp = new DialogueResponse(open_training);
+        resp.addCondition(new HasEntitlementCondition(MKUEntitlements.IntroClericTier1));
+        openTraining.addResponse(new DialogueResponse(open_training));
+
+        DialogueNode hail_wo_ability = new DialogueNode("hail_wo", String.format("Greetings. I am %s, a humble servant of the Holy See of Solang. " +
+                "I've been sent here to investigate the undead uprising.", DialogueContexts.ENTITY_NAME_CONTEXT));
+
+        DialogueNode hail_w_ability = new DialogueNode("hail", String.format("Are you in need of some additional %s to aid your fight against the undead.",
+                openTraining.getPromptEmbed()));
+
+        DialoguePrompt hailPrompt = new DialoguePrompt("hail", "", "", "");
+        DialogueResponse hailWoResp = new DialogueResponse(hail_wo_ability);
+
+        DialogueResponse hailWResp = new DialogueResponse(hail_w_ability);
+        hailWResp.addCondition(new HasEntitlementCondition(MKUEntitlements.IntroClericTier1));
+
+        hailPrompt.addResponse(hailWResp);
+        hailPrompt.addResponse(hailWoResp);
+
+        tree.addNode(hail_w_ability);
+        tree.addNode(hail_wo_ability);
+        tree.addNode(open_training);
+        tree.addPrompt(hailPrompt);
+        tree.addPrompt(openTraining);
+        tree.setHailPrompt(hailPrompt);
         return tree;
     }
 

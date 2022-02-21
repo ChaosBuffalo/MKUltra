@@ -1,13 +1,11 @@
 package com.chaosbuffalo.mkultra.data_generators;
 
-import com.chaosbuffalo.mkchat.dialogue.DialogueNode;
-import com.chaosbuffalo.mkchat.dialogue.DialoguePrompt;
-import com.chaosbuffalo.mkchat.dialogue.DialogueResponse;
-import com.chaosbuffalo.mkchat.dialogue.DialogueUtils;
+import com.chaosbuffalo.mkchat.dialogue.*;
 import com.chaosbuffalo.mkchat.dialogue.conditions.DialogueCondition;
 import com.chaosbuffalo.mknpc.data.QuestDefinitionProvider;
 import com.chaosbuffalo.mknpc.dialogue.effects.OpenLearnAbilitiesEffect;
 import com.chaosbuffalo.mknpc.quest.Quest;
+import com.chaosbuffalo.mknpc.quest.QuestBuilder;
 import com.chaosbuffalo.mknpc.quest.QuestDefinition;
 import com.chaosbuffalo.mknpc.quest.dialogue.NpcDialogueUtils;
 import com.chaosbuffalo.mknpc.quest.dialogue.conditions.HasSpentTalentPointsCondition;
@@ -56,6 +54,124 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
     public void act(DirectoryCache cache) throws IOException {
         writeDefinition(generateIntroQuest(), cache);
         writeDefinition(generateTrooperArmorQuest(), cache);
+        writeDefinition(generateIntroClericQuest(), cache);
+    }
+
+    private QuestDefinition generateIntroClericQuest(){
+        QuestBuilder.QuestLocation introCastle = new QuestBuilder.QuestLocation(MKUWorldGen.INTRO_CASTLE_NAME, 0);
+        QuestBuilder.QuestNpc acolyte = new QuestBuilder.QuestNpc(introCastle, new ResourceLocation(MKUltra.MODID, "solangian_acolyte"));
+        QuestBuilder.QuestNpc apprentice = new QuestBuilder.QuestNpc(introCastle, new ResourceLocation(MKUltra.MODID, "solangian_apprentice"));
+        QuestBuilder.QuestNpc magus = new QuestBuilder.QuestNpc(introCastle, new ResourceLocation(MKUltra.MODID, "imperial_magus"));
+
+        QuestDefinition def = new QuestDefinition(new ResourceLocation(MKUltra.MODID, "cleric_intro"));
+        def.setRepeatable(false);
+        def.setQuestName(new StringTextComponent("A Missing Apprentice"));
+
+        DialogueNode councilNode = new DialogueNode("council",
+                "The leadership of my order is called the Council of the Nine. " +
+                        "They are tasked with overseeing all affairs of the church.");
+        DialoguePrompt councilPrompt = new DialoguePrompt("council",  "Council", "the Council?", "Council");
+        councilPrompt.addResponse(new DialogueResponse(councilNode));
+
+        DialogueNode holySeeNode = new DialogueNode("holySee", String.format(
+                "Our order is dedicated to the worship of the Sun God, Solang. We work to preserve order and prosperity in the realm. " +
+                "This plague of undeath is of great concern to the %s and we believe that this castle is somehow connected.", councilPrompt.getPromptEmbed()));
+        DialoguePrompt holySeePrompt = new DialoguePrompt("holySee", "the Holy See", "Who are the Holy See?", "Holy See of Solang");
+        holySeePrompt.addResponse(new DialogueResponse(holySeeNode));
+
+        DialoguePrompt startQuestPrompt = new DialoguePrompt("start_quest", "task",
+                "What task?", "task");
+        DialogueNode hailNode = new DialogueNode("hail", String.format(
+                "I am %s, sent here under the authority of the %s " +
+                "to investigate the appearance of this castle. I hear you are going into the castle; " +
+                "if you're interested, I have a %s for you.", DialogueContexts.ENTITY_NAME_CONTEXT, holySeePrompt.getPromptEmbed(), startQuestPrompt.getPromptEmbed()));
+
+
+        DialoguePrompt apprenticePrompt = new DialoguePrompt("apprentice", "apprentice", "Where did you last see your apprentice?", "my apprentice");
+        DialogueNode apprenticeNode = new DialogueNode("apprentice", String.format("I last saw %s in the library on the upper floors of the castle.", apprentice.getDialogueLink()));
+        apprenticePrompt.addResponse(new DialogueResponse(apprenticeNode));
+
+        DialogueNode findMyApprentice = new DialogueNode("start_quest",
+                String.format("While you are exploring the castle, could you search for %s?" +
+                        " We were ambushed by zombies while investigating the library and had to split up. " +
+                        "I made it back but %s has yet to return.", apprenticePrompt.getPromptEmbed(), apprentice.getDialogueLink()));
+        startQuestPrompt.addResponse(new DialogueResponse(findMyApprentice));
+
+        def.setupStartQuestResponse(apprenticeNode, apprenticePrompt);
+        def.addHailResponse(hailNode);
+        def.addStartNode(councilNode);
+        def.addStartNode(holySeeNode);
+        def.addStartNode(findMyApprentice);
+        def.addStartPrompt(councilPrompt);
+        def.addStartPrompt(holySeePrompt);
+        def.addStartPrompt(apprenticePrompt);
+        def.addStartPrompt(startQuestPrompt);
+
+        DialogueNode withFavor = new DialogueNode("favor",
+                String.format("When we were escaping from the library I accidentally dropped a necklace of sentimental value. " +
+                "I think the %s has it. Will you retrieve it for me?", magus.getDialogueLink()));
+        DialoguePrompt favorPrompt = new DialoguePrompt("favor", "favor", "What favor?", "a favor");
+        favorPrompt.addResponse(new DialogueResponse(withFavor));
+        withFavor.addEffect(new ObjectiveCompleteEffect("talk_to_apprentice", "talk_to_apprentice"));
+
+        Quest talkToApprentice = new QuestBuilder("talk_to_apprentice",
+                new StringTextComponent("You need to find the Apprentice somewhere in the castle. Perhaps near the library.."))
+                .autoComplete(true)
+                .simpleHail("talk_to_apprentice",
+                        new StringTextComponent("Talk to the apprentice"),
+                        apprentice,
+                        String.format("Oh thank goodness, it is good to see a friendly face. One of the zombies chased me into " +
+                                "here and I wasn't certain if I'd ever get out. Can you do me %s?", favorPrompt.getPromptEmbed()),
+                        false,
+                        (obj) -> {
+                            obj.withAdditionalNode(withFavor);
+                            obj.withAdditionalPrompts(favorPrompt);
+                        }
+                )
+                .reward(new XpReward(25))
+                .quest();
+        def.addQuest(talkToApprentice);
+
+        Quest apprenticeNecklace = new QuestBuilder("loot_necklace",
+                new StringTextComponent("The Apprentice wants you to retrieve their necklace from a zombie in the library."))
+                .autoComplete(true)
+                .questLootFromNotable("loot_necklace", magus, 1.0, 1, new StringTextComponent("The Apprentice's Necklace"))
+                .reward(new XpReward(25))
+                .quest();
+        def.addQuest(apprenticeNecklace);
+
+        Quest returnToApprentice = new QuestBuilder("return_to_apprentice",
+                new StringTextComponent("Return the necklace to the Apprentice"))
+                .autoComplete(true)
+                .simpleHail("return_to_apprentice",
+                        new StringTextComponent("Talk to the apprentice"),
+                        apprentice,
+                        String.format("Thank you so much I don't think I could have handled %s on my own. Please let %s know I will return shortly.",
+                                magus.getDialogueLink(), acolyte.getDialogueLink()),
+                        true,
+                        null
+                )
+                .reward(new XpReward(25))
+                .quest();
+        def.addQuest(returnToApprentice);
+
+        Quest returnToAcolyte = new QuestBuilder("return_to_acolyte",
+                new StringTextComponent("Return to the Acolyte and let them know the Apprentice is safe."))
+                .autoComplete(true)
+                .simpleHail("return_to_acolyte",
+                        new StringTextComponent("Return to the Acolyte"),
+                        acolyte,
+                        String.format("I'm glad %s is alright. Thank you for all you've done. For your service, I will bend my order's rules a little and provide you with some training in our healing magics.",
+                                acolyte.getDialogueLink()),
+                        true,
+                        null
+                )
+                .reward(new XpReward(25))
+                .reward(new GrantEntitlementReward(MKUEntitlements.IntroClericTier1))
+                .quest();
+        def.addQuest(returnToAcolyte);
+
+        return def;
     }
 
     private QuestDefinition generateTrooperArmorQuest(){
@@ -75,9 +191,10 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
                 String.format("For the full set I will need %s, a %s, a %s, a %s, and a %s.", DialogueUtils.getStackCountItemProvider(new ItemStack(MKUItems.corruptedPigIronPlate, 20)),
                         DialogueUtils.getItemNameProvider(MKUItems.destroyedTrooperHelmet), DialogueUtils.getItemNameProvider(MKUItems.destroyedTrooperLeggings),
                         DialogueUtils.getItemNameProvider(MKUItems.destroyedTrooperChestplate), DialogueUtils.getItemNameProvider(MKUItems.destroyedTrooperBoots)));
-        def.setHailPrompt(startQuestPrompt);
-        def.setStartQuestResponse(questStart);
-        def.setStartQuestHail(hailNode);
+        def.setupStartQuestResponse(questStart, startQuestPrompt);
+        def.addHailResponse(hailNode);
+
+
 
         Quest helmet = new Quest("tradeHelmet", new StringTextComponent("The Green Smith needs " +
                 "some scrap metal and a helmet from the pigs in the castle."));
@@ -152,7 +269,7 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
         QuestBuilder.QuestNpc burningRevenant = new QuestBuilder.QuestNpc(introCastle, new ResourceLocation(MKUltra.MODID, "burning_skeleton"));
 
         QuestDefinition def = new QuestDefinition(new ResourceLocation(MKUltra.MODID, "intro_quest"));
-        def.setQuestName(new StringTextComponent("Intro Quest"));
+        def.setQuestName(new StringTextComponent("The Green Knights"));
         DialoguePrompt startQuestPrompt = new DialoguePrompt("start_quest", "don't know",
                 "I don't know", "What are you doing");
         startQuestPrompt.addResponse(new DialogueResponse("start_quest"));
@@ -162,9 +279,8 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
         DialogueNode questStart = new DialogueNode("start_quest", "This world is on the verge of deletion, the dead rise from the ground everywhere, " +
                 "there may still be time to save it if we act now. " +
                 "We're in need of another hero: go talk to our smith and get equipped.");
-        def.setHailPrompt(startQuestPrompt);
-        def.setStartQuestResponse(questStart);
-        def.setStartQuestHail(hailNode);
+        def.addHailResponse(hailNode);
+        def.setupStartQuestResponse(questStart, startQuestPrompt);
 
 
         Quest talk1 = new QuestBuilder("talk_to_smith",
@@ -404,139 +520,5 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
         return def;
     }
 
-    public static class QuestBuilder {
-        private Quest quest;
 
-        public QuestBuilder(String questName, IFormattableTextComponent description){
-            this.quest = new Quest(questName, description);
-        }
-
-        public QuestBuilder autoComplete(boolean value){
-            quest.setAutoComplete(value);
-            return this;
-        }
-
-        public QuestBuilder objective(QuestObjective<?> objective){
-            quest.addObjective(objective);
-            return this;
-        }
-
-        public QuestBuilder reward(QuestReward reward){
-            quest.addReward(reward);
-            return this;
-        }
-
-        public QuestBuilder killNotable(String objectiveName, QuestNpc npc){
-            KillNotableNpcObjective kill = new KillNotableNpcObjective(objectiveName, npc.location.structureName,
-                    npc.location.structureIndex, npc.npcDef);
-            objective(kill);
-            return this;
-        }
-
-        public QuestBuilder killNpc(String objectiveName, ResourceLocation npcDef, int count){
-            KillNpcDefObjective kill = new KillNpcDefObjective(objectiveName, npcDef, count);
-            objective(kill);
-            return this;
-        }
-
-        public QuestBuilder hailWithObjectives(String objectiveName, IFormattableTextComponent description,
-                                               QuestNpc talkTo, String withComplete,
-                                               String withoutComplete, List<String> objectives,
-                                               @Nullable Consumer<TalkToNpcObjective> additionalLogic){
-            TalkToNpcObjective talkObj = new TalkToNpcObjective(objectiveName,
-                    talkTo.location.structureName, talkTo.location.structureIndex, talkTo.npcDef, description);
-            DialogueNode completeNode = new DialogueNode(String.format("%s_complete", objectiveName), withComplete);
-            DialogueResponse completeResponse = new DialogueResponse(completeNode.getId());
-            completeResponse.addCondition(new ObjectivesCompleteCondition(quest.getQuestName(), objectives.toArray(new String[0])));
-            completeNode.addEffect(new ObjectiveCompleteEffect(talkObj.getObjectiveName(), quest.getQuestName()));
-            DialogueNode withoutCompleteNode = new DialogueNode(String.format("%s_wo_complete", objectiveName), withoutComplete);
-            DialogueResponse withoutResponse = new DialogueResponse(withoutCompleteNode.getId());
-            talkObj.withHailResponse(completeNode, completeResponse);
-            talkObj.withHailResponse(withoutCompleteNode, withoutResponse);
-            if (additionalLogic != null){
-                additionalLogic.accept(talkObj);
-            }
-            objective(talkObj);
-            return this;
-        }
-
-        public QuestBuilder hailWithCondition(String objectiveName, IFormattableTextComponent description,
-                                              QuestNpc talkTo, String withCondition, String withoutCondition,
-                                              DialogueCondition withCond,
-                                              @Nullable Consumer<TalkToNpcObjective> additionalLogic){
-            TalkToNpcObjective talkObj = new TalkToNpcObjective(objectiveName,
-                    talkTo.location.structureName, talkTo.location.structureIndex, talkTo.npcDef, description);
-            DialogueNode conditionNode = new DialogueNode(String.format("%s_w_cond", objectiveName), withCondition);
-            DialogueResponse conditionResponse = new DialogueResponse(conditionNode.getId());
-            conditionResponse.addCondition(withCond);
-            conditionNode.addEffect(new ObjectiveCompleteEffect(talkObj.getObjectiveName(), quest.getQuestName()));
-            DialogueNode withoutConditionNode = new DialogueNode(String.format("%s_wo_cond", objectiveName), withoutCondition);
-            DialogueResponse withoutConditionResponse = new DialogueResponse(withoutConditionNode.getId());
-            talkObj.withHailResponse(conditionNode, conditionResponse);
-            talkObj.withHailResponse(withoutConditionNode, withoutConditionResponse);
-            if (additionalLogic != null){
-                additionalLogic.accept(talkObj);
-            }
-            objective(talkObj);
-            return this;
-        }
-
-        public QuestBuilder simpleHail(String objectiveName, IFormattableTextComponent description,
-                                       QuestNpc talkTo, String hailMessage,
-                                       boolean immediateComplete, @Nullable Consumer<TalkToNpcObjective> additionalLogic){
-            TalkToNpcObjective talkObj = new TalkToNpcObjective(
-                    objectiveName,
-                    talkTo.location.structureName, talkTo.location.structureIndex, talkTo.npcDef,
-                    description);
-            DialogueNode hailNode = new DialogueNode(String.format("%s_hail", objectiveName), hailMessage);
-            if (immediateComplete){
-                hailNode.addEffect(new ObjectiveCompleteEffect(talkObj.getObjectiveName(), quest.getQuestName()));
-            }
-            talkObj.withHailResponse(hailNode, new DialogueResponse(hailNode.getId()));
-            if (additionalLogic != null){
-                additionalLogic.accept(talkObj);
-            }
-            objective(talkObj);
-            return this;
-        }
-
-        public QuestBuilder lootChest(String objectiveName, IFormattableTextComponent description, QuestLocation location,
-                                      String chestTag, ItemStack... items){
-            LootChestObjective chestObj = new LootChestObjective(objectiveName, location.structureName,
-                    location.structureIndex, chestTag, description);
-            for (ItemStack item : items){
-                chestObj.addItemStack(item);
-            }
-            objective(chestObj);
-            return this;
-        }
-
-        public Quest quest(){
-            return quest;
-        }
-
-        public static class QuestLocation {
-            ResourceLocation structureName;
-            int structureIndex;
-
-            public QuestLocation(ResourceLocation structureName, int structureIndex){
-                this.structureIndex = structureIndex;
-                this.structureName = structureName;
-            }
-        }
-
-        public static class QuestNpc {
-            QuestLocation location;
-            ResourceLocation npcDef;
-
-            public QuestNpc(QuestLocation location, ResourceLocation npcDef){
-                this.location = location;
-                this.npcDef = npcDef;
-            }
-
-            public String getDialogueLink(){
-                return NpcDialogueUtils.getNotableNpcRaw(location.structureName, location.structureIndex, npcDef);
-            }
-        }
-    }
 }

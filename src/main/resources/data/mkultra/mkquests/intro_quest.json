@@ -844,26 +844,66 @@
     }
   ],
   "repeatable": false,
-  "startQuestResponse": {
-    "id": "start_quest",
-    "message": "This world is on the verge of deletion, the dead rise from the ground everywhere, there may still be time to save it if we act now. We're in need of another hero: go talk to our smith and get equipped."
-  },
-  "hailQuestResponse": {
-    "id": "hail",
-    "message": "Hail and well met. You're lucky we were able to grab you before your soul drifted too far into the aether. {prompt:start_quest} in an archival zone?"
-  },
-  "hailPrompt": {
-    "id": "start_quest",
-    "message": "What are you doing",
-    "triggerPhrase": "don't know",
-    "suggestedText": "I don't know",
-    "responses": [
-      {
-        "responseNodeId": "start_quest"
-      }
-    ]
-  },
-  "questName": "{\"text\":\"Intro Quest\"}",
+  "questName": "{\"text\":\"The Green Knights\"}",
   "requirements": [],
-  "questMode": 0
+  "questMode": 0,
+  "dialogue": {
+    "nodes": [
+      {
+        "id": "start_quest",
+        "message": "This world is on the verge of deletion, the dead rise from the ground everywhere, there may still be time to save it if we act now. We're in need of another hero: go talk to our smith and get equipped.",
+        "effects": [
+          {
+            "dialogueEffectType": "mknpc:start_quest_chain"
+          }
+        ]
+      },
+      {
+        "id": "hail",
+        "message": "Hail and well met. You're lucky we were able to grab you before your soul drifted too far into the aether. {prompt:start_quest} in an archival zone?"
+      }
+    ],
+    "prompts": [
+      {
+        "id": "start_quest",
+        "message": "What are you doing",
+        "triggerPhrase": "don't know",
+        "suggestedText": "I don't know",
+        "responses": [
+          {
+            "responseNodeId": "start_quest"
+          },
+          {
+            "responseNodeId": "start_quest",
+            "conditions": [
+              {
+                "dialogueConditionType": "mknpc:can_start_chain_condition",
+                "invert": false,
+                "allowRepeat": false
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "hail",
+        "message": "",
+        "triggerPhrase": "",
+        "suggestedText": "",
+        "responses": [
+          {
+            "responseNodeId": "hail",
+            "conditions": [
+              {
+                "dialogueConditionType": "mknpc:can_start_chain_condition",
+                "invert": false,
+                "allowRepeat": false
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "hailPrompt": "hail"
+  }
 }

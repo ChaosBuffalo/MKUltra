@@ -15,6 +15,35 @@
       ]
     },
     {
+      "optionType": "mknpc:dialogue",
+      "value": "mkultra:intro_cleric_acolyte"
+    },
+    {
+      "optionType": "mknpc:ability_trainings",
+      "value": [
+        {
+          "ability": "mkultra:ability.heal",
+          "reqs": [
+            {
+              "reqType": "mkcore:training_req.has_entitlement",
+              "attributes": {},
+              "entitlement": "mkultra:cleric.intro.tier_1"
+            }
+          ]
+        },
+        {
+          "ability": "mkultra:ability.smite",
+          "reqs": [
+            {
+              "reqType": "mkcore:training_req.has_entitlement",
+              "attributes": {},
+              "entitlement": "mkultra:cleric.intro.tier_1"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "optionType": "mknpc:equipment",
       "slotOptions": {
         "mainhand": [
@@ -62,6 +91,12 @@
     {
       "optionType": "mknpc:faction",
       "value": "mkultra:see_of_solang"
+    },
+    {
+      "optionType": "mknpc:offer_quests",
+      "offerings": [
+        "mkultra:cleric_intro"
+      ]
     }
   ]
 }

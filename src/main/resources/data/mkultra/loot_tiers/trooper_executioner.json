@@ -52,11 +52,9 @@
           "Name": "mkultra:trooper_executioner",
           "Amount": 2.0,
           "Operation": 0,
-          "UUID": "2f48fc55-5a28-4604-8690-be2c17608bb2",
           "AttributeName": "minecraft:generic.max_health"
         }
-      ],
-      "unique": true
+      ]
     },
     {
       "randomizationType": "mkweapons:attributes",
@@ -70,11 +68,9 @@
           "Name": "mkultra:trooper_executioner",
           "Amount": 2.0,
           "Operation": 0,
-          "UUID": "28ad4345-ec90-4134-9324-e106179bdd2e",
           "AttributeName": "mkcore:max_mana"
         }
-      ],
-      "unique": true
+      ]
     },
     {
       "randomizationType": "mkweapons:attributes",
@@ -88,11 +84,9 @@
           "Name": "mkultra:trooper_executioner",
           "Amount": 0.25,
           "Operation": 0,
-          "UUID": "697bf94a-3d8f-48f0-affc-34cd631e0ec5",
           "AttributeName": "mkcore:mana_regen"
         }
-      ],
-      "unique": true
+      ]
     },
     {
       "randomizationType": "mkweapons:attributes",
@@ -106,11 +100,9 @@
           "Name": "mkultra:trooper_executioner",
           "Amount": 0.05,
           "Operation": 2,
-          "UUID": "a76f8e52-ca6e-406a-af63-87006da439fd",
           "AttributeName": "minecraft:generic.movement_speed"
         }
-      ],
-      "unique": true
+      ]
     },
     {
       "randomizationType": "mkweapons:attributes",
@@ -124,11 +116,9 @@
           "Name": "mkultra:trooper_executioner",
           "Amount": 1.0,
           "Operation": 0,
-          "UUID": "eb40d674-37cf-42ea-bfc0-0dad5008fd96",
           "AttributeName": "minecraft:generic.attack_damage"
         }
-      ],
-      "unique": true
+      ]
     },
     {
       "randomizationType": "mkweapons:attributes",
@@ -142,11 +132,9 @@
           "Name": "mkultra:trooper_executioner",
           "Amount": 1.0,
           "Operation": 0,
-          "UUID": "095901c3-d85c-47e1-a5bc-fbf262cb51b6",
           "AttributeName": "minecraft:generic.armor"
         }
-      ],
-      "unique": true
+      ]
     },
     {
       "randomizationType": "mkweapons:attributes",
@@ -160,11 +148,9 @@
           "Name": "mkultra:trooper_executioner",
           "Amount": 1.0,
           "Operation": 0,
-          "UUID": "47d0ae88-75dd-443d-a61f-5ac02eb1eb68",
           "AttributeName": "mkcore:nature_damage"
         }
-      ],
-      "unique": true
+      ]
     },
     {
       "randomizationType": "mkweapons:attributes",
@@ -178,11 +164,9 @@
           "Name": "mkultra:trooper_executioner",
           "Amount": 4.0,
           "Operation": 0,
-          "UUID": "e64b7990-41a2-4cfe-87f8-29e20d7ce347",
           "AttributeName": "minecraft:generic.max_health"
         }
-      ],
-      "unique": true
+      ]
     },
     {
       "randomizationType": "mkweapons:name",

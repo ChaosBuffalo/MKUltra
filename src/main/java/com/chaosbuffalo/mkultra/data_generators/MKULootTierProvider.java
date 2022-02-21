@@ -38,6 +38,67 @@ public class MKULootTierProvider extends LootTierProvider {
         writeLootTier(trooperCaptain(), cache);
         writeLootTier(trooperExecutioner(), cache);
         writeLootTier(trooperMagus(), cache);
+        writeLootTier(burningSkeletonLoot(), cache);
+    }
+
+    private LootTier burningSkeletonLoot(){
+        LootTier tier = new LootTier(new ResourceLocation(MKUltra.MODID, "burning_skeleton"));
+        addBloodyRing(tier);
+        addEarringOfFireDamage(tier);
+        addSacrificialDagger(tier);
+        return tier;
+
+    }
+
+    private void addSacrificialDagger(LootTier tier){
+        tier.addItemToSlot(LootSlotManager.MAIN_HAND, MKWeaponsItems.lookupWeapon(MKWeaponsItems.IRON_TIER, MeleeWeaponTypes.DAGGER_TYPE));
+
+        for (int i = 0; i < 3; i++){
+            for (int x = 0; x < 3; x++){
+                AttributeOption option = new AttributeOption();
+                option.addAttributeModifier(MKAttributes.BLEED_DAMAGE, tier.getName().toString(), i + 1.0, AttributeModifier.Operation.ADDITION);
+                option.addAttributeModifier(MKAttributes.FIRE_DAMAGE, tier.getName().toString(), x + 1.0, AttributeModifier.Operation.ADDITION);
+                option.setWeight(10 - ((x + 1) * (i + 1)));
+                option.addApplicableSlot(LootSlotManager.MAIN_HAND);
+                tier.addRandomizationOption(option);
+            }
+        }
+        NameOption name = new NameOption(new StringTextComponent("Sacrificial Dagger"));
+        name.addApplicableSlot(LootSlotManager.MAIN_HAND);
+        tier.addRandomizationOption(name);
+        tier.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "blade"),
+                LootSlotManager.MAIN_HAND,
+                RandomizationSlotManager.ATTRIBUTE_SLOT, RandomizationSlotManager.NAME_SLOT), 10);
+    }
+
+    private void addEarringOfFireDamage(LootTier tier){
+        tier.addItemToSlot(LootSlotManager.EARRINGS, MKWeaponsItems.SilverEarring);
+        AttributeOption option = new AttributeOption();
+        option.addApplicableSlot(LootSlotManager.EARRINGS);
+        option.addAttributeModifier(MKAttributes.FIRE_DAMAGE, tier.getName().toString(),
+                2, AttributeModifier.Operation.ADDITION);
+        tier.addRandomizationOption(option);
+        NameOption name = new NameOption(new StringTextComponent("Earring of Minor Firepower"));
+        name.addApplicableSlot(LootSlotManager.EARRINGS);
+        tier.addRandomizationOption(name);
+        tier.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "earring"),
+                LootSlotManager.EARRINGS,
+                RandomizationSlotManager.ATTRIBUTE_SLOT, RandomizationSlotManager.NAME_SLOT), 15);
+    }
+
+    private void addBloodyRing(LootTier tier){
+        tier.addItemToSlot(LootSlotManager.RINGS, MKWeaponsItems.RoseGoldRing);
+        AttributeOption option = new AttributeOption();
+        option.addApplicableSlot(LootSlotManager.RINGS);
+        option.addAttributeModifier(MKAttributes.BLEED_DAMAGE, tier.getName().toString(),
+                3, AttributeModifier.Operation.ADDITION);
+        tier.addRandomizationOption(option);
+        NameOption name = new NameOption(new StringTextComponent("Bloody Ring"));
+        name.addApplicableSlot(LootSlotManager.RINGS);
+        tier.addRandomizationOption(name);
+        tier.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "ring"),
+                LootSlotManager.RINGS,
+                RandomizationSlotManager.ATTRIBUTE_SLOT, RandomizationSlotManager.NAME_SLOT), 15);
     }
 
     private LootTier trooperKnightLootTier(){
@@ -70,8 +131,8 @@ public class MKULootTierProvider extends LootTierProvider {
         tier.addItemToSlot(LootSlotManager.EARRINGS, MKWeaponsItems.GoldEarring);
         AttributeOption option = new AttributeOption();
         option.addApplicableSlot(LootSlotManager.EARRINGS);
-        option.addAttributeModifier(Attributes.MAX_HEALTH, new AttributeModifier(tier.getName().toString(),
-                4, AttributeModifier.Operation.ADDITION));
+        option.addAttributeModifier(Attributes.MAX_HEALTH, tier.getName().toString(),
+                4, AttributeModifier.Operation.ADDITION);
         tier.addRandomizationOption(option);
         NameOption name = new NameOption(new StringTextComponent("Earring of Minor Health"));
         name.addApplicableSlot(LootSlotManager.EARRINGS);
@@ -86,8 +147,8 @@ public class MKULootTierProvider extends LootTierProvider {
         tier.addItemToSlot(LootSlotManager.EARRINGS, MKWeaponsItems.SilverEarring);
         AttributeOption option = new AttributeOption();
         option.addApplicableSlot(LootSlotManager.EARRINGS);
-        option.addAttributeModifier(MKAttributes.MANA_REGEN, new AttributeModifier(tier.getName().toString(),
-                0.25, AttributeModifier.Operation.ADDITION));
+        option.addAttributeModifier(MKAttributes.MANA_REGEN, tier.getName().toString(),
+                0.25, AttributeModifier.Operation.ADDITION);
         tier.addRandomizationOption(option);
         NameOption name = new NameOption(new StringTextComponent("Earring of Quickening Thoughts"));
         name.addApplicableSlot(LootSlotManager.EARRINGS);
@@ -101,8 +162,8 @@ public class MKULootTierProvider extends LootTierProvider {
         tier.addItemToSlot(LootSlotManager.RINGS, MKWeaponsItems.SilverRing);
         AttributeOption option = new AttributeOption();
         option.addApplicableSlot(LootSlotManager.RINGS);
-        option.addAttributeModifier(MKAttributes.MAX_MANA, new AttributeModifier(tier.getName().toString(),
-                4, AttributeModifier.Operation.ADDITION));
+        option.addAttributeModifier(MKAttributes.MAX_MANA, tier.getName().toString(),
+                4, AttributeModifier.Operation.ADDITION);
         tier.addRandomizationOption(option);
         NameOption name = new NameOption(new StringTextComponent("Ring of Minor Mana"));
         name.addApplicableSlot(LootSlotManager.RINGS);
@@ -117,8 +178,8 @@ public class MKULootTierProvider extends LootTierProvider {
         tier.addItemToSlot(LootSlotManager.RINGS, MKWeaponsItems.GoldRing);
         AttributeOption option = new AttributeOption();
         option.addApplicableSlot(LootSlotManager.RINGS);
-        option.addAttributeModifier(Attributes.MAX_HEALTH, new AttributeModifier(tier.getName().toString(),
-                4, AttributeModifier.Operation.ADDITION));
+        option.addAttributeModifier(Attributes.MAX_HEALTH, tier.getName().toString(),
+                4, AttributeModifier.Operation.ADDITION);
         tier.addRandomizationOption(option);
         NameOption name = new NameOption(new StringTextComponent("Ring of Minor Health"));
         name.addApplicableSlot(LootSlotManager.RINGS);
@@ -207,38 +268,38 @@ public class MKULootTierProvider extends LootTierProvider {
 
     private void introCastleAttrs(LootSlot slot, LootTier tier){
         AttributeOption healthAttribute = new AttributeOption();
-        healthAttribute.addAttributeModifier(Attributes.MAX_HEALTH, new AttributeModifier(tier.getName().toString(),
-                2, AttributeModifier.Operation.ADDITION));
+        healthAttribute.addAttributeModifier(Attributes.MAX_HEALTH, tier.getName().toString(),
+                2, AttributeModifier.Operation.ADDITION);
         healthAttribute.addApplicableSlot(slot);
         tier.addRandomizationOption(healthAttribute);
         AttributeOption manaAttribute = new AttributeOption();
-        manaAttribute.addAttributeModifier(MKAttributes.MAX_MANA, new AttributeModifier(tier.getName().toString(),
-                2, AttributeModifier.Operation.ADDITION));
+        manaAttribute.addAttributeModifier(MKAttributes.MAX_MANA, tier.getName().toString(),
+                2, AttributeModifier.Operation.ADDITION);
         manaAttribute.addApplicableSlot(slot);
         tier.addRandomizationOption(manaAttribute);
         AttributeOption manaRegen = new AttributeOption();
-        manaRegen.addAttributeModifier(MKAttributes.MANA_REGEN, new AttributeModifier(tier.getName().toString(),
-                0.25, AttributeModifier.Operation.ADDITION));
+        manaRegen.addAttributeModifier(MKAttributes.MANA_REGEN, tier.getName().toString(),
+                0.25, AttributeModifier.Operation.ADDITION);
         manaRegen.addApplicableSlot(slot);
         tier.addRandomizationOption(manaRegen);
         AttributeOption runSpeed = new AttributeOption();
-        runSpeed.addAttributeModifier(Attributes.MOVEMENT_SPEED, new AttributeModifier(tier.getName().toString(),
-                0.05, AttributeModifier.Operation.MULTIPLY_TOTAL));
+        runSpeed.addAttributeModifier(Attributes.MOVEMENT_SPEED, tier.getName().toString(),
+                0.05, AttributeModifier.Operation.MULTIPLY_TOTAL);
         runSpeed.addApplicableSlot(slot);
         tier.addRandomizationOption(runSpeed);
         AttributeOption atkDamage = new AttributeOption();
-        atkDamage.addAttributeModifier(Attributes.ATTACK_DAMAGE, new AttributeModifier(tier.getName().toString(),
-                1.0, AttributeModifier.Operation.ADDITION));
+        atkDamage.addAttributeModifier(Attributes.ATTACK_DAMAGE, tier.getName().toString(),
+                1.0, AttributeModifier.Operation.ADDITION);
         atkDamage.addApplicableSlot(slot);
         tier.addRandomizationOption(atkDamage);
         AttributeOption armor = new AttributeOption();
-        armor.addAttributeModifier(Attributes.ARMOR, new AttributeModifier(tier.getName().toString(),
-                1.0, AttributeModifier.Operation.ADDITION));
+        armor.addAttributeModifier(Attributes.ARMOR, tier.getName().toString(),
+                1.0, AttributeModifier.Operation.ADDITION);
         armor.addApplicableSlot(slot);
         tier.addRandomizationOption(armor);
         AttributeOption natureDamage = new AttributeOption();
-        natureDamage.addAttributeModifier(MKAttributes.NATURE_DAMAGE, new AttributeModifier(tier.getName().toString(),
-                1, AttributeModifier.Operation.ADDITION));
+        natureDamage.addAttributeModifier(MKAttributes.NATURE_DAMAGE, tier.getName().toString(),
+                1, AttributeModifier.Operation.ADDITION);
         natureDamage.addApplicableSlot(slot);
         tier.addRandomizationOption(natureDamage);
     }

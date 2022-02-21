@@ -110,10 +110,16 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                 .withAbilityOption(SmiteAbility.INSTANCE, 2, 1.0)
                 .withAbilityOption(GalvanizeAbility.INSTANCE, 3, 1.0)
         );
+        def.addOption(new DialogueOption().setValue(new ResourceLocation(MKUltra.MODID, "intro_cleric_acolyte")));
         EquipmentOption equipOption = new EquipmentOption();
         equipOption.addItemChoice(EquipmentSlotType.MAINHAND,
                 new NpcItemChoice(new ItemStack(ForgeRegistries.ITEMS.getValue(
                         new ResourceLocation("mkweapons:mace_iron"))), 1.0, 0.0f));
+        def.addOption(new QuestOfferingOption(new ResourceLocation("mkultra", "cleric_intro")));
+        def.addOption(new AbilityTrainingOption()
+                        .withTrainingOption(HealAbility.INSTANCE, new HasEntitlementRequirement(MKUEntitlements.IntroClericTier1))
+                        .withTrainingOption(SmiteAbility.INSTANCE, new HasEntitlementRequirement(MKUEntitlements.IntroClericTier1))
+        );
         def.addOption(equipOption);
         return def;
     }
@@ -171,7 +177,7 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                 .addAttributeEntry(new NpcAttributeEntry(Attributes.MAX_HEALTH, 250.0))
                 .addAttributeEntry(new NpcAttributeEntry(Attributes.ARMOR, 10.0))
                 .addAttributeEntry(new NpcAttributeEntry(Attributes.ATTACK_DAMAGE, 5.0))
-                .addAttributeEntry(new NpcAttributeEntry(MKAttributes.BLEED_RESISTANCE, 0.25))
+                .addAttributeEntry(new NpcAttributeEntry(MKAttributes.BLEED_RESISTANCE, 1.25))
         );
         def.addOption(new NameOption().setValue("Burning Revenant"));
         EquipmentOption equipOption = new EquipmentOption();
@@ -207,6 +213,17 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                 new BoneEffectInstance(UUID.fromString("3e7496f1-f5bf-45e6-b8e5-64192633ae9f"),
                         BipedSkeleton.HEAD_BONE_NAME, new ResourceLocation(MKUltra.MODID, "burning_skeleton_head"))
         )));
+        ResourceLocation lootTierName = new ResourceLocation(MKUltra.MODID, "burning_skeleton");
+        def.addOption(new ExtraLootOption().withLootOptions(new LootOptionEntry(LootSlotManager.MAIN_HAND.getName(), lootTierName,
+                LootTierManager.INVALID_RANDOMIZATION_TEMPLATE, 1.0))
+                .withLootOptions(new LootOptionEntry(LootSlotManager.RINGS.getName(), lootTierName,
+                        LootTierManager.INVALID_RANDOMIZATION_TEMPLATE, 3.0))
+                .withLootOptions(new LootOptionEntry(LootSlotManager.EARRINGS.getName(), lootTierName,
+                        LootTierManager.INVALID_RANDOMIZATION_TEMPLATE, 2.0))
+                .withDropChances(1)
+                .withNoLootChance(0.1)
+                .withNoLootIncrease(0.0));
+
         return def;
     }
 

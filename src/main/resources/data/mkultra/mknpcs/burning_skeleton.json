@@ -22,13 +22,39 @@
         },
         {
           "attributeName": "mkcore:bleed_resistance",
-          "value": 0.25
+          "value": 1.25
         }
       ]
     },
     {
       "optionType": "mknpc:name",
       "value": "Burning Revenant"
+    },
+    {
+      "optionType": "mknpc:extra_loot",
+      "noLootChance": 0.1,
+      "dropChances": 1,
+      "noLootIncrease": 0.0,
+      "lootOptions": [
+        {
+          "lootSlotName": "mkweapons:main_hand",
+          "lootSlotTier": "mkultra:burning_skeleton",
+          "templateName": "mkweapons:randomization_template.invalid",
+          "weight": 1.0
+        },
+        {
+          "lootSlotName": "mkweapons:rings",
+          "lootSlotTier": "mkultra:burning_skeleton",
+          "templateName": "mkweapons:randomization_template.invalid",
+          "weight": 3.0
+        },
+        {
+          "lootSlotName": "mkweapons:earrings",
+          "lootSlotTier": "mkultra:burning_skeleton",
+          "templateName": "mkweapons:randomization_template.invalid",
+          "weight": 2.0
+        }
+      ]
     },
     {
       "optionType": "mknpc:equipment",

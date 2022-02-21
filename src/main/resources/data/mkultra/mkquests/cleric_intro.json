@@ -1,0 +1,329 @@
+{
+  "quests": [
+    {
+      "questName": "talk_to_apprentice",
+      "objectives": [
+        {
+          "objectiveType": "mknpc:objective.talk_to_npc",
+          "description": [
+            "{\"text\":\"Talk to the apprentice\"}"
+          ],
+          "attributes": {
+            "structureIndex": 0,
+            "npcDefinition": "mkultra:solangian_apprentice",
+            "structure": "mkultra:intro_castle",
+            "objectiveName": "talk_to_apprentice"
+          },
+          "dialogue": {
+            "nodes": [
+              {
+                "id": "talk_to_apprentice_hail",
+                "message": "Oh thank goodness, it is good to see a friendly face. One of the zombies chased me into here and I wasn't certain if I'd ever get out. Can you do me {prompt:favor}?"
+              },
+              {
+                "id": "favor",
+                "message": "When we were escaping from the library I accidentally dropped a necklace of sentimental value. I think the {mk_quest_notable:mkultra:intro_castle#0#mkultra:imperial_magus} has it. Will you retrieve it for me?",
+                "effects": [
+                  {
+                    "dialogueEffectType": "mknpc:objective_completion",
+                    "objectiveName": "talk_to_apprentice",
+                    "questName": "talk_to_apprentice"
+                  }
+                ]
+              }
+            ],
+            "prompts": [
+              {
+                "id": "favor",
+                "message": "a favor",
+                "triggerPhrase": "favor",
+                "suggestedText": "What favor?",
+                "responses": [
+                  {
+                    "responseNodeId": "favor"
+                  }
+                ]
+              },
+              {
+                "id": "hail",
+                "message": "",
+                "triggerPhrase": "",
+                "suggestedText": "",
+                "responses": [
+                  {
+                    "responseNodeId": "talk_to_apprentice_hail"
+                  }
+                ]
+              }
+            ],
+            "hailPrompt": "hail"
+          }
+        }
+      ],
+      "description": "{\"text\":\"You need to find the Apprentice somewhere in the castle. Perhaps near the library..\"}",
+      "autoComplete": true,
+      "rewards": [
+        {
+          "rewardType": "mknpc:quest_reward.xp",
+          "attributes": {
+            "xp": 25
+          }
+        }
+      ]
+    },
+    {
+      "questName": "loot_necklace",
+      "objectives": [
+        {
+          "objectiveType": "mknpc:objective.quest_loot_notable",
+          "description": [],
+          "attributes": {
+            "chance": 1.0,
+            "structureIndex": 0,
+            "npcDefinition": "mkultra:imperial_magus",
+            "count": 1,
+            "structure": "mkultra:intro_castle",
+            "objectiveName": "loot_necklace"
+          },
+          "itemDescription": "{\"text\":\"The Apprentice's Necklace\"}"
+        }
+      ],
+      "description": "{\"text\":\"The Apprentice wants you to retrieve their necklace from a zombie in the library.\"}",
+      "autoComplete": true,
+      "rewards": [
+        {
+          "rewardType": "mknpc:quest_reward.xp",
+          "attributes": {
+            "xp": 25
+          }
+        }
+      ]
+    },
+    {
+      "questName": "return_to_apprentice",
+      "objectives": [
+        {
+          "objectiveType": "mknpc:objective.talk_to_npc",
+          "description": [
+            "{\"text\":\"Talk to the apprentice\"}"
+          ],
+          "attributes": {
+            "structureIndex": 0,
+            "npcDefinition": "mkultra:solangian_apprentice",
+            "structure": "mkultra:intro_castle",
+            "objectiveName": "return_to_apprentice"
+          },
+          "dialogue": {
+            "nodes": [
+              {
+                "id": "return_to_apprentice_hail",
+                "message": "Thank you so much I don't think I could have handled {mk_quest_notable:mkultra:intro_castle#0#mkultra:imperial_magus} on my own. Please let {mk_quest_notable:mkultra:intro_castle#0#mkultra:solangian_acolyte} know I will return shortly.",
+                "effects": [
+                  {
+                    "dialogueEffectType": "mknpc:objective_completion",
+                    "objectiveName": "return_to_apprentice",
+                    "questName": "return_to_apprentice"
+                  }
+                ]
+              }
+            ],
+            "prompts": [
+              {
+                "id": "hail",
+                "message": "",
+                "triggerPhrase": "",
+                "suggestedText": "",
+                "responses": [
+                  {
+                    "responseNodeId": "return_to_apprentice_hail"
+                  }
+                ]
+              }
+            ],
+            "hailPrompt": "hail"
+          }
+        }
+      ],
+      "description": "{\"text\":\"Return the necklace to the Apprentice\"}",
+      "autoComplete": true,
+      "rewards": [
+        {
+          "rewardType": "mknpc:quest_reward.xp",
+          "attributes": {
+            "xp": 25
+          }
+        }
+      ]
+    },
+    {
+      "questName": "return_to_acolyte",
+      "objectives": [
+        {
+          "objectiveType": "mknpc:objective.talk_to_npc",
+          "description": [
+            "{\"text\":\"Return to the Acolyte\"}"
+          ],
+          "attributes": {
+            "structureIndex": 0,
+            "npcDefinition": "mkultra:solangian_acolyte",
+            "structure": "mkultra:intro_castle",
+            "objectiveName": "return_to_acolyte"
+          },
+          "dialogue": {
+            "nodes": [
+              {
+                "id": "return_to_acolyte_hail",
+                "message": "I'm glad {mk_quest_notable:mkultra:intro_castle#0#mkultra:solangian_acolyte} is alright. Thank you for all you've done. For your service, I will bend my order's rules a little and provide you with some training in our healing magics.",
+                "effects": [
+                  {
+                    "dialogueEffectType": "mknpc:objective_completion",
+                    "objectiveName": "return_to_acolyte",
+                    "questName": "return_to_acolyte"
+                  }
+                ]
+              }
+            ],
+            "prompts": [
+              {
+                "id": "hail",
+                "message": "",
+                "triggerPhrase": "",
+                "suggestedText": "",
+                "responses": [
+                  {
+                    "responseNodeId": "return_to_acolyte_hail"
+                  }
+                ]
+              }
+            ],
+            "hailPrompt": "hail"
+          }
+        }
+      ],
+      "description": "{\"text\":\"Return to the Acolyte and let them know the Apprentice is safe.\"}",
+      "autoComplete": true,
+      "rewards": [
+        {
+          "rewardType": "mknpc:quest_reward.xp",
+          "attributes": {
+            "xp": 25
+          }
+        },
+        {
+          "rewardType": "mknpc:quest_reward.entitlement",
+          "attributes": {
+            "entitlement": "mkultra:cleric.intro.tier_1"
+          }
+        }
+      ]
+    }
+  ],
+  "repeatable": false,
+  "questName": "{\"text\":\"A Missing Apprentice\"}",
+  "requirements": [],
+  "questMode": 0,
+  "dialogue": {
+    "nodes": [
+      {
+        "id": "start_quest",
+        "message": "While you are exploring the castle, could you search for {prompt:apprentice}? We were ambushed by zombies while investigating the library and had to split up. I made it back but {mk_quest_notable:mkultra:intro_castle#0#mkultra:solangian_apprentice} has yet to return."
+      },
+      {
+        "id": "holySee",
+        "message": "Our order is dedicated to the worship of the Sun God, Solang. We work to preserve order and prosperity in the realm. This plague of undeath is of great concern to the {prompt:council} and we believe that this castle is somehow connected."
+      },
+      {
+        "id": "council",
+        "message": "The leadership of my order is called the Council of the Nine. They are tasked with overseeing all affairs of the church."
+      },
+      {
+        "id": "hail",
+        "message": "I am {context:entity_name}, sent here under the authority of the {prompt:holySee} to investigate the appearance of this castle. I hear you are going into the castle; if you're interested, I have a {prompt:start_quest} for you."
+      },
+      {
+        "id": "apprentice",
+        "message": "I last saw {mk_quest_notable:mkultra:intro_castle#0#mkultra:solangian_apprentice} in the library on the upper floors of the castle.",
+        "effects": [
+          {
+            "dialogueEffectType": "mknpc:start_quest_chain"
+          }
+        ]
+      }
+    ],
+    "prompts": [
+      {
+        "id": "start_quest",
+        "message": "task",
+        "triggerPhrase": "task",
+        "suggestedText": "What task?",
+        "responses": [
+          {
+            "responseNodeId": "start_quest"
+          }
+        ]
+      },
+      {
+        "id": "holySee",
+        "message": "Holy See of Solang",
+        "triggerPhrase": "the Holy See",
+        "suggestedText": "Who are the Holy See?",
+        "responses": [
+          {
+            "responseNodeId": "holySee"
+          }
+        ]
+      },
+      {
+        "id": "council",
+        "message": "Council",
+        "triggerPhrase": "Council",
+        "suggestedText": "the Council?",
+        "responses": [
+          {
+            "responseNodeId": "council"
+          }
+        ]
+      },
+      {
+        "id": "hail",
+        "message": "",
+        "triggerPhrase": "",
+        "suggestedText": "",
+        "responses": [
+          {
+            "responseNodeId": "hail",
+            "conditions": [
+              {
+                "dialogueConditionType": "mknpc:can_start_chain_condition",
+                "invert": false,
+                "allowRepeat": false
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "apprentice",
+        "message": "my apprentice",
+        "triggerPhrase": "apprentice",
+        "suggestedText": "Where did you last see your apprentice?",
+        "responses": [
+          {
+            "responseNodeId": "apprentice"
+          },
+          {
+            "responseNodeId": "apprentice",
+            "conditions": [
+              {
+                "dialogueConditionType": "mknpc:can_start_chain_condition",
+                "invert": false,
+                "allowRepeat": false
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "hailPrompt": "hail"
+  }
+}
