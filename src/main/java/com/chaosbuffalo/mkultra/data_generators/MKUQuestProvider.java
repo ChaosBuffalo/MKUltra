@@ -60,6 +60,7 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
         QuestBuilder.QuestLocation introCastle = new QuestBuilder.QuestLocation(MKUWorldGen.INTRO_CASTLE_NAME, 0);
         QuestBuilder.QuestNpc acolyte = new QuestBuilder.QuestNpc(introCastle, new ResourceLocation(MKUltra.MODID, "solangian_acolyte"));
         QuestBuilder.QuestNpc apprentice = new QuestBuilder.QuestNpc(introCastle, new ResourceLocation(MKUltra.MODID, "solangian_apprentice"));
+        QuestBuilder.QuestNpc magus = new QuestBuilder.QuestNpc(introCastle, new ResourceLocation(MKUltra.MODID, "imperial_magus"));
 
         QuestDefinition def = new QuestDefinition(new ResourceLocation(MKUltra.MODID, "cleric_intro"));
         def.setRepeatable(false);
@@ -105,20 +106,69 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
         def.addStartPrompt(apprenticePrompt);
         def.addStartPrompt(startQuestPrompt);
 
+        DialogueNode withFavor = new DialogueNode("favor",
+                String.format("When we were escaping from the library I accidentally dropped a necklace of sentimental value. " +
+                "I think the %s has it. Will you retrieve it for me?", magus.getDialogueLink()));
+        DialoguePrompt favorPrompt = new DialoguePrompt("favor", "favor", "What favor?", "a favor");
+        favorPrompt.addResponse(new DialogueResponse(withFavor));
+        withFavor.addEffect(new ObjectiveCompleteEffect("talk_to_apprentice", "talk_to_apprentice"));
+
         Quest talkToApprentice = new QuestBuilder("talk_to_apprentice",
                 new StringTextComponent("You need to find the Apprentice somewhere in the castle. Perhaps near the library.."))
                 .autoComplete(true)
                 .simpleHail("talk_to_apprentice",
                         new StringTextComponent("Talk to the apprentice"),
                         apprentice,
-                        "Oh thank goodness, it is good to see a friendly face. One of the zombies chased me into " +
-                                "here and I wasn't certain if I'd ever get out. ",
+                        String.format("Oh thank goodness, it is good to see a friendly face. One of the zombies chased me into " +
+                                "here and I wasn't certain if I'd ever get out. Can you do me %s?", favorPrompt.getPromptEmbed()),
                         false,
-                        null
+                        (obj) -> {
+                            obj.withAdditionalNode(withFavor);
+                            obj.withAdditionalPrompts(favorPrompt);
+                        }
                 )
                 .reward(new XpReward(25))
                 .quest();
         def.addQuest(talkToApprentice);
+
+        Quest apprenticeNecklace = new QuestBuilder("loot_necklace",
+                new StringTextComponent("The Apprentice wants you to retrieve their necklace from a zombie in the library."))
+                .autoComplete(true)
+                .questLootFromNotable("loot_necklace", magus, 1.0, 1, new StringTextComponent("The Apprentice's Necklace"))
+                .reward(new XpReward(25))
+                .quest();
+        def.addQuest(apprenticeNecklace);
+
+        Quest returnToApprentice = new QuestBuilder("return_to_apprentice",
+                new StringTextComponent("Return the necklace to the Apprentice"))
+                .autoComplete(true)
+                .simpleHail("return_to_apprentice",
+                        new StringTextComponent("Talk to the apprentice"),
+                        apprentice,
+                        String.format("Thank you so much I don't think I could have handled %s on my own. Please let %s know I will return shortly.",
+                                magus.getDialogueLink(), acolyte.getDialogueLink()),
+                        true,
+                        null
+                )
+                .reward(new XpReward(25))
+                .quest();
+        def.addQuest(returnToApprentice);
+
+        Quest returnToAcolyte = new QuestBuilder("return_to_acolyte",
+                new StringTextComponent("Return to the Acolyte and let them know the Apprentice is safe."))
+                .autoComplete(true)
+                .simpleHail("return_to_acolyte",
+                        new StringTextComponent("Return to the Acolyte"),
+                        acolyte,
+                        String.format("I'm glad %s is alright. Thank you for all you've done. For your service, I will bend my order's rules a little and provide you with some training in our healing magics.",
+                                acolyte.getDialogueLink()),
+                        true,
+                        null
+                )
+                .reward(new XpReward(25))
+                .reward(new GrantEntitlementReward(MKUEntitlements.IntroClericTier1))
+                .quest();
+        def.addQuest(returnToAcolyte);
 
         return def;
     }
@@ -501,6 +551,13 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
         public QuestBuilder killNpc(String objectiveName, ResourceLocation npcDef, int count){
             KillNpcDefObjective kill = new KillNpcDefObjective(objectiveName, npcDef, count);
             objective(kill);
+            return this;
+        }
+
+        public QuestBuilder questLootFromNotable(String objectiveName, QuestNpc npc, double chance, int count, IFormattableTextComponent itemDescription){
+            QuestLootNotableObjective obj = new QuestLootNotableObjective(objectiveName, npc.location.structureName,
+                    npc.location.structureIndex, npc.npcDef, chance, count, itemDescription);
+            objective(obj);
             return this;
         }
 

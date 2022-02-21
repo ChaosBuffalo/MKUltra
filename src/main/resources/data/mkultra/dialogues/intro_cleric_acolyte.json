@@ -1,0 +1,56 @@
+{
+  "nodes": [
+    {
+      "id": "hail_wo",
+      "message": "Greetings. I am {context:entity_name}, a humble servant of the Holy See of Solang. I've been sent here to investigate the undead uprising."
+    },
+    {
+      "id": "open_training",
+      "message": "Let me see what I can teach you.",
+      "effects": [
+        {
+          "dialogueEffectType": "mknpc:open_learn_abilities"
+        }
+      ]
+    },
+    {
+      "id": "hail",
+      "message": "Are you in need of some additional {prompt:open_training} to aid your fight against the undead."
+    }
+  ],
+  "prompts": [
+    {
+      "id": "open_training",
+      "message": "magical abilities",
+      "triggerPhrase": "magical abilities",
+      "suggestedText": "what magical abilities?",
+      "responses": [
+        {
+          "responseNodeId": "open_training"
+        }
+      ]
+    },
+    {
+      "id": "hail",
+      "message": "",
+      "triggerPhrase": "",
+      "suggestedText": "",
+      "responses": [
+        {
+          "responseNodeId": "hail",
+          "conditions": [
+            {
+              "dialogueConditionType": "mknpc:has_entitlement",
+              "invert": false,
+              "entitlement": "mkultra:cleric.intro.tier_1"
+            }
+          ]
+        },
+        {
+          "responseNodeId": "hail_wo"
+        }
+      ]
+    }
+  ],
+  "hailPrompt": "hail"
+}

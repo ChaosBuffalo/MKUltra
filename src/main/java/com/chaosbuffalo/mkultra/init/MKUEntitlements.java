@@ -27,6 +27,9 @@ public class MKUEntitlements {
     @ObjectHolder("cleric.tier_1")
     public static MKEntitlement ClericTier1;
 
+    @ObjectHolder("cleric.intro.tier_1")
+    public static MKEntitlement IntroClericTier1;
+
     @ObjectHolder("cleric.tier_2")
     public static MKEntitlement ClericTier2;
 
@@ -49,6 +52,7 @@ public class MKUEntitlements {
         evt.getRegistry().register(new SimpleEntitlement(new ResourceLocation(MKUltra.MODID, "green_knight.tier_2"), 1));
         evt.getRegistry().register(new SimpleEntitlement(new ResourceLocation(MKUltra.MODID, "green_knight.tier_3"), 1));
         evt.getRegistry().register(new SimpleEntitlement(new ResourceLocation(MKUltra.MODID, "cleric.tier_1"), 1));
+        evt.getRegistry().register(new SimpleEntitlement(new ResourceLocation(MKUltra.MODID, "cleric.intro.tier_1"), 1));
         evt.getRegistry().register(new SimpleEntitlement(new ResourceLocation(MKUltra.MODID, "cleric.tier_2"), 1));
         evt.getRegistry().register(new SimpleEntitlement(new ResourceLocation(MKUltra.MODID, "cleric.tier_3"), 1));
         evt.getRegistry().register(new SimpleEntitlement(new ResourceLocation(MKUltra.MODID, "nether_mage.tier_1"), 1));

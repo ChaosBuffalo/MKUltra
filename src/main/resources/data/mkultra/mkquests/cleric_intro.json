@@ -18,10 +18,32 @@
             "nodes": [
               {
                 "id": "talk_to_apprentice_hail",
-                "message": "Oh thank goodness, it is good to see a friendly face. One of the zombies chased me into here and I wasn't certain if I'd ever get out. "
+                "message": "Oh thank goodness, it is good to see a friendly face. One of the zombies chased me into here and I wasn't certain if I'd ever get out. Can you do me {prompt:favor}?"
+              },
+              {
+                "id": "favor",
+                "message": "When we were escaping from the library I accidentally dropped a necklace of sentimental value. I think the {mk_quest_notable:mkultra:intro_castle#0#mkultra:imperial_magus} has it. Will you retrieve it for me?",
+                "effects": [
+                  {
+                    "dialogueEffectType": "mknpc:objective_completion",
+                    "objectiveName": "talk_to_apprentice",
+                    "questName": "talk_to_apprentice"
+                  }
+                ]
               }
             ],
             "prompts": [
+              {
+                "id": "favor",
+                "message": "a favor",
+                "triggerPhrase": "favor",
+                "suggestedText": "What favor?",
+                "responses": [
+                  {
+                    "responseNodeId": "favor"
+                  }
+                ]
+              },
               {
                 "id": "hail",
                 "message": "",
@@ -45,6 +67,152 @@
           "rewardType": "mknpc:quest_reward.xp",
           "attributes": {
             "xp": 25
+          }
+        }
+      ]
+    },
+    {
+      "questName": "loot_necklace",
+      "objectives": [
+        {
+          "objectiveType": "mknpc:objective.quest_loot_notable",
+          "description": [],
+          "attributes": {
+            "chance": 1.0,
+            "structureIndex": 0,
+            "npcDefinition": "mkultra:imperial_magus",
+            "count": 1,
+            "structure": "mkultra:intro_castle",
+            "objectiveName": "loot_necklace"
+          },
+          "itemDescription": "{\"text\":\"The Apprentice's Necklace\"}"
+        }
+      ],
+      "description": "{\"text\":\"The Apprentice wants you to retrieve their necklace from a zombie in the library.\"}",
+      "autoComplete": true,
+      "rewards": [
+        {
+          "rewardType": "mknpc:quest_reward.xp",
+          "attributes": {
+            "xp": 25
+          }
+        }
+      ]
+    },
+    {
+      "questName": "return_to_apprentice",
+      "objectives": [
+        {
+          "objectiveType": "mknpc:objective.talk_to_npc",
+          "description": [
+            "{\"text\":\"Talk to the apprentice\"}"
+          ],
+          "attributes": {
+            "structureIndex": 0,
+            "npcDefinition": "mkultra:solangian_apprentice",
+            "structure": "mkultra:intro_castle",
+            "objectiveName": "return_to_apprentice"
+          },
+          "dialogue": {
+            "nodes": [
+              {
+                "id": "return_to_apprentice_hail",
+                "message": "Thank you so much I don't think I could have handled {mk_quest_notable:mkultra:intro_castle#0#mkultra:imperial_magus} on my own. Please let {mk_quest_notable:mkultra:intro_castle#0#mkultra:solangian_acolyte} know I will return shortly.",
+                "effects": [
+                  {
+                    "dialogueEffectType": "mknpc:objective_completion",
+                    "objectiveName": "return_to_apprentice",
+                    "questName": "return_to_apprentice"
+                  }
+                ]
+              }
+            ],
+            "prompts": [
+              {
+                "id": "hail",
+                "message": "",
+                "triggerPhrase": "",
+                "suggestedText": "",
+                "responses": [
+                  {
+                    "responseNodeId": "return_to_apprentice_hail"
+                  }
+                ]
+              }
+            ],
+            "hailPrompt": "hail"
+          }
+        }
+      ],
+      "description": "{\"text\":\"Return the necklace to the Apprentice\"}",
+      "autoComplete": true,
+      "rewards": [
+        {
+          "rewardType": "mknpc:quest_reward.xp",
+          "attributes": {
+            "xp": 25
+          }
+        }
+      ]
+    },
+    {
+      "questName": "return_to_acolyte",
+      "objectives": [
+        {
+          "objectiveType": "mknpc:objective.talk_to_npc",
+          "description": [
+            "{\"text\":\"Return to the Acolyte\"}"
+          ],
+          "attributes": {
+            "structureIndex": 0,
+            "npcDefinition": "mkultra:solangian_acolyte",
+            "structure": "mkultra:intro_castle",
+            "objectiveName": "return_to_acolyte"
+          },
+          "dialogue": {
+            "nodes": [
+              {
+                "id": "return_to_acolyte_hail",
+                "message": "I'm glad {mk_quest_notable:mkultra:intro_castle#0#mkultra:solangian_acolyte} is alright. Thank you for all you've done. For your service, I will bend my order's rules a little and provide you with some training in our healing magics.",
+                "effects": [
+                  {
+                    "dialogueEffectType": "mknpc:objective_completion",
+                    "objectiveName": "return_to_acolyte",
+                    "questName": "return_to_acolyte"
+                  }
+                ]
+              }
+            ],
+            "prompts": [
+              {
+                "id": "hail",
+                "message": "",
+                "triggerPhrase": "",
+                "suggestedText": "",
+                "responses": [
+                  {
+                    "responseNodeId": "return_to_acolyte_hail"
+                  }
+                ]
+              }
+            ],
+            "hailPrompt": "hail"
+          }
+        }
+      ],
+      "description": "{\"text\":\"Return to the Acolyte and let them know the Apprentice is safe.\"}",
+      "autoComplete": true,
+      "rewards": [
+        {
+          "rewardType": "mknpc:quest_reward.xp",
+          "attributes": {
+            "xp": 25
+          }
+        },
+        {
+          "rewardType": "mknpc:quest_reward.entitlement",
+          "attributes": {
+            "entitlement": "mkultra:cleric.intro.tier_1"
           }
         }
       ]

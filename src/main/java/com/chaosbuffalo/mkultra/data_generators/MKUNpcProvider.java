@@ -110,11 +110,16 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                 .withAbilityOption(SmiteAbility.INSTANCE, 2, 1.0)
                 .withAbilityOption(GalvanizeAbility.INSTANCE, 3, 1.0)
         );
+        def.addOption(new DialogueOption().setValue(new ResourceLocation(MKUltra.MODID, "intro_cleric_acolyte")));
         EquipmentOption equipOption = new EquipmentOption();
         equipOption.addItemChoice(EquipmentSlotType.MAINHAND,
                 new NpcItemChoice(new ItemStack(ForgeRegistries.ITEMS.getValue(
                         new ResourceLocation("mkweapons:mace_iron"))), 1.0, 0.0f));
         def.addOption(new QuestOfferingOption(new ResourceLocation("mkultra", "cleric_intro")));
+        def.addOption(new AbilityTrainingOption()
+                        .withTrainingOption(HealAbility.INSTANCE, new HasEntitlementRequirement(MKUEntitlements.IntroClericTier1))
+                        .withTrainingOption(SmiteAbility.INSTANCE, new HasEntitlementRequirement(MKUEntitlements.IntroClericTier1))
+        );
         def.addOption(equipOption);
         return def;
     }
