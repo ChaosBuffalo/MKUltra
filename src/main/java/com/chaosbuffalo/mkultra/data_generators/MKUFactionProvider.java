@@ -1,5 +1,6 @@
 package com.chaosbuffalo.mkultra.data_generators;
 
+import com.chaosbuffalo.mkfaction.data.MKFactionDataProvider;
 import com.chaosbuffalo.mkfaction.faction.MKFaction;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.init.MKUFactions;
@@ -16,12 +17,10 @@ import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.nio.file.Path;
 
-public class MKUFactionProvider implements IDataProvider {
-    private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
-    private final DataGenerator generator;
+public class MKUFactionProvider extends MKFactionDataProvider {
 
     public MKUFactionProvider(DataGenerator generator) {
-        this.generator = generator;
+        super(MKUltra.MODID, generator);
     }
 
     public void act(@Nonnull DirectoryCache cache) {
@@ -29,24 +28,5 @@ public class MKUFactionProvider implements IDataProvider {
         writeFaction(MKUFactions.HYBOREAN_DEAD, cache);
         writeFaction(MKUFactions.IMPERIAL_DEAD, cache);
         writeFaction(MKUFactions.SEE_OF_SOLANG, cache);
-
-    }
-
-
-    public void writeFaction(MKFaction faction, @Nonnull DirectoryCache cache) {
-        Path outputFolder = this.generator.getOutputFolder();
-        ResourceLocation key = faction.getRegistryName();
-        Path path = outputFolder.resolve("data/" + key.getNamespace() + "/factions/" + key.getPath() + ".json");
-
-        try {
-            JsonElement element = faction.serialize(JsonOps.INSTANCE);
-            IDataProvider.save(GSON, cache, element, path);
-        } catch (IOException var7) {
-            MKUltra.LOGGER.error("Couldn't write faction {}", path, var7);
-        }
-    }
-
-    public String getName() {
-        return "MKU Factions";
     }
 }
