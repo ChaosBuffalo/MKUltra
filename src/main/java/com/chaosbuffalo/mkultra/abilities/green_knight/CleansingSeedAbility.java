@@ -65,6 +65,11 @@ public class CleansingSeedAbility extends MKAbility {
         return TargetingContexts.ALL;
     }
 
+    @Override
+    public AbilityTargetSelector getTargetSelector() {
+        return AbilityTargeting.PROJECTILE;
+    }
+
     public float getModifierScaling() {
         return modifierScaling.value();
     }

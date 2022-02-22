@@ -53,6 +53,11 @@ public class SpiritBombAbility extends MKAbility {
     }
 
     @Override
+    public AbilityTargetSelector getTargetSelector() {
+        return AbilityTargeting.PROJECTILE;
+    }
+
+    @Override
     public SoundEvent getCastingSoundEvent() {
         return ModSounds.casting_holy;
     }
