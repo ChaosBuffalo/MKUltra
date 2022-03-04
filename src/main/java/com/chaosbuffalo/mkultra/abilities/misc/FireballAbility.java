@@ -2,6 +2,8 @@ package com.chaosbuffalo.mkultra.abilities.misc;
 
 import com.chaosbuffalo.mkcore.GameConstants;
 import com.chaosbuffalo.mkcore.abilities.AbilityContext;
+import com.chaosbuffalo.mkcore.abilities.AbilityTargetSelector;
+import com.chaosbuffalo.mkcore.abilities.AbilityTargeting;
 import com.chaosbuffalo.mkcore.abilities.MKAbility;
 
 import com.chaosbuffalo.mkcore.core.IMKEntityData;
@@ -82,6 +84,11 @@ public class FireballAbility extends MKAbility {
     @Override
     public TargetingContext getTargetContext() {
         return TargetingContexts.ENEMY;
+    }
+
+    @Override
+    public AbilityTargetSelector getTargetSelector() {
+        return AbilityTargeting.PROJECTILE;
     }
 
     public float getModifierScaling() {
