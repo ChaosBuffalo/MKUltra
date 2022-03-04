@@ -17,6 +17,8 @@ public class MKUHumans {
             "textures/entity/humans/human_hair_1.png");
     public static final ResourceLocation HUMAN_HAIR_2 = new ResourceLocation(MKUltra.MODID,
             "textures/entity/humans/human_hair_2.png");
+    public static final ResourceLocation HUMAN_HAIR_3 = new ResourceLocation(MKUltra.MODID,
+            "textures/entity/humans/human_hair_3.png");
 
     public static final ResourceLocation GHOST_SKIN_1 = new ResourceLocation(MKUltra.MODID,
             "textures/entity/humans/ghost_skin_1.png");
@@ -54,7 +56,11 @@ public class MKUHumans {
             MKUClothes.SOLANG_ROBES_1, MKUClothes.SOLANG_ROBES_2);
     public static ModelLook HUMAN_BASE = new ModelLook(ModelStyles.BASIC_STYLE, HUMAN_SKIN_1);
 
+    public static ModelLook NETHER_MAGE_1_LOOK = new ModelLook(ModelStyles.SHORT_HAIR_STYLE,
+            HUMAN_SKIN_1, HUMAN_HAIR_3, MKUClothes.NETHER_MAGE_ROBES_1);
+
     public static final String CLERIC_1_NAME = "cleric_1";
     public static final String CLERIC_2_NAME = "cleric_2";
     public static final String DEFAULT_NAME = "default";
+    public static final String NETHER_MAGE_1_NAME = "nether_mage_1";
 }

@@ -1,32 +1,21 @@
 {
   "slotItems": {
-    "mkweapons:earrings": [
-      {
-        "itemStack": "{id: \"mkweapons:gold_earring\", Count: 1b}",
-        "weight": 1.0
-      }
-    ],
     "mkweapons:main_hand": [
       {
-        "itemStack": "{id: \"mkweapons:katana_iron\", Count: 1b, tag: {Damage: 0}}",
+        "itemStack": "{id: \"mkweapons:staff_iron\", Count: 1b, tag: {Damage: 0}}",
         "weight": 1.0
       }
     ]
   },
   "options": [
     {
-      "randomizationType": "mkweapons:melee_effect",
-      "slotName": "mkweapons:randomization.effect",
+      "randomizationType": "mkweapons:option.ability",
+      "slotName": "mkweapons:randomization.ability",
       "slots": [
         "mkweapons:main_hand"
       ],
       "weight": 1.0,
-      "effects": [
-        {
-          "itemEffectType": "mkweapons:weapon_effect.undead_damage",
-          "multiplier": 1.25
-        }
-      ]
+      "abilityId": "mkultra:ability.fireball"
     },
     {
       "randomizationType": "mkweapons:name",
@@ -35,7 +24,7 @@
         "mkweapons:main_hand"
       ],
       "weight": 1.0,
-      "name": "{\"text\":\"Stinging Blade\"}"
+      "name": "{\"text\":\"Burning Staff\"}"
     },
     {
       "randomizationType": "mkweapons:attributes",
@@ -46,7 +35,7 @@
       "weight": 1.0,
       "modifiers": [
         {
-          "Name": "mkultra:trooper_captain",
+          "Name": "mkultra:burning_staff",
           "Amount": 2.0,
           "Operation": 0,
           "AttributeName": "minecraft:generic.max_health"
@@ -62,7 +51,7 @@
       "weight": 1.0,
       "modifiers": [
         {
-          "Name": "mkultra:trooper_captain",
+          "Name": "mkultra:burning_staff",
           "Amount": 2.0,
           "Operation": 0,
           "AttributeName": "mkcore:max_mana"
@@ -78,7 +67,7 @@
       "weight": 1.0,
       "modifiers": [
         {
-          "Name": "mkultra:trooper_captain",
+          "Name": "mkultra:burning_staff",
           "Amount": 0.25,
           "Operation": 0,
           "AttributeName": "mkcore:mana_regen"
@@ -94,7 +83,7 @@
       "weight": 1.0,
       "modifiers": [
         {
-          "Name": "mkultra:trooper_captain",
+          "Name": "mkultra:burning_staff",
           "Amount": 0.05,
           "Operation": 2,
           "AttributeName": "minecraft:generic.movement_speed"
@@ -110,7 +99,7 @@
       "weight": 1.0,
       "modifiers": [
         {
-          "Name": "mkultra:trooper_captain",
+          "Name": "mkultra:burning_staff",
           "Amount": 1.0,
           "Operation": 0,
           "AttributeName": "minecraft:generic.attack_damage"
@@ -126,7 +115,7 @@
       "weight": 1.0,
       "modifiers": [
         {
-          "Name": "mkultra:trooper_captain",
+          "Name": "mkultra:burning_staff",
           "Amount": 1.0,
           "Operation": 0,
           "AttributeName": "minecraft:generic.armor"
@@ -142,37 +131,12 @@
       "weight": 1.0,
       "modifiers": [
         {
-          "Name": "mkultra:trooper_captain",
+          "Name": "mkultra:burning_staff",
           "Amount": 1.0,
           "Operation": 0,
           "AttributeName": "mkcore:nature_damage"
         }
       ]
-    },
-    {
-      "randomizationType": "mkweapons:attributes",
-      "slotName": "mkweapons:randomization.attributes",
-      "slots": [
-        "mkweapons:earrings"
-      ],
-      "weight": 1.0,
-      "modifiers": [
-        {
-          "Name": "mkultra:trooper_captain",
-          "Amount": 4.0,
-          "Operation": 0,
-          "AttributeName": "minecraft:generic.max_health"
-        }
-      ]
-    },
-    {
-      "randomizationType": "mkweapons:name",
-      "slotName": "mkweapons:randomization.name",
-      "slots": [
-        "mkweapons:earrings"
-      ],
-      "weight": 1.0,
-      "name": "{\"text\":\"Earring of Minor Health\"}"
     }
   ],
   "templates": [
@@ -181,7 +145,7 @@
         "templateType": "mkultra:blade_crit",
         "lootSlot": "mkweapons:main_hand",
         "slots": [
-          "mkweapons:randomization.effect",
+          "mkweapons:randomization.ability",
           "mkweapons:randomization.name",
           "mkweapons:randomization.attributes"
         ]
@@ -190,21 +154,10 @@
     },
     {
       "template": {
-        "templateType": "mkultra:earring",
-        "lootSlot": "mkweapons:earrings",
-        "slots": [
-          "mkweapons:randomization.attributes",
-          "mkweapons:randomization.name"
-        ]
-      },
-      "weight": 15.0
-    },
-    {
-      "template": {
         "templateType": "mkultra:blade",
         "lootSlot": "mkweapons:main_hand",
         "slots": [
-          "mkweapons:randomization.effect",
+          "mkweapons:randomization.ability",
           "mkweapons:randomization.name"
         ]
       },

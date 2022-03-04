@@ -76,6 +76,7 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
         writeDefinition(generateClericAcolyte(), cache);
         writeDefinition(generateClericApprentice(), cache);
         writeDefinition(generateForlornGhost(), cache);
+        writeDefinition(generateNetherMageInitiate(), cache);
 //        writeDefinition(generateZombifiedPiglinTrooper(), cache);
     }
 
@@ -164,6 +165,34 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                 new NpcItemChoice(new ItemStack(ForgeRegistries.ITEMS.getValue(
                         new ResourceLocation("mkweapons:mace_iron"))), 1.0, 0.0f));
         def.addOption(equipOption);
+        return def;
+    }
+
+    private NpcDefinition generateNetherMageInitiate(){
+        NpcDefinition def = new NpcDefinition(new ResourceLocation(MKUltra.MODID, "nether_mage_initiate"),
+                MKUEntities.HUMAN_TYPE.getRegistryName(), null);
+        def.addOption(new FactionOption().setValue(MKUFactions.NETHER_MAGE_NAME));
+        def.addOption(new RenderGroupOption().setValue(MKUHumans.NETHER_MAGE_1_NAME));
+        def.addOption(new MKSizeOption().setValue(0.90f));
+        def.addOption(new AttributesOption().addAttributeEntry(new NpcAttributeEntry(Attributes.MAX_HEALTH, 150.0)));
+        def.addOption(new FactionNameOption().setTitle("Initiate"));
+        def.addOption(new NotableOption());
+        def.addOption(new AbilitiesOption()
+                .withAbilityOption(EmberAbility.INSTANCE, 1, 1.0)
+                .withAbilityOption(FireballAbility.INSTANCE, 2, 1.0)
+                .withAbilityOption(FlameWaveAbility.INSTANCE, 3, 1.0)
+        );
+        EquipmentOption equipOption = new EquipmentOption();
+        equipOption.addItemChoice(EquipmentSlotType.MAINHAND,
+                new NpcItemChoice(new ItemStack(ForgeRegistries.ITEMS.getValue(
+                        new ResourceLocation("mkweapons:staff_wood"))), 1.0, 0.0f));
+        def.addOption(equipOption);
+        def.addOption(new AbilityTrainingOption()
+                .withTrainingOption(EmberAbility.INSTANCE, new HasEntitlementRequirement(MKUEntitlements.IntroNetherMageTier1))
+                .withTrainingOption(FireArmorAbility.INSTANCE, new HasEntitlementRequirement(MKUEntitlements.IntroNetherMageTier1))
+        );
+        def.addOption(new DialogueOption().setValue(new ResourceLocation(MKUltra.MODID, "intro_nether_mage_initiate")));
+        def.addOption(new QuestOfferingOption(new ResourceLocation("mkultra", "nether_mage_intro")));
         return def;
     }
 

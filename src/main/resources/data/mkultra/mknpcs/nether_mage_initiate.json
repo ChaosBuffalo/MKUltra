@@ -1,0 +1,102 @@
+{
+  "entityType": "mkultra:human",
+  "options": [
+    {
+      "optionType": "mknpc:render_group",
+      "value": "nether_mage_1"
+    },
+    {
+      "optionType": "mknpc:attributes",
+      "attributes": [
+        {
+          "attributeName": "minecraft:generic.max_health",
+          "value": 150.0
+        }
+      ]
+    },
+    {
+      "optionType": "mknpc:dialogue",
+      "value": "mkultra:intro_nether_mage_initiate"
+    },
+    {
+      "optionType": "mknpc:ability_trainings",
+      "value": [
+        {
+          "ability": "mkultra:ability.ember",
+          "reqs": [
+            {
+              "reqType": "mkcore:training_req.has_entitlement",
+              "attributes": {},
+              "entitlement": "mkultra:nether_mage.intro.tier_1"
+            }
+          ]
+        },
+        {
+          "ability": "mkultra:ability.fire_armor",
+          "reqs": [
+            {
+              "reqType": "mkcore:training_req.has_entitlement",
+              "attributes": {},
+              "entitlement": "mkultra:nether_mage.intro.tier_1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "optionType": "mknpc:equipment",
+      "slotOptions": {
+        "mainhand": [
+          {
+            "weight": 1.0,
+            "dropChance": 0.0,
+            "item": "{id: \"mkweapons:staff_wood\", Count: 1b, tag: {Damage: 0}}"
+          }
+        ]
+      }
+    },
+    {
+      "optionType": "mknpc:notable",
+      "value": true
+    },
+    {
+      "optionType": "mknpc:abilities",
+      "options": [
+        {
+          "priority": 1,
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.ember"
+        },
+        {
+          "priority": 2,
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.fireball"
+        },
+        {
+          "priority": 3,
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.flame_wave"
+        }
+      ]
+    },
+    {
+      "optionType": "mknpc:mk_size",
+      "value": 0.9
+    },
+    {
+      "optionType": "mknpc:faction_name",
+      "title": "Initiate",
+      "hasLastName": false
+    },
+    {
+      "optionType": "mknpc:faction",
+      "value": "mkultra:nether_mages"
+    },
+    {
+      "optionType": "mknpc:offer_quests",
+      "offerings": [
+        "mkultra:nether_mage_intro"
+      ]
+    }
+  ]
+}

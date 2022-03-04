@@ -26,6 +26,8 @@ public class MKUFactions {
             "see_of_solang");
     public static final ResourceLocation GHOSTS_OF_HYBORIA_NAME = new ResourceLocation(MKUltra.MODID,
             "ghosts_of_hyboria");
+    public static final ResourceLocation NETHER_MAGE_NAME = new ResourceLocation(MKUltra.MODID,
+            "nether_mages");
 
     protected static Set<ResourceLocation> getDefaultGoodFactionSet(){
         Set<ResourceLocation> factions = new HashSet<>();
@@ -58,6 +60,9 @@ public class MKUFactions {
     @ObjectHolder("mkultra:ghosts_of_hyboria")
     public static MKFaction GHOSTS_OF_HYBORIA;
 
+    @ObjectHolder("mkultra:nether_mages")
+    public static MKFaction NETHER_MAGES;
+
 
     @SubscribeEvent
     public static void registerFactions(RegistryEvent.Register<MKFaction> event) {
@@ -83,7 +88,7 @@ public class MKUFactions {
                 getDefaultGoodFactionSet());
         imperialDeadFaction.addEnemy(GREEN_KNIGHT_FACTION_NAME);
         imperialDeadFaction.addAlly(Factions.UNDEAD_FACTION_NAME);
-        setupImperialNames(imperialDeadFaction);
+        setupRomanNames(imperialDeadFaction);
         event.getRegistry().register(imperialDeadFaction);
         MKFaction seeFaction = new MKFaction(SEE_OF_SOLANG_NAME,
                 FactionConstants.FRIENDLY_THRESHOLD,
@@ -92,14 +97,48 @@ public class MKUFactions {
         seeFaction.addAlly(GREEN_KNIGHT_FACTION_NAME);
         seeFaction.addEnemy(HYBOREAN_DEAD_NAME);
         seeFaction.addEnemy(IMPERIAL_DEAD_NAME);
-        setupSeeNames(seeFaction);
+        setupItalianFirstNames(seeFaction);
         event.getRegistry().register(seeFaction);
         MKFaction ghosts = new MKFaction(GHOSTS_OF_HYBORIA_NAME,
                 FactionConstants.TRUE_NEUTRAL);
         event.getRegistry().register(ghosts);
+        MKFaction nether_mages = new MKFaction(NETHER_MAGE_NAME,
+                FactionConstants.FRIENDLY_THRESHOLD, getDefaultGoodFactionSet(), getDefaultBadFactionSet());
+        setupMongolianNames(nether_mages);
+        event.getRegistry().register(nether_mages);
     }
 
-    private static void setupSeeNames(MKFaction faction){
+    private static void setupMongolianNames(MKFaction faction){
+        String[] names = {
+                "A'uchu","Achiq-shirun","Adarkidai","Ajai","Alaq","Alaqush-digit-quri","Alchidai","Alchiq","Altan","Altun-ashuq",
+                "Amal","Ambaqai","Aqutai","Arajan","Arasen","Arqai-qasar","Arslan","Asha-gambu","Ashiq","Ba'aridai","Badai","Bala",
+                "Balaqachi","Barqudai","Batachi","Batu","Bedu'un","Bekter","Belgunutei","Belgutei","Bilge","Bo'orchu","Bodonchar",
+                "Borjigidai","Boro'ul","Boroldai","Buch-aran","Bugidei","Bugunutei","Bujek","Bulaqadar","Buqa","Buqatai","Buqatu-salji",
+                "Buqu-qadagi","Buri","Burqan","Buyiruq","Cha'adai","Cha'urqai","Cha'urqan","Chanai","Chanar","Chaqa'an-qo'a","Chaqu'au",
+                "Chaqurqan","Charaqa","Charaqa-linqu","Checheyigen","Chigidei","Chila'un","Chiledu","Chilger","Chilgutei","Chimbai",
+                "Chinggis","Choji-darmala","Chormaqan","Da'aritai","Daritai","Dayyir","Degei","Dei","Dobun","Dodai","Doqolqu","Dorbei",
+                "Duwa","Eljigedei","Emel","Erke-qara","Gu'un","Guchu","Guchugur","Guchuluk","Gur","Gurin","Guyigunek","Guyuk","Harqasun",
+                "Hobogetur","Horqudaq","Idoqudai","Idu'ut","Ile","Iluge","Inalchi","Inancha","Iturgen","Jajiradai","Jalayirtai","Jamuqa",
+                "Janggi","Jaqa","Jaqa-gambu","Jarchi'udai","Jebe","Jebke","Jedei","Jegu","Jelme","Jetei","Jewuredei","Jirqo'adai","Jochi",
+                "Jungsai","Jurchedei","Kete","Kiratai","Kishiliq","Kogse'u-sabraq","Kokochu","Kuchu","Lablaqa","Mangqutai","Megujin","Menen",
+                "Monggetu","Mongke","Mongke'ur","Monglik","Monke","Morichi","Mulke","Mulqalqu","Muqali","Nachin","Naqu","Narin-ke'en","Naya'a",
+                "Nilqa-senggum","Ogodei","Ogole","Ogolei","Okin","Oldaqar","Onggur","Oqda","Oqotur","Otchigin","Otchigui","Qa'atai","Qabichi",
+                "Qabul","Qachi","Qachi'u","Qachi'un","Qachin","Qada","Qada'an","Qadac","Qadai","Qadaq","Qaidu","Qali'udar","Qara'udar","Qarachar",
+                "Qaraldai","Qarchu","Qarqai","Qasar","Qongqai","Qongqortai","Qongtaqar","Qorchi","Qori'aqachar","Qori-shilemun-taishi","Qori-subechi",
+                "Qoridai","Qorilartai","Qorqasun","Qubilai","Quchar","Qudu","Quduqa","Qudus","Qulbari-quri","Qunan","Quri-shilemun","Qutu","Qutula",
+                "Quyildar","Sacha","Senggum","Senggum-bilqe","Shidurqu","Shigi-qutuqu","Shigiken","Shiki'ur","Shirgu'etu","Soqor","Sorqan-shira",
+                "Soyiketu","Sube'etei","Subegei","Sugegei-je'un","Sukegei","Taichar","Taichu","Taqai","Tarqutai","Tarqutai-kiriltuq","Tayang",
+                "Teb-tenggeri","Telegetu","Temuder","Temuge","Temuge-otchigin","Temujin","Temujin-uje","Temur","Tenggeri","Terge","To'oril",
+                "Todo'en-girte","Togus","Tolui","Tolun","Toqto'a","Toquchar","Torbi-tash","Torolchi","Toroquoljin","Tuge","Tumbinai","Tusaqa",
+                "Ui'urtai","Unggur","Uquna","Usun","Yadir","Yalbaq","Yedi-tubluq","Yegei","Yegu","Yeke-cheren","Yeke-ne'urin","Yisuder",
+                "Yisugei","Yisun-te'e","Yisungge"
+        };
+        for (String name : names){
+            faction.addFirstName(name);
+        }
+    }
+
+    private static void setupItalianFirstNames(MKFaction faction){
         String[] names = {
                 "Bodo","Bonauito","Bonaventura","Bonfilio","Bonizo","Brizio","Bruno","Callisto","Calogero","Camaino",
                 "Cambio","Camillo","Carlito","Carlo","Cesare","Cipriano","Ciro","Claudio","Columbano","Constanzo","Coppo",
@@ -156,7 +195,7 @@ public class MKUFactions {
         }
     }
 
-    private static void setupImperialNames(MKFaction faction){
+    private static void setupRomanNames(MKFaction faction){
         String[] names = {
                 "Cilla", "Bore", "Muxom", "Cogi",
                 "Erir", "Rogi", "Inealbh", "Boge",

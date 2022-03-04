@@ -23,6 +23,7 @@ public class MKUDialogueProvider extends DialogueDataProvider {
 
         writeDialogue(getAlphaMovePrompt(), cache);
         writeDialogue(getClericAcolyteDefault(), cache);
+        writeDialogue(getNetherMageInitiateDefault(), cache);
     }
 
     private DialogueTree getAlphaMovePrompt(){
@@ -46,6 +47,49 @@ public class MKUDialogueProvider extends DialogueDataProvider {
         tree.addPrompt(hail);
         tree.setHailPrompt(hail);
 
+        return tree;
+    }
+
+    private DialogueTree getNetherMageInitiateDefault(){
+        DialogueTree tree = new DialogueTree(new ResourceLocation(MKUltra.MODID, "intro_nether_mage_initiate"));
+
+        DialogueNode open_training = new DialogueNode("open_training", "Let me see what I can teach you.");
+        open_training.addEffect(new OpenLearnAbilitiesEffect());
+        DialoguePrompt openTraining = new DialoguePrompt("open_training", "teach me", "Will you teach me?", "teach you");
+        DialogueResponse resp = new DialogueResponse(open_training);
+        resp.addCondition(new HasEntitlementCondition(MKUEntitlements.IntroNetherMageTier1));
+        openTraining.addResponse(new DialogueResponse(open_training));
+
+
+        DialogueNode guildNode = new DialogueNode("guild_desc", "The Nether Mage's Guild studies the " +
+                "Fire and Shadow Magics associated with the Nether dimension. We have guild halls all over the place, I'm surprised you haven't heard of us!");
+        DialoguePrompt guildPrompt = new DialoguePrompt("nether_mage_guild", "guild", "What guild?", "the Guild");
+        guildPrompt.addResponse(new DialogueResponse(guildNode));
+
+        DialogueNode hail_wo_ability = new DialogueNode("hail_wo",
+                String.format("Greetings. I am %s, I've been sent here on a mission for %s. ",
+                DialogueContexts.ENTITY_NAME_CONTEXT, guildPrompt.getPromptEmbed()));
+
+        DialogueNode hail_w_ability = new DialogueNode("hail", String.format("Did you want me to %s?.",
+                openTraining.getPromptEmbed()));
+
+        DialoguePrompt hailPrompt = new DialoguePrompt("hail", "", "", "");
+        DialogueResponse hailWoResp = new DialogueResponse(hail_wo_ability);
+
+        DialogueResponse hailWResp = new DialogueResponse(hail_w_ability);
+        hailWResp.addCondition(new HasEntitlementCondition(MKUEntitlements.IntroNetherMageTier1));
+
+        hailPrompt.addResponse(hailWResp);
+        hailPrompt.addResponse(hailWoResp);
+
+        tree.addNode(hail_w_ability);
+        tree.addNode(hail_wo_ability);
+        tree.addNode(open_training);
+        tree.addPrompt(hailPrompt);
+        tree.addPrompt(openTraining);
+        tree.addNode(guildNode);
+        tree.addPrompt(guildPrompt);
+        tree.setHailPrompt(hailPrompt);
         return tree;
     }
 

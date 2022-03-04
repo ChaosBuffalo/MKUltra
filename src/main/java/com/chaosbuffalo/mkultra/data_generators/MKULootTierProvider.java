@@ -39,6 +39,7 @@ public class MKULootTierProvider extends LootTierProvider {
         writeLootTier(trooperExecutioner(), cache);
         writeLootTier(trooperMagus(), cache);
         writeLootTier(burningSkeletonLoot(), cache);
+        writeLootTier(burningStaff(), cache);
     }
 
     private LootTier burningSkeletonLoot(){
@@ -211,8 +212,8 @@ public class MKULootTierProvider extends LootTierProvider {
         return tier;
     }
 
-    private LootTier trooperMagus(){
-        LootTier tier = new LootTier(new ResourceLocation(MKUltra.MODID, "trooper_magus"));
+    private LootTier burningStaff(){
+        LootTier  tier = new LootTier(new ResourceLocation(MKUltra.MODID, "burning_staff"));
         tier.addItemToSlot(LootSlotManager.MAIN_HAND, MKWeaponsItems.lookupWeapon(MKWeaponsItems.IRON_TIER, MeleeWeaponTypes.STAFF_TYPE));
         AddAbilityOption abilityOption = new AddAbilityOption(FireballAbility.INSTANCE, RandomizationSlotManager.ABILITY_SLOT);
         abilityOption.addApplicableSlot(LootSlotManager.MAIN_HAND);
@@ -227,6 +228,11 @@ public class MKULootTierProvider extends LootTierProvider {
         tier.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "blade_crit"),
                 LootSlotManager.MAIN_HAND,
                 RandomizationSlotManager.ABILITY_SLOT, RandomizationSlotManager.NAME_SLOT, RandomizationSlotManager.ATTRIBUTE_SLOT), 1);
+        return tier;
+    }
+
+    private LootTier trooperMagus(){
+        LootTier tier = new LootTier(new ResourceLocation(MKUltra.MODID, "trooper_magus"));
         addRingOfMinorMana(tier);
         addEarringOfMinorManaRegen(tier);
         return tier;
