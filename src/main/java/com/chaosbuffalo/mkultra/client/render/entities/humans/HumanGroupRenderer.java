@@ -23,6 +23,8 @@ public class HumanGroupRenderer extends BipedGroupRenderer<HumanEntity, MKBipedM
         putRenderer(MKUHumans.GHOST_LONG_HAIR_NAME, new HumanRenderer(rendererManager, MKUHumans.GHOST_LONG_HAIR_STYLE));
         putRenderer(MKUHumans.GHOST_LONG_HAIR_ARMORED_NAME, new HumanRenderer(rendererManager, MKUHumans.ARMORED_GHOST_LONG_HAIR_STYLE));
         putLook(MKUHumans.GHOST_1_NAME, MKUHumans.GHOST_LOOK_1);
+        putRenderer(ModelStyles.SHORT_HAIR_NAME, new HumanRenderer(rendererManager, ModelStyles.SHORT_HAIR_STYLE));
+        putLook(MKUHumans.NETHER_MAGE_1_NAME, MKUHumans.NETHER_MAGE_1_LOOK);
     }
 
     @Nonnull

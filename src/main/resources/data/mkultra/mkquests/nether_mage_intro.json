@@ -1,0 +1,297 @@
+{
+  "quests": [
+    {
+      "questName": "get_staff",
+      "objectives": [
+        {
+          "objectiveType": "mknpc:objective.quest_loot_notable",
+          "description": [],
+          "attributes": {
+            "chance": 1.0,
+            "structureIndex": 0,
+            "npcDefinition": "mkultra:imperial_magus",
+            "count": 1,
+            "structure": "mkultra:intro_castle",
+            "objectiveName": "loot_staff"
+          },
+          "itemDescription": "{\"text\":\"The Magic Staff\"}"
+        }
+      ],
+      "description": "{\"text\":\"The Nether Mage Initiate wants you to retrieve a staff from the library.\"}",
+      "autoComplete": true,
+      "rewards": []
+    },
+    {
+      "questName": "return_to_initiate",
+      "objectives": [
+        {
+          "objectiveType": "mknpc:objective.talk_to_npc",
+          "description": [
+            "{\"text\":\"Talk to the Initiate again.\"}"
+          ],
+          "attributes": {
+            "structureIndex": 0,
+            "npcDefinition": "mkultra:nether_mage_initiate",
+            "structure": "mkultra:intro_castle",
+            "objectiveName": "return_to_initiate"
+          },
+          "dialogue": {
+            "nodes": [
+              {
+                "id": "kill_zombies",
+                "message": "Great, return to me when you've delivered 10 killing blows with the fireball from the staff.",
+                "effects": [
+                  {
+                    "dialogueEffectType": "mknpc:objective_completion",
+                    "objectiveName": "return_to_initiate",
+                    "questName": "return_to_initiate"
+                  }
+                ]
+              },
+              {
+                "id": "return_to_initiate_hail",
+                "message": "Thanks for retrieving this staff, you really saved my ass. Will you do one more thing for me? My assignment was to use this staff to {prompt:kill_zombies} here to test its efficacy."
+              }
+            ],
+            "prompts": [
+              {
+                "id": "kill_zombies",
+                "message": "kill some of the zombies",
+                "triggerPhrase": "kill some of the zombies",
+                "suggestedText": "I will kill some of the zombies.",
+                "responses": [
+                  {
+                    "responseNodeId": "kill_zombies"
+                  }
+                ]
+              },
+              {
+                "id": "hail",
+                "message": "",
+                "triggerPhrase": "",
+                "suggestedText": "",
+                "responses": [
+                  {
+                    "responseNodeId": "return_to_initiate_hail"
+                  }
+                ]
+              }
+            ],
+            "hailPrompt": "hail"
+          }
+        }
+      ],
+      "description": "{\"text\":\"Return to the Initiate with the Magic Staff\"}",
+      "autoComplete": true,
+      "rewards": [
+        {
+          "rewardType": "mknpc:quest_reward.mk_loot",
+          "description": "{\"translate\":\"mkultra.quest_reward.receive_item.name\",\"with\":[{\"text\":\"Burning Staff\"}]}",
+          "attributes": {
+            "loot_tier": "mkultra:burning_staff",
+            "loot_slot": "mkweapons:main_hand"
+          }
+        },
+        {
+          "rewardType": "mknpc:quest_reward.xp",
+          "attributes": {
+            "xp": 25
+          }
+        }
+      ]
+    },
+    {
+      "questName": "test_staff",
+      "objectives": [
+        {
+          "objectiveType": "mknpc:objective.kill_w_ability",
+          "description": [
+            "{\"text\":\"Placeholder\"}"
+          ],
+          "attributes": {
+            "count": 10,
+            "ability": "mkultra:ability.fireball",
+            "objectiveName": "test_staff"
+          }
+        }
+      ],
+      "description": "{\"text\":\"Land Killing Blows with the Fireball Ability granted by the Initiate's Staff\"}",
+      "autoComplete": true,
+      "rewards": [
+        {
+          "rewardType": "mknpc:quest_reward.xp",
+          "attributes": {
+            "xp": 25
+          }
+        }
+      ]
+    },
+    {
+      "questName": "test_complete",
+      "objectives": [
+        {
+          "objectiveType": "mknpc:objective.talk_to_npc",
+          "description": [
+            "{\"text\":\"Talk to the Initiate\"}"
+          ],
+          "attributes": {
+            "structureIndex": 0,
+            "npcDefinition": "mkultra:nether_mage_initiate",
+            "structure": "mkultra:intro_castle",
+            "objectiveName": "test_complete"
+          },
+          "dialogue": {
+            "nodes": [
+              {
+                "id": "test_complete_hail",
+                "message": "Looks like the staff is in working order. You know you weren't half bad at this, you should consider joining {prompt:nether_mage_guild}. In the meantime, I can {prompt:open_training} a few spells. ",
+                "effects": [
+                  {
+                    "dialogueEffectType": "mknpc:objective_completion",
+                    "objectiveName": "test_complete",
+                    "questName": "test_complete"
+                  }
+                ]
+              }
+            ],
+            "prompts": [
+              {
+                "id": "nether_mage_guild",
+                "message": "the Guild",
+                "triggerPhrase": "guild",
+                "suggestedText": "What guild?"
+              },
+              {
+                "id": "open_training",
+                "message": "teach you",
+                "triggerPhrase": "teach me",
+                "suggestedText": "Will you teach me?"
+              },
+              {
+                "id": "hail",
+                "message": "",
+                "triggerPhrase": "",
+                "suggestedText": "",
+                "responses": [
+                  {
+                    "responseNodeId": "test_complete_hail"
+                  }
+                ]
+              }
+            ],
+            "hailPrompt": "hail"
+          }
+        }
+      ],
+      "description": "{\"text\":\"Return to the Initiate\"}",
+      "autoComplete": true,
+      "rewards": [
+        {
+          "rewardType": "mknpc:quest_reward.entitlement",
+          "attributes": {
+            "entitlement": "mkultra:nether_mage.intro.tier_1"
+          }
+        },
+        {
+          "rewardType": "mknpc:quest_reward.xp",
+          "attributes": {
+            "xp": 50
+          }
+        }
+      ]
+    }
+  ],
+  "repeatable": false,
+  "questName": "{\"text\":\"Helping the Nether Mage\"}",
+  "requirements": [],
+  "questMode": 0,
+  "dialogue": {
+    "nodes": [
+      {
+        "id": "assignment",
+        "message": "I was sent here to test a new magical staff my master has been working on, but I dropped it when I was {prompt:ambushed} in the library."
+      },
+      {
+        "id": "nether_mage_guild",
+        "message": "The Nether Mage's Guild studies the Fire and Shadow Magics associated with the Nether dimension. We have guild halls all over the place, I'm surprised you haven't heard of us!"
+      },
+      {
+        "id": "intro",
+        "message": "Hello, I'm {context:entity_name}. The {prompt:nether_mage_guild} sent me out here to research the appearance of this castle. However, I was overwhelmed by zombies and found shelter in this cave. Perhaps you can help me finish {prompt:assignment}."
+      },
+      {
+        "id": "ambushed",
+        "message": "{context:player_name} will you retrieve my staff from {mk_quest_notable:mkultra:intro_castle#0#mkultra:imperial_magus}?",
+        "effects": [
+          {
+            "dialogueEffectType": "mknpc:start_quest_chain"
+          }
+        ]
+      }
+    ],
+    "prompts": [
+      {
+        "id": "assignment",
+        "message": "my assignment",
+        "triggerPhrase": "assignment",
+        "suggestedText": "I will help with your assignment.",
+        "responses": [
+          {
+            "responseNodeId": "assignment"
+          }
+        ]
+      },
+      {
+        "id": "nether_mage_guild",
+        "message": "guild",
+        "triggerPhrase": "guild",
+        "suggestedText": "What guild?",
+        "responses": [
+          {
+            "responseNodeId": "nether_mage_guild"
+          }
+        ]
+      },
+      {
+        "id": "ambushed",
+        "message": "ambushed",
+        "triggerPhrase": "ambushed",
+        "suggestedText": "You were ambushed?",
+        "responses": [
+          {
+            "responseNodeId": "ambushed"
+          },
+          {
+            "responseNodeId": "ambushed",
+            "conditions": [
+              {
+                "dialogueConditionType": "mknpc:can_start_chain_condition",
+                "invert": false,
+                "allowRepeat": false
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "hail",
+        "message": "",
+        "triggerPhrase": "",
+        "suggestedText": "",
+        "responses": [
+          {
+            "responseNodeId": "intro",
+            "conditions": [
+              {
+                "dialogueConditionType": "mknpc:can_start_chain_condition",
+                "invert": false,
+                "allowRepeat": false
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "hailPrompt": "hail"
+  }
+}

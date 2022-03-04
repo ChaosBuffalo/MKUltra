@@ -1,0 +1,71 @@
+{
+  "nodes": [
+    {
+      "id": "guild_desc",
+      "message": "The Nether Mage's Guild studies the Fire and Shadow Magics associated with the Nether dimension. We have guild halls all over the place, I'm surprised you haven't heard of us!"
+    },
+    {
+      "id": "hail_wo",
+      "message": "Greetings. I am {context:entity_name}, I've been sent here on a mission for {prompt:nether_mage_guild}. "
+    },
+    {
+      "id": "open_training",
+      "message": "Let me see what I can teach you.",
+      "effects": [
+        {
+          "dialogueEffectType": "mknpc:open_learn_abilities"
+        }
+      ]
+    },
+    {
+      "id": "hail",
+      "message": "Did you want me to {prompt:open_training}?."
+    }
+  ],
+  "prompts": [
+    {
+      "id": "nether_mage_guild",
+      "message": "the Guild",
+      "triggerPhrase": "guild",
+      "suggestedText": "What guild?",
+      "responses": [
+        {
+          "responseNodeId": "guild_desc"
+        }
+      ]
+    },
+    {
+      "id": "open_training",
+      "message": "teach you",
+      "triggerPhrase": "teach me",
+      "suggestedText": "Will you teach me?",
+      "responses": [
+        {
+          "responseNodeId": "open_training"
+        }
+      ]
+    },
+    {
+      "id": "hail",
+      "message": "",
+      "triggerPhrase": "",
+      "suggestedText": "",
+      "responses": [
+        {
+          "responseNodeId": "hail",
+          "conditions": [
+            {
+              "dialogueConditionType": "mknpc:has_entitlement",
+              "invert": false,
+              "entitlement": "mkultra:nether_mage.intro.tier_1"
+            }
+          ]
+        },
+        {
+          "responseNodeId": "hail_wo"
+        }
+      ]
+    }
+  ],
+  "hailPrompt": "hail"
+}

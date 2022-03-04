@@ -6,15 +6,15 @@
         "weight": 1.0
       }
     ],
-    "mkweapons:main_hand": [
-      {
-        "itemStack": "{id: \"mkweapons:dagger_iron\", Count: 1b, tag: {Damage: 0}}",
-        "weight": 1.0
-      }
-    ],
     "mkweapons:earrings": [
       {
         "itemStack": "{id: \"mkweapons:silver_earring\", Count: 1b}",
+        "weight": 1.0
+      }
+    ],
+    "mkweapons:main_hand": [
+      {
+        "itemStack": "{id: \"mkweapons:dagger_iron\", Count: 1b, tag: {Damage: 0}}",
         "weight": 1.0
       }
     ]

@@ -45,6 +45,9 @@ public class MKUEntitlements {
     @ObjectHolder("nether_mage.tier_3")
     public static MKEntitlement NetherMageTier3;
 
+    @ObjectHolder("nether_mage.intro.tier_1")
+    public static MKEntitlement IntroNetherMageTier1;
+
 
     @SubscribeEvent
     public static void registerEntitlements(RegistryEvent.Register<MKEntitlement> evt) {
@@ -56,6 +59,7 @@ public class MKUEntitlements {
         evt.getRegistry().register(new SimpleEntitlement(new ResourceLocation(MKUltra.MODID, "cleric.tier_2"), 1));
         evt.getRegistry().register(new SimpleEntitlement(new ResourceLocation(MKUltra.MODID, "cleric.tier_3"), 1));
         evt.getRegistry().register(new SimpleEntitlement(new ResourceLocation(MKUltra.MODID, "nether_mage.tier_1"), 1));
+        evt.getRegistry().register(new SimpleEntitlement(new ResourceLocation(MKUltra.MODID, "nether_mage.intro.tier_1"), 1));
         evt.getRegistry().register(new SimpleEntitlement(new ResourceLocation(MKUltra.MODID, "nether_mage.tier_2"), 1));
         evt.getRegistry().register(new SimpleEntitlement(new ResourceLocation(MKUltra.MODID, "nether_mage.tier_3"), 1));
 

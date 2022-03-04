@@ -6,12 +6,6 @@
         "weight": 1.0
       }
     ],
-    "mkweapons:main_hand": [
-      {
-        "itemStack": "{id: \"mkweapons:staff_iron\", Count: 1b, tag: {Damage: 0}}",
-        "weight": 1.0
-      }
-    ],
     "mkweapons:earrings": [
       {
         "itemStack": "{id: \"mkweapons:silver_earring\", Count: 1b}",
@@ -20,136 +14,6 @@
     ]
   },
   "options": [
-    {
-      "randomizationType": "mkweapons:option.ability",
-      "slotName": "mkweapons:randomization.ability",
-      "slots": [
-        "mkweapons:main_hand"
-      ],
-      "weight": 1.0,
-      "abilityId": "mkultra:ability.fireball"
-    },
-    {
-      "randomizationType": "mkweapons:name",
-      "slotName": "mkweapons:randomization.name",
-      "slots": [
-        "mkweapons:main_hand"
-      ],
-      "weight": 1.0,
-      "name": "{\"text\":\"Burning Staff\"}"
-    },
-    {
-      "randomizationType": "mkweapons:attributes",
-      "slotName": "mkweapons:randomization.attributes",
-      "slots": [
-        "mkweapons:main_hand"
-      ],
-      "weight": 1.0,
-      "modifiers": [
-        {
-          "Name": "mkultra:trooper_magus",
-          "Amount": 2.0,
-          "Operation": 0,
-          "AttributeName": "minecraft:generic.max_health"
-        }
-      ]
-    },
-    {
-      "randomizationType": "mkweapons:attributes",
-      "slotName": "mkweapons:randomization.attributes",
-      "slots": [
-        "mkweapons:main_hand"
-      ],
-      "weight": 1.0,
-      "modifiers": [
-        {
-          "Name": "mkultra:trooper_magus",
-          "Amount": 2.0,
-          "Operation": 0,
-          "AttributeName": "mkcore:max_mana"
-        }
-      ]
-    },
-    {
-      "randomizationType": "mkweapons:attributes",
-      "slotName": "mkweapons:randomization.attributes",
-      "slots": [
-        "mkweapons:main_hand"
-      ],
-      "weight": 1.0,
-      "modifiers": [
-        {
-          "Name": "mkultra:trooper_magus",
-          "Amount": 0.25,
-          "Operation": 0,
-          "AttributeName": "mkcore:mana_regen"
-        }
-      ]
-    },
-    {
-      "randomizationType": "mkweapons:attributes",
-      "slotName": "mkweapons:randomization.attributes",
-      "slots": [
-        "mkweapons:main_hand"
-      ],
-      "weight": 1.0,
-      "modifiers": [
-        {
-          "Name": "mkultra:trooper_magus",
-          "Amount": 0.05,
-          "Operation": 2,
-          "AttributeName": "minecraft:generic.movement_speed"
-        }
-      ]
-    },
-    {
-      "randomizationType": "mkweapons:attributes",
-      "slotName": "mkweapons:randomization.attributes",
-      "slots": [
-        "mkweapons:main_hand"
-      ],
-      "weight": 1.0,
-      "modifiers": [
-        {
-          "Name": "mkultra:trooper_magus",
-          "Amount": 1.0,
-          "Operation": 0,
-          "AttributeName": "minecraft:generic.attack_damage"
-        }
-      ]
-    },
-    {
-      "randomizationType": "mkweapons:attributes",
-      "slotName": "mkweapons:randomization.attributes",
-      "slots": [
-        "mkweapons:main_hand"
-      ],
-      "weight": 1.0,
-      "modifiers": [
-        {
-          "Name": "mkultra:trooper_magus",
-          "Amount": 1.0,
-          "Operation": 0,
-          "AttributeName": "minecraft:generic.armor"
-        }
-      ]
-    },
-    {
-      "randomizationType": "mkweapons:attributes",
-      "slotName": "mkweapons:randomization.attributes",
-      "slots": [
-        "mkweapons:main_hand"
-      ],
-      "weight": 1.0,
-      "modifiers": [
-        {
-          "Name": "mkultra:trooper_magus",
-          "Amount": 1.0,
-          "Operation": 0,
-          "AttributeName": "mkcore:nature_damage"
-        }
-      ]
-    },
     {
       "randomizationType": "mkweapons:attributes",
       "slotName": "mkweapons:randomization.attributes",
@@ -204,18 +68,6 @@
   "templates": [
     {
       "template": {
-        "templateType": "mkultra:blade_crit",
-        "lootSlot": "mkweapons:main_hand",
-        "slots": [
-          "mkweapons:randomization.ability",
-          "mkweapons:randomization.name",
-          "mkweapons:randomization.attributes"
-        ]
-      },
-      "weight": 1.0
-    },
-    {
-      "template": {
         "templateType": "mkultra:earring",
         "lootSlot": "mkweapons:earrings",
         "slots": [
@@ -224,17 +76,6 @@
         ]
       },
       "weight": 15.0
-    },
-    {
-      "template": {
-        "templateType": "mkultra:blade",
-        "lootSlot": "mkweapons:main_hand",
-        "slots": [
-          "mkweapons:randomization.ability",
-          "mkweapons:randomization.name"
-        ]
-      },
-      "weight": 10.0
     },
     {
       "template": {

@@ -30,5 +30,7 @@ public class MKUClothes {
 
     public static final ResourceLocation GHOST_LEATHERS_1 = new ResourceLocation(MKUltra.MODID,
             "textures/entity/clothes/ghost_leathers_1.png");
+    public static final ResourceLocation NETHER_MAGE_ROBES_1 = new ResourceLocation(MKUltra.MODID,
+            "textures/entity/clothes/nether_mage_robes_1.png");
 
 }

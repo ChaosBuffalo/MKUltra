@@ -22,6 +22,7 @@ import com.chaosbuffalo.mknpc.quest.rewards.XpReward;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.abilities.green_knight.NaturesRemedyAbility;
 import com.chaosbuffalo.mkultra.abilities.green_knight.SkinLikeWoodAbility;
+import com.chaosbuffalo.mkultra.abilities.misc.FireballAbility;
 import com.chaosbuffalo.mkultra.init.MKUEntitlements;
 import com.chaosbuffalo.mkultra.init.MKUItems;
 import com.chaosbuffalo.mkultra.init.MKUWorldGen;
@@ -55,6 +56,104 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
         writeDefinition(generateIntroQuest(), cache);
         writeDefinition(generateTrooperArmorQuest(), cache);
         writeDefinition(generateIntroClericQuest(), cache);
+        writeDefinition(generateIntroMageQuest(), cache);
+    }
+
+    private QuestDefinition generateIntroMageQuest(){
+        QuestBuilder.QuestLocation introCastle = new QuestBuilder.QuestLocation(MKUWorldGen.INTRO_CASTLE_NAME, 0);
+        QuestBuilder.QuestNpc initiate = new QuestBuilder.QuestNpc(introCastle, new ResourceLocation(MKUltra.MODID, "nether_mage_initiate"));
+        QuestBuilder.QuestNpc magus = new QuestBuilder.QuestNpc(introCastle, new ResourceLocation(MKUltra.MODID, "imperial_magus"));
+
+        QuestDefinition def = new QuestDefinition(new ResourceLocation(MKUltra.MODID, "nether_mage_intro"));
+        def.setRepeatable(false);
+        def.setQuestName(new StringTextComponent("Helping the Nether Mage"));
+
+        DialogueNode ambushedNode = new DialogueNode("ambushed", String.format("%s will you retrieve my staff from %s?",
+                DialogueContexts.PLAYER_NAME_CONTEXT, magus.getDialogueLink()));
+        DialoguePrompt ambushedPrompt = new DialoguePrompt("ambushed", "ambushed", "You were ambushed?", "ambushed");
+        ambushedPrompt.addResponse(new DialogueResponse(ambushedNode));
+
+        DialogueNode netherMageGuild = new DialogueNode("nether_mage_guild", "The Nether Mage's Guild studies the " +
+                "Fire and Shadow Magics associated with the Nether dimension. We have guild halls all over the place, I'm surprised you haven't heard of us!");
+        DialoguePrompt netherMagePrompt = new DialoguePrompt("nether_mage_guild", "guild", "What guild?", "guild");
+        netherMagePrompt.addResponse(new DialogueResponse(netherMageGuild));
+
+        DialogueNode assignmentNode = new DialogueNode("assignment", String.format("I was sent here to test a new magical " +
+                "staff my master has been working on, but I dropped it when I was %s in the library.", ambushedPrompt.getPromptEmbed()));
+        DialoguePrompt assignmentPrompt = new DialoguePrompt("assignment", "assignment", "I will help with your assignment.", "my assignment");
+        assignmentPrompt.addResponse(new DialogueResponse(assignmentNode));
+
+        DialogueNode introNode = new DialogueNode("intro", String.format("Hello, I'm %s. The %s sent me out here to research the appearance of this castle. " +
+                "However, I was overwhelmed by zombies and found shelter in this cave. Perhaps you can help me finish %s.",
+                DialogueContexts.ENTITY_NAME_CONTEXT, netherMagePrompt.getPromptEmbed(), assignmentPrompt.getPromptEmbed()));
+        def.setupStartQuestResponse(ambushedNode, ambushedPrompt);
+        def.addHailResponse(introNode);
+        def.addStartNode(assignmentNode);
+        def.addStartPrompt(assignmentPrompt);
+        def.addStartNode(netherMageGuild);
+        def.addStartPrompt(netherMagePrompt);
+
+        Quest getStaff = new QuestBuilder("get_staff",
+                new StringTextComponent("The Nether Mage Initiate wants you to retrieve a staff from the library."))
+                .autoComplete(true)
+                .questLootFromNotable("loot_staff", magus, 1.0, 1, new StringTextComponent("The Magic Staff"))
+
+                .quest();
+        def.addQuest(getStaff);
+
+        DialogueNode killZombiesNode = new DialogueNode("kill_zombies", "Great, " +
+                "return to me when you've delivered 10 killing blows with the fireball from the staff.");
+        DialoguePrompt killZombiesPrompt = new DialoguePrompt("kill_zombies", "kill some of the zombies", "I will kill some of the zombies.", "kill some of the zombies");
+        killZombiesNode.addEffect(new ObjectiveCompleteEffect("return_to_initiate", "return_to_initiate"));
+        killZombiesPrompt.addResponse(new DialogueResponse(killZombiesNode));
+
+
+        Quest returnToInitiate = new QuestBuilder("return_to_initiate",
+                new StringTextComponent("Return to the Initiate with the Magic Staff"))
+                .autoComplete(true)
+                .simpleHail("return_to_initiate", new StringTextComponent("Talk to the Initiate again."), initiate,
+                        String.format("Thanks for retrieving this staff, you really saved my ass. Will you do one more thing for me? " +
+                                "My assignment was to use this staff to %s here to test its efficacy.", killZombiesPrompt.getPromptEmbed()),
+                        false,
+                        obj -> obj
+                                .withAdditionalNode(killZombiesNode)
+                                .withAdditionalPrompts(killZombiesPrompt)
+                )
+                .reward(new MKLootReward(new ResourceLocation(MKUltra.MODID, "burning_staff"), LootSlotManager.MAIN_HAND.getName(),
+                        new TranslationTextComponent("mkultra.quest_reward.receive_item.name", new StringTextComponent("Burning Staff"))))
+                .reward(new XpReward(25))
+                .quest();
+        def.addQuest(returnToInitiate);
+
+        Quest testStaff = new QuestBuilder("test_staff",
+                new StringTextComponent("Land Killing Blows with the Fireball Ability granted by the Initiate's Staff"))
+                .autoComplete(true)
+                .killWithAbility("test_staff", FireballAbility.INSTANCE, 10)
+                .reward(new XpReward(25))
+                .quest();
+        def.addQuest(testStaff);
+
+        DialoguePrompt openTraining = new DialoguePrompt("open_training", "teach me", "Will you teach me?", "teach you");
+        DialoguePrompt guildPrompt = new DialoguePrompt("nether_mage_guild", "guild", "What guild?", "the Guild");
+
+
+        Quest finalReturn = new QuestBuilder("test_complete", new StringTextComponent("Return to the Initiate"))
+                .autoComplete(true)
+                .simpleHail("test_complete", new StringTextComponent("Talk to the Initiate"), initiate,
+                        String.format("Looks like the staff is in working order. " +
+                        "You know you weren't half bad at this, you should consider joining %s. " +
+                        "In the meantime, I can %s a few spells. ", guildPrompt.getPromptEmbed(),
+                                openTraining.getPromptEmbed()), true,
+                        obj -> {
+                            obj.withAdditionalPrompts(openTraining);
+                            obj.withAdditionalPrompts(guildPrompt);
+                        })
+                .reward(new GrantEntitlementReward(MKUEntitlements.IntroNetherMageTier1))
+                .reward(new XpReward(50))
+                .quest();
+        def.addQuest(finalReturn);
+
+        return def;
     }
 
     private QuestDefinition generateIntroClericQuest(){
@@ -104,7 +203,6 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
         def.addStartNode(findMyApprentice);
         def.addStartPrompt(councilPrompt);
         def.addStartPrompt(holySeePrompt);
-        def.addStartPrompt(apprenticePrompt);
         def.addStartPrompt(startQuestPrompt);
 
         DialogueNode withFavor = new DialogueNode("favor",
