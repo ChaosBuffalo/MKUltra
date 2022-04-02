@@ -22,9 +22,9 @@ import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 
 @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class MKUWorldGen {
-    public static MKJigsawStructure CRYPT_STRUCTURE;
-    public static ResourceLocation CRYPT_NAME = new ResourceLocation(MKUltra.MODID, "crypt");
-    private static StructureFeature<?, ?> CRYPT_FEATURE;
+//    public static MKJigsawStructure CRYPT_STRUCTURE;
+//    public static ResourceLocation CRYPT_NAME = new ResourceLocation(MKUltra.MODID, "crypt");
+//    private static StructureFeature<?, ?> CRYPT_FEATURE;
 
 //    public static final ResourceLocation ALPHA_GREEN_LADY_NAME = new ResourceLocation(MKUltra.MODID, "alpha_green_lady");
 //    public static IStructurePieceType ALPHA_GREEN_LADY_TYPE;
