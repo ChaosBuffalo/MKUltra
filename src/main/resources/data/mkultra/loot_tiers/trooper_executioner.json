@@ -2,216 +2,216 @@
   "slotItems": {
     "mkweapons:rings": [
       {
-        "itemStack": "{id: \"mkweapons:gold_ring\", Count: 1b}",
-        "weight": 1.0
+        "weight": 10.0,
+        "template": {
+          "potentialItems": [
+            {
+              "itemStack": "{id: \"mkweapons:gold_ring\", Count: 1b}",
+              "weight": 1.0
+            }
+          ],
+          "lootSlot": "mkweapons:rings",
+          "options": [
+            {
+              "randomizationType": "mkweapons:attributes",
+              "slotName": "mkweapons:randomization.attributes",
+              "weight": 1.0,
+              "modifiers": [
+                {
+                  "Name": "mkultra:trooper_executioner",
+                  "Amount": 4.0,
+                  "Operation": 0,
+                  "AttributeName": "minecraft:generic.max_health",
+                  "minValue": 4.0,
+                  "maxValue": 20.0
+                }
+              ]
+            },
+            {
+              "randomizationType": "mkweapons:name",
+              "slotName": "mkweapons:randomization.name",
+              "weight": 1.0,
+              "name": "{\"text\":\"Ring of Minor Health\"}"
+            }
+          ],
+          "templates": [
+            {
+              "template": {
+                "templateType": "mkultra:ring",
+                "slots": [
+                  "mkweapons:randomization.attributes",
+                  "mkweapons:randomization.name"
+                ]
+              },
+              "weight": 15.0
+            }
+          ]
+        }
       }
     ],
     "mkweapons:main_hand": [
       {
-        "itemStack": "{id: \"mkweapons:greatsword_iron\", Count: 1b, tag: {Damage: 0}}",
-        "weight": 1.0
-      },
-      {
-        "itemStack": "{id: \"mkweapons:warhammer_iron\", Count: 1b, tag: {Damage: 0}}",
-        "weight": 1.0
-      },
-      {
-        "itemStack": "{id: \"mkweapons:battleaxe_iron\", Count: 1b, tag: {Damage: 0}}",
-        "weight": 1.0
+        "weight": 5.0,
+        "template": {
+          "potentialItems": [
+            {
+              "itemStack": "{id: \"mkweapons:greatsword_iron\", Count: 1b, tag: {Damage: 0}}",
+              "weight": 1.0
+            },
+            {
+              "itemStack": "{id: \"mkweapons:warhammer_iron\", Count: 1b, tag: {Damage: 0}}",
+              "weight": 1.0
+            },
+            {
+              "itemStack": "{id: \"mkweapons:battleaxe_iron\", Count: 1b, tag: {Damage: 0}}",
+              "weight": 1.0
+            }
+          ],
+          "lootSlot": "mkweapons:main_hand",
+          "options": [
+            {
+              "randomizationType": "mkweapons:option.ability",
+              "slotName": "mkweapons:randomization.ability",
+              "weight": 1.0,
+              "abilityId": "mkultra:ability.sever_tendon"
+            },
+            {
+              "randomizationType": "mkweapons:prefix_name",
+              "slotName": "mkweapons:randomization.name",
+              "weight": 1.0,
+              "name": "{\"text\":\"Executioner's\"}"
+            },
+            {
+              "randomizationType": "mkweapons:attributes",
+              "slotName": "mkweapons:randomization.attributes",
+              "weight": 1.0,
+              "modifiers": [
+                {
+                  "Name": "mkultra:trooper_executioner",
+                  "Amount": 2.0,
+                  "Operation": 0,
+                  "AttributeName": "minecraft:generic.max_health",
+                  "minValue": 2.0,
+                  "maxValue": 10.0
+                }
+              ]
+            },
+            {
+              "randomizationType": "mkweapons:attributes",
+              "slotName": "mkweapons:randomization.attributes",
+              "weight": 1.0,
+              "modifiers": [
+                {
+                  "Name": "mkultra:trooper_executioner",
+                  "Amount": 2.0,
+                  "Operation": 0,
+                  "AttributeName": "mkcore:max_mana",
+                  "minValue": 2.0,
+                  "maxValue": 10.0
+                }
+              ]
+            },
+            {
+              "randomizationType": "mkweapons:attributes",
+              "slotName": "mkweapons:randomization.attributes",
+              "weight": 1.0,
+              "modifiers": [
+                {
+                  "Name": "mkultra:trooper_executioner",
+                  "Amount": 0.25,
+                  "Operation": 0,
+                  "AttributeName": "mkcore:mana_regen",
+                  "minValue": 0.25,
+                  "maxValue": 2.0
+                }
+              ]
+            },
+            {
+              "randomizationType": "mkweapons:attributes",
+              "slotName": "mkweapons:randomization.attributes",
+              "weight": 1.0,
+              "modifiers": [
+                {
+                  "Name": "mkultra:trooper_executioner",
+                  "Amount": 0.05,
+                  "Operation": 2,
+                  "AttributeName": "minecraft:generic.movement_speed",
+                  "minValue": 0.05,
+                  "maxValue": 0.15
+                }
+              ]
+            },
+            {
+              "randomizationType": "mkweapons:attributes",
+              "slotName": "mkweapons:randomization.attributes",
+              "weight": 1.0,
+              "modifiers": [
+                {
+                  "Name": "mkultra:trooper_executioner",
+                  "Amount": 1.0,
+                  "Operation": 0,
+                  "AttributeName": "minecraft:generic.attack_damage",
+                  "minValue": 1.0,
+                  "maxValue": 4.0
+                }
+              ]
+            },
+            {
+              "randomizationType": "mkweapons:attributes",
+              "slotName": "mkweapons:randomization.attributes",
+              "weight": 1.0,
+              "modifiers": [
+                {
+                  "Name": "mkultra:trooper_executioner",
+                  "Amount": 1.0,
+                  "Operation": 0,
+                  "AttributeName": "minecraft:generic.armor",
+                  "minValue": 1.0,
+                  "maxValue": 4.0
+                }
+              ]
+            },
+            {
+              "randomizationType": "mkweapons:attributes",
+              "slotName": "mkweapons:randomization.attributes",
+              "weight": 1.0,
+              "modifiers": [
+                {
+                  "Name": "mkultra:trooper_executioner",
+                  "Amount": 1.0,
+                  "Operation": 0,
+                  "AttributeName": "mkcore:nature_damage",
+                  "minValue": 1.0,
+                  "maxValue": 4.0
+                }
+              ]
+            }
+          ],
+          "templates": [
+            {
+              "template": {
+                "templateType": "mkultra:blade_crit",
+                "slots": [
+                  "mkweapons:randomization.ability",
+                  "mkweapons:randomization.name",
+                  "mkweapons:randomization.attributes"
+                ]
+              },
+              "weight": 1.0
+            },
+            {
+              "template": {
+                "templateType": "mkultra:blade",
+                "slots": [
+                  "mkweapons:randomization.ability",
+                  "mkweapons:randomization.name"
+                ]
+              },
+              "weight": 10.0
+            }
+          ]
+        }
       }
     ]
-  },
-  "options": [
-    {
-      "randomizationType": "mkweapons:option.ability",
-      "slotName": "mkweapons:randomization.ability",
-      "slots": [
-        "mkweapons:main_hand"
-      ],
-      "weight": 1.0,
-      "abilityId": "mkultra:ability.sever_tendon"
-    },
-    {
-      "randomizationType": "mkweapons:prefix_name",
-      "slotName": "mkweapons:randomization.name",
-      "slots": [
-        "mkweapons:main_hand"
-      ],
-      "weight": 1.0,
-      "name": "{\"text\":\"Executioner's\"}"
-    },
-    {
-      "randomizationType": "mkweapons:attributes",
-      "slotName": "mkweapons:randomization.attributes",
-      "slots": [
-        "mkweapons:main_hand"
-      ],
-      "weight": 1.0,
-      "modifiers": [
-        {
-          "Name": "mkultra:trooper_executioner",
-          "Amount": 2.0,
-          "Operation": 0,
-          "AttributeName": "minecraft:generic.max_health"
-        }
-      ]
-    },
-    {
-      "randomizationType": "mkweapons:attributes",
-      "slotName": "mkweapons:randomization.attributes",
-      "slots": [
-        "mkweapons:main_hand"
-      ],
-      "weight": 1.0,
-      "modifiers": [
-        {
-          "Name": "mkultra:trooper_executioner",
-          "Amount": 2.0,
-          "Operation": 0,
-          "AttributeName": "mkcore:max_mana"
-        }
-      ]
-    },
-    {
-      "randomizationType": "mkweapons:attributes",
-      "slotName": "mkweapons:randomization.attributes",
-      "slots": [
-        "mkweapons:main_hand"
-      ],
-      "weight": 1.0,
-      "modifiers": [
-        {
-          "Name": "mkultra:trooper_executioner",
-          "Amount": 0.25,
-          "Operation": 0,
-          "AttributeName": "mkcore:mana_regen"
-        }
-      ]
-    },
-    {
-      "randomizationType": "mkweapons:attributes",
-      "slotName": "mkweapons:randomization.attributes",
-      "slots": [
-        "mkweapons:main_hand"
-      ],
-      "weight": 1.0,
-      "modifiers": [
-        {
-          "Name": "mkultra:trooper_executioner",
-          "Amount": 0.05,
-          "Operation": 2,
-          "AttributeName": "minecraft:generic.movement_speed"
-        }
-      ]
-    },
-    {
-      "randomizationType": "mkweapons:attributes",
-      "slotName": "mkweapons:randomization.attributes",
-      "slots": [
-        "mkweapons:main_hand"
-      ],
-      "weight": 1.0,
-      "modifiers": [
-        {
-          "Name": "mkultra:trooper_executioner",
-          "Amount": 1.0,
-          "Operation": 0,
-          "AttributeName": "minecraft:generic.attack_damage"
-        }
-      ]
-    },
-    {
-      "randomizationType": "mkweapons:attributes",
-      "slotName": "mkweapons:randomization.attributes",
-      "slots": [
-        "mkweapons:main_hand"
-      ],
-      "weight": 1.0,
-      "modifiers": [
-        {
-          "Name": "mkultra:trooper_executioner",
-          "Amount": 1.0,
-          "Operation": 0,
-          "AttributeName": "minecraft:generic.armor"
-        }
-      ]
-    },
-    {
-      "randomizationType": "mkweapons:attributes",
-      "slotName": "mkweapons:randomization.attributes",
-      "slots": [
-        "mkweapons:main_hand"
-      ],
-      "weight": 1.0,
-      "modifiers": [
-        {
-          "Name": "mkultra:trooper_executioner",
-          "Amount": 1.0,
-          "Operation": 0,
-          "AttributeName": "mkcore:nature_damage"
-        }
-      ]
-    },
-    {
-      "randomizationType": "mkweapons:attributes",
-      "slotName": "mkweapons:randomization.attributes",
-      "slots": [
-        "mkweapons:rings"
-      ],
-      "weight": 1.0,
-      "modifiers": [
-        {
-          "Name": "mkultra:trooper_executioner",
-          "Amount": 4.0,
-          "Operation": 0,
-          "AttributeName": "minecraft:generic.max_health"
-        }
-      ]
-    },
-    {
-      "randomizationType": "mkweapons:name",
-      "slotName": "mkweapons:randomization.name",
-      "slots": [
-        "mkweapons:rings"
-      ],
-      "weight": 1.0,
-      "name": "{\"text\":\"Ring of Minor Health\"}"
-    }
-  ],
-  "templates": [
-    {
-      "template": {
-        "templateType": "mkultra:blade_crit",
-        "lootSlot": "mkweapons:main_hand",
-        "slots": [
-          "mkweapons:randomization.ability",
-          "mkweapons:randomization.name",
-          "mkweapons:randomization.attributes"
-        ]
-      },
-      "weight": 1.0
-    },
-    {
-      "template": {
-        "templateType": "mkultra:blade",
-        "lootSlot": "mkweapons:main_hand",
-        "slots": [
-          "mkweapons:randomization.ability",
-          "mkweapons:randomization.name"
-        ]
-      },
-      "weight": 10.0
-    },
-    {
-      "template": {
-        "templateType": "mkultra:ring",
-        "lootSlot": "mkweapons:rings",
-        "slots": [
-          "mkweapons:randomization.attributes",
-          "mkweapons:randomization.name"
-        ]
-      },
-      "weight": 15.0
-    }
-  ]
+  }
 }

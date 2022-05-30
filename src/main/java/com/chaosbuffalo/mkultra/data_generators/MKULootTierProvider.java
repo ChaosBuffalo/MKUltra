@@ -8,6 +8,7 @@ import com.chaosbuffalo.mkultra.init.MKUItems;
 import com.chaosbuffalo.mkweapons.data.LootTierProvider;
 import com.chaosbuffalo.mkweapons.init.MKWeaponsItems;
 import com.chaosbuffalo.mkweapons.items.effects.melee.UndeadDamageMeleeWeaponEffect;
+import com.chaosbuffalo.mkweapons.items.randomization.LootItemTemplate;
 import com.chaosbuffalo.mkweapons.items.randomization.LootTier;
 import com.chaosbuffalo.mkweapons.items.randomization.options.*;
 import com.chaosbuffalo.mkweapons.items.randomization.slots.LootSlot;
@@ -44,269 +45,259 @@ public class MKULootTierProvider extends LootTierProvider {
 
     private LootTier burningSkeletonLoot(){
         LootTier tier = new LootTier(new ResourceLocation(MKUltra.MODID, "burning_skeleton"));
-        addBloodyRing(tier);
-        addEarringOfFireDamage(tier);
-        addSacrificialDagger(tier);
+        addBloodyRing(tier, 10);
+        addEarringOfFireDamage(tier, 10);
+        addSacrificialDagger(tier, 10);
         return tier;
 
     }
 
-    private void addSacrificialDagger(LootTier tier){
-        tier.addItemToSlot(LootSlotManager.MAIN_HAND, MKWeaponsItems.lookupWeapon(MKWeaponsItems.IRON_TIER, MeleeWeaponTypes.DAGGER_TYPE));
+    private void addSacrificialDagger(LootTier tier, double weight){
+        LootItemTemplate template = new LootItemTemplate(LootSlotManager.MAIN_HAND);
+        template.addItem(MKWeaponsItems.lookupWeapon(MKWeaponsItems.IRON_TIER, MeleeWeaponTypes.DAGGER_TYPE));
 
         for (int i = 0; i < 3; i++){
             for (int x = 0; x < 3; x++){
                 AttributeOption option = new AttributeOption();
-                option.addAttributeModifier(MKAttributes.BLEED_DAMAGE, tier.getName().toString(), i + 1.0, AttributeModifier.Operation.ADDITION);
-                option.addAttributeModifier(MKAttributes.FIRE_DAMAGE, tier.getName().toString(), x + 1.0, AttributeModifier.Operation.ADDITION);
+                option.addAttributeModifier(MKAttributes.BLEED_DAMAGE, tier.getName().toString(), i + 1.0, 3 * (i + 1.0), AttributeModifier.Operation.ADDITION);
+                option.addAttributeModifier(MKAttributes.FIRE_DAMAGE, tier.getName().toString(), x + 1.0, 3 * (x + 1.0), AttributeModifier.Operation.ADDITION);
                 option.setWeight(10 - ((x + 1) * (i + 1)));
-                option.addApplicableSlot(LootSlotManager.MAIN_HAND);
-                tier.addRandomizationOption(option);
+                template.addRandomizationOption(option);
             }
         }
         NameOption name = new NameOption(new StringTextComponent("Sacrificial Dagger"));
-        name.addApplicableSlot(LootSlotManager.MAIN_HAND);
-        tier.addRandomizationOption(name);
-        tier.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "blade"),
-                LootSlotManager.MAIN_HAND,
+        template.addRandomizationOption(name);
+        template.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "blade"),
                 RandomizationSlotManager.ATTRIBUTE_SLOT, RandomizationSlotManager.NAME_SLOT), 10);
+        tier.addItemTemplate(template, weight);
     }
 
-    private void addEarringOfFireDamage(LootTier tier){
-        tier.addItemToSlot(LootSlotManager.EARRINGS, MKWeaponsItems.SilverEarring);
+    private void addEarringOfFireDamage(LootTier tier, double weight){
+
+        LootItemTemplate template = new LootItemTemplate(LootSlotManager.EARRINGS);
+        template.addItem(MKWeaponsItems.SilverEarring);
+
         AttributeOption option = new AttributeOption();
-        option.addApplicableSlot(LootSlotManager.EARRINGS);
         option.addAttributeModifier(MKAttributes.FIRE_DAMAGE, tier.getName().toString(),
-                2, AttributeModifier.Operation.ADDITION);
-        tier.addRandomizationOption(option);
+                2, 8, AttributeModifier.Operation.ADDITION);
+        template.addRandomizationOption(option);
         NameOption name = new NameOption(new StringTextComponent("Earring of Minor Firepower"));
-        name.addApplicableSlot(LootSlotManager.EARRINGS);
-        tier.addRandomizationOption(name);
-        tier.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "earring"),
-                LootSlotManager.EARRINGS,
+        template.addRandomizationOption(name);
+        template.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "earring"),
                 RandomizationSlotManager.ATTRIBUTE_SLOT, RandomizationSlotManager.NAME_SLOT), 15);
+        tier.addItemTemplate(template, weight);
     }
 
-    private void addBloodyRing(LootTier tier){
-        tier.addItemToSlot(LootSlotManager.RINGS, MKWeaponsItems.RoseGoldRing);
+    private void addBloodyRing(LootTier tier, double weight){
+
+        LootItemTemplate template = new LootItemTemplate(LootSlotManager.RINGS);
+        template.addItem(MKWeaponsItems.RoseGoldRing);
         AttributeOption option = new AttributeOption();
-        option.addApplicableSlot(LootSlotManager.RINGS);
         option.addAttributeModifier(MKAttributes.BLEED_DAMAGE, tier.getName().toString(),
-                3, AttributeModifier.Operation.ADDITION);
-        tier.addRandomizationOption(option);
+                3, 9, AttributeModifier.Operation.ADDITION);
+        template.addRandomizationOption(option);
         NameOption name = new NameOption(new StringTextComponent("Bloody Ring"));
-        name.addApplicableSlot(LootSlotManager.RINGS);
-        tier.addRandomizationOption(name);
-        tier.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "ring"),
-                LootSlotManager.RINGS,
+        template.addRandomizationOption(name);
+        template.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "ring"),
                 RandomizationSlotManager.ATTRIBUTE_SLOT, RandomizationSlotManager.NAME_SLOT), 15);
+        tier.addItemTemplate(template, weight);
     }
 
     private LootTier trooperKnightLootTier(){
         LootTier tier = new LootTier(new ResourceLocation(MKUltra.MODID, "trooper_knight_armor"));
-        tier.addItemToSlot(LootSlotManager.HEAD, MKUItems.trooperKnightHelmet);
-        tier.addItemToSlot(LootSlotManager.CHEST, MKUItems.trooperKnightChestplate);
-        tier.addItemToSlot(LootSlotManager.FEET, MKUItems.trooperKnightBoots);
-        tier.addItemToSlot(LootSlotManager.LEGS, MKUItems.trooperKnightLeggings);
-        introCastleAttrs(LootSlotManager.CHEST, tier);
-        introCastleAttrs(LootSlotManager.FEET, tier);
-        introCastleAttrs(LootSlotManager.HEAD, tier);
-        introCastleAttrs(LootSlotManager.LEGS, tier);
-        addTemplateTrooperKnight(LootSlotManager.CHEST, tier);
-        addTemplateTrooperKnight(LootSlotManager.LEGS, tier);
-        addTemplateTrooperKnight(LootSlotManager.FEET, tier);
-        addTemplateTrooperKnight(LootSlotManager.HEAD, tier);
+        LootItemTemplate headTemp = new LootItemTemplate(LootSlotManager.HEAD);
+        headTemp.addItem(MKUItems.trooperKnightHelmet);
+        LootItemTemplate chestTemp = new LootItemTemplate(LootSlotManager.CHEST);
+        chestTemp.addItem(MKUItems.trooperKnightChestplate);
+        LootItemTemplate feetTemp = new LootItemTemplate(LootSlotManager.FEET);
+        feetTemp.addItem(MKUItems.trooperKnightBoots);
+        LootItemTemplate legsTemp = new LootItemTemplate(LootSlotManager.LEGS);
+        legsTemp.addItem(MKUItems.trooperKnightLeggings);
+        introCastleAttrs(tier, headTemp);
+        introCastleAttrs(tier, feetTemp);
+        introCastleAttrs(tier, chestTemp);
+        introCastleAttrs(tier, legsTemp);
+        addTemplateTrooperKnight(headTemp);
+        addTemplateTrooperKnight(chestTemp);
+        addTemplateTrooperKnight(legsTemp);
+        addTemplateTrooperKnight(feetTemp);
+        tier.addItemTemplate(headTemp, 1.0);
+        tier.addItemTemplate(chestTemp, 1.0);
+        tier.addItemTemplate(legsTemp, 1.0);
+        tier.addItemTemplate(feetTemp, 1.0);
         return tier;
     }
 
-    private void addTemplateTrooperKnight(LootSlot slot, LootTier tier){
-        tier.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, String.format("one_effect_%s", slot.getName().getPath())),
-                slot,
+    private void addTemplateTrooperKnight(LootItemTemplate template){
+        template.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "one_effect"),
                 RandomizationSlotManager.ATTRIBUTE_SLOT), 90);
-        tier.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, String.format("two_effect_%s", slot.getName().getPath())),
-                slot,
+        template.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "two_effect"),
                 RandomizationSlotManager.ATTRIBUTE_SLOT, RandomizationSlotManager.ATTRIBUTE_SLOT), 10);
     }
 
-    private void addEarringOfMinorHealth(LootTier tier){
-        tier.addItemToSlot(LootSlotManager.EARRINGS, MKWeaponsItems.GoldEarring);
+    private void addEarringOfMinorHealth(LootTier tier, double weight){
+        LootItemTemplate template = new LootItemTemplate(LootSlotManager.EARRINGS);
+        template.addItem(MKWeaponsItems.GoldEarring);
         AttributeOption option = new AttributeOption();
-        option.addApplicableSlot(LootSlotManager.EARRINGS);
         option.addAttributeModifier(Attributes.MAX_HEALTH, tier.getName().toString(),
-                4, AttributeModifier.Operation.ADDITION);
-        tier.addRandomizationOption(option);
+                4, 20.0, AttributeModifier.Operation.ADDITION);
+        template.addRandomizationOption(option);
         NameOption name = new NameOption(new StringTextComponent("Earring of Minor Health"));
-        name.addApplicableSlot(LootSlotManager.EARRINGS);
-        tier.addRandomizationOption(name);
-        tier.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "earring"),
-                LootSlotManager.EARRINGS,
+        template.addRandomizationOption(name);
+        template.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "earring"),
                 RandomizationSlotManager.ATTRIBUTE_SLOT, RandomizationSlotManager.NAME_SLOT), 15);
+        tier.addItemTemplate(template, weight);
 
     }
 
-    private void addEarringOfMinorManaRegen(LootTier tier){
-        tier.addItemToSlot(LootSlotManager.EARRINGS, MKWeaponsItems.SilverEarring);
+    private void addEarringOfMinorManaRegen(LootTier tier, double weight){
+        LootItemTemplate template = new LootItemTemplate(LootSlotManager.EARRINGS);
+        template.addItem(MKWeaponsItems.SilverEarring);
         AttributeOption option = new AttributeOption();
-        option.addApplicableSlot(LootSlotManager.EARRINGS);
         option.addAttributeModifier(MKAttributes.MANA_REGEN, tier.getName().toString(),
-                0.25, AttributeModifier.Operation.ADDITION);
-        tier.addRandomizationOption(option);
+                0.25, 2.5, AttributeModifier.Operation.ADDITION);
+        template.addRandomizationOption(option);
         NameOption name = new NameOption(new StringTextComponent("Earring of Quickening Thoughts"));
-        name.addApplicableSlot(LootSlotManager.EARRINGS);
-        tier.addRandomizationOption(name);
-        tier.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "earring"),
-                LootSlotManager.EARRINGS,
+        template.addRandomizationOption(name);
+        template.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "earring"),
                 RandomizationSlotManager.ATTRIBUTE_SLOT, RandomizationSlotManager.NAME_SLOT), 15);
+        tier.addItemTemplate(template, weight);
     }
 
-    private void addRingOfMinorMana(LootTier tier){
-        tier.addItemToSlot(LootSlotManager.RINGS, MKWeaponsItems.SilverRing);
+    private void addRingOfMinorMana(LootTier tier, double weight){
+        LootItemTemplate template = new LootItemTemplate(LootSlotManager.RINGS);
+        template.addItem(MKWeaponsItems.SilverRing);
         AttributeOption option = new AttributeOption();
-        option.addApplicableSlot(LootSlotManager.RINGS);
         option.addAttributeModifier(MKAttributes.MAX_MANA, tier.getName().toString(),
-                4, AttributeModifier.Operation.ADDITION);
-        tier.addRandomizationOption(option);
+                4, 20, AttributeModifier.Operation.ADDITION);
+        template.addRandomizationOption(option);
         NameOption name = new NameOption(new StringTextComponent("Ring of Minor Mana"));
-        name.addApplicableSlot(LootSlotManager.RINGS);
-        tier.addRandomizationOption(name);
-        tier.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "ring"),
-                LootSlotManager.RINGS,
+        template.addRandomizationOption(name);
+        template.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "ring"),
                 RandomizationSlotManager.ATTRIBUTE_SLOT, RandomizationSlotManager.NAME_SLOT), 15);
+        tier.addItemTemplate(template, weight);
 
     }
 
-    private void addRingOfMinorHealth(LootTier tier){
-        tier.addItemToSlot(LootSlotManager.RINGS, MKWeaponsItems.GoldRing);
+    private void addRingOfMinorHealth(LootTier tier, double weight){
+        LootItemTemplate template = new LootItemTemplate(LootSlotManager.RINGS);
+        template.addItem(MKWeaponsItems.GoldRing);
         AttributeOption option = new AttributeOption();
-        option.addApplicableSlot(LootSlotManager.RINGS);
         option.addAttributeModifier(Attributes.MAX_HEALTH, tier.getName().toString(),
-                4, AttributeModifier.Operation.ADDITION);
-        tier.addRandomizationOption(option);
+                4, 20.0, AttributeModifier.Operation.ADDITION);
+        template.addRandomizationOption(option);
         NameOption name = new NameOption(new StringTextComponent("Ring of Minor Health"));
-        name.addApplicableSlot(LootSlotManager.RINGS);
-        tier.addRandomizationOption(name);
-        tier.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "ring"),
-                LootSlotManager.RINGS,
+        template.addRandomizationOption(name);
+        template.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "ring"),
                 RandomizationSlotManager.ATTRIBUTE_SLOT, RandomizationSlotManager.NAME_SLOT), 15);
-
+        tier.addItemTemplate(template, weight);
     }
 
     private LootTier trooperCaptain(){
         LootTier tier = new LootTier(new ResourceLocation(MKUltra.MODID, "trooper_captain"));
-        tier.addItemToSlot(LootSlotManager.MAIN_HAND, MKWeaponsItems.lookupWeapon(MKWeaponsItems.IRON_TIER, MeleeWeaponTypes.KATANA_TYPE));
+        LootItemTemplate katana = new LootItemTemplate(LootSlotManager.MAIN_HAND);
+        katana.addItem(MKWeaponsItems.lookupWeapon(MKWeaponsItems.IRON_TIER, MeleeWeaponTypes.KATANA_TYPE));
         MeleeEffectOption meleeEffect = new MeleeEffectOption();
-        meleeEffect.addApplicableSlot(LootSlotManager.MAIN_HAND);
         meleeEffect.addEffect(new UndeadDamageMeleeWeaponEffect(1.25f));
-        tier.addRandomizationOption(meleeEffect);
+        katana.addRandomizationOption(meleeEffect);
         NameOption name = new NameOption(new StringTextComponent("Stinging Blade"));
-        name.addApplicableSlot(LootSlotManager.MAIN_HAND);
-        tier.addRandomizationOption(name);
-        introCastleAttrs(LootSlotManager.MAIN_HAND, tier);
-        tier.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "blade"),
-                LootSlotManager.MAIN_HAND,
+        katana.addRandomizationOption(name);
+        introCastleAttrs(tier, katana);
+        katana.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "blade"),
                 RandomizationSlotManager.EFFECT_SLOT, RandomizationSlotManager.NAME_SLOT), 10);
-        tier.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "blade_crit"),
-                LootSlotManager.MAIN_HAND,
+        katana.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "blade_crit"),
                 RandomizationSlotManager.EFFECT_SLOT, RandomizationSlotManager.NAME_SLOT, RandomizationSlotManager.ATTRIBUTE_SLOT), 1);
-        addEarringOfMinorHealth(tier);
+        tier.addItemTemplate(katana, 5);
+        addEarringOfMinorHealth(tier, 10);
         return tier;
     }
 
     private LootTier burningStaff(){
         LootTier  tier = new LootTier(new ResourceLocation(MKUltra.MODID, "burning_staff"));
-        tier.addItemToSlot(LootSlotManager.MAIN_HAND, MKWeaponsItems.lookupWeapon(MKWeaponsItems.IRON_TIER, MeleeWeaponTypes.STAFF_TYPE));
+        LootItemTemplate staff = new LootItemTemplate(LootSlotManager.MAIN_HAND);
+        staff.addItem(MKWeaponsItems.lookupWeapon(MKWeaponsItems.IRON_TIER, MeleeWeaponTypes.STAFF_TYPE));
         AddAbilityOption abilityOption = new AddAbilityOption(FireballAbility.INSTANCE, RandomizationSlotManager.ABILITY_SLOT);
-        abilityOption.addApplicableSlot(LootSlotManager.MAIN_HAND);
-        tier.addRandomizationOption(abilityOption);
+        staff.addRandomizationOption(abilityOption);
         NameOption name = new NameOption(new StringTextComponent("Burning Staff"));
-        name.addApplicableSlot(LootSlotManager.MAIN_HAND);
-        tier.addRandomizationOption(name);
-        introCastleAttrs(LootSlotManager.MAIN_HAND, tier);
-        tier.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "blade"),
-                LootSlotManager.MAIN_HAND,
+        staff.addRandomizationOption(name);
+        introCastleAttrs(tier, staff);
+        staff.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "blade"),
                 RandomizationSlotManager.ABILITY_SLOT, RandomizationSlotManager.NAME_SLOT), 10);
-        tier.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "blade_crit"),
-                LootSlotManager.MAIN_HAND,
+        staff.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "blade_crit"),
                 RandomizationSlotManager.ABILITY_SLOT, RandomizationSlotManager.NAME_SLOT, RandomizationSlotManager.ATTRIBUTE_SLOT), 1);
+        tier.addItemTemplate(staff, 10);
         return tier;
     }
 
     private LootTier trooperMagus(){
         LootTier tier = new LootTier(new ResourceLocation(MKUltra.MODID, "trooper_magus"));
-        addRingOfMinorMana(tier);
-        addEarringOfMinorManaRegen(tier);
+        addRingOfMinorMana(tier, 10);
+        addEarringOfMinorManaRegen(tier, 10);
         return tier;
     }
 
     private LootTier trooperExecutioner(){
         LootTier tier = new LootTier(new ResourceLocation(MKUltra.MODID, "trooper_executioner"));
-        tier.addItemToSlot(LootSlotManager.MAIN_HAND, MKWeaponsItems.lookupWeapon(MKWeaponsItems.IRON_TIER, MeleeWeaponTypes.GREATSWORD_TYPE));
-        tier.addItemToSlot(LootSlotManager.MAIN_HAND, MKWeaponsItems.lookupWeapon(MKWeaponsItems.IRON_TIER, MeleeWeaponTypes.WARHAMMER_TYPE));
-        tier.addItemToSlot(LootSlotManager.MAIN_HAND, MKWeaponsItems.lookupWeapon(MKWeaponsItems.IRON_TIER, MeleeWeaponTypes.BATTLEAXE_TYPE));
+        LootItemTemplate executionersBlade = new LootItemTemplate(LootSlotManager.MAIN_HAND);
+        executionersBlade.addItem(MKWeaponsItems.lookupWeapon(MKWeaponsItems.IRON_TIER, MeleeWeaponTypes.GREATSWORD_TYPE));
+        executionersBlade.addItem(MKWeaponsItems.lookupWeapon(MKWeaponsItems.IRON_TIER, MeleeWeaponTypes.WARHAMMER_TYPE));
+        executionersBlade.addItem(MKWeaponsItems.lookupWeapon(MKWeaponsItems.IRON_TIER, MeleeWeaponTypes.BATTLEAXE_TYPE));
         AddAbilityOption abilityOption = new AddAbilityOption(SeverTendonAbility.INSTANCE, RandomizationSlotManager.ABILITY_SLOT);
-        abilityOption.addApplicableSlot(LootSlotManager.MAIN_HAND);
-        tier.addRandomizationOption(abilityOption);
+        executionersBlade.addRandomizationOption(abilityOption);
         PrefixNameOption name = new PrefixNameOption(new StringTextComponent("Executioner's"));
-        name.addApplicableSlot(LootSlotManager.MAIN_HAND);
-        tier.addRandomizationOption(name);
-        introCastleAttrs(LootSlotManager.MAIN_HAND, tier);
-        tier.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "blade"),
-                LootSlotManager.MAIN_HAND,
+        executionersBlade.addRandomizationOption(name);
+        introCastleAttrs(tier, executionersBlade);
+        executionersBlade.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "blade"),
                 RandomizationSlotManager.ABILITY_SLOT, RandomizationSlotManager.NAME_SLOT), 10);
-        tier.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "blade_crit"),
-                LootSlotManager.MAIN_HAND,
+        executionersBlade.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "blade_crit"),
                 RandomizationSlotManager.ABILITY_SLOT, RandomizationSlotManager.NAME_SLOT, RandomizationSlotManager.ATTRIBUTE_SLOT), 1);
-        addRingOfMinorHealth(tier);
+        addRingOfMinorHealth(tier, 10);
+        tier.addItemTemplate(executionersBlade, 5);
         return tier;
     }
 
     private LootTier zombieTrooperTier(){
         LootTier tier = new LootTier(new ResourceLocation(MKUltra.MODID, "zombie_trooper"));
-        tier.addItemStackToSlot(LootSlotManager.ITEMS, new ItemStack(MKUItems.corruptedPigIronPlate), 10.0);
-        tier.addItemStackToSlot(LootSlotManager.ITEMS, new ItemStack(MKUItems.destroyedTrooperBoots), 1.0);
-        tier.addItemStackToSlot(LootSlotManager.ITEMS, new ItemStack(MKUItems.destroyedTrooperChestplate), 1.0);
-        tier.addItemStackToSlot(LootSlotManager.ITEMS, new ItemStack(MKUItems.destroyedTrooperLeggings), 1.0);
-        tier.addItemStackToSlot(LootSlotManager.ITEMS, new ItemStack(MKUItems.destroyedTrooperHelmet), 1.0);
-        tier.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "empty"), LootSlotManager.ITEMS), 1.0);
+        LootItemTemplate pigLoot = new LootItemTemplate(LootSlotManager.ITEMS);
+        pigLoot.addItemStack(new ItemStack(MKUItems.corruptedPigIronPlate), 10.0);
+        pigLoot.addItemStack(new ItemStack(MKUItems.destroyedTrooperBoots), 1.0);
+        pigLoot.addItemStack(new ItemStack(MKUItems.destroyedTrooperChestplate), 1.0);
+        pigLoot.addItemStack(new ItemStack(MKUItems.destroyedTrooperLeggings), 1.0);
+        pigLoot.addItemStack(new ItemStack(MKUItems.destroyedTrooperHelmet), 1.0);
+        pigLoot.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "empty")), 1.0);
+        tier.addItemTemplate(pigLoot, 10);
         return tier;
 
     }
 
-    private void introCastleAttrs(LootSlot slot, LootTier tier){
+    private void introCastleAttrs(LootTier tier, LootItemTemplate template){
         AttributeOption healthAttribute = new AttributeOption();
         healthAttribute.addAttributeModifier(Attributes.MAX_HEALTH, tier.getName().toString(),
-                2, AttributeModifier.Operation.ADDITION);
-        healthAttribute.addApplicableSlot(slot);
-        tier.addRandomizationOption(healthAttribute);
+                2, 10.0, AttributeModifier.Operation.ADDITION);
+        template.addRandomizationOption(healthAttribute);
         AttributeOption manaAttribute = new AttributeOption();
         manaAttribute.addAttributeModifier(MKAttributes.MAX_MANA, tier.getName().toString(),
-                2, AttributeModifier.Operation.ADDITION);
-        manaAttribute.addApplicableSlot(slot);
-        tier.addRandomizationOption(manaAttribute);
+                2, 10.0, AttributeModifier.Operation.ADDITION);
+        template.addRandomizationOption(manaAttribute);
         AttributeOption manaRegen = new AttributeOption();
         manaRegen.addAttributeModifier(MKAttributes.MANA_REGEN, tier.getName().toString(),
-                0.25, AttributeModifier.Operation.ADDITION);
-        manaRegen.addApplicableSlot(slot);
-        tier.addRandomizationOption(manaRegen);
+                0.25, 2.0, AttributeModifier.Operation.ADDITION);
+        template.addRandomizationOption(manaRegen);
         AttributeOption runSpeed = new AttributeOption();
         runSpeed.addAttributeModifier(Attributes.MOVEMENT_SPEED, tier.getName().toString(),
-                0.05, AttributeModifier.Operation.MULTIPLY_TOTAL);
-        runSpeed.addApplicableSlot(slot);
-        tier.addRandomizationOption(runSpeed);
+                0.05, 0.15, AttributeModifier.Operation.MULTIPLY_TOTAL);
+        template.addRandomizationOption(runSpeed);
         AttributeOption atkDamage = new AttributeOption();
         atkDamage.addAttributeModifier(Attributes.ATTACK_DAMAGE, tier.getName().toString(),
-                1.0, AttributeModifier.Operation.ADDITION);
-        atkDamage.addApplicableSlot(slot);
-        tier.addRandomizationOption(atkDamage);
+                1.0, 4.0, AttributeModifier.Operation.ADDITION);
+        template.addRandomizationOption(atkDamage);
         AttributeOption armor = new AttributeOption();
         armor.addAttributeModifier(Attributes.ARMOR, tier.getName().toString(),
-                1.0, AttributeModifier.Operation.ADDITION);
-        armor.addApplicableSlot(slot);
-        tier.addRandomizationOption(armor);
+                1.0, 4.0, AttributeModifier.Operation.ADDITION);
+        template.addRandomizationOption(armor);
         AttributeOption natureDamage = new AttributeOption();
         natureDamage.addAttributeModifier(MKAttributes.NATURE_DAMAGE, tier.getName().toString(),
-                1, AttributeModifier.Operation.ADDITION);
-        natureDamage.addApplicableSlot(slot);
-        tier.addRandomizationOption(natureDamage);
+                1, 4.0, AttributeModifier.Operation.ADDITION);
+        template.addRandomizationOption(natureDamage);
     }
 }
