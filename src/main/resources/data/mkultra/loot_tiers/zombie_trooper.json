@@ -2,36 +2,43 @@
   "slotItems": {
     "mkweapons:items": [
       {
-        "itemStack": "{id: \"mkultra:corrupted_pig_iron_plate\", Count: 1b}",
-        "weight": 10.0
-      },
-      {
-        "itemStack": "{id: \"mkultra:destroyed_trooper_boots\", Count: 1b}",
-        "weight": 1.0
-      },
-      {
-        "itemStack": "{id: \"mkultra:destroyed_trooper_chestplate\", Count: 1b}",
-        "weight": 1.0
-      },
-      {
-        "itemStack": "{id: \"mkultra:destroyed_trooper_leggings\", Count: 1b}",
-        "weight": 1.0
-      },
-      {
-        "itemStack": "{id: \"mkultra:destroyed_trooper_helmet\", Count: 1b}",
-        "weight": 1.0
+        "weight": 10.0,
+        "template": {
+          "potentialItems": [
+            {
+              "itemStack": "{id: \"mkultra:corrupted_pig_iron_plate\", Count: 1b}",
+              "weight": 10.0
+            },
+            {
+              "itemStack": "{id: \"mkultra:destroyed_trooper_boots\", Count: 1b}",
+              "weight": 1.0
+            },
+            {
+              "itemStack": "{id: \"mkultra:destroyed_trooper_chestplate\", Count: 1b}",
+              "weight": 1.0
+            },
+            {
+              "itemStack": "{id: \"mkultra:destroyed_trooper_leggings\", Count: 1b}",
+              "weight": 1.0
+            },
+            {
+              "itemStack": "{id: \"mkultra:destroyed_trooper_helmet\", Count: 1b}",
+              "weight": 1.0
+            }
+          ],
+          "lootSlot": "mkweapons:items",
+          "options": [],
+          "templates": [
+            {
+              "template": {
+                "templateType": "mkultra:empty",
+                "slots": []
+              },
+              "weight": 1.0
+            }
+          ]
+        }
       }
     ]
-  },
-  "options": [],
-  "templates": [
-    {
-      "template": {
-        "templateType": "mkultra:empty",
-        "lootSlot": "mkweapons:items",
-        "slots": []
-      },
-      "weight": 1.0
-    }
-  ]
+  }
 }

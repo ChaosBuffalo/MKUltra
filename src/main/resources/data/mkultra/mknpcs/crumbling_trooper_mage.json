@@ -27,7 +27,6 @@
         {
           "lootSlotName": "mkweapons:items",
           "lootSlotTier": "mkultra:zombie_trooper",
-          "templateName": "mkultra:empty",
           "weight": 1.0
         }
       ]

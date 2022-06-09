@@ -243,12 +243,9 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                         BipedSkeleton.HEAD_BONE_NAME, new ResourceLocation(MKUltra.MODID, "burning_skeleton_head"))
         )));
         ResourceLocation lootTierName = new ResourceLocation(MKUltra.MODID, "burning_skeleton");
-        def.addOption(new ExtraLootOption().withLootOptions(new LootOptionEntry(LootSlotManager.MAIN_HAND.getName(), lootTierName,
-                LootTierManager.INVALID_RANDOMIZATION_TEMPLATE, 1.0))
-                .withLootOptions(new LootOptionEntry(LootSlotManager.RINGS.getName(), lootTierName,
-                        LootTierManager.INVALID_RANDOMIZATION_TEMPLATE, 3.0))
-                .withLootOptions(new LootOptionEntry(LootSlotManager.EARRINGS.getName(), lootTierName,
-                        LootTierManager.INVALID_RANDOMIZATION_TEMPLATE, 2.0))
+        def.addOption(new ExtraLootOption().withLootOptions(new LootOptionEntry(LootSlotManager.MAIN_HAND.getName(), lootTierName, 1.0))
+                .withLootOptions(new LootOptionEntry(LootSlotManager.RINGS.getName(), lootTierName, 3.0))
+                .withLootOptions(new LootOptionEntry(LootSlotManager.EARRINGS.getName(), lootTierName, 2.0))
                 .withDropChances(1)
                 .withNoLootChance(0.1)
                 .withNoLootIncrease(0.0));
@@ -309,9 +306,8 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                 .withAbilityOption(EmberAbility.INSTANCE, 2, 0.5)
         );
         ResourceLocation lootTierName = new ResourceLocation(MKUltra.MODID, "zombie_trooper");
-        ResourceLocation templateName = new ResourceLocation(MKUltra.MODID, "empty");
         def.addOption(new ExtraLootOption()
-                .withLootOptions(new LootOptionEntry(LootSlotManager.ITEMS.getName(), lootTierName, templateName, 1.0))
+                .withLootOptions(new LootOptionEntry(LootSlotManager.ITEMS.getName(), lootTierName, 1.0))
                 .withDropChances(2)
                 .withNoLootChance(0.1)
                 .withNoLootIncrease(0.25)
@@ -343,10 +339,8 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
         );
         ResourceLocation lootTierName = new ResourceLocation(MKUltra.MODID, "trooper_executioner");
         def.addOption(new ExtraLootOption()
-                .withLootOptions(new LootOptionEntry(LootSlotManager.MAIN_HAND.getName(), lootTierName,
-                        LootTierManager.INVALID_RANDOMIZATION_TEMPLATE, 1.0))
-                .withLootOptions(new LootOptionEntry(LootSlotManager.RINGS.getName(), lootTierName,
-                        LootTierManager.INVALID_RANDOMIZATION_TEMPLATE, 3.0))
+                .withLootOptions(new LootOptionEntry(LootSlotManager.MAIN_HAND.getName(), lootTierName, 1.0))
+                .withLootOptions(new LootOptionEntry(LootSlotManager.RINGS.getName(), lootTierName, 3.0))
                 .withDropChances(2)
                 .withNoLootChance(0.2)
                 .withNoLootIncrease(0.25)
@@ -381,12 +375,9 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
         );
         ResourceLocation lootTierName = new ResourceLocation(MKUltra.MODID, "trooper_magus");
         def.addOption(new ExtraLootOption()
-                .withLootOptions(new LootOptionEntry(LootSlotManager.MAIN_HAND.getName(), lootTierName,
-                        LootTierManager.INVALID_RANDOMIZATION_TEMPLATE, 1.0))
-                .withLootOptions(new LootOptionEntry(LootSlotManager.RINGS.getName(), lootTierName,
-                        LootTierManager.INVALID_RANDOMIZATION_TEMPLATE, 2.0))
-                .withLootOptions(new LootOptionEntry(LootSlotManager.EARRINGS.getName(), lootTierName,
-                        LootTierManager.INVALID_RANDOMIZATION_TEMPLATE, 1.0))
+                .withLootOptions(new LootOptionEntry(LootSlotManager.MAIN_HAND.getName(), lootTierName, 1.0))
+                .withLootOptions(new LootOptionEntry(LootSlotManager.RINGS.getName(), lootTierName, 2.0))
+                .withLootOptions(new LootOptionEntry(LootSlotManager.EARRINGS.getName(), lootTierName, 1.0))
                 .withDropChances(2)
                 .withNoLootChance(0.2)
                 .withNoLootIncrease(0.25)
@@ -424,10 +415,8 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
         );
         ResourceLocation lootTierName = new ResourceLocation(MKUltra.MODID, "trooper_captain");
         def.addOption(new ExtraLootOption()
-                .withLootOptions(new LootOptionEntry(LootSlotManager.MAIN_HAND.getName(), lootTierName,
-                        LootTierManager.INVALID_RANDOMIZATION_TEMPLATE, 1.0))
-                .withLootOptions(new LootOptionEntry(LootSlotManager.EARRINGS.getName(), lootTierName,
-                        LootTierManager.INVALID_RANDOMIZATION_TEMPLATE, 3.0))
+                .withLootOptions(new LootOptionEntry(LootSlotManager.MAIN_HAND.getName(), lootTierName, 1.0))
+                .withLootOptions(new LootOptionEntry(LootSlotManager.EARRINGS.getName(), lootTierName, 3.0))
                 .withDropChances(2)
                 .withNoLootChance(0.2)
                 .withNoLootIncrease(0.25)
@@ -493,9 +482,8 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                 .withAbilityOption(EmberAbility.INSTANCE, 2, 0.5)
         );
         ResourceLocation lootTierName = new ResourceLocation(MKUltra.MODID, "zombie_trooper");
-        ResourceLocation templateName = new ResourceLocation(MKUltra.MODID, "empty");
         def.addOption(new ExtraLootOption()
-                .withLootOptions(new LootOptionEntry(LootSlotManager.ITEMS.getName(), lootTierName, templateName, 1.0))
+                .withLootOptions(new LootOptionEntry(LootSlotManager.ITEMS.getName(), lootTierName, 1.0))
                 .withDropChances(2)
                 .withNoLootChance(0.1)
                 .withNoLootIncrease(0.25)

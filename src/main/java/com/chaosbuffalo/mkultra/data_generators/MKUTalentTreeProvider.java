@@ -34,7 +34,7 @@ public class MKUTalentTreeProvider extends DataGenerators.TalentTreeDataGenerato
         tree.setDefault(true);
         TalentLineDefinition line = new TalentLineDefinition(tree, "tanking");
         line.addNode(new EntitlementGrantTalentNode(CoreTalents.ABILITY_SLOT_TALENT, UUID.fromString("119917ea-b852-4cb5-8bfe-2cdad488f279")));
-        line.addNode(new AttributeTalentNode(CoreTalents.MAX_HEALTH_TALENT, 2, 1.0));
+        line.addNode(new AttributeTalentNode(CoreTalents.MAX_HEALTH_TALENT, 2, 5.0));
         line.addNode(new AttributeTalentNode(CoreTalents.ARMOR_TALENT, 2, 1.0));
         line.addNode(new EntitlementGrantTalentNode(CoreTalents.ABILITY_SLOT_TALENT, UUID.fromString("121817fa-1cfc-4334-aa77-13c02ede83ff")));
         line.addNode(new EntitlementGrantTalentNode(CoreTalents.POOL_COUNT_TALENT, UUID.fromString("108549d0-7935-4386-bf38-2ca48329305e")));
@@ -45,7 +45,7 @@ public class MKUTalentTreeProvider extends DataGenerators.TalentTreeDataGenerato
         tree.addLine(line);
         TalentLineDefinition magic = new TalentLineDefinition(tree, "magic");
         magic.addNode(new EntitlementGrantTalentNode(CoreTalents.ABILITY_SLOT_TALENT, UUID.fromString("2e1ff629-b139-4303-831d-1c1bc5ebc21e")));
-        magic.addNode(new AttributeTalentNode(CoreTalents.MAX_MANA_TALENT, 2, 1.0));
+        magic.addNode(new AttributeTalentNode(CoreTalents.MAX_MANA_TALENT, 2, 5.0));
         magic.addNode(new AttributeTalentNode(CoreTalents.MANA_REGEN_TALENT, 2, 0.25));
         magic.addNode(new AttributeTalentNode(CoreTalents.MAX_MANA_TALENT, 3, 1.0));
         magic.addNode(new AttributeTalentNode(CoreTalents.MANA_REGEN_TALENT, 2, 0.25));
@@ -62,8 +62,8 @@ public class MKUTalentTreeProvider extends DataGenerators.TalentTreeDataGenerato
         tree.addLine(magic);
         TalentLineDefinition heal = new TalentLineDefinition(tree, "healing");
         heal.addNode(new EntitlementGrantTalentNode(CoreTalents.ABILITY_SLOT_TALENT, UUID.fromString("3a31b74d-cf08-451f-a483-8eb9e47ce89b")));
-        heal.addNode(new AttributeTalentNode(CoreTalents.MAX_MANA_TALENT, 2, 1.0));
-        heal.addNode(new AttributeTalentNode(CoreTalents.MANA_REGEN_TALENT, 2, 0.25));
+        heal.addNode(new AttributeTalentNode(CoreTalents.MANA_REGEN_TALENT, 2, 0.5));
+        heal.addNode(new AttributeTalentNode(CoreTalents.HEAL_BONUS_TALENT, 2, 2.0));
         heal.addNode(new EntitlementGrantTalentNode(CoreTalents.ABILITY_SLOT_TALENT, UUID.fromString("de5a37a4-b7e5-4565-9217-2d5d8de5d448")));
         heal.addNode(new EntitlementGrantTalentNode(CoreTalents.POOL_COUNT_TALENT, UUID.fromString("fbbab80a-c3f8-460f-81cf-5184a7c7f39a")));
         heal.addNode(new AttributeTalentNode(CoreTalents.MAX_MANA_TALENT, 3, 1.0));
