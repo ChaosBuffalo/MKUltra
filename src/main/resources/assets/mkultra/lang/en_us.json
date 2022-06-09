@@ -85,5 +85,9 @@
   "mkultra.entitlement.nether_mage.tier_2.name": "Nether Mage Tier 2",
   "mkultra.entitlement.nether_mage.tier_3.name": "Nether Mage Tier 3",
   "mkultra.entitlement.cleric.intro.tier_1.name": "Acolyte's Blessing",
-  "mkultra.entitlement.nether_mage.intro.tier_1.name": "Initiate's Knowledge"
+  "mkultra.entitlement.nether_mage.intro.tier_1.name": "Initiate's Knowledge",
+  "faction.mkultra.see_of_solang.name": "See of Solang",
+  "faction.mkultra.nether_mages.name": "Nether Mage's Guild",
+  "faction.mkultra.hyborean_dead.name": "Hyborean Dead"
+
 }

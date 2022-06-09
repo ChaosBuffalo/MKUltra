@@ -32,5 +32,9 @@ public class MKUClothes {
             "textures/entity/clothes/ghost_leathers_1.png");
     public static final ResourceLocation NETHER_MAGE_ROBES_1 = new ResourceLocation(MKUltra.MODID,
             "textures/entity/clothes/nether_mage_robes_1.png");
+    public static final ResourceLocation SOLANGIAN_ARMOR_1 = new ResourceLocation(MKUltra.MODID,
+            "textures/entity/clothes/solangian_armor_1.png");
+    public static final ResourceLocation SOLANGIAN_ARMOR_2 = new ResourceLocation(MKUltra.MODID,
+            "textures/entity/clothes/solangian_armor_2.png");
 
 }

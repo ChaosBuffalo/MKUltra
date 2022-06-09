@@ -5,14 +5,19 @@ buildscript {
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+        classpath("com.dipien:semantic-version-gradle-plugin:1.0.0")
     }
 }
+plugins {
+    id "com.google.cloud.artifactregistry.gradle-plugin" version "2.1.5"
+}
+apply plugin: "com.dipien.semantic-version"
 apply plugin: 'net.minecraftforge.gradle'
 // Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = "${mod_version}"
+version = "1.0.0"
 group = "${mod_group}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "${mod_id}-${mc_version}"
 
@@ -30,6 +35,9 @@ repositories {
     }
     maven {
         url = "https://maven.theillusivec4.top/"
+    }
+    maven {
+        url "artifactregistry://us-central1-maven.pkg.dev/secure-garden-352216/chaosbuffalo-maven-repo"
     }
 }
 
@@ -113,7 +121,7 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
-            args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            args '--mod', 'mkultra', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 
             mods {
                 "${mod_id}" {
@@ -169,7 +177,7 @@ jar {
                 "Specification-Vendor": "${mod_vendor}",
                 "Specification-Version": "1", // We are version 1 of ourselves
                 "Implementation-Title": project.name,
-                "Implementation-Version": "${version}",
+                "Implementation-Version": project.version,
                 "Implementation-Vendor" :"${mod_vendor}",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
@@ -183,15 +191,15 @@ jar.finalizedBy('reobfJar')
 //publish.dependsOn('reobfJar')
 
 publishing {
+    repositories {
+        maven {
+            url "artifactregistry://us-central1-maven.pkg.dev/secure-garden-352216/chaosbuffalo-maven-repo"
+        }
+    }
     publications {
         mavenJava(MavenPublication) {
             artifactId jar.baseName
             artifact jar
-        }
-    }
-    repositories {
-        maven {
-            url "file:///${project.projectDir}/mcmodsrepo"
         }
     }
 }

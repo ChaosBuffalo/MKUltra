@@ -32,6 +32,11 @@ public class MKUHumans {
             true, false, new LayerStyle("hair_1", 0.25F),
             new LayerStyle("clothes_1", 0.3F), new LayerStyle("clothes_2", 0.5f));
 
+    public static final String TWO_LAYER_ARMOR_SHORT_HAIR_NAME = "two_layer_armor_short_hair";
+    public static final ModelStyle TWO_LAYER_ARMOR_SHORT_HAIR = new ModelStyle(TWO_LAYER_ARMOR_SHORT_HAIR_NAME,
+            false, false, new LayerStyle("hair_1", 0.25F),
+            new LayerStyle("armor_lower", 0.5F), new LayerStyle("armor_upper", 1.0f));
+
     public static final String GHOST_LONG_HAIR_NAME = "ghost_long_hair";
     public static final String GHOST_LONG_HAIR_ARMORED_NAME = "ghost_long_hair_armored";
 
@@ -54,6 +59,10 @@ public class MKUHumans {
             MKUClothes.SOLANG_ROBES_1, MKUClothes.SOLANG_ROBES_2);
     public static ModelLook CLERIC_2_LOOK = new ModelLook(TWO_LAYER_CLOTHES_SHORT_HAIR, HUMAN_SKIN_2, HUMAN_HAIR_2,
             MKUClothes.SOLANG_ROBES_1, MKUClothes.SOLANG_ROBES_2);
+    public static ModelLook TEMPLE_GUARD_1_LOOK = new ModelLook(TWO_LAYER_ARMOR_SHORT_HAIR, HUMAN_SKIN_1, HUMAN_HAIR_2,
+            MKUClothes.SOLANGIAN_ARMOR_2, MKUClothes.SOLANGIAN_ARMOR_1);
+    public static ModelLook TEMPLE_GUARD_2_LOOK = new ModelLook(TWO_LAYER_ARMOR_SHORT_HAIR, HUMAN_SKIN_1, HUMAN_HAIR_3,
+            MKUClothes.SOLANGIAN_ARMOR_2, MKUClothes.SOLANGIAN_ARMOR_1);
     public static ModelLook HUMAN_BASE = new ModelLook(ModelStyles.BASIC_STYLE, HUMAN_SKIN_1);
 
     public static ModelLook NETHER_MAGE_1_LOOK = new ModelLook(ModelStyles.SHORT_HAIR_STYLE,
@@ -63,4 +72,6 @@ public class MKUHumans {
     public static final String CLERIC_2_NAME = "cleric_2";
     public static final String DEFAULT_NAME = "default";
     public static final String NETHER_MAGE_1_NAME = "nether_mage_1";
+    public static final String TEMPLE_GUARD_1_NAME = "temple_guard_1";
+    public static final String TEMPLE_GUARD_2_NAME = "temple_guard_2";
 }

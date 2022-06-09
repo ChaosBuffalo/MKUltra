@@ -6,6 +6,7 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.world.gen.feature.structure.*;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.DimensionSettings;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
@@ -39,6 +40,10 @@ public class MKUWorldGen {
     public static MKJigsawStructure INTRO_CASTLE;
     public static ResourceLocation INTRO_CASTLE_NAME = new ResourceLocation(MKUltra.MODID, "intro_castle");
     private static StructureFeature<?, ?> INTRO_CASTLE_FEATURE;
+
+    public static MKJigsawStructure DESERT_TEMPLE_VILLAGE_STRUCTURE;
+    public static final ResourceLocation DESERT_TEMPLE_VILLAGE_NAME = new ResourceLocation(MKUltra.MODID, "desert_temple_village");
+    private static StructureFeature<?, ?> DESERT_TEMPLE_VILLAGE_FEATURE;
 
 
     public static void registerStructurePieces(){
@@ -82,12 +87,21 @@ public class MKUWorldGen {
         INTRO_CASTLE_FEATURE = INTRO_CASTLE.withConfiguration(new VillageConfig(
                 () -> IntroCastlePools.INTRO_CASTLE_BASE, IntroCastlePools.GEN_DEPTH));
         evt.getRegistry().register(INTRO_CASTLE);
+
+        DESERT_TEMPLE_VILLAGE_STRUCTURE = new MKJigsawStructure(VillageConfig.field_236533_a_, 0, true, true, false);
+        DESERT_TEMPLE_VILLAGE_STRUCTURE.setRegistryName(DESERT_TEMPLE_VILLAGE_NAME);
+        Structure.NAME_STRUCTURE_BIMAP.put(DESERT_TEMPLE_VILLAGE_NAME.toString(), DESERT_TEMPLE_VILLAGE_STRUCTURE);
+        Structure.STRUCTURE_DECORATION_STAGE_MAP.put(DESERT_TEMPLE_VILLAGE_STRUCTURE, GenerationStage.Decoration.SURFACE_STRUCTURES);
+        DESERT_TEMPLE_VILLAGE_FEATURE = DESERT_TEMPLE_VILLAGE_STRUCTURE.withConfiguration(new VillageConfig(() -> DesertTempleVillagePools.DESERT_TEMPLE_VILLAGE_BASE, DesertTempleVillagePools.GEN_DEPTH));
+        evt.getRegistry().register(DESERT_TEMPLE_VILLAGE_STRUCTURE);
     }
 
     public static void worldSetup(FMLServerAboutToStartEvent event){
         event.getServer().getDynamicRegistries().getRegistry(Registry.NOISE_SETTINGS_KEY).getOptionalValue(DimensionSettings.OVERWORLD)
-                .ifPresent(x -> x.getStructures().func_236195_a_().put(INTRO_CASTLE,
-                        new StructureSeparationSettings(2, 1, 34222645)));
+                .ifPresent(x ->  {
+                    x.getStructures().func_236195_a_().put(INTRO_CASTLE, new StructureSeparationSettings(2, 1, 34222645));
+                    x.getStructures().func_236195_a_().put(DESERT_TEMPLE_VILLAGE_STRUCTURE, new StructureSeparationSettings(36, 8, 14444012));
+                });
 //        event.getServer().getDynamicRegistries().getRegistry(Registry.NOISE_SETTINGS_KEY).forEach(dimensionSettings -> {
 ////            dimensionSettings.getStructures().func_236195_a_().put(ALPHA_GREEN_LADY_STRUCTURE,
 ////                    new StructureSeparationSettings(2, 1, 34222645));
@@ -104,5 +118,8 @@ public class MKUWorldGen {
 //        event.getGeneration().withStructure(ALPHA_GREEN_LADY_FEATURE);
 //        event.getGeneration().withStructure(HYBOREAN_ALTER_FEATURE);
         event.getGeneration().withStructure(INTRO_CASTLE_FEATURE);
+        if (event.getCategory() == Biome.Category.DESERT) {
+            event.getGeneration().withStructure(DESERT_TEMPLE_VILLAGE_FEATURE);
+        }
     }
 }
