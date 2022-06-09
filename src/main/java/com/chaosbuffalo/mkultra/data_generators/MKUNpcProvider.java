@@ -77,6 +77,9 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
         writeDefinition(generateClericApprentice(), cache);
         writeDefinition(generateForlornGhost(), cache);
         writeDefinition(generateNetherMageInitiate(), cache);
+        writeDefinition(generateTempleGuard(), cache);
+        writeDefinition(generateTempleGuard2(), cache);
+        writeDefinition(generateCleric(), cache);
 //        writeDefinition(generateZombifiedPiglinTrooper(), cache);
     }
 
@@ -125,6 +128,39 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
         return def;
     }
 
+    private NpcDefinition generateCleric(){
+        NpcDefinition def = new NpcDefinition(new ResourceLocation(MKUltra.MODID, "solangian_cleric"),
+                MKUEntities.HUMAN_TYPE.getRegistryName(), null);
+        def.addOption(new FactionOption().setValue(MKUFactions.SEE_OF_SOLANG_NAME));
+        def.addOption(new RenderGroupOption().setValue(MKUHumans.CLERIC_1_NAME));
+        def.addOption(new MKSizeOption().setValue(1.05f));
+        def.addOption(new AttributesOption().addAttributeEntry(new NpcAttributeEntry(Attributes.MAX_HEALTH, 500.0)));
+        def.addOption(new FactionNameOption().setTitle("Cleric"));
+        def.addOption(new NotableOption());
+        def.addOption(new AbilitiesOption()
+                .withAbilityOption(HealAbility.INSTANCE, 1, 1.0)
+                .withAbilityOption(SmiteAbility.INSTANCE, 2, 1.0)
+                .withAbilityOption(GalvanizeAbility.INSTANCE, 3, 1.0)
+                .withAbilityOption(PowerWordSummonAbility.INSTANCE, 4, 1.0)
+                .withAbilityOption(InspireAbility.INSTANCE, 5, 1.0)
+        );
+//        def.addOption(new DialogueOption().setValue(new ResourceLocation(MKUltra.MODID, "intro_cleric_acolyte")));
+        EquipmentOption equipOption = new EquipmentOption();
+        equipOption.addItemChoice(EquipmentSlotType.MAINHAND,
+                new NpcItemChoice(new ItemStack(ForgeRegistries.ITEMS.getValue(
+                        new ResourceLocation("mkweapons:mace_gold"))), 1.0, 0.0f));
+//        def.addOption(new QuestOfferingOption(new ResourceLocation("mkultra", "cleric_intro")));
+        def.addOption(new AbilityTrainingOption()
+                .withTrainingOption(HealAbility.INSTANCE, new HasEntitlementRequirement(MKUEntitlements.ClericTier1))
+                .withTrainingOption(SmiteAbility.INSTANCE, new HasEntitlementRequirement(MKUEntitlements.ClericTier1))
+                .withTrainingOption(GalvanizeAbility.INSTANCE, new HasEntitlementRequirement(MKUEntitlements.ClericTier2))
+                .withTrainingOption(PowerWordSummonAbility.INSTANCE, new HasEntitlementRequirement(MKUEntitlements.ClericTier2))
+                .withTrainingOption(InspireAbility.INSTANCE, new HasEntitlementRequirement(MKUEntitlements.ClericTier3))
+        );
+        def.addOption(equipOption);
+        return def;
+    }
+
     private NpcDefinition generateForlornGhost(){
         NpcDefinition def = new NpcDefinition(new ResourceLocation(MKUltra.MODID, "forlorn_ghost"),
                 MKUEntities.HUMAN_TYPE.getRegistryName(), null);
@@ -144,6 +180,49 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
 //                new NpcItemChoice(new ItemStack(ForgeRegistries.ITEMS.getValue(
 //                        new ResourceLocation("mkweapons:mace_iron"))), 1.0, 0.0f));
 //        def.addOption(equipOption);
+        return def;
+    }
+
+    private NpcDefinition generateTempleGuard2() {
+        NpcDefinition def = new NpcDefinition(new ResourceLocation(MKUltra.MODID, "solangian_temple_guard_2"),
+                MKUEntities.HUMAN_TYPE.getRegistryName(), null);
+        def.addOption(new FactionOption().setValue(MKUFactions.SEE_OF_SOLANG_NAME));
+        def.addOption(new RenderGroupOption().setValue(MKUHumans.TEMPLE_GUARD_2_NAME));
+        def.addOption(new MKSizeOption().setValue(1.0f));
+        def.addOption(new AttributesOption().addAttributeEntry(new NpcAttributeEntry(Attributes.MAX_HEALTH, 300.0)));
+        def.addOption(new FactionNameOption().setTitle("Temple Guard"));
+        def.addOption(new NotableOption());
+        def.addOption(new AbilitiesOption()
+                .withAbilityOption(HealAbility.INSTANCE, 1, 1.0)
+                .withAbilityOption(SmiteAbility.INSTANCE, 2, 1.0)
+                .withAbilityOption(SeverTendonAbility.INSTANCE, 3, 1.0)
+        );
+        EquipmentOption equipOption = new EquipmentOption();
+        equipOption.addItemChoice(EquipmentSlotType.MAINHAND,
+                new NpcItemChoice(new ItemStack(ForgeRegistries.ITEMS.getValue(
+                        new ResourceLocation("mkweapons:spear_gold"))), 1.0, 0.0f));
+        def.addOption(equipOption);
+        return def;
+    }
+
+    private NpcDefinition generateTempleGuard() {
+        NpcDefinition def = new NpcDefinition(new ResourceLocation(MKUltra.MODID, "solangian_temple_guard"),
+                MKUEntities.HUMAN_TYPE.getRegistryName(), null);
+        def.addOption(new FactionOption().setValue(MKUFactions.SEE_OF_SOLANG_NAME));
+        def.addOption(new RenderGroupOption().setValue(MKUHumans.TEMPLE_GUARD_1_NAME));
+        def.addOption(new MKSizeOption().setValue(1.0f));
+        def.addOption(new AttributesOption().addAttributeEntry(new NpcAttributeEntry(Attributes.MAX_HEALTH, 250.0)));
+        def.addOption(new FactionNameOption().setTitle("Temple Guard"));
+        def.addOption(new NotableOption());
+        def.addOption(new AbilitiesOption()
+                .withAbilityOption(HealAbility.INSTANCE, 1, 1.0)
+                .withAbilityOption(SmiteAbility.INSTANCE, 2, 1.0)
+        );
+        EquipmentOption equipOption = new EquipmentOption();
+        equipOption.addItemChoice(EquipmentSlotType.MAINHAND,
+                new NpcItemChoice(new ItemStack(ForgeRegistries.ITEMS.getValue(
+                        new ResourceLocation("mkweapons:spear_gold"))), 1.0, 0.0f));
+        def.addOption(equipOption);
         return def;
     }
 

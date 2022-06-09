@@ -4,6 +4,7 @@ package com.chaosbuffalo.mkultra;
 import com.chaosbuffalo.mkultra.extensions.MKUNpcExtensions;
 import com.chaosbuffalo.mkultra.init.MKUWorldGen;
 import com.chaosbuffalo.mkultra.world.gen.feature.structure.CryptStructurePools;
+import com.chaosbuffalo.mkultra.world.gen.feature.structure.DesertTempleVillagePools;
 import com.chaosbuffalo.mkultra.world.gen.feature.structure.IntroCastlePools;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -21,6 +22,7 @@ public class MKUltra {
     public MKUltra(){
         CryptStructurePools.registerPatterns();
         IntroCastlePools.registerPatterns();
+        DesertTempleVillagePools.registerPatterns();
         MKUWorldGen.registerStructurePieces();
         MinecraftForge.EVENT_BUS.addListener(MKUWorldGen::worldSetup);
         MinecraftForge.EVENT_BUS.addListener(MKUWorldGen::biomeSetup);

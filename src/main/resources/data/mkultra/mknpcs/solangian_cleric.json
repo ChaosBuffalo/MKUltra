@@ -1,0 +1,132 @@
+{
+  "entityType": "mkultra:human",
+  "options": [
+    {
+      "optionType": "mknpc:render_group",
+      "value": "cleric_1"
+    },
+    {
+      "optionType": "mknpc:attributes",
+      "attributes": [
+        {
+          "attributeName": "minecraft:generic.max_health",
+          "value": 500.0
+        }
+      ]
+    },
+    {
+      "optionType": "mknpc:ability_trainings",
+      "value": [
+        {
+          "ability": "mkultra:ability.heal",
+          "reqs": [
+            {
+              "reqType": "mkcore:training_req.has_entitlement",
+              "attributes": {},
+              "entitlement": "mkultra:cleric.tier_1"
+            }
+          ]
+        },
+        {
+          "ability": "mkultra:ability.smite",
+          "reqs": [
+            {
+              "reqType": "mkcore:training_req.has_entitlement",
+              "attributes": {},
+              "entitlement": "mkultra:cleric.tier_1"
+            }
+          ]
+        },
+        {
+          "ability": "mkultra:ability.galvanize",
+          "reqs": [
+            {
+              "reqType": "mkcore:training_req.has_entitlement",
+              "attributes": {},
+              "entitlement": "mkultra:cleric.tier_2"
+            }
+          ]
+        },
+        {
+          "ability": "mkultra:ability.power_word_summon",
+          "reqs": [
+            {
+              "reqType": "mkcore:training_req.has_entitlement",
+              "attributes": {},
+              "entitlement": "mkultra:cleric.tier_2"
+            }
+          ]
+        },
+        {
+          "ability": "mkultra:ability.inspire",
+          "reqs": [
+            {
+              "reqType": "mkcore:training_req.has_entitlement",
+              "attributes": {},
+              "entitlement": "mkultra:cleric.tier_3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "optionType": "mknpc:equipment",
+      "slotOptions": {
+        "mainhand": [
+          {
+            "weight": 1.0,
+            "dropChance": 0.0,
+            "item": "{id: \"mkweapons:mace_gold\", Count: 1b, tag: {Damage: 0}}"
+          }
+        ]
+      }
+    },
+    {
+      "optionType": "mknpc:notable",
+      "value": true
+    },
+    {
+      "optionType": "mknpc:abilities",
+      "options": [
+        {
+          "priority": 1,
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.heal"
+        },
+        {
+          "priority": 2,
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.smite"
+        },
+        {
+          "priority": 3,
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.galvanize"
+        },
+        {
+          "priority": 4,
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.power_word_summon"
+        },
+        {
+          "priority": 5,
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.inspire"
+        }
+      ]
+    },
+    {
+      "optionType": "mknpc:mk_size",
+      "value": 1.05
+    },
+    {
+      "optionType": "mknpc:faction_name",
+      "title": "Cleric",
+      "hasLastName": false
+    },
+    {
+      "optionType": "mknpc:faction",
+      "value": "mkultra:see_of_solang"
+    }
+  ]
+}
