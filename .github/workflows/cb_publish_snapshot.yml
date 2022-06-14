@@ -1,8 +1,8 @@
-name: Build On Master Merge
+name: Publish Snapshot On Merge
 
 on:
   push:
-    branches: [ master ]
+    branches: [ "master" ]
     paths: 
         - 'src/**'
 
@@ -26,12 +26,6 @@ jobs:
       with:
         java-version: '8'
         distribution: 'adopt'
-
-    - name: Increment Patch Version
-      run: ./gradlew incrementVersion --versionIncrementType=PATCH --versionIncrementBranch=master
-      env:
-        gitUserEmail: ${{ secrets.GIT_USER_EMAIL }}
-        gitUserName: ${{ secrets.GIT_USER_NAME }}
 
     - name: Publish to Maven
       run: gradle publish

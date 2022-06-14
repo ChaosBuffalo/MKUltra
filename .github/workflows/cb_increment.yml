@@ -13,6 +13,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      RELEASE_MODE: true
 
     steps:
     - uses: actions/checkout@v3
@@ -32,7 +34,7 @@ jobs:
         distribution: 'adopt'
 
     - name: Increment Version
-      run: ./gradlew incrementVersion --versionIncrementType=${{ github.event.inputs.versionIncrementType }} --versionIncrementBranch=master
+      run: ./gradlew incrementVersion --versionIncrementType=${{ github.event.inputs.versionIncrementType }} --versionIncrementBranch="master"
       env:
         gitUserEmail: ${{ secrets.GIT_USER_EMAIL }}
         gitUserName: ${{ secrets.GIT_USER_NAME }}
