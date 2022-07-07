@@ -107,7 +107,7 @@ public class WrathBeamFlurryAbility extends MKAbility {
                     new AxisAlignedBB(minBound, maxBound));
             for (LivingEntity ent : entities){
                 if (Targeting.isValidTarget(getTargetContext(), castingEntity, ent)){
-                    WrathBeamAbility.INSTANCE.castWrathBeam(castingEntity, ent);
+                    WrathBeamAbility.INSTANCE.castWrathBeam(castingEntity, ent.getPositionVec());
                 }
             }
         }
