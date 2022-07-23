@@ -66,8 +66,8 @@ public class EmberAbility extends MKAbility {
         ITextComponent dotStr = getDamageDescription(entityData,
                 CoreDamageTypes.FireDamage, baseDot.value(), scaleDot.value(), level, dotModifierScaling.value());
         return new TranslationTextComponent(getDescriptionTranslationKey(), valueStr,
-                getBuffDuration(entityData, level, baseDuration.value(), scaleDuration.value()) / 20,
-                dotStr, BurnEffect.DEFAULT_PERIOD / 20);
+                NUMBER_FORMATTER.format(convertDurationToSeconds(getBuffDuration(entityData, level, baseDuration.value(), scaleDuration.value()))),
+                dotStr, NUMBER_FORMATTER.format(convertDurationToSeconds(BurnEffect.DEFAULT_PERIOD)));
     }
 
     public MKEffectBuilder<?> getBurnCast(IMKEntityData casterData, float level) {

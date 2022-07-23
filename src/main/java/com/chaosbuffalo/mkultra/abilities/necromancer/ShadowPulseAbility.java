@@ -1,4 +1,4 @@
-package com.chaosbuffalo.mkultra.abilities.misc;
+package com.chaosbuffalo.mkultra.abilities.necromancer;
 
 import com.chaosbuffalo.mkcore.GameConstants;
 import com.chaosbuffalo.mkcore.abilities.*;
@@ -37,7 +37,7 @@ import java.util.Set;
 
 public class ShadowPulseAbility extends MKAbility {
     private static final ResourceLocation PULSE_PARTICLES = new ResourceLocation(MKUltra.MODID, "shadow_pulse_detonate");
-    public static final ResourceLocation CASTING_PARTICLES = new ResourceLocation(MKUltra.MODID, "shadowbolt_casting");
+    public static final ResourceLocation CASTING_PARTICLES = new ResourceLocation(MKUltra.MODID, "shadow_bolt_casting");
     private static final ResourceLocation WAIT_PARTICLES = new ResourceLocation(MKUltra.MODID, "shadow_pulse_wait");
     public static final ShadowPulseAbility INSTANCE = new ShadowPulseAbility();
     protected final FloatAttribute base = new FloatAttribute("base", 1.0f);
@@ -61,7 +61,7 @@ public class ShadowPulseAbility extends MKAbility {
         setCastTime(GameConstants.TICKS_PER_SECOND);
         setCooldownSeconds(10);
         setManaCost(5);
-        addSkillAttribute(MKAttributes.EVOCATION);
+        addSkillAttribute(MKAttributes.CONJURATION);
         casting_particles.setDefaultValue(CASTING_PARTICLES);
         addAttributes(base, scale, modifierScaling, tickRate, pulse_particles, wait_particles, duration,
                 baseGravity, scaleGravity, detonateBase, detonateScale, radius, waitTime);
@@ -69,11 +69,15 @@ public class ShadowPulseAbility extends MKAbility {
 
     @Override
     protected ITextComponent getAbilityDescription(IMKEntityData casterData) {
-        float level = getSkillLevel(casterData.getEntity(), MKAttributes.EVOCATION);
+        float level = getSkillLevel(casterData.getEntity(), MKAttributes.CONJURATION);
         ITextComponent damageStr = getDamageDescription(casterData, CoreDamageTypes.ShadowDamage, base.value(), scale.value(), level, modifierScaling.value());
-        return new TranslationTextComponent(getDescriptionTranslationKey(), damageStr,
+        ITextComponent detonateStr = getDamageDescription(casterData, CoreDamageTypes.ShadowDamage, detonateBase.value(), detonateScale.value(), level, modifierScaling.value());
+        return new TranslationTextComponent(getDescriptionTranslationKey(),
+                NUMBER_FORMATTER.format(radius.value()),
+                damageStr,
                 NUMBER_FORMATTER.format(convertDurationToSeconds(tickRate.value())),
-                NUMBER_FORMATTER.format(convertDurationToSeconds(duration.value())));
+                NUMBER_FORMATTER.format(convertDurationToSeconds(duration.value())),
+                detonateStr);
     }
 
     @Override
@@ -95,7 +99,7 @@ public class ShadowPulseAbility extends MKAbility {
     public void castShadowPulse(LivingEntity castingEntity, Vector3d position){
         Vector3d pulseOffset = new Vector3d(0.0, 0.5, 0.0);
         Vector3d pulsePos = position.add(pulseOffset);
-        float level = getSkillLevel(castingEntity, MKAttributes.EVOCATION);
+        float level = getSkillLevel(castingEntity, MKAttributes.CONJURATION);
         MKEffectBuilder<?> damage = MKAbilityDamageEffect.from(castingEntity, CoreDamageTypes.ShadowDamage,
                 base.value(), scale.value(), modifierScaling.value())
                 .ability(this)

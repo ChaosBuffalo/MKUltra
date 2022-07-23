@@ -30,6 +30,8 @@ public class MKURenderers {
             (manager) -> new SpriteProjectileRenderer<>(manager, Minecraft.getInstance().getItemRenderer(), 1.0f, true));
         RenderingRegistry.registerEntityRenderingHandler(FireballProjectileEntity.TYPE,
                 (manager) -> new SpriteProjectileRenderer<>(manager, Minecraft.getInstance().getItemRenderer(), 1.0f, true));
+        RenderingRegistry.registerEntityRenderingHandler(ShadowBoltProjectileEntity.TYPE,
+                (manager) -> new SpriteProjectileRenderer<>(manager, Minecraft.getInstance().getItemRenderer(), 1.0f, true));
         RenderingRegistry.registerEntityRenderingHandler(MKUEntities.ORC_TYPE, OrcGroupRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(MKUEntities.HYBOREAN_SKELETON_TYPE, (manager) ->
                 new SkeletalGroupRenderer(manager, MKUSkeletons.SKELETON_STYLES));

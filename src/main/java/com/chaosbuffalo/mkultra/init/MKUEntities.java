@@ -7,6 +7,7 @@ import com.chaosbuffalo.mkultra.entities.humans.HumanEntity;
 import com.chaosbuffalo.mkultra.entities.orcs.OrcEntity;
 import com.chaosbuffalo.mkultra.entities.projectiles.CleansingSeedProjectileEntity;
 import com.chaosbuffalo.mkultra.entities.projectiles.FireballProjectileEntity;
+import com.chaosbuffalo.mkultra.entities.projectiles.ShadowBoltProjectileEntity;
 import com.chaosbuffalo.mkultra.entities.projectiles.SpiritBombProjectileEntity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
@@ -67,6 +68,17 @@ public class MKUEntities {
                 .disableSerialization()
                 .build("fireball_projectile")
                 .setRegistryName(new ResourceLocation(MKUltra.MODID, "fireball_projectile")));
+
+        evt.getRegistry().register(EntityType.Builder.<ShadowBoltProjectileEntity>create(
+                ShadowBoltProjectileEntity::new, EntityClassification.MISC)
+                .immuneToFire()
+                .size(0.25f, 0.25f)
+                .setTrackingRange(5)
+                .setUpdateInterval(10)
+                .setShouldReceiveVelocityUpdates(true)
+                .disableSerialization()
+                .build("shadow_bolt_projectile")
+                .setRegistryName(new ResourceLocation(MKUltra.MODID, "shadow_bolt_projectile")));
 
         EntityType<MKSkeletonEntity> hyborean_skeleton = EntityType.Builder.create(
                 MKSkeletonEntity::new, EntityClassification.MONSTER)
