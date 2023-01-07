@@ -80,6 +80,17 @@ public class MKUEntities {
                 .build("shadow_bolt_projectile")
                 .setRegistryName(new ResourceLocation(MKUltra.MODID, "shadow_bolt_projectile")));
 
+        evt.getRegistry().register(EntityType.Builder.<ShadowBoltProjectileEntity>create(
+                ShadowBoltProjectileEntity::new, EntityClassification.MISC)
+                .immuneToFire()
+                .size(0.25f, 0.25f)
+                .setTrackingRange(5)
+                .setUpdateInterval(10)
+                .setShouldReceiveVelocityUpdates(true)
+                .disableSerialization()
+                .build("drown_projectile")
+                .setRegistryName(new ResourceLocation(MKUltra.MODID, "drown_projectile")));
+
         EntityType<MKSkeletonEntity> hyborean_skeleton = EntityType.Builder.create(
                 MKSkeletonEntity::new, EntityClassification.MONSTER)
                 .size(EntityType.SKELETON.getWidth(), EntityType.SKELETON.getHeight())

@@ -70,7 +70,7 @@ public class FireballProjectileEntity extends TrailProjectileEntity implements I
             MKEffectBuilder<?> fireBreak = ResistanceEffects.BREAK_FIRE.builder(casterLiving)
                     .ability(FireballAbility.INSTANCE)
                     .directEntity(this)
-                    .timed((amplifier + 1) * GameConstants.TICKS_PER_SECOND)
+                    .timed(Math.round((getSkillLevel() + 1) * GameConstants.TICKS_PER_SECOND))
                     .skillLevel(getSkillLevel())
                     .amplify(amplifier);
 

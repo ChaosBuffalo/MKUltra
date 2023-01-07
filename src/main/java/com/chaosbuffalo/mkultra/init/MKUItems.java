@@ -36,6 +36,9 @@ public final class MKUItems {
     @ObjectHolder(MKUltra.MODID + ":shadow_bolt_projectile")
     public static Item shadowBoltProjectileItem;
 
+    @ObjectHolder(MKUltra.MODID + ":drown_projectile")
+    public static Item drownProjectileItem;
+
     @ObjectHolder(MKUltra.MODID + ":green_knight_helmet")
     public static Item greenKnightHelmet;
 
@@ -86,6 +89,8 @@ public final class MKUItems {
                 .setRegistryName(MKUltra.MODID, "fireball_projectile"));
         event.getRegistry().register(new Item(new Item.Properties())
                 .setRegistryName(MKUltra.MODID, "shadow_bolt_projectile"));
+        event.getRegistry().register(new Item(new Item.Properties())
+                .setRegistryName(MKUltra.MODID, "drown_projectile"));
 
         //quest items
         Item pigIronPlate = new Item(new Item.Properties().group(ItemGroup.MISC))
