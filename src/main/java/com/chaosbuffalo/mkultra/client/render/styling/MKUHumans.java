@@ -20,6 +20,9 @@ public class MKUHumans {
     public static final ResourceLocation HUMAN_HAIR_3 = new ResourceLocation(MKUltra.MODID,
             "textures/entity/humans/human_hair_3.png");
 
+    public static final ResourceLocation PALE_HUMAN_SKIN_1 = new ResourceLocation(MKUltra.MODID,
+            "textures/entity/humans/pale_skin_1.png");
+
     public static final ResourceLocation GHOST_SKIN_1 = new ResourceLocation(MKUltra.MODID,
             "textures/entity/humans/ghost_skin_1.png");
     public static final ResourceLocation GHOST_HAIR_1 = new ResourceLocation(MKUltra.MODID,
@@ -35,6 +38,11 @@ public class MKUHumans {
     public static final String TWO_LAYER_ARMOR_SHORT_HAIR_NAME = "two_layer_armor_short_hair";
     public static final ModelStyle TWO_LAYER_ARMOR_SHORT_HAIR = new ModelStyle(TWO_LAYER_ARMOR_SHORT_HAIR_NAME,
             false, false, new LayerStyle("hair_1", 0.25F),
+            new LayerStyle("armor_lower", 0.5F), new LayerStyle("armor_upper", 1.0f));
+
+    public static final String TWO_LAYER_ARMOR_NO_HAIR_NAME = "two_layer_armor_no_hair";
+    public static final ModelStyle TWO_LAYER_ARMOR_NO_HAIR = new ModelStyle(TWO_LAYER_ARMOR_NO_HAIR_NAME,
+            false, false,
             new LayerStyle("armor_lower", 0.5F), new LayerStyle("armor_upper", 1.0f));
 
     public static final String GHOST_LONG_HAIR_NAME = "ghost_long_hair";
@@ -74,4 +82,12 @@ public class MKUHumans {
     public static final String NETHER_MAGE_1_NAME = "nether_mage_1";
     public static final String TEMPLE_GUARD_1_NAME = "temple_guard_1";
     public static final String TEMPLE_GUARD_2_NAME = "temple_guard_2";
+    public static final String NECROTIDE_CULTIST_1_NAME = "necrotide_cultist_1";
+    public static final String NECROTIDE_CULTIST_SKULL_1_NAME = "necrotide_cultist_skull_1";
+
+    public static ModelLook NECROTIDE_CULTIST_1 = new ModelLook(TWO_LAYER_ARMOR_NO_HAIR, PALE_HUMAN_SKIN_1,
+            MKUClothes.NECROTIDE_ROBES_2, MKUClothes.NECROTIDE_ROBES_1);
+    public static ModelLook NECROTIDE_CULTIST_SKULL_1 = new ModelLook(TWO_LAYER_ARMOR_NO_HAIR, PALE_HUMAN_SKIN_1,
+            MKUClothes.NECROTIDE_ROBES_2, MKUClothes.NECROTIDE_ROBES_SKULL_HOOD);
+
 }

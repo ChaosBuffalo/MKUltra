@@ -19,11 +19,11 @@ import com.chaosbuffalo.mkultra.abilities.brawler.WhirlwindBladesAbility;
 import com.chaosbuffalo.mkultra.abilities.brawler.YankAbility;
 import com.chaosbuffalo.mkultra.abilities.cleric.*;
 import com.chaosbuffalo.mkultra.abilities.green_knight.*;
-import com.chaosbuffalo.mkultra.abilities.misc.FireballAbility;
-import com.chaosbuffalo.mkultra.abilities.misc.SeverTendonAbility;
-import com.chaosbuffalo.mkultra.abilities.misc.WrathBeamAbility;
-import com.chaosbuffalo.mkultra.abilities.misc.WrathBeamFlurryAbility;
+import com.chaosbuffalo.mkultra.abilities.misc.*;
+import com.chaosbuffalo.mkultra.abilities.necromancer.ShadowBoltAbility;
+import com.chaosbuffalo.mkultra.abilities.necromancer.ShadowPulseAbility;
 import com.chaosbuffalo.mkultra.abilities.nether_mage.*;
+import com.chaosbuffalo.mkultra.abilities.wet_wizard.DrownAbility;
 import com.chaosbuffalo.mkultra.client.render.styling.MKUHumans;
 import com.chaosbuffalo.mkultra.client.render.styling.MKUOrcs;
 import com.chaosbuffalo.mkultra.client.render.styling.MKUPiglins;
@@ -80,23 +80,42 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
         writeDefinition(generateTempleGuard(), cache);
         writeDefinition(generateTempleGuard2(), cache);
         writeDefinition(generateCleric(), cache);
-//        writeDefinition(generateZombifiedPiglinTrooper(), cache);
+        writeDefinition(generateNecrotideCultistAcolyte(), cache);
+        writeDefinition(generateNecrotideCultist(), cache);
     }
 
-    private NpcDefinition generateZombifiedPiglinTrooper(){
-        NpcDefinition def = new NpcDefinition(new ResourceLocation(MKUltra.MODID, "zombified_piglin_trooper"),
-                MKUEntities.ZOMBIFIED_PIGLIN_TYPE.getRegistryName(), null);
-        def.addOption(new FactionOption().setValue(Factions.UNDEAD_FACTION_NAME));
-        def.addOption(new MKSizeOption().setValue(1.0f));
-        def.addOption(new RenderGroupOption().setValue(MKUPiglins.ZOMBIE_PIG_TROOPER_NAME));
-        def.addOption(new AttributesOption().addAttributeEntry(new NpcAttributeEntry(Attributes.MAX_HEALTH, 45.0)));
-        def.addOption(new NameOption().setValue("Zombified Trooper"));
-        def.addOption(new ParticleEffectsOption().withEffects(Lists.newArrayList(
-                new BoneEffectInstance(UUID.fromString("e45696e1-ddb1-4709-bc29-1733ee1bced9"),
-                        BipedSkeleton.RIGHT_HAND_BONE_NAME, new ResourceLocation(MKUltra.MODID, "flame_wave_casting")),
-                new BoneEffectInstance(UUID.fromString("02d14078-dd34-496c-b055-0f939af19403"),
-                        BipedSkeleton.LEFT_HAND_BONE_NAME, new ResourceLocation(MKUltra.MODID, "flame_wave_casting"))
-        )));
+    private NpcDefinition generateNecrotideCultistAcolyte() {
+        NpcDefinition def = new NpcDefinition(new ResourceLocation(MKUltra.MODID, "necrotide_acolyte"),
+                MKUEntities.HUMAN_TYPE.getRegistryName(), null);
+        def.addOption(new FactionOption().setValue(MKUFactions.NECROTIDE_CULTISTS_NAME));
+        def.addOption(new RenderGroupOption().setValue(MKUHumans.NECROTIDE_CULTIST_1_NAME));
+        def.addOption(new MKSizeOption().setValue(0.95f));
+        def.addOption(new AttributesOption().addAttributeEntry(new NpcAttributeEntry(Attributes.MAX_HEALTH, 50.0)));
+        def.addOption(new NameOption().setValue("A Necrotide Acolyte"));
+        def.addOption(new AbilitiesOption()
+                .withAbilityOption(ShadowBoltAbility.INSTANCE, 1, 1.0)
+                .withAbilityOption(DrownAbility.INSTANCE, 2, 0.5)
+                .withAbilityOption(ShadowPulseAbility.INSTANCE, 3, 0.5)
+        );
+        def.addOption(MKUNpcGenUtils.GetSkillOptionForClass(MKUNpcGenUtils.NpcSkillClass.MAGE));
+        return def;
+    }
+
+    private NpcDefinition generateNecrotideCultist() {
+        NpcDefinition def = new NpcDefinition(new ResourceLocation(MKUltra.MODID, "necrotide_cultist"),
+                MKUEntities.HUMAN_TYPE.getRegistryName(), null);
+        def.addOption(new FactionOption().setValue(MKUFactions.NECROTIDE_CULTISTS_NAME));
+        def.addOption(new RenderGroupOption().setValue(MKUHumans.NECROTIDE_CULTIST_SKULL_1_NAME));
+        def.addOption(new MKSizeOption().setValue(1.05f));
+        def.addOption(new AttributesOption().addAttributeEntry(new NpcAttributeEntry(Attributes.MAX_HEALTH, 125.0)));
+        def.addOption(new FactionNameOption().setTitle("Cultist"));
+        def.addOption(new AbilitiesOption()
+                .withAbilityOption(ShadowBoltAbility.INSTANCE, 1, 1.0)
+                .withAbilityOption(DrownAbility.INSTANCE, 2, 1.0)
+                .withAbilityOption(ShadowPulseAbility.INSTANCE, 3, 1.0)
+                .withAbilityOption(MKEntitySummonAbility.TEST_SUMMON, 4, 1.0)
+        );
+        def.addOption(MKUNpcGenUtils.GetSkillOptionForClass(MKUNpcGenUtils.NpcSkillClass.NECROMANCER));
         return def;
     }
 
@@ -125,6 +144,7 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                         .withTrainingOption(SmiteAbility.INSTANCE, new HasEntitlementRequirement(MKUEntitlements.IntroClericTier1))
         );
         def.addOption(equipOption);
+        def.addOption(MKUNpcGenUtils.GetSkillOptionForClass(MKUNpcGenUtils.NpcSkillClass.CLERIC));
         return def;
     }
 
@@ -158,6 +178,7 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                 .withTrainingOption(InspireAbility.INSTANCE, new HasEntitlementRequirement(MKUEntitlements.ClericTier3))
         );
         def.addOption(equipOption);
+        def.addOption(MKUNpcGenUtils.GetSkillOptionForClass(MKUNpcGenUtils.NpcSkillClass.CLERIC));
         return def;
     }
 
@@ -180,6 +201,7 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
 //                new NpcItemChoice(new ItemStack(ForgeRegistries.ITEMS.getValue(
 //                        new ResourceLocation("mkweapons:mace_iron"))), 1.0, 0.0f));
 //        def.addOption(equipOption);
+        def.addOption(MKUNpcGenUtils.GetSkillOptionForClass(MKUNpcGenUtils.NpcSkillClass.FIGHTER));
         return def;
     }
 
@@ -202,6 +224,7 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                 new NpcItemChoice(new ItemStack(ForgeRegistries.ITEMS.getValue(
                         new ResourceLocation("mkweapons:spear_gold"))), 1.0, 0.0f));
         def.addOption(equipOption);
+        def.addOption(MKUNpcGenUtils.GetSkillOptionForClass(MKUNpcGenUtils.NpcSkillClass.PALADIN));
         return def;
     }
 
@@ -223,6 +246,7 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                 new NpcItemChoice(new ItemStack(ForgeRegistries.ITEMS.getValue(
                         new ResourceLocation("mkweapons:spear_gold"))), 1.0, 0.0f));
         def.addOption(equipOption);
+        def.addOption(MKUNpcGenUtils.GetSkillOptionForClass(MKUNpcGenUtils.NpcSkillClass.PALADIN));
         return def;
     }
 
@@ -244,6 +268,7 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                 new NpcItemChoice(new ItemStack(ForgeRegistries.ITEMS.getValue(
                         new ResourceLocation("mkweapons:mace_iron"))), 1.0, 0.0f));
         def.addOption(equipOption);
+        def.addOption(MKUNpcGenUtils.GetSkillOptionForClass(MKUNpcGenUtils.NpcSkillClass.CLERIC));
         return def;
     }
 
@@ -272,6 +297,7 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
         );
         def.addOption(new DialogueOption().setValue(new ResourceLocation(MKUltra.MODID, "intro_nether_mage_initiate")));
         def.addOption(new QuestOfferingOption(new ResourceLocation("mkultra", "nether_mage_intro")));
+        def.addOption(MKUNpcGenUtils.GetSkillOptionForClass(MKUNpcGenUtils.NpcSkillClass.MAGE));
         return def;
     }
 
@@ -328,7 +354,7 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                 .withDropChances(1)
                 .withNoLootChance(0.1)
                 .withNoLootIncrease(0.0));
-
+        def.addOption(MKUNpcGenUtils.GetSkillOptionForClass(MKUNpcGenUtils.NpcSkillClass.MAGE));
         return def;
     }
 
@@ -348,6 +374,7 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                 new NpcItemChoice(ItemStack.EMPTY, 1.0, 0.0f));
         def.addOption(equipOption);
         def.addOption(new ExperienceOption().setValue(5));
+        def.addOption(MKUNpcGenUtils.GetSkillOptionForClass(MKUNpcGenUtils.NpcSkillClass.FIGHTER));
         return def;
     }
 
@@ -364,6 +391,7 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                 new NpcItemChoice(new ItemStack(Items.BOW), 1.0, 0.0f));
         def.addOption(equipOption);
         def.addOption(new ExperienceOption().setValue(5));
+        def.addOption(MKUNpcGenUtils.GetSkillOptionForClass(MKUNpcGenUtils.NpcSkillClass.ARCHER));
         return def;
     }
 
@@ -392,6 +420,7 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                 .withNoLootIncrease(0.25)
         );
         def.addOption(new ExperienceOption().setValue(10));
+        def.addOption(MKUNpcGenUtils.GetSkillOptionForClass(MKUNpcGenUtils.NpcSkillClass.MAGE));
         return def;
     }
 
@@ -425,6 +454,7 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                 .withNoLootIncrease(0.25)
         );
         def.addOption(new ExperienceOption().setValue(20));
+        def.addOption(MKUNpcGenUtils.GetSkillOptionForClass(MKUNpcGenUtils.NpcSkillClass.FIGHTER));
         return def;
     }
 
@@ -462,6 +492,7 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                 .withNoLootIncrease(0.25)
         );
         def.addOption(new ExperienceOption().setValue(25));
+        def.addOption(MKUNpcGenUtils.GetSkillOptionForClass(MKUNpcGenUtils.NpcSkillClass.MAGE));
         return def;
     }
 
@@ -501,6 +532,7 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                 .withNoLootIncrease(0.25)
         );
         def.addOption(new ExperienceOption().setValue(25));
+        def.addOption(MKUNpcGenUtils.GetSkillOptionForClass(MKUNpcGenUtils.NpcSkillClass.PALADIN));
         return def;
     }
 
@@ -533,6 +565,7 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
 //                .withNoLootIncrease(0.25)
 //        );
         def.addOption(new ExperienceOption().setValue(15));
+        def.addOption(MKUNpcGenUtils.GetSkillOptionForClass(MKUNpcGenUtils.NpcSkillClass.MAGE));
         return def;
     }
 
@@ -568,6 +601,7 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                 .withNoLootIncrease(0.25)
         );
         def.addOption(new ExperienceOption().setValue(10));
+        def.addOption(MKUNpcGenUtils.GetSkillOptionForClass(MKUNpcGenUtils.NpcSkillClass.FIGHTER));
         return def;
     }
 
@@ -597,6 +631,7 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                 new NpcItemChoice(new ItemStack(ForgeRegistries.ITEMS.getValue(
                         new ResourceLocation("mkweapons:warhammer_stone"))), 1.0, 0.0f));
         def.addOption(equipOption);
+        def.addOption(MKUNpcGenUtils.GetSkillOptionForClass(MKUNpcGenUtils.NpcSkillClass.WARRIOR));
         return def;
     }
 
@@ -613,6 +648,7 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                 new NpcItemChoice(new ItemStack(ForgeRegistries.ITEMS.getValue(
                         new ResourceLocation("mkweapons:longbow_stone"))), 1.0, 0.0f));
         def.addOption(equipOption);
+        def.addOption(MKUNpcGenUtils.GetSkillOptionForClass(MKUNpcGenUtils.NpcSkillClass.ARCHER));
         return def;
     }
 
@@ -641,6 +677,7 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                 .withAbilityOption(WarpCurseAbility.INSTANCE, 4, 0.5)
         );
         def.addOption(new MKComboSettingsOption().setComboCount(5).setComboDelay(60));
+        def.addOption(MKUNpcGenUtils.GetSkillOptionForClass(MKUNpcGenUtils.NpcSkillClass.MAGE));
         return def;
     }
 
@@ -675,6 +712,7 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
 
         );
         def.addOption(new MKComboSettingsOption().setComboCount(2).setComboDelay(10));
+        def.addOption(MKUNpcGenUtils.GetSkillOptionForClass(MKUNpcGenUtils.NpcSkillClass.PALADIN));
         return def;
     }
 
@@ -696,6 +734,7 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                 .withAbilityOption(FireballAbility.INSTANCE, 1, 1.0)
                 .withAbilityOption(EmberAbility.INSTANCE, 3, 1.0)
         );
+        def.addOption(MKUNpcGenUtils.GetSkillOptionForClass(MKUNpcGenUtils.NpcSkillClass.MAGE));
         return def;
     }
 
@@ -723,6 +762,7 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                 .withAbilityOption(SeverTendonAbility.INSTANCE, 3, 1.0)
         );
         def.addOption(new MKComboSettingsOption().setComboCount(4).setComboDelay(30));
+        def.addOption(MKUNpcGenUtils.GetSkillOptionForClass(MKUNpcGenUtils.NpcSkillClass.PALADIN));
         return def;
     }
 
@@ -745,6 +785,7 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                         new ResourceLocation("mkweapons:warhammer_iron"))), 1.0, 0.0f));
         def.addOption(equipOption);
         def.addOption(new QuestOfferingOption(new ResourceLocation("mkultra", "trooper_armor")));
+        def.addOption(MKUNpcGenUtils.GetSkillOptionForClass(MKUNpcGenUtils.NpcSkillClass.PALADIN));
         return def;
     }
 
@@ -774,6 +815,7 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
         def.addOption(new NameOption().setValue("Green Lady"));
         def.addOption(new NotableOption());
         def.addOption(new QuestOfferingOption(new ResourceLocation("mkultra", "intro_quest")));
+        def.addOption(MKUNpcGenUtils.GetSkillOptionForClass(MKUNpcGenUtils.NpcSkillClass.CLERIC));
         return def;
     }
 
@@ -807,6 +849,7 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                         new ResourceLocation("mkweapons:dagger_stone"))), 1.0, 0.0f));
         def.addOption(equipOption);
         def.addOption(new NotableOption());
+        def.addOption(MKUNpcGenUtils.GetSkillOptionForClass(MKUNpcGenUtils.NpcSkillClass.PALADIN));
         return def;
     }
 
@@ -840,6 +883,7 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                         new ResourceLocation("mkweapons:battleaxe_stone"))), 1.0, 0.0f));
         def.addOption(equipOption);
         def.addOption(new NotableOption());
+        def.addOption(MKUNpcGenUtils.GetSkillOptionForClass(MKUNpcGenUtils.NpcSkillClass.PALADIN));
         return def;
     }
 

@@ -5,10 +5,7 @@ import com.chaosbuffalo.mknpc.entity.MKZombifiedPiglinEntity;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.entities.humans.HumanEntity;
 import com.chaosbuffalo.mkultra.entities.orcs.OrcEntity;
-import com.chaosbuffalo.mkultra.entities.projectiles.CleansingSeedProjectileEntity;
-import com.chaosbuffalo.mkultra.entities.projectiles.FireballProjectileEntity;
-import com.chaosbuffalo.mkultra.entities.projectiles.ShadowBoltProjectileEntity;
-import com.chaosbuffalo.mkultra.entities.projectiles.SpiritBombProjectileEntity;
+import com.chaosbuffalo.mkultra.entities.projectiles.*;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -80,8 +77,8 @@ public class MKUEntities {
                 .build("shadow_bolt_projectile")
                 .setRegistryName(new ResourceLocation(MKUltra.MODID, "shadow_bolt_projectile")));
 
-        evt.getRegistry().register(EntityType.Builder.<ShadowBoltProjectileEntity>create(
-                ShadowBoltProjectileEntity::new, EntityClassification.MISC)
+        evt.getRegistry().register(EntityType.Builder.<DrownProjectileEntity>create(
+                DrownProjectileEntity::new, EntityClassification.MISC)
                 .immuneToFire()
                 .size(0.25f, 0.25f)
                 .setTrackingRange(5)

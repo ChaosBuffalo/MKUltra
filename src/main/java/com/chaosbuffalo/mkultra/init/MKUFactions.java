@@ -28,6 +28,8 @@ public class MKUFactions {
             "ghosts_of_hyboria");
     public static final ResourceLocation NETHER_MAGE_NAME = new ResourceLocation(MKUltra.MODID,
             "nether_mages");
+    public static final ResourceLocation NECROTIDE_CULTISTS_NAME = new ResourceLocation(MKUltra.MODID,
+            "necrotide_cultists");
 
     protected static Set<ResourceLocation> getDefaultGoodFactionSet(){
         Set<ResourceLocation> factions = new HashSet<>();
@@ -42,6 +44,7 @@ public class MKUFactions {
         factions.add(Factions.HOSTILE_ANIMALS_FACTION_NAME);
         factions.add(Factions.UNDEAD_FACTION_NAME);
         factions.add(Factions.MONSTERS_FACTION_NAME);
+        factions.add(NECROTIDE_CULTISTS_NAME);
         return factions;
     }
 
@@ -63,6 +66,9 @@ public class MKUFactions {
     @ObjectHolder("mkultra:nether_mages")
     public static MKFaction NETHER_MAGES;
 
+    @ObjectHolder("mkultra:necrotide_cultists")
+    public static MKFaction NECROTIDE_CULTISTS;
+
 
     @SubscribeEvent
     public static void registerFactions(RegistryEvent.Register<MKFaction> event) {
@@ -73,6 +79,7 @@ public class MKUFactions {
         );
         greenKnightFaction.addEnemy(HYBOREAN_DEAD_NAME);
         greenKnightFaction.addEnemy(IMPERIAL_DEAD_NAME);
+        greenKnightFaction.addEnemy(NECROTIDE_CULTISTS_NAME);
         event.getRegistry().register(greenKnightFaction);
         MKFaction hyboreanDeadFaction = new MKFaction(HYBOREAN_DEAD_NAME,
                 FactionConstants.ENEMY_THRESHOLD,
@@ -106,6 +113,10 @@ public class MKUFactions {
                 FactionConstants.FRIENDLY_THRESHOLD, getDefaultGoodFactionSet(), getDefaultBadFactionSet());
         setupMongolianNames(nether_mages);
         event.getRegistry().register(nether_mages);
+        MKFaction necrotideCultists = new MKFaction(NECROTIDE_CULTISTS_NAME,
+                FactionConstants.ENEMY_THRESHOLD, new HashSet<>(), getDefaultGoodFactionSet());
+        setupMongolianNames(necrotideCultists);
+        event.getRegistry().register(necrotideCultists);
     }
 
     private static void setupMongolianNames(MKFaction faction){
