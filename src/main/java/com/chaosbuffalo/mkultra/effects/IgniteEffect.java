@@ -7,6 +7,7 @@ import com.chaosbuffalo.mkcore.effects.*;
 import com.chaosbuffalo.mkcore.init.CoreDamageTypes;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.abilities.nether_mage.EmberAbility;
+import com.chaosbuffalo.mkultra.init.MKUAbilities;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.potion.EffectType;
 import net.minecraftforge.event.RegistryEvent;
@@ -55,7 +56,7 @@ public class IgniteEffect extends MKEffect {
                     activeEffect.getAbilityId(), activeEffect.getDirectEntity(), activeEffect.getSourceEntity(), scaling), damage);
 
             MKCore.getEntityData(activeEffect.getSourceEntity()).ifPresent(casterData -> {
-                MKEffectBuilder<?> burn = EmberAbility.INSTANCE.getBurnCast(casterData, activeEffect.getStackCount())
+                MKEffectBuilder<?> burn = MKUAbilities.EMBER.get().getBurnCast(casterData, activeEffect.getStackCount())
                         .ability(activeEffect.getAbilityId());
                 targetData.getEffects().addEffect(burn);
             });

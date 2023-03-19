@@ -12,6 +12,7 @@ import com.chaosbuffalo.mkcore.utils.SoundUtils;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.abilities.green_knight.SpiritBombAbility;
 import com.chaosbuffalo.mkultra.entities.IMKRenderAsItem;
+import com.chaosbuffalo.mkultra.init.MKUAbilities;
 import com.chaosbuffalo.mkultra.init.MKUItems;
 import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.Targeting;
@@ -105,11 +106,12 @@ public class SpiritBombProjectileEntity extends TrailProjectileEntity implements
     private boolean doEffect(Entity caster, int amplifier) {
         if (!this.world.isRemote && caster instanceof LivingEntity) {
             LivingEntity casterLiving = (LivingEntity) caster;
+            SpiritBombAbility ability = MKUAbilities.SPIRIT_BOMB.get();
             MKEffectBuilder<?> damage = MKAbilityDamageEffect.from(casterLiving, CoreDamageTypes.NatureDamage,
-                            SpiritBombAbility.INSTANCE.getBaseDamage(),
-                            SpiritBombAbility.INSTANCE.getScaleDamage(),
-                            SpiritBombAbility.INSTANCE.getModifierScaling())
-                    .ability(SpiritBombAbility.INSTANCE)
+                            ability.getBaseDamage(),
+                            ability.getScaleDamage(),
+                            ability.getModifierScaling())
+                    .ability(ability)
                     .directEntity(this)
                     .skillLevel(getSkillLevel())
                     .amplify(amplifier);

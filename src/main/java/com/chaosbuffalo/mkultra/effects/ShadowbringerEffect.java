@@ -4,6 +4,7 @@ import com.chaosbuffalo.mkcore.core.IMKEntityData;
 import com.chaosbuffalo.mkcore.effects.*;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.abilities.necromancer.ShadowBoltAbility;
+import com.chaosbuffalo.mkultra.init.MKUAbilities;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.potion.EffectType;
 import net.minecraftforge.event.RegistryEvent;
@@ -26,7 +27,7 @@ public class ShadowbringerEffect extends MKEffect {
     @Override
     public void onInstanceAdded(IMKEntityData targetData, MKActiveEffect newInstance) {
         super.onInstanceAdded(targetData, newInstance);
-        targetData.getAbilityExecutor().setCooldown(ShadowBoltAbility.INSTANCE.getAbilityId(), 0);
+        targetData.getAbilityExecutor().setCooldown(MKUAbilities.SHADOW_BOLT.getId(), 0);
     }
 
     @Override

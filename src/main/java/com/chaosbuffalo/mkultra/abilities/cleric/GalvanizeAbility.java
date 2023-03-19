@@ -28,23 +28,18 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
 public class GalvanizeAbility extends MKAbility {
     public static final ResourceLocation CASTING_PARTICLES = new ResourceLocation(MKUltra.MODID, "galvanize_casting");
     public static final ResourceLocation CAST_1_PARTICLES = new ResourceLocation(MKUltra.MODID, "galvanize_cast_1");
     public static final ResourceLocation CAST_2_PARTICLES = new ResourceLocation(MKUltra.MODID, "galvanize_cast_2");
-    public static final GalvanizeAbility INSTANCE = new GalvanizeAbility();
-
     protected final IntAttribute base = new IntAttribute("baseDuration", 5);
     protected final IntAttribute scale = new IntAttribute("scaleDuration", 2);
     protected final ResourceLocationAttribute cast_1_particles = new ResourceLocationAttribute("cast_1_particles", CAST_1_PARTICLES);
     protected final ResourceLocationAttribute cast_2_particles = new ResourceLocationAttribute("cast_2_particles", CAST_2_PARTICLES);
 
     public GalvanizeAbility() {
-        super(MKUltra.MODID, "ability.galvanize");
+        super();
         setCooldownSeconds(25);
         setManaCost(8);
         setCastTime(GameConstants.TICKS_PER_SECOND / 4);
@@ -108,15 +103,6 @@ public class GalvanizeAbility extends MKAbility {
                 .spawn();
 
         PacketHandler.sendToTrackingAndSelf(new MKParticleEffectSpawnPacket(
-                        new Vector3d(0.0, 1.0, 0.0), cast_1_particles.getValue(), entity.getEntityId()), entity);
-    }
-
-    @SuppressWarnings("unused")
-    @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-    private static class RegisterMe {
-        @SubscribeEvent
-        public static void register(RegistryEvent.Register<MKAbility> event) {
-            event.getRegistry().register(INSTANCE);
-        }
+                new Vector3d(0.0, 1.0, 0.0), cast_1_particles.getValue(), entity.getEntityId()), entity);
     }
 }

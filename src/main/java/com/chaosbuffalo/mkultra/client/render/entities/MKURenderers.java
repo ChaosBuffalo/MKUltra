@@ -3,6 +3,7 @@ package com.chaosbuffalo.mkultra.client.render.entities;
 import com.chaosbuffalo.mknpc.client.render.renderers.SkeletalGroupRenderer;
 import com.chaosbuffalo.mknpc.client.render.renderers.ZombifiedPiglinGroupRenderer;
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.client.render.entities.golems.GolemGroupRenderer;
 import com.chaosbuffalo.mkultra.client.render.entities.humans.HumanGroupRenderer;
 import com.chaosbuffalo.mkultra.client.render.entities.orcs.OrcGroupRenderer;
 import com.chaosbuffalo.mkultra.client.render.styling.MKUPiglins;
@@ -40,5 +41,6 @@ public class MKURenderers {
         RenderingRegistry.registerEntityRenderingHandler(MKUEntities.ZOMBIFIED_PIGLIN_TYPE, (renderManager)->
                 new ZombifiedPiglinGroupRenderer(renderManager, MKUPiglins.ZOMBIE_PIGLIN_STYLES));
         RenderingRegistry.registerEntityRenderingHandler(MKUEntities.HUMAN_TYPE, HumanGroupRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(MKUEntities.GOLEM_TYPE.get(), GolemGroupRenderer::new);
     }
 }

@@ -28,25 +28,20 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
 
 
 public class WhirlwindBladesAbility extends MKAbility {
     public static final ResourceLocation CAST_PARTICLES = new ResourceLocation(MKUltra.MODID, "whirlwind_blades_pulse");
-    public static WhirlwindBladesAbility INSTANCE = new WhirlwindBladesAbility();
     protected final ResourceLocationAttribute cast_particles = new ResourceLocationAttribute("cast_particles", CAST_PARTICLES);
-
     protected final FloatAttribute modifierScaling = new FloatAttribute("modifierScaling", 1.0f);
     protected final FloatAttribute base = new FloatAttribute("base", 2.0f);
     protected final FloatAttribute scale = new FloatAttribute("scale", 1.0f);
     protected final FloatAttribute perTick = new FloatAttribute("perTick", 0.15f);
 
-    private WhirlwindBladesAbility() {
-        super(MKUltra.MODID, "ability.whirlwind_blades");
+    public WhirlwindBladesAbility() {
+        super();
         addAttributes(cast_particles, base, scale, modifierScaling, perTick);
         setCastTime(GameConstants.TICKS_PER_SECOND * 3);
         setCooldownSeconds(20);
@@ -86,7 +81,7 @@ public class WhirlwindBladesAbility extends MKAbility {
         ITextComponent maxDamage = getDamageDescription(entityData,
                 CoreDamageTypes.MeleeDamage, base.value(), scale.value(), level,
                 modifierScaling.value() * numberOfCasts * perTick.value());
-        return new TranslationTextComponent(getDescriptionTranslationKey(), NUMBER_FORMATTER.format(periodSeconds),INTEGER_FORMATTER.format(castSeconds),
+        return new TranslationTextComponent(getDescriptionTranslationKey(), NUMBER_FORMATTER.format(periodSeconds), INTEGER_FORMATTER.format(castSeconds),
                 PERCENT_FORMATTER.format(perTick.value()), baseDamage, maxDamage);
     }
 
@@ -100,7 +95,7 @@ public class WhirlwindBladesAbility extends MKAbility {
         return getMeleeReach(entity);
     }
 
-        @Override
+    @Override
     public SoundEvent getCastingSoundEvent() {
         return ModSounds.spell_whirlwind_1;
     }
@@ -129,7 +124,7 @@ public class WhirlwindBladesAbility extends MKAbility {
             MKEffectBuilder<?> particles = MKParticleEffect.from(castingEntity,
                     cast_particles.getValue(), true, new Vector3d(0.0, 1.0, 0.0))
                     .ability(this);
-            MKEffectBuilder<?> sound = SoundEffect.from(castingEntity, ModSounds.spell_shadow_2,castingEntity.getSoundCategory())
+            MKEffectBuilder<?> sound = SoundEffect.from(castingEntity, ModSounds.spell_shadow_2, castingEntity.getSoundCategory())
                     .ability(this);
 
             AreaEffectBuilder.createOnCaster(castingEntity)
@@ -141,15 +136,6 @@ public class WhirlwindBladesAbility extends MKAbility {
                     .radius(getDistance(castingEntity), true)
                     .disableParticle()
                     .spawn();
-        }
-    }
-
-    @SuppressWarnings("unused")
-    @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-    private static class RegisterMe {
-        @SubscribeEvent
-        public static void register(RegistryEvent.Register<MKAbility> event) {
-            event.getRegistry().register(INSTANCE);
         }
     }
 }

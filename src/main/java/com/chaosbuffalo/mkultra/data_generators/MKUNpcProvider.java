@@ -14,24 +14,18 @@ import com.chaosbuffalo.mknpc.npc.NpcItemChoice;
 import com.chaosbuffalo.mknpc.npc.entries.LootOptionEntry;
 import com.chaosbuffalo.mknpc.npc.options.*;
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.abilities.brawler.FuriousBrooding;
+import com.chaosbuffalo.mkultra.abilities.brawler.FuriousBroodingAbility;
 import com.chaosbuffalo.mkultra.abilities.brawler.WhirlwindBladesAbility;
 import com.chaosbuffalo.mkultra.abilities.brawler.YankAbility;
 import com.chaosbuffalo.mkultra.abilities.cleric.*;
 import com.chaosbuffalo.mkultra.abilities.green_knight.*;
 import com.chaosbuffalo.mkultra.abilities.misc.*;
 import com.chaosbuffalo.mkultra.abilities.necromancer.ShadowBoltAbility;
-import com.chaosbuffalo.mkultra.abilities.necromancer.ShadowPulseAbility;
 import com.chaosbuffalo.mkultra.abilities.nether_mage.*;
 import com.chaosbuffalo.mkultra.abilities.wet_wizard.DrownAbility;
-import com.chaosbuffalo.mkultra.client.render.styling.MKUHumans;
-import com.chaosbuffalo.mkultra.client.render.styling.MKUOrcs;
-import com.chaosbuffalo.mkultra.client.render.styling.MKUPiglins;
-import com.chaosbuffalo.mkultra.client.render.styling.MKUSkeletons;
+import com.chaosbuffalo.mkultra.client.render.styling.*;
 import com.chaosbuffalo.mkultra.init.*;
-import com.chaosbuffalo.mkweapons.items.randomization.LootTierManager;
 import com.chaosbuffalo.mkweapons.items.randomization.slots.LootSlotManager;
-import com.google.common.collect.Lists;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DirectoryCache;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -82,6 +76,40 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
         writeDefinition(generateCleric(), cache);
         writeDefinition(generateNecrotideCultistAcolyte(), cache);
         writeDefinition(generateNecrotideCultist(), cache);
+        writeDefinition(generateSkeletalLock(), cache);
+        writeDefinition(generateNecrotideGolem(), cache);
+    }
+
+    private NpcDefinition generateSkeletalLock() {
+        NpcDefinition def = new NpcDefinition(new ResourceLocation(MKUltra.MODID, "skeletal_lock"),
+                MKUEntities.HYBOREAN_SKELETON_TYPE.getRegistryName(), null);
+        def.addOption(new FactionOption().setValue(MKUFactions.NECROTIDE_CULTISTS_NAME));
+        def.addOption(new RenderGroupOption().setValue(MKUSkeletons.BASIC_NAME));
+        def.addOption(new MKSizeOption().setValue(1.0f));
+        def.addOption(new AttributesOption().addAttributeEntry(new NpcAttributeEntry(Attributes.MAX_HEALTH, 50.0)));
+        def.addOption(new NameOption().setValue("A Skeletal Lock"));
+        def.addOption(new AbilitiesOption()
+                .withAbilityOption(MKUAbilities.SHADOW_BOLT.get(), 1, 1.0)
+        );
+        def.addOption(MKUNpcGenUtils.GetSkillOptionForClass(MKUNpcGenUtils.NpcSkillClass.MAGE));
+        def.addOption(new NotableOption());
+        return def;
+    }
+
+    private NpcDefinition generateNecrotideGolem() {
+        NpcDefinition def = new NpcDefinition(new ResourceLocation(MKUltra.MODID, "necrotide_golem"),
+                MKUEntities.GOLEM_TYPE.get().getRegistryName(), null);
+        def.addOption(new FactionOption().setValue(MKUFactions.NECROTIDE_CULTISTS_NAME));
+        def.addOption(new RenderGroupOption().setValue(MKUGolems.NECROTIDE_GOLEM_NAME));
+        def.addOption(new MKSizeOption().setValue(1.25f));
+        def.addOption(new AttributesOption().addAttributeEntry(new NpcAttributeEntry(Attributes.MAX_HEALTH, 500.0)));
+        def.addOption(new NameOption().setValue("A Necrotide Construction"));
+        def.addOption(new AbilitiesOption()
+                .withAbilityOption(MKUAbilities.SHADOW_BOLT.get(), 1, 1.0)
+        );
+        def.addOption(MKUNpcGenUtils.GetSkillOptionForClass(MKUNpcGenUtils.NpcSkillClass.NECROMANCER));
+        def.addOption(new NotableOption());
+        return def;
     }
 
     private NpcDefinition generateNecrotideCultistAcolyte() {
@@ -93,9 +121,9 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
         def.addOption(new AttributesOption().addAttributeEntry(new NpcAttributeEntry(Attributes.MAX_HEALTH, 50.0)));
         def.addOption(new NameOption().setValue("A Necrotide Acolyte"));
         def.addOption(new AbilitiesOption()
-                .withAbilityOption(ShadowBoltAbility.INSTANCE, 1, 1.0)
-                .withAbilityOption(DrownAbility.INSTANCE, 2, 0.5)
-                .withAbilityOption(ShadowPulseAbility.INSTANCE, 3, 0.5)
+                .withAbilityOption(MKUAbilities.SHADOW_BOLT.get(), 1, 1.0)
+                .withAbilityOption(MKUAbilities.DROWN.get(), 2, 0.5)
+                .withAbilityOption(MKUAbilities.SHADOW_PULSE.get(), 3, 0.5)
         );
         def.addOption(MKUNpcGenUtils.GetSkillOptionForClass(MKUNpcGenUtils.NpcSkillClass.MAGE));
         return def;
@@ -110,10 +138,10 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
         def.addOption(new AttributesOption().addAttributeEntry(new NpcAttributeEntry(Attributes.MAX_HEALTH, 125.0)));
         def.addOption(new FactionNameOption().setTitle("Cultist"));
         def.addOption(new AbilitiesOption()
-                .withAbilityOption(ShadowBoltAbility.INSTANCE, 1, 1.0)
-                .withAbilityOption(DrownAbility.INSTANCE, 2, 1.0)
-                .withAbilityOption(ShadowPulseAbility.INSTANCE, 3, 1.0)
-                .withAbilityOption(MKEntitySummonAbility.TEST_SUMMON, 4, 1.0)
+                .withAbilityOption(MKUAbilities.SHADOW_BOLT.get(), 1, 1.0)
+                .withAbilityOption(MKUAbilities.DROWN.get(), 2, 1.0)
+                .withAbilityOption(MKUAbilities.SHADOW_PULSE.get(), 3, 1.0)
+                .withAbilityOption(MKUAbilities.TEST_SUMMON.get(), 4, 1.0)
         );
         def.addOption(MKUNpcGenUtils.GetSkillOptionForClass(MKUNpcGenUtils.NpcSkillClass.NECROMANCER));
         return def;
@@ -129,9 +157,9 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
         def.addOption(new FactionNameOption().setTitle("Acolyte"));
         def.addOption(new NotableOption());
         def.addOption(new AbilitiesOption()
-                .withAbilityOption(HealAbility.INSTANCE, 1, 1.0)
-                .withAbilityOption(SmiteAbility.INSTANCE, 2, 1.0)
-                .withAbilityOption(GalvanizeAbility.INSTANCE, 3, 1.0)
+                .withAbilityOption(MKUAbilities.HEAL.get(), 1, 1.0)
+                .withAbilityOption(MKUAbilities.SMITE.get(), 2, 1.0)
+                .withAbilityOption(MKUAbilities.GALVANIZE.get(), 3, 1.0)
         );
         def.addOption(new DialogueOption().setValue(new ResourceLocation(MKUltra.MODID, "intro_cleric_acolyte")));
         EquipmentOption equipOption = new EquipmentOption();
@@ -140,8 +168,8 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                         new ResourceLocation("mkweapons:mace_iron"))), 1.0, 0.0f));
         def.addOption(new QuestOfferingOption(new ResourceLocation("mkultra", "cleric_intro")));
         def.addOption(new AbilityTrainingOption()
-                        .withTrainingOption(HealAbility.INSTANCE, new HasEntitlementRequirement(MKUEntitlements.IntroClericTier1))
-                        .withTrainingOption(SmiteAbility.INSTANCE, new HasEntitlementRequirement(MKUEntitlements.IntroClericTier1))
+                        .withTrainingOption(MKUAbilities.HEAL.get(), new HasEntitlementRequirement(MKUEntitlements.IntroClericTier1))
+                        .withTrainingOption(MKUAbilities.SMITE.get(), new HasEntitlementRequirement(MKUEntitlements.IntroClericTier1))
         );
         def.addOption(equipOption);
         def.addOption(MKUNpcGenUtils.GetSkillOptionForClass(MKUNpcGenUtils.NpcSkillClass.CLERIC));
@@ -158,11 +186,11 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
         def.addOption(new FactionNameOption().setTitle("Cleric"));
         def.addOption(new NotableOption());
         def.addOption(new AbilitiesOption()
-                .withAbilityOption(HealAbility.INSTANCE, 1, 1.0)
-                .withAbilityOption(SmiteAbility.INSTANCE, 2, 1.0)
-                .withAbilityOption(GalvanizeAbility.INSTANCE, 3, 1.0)
-                .withAbilityOption(PowerWordSummonAbility.INSTANCE, 4, 1.0)
-                .withAbilityOption(InspireAbility.INSTANCE, 5, 1.0)
+                .withAbilityOption(MKUAbilities.HEAL.get(), 1, 1.0)
+                .withAbilityOption(MKUAbilities.SMITE.get(), 2, 1.0)
+                .withAbilityOption(MKUAbilities.GALVANIZE.get(), 3, 1.0)
+                .withAbilityOption(MKUAbilities.POWER_WORD_SUMMON.get(), 4, 1.0)
+                .withAbilityOption(MKUAbilities.INSPIRE.get(), 5, 1.0)
         );
 //        def.addOption(new DialogueOption().setValue(new ResourceLocation(MKUltra.MODID, "intro_cleric_acolyte")));
         EquipmentOption equipOption = new EquipmentOption();
@@ -171,11 +199,11 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                         new ResourceLocation("mkweapons:mace_gold"))), 1.0, 0.0f));
 //        def.addOption(new QuestOfferingOption(new ResourceLocation("mkultra", "cleric_intro")));
         def.addOption(new AbilityTrainingOption()
-                .withTrainingOption(HealAbility.INSTANCE, new HasEntitlementRequirement(MKUEntitlements.ClericTier1))
-                .withTrainingOption(SmiteAbility.INSTANCE, new HasEntitlementRequirement(MKUEntitlements.ClericTier1))
-                .withTrainingOption(GalvanizeAbility.INSTANCE, new HasEntitlementRequirement(MKUEntitlements.ClericTier2))
-                .withTrainingOption(PowerWordSummonAbility.INSTANCE, new HasEntitlementRequirement(MKUEntitlements.ClericTier2))
-                .withTrainingOption(InspireAbility.INSTANCE, new HasEntitlementRequirement(MKUEntitlements.ClericTier3))
+                .withTrainingOption(MKUAbilities.HEAL.get(), new HasEntitlementRequirement(MKUEntitlements.ClericTier1))
+                .withTrainingOption(MKUAbilities.SMITE.get(), new HasEntitlementRequirement(MKUEntitlements.ClericTier1))
+                .withTrainingOption(MKUAbilities.GALVANIZE.get(), new HasEntitlementRequirement(MKUEntitlements.ClericTier2))
+                .withTrainingOption(MKUAbilities.POWER_WORD_SUMMON.get(), new HasEntitlementRequirement(MKUEntitlements.ClericTier2))
+                .withTrainingOption(MKUAbilities.INSPIRE.get(), new HasEntitlementRequirement(MKUEntitlements.ClericTier3))
         );
         def.addOption(equipOption);
         def.addOption(MKUNpcGenUtils.GetSkillOptionForClass(MKUNpcGenUtils.NpcSkillClass.CLERIC));
@@ -215,9 +243,9 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
         def.addOption(new FactionNameOption().setTitle("Temple Guard"));
         def.addOption(new NotableOption());
         def.addOption(new AbilitiesOption()
-                .withAbilityOption(HealAbility.INSTANCE, 1, 1.0)
-                .withAbilityOption(SmiteAbility.INSTANCE, 2, 1.0)
-                .withAbilityOption(SeverTendonAbility.INSTANCE, 3, 1.0)
+                .withAbilityOption(MKUAbilities.HEAL.get(), 1, 1.0)
+                .withAbilityOption(MKUAbilities.SMITE.get(), 2, 1.0)
+                .withAbilityOption(MKUAbilities.SEVER_TENDON.get(), 3, 1.0)
         );
         EquipmentOption equipOption = new EquipmentOption();
         equipOption.addItemChoice(EquipmentSlotType.MAINHAND,
@@ -238,8 +266,8 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
         def.addOption(new FactionNameOption().setTitle("Temple Guard"));
         def.addOption(new NotableOption());
         def.addOption(new AbilitiesOption()
-                .withAbilityOption(HealAbility.INSTANCE, 1, 1.0)
-                .withAbilityOption(SmiteAbility.INSTANCE, 2, 1.0)
+                .withAbilityOption(MKUAbilities.HEAL.get(), 1, 1.0)
+                .withAbilityOption(MKUAbilities.SMITE.get(), 2, 1.0)
         );
         EquipmentOption equipOption = new EquipmentOption();
         equipOption.addItemChoice(EquipmentSlotType.MAINHAND,
@@ -260,8 +288,8 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
         def.addOption(new FactionNameOption().setTitle("Apprentice"));
         def.addOption(new NotableOption());
         def.addOption(new AbilitiesOption()
-                .withAbilityOption(HealAbility.INSTANCE, 1, 1.0)
-                .withAbilityOption(SmiteAbility.INSTANCE, 2, 1.0)
+                .withAbilityOption(MKUAbilities.HEAL.get(), 1, 1.0)
+                .withAbilityOption(MKUAbilities.SMITE.get(), 2, 1.0)
         );
         EquipmentOption equipOption = new EquipmentOption();
         equipOption.addItemChoice(EquipmentSlotType.MAINHAND,
@@ -282,9 +310,9 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
         def.addOption(new FactionNameOption().setTitle("Initiate"));
         def.addOption(new NotableOption());
         def.addOption(new AbilitiesOption()
-                .withAbilityOption(EmberAbility.INSTANCE, 1, 1.0)
-                .withAbilityOption(FireballAbility.INSTANCE, 2, 1.0)
-                .withAbilityOption(FlameWaveAbility.INSTANCE, 3, 1.0)
+                .withAbilityOption(MKUAbilities.EMBER.get(), 1, 1.0)
+                .withAbilityOption(MKUAbilities.FIREBALL.get(), 2, 1.0)
+                .withAbilityOption(MKUAbilities.FLAME_WAVE.get(), 3, 1.0)
         );
         EquipmentOption equipOption = new EquipmentOption();
         equipOption.addItemChoice(EquipmentSlotType.MAINHAND,
@@ -292,8 +320,8 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                         new ResourceLocation("mkweapons:staff_wood"))), 1.0, 0.0f));
         def.addOption(equipOption);
         def.addOption(new AbilityTrainingOption()
-                .withTrainingOption(EmberAbility.INSTANCE, new HasEntitlementRequirement(MKUEntitlements.IntroNetherMageTier1))
-                .withTrainingOption(FireArmorAbility.INSTANCE, new HasEntitlementRequirement(MKUEntitlements.IntroNetherMageTier1))
+                .withTrainingOption(MKUAbilities.EMBER.get(), new HasEntitlementRequirement(MKUEntitlements.IntroNetherMageTier1))
+                .withTrainingOption(MKUAbilities.FIRE_ARMOR.get(), new HasEntitlementRequirement(MKUEntitlements.IntroNetherMageTier1))
         );
         def.addOption(new DialogueOption().setValue(new ResourceLocation(MKUltra.MODID, "intro_nether_mage_initiate")));
         def.addOption(new QuestOfferingOption(new ResourceLocation("mkultra", "nether_mage_intro")));
@@ -323,17 +351,17 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
         def.addOption(new BossStageOption()
                 .withStage(new BossStage()
                         .withOption(new TempAbilitiesOption()
-                                .withAbilityOption(FireArmorAbility.INSTANCE, 3, 1.0)
-                                .withAbilityOption(FireballAbility.INSTANCE, 2, 1.0)
-                                .withAbilityOption(WrathBeamAbility.INSTANCE, 1, 1.0))
+                                .withAbilityOption(MKUAbilities.FIRE_ARMOR.get(), 3, 1.0)
+                                .withAbilityOption(MKUAbilities.FIREBALL.get(), 2, 1.0)
+                                .withAbilityOption(MKUAbilities.WRATH_BEAM.get(), 1, 1.0))
 //                        .withOption(new ParticleEffectsOption().withEffects(Collections.singletonList(
 //                                new BoneEffectInstance(UUID.fromString("3e7496f1-f5bf-45e6-b8e5-64192633ae9f"),
 //                                        BipedSkeleton.HEAD_BONE_NAME, new ResourceLocation(MKUltra.MODID, "flame_wave_casting")))))
                 )
                 .withStage(new BossStage()
                         .withOption(new TempAbilitiesOption()
-                                .withAbilityOption(FireballAbility.INSTANCE, 3, 1.0)
-                                .withAbilityOption(WrathBeamFlurryAbility.INSTANCE, 1, 1.0))
+                                .withAbilityOption(MKUAbilities.FIREBALL.get(), 3, 1.0)
+                                .withAbilityOption(MKUAbilities.WRATH_BEAM_FLURRY.get(), 1, 1.0))
 //                        .withOption(new ParticleEffectsOption().withEffects(Collections.singletonList(
 //                                new BoneEffectInstance(UUID.fromString("e45696e1-ddb1-4709-bc29-1733ee1bced9"),
 //                                BipedSkeleton.HEAD_BONE_NAME, new ResourceLocation(MKUltra.MODID, "flame_wave_casting")))))
@@ -409,8 +437,8 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                         new ResourceLocation("mkweapons:dagger_stone"))), 1.0, 0.0f));
         def.addOption(equipOption);
         def.addOption(new AbilitiesOption()
-                .withAbilityOption(FireballAbility.INSTANCE, 1, 1.0)
-                .withAbilityOption(EmberAbility.INSTANCE, 2, 0.5)
+                .withAbilityOption(MKUAbilities.FIREBALL.get(), 1, 1.0)
+                .withAbilityOption(MKUAbilities.EMBER.get(), 2, 0.5)
         );
         ResourceLocation lootTierName = new ResourceLocation(MKUltra.MODID, "zombie_trooper");
         def.addOption(new ExtraLootOption()
@@ -441,9 +469,9 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                         new ResourceLocation("mkweapons:battleaxe_stone"))), 1.0, 0.0f));
         def.addOption(equipOption);
         def.addOption(new AbilitiesOption()
-                .withAbilityOption(FuriousBrooding.INSTANCE, 3, 1.0)
-                .withAbilityOption(WhirlwindBladesAbility.INSTANCE, 1, 1.0)
-                .withAbilityOption(YankAbility.INSTANCE, 2, 1.0)
+                .withAbilityOption(MKUAbilities.FURIOUS_BROODING.get(), 3, 1.0)
+                .withAbilityOption(MKUAbilities.WHIRLWIND_BLADES.get(), 1, 1.0)
+                .withAbilityOption(MKUAbilities.YANK.get(), 2, 1.0)
         );
         ResourceLocation lootTierName = new ResourceLocation(MKUltra.MODID, "trooper_executioner");
         def.addOption(new ExtraLootOption()
@@ -474,13 +502,13 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                         new ResourceLocation("mkweapons:mace_stone"))), 1.0, 0.0f));
         def.addOption(equipOption);
         def.addOption(new AbilitiesOption()
-                .withAbilityOption(FireballAbility.INSTANCE, 3, 1.0)
-                .withAbilityOption(FlameWaveAbility.INSTANCE, 6, 1.0)
-                .withAbilityOption(SmiteAbility.INSTANCE, 4, 1.0)
-                .withAbilityOption(FireArmorAbility.INSTANCE, 5, 1.0)
-                .withAbilityOption(HealAbility.INSTANCE, 1, 1.0)
-                .withAbilityOption(NaturesRemedyAbility.INSTANCE, 2, 1.0)
-                .withAbilityOption(PowerWordSummonAbility.INSTANCE, 7, 1.0)
+                .withAbilityOption(MKUAbilities.FIREBALL.get(), 3, 1.0)
+                .withAbilityOption(MKUAbilities.FLAME_WAVE.get(), 6, 1.0)
+                .withAbilityOption(MKUAbilities.SMITE.get(), 4, 1.0)
+                .withAbilityOption(MKUAbilities.FIRE_ARMOR.get(), 5, 1.0)
+                .withAbilityOption(MKUAbilities.HEAL.get(), 1, 1.0)
+                .withAbilityOption(MKUAbilities.NATURES_REMEDY.get(), 2, 1.0)
+                .withAbilityOption(MKUAbilities.POWER_WORD_SUMMON.get(), 7, 1.0)
         );
         ResourceLocation lootTierName = new ResourceLocation(MKUltra.MODID, "trooper_magus");
         def.addOption(new ExtraLootOption()
@@ -519,9 +547,9 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                         new ResourceLocation("mkweapons:warhammer_stone"))), 1.0, 0.0f));
         def.addOption(equipOption);
         def.addOption(new AbilitiesOption()
-                .withAbilityOption(HealAbility.INSTANCE, 2, 1.0)
-                .withAbilityOption(FuriousBrooding.INSTANCE, 3, 1.0)
-                .withAbilityOption(SmiteAbility.INSTANCE, 1, 1.0)
+                .withAbilityOption(MKUAbilities.HEAL.get(), 2, 1.0)
+                .withAbilityOption(MKUAbilities.FURIOUS_BROODING.get(), 3, 1.0)
+                .withAbilityOption(MKUAbilities.SMITE.get(), 1, 1.0)
         );
         ResourceLocation lootTierName = new ResourceLocation(MKUltra.MODID, "trooper_captain");
         def.addOption(new ExtraLootOption()
@@ -550,11 +578,11 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                         new ResourceLocation("mkweapons:dagger_stone"))), 1.0, 0.0f));
         def.addOption(equipOption);
         def.addOption(new AbilitiesOption()
-                .withAbilityOption(FireballAbility.INSTANCE, 1, 1.0)
-                .withAbilityOption(EmberAbility.INSTANCE, 2, 0.75)
-                .withAbilityOption(FlameWaveAbility.INSTANCE, 3, 0.5)
-                .withAbilityOption(SmiteAbility.INSTANCE, 4, 0.25)
-                .withAbilityOption(FireArmorAbility.INSTANCE, 5, 0.75)
+                .withAbilityOption(MKUAbilities.FIREBALL.get(), 1, 1.0)
+                .withAbilityOption(MKUAbilities.EMBER.get(), 2, 0.75)
+                .withAbilityOption(MKUAbilities.FLAME_WAVE.get(), 3, 0.5)
+                .withAbilityOption(MKUAbilities.SMITE.get(), 4, 0.25)
+                .withAbilityOption(MKUAbilities.FIRE_ARMOR.get(), 5, 0.75)
         );
 //        ResourceLocation lootTierName = new ResourceLocation(MKUltra.MODID, "zombie_trooper");
 //        ResourceLocation templateName = new ResourceLocation(MKUltra.MODID, "empty");
@@ -590,8 +618,8 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                         new ResourceLocation("mkweapons:mace_stone"))), 1.0, 0.0f));
         def.addOption(equipOption);
         def.addOption(new AbilitiesOption()
-                .withAbilityOption(SeverTendonAbility.INSTANCE, 3, 1.0)
-                .withAbilityOption(EmberAbility.INSTANCE, 2, 0.5)
+                .withAbilityOption(MKUAbilities.SEVER_TENDON.get(), 3, 1.0)
+                .withAbilityOption(MKUAbilities.EMBER.get(), 2, 0.5)
         );
         ResourceLocation lootTierName = new ResourceLocation(MKUltra.MODID, "zombie_trooper");
         def.addOption(new ExtraLootOption()
@@ -669,12 +697,12 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                         new ResourceLocation("mkweapons:katana_iron"))), 1.0, 0.0f));
         def.addOption(equipOption);
         def.addOption(new AbilitiesOption()
-                .withAbilityOption(FireArmorAbility.INSTANCE, 5, 1.0)
-                .withAbilityOption(FireballAbility.INSTANCE, 6, 1.0)
-                .withAbilityOption(EmberAbility.INSTANCE, 1, 1.0)
-                .withAbilityOption(IgniteAbility.INSTANCE, 2, 0.5)
-                .withAbilityOption(FlameWaveAbility.INSTANCE, 3, 1.0)
-                .withAbilityOption(WarpCurseAbility.INSTANCE, 4, 0.5)
+                .withAbilityOption(MKUAbilities.FIRE_ARMOR.get(), 5, 1.0)
+                .withAbilityOption(MKUAbilities.FIREBALL.get(), 6, 1.0)
+                .withAbilityOption(MKUAbilities.EMBER.get(), 1, 1.0)
+                .withAbilityOption(MKUAbilities.IGNITE.get(), 2, 0.5)
+                .withAbilityOption(MKUAbilities.FLAME_WAVE.get(), 3, 1.0)
+                .withAbilityOption(MKUAbilities.WARP_CURSE.get(), 4, 0.5)
         );
         def.addOption(new MKComboSettingsOption().setComboCount(5).setComboDelay(60));
         def.addOption(MKUNpcGenUtils.GetSkillOptionForClass(MKUNpcGenUtils.NpcSkillClass.MAGE));
@@ -703,12 +731,12 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                         new ResourceLocation("mkweapons:greatsword_iron"))), 1.0, 0.0f));
         def.addOption(equipOption);
         def.addOption(new AbilitiesOption()
-                .withAbilityOption(NaturesRemedyAbility.INSTANCE, 2, 1.0)
-                .withAbilityOption(SeverTendonAbility.INSTANCE, 3, 1.0)
-                .withAbilityOption(HealAbility.INSTANCE, 1, 1.0)
-                .withAbilityOption(PowerWordSummonAbility.INSTANCE, 4, 0.5)
-                .withAbilityOption(ExplosiveGrowthAbility.INSTANCE, 5, 0.5)
-                .withAbilityOption(FireballAbility.INSTANCE, 6, 0.5)
+                .withAbilityOption(MKUAbilities.NATURES_REMEDY.get(), 2, 1.0)
+                .withAbilityOption(MKUAbilities.SEVER_TENDON.get(), 3, 1.0)
+                .withAbilityOption(MKUAbilities.HEAL.get(), 1, 1.0)
+                .withAbilityOption(MKUAbilities.POWER_WORD_SUMMON.get(), 4, 0.5)
+                .withAbilityOption(MKUAbilities.EXPLOSIVE_GROWTH.get(), 5, 0.5)
+                .withAbilityOption(MKUAbilities.FIREBALL.get(), 6, 0.5)
 
         );
         def.addOption(new MKComboSettingsOption().setComboCount(2).setComboDelay(10));
@@ -730,9 +758,9 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                         new ResourceLocation("mkweapons:dagger_stone"))), 1.0, 0.0f));
         def.addOption(equipOption);
         def.addOption(new AbilitiesOption()
-                .withAbilityOption(FireArmorAbility.INSTANCE, 2, 0.5)
-                .withAbilityOption(FireballAbility.INSTANCE, 1, 1.0)
-                .withAbilityOption(EmberAbility.INSTANCE, 3, 1.0)
+                .withAbilityOption(MKUAbilities.FIRE_ARMOR.get(), 2, 0.5)
+                .withAbilityOption(MKUAbilities.FIREBALL.get(), 1, 1.0)
+                .withAbilityOption(MKUAbilities.EMBER.get(), 3, 1.0)
         );
         def.addOption(MKUNpcGenUtils.GetSkillOptionForClass(MKUNpcGenUtils.NpcSkillClass.MAGE));
         return def;
@@ -758,8 +786,8 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                         new ResourceLocation("mkweapons:warhammer_iron"))), 1.0, 0.0f));
         def.addOption(equipOption);
         def.addOption(new AbilitiesOption()
-                .withAbilityOption(NaturesRemedyAbility.INSTANCE, 2, 1.0)
-                .withAbilityOption(SeverTendonAbility.INSTANCE, 3, 1.0)
+                .withAbilityOption(MKUAbilities.NATURES_REMEDY.get(), 2, 1.0)
+                .withAbilityOption(MKUAbilities.SEVER_TENDON.get(), 3, 1.0)
         );
         def.addOption(new MKComboSettingsOption().setComboCount(4).setComboDelay(30));
         def.addOption(MKUNpcGenUtils.GetSkillOptionForClass(MKUNpcGenUtils.NpcSkillClass.PALADIN));
@@ -773,8 +801,8 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
         def.addOption(new MKSizeOption().setValue(1.5f));
         def.addOption(new RenderGroupOption().setValue(MKUOrcs.GREEN_SMITH_NAME));
         def.addOption(new AbilitiesOption()
-                .withAbilityOption(SkinLikeWoodAbility.INSTANCE, 1, 1.0)
-                .withAbilityOption(NaturesRemedyAbility.INSTANCE, 2, 1.0)
+                .withAbilityOption(MKUAbilities.SKIN_LIKE_WOOD.get(), 1, 1.0)
+                .withAbilityOption(MKUAbilities.NATURES_REMEDY.get(), 2, 1.0)
         );
         def.addOption(new AttributesOption().addAttributeEntry(new NpcAttributeEntry(Attributes.MAX_HEALTH, 400.0)));
         def.addOption(new NameOption().setValue("Green Smith"));
@@ -797,18 +825,18 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
         def.addOption(new MKSizeOption().setValue(1.1f));
         def.addOption(new RenderGroupOption().setValue(MKUOrcs.GREEN_LADY_NAME));
         def.addOption(new AbilityTrainingOption()
-                .withTrainingOption(SkinLikeWoodAbility.INSTANCE, new HasEntitlementRequirement(MKUEntitlements.GreenKnightTier1))
-                .withTrainingOption(NaturesRemedyAbility.INSTANCE, new HasEntitlementRequirement(MKUEntitlements.GreenKnightTier1))
-                .withTrainingOption(SpiritBombAbility.INSTANCE, new HasEntitlementRequirement(MKUEntitlements.GreenKnightTier2))
-                .withTrainingOption(CleansingSeedAbility.INSTANCE, new HasEntitlementRequirement(MKUEntitlements.GreenKnightTier2))
-                .withTrainingOption(ExplosiveGrowthAbility.INSTANCE, new HasEntitlementRequirement(MKUEntitlements.GreenKnightTier3))
+                .withTrainingOption(MKUAbilities.SKIN_LIKE_WOOD.get(), new HasEntitlementRequirement(MKUEntitlements.GreenKnightTier1))
+                .withTrainingOption(MKUAbilities.NATURES_REMEDY.get(), new HasEntitlementRequirement(MKUEntitlements.GreenKnightTier1))
+                .withTrainingOption(MKUAbilities.SPIRIT_BOMB.get(), new HasEntitlementRequirement(MKUEntitlements.GreenKnightTier2))
+                .withTrainingOption(MKUAbilities.CLEANSING_SEED.get(), new HasEntitlementRequirement(MKUEntitlements.GreenKnightTier2))
+                .withTrainingOption(MKUAbilities.EXPLOSIVE_GROWTH.get(), new HasEntitlementRequirement(MKUEntitlements.GreenKnightTier3))
         );
         def.addOption(new AbilitiesOption()
-                .withAbilityOption(SkinLikeWoodAbility.INSTANCE, 1, 1.0)
-                .withAbilityOption(NaturesRemedyAbility.INSTANCE, 2, 1.0)
-                .withAbilityOption(SpiritBombAbility.INSTANCE, 4, 1.0)
-                .withAbilityOption(ExplosiveGrowthAbility.INSTANCE, 3, 1.0)
-                .withAbilityOption(CleansingSeedAbility.INSTANCE, 5, 1.0)
+                .withAbilityOption(MKUAbilities.SKIN_LIKE_WOOD.get(), 1, 1.0)
+                .withAbilityOption(MKUAbilities.NATURES_REMEDY.get(), 2, 1.0)
+                .withAbilityOption(MKUAbilities.SPIRIT_BOMB.get(), 4, 1.0)
+                .withAbilityOption(MKUAbilities.NATURES_REMEDY.get(), 3, 1.0)
+                .withAbilityOption(MKUAbilities.CLEANSING_SEED.get(), 5, 1.0)
         );
         def.addOption(new DialogueOption().setValue(new ResourceLocation(MKUltra.MODID, "open_abilities")));
         def.addOption(new AttributesOption().addAttributeEntry(new NpcAttributeEntry(Attributes.MAX_HEALTH, 400.0)));
@@ -826,11 +854,11 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
         def.addOption(new MKSizeOption().setValue(1.1f));
         def.addOption(new RenderGroupOption().setValue(MKUOrcs.GREEN_LADY_GUARD_2_NAME));
         def.addOption(new AbilitiesOption()
-                .withAbilityOption(SkinLikeWoodAbility.INSTANCE, 1, 1.0)
-                .withAbilityOption(NaturesRemedyAbility.INSTANCE, 2, 1.0)
-                .withAbilityOption(SpiritBombAbility.INSTANCE, 4, 1.0)
-                .withAbilityOption(ExplosiveGrowthAbility.INSTANCE, 3, 1.0)
-                .withAbilityOption(CleansingSeedAbility.INSTANCE, 5, 1.0)
+                .withAbilityOption(MKUAbilities.SKIN_LIKE_WOOD.get(), 1, 1.0)
+                .withAbilityOption(MKUAbilities.NATURES_REMEDY.get(), 2, 1.0)
+                .withAbilityOption(MKUAbilities.SPIRIT_BOMB.get(), 4, 1.0)
+                .withAbilityOption(MKUAbilities.EXPLOSIVE_GROWTH.get(), 3, 1.0)
+                .withAbilityOption(MKUAbilities.CLEANSING_SEED.get(), 5, 1.0)
         );
 //        def.addOption(new DialogueOption().setValue(new ResourceLocation(MKUltra.MODID, "open_abilities")));
         def.addOption(new AttributesOption().addAttributeEntry(new NpcAttributeEntry(Attributes.MAX_HEALTH, 150.0)));
@@ -860,11 +888,11 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
         def.addOption(new MKSizeOption().setValue(1.1f));
         def.addOption(new RenderGroupOption().setValue(MKUOrcs.GREEN_LADY_GUARD_1_NAME));
         def.addOption(new AbilitiesOption()
-                .withAbilityOption(SkinLikeWoodAbility.INSTANCE, 1, 1.0)
-                .withAbilityOption(NaturesRemedyAbility.INSTANCE, 2, 1.0)
-                .withAbilityOption(SpiritBombAbility.INSTANCE, 4, 1.0)
-                .withAbilityOption(ExplosiveGrowthAbility.INSTANCE, 3, 1.0)
-                .withAbilityOption(CleansingSeedAbility.INSTANCE, 5, 1.0)
+                .withAbilityOption(MKUAbilities.SKIN_LIKE_WOOD.get(), 1, 1.0)
+                .withAbilityOption(MKUAbilities.NATURES_REMEDY.get(), 2, 1.0)
+                .withAbilityOption(MKUAbilities.SPIRIT_BOMB.get(), 4, 1.0)
+                .withAbilityOption(MKUAbilities.EXPLOSIVE_GROWTH.get(), 3, 1.0)
+                .withAbilityOption(MKUAbilities.CLEANSING_SEED.get(), 5, 1.0)
         );
 //        def.addOption(new DialogueOption().setValue(new ResourceLocation(MKUltra.MODID, "open_abilities")));
         def.addOption(new AttributesOption().addAttributeEntry(new NpcAttributeEntry(Attributes.MAX_HEALTH, 150.0)));

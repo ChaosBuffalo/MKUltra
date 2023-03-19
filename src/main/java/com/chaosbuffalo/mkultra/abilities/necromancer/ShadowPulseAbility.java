@@ -28,9 +28,6 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
 import java.util.Set;
@@ -39,7 +36,6 @@ public class ShadowPulseAbility extends MKAbility {
     private static final ResourceLocation PULSE_PARTICLES = new ResourceLocation(MKUltra.MODID, "shadow_pulse_detonate");
     public static final ResourceLocation CASTING_PARTICLES = new ResourceLocation(MKUltra.MODID, "shadow_bolt_casting");
     private static final ResourceLocation WAIT_PARTICLES = new ResourceLocation(MKUltra.MODID, "shadow_pulse_wait");
-    public static final ShadowPulseAbility INSTANCE = new ShadowPulseAbility();
     protected final FloatAttribute base = new FloatAttribute("base", 1.0f);
     protected final FloatAttribute scale = new FloatAttribute("scale", 0.25f);
     protected final FloatAttribute baseGravity = new FloatAttribute("baseGravity", 0.25f);
@@ -55,9 +51,8 @@ public class ShadowPulseAbility extends MKAbility {
     protected final FloatAttribute radius = new FloatAttribute("radius", 1.5f);
 
 
-
-    private ShadowPulseAbility() {
-        super(MKUltra.MODID, "ability.shadow_pulse");
+    public ShadowPulseAbility() {
+        super();
         setCastTime(GameConstants.TICKS_PER_SECOND);
         setCooldownSeconds(10);
         setManaCost(5);
@@ -96,7 +91,7 @@ public class ShadowPulseAbility extends MKAbility {
         return ModSounds.hostile_casting_shadow;
     }
 
-    public void castShadowPulse(LivingEntity castingEntity, Vector3d position){
+    public void castShadowPulse(LivingEntity castingEntity, Vector3d position) {
         Vector3d pulseOffset = new Vector3d(0.0, 0.5, 0.0);
         Vector3d pulsePos = position.add(pulseOffset);
         float level = getSkillLevel(castingEntity, MKAttributes.CONJURATION);
@@ -154,12 +149,4 @@ public class ShadowPulseAbility extends MKAbility {
         return AbilityTargeting.POSITION_INCLUDE_ENTITIES;
     }
 
-    @SuppressWarnings("unused")
-    @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-    private static class RegisterMe {
-        @SubscribeEvent
-        public static void register(RegistryEvent.Register<MKAbility> event) {
-            event.getRegistry().register(INSTANCE);
-        }
-    }
 }

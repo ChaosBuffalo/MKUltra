@@ -13,6 +13,7 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.abilities.necromancer.ShadowBoltAbility;
 import com.chaosbuffalo.mkultra.abilities.wet_wizard.DrownAbility;
 import com.chaosbuffalo.mkultra.entities.IMKRenderAsItem;
+import com.chaosbuffalo.mkultra.init.MKUAbilities;
 import com.chaosbuffalo.mkultra.init.MKUItems;
 import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.TargetingContext;
@@ -62,7 +63,7 @@ public class DrownProjectileEntity extends TrailProjectileEntity implements IMKR
             if (result.getType().equals(RayTraceResult.Type.ENTITY)) {
                 EntityRayTraceResult entityTrace = (EntityRayTraceResult) result;
                 MKCore.getEntityData(caster).ifPresent(casterData -> {
-                    MKEffectBuilder<?> damage = DrownAbility.INSTANCE.getDotEffect(casterData, getSkillLevel());
+                    MKEffectBuilder<?> damage = MKUAbilities.DROWN.get().getDotEffect(casterData, getSkillLevel());
                     MKCore.getEntityData(entityTrace.getEntity()).ifPresent(x -> {
                         x.getEffects().addEffect(damage);
                     });

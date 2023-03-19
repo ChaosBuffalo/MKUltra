@@ -25,16 +25,11 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
 public class EmberAbility extends MKAbility {
     public static final ResourceLocation CASTING_PARTICLES = new ResourceLocation(MKUltra.MODID, "ember_casting");
     public static final ResourceLocation CAST_PARTICLES = new ResourceLocation(MKUltra.MODID, "ember_cast");
     public static final ResourceLocation BURN_PARTICLES = new ResourceLocation(MKUltra.MODID, "burn_tick");
-    public static final EmberAbility INSTANCE = new EmberAbility();
-
     protected final FloatAttribute base = new FloatAttribute("base", 8.0f);
     protected final FloatAttribute scale = new FloatAttribute("scale", 3.0f);
     protected final FloatAttribute baseDot = new FloatAttribute("baseBurnDamage", 2.0f);
@@ -48,7 +43,7 @@ public class EmberAbility extends MKAbility {
 
 
     public EmberAbility() {
-        super(MKUltra.MODID, "ability.ember");
+        super();
         setCooldownSeconds(6);
         setManaCost(4);
         setCastTime(GameConstants.TICKS_PER_SECOND / 2);
@@ -109,7 +104,7 @@ public class EmberAbility extends MKAbility {
         float level = getSkillLevel(entity, MKAttributes.EVOCATION);
         context.getMemory(MKAbilityMemories.ABILITY_TARGET).ifPresent(targetEntity -> {
             MKEffectBuilder<?> damage = MKAbilityDamageEffect.from(entity, CoreDamageTypes.FireDamage,
-                            base.value(), scale.value(), modifierScaling.value())
+                    base.value(), scale.value(), modifierScaling.value())
                     .ability(this)
                     .skillLevel(level);
             MKEffectBuilder<?> burn = getBurnCast(data, level)
@@ -128,14 +123,5 @@ public class EmberAbility extends MKAbility {
                             targetEntity.getEntityId()),
                     targetEntity);
         });
-    }
-
-    @SuppressWarnings("unused")
-    @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-    private static class RegisterMe {
-        @SubscribeEvent
-        public static void register(RegistryEvent.Register<MKAbility> event) {
-            event.getRegistry().register(INSTANCE);
-        }
     }
 }

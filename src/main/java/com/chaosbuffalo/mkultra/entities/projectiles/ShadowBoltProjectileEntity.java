@@ -12,6 +12,7 @@ import com.chaosbuffalo.mkcore.utils.SoundUtils;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.abilities.necromancer.ShadowBoltAbility;
 import com.chaosbuffalo.mkultra.entities.IMKRenderAsItem;
+import com.chaosbuffalo.mkultra.init.MKUAbilities;
 import com.chaosbuffalo.mkultra.init.MKUItems;
 import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.TargetingContext;
@@ -61,11 +62,12 @@ public class ShadowBoltProjectileEntity extends TrailProjectileEntity implements
 
             if (result.getType().equals(RayTraceResult.Type.ENTITY)) {
                 EntityRayTraceResult entityTrace = (EntityRayTraceResult) result;
+                ShadowBoltAbility ability = MKUAbilities.SHADOW_BOLT.get();
                 MKEffectBuilder<?> damage = MKAbilityDamageEffect.from(casterLiving, CoreDamageTypes.ShadowDamage,
-                        ShadowBoltAbility.INSTANCE.getBaseDamage(),
-                        ShadowBoltAbility.INSTANCE.getScaleDamage(),
-                        ShadowBoltAbility.INSTANCE.getModifierScaling())
-                        .ability(ShadowBoltAbility.INSTANCE)
+                        ability.getBaseDamage(),
+                        ability.getScaleDamage(),
+                        ability.getModifierScaling())
+                        .ability(ability)
                         .directEntity(this)
                         .skillLevel(getSkillLevel())
                         .amplify(amplifier);

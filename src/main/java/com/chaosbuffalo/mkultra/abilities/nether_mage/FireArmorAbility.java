@@ -1,10 +1,14 @@
 package com.chaosbuffalo.mkultra.abilities.nether_mage;
 
 import com.chaosbuffalo.mkcore.GameConstants;
-import com.chaosbuffalo.mkcore.abilities.*;
+import com.chaosbuffalo.mkcore.abilities.AbilityContext;
+import com.chaosbuffalo.mkcore.abilities.AbilityTargetSelector;
+import com.chaosbuffalo.mkcore.abilities.AbilityTargeting;
+import com.chaosbuffalo.mkcore.abilities.MKAbility;
 import com.chaosbuffalo.mkcore.core.IMKEntityData;
 import com.chaosbuffalo.mkcore.core.MKAttributes;
-import com.chaosbuffalo.mkcore.effects.*;
+import com.chaosbuffalo.mkcore.effects.AreaEffectBuilder;
+import com.chaosbuffalo.mkcore.effects.MKEffectBuilder;
 import com.chaosbuffalo.mkcore.effects.utility.MKParticleEffect;
 import com.chaosbuffalo.mkcore.effects.utility.SoundEffect;
 import com.chaosbuffalo.mkcore.init.CoreDamageTypes;
@@ -23,23 +27,18 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
 
 public class FireArmorAbility extends MKAbility {
     public static final ResourceLocation CASTING_PARTICLES = new ResourceLocation(MKUltra.MODID, "fire_armor_casting");
     public static final ResourceLocation CAST_PARTICLES = new ResourceLocation(MKUltra.MODID, "fire_armor_cast");
-    public static final FireArmorAbility INSTANCE = new FireArmorAbility();
-
     protected final IntAttribute baseDuration = new IntAttribute("baseDuration", 60);
     protected final IntAttribute scaleDuration = new IntAttribute("scaleDuration", 15);
     protected final ResourceLocationAttribute cast_particles = new ResourceLocationAttribute("cast_particles", CAST_PARTICLES);
 
-    private FireArmorAbility() {
-        super(MKUltra.MODID, "ability.fire_armor");
+    public FireArmorAbility() {
+        super();
         setCooldownSeconds(150);
         setManaCost(12);
         setCastTime(GameConstants.TICKS_PER_SECOND);
@@ -110,14 +109,5 @@ public class FireArmorAbility extends MKAbility {
     @Override
     public AbilityTargetSelector getTargetSelector() {
         return AbilityTargeting.PBAOE;
-    }
-
-    @SuppressWarnings("unused")
-    @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-    private static class RegisterMe {
-        @SubscribeEvent
-        public static void register(RegistryEvent.Register<MKAbility> event) {
-            event.getRegistry().register(INSTANCE);
-        }
     }
 }

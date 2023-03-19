@@ -15,7 +15,6 @@ import com.chaosbuffalo.mkcore.serialization.attributes.IntAttribute;
 import com.chaosbuffalo.mkcore.serialization.attributes.ResourceLocationAttribute;
 import com.chaosbuffalo.mkcore.utils.SoundUtils;
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.effects.BurnEffect;
 import com.chaosbuffalo.mkultra.effects.EngulfingDarknessEffect;
 import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.TargetingContext;
@@ -26,9 +25,6 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
 import java.util.function.Consumer;
 
@@ -36,8 +32,6 @@ public class EngulfingDarknessAbility extends MKAbility {
     public static final ResourceLocation CASTING_PARTICLES = new ResourceLocation(MKUltra.MODID, "shadow_bolt_casting");
     public static final ResourceLocation CAST_PARTICLES = new ResourceLocation(MKUltra.MODID, "engulfing_darkness_cast");
     public static final ResourceLocation TICK_PARTICLES = new ResourceLocation(MKUltra.MODID, "engulfing_darkness_tick");
-    public static final EngulfingDarknessAbility INSTANCE = new EngulfingDarknessAbility();
-
     protected final FloatAttribute baseDot = new FloatAttribute("base_dot_damage", 2.0f);
     protected final FloatAttribute scaleDot = new FloatAttribute("scale_dot_damage", 2.0f);
     protected final IntAttribute baseDuration = new IntAttribute("base_duration", 10);
@@ -50,10 +44,10 @@ public class EngulfingDarknessAbility extends MKAbility {
 
 
     public EngulfingDarknessAbility() {
-        super(MKUltra.MODID, "ability.engulfing_darkness");
+        super();
         setCooldownSeconds(4);
         setManaCost(5);
-        setCastTime((GameConstants.TICKS_PER_SECOND  * 3) / 2);
+        setCastTime((GameConstants.TICKS_PER_SECOND * 3) / 2);
         addAttributes(baseDuration, scaleDuration, baseDot, scaleDot, dotModifierScaling,
                 castParticles, dotCastParticles, shadowbringerChance, shadowbringerDuration);
         addSkillAttribute(MKAttributes.CONJURATION);
@@ -137,14 +131,5 @@ public class EngulfingDarknessAbility extends MKAbility {
                             targetEntity.getEntityId()),
                     targetEntity);
         });
-    }
-
-    @SuppressWarnings("unused")
-    @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-    private static class RegisterMe {
-        @SubscribeEvent
-        public static void register(RegistryEvent.Register<MKAbility> event) {
-            event.getRegistry().register(INSTANCE);
-        }
     }
 }

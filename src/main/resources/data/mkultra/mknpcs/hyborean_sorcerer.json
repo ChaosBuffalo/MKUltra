@@ -51,6 +51,19 @@
       ]
     },
     {
+      "optionType": "mknpc:skills",
+      "minor_skills": [
+        "mkcore:alteration",
+        "mkcore:abjuration",
+        "mkcore:conjuration",
+        "mkcore:evocation"
+      ],
+      "major_skills": [],
+      "remedial_skills": [
+        "mkcore:one_hand_pierce"
+      ]
+    },
+    {
       "optionType": "mknpc:mk_size",
       "value": 0.9
     },

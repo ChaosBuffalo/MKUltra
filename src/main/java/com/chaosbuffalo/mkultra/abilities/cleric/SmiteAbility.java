@@ -24,14 +24,8 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
 public class SmiteAbility extends MKAbility {
-
-    public static final SmiteAbility INSTANCE = new SmiteAbility();
-
     protected final ResourceLocation CASTING_PARTICLES = new ResourceLocation(MKUltra.MODID, "smite_casting");
     protected final ResourceLocation CAST_PARTICLES = new ResourceLocation(MKUltra.MODID, "smite_cast");
     protected final FloatAttribute base = new FloatAttribute("base", 5.0f);
@@ -40,7 +34,7 @@ public class SmiteAbility extends MKAbility {
     protected final ResourceLocationAttribute cast_particles = new ResourceLocationAttribute("cast_particles", CAST_PARTICLES);
 
     public SmiteAbility() {
-        super(MKUltra.MODID, "ability.smite");
+        super();
         setCooldownSeconds(6);
         setManaCost(5);
         setCastTime(GameConstants.TICKS_PER_SECOND);
@@ -90,7 +84,7 @@ public class SmiteAbility extends MKAbility {
         context.getMemory(MKAbilityMemories.ABILITY_TARGET).ifPresent(targetEntity -> {
 
             MKEffectBuilder<?> damage = MKAbilityDamageEffect.from(entity, CoreDamageTypes.HolyDamage,
-                            base.value(), scale.value(), modifierScaling.value())
+                    base.value(), scale.value(), modifierScaling.value())
                     .ability(this)
                     .skillLevel(level);
 
@@ -107,14 +101,5 @@ public class SmiteAbility extends MKAbility {
             PacketHandler.sendToTrackingAndSelf(new MKParticleEffectSpawnPacket(
                     new Vector3d(0.0, 1.0, 0.0), cast_particles.getValue(), targetEntity.getEntityId()), targetEntity);
         });
-    }
-
-    @SuppressWarnings("unused")
-    @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-    private static class RegisterMe {
-        @SubscribeEvent
-        public static void register(RegistryEvent.Register<MKAbility> event) {
-            event.getRegistry().register(INSTANCE);
-        }
     }
 }

@@ -26,15 +26,10 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
 public class WarpCurseAbility extends MKAbility {
     public static final ResourceLocation CASTING_PARTICLES = new ResourceLocation(MKUltra.MODID, "warp_curse_casting");
     public static final ResourceLocation CAST_PARTICLES = new ResourceLocation(MKUltra.MODID, "warp_curse_cast");
-    public static final WarpCurseAbility INSTANCE = new WarpCurseAbility();
-
     protected final FloatAttribute base = new FloatAttribute("base", 4.0f);
     protected final FloatAttribute scale = new FloatAttribute("scale", 2.0f);
     protected final IntAttribute baseDuration = new IntAttribute("baseDuration", 4);
@@ -43,7 +38,7 @@ public class WarpCurseAbility extends MKAbility {
     protected final ResourceLocationAttribute cast_particles = new ResourceLocationAttribute("cast_particles", CAST_PARTICLES);
 
     public WarpCurseAbility() {
-        super(MKUltra.MODID, "ability.warp_curse");
+        super();
         setCooldownSeconds(16);
         setManaCost(8);
         setCastTime(GameConstants.TICKS_PER_SECOND + 10);
@@ -95,7 +90,7 @@ public class WarpCurseAbility extends MKAbility {
             float level = getSkillLevel(castingEntity, MKAttributes.ALTERATON);
             int duration = getBuffDuration(casterData, level, baseDuration.value(), scaleDuration.value());
             MKEffectBuilder<?> warpCast = WarpCurseEffect.from(castingEntity, base.value(), scale.value(),
-                            modifierScaling.value(), cast_particles.getValue())
+                    modifierScaling.value(), cast_particles.getValue())
                     .ability(this)
                     .timed(duration)
                     .skillLevel(level);
@@ -108,14 +103,5 @@ public class WarpCurseAbility extends MKAbility {
             PacketHandler.sendToTrackingAndSelf(new MKParticleEffectSpawnPacket(
                     new Vector3d(0.0, 1.0, 0.0), cast_particles.getValue(), castingEntity.getEntityId()), castingEntity);
         });
-    }
-
-    @SuppressWarnings("unused")
-    @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-    private static class RegisterMe {
-        @SubscribeEvent
-        public static void register(RegistryEvent.Register<MKAbility> event) {
-            event.getRegistry().register(INSTANCE);
-        }
     }
 }

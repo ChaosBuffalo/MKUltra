@@ -24,9 +24,6 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
 
@@ -34,8 +31,6 @@ public class NaturesRemedyAbility extends MKAbility {
     public static final ResourceLocation CASTING_PARTICLES = new ResourceLocation(MKUltra.MODID, "natures_remedy_casting");
     public static final ResourceLocation CAST_PARTICLES = new ResourceLocation(MKUltra.MODID, "natures_remedy_cast");
     public static final ResourceLocation TICK_PARTICLES = new ResourceLocation(MKUltra.MODID, "natures_remedy_tick");
-    public static final NaturesRemedyAbility INSTANCE = new NaturesRemedyAbility();
-
     protected final FloatAttribute baseValue = new FloatAttribute("baseValue", 2.0f);
     protected final FloatAttribute scaleValue = new FloatAttribute("scaleValue", 1.0f);
     protected final IntAttribute baseDuration = new IntAttribute("baseDuration", 4);
@@ -44,8 +39,8 @@ public class NaturesRemedyAbility extends MKAbility {
     protected final ResourceLocationAttribute cast_particles = new ResourceLocationAttribute("cast_particles", CAST_PARTICLES);
     protected final ResourceLocationAttribute tick_particles = new ResourceLocationAttribute("tick_particles", TICK_PARTICLES);
 
-    private NaturesRemedyAbility() {
-        super(MKUltra.MODID, "ability.natures_remedy");
+    public NaturesRemedyAbility() {
+        super();
         setCooldownSeconds(10);
         setManaCost(4);
         setCastTime(GameConstants.TICKS_PER_SECOND / 2);
@@ -83,7 +78,7 @@ public class NaturesRemedyAbility extends MKAbility {
     public MKEffectBuilder<?> createNaturesRemedyEffect(IMKEntityData casterData, float level) {
         int duration = getBuffDuration(casterData, level, baseDuration.value(), scaleDuration.value());
         return NaturesRemedyEffect.from(casterData.getEntity(), baseValue.value(), scaleValue.value(),
-                        modifierScaling.value(), tick_particles.getValue())
+                modifierScaling.value(), tick_particles.getValue())
                 .ability(this)
                 .skillLevel(level)
                 .timed(duration);
@@ -108,14 +103,5 @@ public class NaturesRemedyAbility extends MKAbility {
     @Override
     public AbilityTargetSelector getTargetSelector() {
         return AbilityTargeting.SINGLE_TARGET_OR_SELF;
-    }
-
-    @SuppressWarnings("unused")
-    @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-    private static class RegisterMe {
-        @SubscribeEvent
-        public static void register(RegistryEvent.Register<MKAbility> event) {
-            event.getRegistry().register(INSTANCE);
-        }
     }
 }

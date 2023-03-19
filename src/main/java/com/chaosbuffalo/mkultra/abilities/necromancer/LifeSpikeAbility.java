@@ -24,14 +24,8 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
 public class LifeSpikeAbility extends MKAbility {
-
-    public static final LifeSpikeAbility INSTANCE = new LifeSpikeAbility();
-
     protected final ResourceLocation CASTING_PARTICLES = new ResourceLocation(MKUltra.MODID, "lifespike_casting");
     protected final ResourceLocation CAST_PARTICLES = new ResourceLocation(MKUltra.MODID, "lifespike_cast");
     protected final FloatAttribute base = new FloatAttribute("base", 10.0f);
@@ -42,7 +36,7 @@ public class LifeSpikeAbility extends MKAbility {
     protected final ResourceLocationAttribute cast_particles = new ResourceLocationAttribute("cast_particles", CAST_PARTICLES);
 
     public LifeSpikeAbility() {
-        super(MKUltra.MODID, "ability.life_spike");
+        super();
         setCooldownSeconds(30);
         setManaCost(10);
         setCastTime(GameConstants.TICKS_PER_SECOND * 2);
@@ -113,14 +107,5 @@ public class LifeSpikeAbility extends MKAbility {
             PacketHandler.sendToTrackingAndSelf(new MKParticleEffectSpawnPacket(
                     new Vector3d(0.0, 1.75, 0.0), cast_particles.getValue(), targetEntity.getEntityId()), targetEntity);
         });
-    }
-
-    @SuppressWarnings("unused")
-    @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-    private static class RegisterMe {
-        @SubscribeEvent
-        public static void register(RegistryEvent.Register<MKAbility> event) {
-            event.getRegistry().register(INSTANCE);
-        }
     }
 }

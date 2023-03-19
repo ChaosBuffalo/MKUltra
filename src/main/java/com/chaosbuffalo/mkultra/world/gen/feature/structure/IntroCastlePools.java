@@ -31,10 +31,5 @@ public class IntroCastlePools {
                         Pair.of(MKSingleJigsawPiece.getMKSingleJigsaw(CASTLE_BASE, false), 1)
                 ),
                 JigsawPattern.PlacementBehaviour.RIGID));
-//        JigsawPatternRegistry.func_244094_a(new JigsawPattern(new ResourceLocation(MKUltra.MODID, "intro_castle.green_knight_island"), new ResourceLocation("empty"),
-//                ImmutableList.of(
-//                        Pair.of(MKSingleJigsawPiece.getMKSingleJigsaw(GREEN_KNIGHT_ISLAND, false), 1)
-//                ),
-//                JigsawPattern.PlacementBehaviour.RIGID));
     }
 }

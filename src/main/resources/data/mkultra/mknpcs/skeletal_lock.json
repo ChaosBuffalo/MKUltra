@@ -1,0 +1,57 @@
+{
+  "entityType": "mkultra:hyborean_skeleton",
+  "options": [
+    {
+      "optionType": "mknpc:render_group",
+      "value": "basic"
+    },
+    {
+      "optionType": "mknpc:attributes",
+      "attributes": [
+        {
+          "attributeName": "minecraft:generic.max_health",
+          "value": 50.0
+        }
+      ]
+    },
+    {
+      "optionType": "mknpc:name",
+      "value": "A Skeletal Lock"
+    },
+    {
+      "optionType": "mknpc:abilities",
+      "options": [
+        {
+          "priority": 1,
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.shadow_bolt"
+        }
+      ]
+    },
+    {
+      "optionType": "mknpc:skills",
+      "minor_skills": [
+        "mkcore:alteration",
+        "mkcore:abjuration",
+        "mkcore:conjuration",
+        "mkcore:evocation"
+      ],
+      "major_skills": [],
+      "remedial_skills": [
+        "mkcore:one_hand_pierce"
+      ]
+    },
+    {
+      "optionType": "mknpc:notable",
+      "value": true
+    },
+    {
+      "optionType": "mknpc:mk_size",
+      "value": 1.0
+    },
+    {
+      "optionType": "mknpc:faction",
+      "value": "mkultra:necrotide_cultists"
+    }
+  ]
+}

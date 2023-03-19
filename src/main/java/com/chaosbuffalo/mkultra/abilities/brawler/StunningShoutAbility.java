@@ -30,9 +30,6 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -40,8 +37,6 @@ import java.util.List;
 public class StunningShoutAbility extends MKAbility {
     public static final ResourceLocation TICK_PARTICLES = new ResourceLocation(MKUltra.MODID, "stunning_shout_tick");
     public static final ResourceLocation CAST_PARTICLES = new ResourceLocation(MKUltra.MODID, "stunning_shout_cast");
-    public static final StunningShoutAbility INSTANCE = new StunningShoutAbility();
-
     protected final FloatAttribute baseDamage = new FloatAttribute("baseDamage", 4.0f);
     protected final FloatAttribute scaleDamage = new FloatAttribute("scaleDamage", 2.0f);
     protected final FloatAttribute modifierScaling = new FloatAttribute("modifierScaling", 1.0f);
@@ -50,8 +45,8 @@ public class StunningShoutAbility extends MKAbility {
     protected final IntAttribute baseDuration = new IntAttribute("baseDuration", 1);
     protected final IntAttribute scaleDuration = new IntAttribute("scaleDuration", 1);
 
-    private StunningShoutAbility() {
-        super(MKUltra.MODID, "ability.stunning_shout");
+    public StunningShoutAbility() {
+        super();
         setCooldownSeconds(12);
         setManaCost(4);
         addAttributes(baseDamage, scaleDamage, baseDuration, scaleDuration, cast_particles, tick_particles);
@@ -99,7 +94,6 @@ public class StunningShoutAbility extends MKAbility {
         float level = getSkillLevel(castingEntity, MKAttributes.PNEUMA);
 
 
-
         MKEffectBuilder<?> damage = MKAbilityDamageEffect.from(castingEntity, CoreDamageTypes.BleedDamage,
                 baseDamage.value(), scaleDamage.value(), modifierScaling.value())
                 .skillLevel(level)
@@ -117,24 +111,15 @@ public class StunningShoutAbility extends MKAbility {
 
         for (LivingEntity entHit : entityHit) {
             MKCore.getEntityData(entHit).ifPresent(targetData -> {
-               targetData.getEffects().addEffect(damage);
-               targetData.getEffects().addEffect(stun);
-               targetData.getEffects().addEffect(particles);
+                targetData.getEffects().addEffect(damage);
+                targetData.getEffects().addEffect(stun);
+                targetData.getEffects().addEffect(particles);
             });
         }
 
         MKParticleEffectSpawnPacket spawn = new MKParticleEffectSpawnPacket(from, CAST_PARTICLES);
         spawn.addLoc(to);
         PacketHandler.sendToTrackingAndSelf(spawn, castingEntity);
-    }
-
-    @SuppressWarnings("unused")
-    @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-    private static class RegisterMe {
-        @SubscribeEvent
-        public static void register(RegistryEvent.Register<MKAbility> event) {
-            event.getRegistry().register(INSTANCE);
-        }
     }
 }
 

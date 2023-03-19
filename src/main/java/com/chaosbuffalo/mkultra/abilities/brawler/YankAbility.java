@@ -21,21 +21,16 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
 public class YankAbility extends MKAbility {
     public static final ResourceLocation CAST_PARTICLES = new ResourceLocation(MKUltra.MODID, "yank_cast");
-    public static final YankAbility INSTANCE = new YankAbility();
-
     protected final FloatAttribute base = new FloatAttribute("base", 1.0f);
     protected final FloatAttribute scale = new FloatAttribute("scale", 0.75f);
     protected final ResourceLocationAttribute cast_particles = new ResourceLocationAttribute("cast_particles", CAST_PARTICLES);
 
 
     public YankAbility() {
-        super(MKUltra.MODID, "ability.yank");
+        super();
         setCooldownSeconds(5);
         setManaCost(4);
         addAttributes(base, scale, cast_particles);
@@ -64,6 +59,7 @@ public class YankAbility extends MKAbility {
     public AbilityTargetSelector getTargetSelector() {
         return AbilityTargeting.SINGLE_TARGET;
     }
+
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
         return ModSounds.spell_grab_2;
@@ -88,14 +84,5 @@ public class YankAbility extends MKAbility {
             spawn.addLoc(targetPos);
             PacketHandler.sendToTrackingAndSelf(spawn, entity);
         });
-    }
-
-    @SuppressWarnings("unused")
-    @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-    private static class RegisterMe {
-        @SubscribeEvent
-        public static void register(RegistryEvent.Register<MKAbility> event) {
-            event.getRegistry().register(INSTANCE);
-        }
     }
 }

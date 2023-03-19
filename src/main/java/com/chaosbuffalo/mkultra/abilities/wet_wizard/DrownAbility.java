@@ -1,7 +1,10 @@
 package com.chaosbuffalo.mkultra.abilities.wet_wizard;
 
 import com.chaosbuffalo.mkcore.GameConstants;
-import com.chaosbuffalo.mkcore.abilities.*;
+import com.chaosbuffalo.mkcore.abilities.AbilityContext;
+import com.chaosbuffalo.mkcore.abilities.AbilityTargetSelector;
+import com.chaosbuffalo.mkcore.abilities.AbilityTargeting;
+import com.chaosbuffalo.mkcore.abilities.MKAbility;
 import com.chaosbuffalo.mkcore.core.IMKEntityData;
 import com.chaosbuffalo.mkcore.core.MKAttributes;
 import com.chaosbuffalo.mkcore.effects.MKEffectBuilder;
@@ -10,7 +13,6 @@ import com.chaosbuffalo.mkcore.serialization.attributes.FloatAttribute;
 import com.chaosbuffalo.mkcore.serialization.attributes.IntAttribute;
 import com.chaosbuffalo.mkcore.serialization.attributes.ResourceLocationAttribute;
 import com.chaosbuffalo.mkultra.MKUltra;
-import com.chaosbuffalo.mkultra.abilities.nether_mage.EmberAbility;
 import com.chaosbuffalo.mkultra.effects.DrownEffect;
 import com.chaosbuffalo.mkultra.entities.projectiles.DrownProjectileEntity;
 import com.chaosbuffalo.mkultra.init.ModSounds;
@@ -21,15 +23,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
 public class DrownAbility extends MKAbility {
     public static final ResourceLocation CASTING_PARTICLES = new ResourceLocation(MKUltra.MODID, "ember_casting");
     public static final ResourceLocation TICK_PARTICLES = new ResourceLocation(MKUltra.MODID, "drown_effect");
-    public static final DrownAbility INSTANCE = new DrownAbility();
-
     protected final FloatAttribute baseDot = new FloatAttribute("baseBurnDamage", 4.0f);
     protected final FloatAttribute scaleDot = new FloatAttribute("scaleBurnDamage", 2.0f);
     protected final IntAttribute baseDuration = new IntAttribute("baseDuration", 10);
@@ -41,7 +38,7 @@ public class DrownAbility extends MKAbility {
 
 
     public DrownAbility() {
-        super(MKUltra.MODID, "ability.drown");
+        super();
         setCooldownSeconds(10);
         setManaCost(5);
         setCastTime(GameConstants.TICKS_PER_SECOND);
@@ -103,14 +100,5 @@ public class DrownAbility extends MKAbility {
         proj.setSkillLevel(level);
         shootProjectile(proj, projectileSpeed.value(), projectileInaccuracy.value(), entity, context);
         entity.world.addEntity(proj);
-    }
-
-    @SuppressWarnings("unused")
-    @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-    private static class RegisterMe {
-        @SubscribeEvent
-        public static void register(RegistryEvent.Register<MKAbility> event) {
-            event.getRegistry().register(INSTANCE);
-        }
     }
 }

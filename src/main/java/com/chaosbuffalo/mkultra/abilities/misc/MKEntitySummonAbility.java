@@ -1,7 +1,6 @@
 package com.chaosbuffalo.mkultra.abilities.misc;
 
 import com.chaosbuffalo.mkcore.GameConstants;
-import com.chaosbuffalo.mkcore.MKCore;
 import com.chaosbuffalo.mkcore.abilities.*;
 import com.chaosbuffalo.mkcore.abilities.ai.conditions.SummonPetCondition;
 import com.chaosbuffalo.mkcore.core.IMKEntityData;
@@ -26,31 +25,29 @@ import com.google.common.collect.ImmutableSet;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.brain.memory.MemoryModuleType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
 import java.util.Set;
 import java.util.UUID;
 
 public class MKEntitySummonAbility extends MKAbility {
     protected final ResourceLocationAttribute npcDefintion = new ResourceLocationAttribute("npc", NpcDefinitionManager.INVALID_NPC_DEF);
-    public static final MKEntitySummonAbility TEST_SUMMON = new MKEntitySummonAbility(
-            new ResourceLocation(MKUltra.MODID, "ability.test_summon"),
-            new ResourceLocation(MKUltra.MODID, "hyborean_sorcerer_queen"));
+    protected final Attribute summoningSkill;
 
 
-    public MKEntitySummonAbility(ResourceLocation abilityId, ResourceLocation npcDef) {
-        super(abilityId);
+    public MKEntitySummonAbility(ResourceLocation npcDef, Attribute skillAttribute) {
+        super();
         npcDefintion.setDefaultValue(npcDef);
         addAttribute(npcDefintion);
         setCastTime(5 * GameConstants.TICKS_PER_SECOND);
         setUseCondition(new SummonPetCondition(this));
+        addSkillAttribute(skillAttribute);
+        summoningSkill = skillAttribute;
     }
 
     @Override
@@ -95,7 +92,7 @@ public class MKEntitySummonAbility extends MKAbility {
             if (def != null && target.getPosition().isPresent()) {
                 UUID id = casterData instanceof MKPlayerData ? ((MKPlayerData) casterData).getPersonaManager().getActivePersona().getPersonaId() :
                         MKNpc.getNpcData(castingEntity).map(IEntityNpcData::getSpawnID).orElse(castingEntity.getUniqueID());
-                Entity entity = def.createEntity(castingEntity.getEntityWorld(), target.getPosition().get(), id);
+                Entity entity = def.createEntity(castingEntity.getEntityWorld(), target.getPosition().get(), id, getSkillLevel(castingEntity, summoningSkill));
                 MKPet<MKEntity> pet = MKPet.makePetFromEntity(MKEntity.class, getAbilityId(), entity);
                 if (pet.getEntity() != null) {
                     casterData.getPets().addPet(pet);
@@ -153,15 +150,6 @@ public class MKEntitySummonAbility extends MKAbility {
                             }
                         });
             }
-        }
-    }
-
-    @SuppressWarnings("unused")
-    @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-    private static class RegisterMe {
-        @SubscribeEvent
-        public static void register(RegistryEvent.Register<MKAbility> event) {
-            event.getRegistry().register(TEST_SUMMON);
         }
     }
 }

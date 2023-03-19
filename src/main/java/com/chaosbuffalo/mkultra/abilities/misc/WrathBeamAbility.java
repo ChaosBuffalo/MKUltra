@@ -1,7 +1,6 @@
 package com.chaosbuffalo.mkultra.abilities.misc;
 
 import com.chaosbuffalo.mkcore.GameConstants;
-import com.chaosbuffalo.mkcore.abilities.*;
 import com.chaosbuffalo.mkcore.core.IMKEntityData;
 import com.chaosbuffalo.mkcore.core.MKAttributes;
 import com.chaosbuffalo.mkcore.effects.EntityEffectBuilder;
@@ -14,32 +13,25 @@ import com.chaosbuffalo.mkcore.serialization.attributes.FloatAttribute;
 import com.chaosbuffalo.mkcore.serialization.attributes.IntAttribute;
 import com.chaosbuffalo.mkcore.serialization.attributes.ResourceLocationAttribute;
 import com.chaosbuffalo.mkcore.utils.SoundUtils;
-import com.chaosbuffalo.mkcore.utils.TargetUtil;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.ResistanceEffects;
 import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.TargetingContext;
 import com.chaosbuffalo.targeting_api.TargetingContexts;
-import com.google.common.collect.ImmutableSet;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.brain.memory.MemoryModuleType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
-import java.util.Set;
 
-public class WrathBeamAbility extends MKAbility {
+public class WrathBeamAbility extends PositionTargetingAbility {
     private static final ResourceLocation PULSE_PARTICLES = new ResourceLocation(MKUltra.MODID, "wrath_beam_pulse");
     public static final ResourceLocation CASTING_PARTICLES = new ResourceLocation(MKUltra.MODID, "flame_wave_casting");
     private static final ResourceLocation WAIT_PARTICLES = new ResourceLocation(MKUltra.MODID, "wrath_beam_wait");
-    public static final WrathBeamAbility INSTANCE = new WrathBeamAbility();
+
     protected final FloatAttribute base = new FloatAttribute("base", 5.0f);
     protected final FloatAttribute scale = new FloatAttribute("scale", 5.0f);
     protected final FloatAttribute modifierScaling = new FloatAttribute("modifierScaling", 1.0f);
@@ -49,10 +41,8 @@ public class WrathBeamAbility extends MKAbility {
     protected final IntAttribute duration = new IntAttribute("duration", GameConstants.TICKS_PER_SECOND * 2);
     protected final IntAttribute breakDuration = new IntAttribute("breakDuration", GameConstants.TICKS_PER_SECOND * 2);
 
-
-
-    private WrathBeamAbility() {
-        super(MKUltra.MODID, "ability.wrath_beam");
+    public WrathBeamAbility() {
+        super();
         setCastTime(GameConstants.TICKS_PER_SECOND);
         setCooldownSeconds(5);
         setManaCost(6);
@@ -87,7 +77,8 @@ public class WrathBeamAbility extends MKAbility {
         return ModSounds.hostile_casting_fire;
     }
 
-    public void castWrathBeam(LivingEntity castingEntity, Vector3d position){
+    @Override
+    public void castAtPosition(LivingEntity castingEntity, Vector3d position) {
         float level = getSkillLevel(castingEntity, MKAttributes.EVOCATION);
         MKEffectBuilder<?> damage = MKAbilityDamageEffect.from(castingEntity, CoreDamageTypes.FireDamage,
                 base.value(), scale.value(), modifierScaling.value())
@@ -113,31 +104,5 @@ public class WrathBeamAbility extends MKAbility {
         SoundUtils.serverPlaySoundFromEntity(position.getX(), position.getY(), position.getZ(),
                 ModSounds.spell_dark_13, castingEntity.getSoundCategory(), 1.0f, 1.0f, castingEntity);
         lineBuilder.spawn();
-    }
-
-    @Override
-    public void endCast(LivingEntity castingEntity, IMKEntityData casterData, AbilityContext context) {
-        super.endCast(castingEntity, casterData, context);
-        context.getMemory(MKAbilityMemories.ABILITY_POSITION_TARGET)
-                .flatMap(TargetUtil.LivingOrPosition::getPosition).ifPresent(x -> castWrathBeam(castingEntity, x));
-    }
-
-    @Override
-    public Set<MemoryModuleType<?>> getRequiredMemories() {
-        return ImmutableSet.of(MKAbilityMemories.ABILITY_POSITION_TARGET);
-    }
-
-    @Override
-    public AbilityTargetSelector getTargetSelector() {
-        return AbilityTargeting.POSITION_INCLUDE_ENTITIES;
-    }
-
-    @SuppressWarnings("unused")
-    @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-    private static class RegisterMe {
-        @SubscribeEvent
-        public static void register(RegistryEvent.Register<MKAbility> event) {
-            event.getRegistry().register(INSTANCE);
-        }
     }
 }

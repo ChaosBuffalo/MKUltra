@@ -4,6 +4,7 @@ import com.chaosbuffalo.mkcore.core.MKAttributes;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.abilities.misc.FireballAbility;
 import com.chaosbuffalo.mkultra.abilities.misc.SeverTendonAbility;
+import com.chaosbuffalo.mkultra.init.MKUAbilities;
 import com.chaosbuffalo.mkultra.init.MKUItems;
 import com.chaosbuffalo.mkweapons.data.LootTierProvider;
 import com.chaosbuffalo.mkweapons.init.MKWeaponsItems;
@@ -216,7 +217,7 @@ public class MKULootTierProvider extends LootTierProvider {
         LootTier  tier = new LootTier(new ResourceLocation(MKUltra.MODID, "burning_staff"));
         LootItemTemplate staff = new LootItemTemplate(LootSlotManager.MAIN_HAND);
         staff.addItem(MKWeaponsItems.lookupWeapon(MKWeaponsItems.IRON_TIER, MeleeWeaponTypes.STAFF_TYPE));
-        AddAbilityOption abilityOption = new AddAbilityOption(FireballAbility.INSTANCE, RandomizationSlotManager.ABILITY_SLOT);
+        AddAbilityOption abilityOption = new AddAbilityOption(MKUAbilities.FIREBALL.get(), RandomizationSlotManager.ABILITY_SLOT);
         staff.addRandomizationOption(abilityOption);
         NameOption name = new NameOption(new StringTextComponent("Burning Staff"));
         staff.addRandomizationOption(name);
@@ -242,7 +243,7 @@ public class MKULootTierProvider extends LootTierProvider {
         executionersBlade.addItem(MKWeaponsItems.lookupWeapon(MKWeaponsItems.IRON_TIER, MeleeWeaponTypes.GREATSWORD_TYPE));
         executionersBlade.addItem(MKWeaponsItems.lookupWeapon(MKWeaponsItems.IRON_TIER, MeleeWeaponTypes.WARHAMMER_TYPE));
         executionersBlade.addItem(MKWeaponsItems.lookupWeapon(MKWeaponsItems.IRON_TIER, MeleeWeaponTypes.BATTLEAXE_TYPE));
-        AddAbilityOption abilityOption = new AddAbilityOption(SeverTendonAbility.INSTANCE, RandomizationSlotManager.ABILITY_SLOT);
+        AddAbilityOption abilityOption = new AddAbilityOption(MKUAbilities.SEVER_TENDON.get(), RandomizationSlotManager.ABILITY_SLOT);
         executionersBlade.addRandomizationOption(abilityOption);
         PrefixNameOption name = new PrefixNameOption(new StringTextComponent("Executioner's"));
         executionersBlade.addRandomizationOption(name);

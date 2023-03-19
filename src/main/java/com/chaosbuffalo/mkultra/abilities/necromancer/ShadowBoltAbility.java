@@ -11,7 +11,6 @@ import com.chaosbuffalo.mkcore.init.CoreDamageTypes;
 import com.chaosbuffalo.mkcore.serialization.attributes.FloatAttribute;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.ShadowbringerEffect;
-import com.chaosbuffalo.mkultra.entities.projectiles.FireballProjectileEntity;
 import com.chaosbuffalo.mkultra.entities.projectiles.ShadowBoltProjectileEntity;
 import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.TargetingContext;
@@ -21,24 +20,19 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
 
 public class ShadowBoltAbility extends MKAbility {
     public static final ResourceLocation CASTING_PARTICLES = new ResourceLocation(MKUltra.MODID, "shadow_bolt_casting");
-    public static final ShadowBoltAbility INSTANCE = new ShadowBoltAbility();
-
     protected final FloatAttribute baseDamage = new FloatAttribute("baseDamage", 8.0f);
     protected final FloatAttribute scaleDamage = new FloatAttribute("scaleDamage", 4.0f);
     protected final FloatAttribute projectileSpeed = new FloatAttribute("projectileSpeed", 1.25f);
     protected final FloatAttribute projectileInaccuracy = new FloatAttribute("projectileInaccuracy", 0.2f);
     protected final FloatAttribute modifierScaling = new FloatAttribute("modifierScaling", 1.0f);
 
-    private ShadowBoltAbility() {
-        super(MKUltra.MODID, "ability.shadow_bolt");
+    public ShadowBoltAbility() {
+        super();
         setCooldownSeconds(8);
         setManaCost(7);
         setCastTime(GameConstants.TICKS_PER_SECOND);
@@ -118,14 +112,5 @@ public class ShadowBoltAbility extends MKAbility {
         proj.setSkillLevel(level);
         shootProjectile(proj, projectileSpeed.value(), projectileInaccuracy.value(), entity, context);
         entity.world.addEntity(proj);
-    }
-
-    @SuppressWarnings("unused")
-    @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-    private static class RegisterMe {
-        @SubscribeEvent
-        public static void register(RegistryEvent.Register<MKAbility> event) {
-            event.getRegistry().register(INSTANCE);
-        }
     }
 }

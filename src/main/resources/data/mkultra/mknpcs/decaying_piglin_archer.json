@@ -31,6 +31,22 @@
       }
     },
     {
+      "optionType": "mknpc:skills",
+      "minor_skills": [
+        "mkcore:one_hand_pierce",
+        "mkcore:one_hand_slash",
+        "mkcore:one_hand_blunt"
+      ],
+      "major_skills": [
+        "mkcore:marksmanship"
+      ],
+      "remedial_skills": [
+        "mkcore:arete",
+        "mkcore:pneuma",
+        "mkcore:pankration"
+      ]
+    },
+    {
       "optionType": "mknpc:mk_size",
       "value": 0.85
     },
