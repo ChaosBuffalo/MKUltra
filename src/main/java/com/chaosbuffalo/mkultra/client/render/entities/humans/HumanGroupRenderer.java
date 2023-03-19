@@ -21,6 +21,7 @@ public class HumanGroupRenderer extends BipedGroupRenderer<HumanEntity, MKBipedM
         putRenderer(MKUHumans.GHOST_LONG_HAIR_NAME, new HumanRenderer(rendererManager, MKUHumans.GHOST_LONG_HAIR_STYLE));
         putRenderer(MKUHumans.GHOST_LONG_HAIR_ARMORED_NAME, new HumanRenderer(rendererManager, MKUHumans.ARMORED_GHOST_LONG_HAIR_STYLE));
         putRenderer(MKUHumans.TWO_LAYER_ARMOR_SHORT_HAIR_NAME, new HumanRenderer(rendererManager, MKUHumans.TWO_LAYER_ARMOR_SHORT_HAIR));
+        putRenderer(MKUHumans.TWO_LAYER_ARMOR_NO_HAIR_NAME, new HumanRenderer(rendererManager, MKUHumans.TWO_LAYER_ARMOR_NO_HAIR));
         putLook(MKUHumans.DEFAULT_NAME, MKUHumans.HUMAN_BASE);
         putLook(MKUHumans.CLERIC_1_NAME, MKUHumans.CLERIC_1_LOOK);
         putLook(MKUHumans.CLERIC_2_NAME, MKUHumans.CLERIC_2_LOOK);
@@ -28,6 +29,8 @@ public class HumanGroupRenderer extends BipedGroupRenderer<HumanEntity, MKBipedM
         putLook(MKUHumans.NETHER_MAGE_1_NAME, MKUHumans.NETHER_MAGE_1_LOOK);
         putLook(MKUHumans.TEMPLE_GUARD_1_NAME, MKUHumans.TEMPLE_GUARD_1_LOOK);
         putLook(MKUHumans.TEMPLE_GUARD_2_NAME, MKUHumans.TEMPLE_GUARD_2_LOOK);
+        putLook(MKUHumans.NECROTIDE_CULTIST_1_NAME, MKUHumans.NECROTIDE_CULTIST_1);
+        putLook(MKUHumans.NECROTIDE_CULTIST_SKULL_1_NAME, MKUHumans.NECROTIDE_CULTIST_SKULL_1);
     }
 
     @Nonnull

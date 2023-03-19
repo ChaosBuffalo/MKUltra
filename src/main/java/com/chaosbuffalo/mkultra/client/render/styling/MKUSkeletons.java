@@ -46,6 +46,10 @@ public class MKUSkeletons {
 
     public static final String HYBOREAN_WARRIOR_NAME = "hyborean_warrior";
 
+    public static final String BASIC_NAME = "basic";
+
+    public static final ModelLook BASIC = new ModelLook(ModelStyles.BASIC_STYLE, SkeletonStyles.SKELETON_TEXTURES);
+
     static {
         SKELETON_STYLES.put(ANCIENT_KING_NAME, ANCIENT_KING);
         SKELETON_STYLES.put(SORCERER_NAME, SORCERER);
@@ -54,6 +58,7 @@ public class MKUSkeletons {
         SKELETON_STYLES.put(HYBOREAN_ARCHER_NAME, HYBOREAN_ARCHER);
         SKELETON_STYLES.put(HYBOREAN_WARRIOR_NAME, HYBOREAN_WARRIOR);
         SKELETON_STYLES.put(BURNING_NAME, BURNING_SKELETON);
+        SKELETON_STYLES.put(BASIC_NAME, BASIC);
 
 
     }

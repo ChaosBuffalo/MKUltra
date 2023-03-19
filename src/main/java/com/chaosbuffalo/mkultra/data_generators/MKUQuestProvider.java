@@ -23,6 +23,7 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.abilities.green_knight.NaturesRemedyAbility;
 import com.chaosbuffalo.mkultra.abilities.green_knight.SkinLikeWoodAbility;
 import com.chaosbuffalo.mkultra.abilities.misc.FireballAbility;
+import com.chaosbuffalo.mkultra.init.MKUAbilities;
 import com.chaosbuffalo.mkultra.init.MKUEntitlements;
 import com.chaosbuffalo.mkultra.init.MKUItems;
 import com.chaosbuffalo.mkultra.init.MKUWorldGen;
@@ -128,7 +129,7 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
         Quest testStaff = new QuestBuilder("test_staff",
                 new StringTextComponent("Land Killing Blows with the Fireball Ability granted by the Initiate's Staff"))
                 .autoComplete(true)
-                .killWithAbility("test_staff", FireballAbility.INSTANCE, 10)
+                .killWithAbility("test_staff", MKUAbilities.FIREBALL.get(), 10)
                 .reward(new XpReward(25))
                 .quest();
         def.addQuest(testStaff);
@@ -490,7 +491,7 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
                         "Now we must test your mettle in combat. " +
                                 "Go kill some of the zombies on the first floor to try out your new magic, and don't forget you can always return to me to learn more.",
                         "Come back to me once you've learned one of our abilities.",
-                        new HasTrainedAbilitiesCondition(false, SkinLikeWoodAbility.INSTANCE.getAbilityId(), NaturesRemedyAbility.INSTANCE.getAbilityId()),
+                        new HasTrainedAbilitiesCondition(false, MKUAbilities.SKIN_LIKE_WOOD.getId(), MKUAbilities.NATURES_REMEDY.getId()),
                         (convo) ->{
                             convo.withAdditionalNode(openTraining2);
                             convo.withAdditionalPrompts(needTraining2);

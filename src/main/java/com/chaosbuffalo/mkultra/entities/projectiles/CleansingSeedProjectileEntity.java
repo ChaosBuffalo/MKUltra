@@ -12,6 +12,7 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.abilities.green_knight.CleansingSeedAbility;
 import com.chaosbuffalo.mkultra.effects.CureEffect;
 import com.chaosbuffalo.mkultra.entities.IMKRenderAsItem;
+import com.chaosbuffalo.mkultra.init.MKUAbilities;
 import com.chaosbuffalo.mkultra.init.MKUItems;
 import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.Targeting;
@@ -68,10 +69,11 @@ public class CleansingSeedProjectileEntity extends TrailProjectileEntity impleme
             if (entityTrace.getEntity() instanceof LivingEntity) {
                 LivingEntity target = (LivingEntity) entityTrace.getEntity();
                 Targeting.TargetRelation relation = Targeting.getTargetRelation(caster, target);
+                CleansingSeedAbility ability = MKUAbilities.CLEANSING_SEED.get();
                 switch (relation) {
                     case FRIEND: {
                         MKEffectBuilder<?> cure = CureEffect.from(casterLiving)
-                                .ability(CleansingSeedAbility.INSTANCE)
+                                .ability(ability)
                                 .directEntity(this)
                                 .skillLevel(getSkillLevel())
                                 .amplify(amplifier);
@@ -83,9 +85,9 @@ public class CleansingSeedProjectileEntity extends TrailProjectileEntity impleme
                     }
                     case ENEMY: {
                         target.attackEntityFrom(MKDamageSource.causeAbilityDamage(CoreDamageTypes.NatureDamage,
-                                        CleansingSeedAbility.INSTANCE.getAbilityId(), this, caster,
-                                        CleansingSeedAbility.INSTANCE.getModifierScaling()),
-                                CleansingSeedAbility.INSTANCE.getDamageForLevel(getSkillLevel()));
+                                        ability.getAbilityId(), this, caster,
+                                        ability.getModifierScaling()),
+                                ability.getDamageForLevel(getSkillLevel()));
                         SoundUtils.serverPlaySoundAtEntity(target, ModSounds.spell_water_8, cat);
                         break;
                     }

@@ -1,0 +1,59 @@
+{
+  "entityType": "mkultra:golem",
+  "options": [
+    {
+      "optionType": "mknpc:render_group",
+      "value": "necrotide_golem"
+    },
+    {
+      "optionType": "mknpc:attributes",
+      "attributes": [
+        {
+          "attributeName": "minecraft:generic.max_health",
+          "value": 500.0
+        }
+      ]
+    },
+    {
+      "optionType": "mknpc:name",
+      "value": "A Necrotide Construction"
+    },
+    {
+      "optionType": "mknpc:abilities",
+      "options": [
+        {
+          "priority": 1,
+          "chance": 1.0,
+          "abilityName": "mkultra:ability.shadow_bolt"
+        }
+      ]
+    },
+    {
+      "optionType": "mknpc:skills",
+      "minor_skills": [
+        "mkcore:evocation",
+        "mkcore:alteration",
+        "mkcore:abjuration"
+      ],
+      "major_skills": [
+        "mkcore:conjuration",
+        "mkcore:necromancy"
+      ],
+      "remedial_skills": [
+        "mkcore:one_hand_pierce"
+      ]
+    },
+    {
+      "optionType": "mknpc:notable",
+      "value": true
+    },
+    {
+      "optionType": "mknpc:mk_size",
+      "value": 1.25
+    },
+    {
+      "optionType": "mknpc:faction",
+      "value": "mkultra:necrotide_cultists"
+    }
+  ]
+}

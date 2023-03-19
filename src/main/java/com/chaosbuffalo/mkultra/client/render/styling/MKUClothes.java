@@ -37,4 +37,11 @@ public class MKUClothes {
     public static final ResourceLocation SOLANGIAN_ARMOR_2 = new ResourceLocation(MKUltra.MODID,
             "textures/entity/clothes/solangian_armor_2.png");
 
+    public static final ResourceLocation NECROTIDE_ROBES_1 = new ResourceLocation(MKUltra.MODID,
+            "textures/entity/clothes/necrotide_robes_1.png");
+    public static final ResourceLocation NECROTIDE_ROBES_2 = new ResourceLocation(MKUltra.MODID,
+            "textures/entity/clothes/necrotide_robes_2.png");
+    public static final ResourceLocation NECROTIDE_ROBES_SKULL_HOOD = new ResourceLocation(MKUltra.MODID,
+            "textures/entity/clothes/necrotide_robes_skull_1.png");
+
 }

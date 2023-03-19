@@ -88,6 +88,15 @@
   "mkultra.entitlement.nether_mage.intro.tier_1.name": "Initiate's Knowledge",
   "faction.mkultra.see_of_solang.name": "See of Solang",
   "faction.mkultra.nether_mages.name": "Nether Mage's Guild",
-  "faction.mkultra.hyborean_dead.name": "Hyborean Dead"
-
+  "faction.mkultra.hyborean_dead.name": "Hyborean Dead",
+  "mkultra.ability.shadow_pulse.name": "Shadow Pulse",
+  "mkultra.ability.shadow_pulse.description": "Summons a vortex of shadow with a radius of %s blocks, pulling nearby enemies in and dealing %s every %s seconds for %s seconds. When the effect ends, the vortex detonates dealing %s.",
+  "mkultra.ability.shadow_bolt.name": "Shadow Bolt",
+  "mkultra.ability.shadow_bolt.description": "Throws a magical ball of shadow, causing %s to the target.",
+  "mkultra.ability.engulfing_darkness.name": "Engulfing Darkness",
+  "mkultra.ability.engulfing_darkness.description": "Conjures a magical darkness around the target, causing %s every %s seconds for %s seconds and slowing their movement. Every tick has a %s chance to grant the caster Shadowbringer for %s seconds. Shadowbringer causes your next Shadowbolt to have an instant cast time, 50%% of the mana cost, and instantly resets its cooldown.",
+  "mkultra.ability.life_spike.name": "Life Spike",
+  "mkultra.ability.life_spike.description": "Strikes the target with a blast of dark energy causing %s and transferring %s health to the caster.",
+  "mkultra.pet_name_format": "%s's %s",
+  "faction.mkultra.necrotide_cultists.name": "Necrotide Cultists"
 }

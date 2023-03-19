@@ -25,11 +25,11 @@ public class MKUTalents {
     public static void registerTalents(RegistryEvent.Register<MKTalent> event) {
         PassiveTalent soulDrain = new PassiveTalent(
                 new ResourceLocation(MKUltra.MODID, "talent.soul_drain"),
-                SoulDrainAbility.INSTANCE);
+                MKUAbilities.SOUL_DRAIN);
         event.getRegistry().register(soulDrain);
         PassiveTalent lifeSiphon = new PassiveTalent(
                 new ResourceLocation(MKUltra.MODID, "talent.life_siphon"),
-                LifeSiphonAbility.INSTANCE);
+                MKUAbilities.LIFE_SIPHON);
         event.getRegistry().register(lifeSiphon);
     }
 }

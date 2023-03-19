@@ -1,7 +1,10 @@
 package com.chaosbuffalo.mkultra.init;
 
 
+import com.chaosbuffalo.mknpc.entity.MKEntity;
 import com.chaosbuffalo.mknpc.world.gen.feature.structure.*;
+import com.chaosbuffalo.mknpc.world.gen.feature.structure.events.StructureEvent;
+import com.chaosbuffalo.mknpc.world.gen.feature.structure.events.event.SpawnNpcDefinitionEvent;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.world.gen.feature.structure.*;
 import net.minecraft.util.ResourceLocation;
@@ -44,6 +47,10 @@ public class MKUWorldGen {
     public static MKJigsawStructure DESERT_TEMPLE_VILLAGE_STRUCTURE;
     public static final ResourceLocation DESERT_TEMPLE_VILLAGE_NAME = new ResourceLocation(MKUltra.MODID, "desert_temple_village");
     private static StructureFeature<?, ?> DESERT_TEMPLE_VILLAGE_FEATURE;
+
+    public static MKJigsawStructure NECROTIDE_ALTER;
+    public static final ResourceLocation NECROTIDE_ALTER_NAME = new ResourceLocation(MKUltra.MODID, "necrotide_alter");
+    private static StructureFeature<?, ?> NECROTIDE_ALTER_FEATURE;
 
 
     public static void registerStructurePieces(){
@@ -94,6 +101,19 @@ public class MKUWorldGen {
         Structure.STRUCTURE_DECORATION_STAGE_MAP.put(DESERT_TEMPLE_VILLAGE_STRUCTURE, GenerationStage.Decoration.SURFACE_STRUCTURES);
         DESERT_TEMPLE_VILLAGE_FEATURE = DESERT_TEMPLE_VILLAGE_STRUCTURE.withConfiguration(new VillageConfig(() -> DesertTempleVillagePools.DESERT_TEMPLE_VILLAGE_BASE, DesertTempleVillagePools.GEN_DEPTH));
         evt.getRegistry().register(DESERT_TEMPLE_VILLAGE_STRUCTURE);
+
+        NECROTIDE_ALTER = new MKJigsawStructure(VillageConfig.field_236533_a_, 0, true, true, false)
+                .addEvent("summon_golem", new SpawnNpcDefinitionEvent(new ResourceLocation(MKUltra.MODID, "necrotide_golem"),
+                        "golem_spawn", "golem_look", MKEntity.NonCombatMoveType.STATIONARY)
+                        .addNotableDeadCondition(new ResourceLocation(MKUltra.MODID, "skeletal_lock"), true)
+                        .addTrigger(StructureEvent.EventTrigger.ON_DEATH));
+        NECROTIDE_ALTER.setRegistryName(NECROTIDE_ALTER_NAME);
+        Structure.NAME_STRUCTURE_BIMAP.put(NECROTIDE_ALTER_NAME.toString(), NECROTIDE_ALTER);
+        Structure.STRUCTURE_DECORATION_STAGE_MAP.put(NECROTIDE_ALTER, GenerationStage.Decoration.SURFACE_STRUCTURES);
+        NECROTIDE_ALTER_FEATURE = NECROTIDE_ALTER.withConfiguration(new VillageConfig(
+                () -> NecrotideAlterPools.BASE, NecrotideAlterPools.GEN_DEPTH));
+        evt.getRegistry().register(NECROTIDE_ALTER);
+
     }
 
     public static void worldSetup(FMLServerAboutToStartEvent event){
@@ -101,6 +121,7 @@ public class MKUWorldGen {
                 .ifPresent(x ->  {
                     x.getStructures().func_236195_a_().put(INTRO_CASTLE, new StructureSeparationSettings(2, 1, 34222645));
                     x.getStructures().func_236195_a_().put(DESERT_TEMPLE_VILLAGE_STRUCTURE, new StructureSeparationSettings(36, 8, 14444012));
+                    x.getStructures().func_236195_a_().put(NECROTIDE_ALTER, new StructureSeparationSettings(50, 24, 132321313));
                 });
 //        event.getServer().getDynamicRegistries().getRegistry(Registry.NOISE_SETTINGS_KEY).forEach(dimensionSettings -> {
 ////            dimensionSettings.getStructures().func_236195_a_().put(ALPHA_GREEN_LADY_STRUCTURE,
@@ -120,6 +141,8 @@ public class MKUWorldGen {
         event.getGeneration().withStructure(INTRO_CASTLE_FEATURE);
         if (event.getCategory() == Biome.Category.DESERT) {
             event.getGeneration().withStructure(DESERT_TEMPLE_VILLAGE_FEATURE);
+            event.getGeneration().withStructure(NECROTIDE_ALTER_FEATURE);
         }
+
     }
 }

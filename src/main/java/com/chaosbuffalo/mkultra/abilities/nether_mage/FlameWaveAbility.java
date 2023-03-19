@@ -7,7 +7,8 @@ import com.chaosbuffalo.mkcore.abilities.AbilityTargeting;
 import com.chaosbuffalo.mkcore.abilities.MKAbility;
 import com.chaosbuffalo.mkcore.core.IMKEntityData;
 import com.chaosbuffalo.mkcore.core.MKAttributes;
-import com.chaosbuffalo.mkcore.effects.*;
+import com.chaosbuffalo.mkcore.effects.AreaEffectBuilder;
+import com.chaosbuffalo.mkcore.effects.MKEffectBuilder;
 import com.chaosbuffalo.mkcore.effects.utility.MKParticleEffect;
 import com.chaosbuffalo.mkcore.effects.utility.SoundEffect;
 import com.chaosbuffalo.mkcore.init.CoreDamageTypes;
@@ -27,9 +28,6 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
 
@@ -37,8 +35,6 @@ public class FlameWaveAbility extends MKAbility {
     public static final ResourceLocation CASTING_PARTICLES = new ResourceLocation(MKUltra.MODID, "flame_wave_casting");
     public static final ResourceLocation CAST_1_PARTICLES = new ResourceLocation(MKUltra.MODID, "flame_wave_cast_1");
     public static final ResourceLocation CAST_2_PARTICLES = new ResourceLocation(MKUltra.MODID, "flame_wave_cast_2");
-    public static final FlameWaveAbility INSTANCE = new FlameWaveAbility();
-
     protected final FloatAttribute base = new FloatAttribute("base", 6.0f);
     protected final FloatAttribute scale = new FloatAttribute("scale", 3.0f);
     protected final FloatAttribute modifierScaling = new FloatAttribute("modifierScaling", 1.0f);
@@ -50,7 +46,7 @@ public class FlameWaveAbility extends MKAbility {
 
 
     public FlameWaveAbility() {
-        super(MKUltra.MODID, "ability.flame_wave");
+        super();
         setCooldownSeconds(14);
         setManaCost(6);
         setCastTime(GameConstants.TICKS_PER_SECOND / 2);
@@ -102,7 +98,7 @@ public class FlameWaveAbility extends MKAbility {
         float level = getSkillLevel(entity, MKAttributes.EVOCATION);
 
         MKEffectBuilder<?> flames = FlameWaveEffect.from(entity, base.value(), scale.value(), modifierScaling.value(),
-                        baseDuration.value(), scaleDuration.value(), damageBoost.value())
+                baseDuration.value(), scaleDuration.value(), damageBoost.value())
                 .ability(this)
                 .skillLevel(level);
 
@@ -125,14 +121,5 @@ public class FlameWaveAbility extends MKAbility {
         PacketHandler.sendToTrackingAndSelf(new MKParticleEffectSpawnPacket(
                         new Vector3d(0.0, 1.0, 0.0), cast_1_particles.getValue(), entity.getEntityId()),
                 entity);
-    }
-
-    @SuppressWarnings("unused")
-    @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-    private static class RegisterMe {
-        @SubscribeEvent
-        public static void register(RegistryEvent.Register<MKAbility> event) {
-            event.getRegistry().register(INSTANCE);
-        }
     }
 }

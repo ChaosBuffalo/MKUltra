@@ -1,13 +1,12 @@
 package com.chaosbuffalo.mkultra.init;
 
+import com.chaosbuffalo.mknpc.entity.MKGolemEntity;
 import com.chaosbuffalo.mknpc.entity.MKSkeletonEntity;
 import com.chaosbuffalo.mknpc.entity.MKZombifiedPiglinEntity;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.entities.humans.HumanEntity;
 import com.chaosbuffalo.mkultra.entities.orcs.OrcEntity;
-import com.chaosbuffalo.mkultra.entities.projectiles.CleansingSeedProjectileEntity;
-import com.chaosbuffalo.mkultra.entities.projectiles.FireballProjectileEntity;
-import com.chaosbuffalo.mkultra.entities.projectiles.SpiritBombProjectileEntity;
+import com.chaosbuffalo.mkultra.entities.projectiles.*;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -15,11 +14,26 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 
 
 @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class MKUEntities {
+
+    public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, MKUltra.MODID);
+
+    public static final RegistryObject<EntityType<MKGolemEntity>> GOLEM_TYPE = ENTITIES.register("golem",
+            () -> EntityType.Builder.create(MKGolemEntity::new, EntityClassification.MONSTER)
+                    .size(EntityType.IRON_GOLEM.getWidth(), EntityType.IRON_GOLEM.getHeight())
+                    .build(new ResourceLocation(MKUltra.MODID, "golem").toString()));
+
+    public static void register() {
+        ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
+    }
 
     public static final String HYBOREAN_SKELETON_NAME = "hyborean_skeleton";
     public static EntityType<MKSkeletonEntity> HYBOREAN_SKELETON_TYPE;
@@ -68,6 +82,28 @@ public class MKUEntities {
                 .build("fireball_projectile")
                 .setRegistryName(new ResourceLocation(MKUltra.MODID, "fireball_projectile")));
 
+        evt.getRegistry().register(EntityType.Builder.<ShadowBoltProjectileEntity>create(
+                ShadowBoltProjectileEntity::new, EntityClassification.MISC)
+                .immuneToFire()
+                .size(0.25f, 0.25f)
+                .setTrackingRange(5)
+                .setUpdateInterval(10)
+                .setShouldReceiveVelocityUpdates(true)
+                .disableSerialization()
+                .build("shadow_bolt_projectile")
+                .setRegistryName(new ResourceLocation(MKUltra.MODID, "shadow_bolt_projectile")));
+
+        evt.getRegistry().register(EntityType.Builder.<DrownProjectileEntity>create(
+                DrownProjectileEntity::new, EntityClassification.MISC)
+                .immuneToFire()
+                .size(0.25f, 0.25f)
+                .setTrackingRange(5)
+                .setUpdateInterval(10)
+                .setShouldReceiveVelocityUpdates(true)
+                .disableSerialization()
+                .build("drown_projectile")
+                .setRegistryName(new ResourceLocation(MKUltra.MODID, "drown_projectile")));
+
         EntityType<MKSkeletonEntity> hyborean_skeleton = EntityType.Builder.create(
                 MKSkeletonEntity::new, EntityClassification.MONSTER)
                 .size(EntityType.SKELETON.getWidth(), EntityType.SKELETON.getHeight())
@@ -109,5 +145,6 @@ public class MKUEntities {
         event.put(ORC_TYPE, OrcEntity.registerAttributes(2.0, 0.35).create());
         event.put(ZOMBIFIED_PIGLIN_TYPE, MKZombifiedPiglinEntity.registerAttributes(2.0, 0.2).create());
         event.put(HUMAN_TYPE, HumanEntity.registerAttributes(2.0, 0.35).create());
+        event.put(GOLEM_TYPE.get(), MKGolemEntity.registerAttributes(4.0, 0.3).create());
     }
 }

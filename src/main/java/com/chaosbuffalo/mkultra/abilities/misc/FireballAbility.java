@@ -5,7 +5,6 @@ import com.chaosbuffalo.mkcore.abilities.AbilityContext;
 import com.chaosbuffalo.mkcore.abilities.AbilityTargetSelector;
 import com.chaosbuffalo.mkcore.abilities.AbilityTargeting;
 import com.chaosbuffalo.mkcore.abilities.MKAbility;
-
 import com.chaosbuffalo.mkcore.core.IMKEntityData;
 import com.chaosbuffalo.mkcore.core.MKAttributes;
 import com.chaosbuffalo.mkcore.init.CoreDamageTypes;
@@ -20,16 +19,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
 
 public class FireballAbility extends MKAbility {
     public static final ResourceLocation CASTING_PARTICLES = new ResourceLocation(MKUltra.MODID, "fireball_casting");
-    public static final FireballAbility INSTANCE = new FireballAbility();
-
     protected final FloatAttribute baseDamage = new FloatAttribute("baseDamage", 6.0f);
     protected final FloatAttribute scaleDamage = new FloatAttribute("scaleDamage", 2.0f);
     protected final FloatAttribute projectileSpeed = new FloatAttribute("projectileSpeed", 1.25f);
@@ -37,8 +31,8 @@ public class FireballAbility extends MKAbility {
     protected final FloatAttribute modifierScaling = new FloatAttribute("modifierScaling", 1.0f);
     protected final FloatAttribute radius = new FloatAttribute("explosionRadius", 2.0f);
 
-    private FireballAbility() {
-        super(MKUltra.MODID, "ability.fireball");
+    public FireballAbility() {
+        super();
         setCooldownSeconds(4);
         setManaCost(5);
         setCastTime(GameConstants.TICKS_PER_SECOND);
@@ -109,14 +103,5 @@ public class FireballAbility extends MKAbility {
         proj.setSkillLevel(level);
         shootProjectile(proj, projectileSpeed.value(), projectileInaccuracy.value(), entity, context);
         entity.world.addEntity(proj);
-    }
-
-    @SuppressWarnings("unused")
-    @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-    private static class RegisterMe {
-        @SubscribeEvent
-        public static void register(RegistryEvent.Register<MKAbility> event) {
-            event.getRegistry().register(INSTANCE);
-        }
     }
 }

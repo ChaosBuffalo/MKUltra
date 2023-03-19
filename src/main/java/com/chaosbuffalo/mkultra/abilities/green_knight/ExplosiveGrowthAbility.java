@@ -21,6 +21,7 @@ import com.chaosbuffalo.mkcore.utils.SoundUtils;
 import com.chaosbuffalo.mkcore.utils.TargetUtil;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.CureEffect;
+import com.chaosbuffalo.mkultra.init.MKUAbilities;
 import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.Targeting;
 import com.chaosbuffalo.targeting_api.TargetingContext;
@@ -34,9 +35,6 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -45,16 +43,14 @@ public class ExplosiveGrowthAbility extends MKAbility {
     public static final ResourceLocation CASTING_PARTICLES = new ResourceLocation(MKUltra.MODID, "explosive_growth_casting");
     public static final ResourceLocation CAST_PARTICLES = new ResourceLocation(MKUltra.MODID, "explosive_growth_cast");
     public static final ResourceLocation DETONATE_PARTICLES = new ResourceLocation(MKUltra.MODID, "explosive_growth_detonate");
-    public static final ExplosiveGrowthAbility INSTANCE = new ExplosiveGrowthAbility();
-
     protected final FloatAttribute baseDamage = new FloatAttribute("baseDamage", 10.0f);
     protected final FloatAttribute scaleDamage = new FloatAttribute("scaleDamage", 5.0f);
     protected final FloatAttribute modifierScaling = new FloatAttribute("modifierScaling", 1.0f);
     protected final ResourceLocationAttribute cast_particles = new ResourceLocationAttribute("cast_particles", CAST_PARTICLES);
     protected final ResourceLocationAttribute detonate_particles = new ResourceLocationAttribute("detonate_particles", DETONATE_PARTICLES);
 
-    private ExplosiveGrowthAbility() {
-        super(MKUltra.MODID, "ability.explosive_growth");
+    public ExplosiveGrowthAbility() {
+        super();
         setCooldownSeconds(35);
         setManaCost(6);
         setCastTime(GameConstants.TICKS_PER_SECOND / 4);
@@ -116,7 +112,7 @@ public class ExplosiveGrowthAbility extends MKAbility {
         MKEffectBuilder<?> cure = CureEffect.from(castingEntity)
                 .ability(this)
                 .skillLevel(restoLevel);
-        MKEffectBuilder<?> remedy = NaturesRemedyAbility.INSTANCE.createNaturesRemedyEffect(casterData, restoLevel)
+        MKEffectBuilder<?> remedy = MKUAbilities.NATURES_REMEDY.get().createNaturesRemedyEffect(casterData, restoLevel)
                 .ability(this);
 
         Vector3d look = castingEntity.getLookVec().scale(getDistance(castingEntity));
@@ -161,12 +157,4 @@ public class ExplosiveGrowthAbility extends MKAbility {
         PacketHandler.sendToTrackingAndSelf(spawn, castingEntity);
     }
 
-    @SuppressWarnings("unused")
-    @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-    private static class RegisterMe {
-        @SubscribeEvent
-        public static void register(RegistryEvent.Register<MKAbility> event) {
-            event.getRegistry().register(INSTANCE);
-        }
-    }
 }

@@ -13,6 +13,7 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.abilities.misc.FireballAbility;
 import com.chaosbuffalo.mkultra.effects.ResistanceEffects;
 import com.chaosbuffalo.mkultra.entities.IMKRenderAsItem;
+import com.chaosbuffalo.mkultra.init.MKUAbilities;
 import com.chaosbuffalo.mkultra.init.MKUItems;
 import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.TargetingContext;
@@ -58,19 +59,20 @@ public class FireballProjectileEntity extends TrailProjectileEntity implements I
             PacketHandler.sendToTrackingAndSelf(new MKParticleEffectSpawnPacket(
                             new Vector3d(0.0, 0.0, 0.0), DETONATE_PARTICLES, getEntityId()), this);
 
+            FireballAbility ability = MKUAbilities.FIREBALL.get();
             MKEffectBuilder<?> damage = MKAbilityDamageEffect.from(casterLiving, CoreDamageTypes.FireDamage,
-                            FireballAbility.INSTANCE.getBaseDamage(),
-                            FireballAbility.INSTANCE.getScaleDamage(),
-                            FireballAbility.INSTANCE.getModifierScaling())
-                    .ability(FireballAbility.INSTANCE)
+                            ability.getBaseDamage(),
+                            ability.getScaleDamage(),
+                            ability.getModifierScaling())
+                    .ability(ability)
                     .directEntity(this)
                     .skillLevel(getSkillLevel())
                     .amplify(amplifier);
 
             MKEffectBuilder<?> fireBreak = ResistanceEffects.BREAK_FIRE.builder(casterLiving)
-                    .ability(FireballAbility.INSTANCE)
+                    .ability(ability)
                     .directEntity(this)
-                    .timed((amplifier + 1) * GameConstants.TICKS_PER_SECOND)
+                    .timed(Math.round((getSkillLevel() + 1) * GameConstants.TICKS_PER_SECOND))
                     .skillLevel(getSkillLevel())
                     .amplify(amplifier);
 
@@ -78,7 +80,7 @@ public class FireballProjectileEntity extends TrailProjectileEntity implements I
                     .effect(damage, getTargetContext())
                     .effect(fireBreak, getTargetContext())
                     .instant()
-                    .color(16737330).radius(FireballAbility.INSTANCE.getExplosionRadius(), true)
+                    .color(16737330).radius(ability.getExplosionRadius(), true)
                     .disableParticle()
                     .spawn();
             return true;

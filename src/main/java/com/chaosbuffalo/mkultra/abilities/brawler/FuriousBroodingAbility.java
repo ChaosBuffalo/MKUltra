@@ -23,16 +23,11 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
 
-public class FuriousBrooding extends MKAbility {
+public class FuriousBroodingAbility extends MKAbility {
     public static final ResourceLocation TICK_PARTICLES = new ResourceLocation(MKUltra.MODID, "furious_brooding_pulse");
-    public static final FuriousBrooding INSTANCE = new FuriousBrooding();
-
     protected final ResourceLocationAttribute tick_particles = new ResourceLocationAttribute("cast_particles", TICK_PARTICLES);
     protected final FloatAttribute baseValue = new FloatAttribute("baseValue", 2.0f);
     protected final FloatAttribute scaleValue = new FloatAttribute("scaleValue", 1.0f);
@@ -40,8 +35,8 @@ public class FuriousBrooding extends MKAbility {
     protected final IntAttribute scaleDuration = new IntAttribute("scaleDuration", 5);
     protected final FloatAttribute modifierScaling = new FloatAttribute("modifierScaling", 1.0f);
 
-    private FuriousBrooding() {
-        super(new ResourceLocation(MKUltra.MODID, "ability.furious_brooding"));
+    public FuriousBroodingAbility() {
+        super();
         setCooldownSeconds(18);
         setManaCost(6);
         addAttributes(tick_particles, baseValue, baseDuration, scaleValue, scaleDuration, modifierScaling);
@@ -95,15 +90,6 @@ public class FuriousBrooding extends MKAbility {
                     new Vector3d(0.0, 1.0, 0.0), tick_particles.getValue(),
                     targetEntity.getEntityId()), targetEntity);
         });
-    }
-
-    @SuppressWarnings("unused")
-    @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-    private static class RegisterMe {
-        @SubscribeEvent
-        public static void register(RegistryEvent.Register<MKAbility> event) {
-            event.getRegistry().register(INSTANCE);
-        }
     }
 }
 

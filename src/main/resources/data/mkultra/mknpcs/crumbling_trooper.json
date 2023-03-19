@@ -69,6 +69,23 @@
       ]
     },
     {
+      "optionType": "mknpc:skills",
+      "minor_skills": [
+        "mkcore:one_hand_pierce",
+        "mkcore:two_hand_slash",
+        "mkcore:two_hand_blunt",
+        "mkcore:one_hand_slash",
+        "mkcore:one_hand_blunt",
+        "mkcore:two_hand_pierce"
+      ],
+      "major_skills": [],
+      "remedial_skills": [
+        "mkcore:arete",
+        "mkcore:pneuma",
+        "mkcore:pankration"
+      ]
+    },
+    {
       "optionType": "mknpc:lunge_speed",
       "value": 0.35
     },

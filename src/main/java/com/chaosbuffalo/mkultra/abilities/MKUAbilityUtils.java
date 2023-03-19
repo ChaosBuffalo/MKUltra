@@ -8,9 +8,7 @@ import net.minecraft.entity.LivingEntity;
 public class MKUAbilityUtils {
 
     public static boolean isBurning(LivingEntity entity) {
-        return MKCore.getEntityData(entity)
-                .map(MKUAbilityUtils::isBurning)
-                .orElse(false);
+        return MKCore.getEntityData(entity).map(MKUAbilityUtils::isBurning).orElse(false);
     }
 
     public static boolean isBurning(IMKEntityData entityData) {
