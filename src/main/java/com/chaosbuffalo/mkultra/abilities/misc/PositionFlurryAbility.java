@@ -13,6 +13,8 @@ import com.chaosbuffalo.targeting_api.Targeting;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.RegistryObject;
 
 import java.util.List;
@@ -25,6 +27,15 @@ public abstract class PositionFlurryAbility extends MKAbility {
         super();
         addAttributes(tickRate);
         this.abilityToCast = abilityToCast;
+    }
+
+    @Override
+    protected ITextComponent getAbilityDescription(IMKEntityData entityData) {
+
+        return new TranslationTextComponent("mkultra.ability.flurry.description",
+                abilityToCast.get().getAbilityName(),
+                NUMBER_FORMATTER.format(getDistance(entityData.getEntity())),
+                NUMBER_FORMATTER.format(convertDurationToSeconds(tickRate.value())));
     }
 
     @Override

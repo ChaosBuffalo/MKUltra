@@ -77,7 +77,7 @@
   "mkultra.ability.wrath_beam.name": "Wrath Beam",
   "mkultra.ability.wrath_beam.description": "Calls down a beam of energy dealing %s and applying Break Fire for %s seconds every %s seconds for %s seconds.",
   "mkultra.ability.wrath_beam_flurry.name": "Wrath Beam Flurry",
-  "mkultra.ability.wrath_beam_flurry.description": "Casts a Wrath Beam on every enemy within %s blocks every %s seconds",
+  "mkultra.ability.flurry.description": "Casts a %s on every enemy within %s blocks every %s seconds",
   "mkultra.entitlement.cleric.tier_1.name": "Cleric Tier 1",
   "mkultra.entitlement.cleric.tier_2.name": "Cleric Tier 2",
   "mkultra.entitlement.cleric.tier_3.name": "Cleric Tier 3",

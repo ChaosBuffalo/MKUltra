@@ -16,6 +16,7 @@ import com.chaosbuffalo.mkcore.serialization.attributes.ResourceLocationAttribut
 import com.chaosbuffalo.mkcore.utils.SoundUtils;
 import com.chaosbuffalo.mkcore.utils.TargetUtil;
 import com.chaosbuffalo.mkultra.MKUltra;
+import com.chaosbuffalo.mkultra.abilities.misc.PositionTargetingAbility;
 import com.chaosbuffalo.mkultra.effects.PullEffect;
 import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.TargetingContext;
@@ -32,7 +33,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import javax.annotation.Nullable;
 import java.util.Set;
 
-public class ShadowPulseAbility extends MKAbility {
+public class ShadowPulseAbility extends PositionTargetingAbility {
     private static final ResourceLocation PULSE_PARTICLES = new ResourceLocation(MKUltra.MODID, "shadow_pulse_detonate");
     public static final ResourceLocation CASTING_PARTICLES = new ResourceLocation(MKUltra.MODID, "shadow_bolt_casting");
     private static final ResourceLocation WAIT_PARTICLES = new ResourceLocation(MKUltra.MODID, "shadow_pulse_wait");
@@ -61,6 +62,7 @@ public class ShadowPulseAbility extends MKAbility {
         addAttributes(base, scale, modifierScaling, tickRate, pulse_particles, wait_particles, duration,
                 baseGravity, scaleGravity, detonateBase, detonateScale, radius, waitTime);
     }
+
 
     @Override
     protected ITextComponent getAbilityDescription(IMKEntityData casterData) {
@@ -91,7 +93,8 @@ public class ShadowPulseAbility extends MKAbility {
         return ModSounds.hostile_casting_shadow;
     }
 
-    public void castShadowPulse(LivingEntity castingEntity, Vector3d position) {
+    @Override
+    public void castAtPosition(LivingEntity castingEntity, Vector3d position) {
         Vector3d pulseOffset = new Vector3d(0.0, 0.5, 0.0);
         Vector3d pulsePos = position.add(pulseOffset);
         float level = getSkillLevel(castingEntity, MKAttributes.CONJURATION);
@@ -130,23 +133,6 @@ public class ShadowPulseAbility extends MKAbility {
         SoundUtils.serverPlaySoundFromEntity(position.getX(), position.getY(), position.getZ(), ModSounds.spell_dark_13,
                 castingEntity.getSoundCategory(), 1.0f, 1.0f, castingEntity);
         builder.spawn();
-    }
-
-    @Override
-    public void endCast(LivingEntity castingEntity, IMKEntityData casterData, AbilityContext context) {
-        super.endCast(castingEntity, casterData, context);
-        context.getMemory(MKAbilityMemories.ABILITY_POSITION_TARGET)
-                .flatMap(TargetUtil.LivingOrPosition::getPosition).ifPresent(x -> castShadowPulse(castingEntity, x));
-    }
-
-    @Override
-    public Set<MemoryModuleType<?>> getRequiredMemories() {
-        return ImmutableSet.of(MKAbilityMemories.ABILITY_POSITION_TARGET);
-    }
-
-    @Override
-    public AbilityTargetSelector getTargetSelector() {
-        return AbilityTargeting.POSITION_INCLUDE_ENTITIES;
     }
 
 }
