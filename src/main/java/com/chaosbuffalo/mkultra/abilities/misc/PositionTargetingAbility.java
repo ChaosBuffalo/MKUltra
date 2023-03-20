@@ -7,6 +7,7 @@ import com.google.common.collect.ImmutableSet;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.brain.memory.MemoryModuleType;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.text.ITextComponent;
 
 import java.util.Set;
 
@@ -28,6 +29,11 @@ public abstract class PositionTargetingAbility extends MKAbility {
     @Override
     public Set<MemoryModuleType<?>> getRequiredMemories() {
         return ImmutableSet.of(MKAbilityMemories.ABILITY_POSITION_TARGET);
+    }
+
+    // FIXME: when we get the multiproject working lets make some of these calls less protected for stuff like this
+    public ITextComponent exposeAbilityDescription(IMKEntityData casterData) {
+        return getAbilityDescription(casterData);
     }
 
     @Override

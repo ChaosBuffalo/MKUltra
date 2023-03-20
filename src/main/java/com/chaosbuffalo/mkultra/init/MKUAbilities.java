@@ -29,6 +29,7 @@ public class MKUAbilities {
     public static RegistryObject<WrathBeamFlurryAbility> WRATH_BEAM_FLURRY = ABILITIES.register("ability.wrath_beam_flurry", WrathBeamFlurryAbility::new);
     public static final RegistryObject<SeverTendonAbility> SEVER_TENDON = ABILITIES.register("ability.sever_tendon", SeverTendonAbility::new);
     public static final RegistryObject<FireballAbility> FIREBALL = ABILITIES.register("ability.fireball", FireballAbility::new);
+    public static final RegistryObject<ShadowPulseFlurryAbility> SHADOW_PUlSE_FLURRY = ABILITIES.register("ability.shadow_pulse_flurry", ShadowPulseFlurryAbility::new);
 
     //necromancer
     public static final RegistryObject<MKEntitySummonAbility> TEST_SUMMON = ABILITIES.register("ability.test_summon",

@@ -21,7 +21,7 @@ public class ShadowPulseFlurryAbility extends PositionFlurryAbility{
     public static final ResourceLocation CASTING_PARTICLES = new ResourceLocation(MKUltra.MODID, "shadow_bolt_casting");
 
     public ShadowPulseFlurryAbility() {
-        super(MKUAbilities.WRATH_BEAM);
+        super(MKUAbilities.SHADOW_PULSE);
         setCastTime(GameConstants.TICKS_PER_SECOND * 3);
         //FIXME: this should be simplified in attribute rework
         tickRate.setValue(GameConstants.TICKS_PER_SECOND);
@@ -31,14 +31,6 @@ public class ShadowPulseFlurryAbility extends PositionFlurryAbility{
         addSkillAttribute(MKAttributes.EVOCATION);
         setUseCondition(new MeleeUseCondition(this));
         casting_particles.setDefaultValue(CASTING_PARTICLES);
-    }
-
-    @Override
-    protected ITextComponent getAbilityDescription(IMKEntityData entityData) {
-
-        return new TranslationTextComponent(getDescriptionTranslationKey(),
-                NUMBER_FORMATTER.format(getDistance(entityData.getEntity())),
-                NUMBER_FORMATTER.format(convertDurationToSeconds(tickRate.value())));
     }
 
     @Override

@@ -98,5 +98,6 @@
   "mkultra.ability.life_spike.name": "Life Spike",
   "mkultra.ability.life_spike.description": "Strikes the target with a blast of dark energy causing %s and transferring %s health to the caster.",
   "mkultra.pet_name_format": "%s's %s",
-  "faction.mkultra.necrotide_cultists.name": "Necrotide Cultists"
+  "faction.mkultra.necrotide_cultists.name": "Necrotide Cultists",
+  "mkultra.ability.shadow_pulse_flurry.name": "Shadow Pulse Flurry"
 }
