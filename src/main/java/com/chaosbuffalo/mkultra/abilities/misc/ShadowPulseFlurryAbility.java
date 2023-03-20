@@ -17,12 +17,15 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 import javax.annotation.Nullable;
 
-public class WrathBeamFlurryAbility extends PositionFlurryAbility {
-    public static final ResourceLocation CASTING_PARTICLES = new ResourceLocation(MKUltra.MODID, "flame_wave_casting");
+public class ShadowPulseFlurryAbility extends PositionFlurryAbility{
+    public static final ResourceLocation CASTING_PARTICLES = new ResourceLocation(MKUltra.MODID, "shadow_bolt_casting");
 
-    public WrathBeamFlurryAbility() {
-        super(MKUAbilities.WRATH_BEAM);
-        setCastTime(GameConstants.TICKS_PER_SECOND * 2);
+    public ShadowPulseFlurryAbility() {
+        super(MKUAbilities.SHADOW_PULSE);
+        setCastTime(GameConstants.TICKS_PER_SECOND * 3);
+        //FIXME: this should be simplified in attribute rework
+        tickRate.setValue(GameConstants.TICKS_PER_SECOND);
+        tickRate.setDefaultValue(GameConstants.TICKS_PER_SECOND);
         setCooldownSeconds(5);
         setManaCost(10);
         addSkillAttribute(MKAttributes.EVOCATION);
