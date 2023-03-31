@@ -1,25 +1,25 @@
 package com.chaosbuffalo.mkultra.item;
 
 import com.chaosbuffalo.mkultra.init.MKUItems;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.IArmorMaterial;
-import net.minecraft.item.Items;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.LazyValue;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.util.LazyLoadedValue;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 
 import java.util.function.Supplier;
 
-public enum MKUArmorMaterial implements IArmorMaterial {
+public enum MKUArmorMaterial implements ArmorMaterial {
 
-    GREEN_KNIGHT_ARMOR("mkultra:green_knight", 25, new int[]{3, 6, 7, 3}, 15, SoundEvents.ITEM_ARMOR_EQUIP_IRON,
+    GREEN_KNIGHT_ARMOR("mkultra:green_knight", 25, new int[]{3, 6, 7, 3}, 15, SoundEvents.ARMOR_EQUIP_IRON,
             0.0F, 0.0F, () -> {
-        return Ingredient.fromItems(Items.IRON_INGOT);
+        return Ingredient.of(Items.IRON_INGOT);
     }),
     TROOPER_KNIGHT_ARMOR("mkultra:trooper_knight", 18, new int[]{1, 4, 5, 2}, 12,
-            SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0.0F, 0.0F, () -> {
-        return Ingredient.fromItems(MKUItems.corruptedPigIronPlate);
+            SoundEvents.ARMOR_EQUIP_IRON, 0.0F, 0.0F, () -> {
+        return Ingredient.of(MKUItems.corruptedPigIronPlate);
     });
 
 
@@ -31,7 +31,7 @@ public enum MKUArmorMaterial implements IArmorMaterial {
     private final SoundEvent soundEvent;
     private final float toughness;
     private final float knockbackResistance;
-    private final LazyValue<Ingredient> repairMaterial;
+    private final LazyLoadedValue<Ingredient> repairMaterial;
 
     private MKUArmorMaterial(String name, int maxDamageFactor, int[] damageReductionAmountArray, int enchantability,
                              SoundEvent soundEvent, float toughness, float knockbackResistance,
@@ -43,32 +43,32 @@ public enum MKUArmorMaterial implements IArmorMaterial {
         this.soundEvent = soundEvent;
         this.toughness = toughness;
         this.knockbackResistance = knockbackResistance;
-        this.repairMaterial = new LazyValue<>(repairMaterial);
+        this.repairMaterial = new LazyLoadedValue<>(repairMaterial);
     }
 
     @Override
-    public int getDurability(EquipmentSlotType slotIn) {
+    public int getDurabilityForSlot(EquipmentSlot slotIn) {
         return MAX_DAMAGE_ARRAY[slotIn.getIndex()] * this.maxDamageFactor;
     }
 
     @Override
-    public int getDamageReductionAmount(EquipmentSlotType slotIn) {
+    public int getDefenseForSlot(EquipmentSlot slotIn) {
         return this.damageReductionAmountArray[slotIn.getIndex()];
     }
 
     @Override
-    public int getEnchantability() {
+    public int getEnchantmentValue() {
         return enchantability;
     }
 
     @Override
-    public SoundEvent getSoundEvent() {
+    public SoundEvent getEquipSound() {
         return soundEvent;
     }
 
     @Override
-    public Ingredient getRepairMaterial() {
-        return repairMaterial.getValue();
+    public Ingredient getRepairIngredient() {
+        return repairMaterial.get();
     }
 
     @Override

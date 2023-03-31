@@ -18,18 +18,18 @@ import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.Targeting;
 import com.chaosbuffalo.targeting_api.TargetingContext;
 import com.chaosbuffalo.targeting_api.TargetingContexts;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ObjectHolder;
 
 
@@ -40,32 +40,26 @@ public class CleansingSeedProjectileEntity extends TrailProjectileEntity impleme
     public static final ResourceLocation TRAIL_PARTICLES = new ResourceLocation(MKUltra.MODID, "cleansing_seed_trail");
     public static final ResourceLocation DETONATE_PARTICLES = new ResourceLocation(MKUltra.MODID, "cleansing_seed_detonate");
 
-    @ObjectHolder(MKUltra.MODID + ":cleansing_seed_projectile")
-    public static EntityType<CleansingSeedProjectileEntity> TYPE;
 
-    public CleansingSeedProjectileEntity(EntityType<? extends ProjectileEntity> entityTypeIn,
-                                         World worldIn) {
+    public CleansingSeedProjectileEntity(EntityType<? extends Projectile> entityTypeIn,
+                                         Level worldIn) {
         super(entityTypeIn, worldIn);
         setDeathTime(40);
         setTrailAnimation(ParticleAnimationManager.ANIMATIONS.get(TRAIL_PARTICLES));
     }
 
-    public CleansingSeedProjectileEntity(World world) {
-        this(TYPE, world);
-    }
-
     @Override
-    protected boolean onImpact(Entity caster, RayTraceResult trace, int amplifier) {
-        if (world.isRemote) {
+    protected boolean onImpact(Entity caster, HitResult trace, int amplifier) {
+        if (level.isClientSide) {
             // No client code
             return false;
         }
 
-        SoundCategory cat = caster instanceof PlayerEntity ? SoundCategory.PLAYERS : SoundCategory.HOSTILE;
+        SoundSource cat = caster instanceof Player ? SoundSource.PLAYERS : SoundSource.HOSTILE;
         SoundUtils.serverPlaySoundAtEntity(this, ModSounds.spell_water_6, cat);
-        if (caster instanceof LivingEntity && trace.getType() == RayTraceResult.Type.ENTITY) {
+        if (caster instanceof LivingEntity && trace.getType() == HitResult.Type.ENTITY) {
             LivingEntity casterLiving = (LivingEntity) caster;
-            EntityRayTraceResult entityTrace = (EntityRayTraceResult) trace;
+            EntityHitResult entityTrace = (EntityHitResult) trace;
             if (entityTrace.getEntity() instanceof LivingEntity) {
                 LivingEntity target = (LivingEntity) entityTrace.getEntity();
                 Targeting.TargetRelation relation = Targeting.getTargetRelation(caster, target);
@@ -84,7 +78,7 @@ public class CleansingSeedProjectileEntity extends TrailProjectileEntity impleme
                         break;
                     }
                     case ENEMY: {
-                        target.attackEntityFrom(MKDamageSource.causeAbilityDamage(CoreDamageTypes.NatureDamage,
+                        target.hurt(MKDamageSource.causeAbilityDamage(CoreDamageTypes.NatureDamage,
                                         ability.getAbilityId(), this, caster,
                                         ability.getModifierScaling()),
                                 ability.getDamageForLevel(getSkillLevel()));
@@ -96,7 +90,7 @@ public class CleansingSeedProjectileEntity extends TrailProjectileEntity impleme
         }
 
         PacketHandler.sendToTrackingAndSelf(new MKParticleEffectSpawnPacket(
-                new Vector3d(0.0, 0.0, 0.0), DETONATE_PARTICLES, getEntityId()), this);
+                new Vec3(0.0, 0.0, 0.0), DETONATE_PARTICLES, getId()), this);
 
         return true;
     }

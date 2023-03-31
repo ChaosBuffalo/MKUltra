@@ -18,14 +18,14 @@ import com.chaosbuffalo.mkultra.effects.WarpCurseEffect;
 import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.TargetingContext;
 import com.chaosbuffalo.targeting_api.TargetingContexts;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 public class WarpCurseAbility extends MKAbility {
     public static final ResourceLocation CASTING_PARTICLES = new ResourceLocation(MKUltra.MODID, "warp_curse_casting");
@@ -48,12 +48,12 @@ public class WarpCurseAbility extends MKAbility {
     }
 
     @Override
-    protected ITextComponent getAbilityDescription(IMKEntityData entityData) {
+    protected Component getAbilityDescription(IMKEntityData entityData) {
         float level = getSkillLevel(entityData.getEntity(), MKAttributes.ALTERATON);
         int duration = getBuffDuration(entityData, level, baseDuration.value(), scaleDuration.value());
-        ITextComponent valueStr = getDamageDescription(entityData,
+        Component valueStr = getDamageDescription(entityData,
                 CoreDamageTypes.ShadowDamage, base.value(), scale.value(), level, modifierScaling.value());
-        return new TranslationTextComponent(getDescriptionTranslationKey(), valueStr,
+        return new TranslatableComponent(getDescriptionTranslationKey(), valueStr,
                 WarpCurseEffect.DEFAULT_PERIOD / 20,
                 duration / 20);
     }
@@ -97,11 +97,11 @@ public class WarpCurseAbility extends MKAbility {
 
             int oldAmp = Math.round(level);
             MKCore.getEntityData(targetEntity).ifPresent(targetData -> targetData.getEffects().addEffect(warpCast));
-            targetEntity.addPotionEffect(new EffectInstance(Effects.SLOWNESS, duration, oldAmp, false, false, true, null));
+            targetEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, duration, oldAmp, false, false, true, null));
 
-            SoundUtils.serverPlaySoundAtEntity(targetEntity, ModSounds.spell_fire_5, targetEntity.getSoundCategory());
+            SoundUtils.serverPlaySoundAtEntity(targetEntity, ModSounds.spell_fire_5, targetEntity.getSoundSource());
             PacketHandler.sendToTrackingAndSelf(new MKParticleEffectSpawnPacket(
-                    new Vector3d(0.0, 1.0, 0.0), cast_particles.getValue(), castingEntity.getEntityId()), castingEntity);
+                    new Vec3(0.0, 1.0, 0.0), cast_particles.getValue(), castingEntity.getId()), castingEntity);
         });
     }
 }

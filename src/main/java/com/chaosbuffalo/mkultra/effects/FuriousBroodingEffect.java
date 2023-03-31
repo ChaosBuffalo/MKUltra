@@ -7,12 +7,11 @@ import com.chaosbuffalo.mkcore.core.healing.MKHealSource;
 import com.chaosbuffalo.mkcore.core.healing.MKHealing;
 import com.chaosbuffalo.mkcore.effects.*;
 import com.chaosbuffalo.mkultra.MKUltra;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.potion.EffectType;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -26,7 +25,7 @@ public class FuriousBroodingEffect extends MKEffect {
     public static final FuriousBroodingEffect INSTANCE = new FuriousBroodingEffect();
 
     protected FuriousBroodingEffect() {
-        super(EffectType.BENEFICIAL);
+        super(MobEffectCategory.BENEFICIAL);
         setRegistryName(MKUltra.MODID, "effect.furious_brooding");
         addAttribute(Attributes.MOVEMENT_SPEED, modUUID, -0.60, 0.05, AttributeModifier.Operation.MULTIPLY_TOTAL, MKAttributes.PNEUMA);
     }

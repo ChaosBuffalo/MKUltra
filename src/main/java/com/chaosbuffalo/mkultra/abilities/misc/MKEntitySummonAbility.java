@@ -22,15 +22,15 @@ import com.chaosbuffalo.targeting_api.Targeting;
 import com.chaosbuffalo.targeting_api.TargetingContext;
 import com.chaosbuffalo.targeting_api.TargetingContexts;
 import com.google.common.collect.ImmutableSet;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.brain.memory.MemoryModuleType;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.memory.MemoryModuleType;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 import java.util.Set;
 import java.util.UUID;
@@ -91,21 +91,21 @@ public class MKEntitySummonAbility extends MKAbility {
             NpcDefinition def = NpcDefinitionManager.getDefinition(npcDefintion.getValue());
             if (def != null && target.getPosition().isPresent()) {
                 UUID id = casterData instanceof MKPlayerData ? ((MKPlayerData) casterData).getPersonaManager().getActivePersona().getPersonaId() :
-                        MKNpc.getNpcData(castingEntity).map(IEntityNpcData::getSpawnID).orElse(castingEntity.getUniqueID());
-                Entity entity = def.createEntity(castingEntity.getEntityWorld(), target.getPosition().get(), id, getSkillLevel(castingEntity, summoningSkill));
+                        MKNpc.getNpcData(castingEntity).map(IEntityNpcData::getSpawnID).orElse(castingEntity.getUUID());
+                Entity entity = def.createEntity(castingEntity.getCommandSenderWorld(), target.getPosition().get(), id, getSkillLevel(castingEntity, summoningSkill));
                 MKPet<MKEntity> pet = MKPet.makePetFromEntity(MKEntity.class, getAbilityId(), entity);
                 if (pet.getEntity() != null) {
                     casterData.getPets().addPet(pet);
-                    castingEntity.getEntityWorld().addEntity(pet.getEntity());
+                    castingEntity.getCommandSenderWorld().addFreshEntity(pet.getEntity());
                     pet.getEntity().setNoncombatBehavior(new PetNonCombatBehavior(castingEntity));
                     pet.getEntity().setNonCombatMoveType(MKEntity.NonCombatMoveType.STATIONARY);
                     MKNpc.getNpcData(pet.getEntity()).ifPresent(x -> x.setMKSpawned(true));
                     pet.getEntity().getCapability(FactionCapabilities.MOB_FACTION_CAPABILITY).ifPresent(x -> x.setFactionName(MKFaction.INVALID_FACTION));
-                    ITextComponent newName = new TranslationTextComponent("mkultra.pet_name_format", castingEntity.getName(), pet.getEntity().getName());
+                    Component newName = new TranslatableComponent("mkultra.pet_name_format", castingEntity.getName(), pet.getEntity().getName());
                     pet.getEntity().setCustomName(newName);
                 } else {
                     if (entity != null) {
-                        entity.remove();
+                        entity.remove(Entity.RemovalReason.DISCARDED);
                     }
                     MKUltra.LOGGER.error("Summon Ability {} failed to cast npc: {} to a MKEntity", getAbilityId(), npcDefintion.getValue());
                 }
@@ -117,8 +117,8 @@ public class MKEntitySummonAbility extends MKAbility {
                 LivingEntity tar = target.getEntity().get();
                 casterData.getPets().getPet(getAbilityId()).ifPresent(x -> {
                     if (tar.equals(x.getEntity())) {
-                        if (castingEntity.isSneaking()) {
-                            x.getEntity().remove();
+                        if (castingEntity.isShiftKeyDown()) {
+                            x.getEntity().remove(Entity.RemovalReason.DISCARDED);
                             casterData.getPets().removePet(x);
                         } else {
                             x.getEntity().setNoncombatBehavior(new PetNonCombatBehavior(castingEntity));
@@ -128,9 +128,9 @@ public class MKEntitySummonAbility extends MKAbility {
                             if (Targeting.isValidEnemy(castingEntity, tar)) {
                                 float newThreat = x.getEntity().getHighestThreat() + 500.0f;
                                 x.getEntity().addThreat(tar, newThreat, true);
-                                x.getEntity().getBrain().removeMemory(MKMemoryModuleTypes.SPAWN_POINT);
-                                if (x.getEntity() instanceof MobEntity) {
-                                    ((MobEntity) x.getEntity()).getNavigator().clearPath();
+                                x.getEntity().getBrain().eraseMemory(MKMemoryModuleTypes.SPAWN_POINT);
+                                if (x.getEntity() instanceof Mob) {
+                                    ((Mob) x.getEntity()).getNavigation().stop();
                                 }
                                 x.getEntity().enterCombatMovementState(tar);
 
@@ -141,7 +141,7 @@ public class MKEntitySummonAbility extends MKAbility {
                     }
                 });
             } else if (target.getPosition().isPresent()) {
-                Vector3d pos = target.getPosition().get();
+                Vec3 pos = target.getPosition().get();
                 casterData.getPets().getPet(getAbilityId()).ifPresent(
                         x -> {
                             if (x.getEntity() != null) {

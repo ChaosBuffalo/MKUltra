@@ -8,9 +8,9 @@ import com.chaosbuffalo.mkcore.effects.MKEffect;
 import com.chaosbuffalo.mkcore.effects.MKEffectBuilder;
 import com.chaosbuffalo.mkcore.effects.ScalingValueEffectState;
 import com.chaosbuffalo.mkultra.MKUltra;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.potion.EffectType;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -24,7 +24,7 @@ public class NaturesRemedyEffect extends MKEffect {
     public static final NaturesRemedyEffect INSTANCE = new NaturesRemedyEffect();
 
     private NaturesRemedyEffect() {
-        super(EffectType.BENEFICIAL);
+        super(MobEffectCategory.BENEFICIAL);
         setRegistryName(MKUltra.MODID, "effect.natures_remedy");
     }
 
@@ -68,7 +68,7 @@ public class NaturesRemedyEffect extends MKEffect {
                     activeEffect.getDirectEntity(),
                     activeEffect.getSourceEntity(),
                     getModifierScale());
-            heal.setDamageUndead(activeEffect.hasSourceEntity() && !activeEffect.getSourceEntity().isEntityUndead());
+            heal.setDamageUndead(activeEffect.hasSourceEntity() && !activeEffect.getSourceEntity().isInvertedHealAndHarm());
             MKHealing.healEntityFrom(target, value, heal);
             sendEffectParticles(targetData.getEntity());
             return true;

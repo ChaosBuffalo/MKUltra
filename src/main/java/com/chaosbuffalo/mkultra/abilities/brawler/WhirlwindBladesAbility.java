@@ -22,12 +22,12 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.TargetingContext;
 import com.chaosbuffalo.targeting_api.TargetingContexts;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 import javax.annotation.Nullable;
 
@@ -71,17 +71,17 @@ public class WhirlwindBladesAbility extends MKAbility {
     }
 
     @Override
-    protected ITextComponent getAbilityDescription(IMKEntityData entityData) {
+    protected Component getAbilityDescription(IMKEntityData entityData) {
         float level = getSkillLevel(entityData.getEntity(), MKAttributes.PANKRATION);
-        ITextComponent baseDamage = getDamageDescription(entityData,
+        Component baseDamage = getDamageDescription(entityData,
                 CoreDamageTypes.MeleeDamage, base.value(), scale.value(), level, 0.0f);
         float periodSeconds = 6.0f / GameConstants.TICKS_PER_SECOND;
         int castSeconds = getCastTime(entityData) / GameConstants.TICKS_PER_SECOND;
         int numberOfCasts = Math.round(castSeconds / periodSeconds);
-        ITextComponent maxDamage = getDamageDescription(entityData,
+        Component maxDamage = getDamageDescription(entityData,
                 CoreDamageTypes.MeleeDamage, base.value(), scale.value(), level,
                 modifierScaling.value() * numberOfCasts * perTick.value());
-        return new TranslationTextComponent(getDescriptionTranslationKey(), NUMBER_FORMATTER.format(periodSeconds), INTEGER_FORMATTER.format(castSeconds),
+        return new TranslatableComponent(getDescriptionTranslationKey(), NUMBER_FORMATTER.format(periodSeconds), INTEGER_FORMATTER.format(castSeconds),
                 PERCENT_FORMATTER.format(perTick.value()), baseDamage, maxDamage);
     }
 
@@ -122,9 +122,9 @@ public class WhirlwindBladesAbility extends MKAbility {
                     .ability(this)
                     .skillLevel(level);
             MKEffectBuilder<?> particles = MKParticleEffect.from(castingEntity,
-                    cast_particles.getValue(), true, new Vector3d(0.0, 1.0, 0.0))
+                    cast_particles.getValue(), true, new Vec3(0.0, 1.0, 0.0))
                     .ability(this);
-            MKEffectBuilder<?> sound = SoundEffect.from(castingEntity, ModSounds.spell_shadow_2, castingEntity.getSoundCategory())
+            MKEffectBuilder<?> sound = SoundEffect.from(castingEntity, ModSounds.spell_shadow_2, castingEntity.getSoundSource())
                     .ability(this);
 
             AreaEffectBuilder.createOnCaster(castingEntity)

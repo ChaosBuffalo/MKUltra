@@ -5,23 +5,24 @@ import com.chaosbuffalo.mknpc.client.render.models.styling.ModelStyles;
 import com.chaosbuffalo.mknpc.client.render.renderers.BipedGroupRenderer;
 import com.chaosbuffalo.mkultra.client.render.styling.MKUHumans;
 import com.chaosbuffalo.mkultra.entities.humans.HumanEntity;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.resources.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
 public class HumanGroupRenderer extends BipedGroupRenderer<HumanEntity, MKBipedModel<HumanEntity>> {
 
-    public HumanGroupRenderer(EntityRendererManager rendererManager) {
-        super(rendererManager);
-        putRenderer(ModelStyles.BASIC_NAME, new HumanRenderer(rendererManager, ModelStyles.BASIC_STYLE));
+    public HumanGroupRenderer(EntityRendererProvider.Context context, ResourceLocation entityType) {
+        super(context);
+        putRenderer(ModelStyles.BASIC_NAME, new HumanRenderer(context, ModelStyles.BASIC_STYLE, entityType));
         putRenderer(MKUHumans.TWO_LAYER_CLOTHES_SHORT_HAIR_NAME,
-                new HumanRenderer(rendererManager, MKUHumans.TWO_LAYER_CLOTHES_SHORT_HAIR));
-        putRenderer(ModelStyles.SHORT_HAIR_NAME, new HumanRenderer(rendererManager, ModelStyles.SHORT_HAIR_STYLE));
-        putRenderer(MKUHumans.GHOST_LONG_HAIR_NAME, new HumanRenderer(rendererManager, MKUHumans.GHOST_LONG_HAIR_STYLE));
-        putRenderer(MKUHumans.GHOST_LONG_HAIR_ARMORED_NAME, new HumanRenderer(rendererManager, MKUHumans.ARMORED_GHOST_LONG_HAIR_STYLE));
-        putRenderer(MKUHumans.TWO_LAYER_ARMOR_SHORT_HAIR_NAME, new HumanRenderer(rendererManager, MKUHumans.TWO_LAYER_ARMOR_SHORT_HAIR));
-        putRenderer(MKUHumans.TWO_LAYER_ARMOR_NO_HAIR_NAME, new HumanRenderer(rendererManager, MKUHumans.TWO_LAYER_ARMOR_NO_HAIR));
+                new HumanRenderer(context, MKUHumans.TWO_LAYER_CLOTHES_SHORT_HAIR, entityType));
+        putRenderer(ModelStyles.SHORT_HAIR_NAME, new HumanRenderer(context, ModelStyles.SHORT_HAIR_STYLE, entityType));
+        putRenderer(MKUHumans.GHOST_LONG_HAIR_NAME, new HumanRenderer(context, MKUHumans.GHOST_LONG_HAIR_STYLE, entityType));
+        putRenderer(MKUHumans.GHOST_LONG_HAIR_ARMORED_NAME, new HumanRenderer(context, MKUHumans.ARMORED_GHOST_LONG_HAIR_STYLE, entityType));
+        putRenderer(MKUHumans.TWO_LAYER_ARMOR_SHORT_HAIR_NAME, new HumanRenderer(context, MKUHumans.TWO_LAYER_ARMOR_SHORT_HAIR, entityType));
+        putRenderer(MKUHumans.TWO_LAYER_ARMOR_NO_HAIR_NAME, new HumanRenderer(context, MKUHumans.TWO_LAYER_ARMOR_NO_HAIR, entityType));
         putLook(MKUHumans.DEFAULT_NAME, MKUHumans.HUMAN_BASE);
         putLook(MKUHumans.CLERIC_1_NAME, MKUHumans.CLERIC_1_LOOK);
         putLook(MKUHumans.CLERIC_2_NAME, MKUHumans.CLERIC_2_LOOK);

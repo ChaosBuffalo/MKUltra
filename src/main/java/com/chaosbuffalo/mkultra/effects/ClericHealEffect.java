@@ -9,8 +9,8 @@ import com.chaosbuffalo.mkcore.effects.MKEffectBuilder;
 import com.chaosbuffalo.mkcore.effects.ScalingValueEffectState;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.targeting_api.TargetingContext;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.potion.EffectType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -22,7 +22,7 @@ public class ClericHealEffect extends MKEffect {
     public static final ClericHealEffect INSTANCE = new ClericHealEffect();
 
     private ClericHealEffect() {
-        super(EffectType.BENEFICIAL);
+        super(MobEffectCategory.BENEFICIAL);
         setRegistryName(MKUltra.MODID, "effect.cleric_heal");
     }
 
@@ -60,7 +60,7 @@ public class ClericHealEffect extends MKEffect {
 //            MKUltra.LOGGER.info("ClericHealEffect.performEffect {} on {} from {} {}", value, target, source, instance);
             MKHealSource heal = MKHealSource.getHolyHeal(activeEffect.getAbilityId(),
                     activeEffect.getDirectEntity(), activeEffect.getSourceEntity(), getModifierScale());
-            heal.setDamageUndead(activeEffect.hasSourceEntity() && !activeEffect.getSourceEntity().isEntityUndead());
+            heal.setDamageUndead(activeEffect.hasSourceEntity() && !activeEffect.getSourceEntity().isInvertedHealAndHarm());
             MKHealing.healEntityFrom(target, value, heal);
             return true;
         }

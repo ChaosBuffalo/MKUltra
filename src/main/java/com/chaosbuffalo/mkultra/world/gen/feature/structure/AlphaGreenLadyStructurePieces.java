@@ -71,7 +71,7 @@
 //
 //
 //        @Override
-//        public boolean func_230383_a_(ISeedReader seedReader, StructureManager structureManager, ChunkGenerator chunkGenerator,
+//        public boolean postProcess(ISeedReader seedReader, StructureManager structureManager, ChunkGenerator chunkGenerator,
 //                                      Random random, MutableBoundingBox boundingBox, ChunkPos chunkPos, BlockPos blockPos) {
 //
 //            int x = chunkPos.x * 16;
@@ -81,7 +81,7 @@
 //                y += 1;
 //            }
 //            this.templatePosition = new BlockPos(x, y, z).add(StructureUtils.getCorrectionForEvenRotation(rotation));
-//            return super.func_230383_a_(seedReader, structureManager, chunkGenerator, random, boundingBox, chunkPos, blockPos);
+//            return super.postProcess(seedReader, structureManager, chunkGenerator, random, boundingBox, chunkPos, blockPos);
 //        }
 //
 //        private void setManager(TemplateManager manager) {

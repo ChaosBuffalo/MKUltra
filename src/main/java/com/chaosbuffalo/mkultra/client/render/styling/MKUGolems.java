@@ -4,7 +4,7 @@ package com.chaosbuffalo.mkultra.client.render.styling;
 import com.chaosbuffalo.mknpc.client.render.models.styling.ModelLook;
 import com.chaosbuffalo.mknpc.client.render.models.styling.ModelStyle;
 import com.chaosbuffalo.mkultra.MKUltra;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class MKUGolems {
 

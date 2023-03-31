@@ -4,7 +4,7 @@ package com.chaosbuffalo.mkultra.init;
 import com.chaosbuffalo.mkcore.core.entitlements.MKEntitlement;
 import com.chaosbuffalo.mkcore.core.entitlements.SimpleEntitlement;
 import com.chaosbuffalo.mkultra.MKUltra;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;

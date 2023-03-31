@@ -8,8 +8,8 @@ import com.chaosbuffalo.mkcore.init.CoreDamageTypes;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.abilities.nether_mage.EmberAbility;
 import com.chaosbuffalo.mkultra.init.MKUAbilities;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.potion.EffectType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -26,7 +26,7 @@ public class IgniteEffect extends MKEffect {
     }
 
     private IgniteEffect() {
-        super(EffectType.HARMFUL);
+        super(MobEffectCategory.HARMFUL);
         setRegistryName("effect.ignite");
     }
 
@@ -52,7 +52,7 @@ public class IgniteEffect extends MKEffect {
 
             float damage = getScaledValue(activeEffect.getStackCount(), activeEffect.getSkillLevel());
             float scaling = getModifierScale();
-            targetData.getEntity().attackEntityFrom(MKDamageSource.causeAbilityDamage(CoreDamageTypes.FireDamage,
+            targetData.getEntity().hurt(MKDamageSource.causeAbilityDamage(CoreDamageTypes.FireDamage,
                     activeEffect.getAbilityId(), activeEffect.getDirectEntity(), activeEffect.getSourceEntity(), scaling), damage);
 
             MKCore.getEntityData(activeEffect.getSourceEntity()).ifPresent(casterData -> {

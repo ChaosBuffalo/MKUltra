@@ -7,9 +7,9 @@ import com.chaosbuffalo.mkcore.core.MKAttributes;
 import com.chaosbuffalo.mkcore.effects.MKEffect;
 import com.chaosbuffalo.mkcore.serialization.attributes.FloatAttribute;
 import com.chaosbuffalo.mkultra.effects.LifeSiphonEffect;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 public class LifeSiphonAbility extends MKPassiveAbility {
     protected final FloatAttribute base = new FloatAttribute("base", 4.0f);
@@ -32,10 +32,10 @@ public class LifeSiphonAbility extends MKPassiveAbility {
     }
 
     @Override
-    protected ITextComponent getAbilityDescription(IMKEntityData entityData) {
+    protected Component getAbilityDescription(IMKEntityData entityData) {
         float level = getSkillLevel(entityData.getEntity(), MKAttributes.NECROMANCY);
-        ITextComponent valueStr = getHealDescription(entityData, base.value(), scale.value(), level, modifierScaling.value());
-        return new TranslationTextComponent(getDescriptionTranslationKey(), valueStr);
+        Component valueStr = getHealDescription(entityData, base.value(), scale.value(), level, modifierScaling.value());
+        return new TranslatableComponent(getDescriptionTranslationKey(), valueStr);
     }
 
     @Override

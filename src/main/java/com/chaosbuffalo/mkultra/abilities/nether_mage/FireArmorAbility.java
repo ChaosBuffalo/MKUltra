@@ -19,14 +19,14 @@ import com.chaosbuffalo.mkultra.effects.ResistanceEffects;
 import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.TargetingContext;
 import com.chaosbuffalo.targeting_api.TargetingContexts;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 import javax.annotation.Nullable;
 
@@ -53,12 +53,12 @@ public class FireArmorAbility extends MKAbility {
     }
 
     @Override
-    protected ITextComponent getAbilityDescription(IMKEntityData entityData) {
+    protected Component getAbilityDescription(IMKEntityData entityData) {
         float level = getSkillLevel(entityData.getEntity(), MKAttributes.ABJURATION);
         float amount = ResistanceEffects.FIRE_ARMOR.getPerLevel() * (level + 1) * 100.0f;
         int duration = getBuffDuration(entityData, level, baseDuration.value(), scaleDuration.value()) / GameConstants.TICKS_PER_SECOND;
-        return new TranslationTextComponent(getDescriptionTranslationKey(), amount,
-                CoreDamageTypes.FireDamage.getDisplayName().mergeStyle(CoreDamageTypes.FireDamage.getFormatting()), duration);
+        return new TranslatableComponent(getDescriptionTranslationKey(), amount,
+                CoreDamageTypes.FireDamage.getDisplayName().withStyle(CoreDamageTypes.FireDamage.getFormatting()), duration);
     }
 
     @Nullable
@@ -74,13 +74,13 @@ public class FireArmorAbility extends MKAbility {
         int duration = getBuffDuration(data, level, baseDuration.value(), scaleDuration.value());
 
         int oldAmp = Math.round(level);
-        EffectInstance fireResist = new EffectInstance(Effects.FIRE_RESISTANCE, duration, oldAmp, false, false, true, null);
-        EffectInstance absorb = new EffectInstance(Effects.ABSORPTION, duration, oldAmp, false, false, true, null);
+        MobEffectInstance fireResist = new MobEffectInstance(MobEffects.FIRE_RESISTANCE, duration, oldAmp, false, false, true, null);
+        MobEffectInstance absorb = new MobEffectInstance(MobEffects.ABSORPTION, duration, oldAmp, false, false, true, null);
 
-        MKEffectBuilder<?> particles = MKParticleEffect.from(entity, cast_particles.getValue(), true, new Vector3d(0.0, 1.0, 0.0))
+        MKEffectBuilder<?> particles = MKParticleEffect.from(entity, cast_particles.getValue(), true, new Vec3(0.0, 1.0, 0.0))
                 .ability(this);
 
-        MKEffectBuilder<?> sound = SoundEffect.from(entity, ModSounds.spell_fire_2, entity.getSoundCategory())
+        MKEffectBuilder<?> sound = SoundEffect.from(entity, ModSounds.spell_fire_2, entity.getSoundSource())
                 .ability(this);
 
         MKEffectBuilder<?> fireArmor = ResistanceEffects.FIRE_ARMOR.builder(entity)

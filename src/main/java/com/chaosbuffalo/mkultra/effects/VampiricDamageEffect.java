@@ -9,13 +9,11 @@ import com.chaosbuffalo.mkcore.effects.MKActiveEffect;
 import com.chaosbuffalo.mkcore.effects.MKEffect;
 import com.chaosbuffalo.mkcore.effects.MKEffectBuilder;
 import com.chaosbuffalo.mkcore.effects.ScalingValueEffectState;
-import com.chaosbuffalo.mkcore.init.CoreDamageTypes;
 import com.chaosbuffalo.mkultra.MKUltra;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.potion.EffectType;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -27,7 +25,7 @@ public class VampiricDamageEffect extends MKEffect {
     public static final VampiricDamageEffect INSTANCE = new VampiricDamageEffect();
 
     public VampiricDamageEffect() {
-        super(EffectType.HARMFUL);
+        super(MobEffectCategory.HARMFUL);
         this.setRegistryName(MKUltra.MODID, "effect.vampiric_damage");
     }
 
@@ -88,14 +86,14 @@ public class VampiricDamageEffect extends MKEffect {
         }
 
         @Override
-        public void serializeStorage(CompoundNBT stateTag) {
+        public void serializeStorage(CompoundTag stateTag) {
             super.serializeStorage(stateTag);
             stateTag.putFloat("healthScaling", healthScaling);
             stateTag.putFloat("healthModScaling", healModScaling);
         }
 
         @Override
-        public void deserializeStorage(CompoundNBT stateTag) {
+        public void deserializeStorage(CompoundTag stateTag) {
             super.deserializeStorage(stateTag);
             healthScaling = stateTag.getFloat("healthScaling");
             healModScaling = stateTag.getFloat("healthModScaling");
@@ -105,7 +103,7 @@ public class VampiricDamageEffect extends MKEffect {
             DamageSource damage = MKDamageSource.causeAbilityDamage(this.damageType, activeEffect.getAbilityId(),
                     activeEffect.getDirectEntity(), activeEffect.getSourceEntity(), this.getModifierScale());
             float value = this.getScaledValue(activeEffect.getStackCount(), activeEffect.getSkillLevel());
-            targetData.getEntity().attackEntityFrom(damage, value);
+            targetData.getEntity().hurt(damage, value);
             LivingEntity source = activeEffect.getSourceEntity();
             if (source != null) {
                 MKHealSource healSource = MKHealSource.getShadowHeal(activeEffect.getAbilityId(),

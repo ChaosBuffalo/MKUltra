@@ -4,15 +4,11 @@ import com.chaosbuffalo.mkcore.core.IMKEntityData;
 import com.chaosbuffalo.mkcore.effects.*;
 import com.chaosbuffalo.mkcore.effects.status.DamageTypeDotEffect;
 import com.chaosbuffalo.mkcore.init.CoreDamageTypes;
-import com.chaosbuffalo.mkcore.network.MKParticleEffectSpawnPacket;
-import com.chaosbuffalo.mkcore.network.PacketHandler;
 import com.chaosbuffalo.mkcore.utils.SoundUtils;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.init.ModSounds;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -64,7 +60,7 @@ public class BurnEffect extends DamageTypeDotEffect {
 
         @Override
         public boolean performEffect(IMKEntityData targetData, MKActiveEffect activeEffect) {
-            SoundUtils.serverPlaySoundAtEntity(targetData.getEntity(), ModSounds.spell_fire_6, targetData.getEntity().getSoundCategory());
+            SoundUtils.serverPlaySoundAtEntity(targetData.getEntity(), ModSounds.spell_fire_6, targetData.getEntity().getSoundSource());
             sendEffectParticles(targetData.getEntity());
             return super.performEffect(targetData, activeEffect);
         }

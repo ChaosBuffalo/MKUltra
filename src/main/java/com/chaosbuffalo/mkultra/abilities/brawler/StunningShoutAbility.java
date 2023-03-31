@@ -24,12 +24,12 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.TargetingContext;
 import com.chaosbuffalo.targeting_api.TargetingContexts;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -69,12 +69,12 @@ public class StunningShoutAbility extends MKAbility {
     }
 
     @Override
-    protected ITextComponent getAbilityDescription(IMKEntityData entityData) {
+    protected Component getAbilityDescription(IMKEntityData entityData) {
         float level = getSkillLevel(entityData.getEntity(), MKAttributes.PNEUMA);
-        ITextComponent damageStr = getDamageDescription(entityData, CoreDamageTypes.BleedDamage, baseDamage.value(),
+        Component damageStr = getDamageDescription(entityData, CoreDamageTypes.BleedDamage, baseDamage.value(),
                 scaleDamage.value(), level, modifierScaling.value());
         int dur = getBuffDuration(entityData, level, baseDuration.value(), scaleDuration.value()) / GameConstants.TICKS_PER_SECOND;
-        return new TranslationTextComponent(getDescriptionTranslationKey(), INTEGER_FORMATTER.format(dur), damageStr);
+        return new TranslatableComponent(getDescriptionTranslationKey(), INTEGER_FORMATTER.format(dur), damageStr);
     }
 
     @Override
@@ -101,12 +101,12 @@ public class StunningShoutAbility extends MKAbility {
         MKEffectBuilder<?> stun = StunEffect.from(castingEntity).ability(this).skillLevel(level).timed(
                 getBuffDuration(casterData, level, baseDuration.value(), scaleDuration.value()));
         MKEffectBuilder<?> particles = MKParticleEffect.from(castingEntity, tick_particles.getValue(),
-                false, new Vector3d(0.0, 1.5, 0.0))
+                false, new Vec3(0.0, 1.5, 0.0))
                 .ability(this);
 
-        Vector3d look = castingEntity.getLookVec().scale(getDistance(castingEntity));
-        Vector3d from = castingEntity.getPositionVec().add(0, castingEntity.getEyeHeight(), 0);
-        Vector3d to = from.add(look);
+        Vec3 look = castingEntity.getLookAngle().scale(getDistance(castingEntity));
+        Vec3 from = castingEntity.position().add(0, castingEntity.getEyeHeight(), 0);
+        Vec3 to = from.add(look);
         List<LivingEntity> entityHit = TargetUtil.getTargetsInLine(castingEntity, from, to, 1.0f, this::isValidTarget);
 
         for (LivingEntity entHit : entityHit) {

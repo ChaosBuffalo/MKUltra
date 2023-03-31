@@ -11,14 +11,15 @@ import com.chaosbuffalo.mkcore.init.CoreDamageTypes;
 import com.chaosbuffalo.mkcore.serialization.attributes.FloatAttribute;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.entities.projectiles.FireballProjectileEntity;
+import com.chaosbuffalo.mkultra.init.MKUEntities;
 import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.TargetingContext;
 import com.chaosbuffalo.targeting_api.TargetingContexts;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 import javax.annotation.Nullable;
 
@@ -55,12 +56,12 @@ public class FireballAbility extends MKAbility {
     }
 
     @Override
-    protected ITextComponent getAbilityDescription(IMKEntityData entityData) {
+    protected Component getAbilityDescription(IMKEntityData entityData) {
         float skillLevel = getSkillLevel(entityData.getEntity(), MKAttributes.EVOCATION);
-        ITextComponent damageStr = getDamageDescription(entityData, CoreDamageTypes.FireDamage, baseDamage.value(),
+        Component damageStr = getDamageDescription(entityData, CoreDamageTypes.FireDamage, baseDamage.value(),
                 scaleDamage.value(), skillLevel,
                 modifierScaling.value());
-        return new TranslationTextComponent(getDescriptionTranslationKey(), damageStr, getExplosionRadius(),
+        return new TranslatableComponent(getDescriptionTranslationKey(), damageStr, getExplosionRadius(),
                 (skillLevel + 1) * .1f * 100.0f, skillLevel + 1);
     }
 
@@ -98,10 +99,10 @@ public class FireballAbility extends MKAbility {
     public void endCast(LivingEntity entity, IMKEntityData data, AbilityContext context) {
         super.endCast(entity, data, context);
         float level = getSkillLevel(entity, MKAttributes.EVOCATION);
-        FireballProjectileEntity proj = new FireballProjectileEntity(entity.world);
-        proj.setShooter(entity);
+        FireballProjectileEntity proj = new FireballProjectileEntity(MKUEntities.FIREBALL_TYPE.get(), entity.level);
+        proj.setOwner(entity);
         proj.setSkillLevel(level);
         shootProjectile(proj, projectileSpeed.value(), projectileInaccuracy.value(), entity, context);
-        entity.world.addEntity(proj);
+        entity.level.addFreshEntity(proj);
     }
 }

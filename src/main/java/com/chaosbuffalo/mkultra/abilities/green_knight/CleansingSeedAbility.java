@@ -11,14 +11,15 @@ import com.chaosbuffalo.mkcore.init.CoreDamageTypes;
 import com.chaosbuffalo.mkcore.serialization.attributes.FloatAttribute;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.entities.projectiles.CleansingSeedProjectileEntity;
+import com.chaosbuffalo.mkultra.init.MKUEntities;
 import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.TargetingContext;
 import com.chaosbuffalo.targeting_api.TargetingContexts;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 import javax.annotation.Nullable;
 
@@ -45,11 +46,11 @@ public class CleansingSeedAbility extends MKAbility {
     }
 
     @Override
-    protected ITextComponent getAbilityDescription(IMKEntityData entityData) {
-        ITextComponent damageStr = getDamageDescription(entityData, CoreDamageTypes.NatureDamage, baseDamage.value(),
+    protected Component getAbilityDescription(IMKEntityData entityData) {
+        Component damageStr = getDamageDescription(entityData, CoreDamageTypes.NatureDamage, baseDamage.value(),
                 scaleDamage.value(), getSkillLevel(entityData.getEntity(), MKAttributes.RESTORATION),
                 modifierScaling.value());
-        return new TranslationTextComponent(getDescriptionTranslationKey(), damageStr);
+        return new TranslatableComponent(getDescriptionTranslationKey(), damageStr);
     }
 
     @Nullable
@@ -87,10 +88,10 @@ public class CleansingSeedAbility extends MKAbility {
         super.endCast(entity, data, context);
 
         float level = getSkillLevel(entity, MKAttributes.RESTORATION);
-        CleansingSeedProjectileEntity proj = new CleansingSeedProjectileEntity(entity.world);
-        proj.setShooter(entity);
+        CleansingSeedProjectileEntity proj = new CleansingSeedProjectileEntity(MKUEntities.CLEANSING_SEED_TYPE.get(), entity.level);
+        proj.setOwner(entity);
         proj.setSkillLevel(level);
         shootProjectile(proj, projectileSpeed.value(), projectileInaccuracy.value(), entity, context);
-        entity.world.addEntity(proj);
+        entity.level.addFreshEntity(proj);
     }
 }

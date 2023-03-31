@@ -10,8 +10,8 @@ import com.chaosbuffalo.mkcore.init.CoreTalents;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.init.MKUTalents;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.DirectoryCache;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.data.HashCache;
+import net.minecraft.resources.ResourceLocation;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
@@ -23,12 +23,12 @@ public class MKUTalentTreeProvider extends DataGenerators.TalentTreeDataGenerato
     }
 
     @Override
-    public void act(DirectoryCache cache) throws IOException {
+    public void run(HashCache cache) throws IOException {
         generateCoreTree(cache);
     }
 
 
-    private void generateCoreTree(@Nonnull DirectoryCache cache){
+    private void generateCoreTree(@Nonnull HashCache cache){
         TalentTreeDefinition tree = new TalentTreeDefinition(new ResourceLocation(MKUltra.MODID, "core_talents"));
         tree.setVersion(2);
         tree.setDefault(true);

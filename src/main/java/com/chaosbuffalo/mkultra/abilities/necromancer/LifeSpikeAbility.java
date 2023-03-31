@@ -18,12 +18,12 @@ import com.chaosbuffalo.mkultra.effects.VampiricDamageEffect;
 import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.TargetingContext;
 import com.chaosbuffalo.targeting_api.TargetingContexts;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 public class LifeSpikeAbility extends MKAbility {
     protected final ResourceLocation CASTING_PARTICLES = new ResourceLocation(MKUltra.MODID, "lifespike_casting");
@@ -51,15 +51,15 @@ public class LifeSpikeAbility extends MKAbility {
     }
 
     @Override
-    protected ITextComponent getAbilityDescription(IMKEntityData entityData) {
+    protected Component getAbilityDescription(IMKEntityData entityData) {
         float level = getSkillLevel(entityData.getEntity(), MKAttributes.NECROMANCY);
-        ITextComponent valueStr = getDamageDescription(entityData,
+        Component valueStr = getDamageDescription(entityData,
                 CoreDamageTypes.ShadowDamage, base.value(), scale.value(), level, modifierScaling.value());
 
         float bonus = entityData.getStats().getDamageTypeBonus(CoreDamageTypes.ShadowDamage) * modifierScaling.value();
         float healing = (base.value() + scale.value() * level + bonus) * healScaling.value();
-        ITextComponent healStr = getHealDescription(entityData, healing, 0.0f, 0.0f, healModScaling.value());
-        return new TranslationTextComponent(getDescriptionTranslationKey(), valueStr, healStr);
+        Component healStr = getHealDescription(entityData, healing, 0.0f, 0.0f, healModScaling.value());
+        return new TranslatableComponent(getDescriptionTranslationKey(), valueStr, healStr);
     }
 
     @Override
@@ -103,9 +103,9 @@ public class LifeSpikeAbility extends MKAbility {
                 targetData.getEffects().addEffect(damage);
             });
 
-            SoundUtils.serverPlaySoundAtEntity(targetEntity, ModSounds.spell_shadow_6, targetEntity.getSoundCategory());
+            SoundUtils.serverPlaySoundAtEntity(targetEntity, ModSounds.spell_shadow_6, targetEntity.getSoundSource());
             PacketHandler.sendToTrackingAndSelf(new MKParticleEffectSpawnPacket(
-                    new Vector3d(0.0, 1.75, 0.0), cast_particles.getValue(), targetEntity.getEntityId()), targetEntity);
+                    new Vec3(0.0, 1.75, 0.0), cast_particles.getValue(), targetEntity.getId()), targetEntity);
         });
     }
 }

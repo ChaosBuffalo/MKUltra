@@ -17,12 +17,12 @@ import com.chaosbuffalo.mkultra.effects.ClericHealEffect;
 import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.TargetingContext;
 import com.chaosbuffalo.targeting_api.TargetingContexts;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 public class HealAbility extends MKAbility {
     protected final ResourceLocation CASTING_PARTICLES = new ResourceLocation(MKUltra.MODID, "heal_casting");
@@ -43,11 +43,11 @@ public class HealAbility extends MKAbility {
     }
 
     @Override
-    protected ITextComponent getAbilityDescription(IMKEntityData entityData) {
+    protected Component getAbilityDescription(IMKEntityData entityData) {
         float level = getSkillLevel(entityData.getEntity(), MKAttributes.RESTORATION);
-        ITextComponent valueStr = getHealDescription(entityData, base.value(),
+        Component valueStr = getHealDescription(entityData, base.value(),
                 scale.value(), level, modifierScaling.value());
-        return new TranslationTextComponent(getDescriptionTranslationKey(), valueStr);
+        return new TranslatableComponent(getDescriptionTranslationKey(), valueStr);
     }
 
     public FloatAttribute getModifierScaling() {
@@ -96,9 +96,9 @@ public class HealAbility extends MKAbility {
 
             MKCore.getEntityData(targetEntity).ifPresent(targetData -> targetData.getEffects().addEffect(heal));
 
-            SoundUtils.serverPlaySoundAtEntity(targetEntity, ModSounds.spell_heal_3, targetEntity.getSoundCategory());
+            SoundUtils.serverPlaySoundAtEntity(targetEntity, ModSounds.spell_heal_3, targetEntity.getSoundSource());
             PacketHandler.sendToTrackingAndSelf(new MKParticleEffectSpawnPacket(
-                    new Vector3d(0.0, 1.0, 0.0), cast_particles.getValue(), targetEntity.getEntityId()), targetEntity);
+                    new Vec3(0.0, 1.0, 0.0), cast_particles.getValue(), targetEntity.getId()), targetEntity);
         });
     }
 }

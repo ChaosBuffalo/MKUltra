@@ -17,10 +17,10 @@ import com.chaosbuffalo.mkultra.effects.SkinLikeWoodEffect;
 import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.TargetingContext;
 import com.chaosbuffalo.targeting_api.TargetingContexts;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 
@@ -64,7 +64,7 @@ public class SkinLikeWoodAbility extends MKToggleAbility {
     public void applyEffect(LivingEntity entity, IMKEntityData entityData) {
         super.applyEffect(entity, entityData);
         float level = getSkillLevel(entity, MKAttributes.ABJURATION);
-        SoundUtils.serverPlaySoundAtEntity(entity, ModSounds.spell_earth_7, entity.getSoundCategory());
+        SoundUtils.serverPlaySoundAtEntity(entity, ModSounds.spell_earth_7, entity.getSoundSource());
 
         MKEffectBuilder<?> instance = getToggleEffect().builder(entity)
                 .ability(this)
@@ -73,7 +73,7 @@ public class SkinLikeWoodAbility extends MKToggleAbility {
         entityData.getEffects().addEffect(instance);
 
         PacketHandler.sendToTrackingAndSelf(new MKParticleEffectSpawnPacket(
-                new Vector3d(0.0, 1.0, 0.0), cast_particles.getValue(),
-                entity.getEntityId()), entity);
+                new Vec3(0.0, 1.0, 0.0), cast_particles.getValue(),
+                entity.getId()), entity);
     }
 }

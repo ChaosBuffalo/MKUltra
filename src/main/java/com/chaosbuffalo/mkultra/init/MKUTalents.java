@@ -5,7 +5,7 @@ import com.chaosbuffalo.mkcore.core.talents.talent_types.PassiveTalent;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.abilities.passives.LifeSiphonAbility;
 import com.chaosbuffalo.mkultra.abilities.passives.SoulDrainAbility;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;

@@ -20,14 +20,14 @@ import com.chaosbuffalo.mkultra.effects.CureEffect;
 import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.TargetingContext;
 import com.chaosbuffalo.targeting_api.TargetingContexts;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 public class GalvanizeAbility extends MKAbility {
     public static final ResourceLocation CASTING_PARTICLES = new ResourceLocation(MKUltra.MODID, "galvanize_casting");
@@ -49,10 +49,10 @@ public class GalvanizeAbility extends MKAbility {
     }
 
     @Override
-    protected ITextComponent getAbilityDescription(IMKEntityData entityData) {
+    protected Component getAbilityDescription(IMKEntityData entityData) {
         float level = getSkillLevel(entityData.getEntity(), MKAttributes.ABJURATION);
         int duration = getBuffDuration(entityData, level, base.value(), scale.value()) / GameConstants.TICKS_PER_SECOND;
-        return new TranslationTextComponent(getDescriptionTranslationKey(), duration);
+        return new TranslatableComponent(getDescriptionTranslationKey(), duration);
     }
 
     @Override
@@ -82,13 +82,13 @@ public class GalvanizeAbility extends MKAbility {
         int duration = getBuffDuration(data, level, base.value(), scale.value());
 
         int oldAmp = Math.round(level);
-        EffectInstance jump = new EffectInstance(Effects.JUMP_BOOST, duration, oldAmp, false, false);
+        MobEffectInstance jump = new MobEffectInstance(MobEffects.JUMP, duration, oldAmp, false, false);
         MKEffectBuilder<?> cure = CureEffect.from(entity)
                 .ability(this)
                 .skillLevel(level);
-        MKEffectBuilder<?> sound = SoundEffect.from(entity, ModSounds.spell_buff_5, entity.getSoundCategory())
+        MKEffectBuilder<?> sound = SoundEffect.from(entity, ModSounds.spell_buff_5, entity.getSoundSource())
                 .ability(this);
-        MKEffectBuilder<?> particles = MKParticleEffect.from(entity, cast_2_particles.getValue(), false, new Vector3d(0.0, 1.0, 0.0))
+        MKEffectBuilder<?> particles = MKParticleEffect.from(entity, cast_2_particles.getValue(), false, new Vec3(0.0, 1.0, 0.0))
                 .ability(this);
 
         AreaEffectBuilder.createOnCaster(entity)
@@ -103,6 +103,6 @@ public class GalvanizeAbility extends MKAbility {
                 .spawn();
 
         PacketHandler.sendToTrackingAndSelf(new MKParticleEffectSpawnPacket(
-                new Vector3d(0.0, 1.0, 0.0), cast_1_particles.getValue(), entity.getEntityId()), entity);
+                new Vec3(0.0, 1.0, 0.0), cast_1_particles.getValue(), entity.getId()), entity);
     }
 }

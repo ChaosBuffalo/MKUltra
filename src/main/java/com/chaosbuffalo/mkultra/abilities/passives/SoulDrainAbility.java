@@ -7,9 +7,9 @@ import com.chaosbuffalo.mkcore.core.MKAttributes;
 import com.chaosbuffalo.mkcore.effects.MKEffect;
 import com.chaosbuffalo.mkcore.serialization.attributes.FloatAttribute;
 import com.chaosbuffalo.mkultra.effects.SoulDrainEffect;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 public class SoulDrainAbility extends MKPassiveAbility {
     protected final FloatAttribute base = new FloatAttribute("base", 4.0f);
@@ -32,8 +32,8 @@ public class SoulDrainAbility extends MKPassiveAbility {
     }
 
     @Override
-    protected ITextComponent getAbilityDescription(IMKEntityData entityData) {
+    protected Component getAbilityDescription(IMKEntityData entityData) {
         float value = getDrainValue(entityData.getEntity());
-        return new TranslationTextComponent(getDescriptionTranslationKey(), value);
+        return new TranslatableComponent(getDescriptionTranslationKey(), value);
     }
 }

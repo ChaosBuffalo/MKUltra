@@ -13,10 +13,10 @@ import com.chaosbuffalo.mkcore.network.PacketHandler;
 import com.chaosbuffalo.mkcore.network.ParticleEffectSpawnPacket;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkweapons.init.MKWeaponsParticles;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.potion.EffectType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -30,7 +30,7 @@ public class SeverTendonEffect extends MKEffect {
     public static final SeverTendonEffect INSTANCE = new SeverTendonEffect();
 
     protected SeverTendonEffect() {
-        super(EffectType.HARMFUL);
+        super(MobEffectCategory.HARMFUL);
         setRegistryName(MKUltra.MODID, "effect.sever_tendon");
         addAttribute(Attributes.MOVEMENT_SPEED, modUUID, -0.05, AttributeModifier.Operation.MULTIPLY_TOTAL);
     }
@@ -63,15 +63,15 @@ public class SeverTendonEffect extends MKEffect {
 
             float damage = getScaledValue(activeEffect.getStackCount(), activeEffect.getSkillLevel());
             LivingEntity target = targetData.getEntity();
-            target.attackEntityFrom(MKDamageSource.causeAbilityDamage(CoreDamageTypes.BleedDamage,
+            target.hurt(MKDamageSource.causeAbilityDamage(CoreDamageTypes.BleedDamage,
                     activeEffect.getAbilityId(), activeEffect.getDirectEntity(), activeEffect.getSourceEntity(),
                     getModifierScale()), damage);
             PacketHandler.sendToTrackingAndSelf(
                     new ParticleEffectSpawnPacket(
                             MKWeaponsParticles.DRIPPING_BLOOD,
                             ParticleEffects.DIRECTED_SPOUT, 8, 1,
-                            target.getPosX(), target.getPosY() + target.getHeight() * .75,
-                            target.getPosZ(), target.getWidth() / 2.0, 0.5, target.getWidth() / 2.0, 3,
+                            target.getX(), target.getY() + target.getBbHeight() * .75,
+                            target.getZ(), target.getBbWidth() / 2.0, 0.5, target.getBbWidth() / 2.0, 3,
                             target.getUpVector(0)), target);
             return true;
         }

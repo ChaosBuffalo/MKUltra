@@ -14,24 +14,20 @@ import com.chaosbuffalo.mkcore.serialization.attributes.FloatAttribute;
 import com.chaosbuffalo.mkcore.serialization.attributes.IntAttribute;
 import com.chaosbuffalo.mkcore.serialization.attributes.ResourceLocationAttribute;
 import com.chaosbuffalo.mkcore.utils.SoundUtils;
-import com.chaosbuffalo.mkcore.utils.TargetUtil;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.abilities.misc.PositionTargetingAbility;
 import com.chaosbuffalo.mkultra.effects.PullEffect;
 import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.TargetingContext;
 import com.chaosbuffalo.targeting_api.TargetingContexts;
-import com.google.common.collect.ImmutableSet;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.brain.memory.MemoryModuleType;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 import javax.annotation.Nullable;
-import java.util.Set;
 
 public class ShadowPulseAbility extends PositionTargetingAbility {
     private static final ResourceLocation PULSE_PARTICLES = new ResourceLocation(MKUltra.MODID, "shadow_pulse_detonate");
@@ -65,11 +61,11 @@ public class ShadowPulseAbility extends PositionTargetingAbility {
 
 
     @Override
-    protected ITextComponent getAbilityDescription(IMKEntityData casterData) {
+    protected Component getAbilityDescription(IMKEntityData casterData) {
         float level = getSkillLevel(casterData.getEntity(), MKAttributes.CONJURATION);
-        ITextComponent damageStr = getDamageDescription(casterData, CoreDamageTypes.ShadowDamage, base.value(), scale.value(), level, modifierScaling.value());
-        ITextComponent detonateStr = getDamageDescription(casterData, CoreDamageTypes.ShadowDamage, detonateBase.value(), detonateScale.value(), level, modifierScaling.value());
-        return new TranslationTextComponent(getDescriptionTranslationKey(),
+        Component damageStr = getDamageDescription(casterData, CoreDamageTypes.ShadowDamage, base.value(), scale.value(), level, modifierScaling.value());
+        Component detonateStr = getDamageDescription(casterData, CoreDamageTypes.ShadowDamage, detonateBase.value(), detonateScale.value(), level, modifierScaling.value());
+        return new TranslatableComponent(getDescriptionTranslationKey(),
                 NUMBER_FORMATTER.format(radius.value()),
                 damageStr,
                 NUMBER_FORMATTER.format(convertDurationToSeconds(tickRate.value())),
@@ -94,9 +90,9 @@ public class ShadowPulseAbility extends PositionTargetingAbility {
     }
 
     @Override
-    public void castAtPosition(LivingEntity castingEntity, Vector3d position) {
-        Vector3d pulseOffset = new Vector3d(0.0, 0.5, 0.0);
-        Vector3d pulsePos = position.add(pulseOffset);
+    public void castAtPosition(LivingEntity castingEntity, Vec3 position) {
+        Vec3 pulseOffset = new Vec3(0.0, 0.5, 0.0);
+        Vec3 pulsePos = position.add(pulseOffset);
         float level = getSkillLevel(castingEntity, MKAttributes.CONJURATION);
         MKEffectBuilder<?> damage = MKAbilityDamageEffect.from(castingEntity, CoreDamageTypes.ShadowDamage,
                 base.value(), scale.value(), modifierScaling.value())
@@ -109,13 +105,13 @@ public class ShadowPulseAbility extends PositionTargetingAbility {
         MKEffectBuilder<?> pull = PullEffect.from(castingEntity, baseGravity.value(), scaleGravity.value(), pulsePos)
                 .ability(this)
                 .skillLevel(level);
-        MKEffectBuilder<?> sound = SoundEffect.from(castingEntity, ModSounds.spell_shadow_10, castingEntity.getSoundCategory())
+        MKEffectBuilder<?> sound = SoundEffect.from(castingEntity, ModSounds.spell_shadow_10, castingEntity.getSoundSource())
                 .ability(this);
         MKEffectBuilder<?> detonateDamage = MKAbilityDamageEffect.from(castingEntity, CoreDamageTypes.ShadowDamage,
                 detonateBase.value(), detonateScale.value(), modifierScaling.value())
                 .ability(this)
                 .skillLevel(level);
-        MKEffectBuilder<?> detonateSound = SoundEffect.from(castingEntity, ModSounds.spell_shadow_9, castingEntity.getSoundCategory())
+        MKEffectBuilder<?> detonateSound = SoundEffect.from(castingEntity, ModSounds.spell_shadow_9, castingEntity.getSoundSource())
                 .ability(this);
         EntityEffectBuilder.PointEffectBuilder builder = EntityEffectBuilder.createPointEffect(castingEntity, pulsePos);
 
@@ -130,8 +126,8 @@ public class ShadowPulseAbility extends PositionTargetingAbility {
                 .duration(duration.value())
                 .waitTime(waitTime.value())
                 .tickRate(tickRate.value());
-        SoundUtils.serverPlaySoundFromEntity(position.getX(), position.getY(), position.getZ(), ModSounds.spell_dark_13,
-                castingEntity.getSoundCategory(), 1.0f, 1.0f, castingEntity);
+        SoundUtils.serverPlaySoundFromEntity(position.x(), position.y(), position.z(), ModSounds.spell_dark_13,
+                castingEntity.getSoundSource(), 1.0f, 1.0f, castingEntity);
         builder.spawn();
     }
 

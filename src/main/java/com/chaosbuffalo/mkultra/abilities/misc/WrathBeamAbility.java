@@ -18,12 +18,12 @@ import com.chaosbuffalo.mkultra.effects.ResistanceEffects;
 import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.TargetingContext;
 import com.chaosbuffalo.targeting_api.TargetingContexts;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 import javax.annotation.Nullable;
 
@@ -52,10 +52,10 @@ public class WrathBeamAbility extends PositionTargetingAbility {
     }
 
     @Override
-    protected ITextComponent getAbilityDescription(IMKEntityData casterData) {
+    protected Component getAbilityDescription(IMKEntityData casterData) {
         float level = getSkillLevel(casterData.getEntity(), MKAttributes.EVOCATION);
-        ITextComponent damageStr = getDamageDescription(casterData, CoreDamageTypes.FireDamage, base.value(), scale.value(), level, modifierScaling.value());
-        return new TranslationTextComponent(getDescriptionTranslationKey(), damageStr,
+        Component damageStr = getDamageDescription(casterData, CoreDamageTypes.FireDamage, base.value(), scale.value(), level, modifierScaling.value());
+        return new TranslatableComponent(getDescriptionTranslationKey(), damageStr,
                 NUMBER_FORMATTER.format(convertDurationToSeconds(breakDuration.value())),
                 NUMBER_FORMATTER.format(convertDurationToSeconds(tickRate.value())),
                 NUMBER_FORMATTER.format(convertDurationToSeconds(duration.value())));
@@ -78,7 +78,7 @@ public class WrathBeamAbility extends PositionTargetingAbility {
     }
 
     @Override
-    public void castAtPosition(LivingEntity castingEntity, Vector3d position) {
+    public void castAtPosition(LivingEntity castingEntity, Vec3 position) {
         float level = getSkillLevel(castingEntity, MKAttributes.EVOCATION);
         MKEffectBuilder<?> damage = MKAbilityDamageEffect.from(castingEntity, CoreDamageTypes.FireDamage,
                 base.value(), scale.value(), modifierScaling.value())
@@ -88,7 +88,7 @@ public class WrathBeamAbility extends PositionTargetingAbility {
                 .ability(this)
                 .timed(breakDuration.value())
                 .skillLevel(level);
-        MKEffectBuilder<?> sound = SoundEffect.from(castingEntity, ModSounds.spell_fire_7, castingEntity.getSoundCategory())
+        MKEffectBuilder<?> sound = SoundEffect.from(castingEntity, ModSounds.spell_fire_7, castingEntity.getSoundSource())
                 .ability(this);
         EntityEffectBuilder.LineEffectBuilder lineBuilder = EntityEffectBuilder.createLineEffect(castingEntity,
                 position.subtract(0.0, 0.1, 0.0),
@@ -101,8 +101,8 @@ public class WrathBeamAbility extends PositionTargetingAbility {
                 .duration(duration.value())
                 .waitTime(duration.value() / 2)
                 .tickRate(tickRate.value());
-        SoundUtils.serverPlaySoundFromEntity(position.getX(), position.getY(), position.getZ(),
-                ModSounds.spell_dark_13, castingEntity.getSoundCategory(), 1.0f, 1.0f, castingEntity);
+        SoundUtils.serverPlaySoundFromEntity(position.x(), position.y(), position.z(),
+                ModSounds.spell_dark_13, castingEntity.getSoundSource(), 1.0f, 1.0f, castingEntity);
         lineBuilder.spawn();
     }
 }

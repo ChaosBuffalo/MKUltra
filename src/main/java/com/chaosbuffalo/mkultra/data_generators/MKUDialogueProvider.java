@@ -7,8 +7,8 @@ import com.chaosbuffalo.mknpc.quest.dialogue.conditions.HasEntitlementCondition;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.init.MKUEntitlements;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.DirectoryCache;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.data.HashCache;
+import net.minecraft.resources.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
@@ -19,7 +19,7 @@ public class MKUDialogueProvider extends DialogueDataProvider {
     }
 
     @Override
-    public void act(@Nonnull DirectoryCache cache) {
+    public void run(@Nonnull HashCache cache) {
 
         writeDialogue(getAlphaMovePrompt(), cache);
         writeDialogue(getClericAcolyteDefault(), cache);

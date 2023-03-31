@@ -7,13 +7,16 @@ import com.chaosbuffalo.mkcore.effects.*;
 import com.chaosbuffalo.mkcore.init.CoreDamageTypes;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.abilities.MKUAbilityUtils;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.potion.*;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import java.util.UUID;
+
+import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 
 public class FlameWaveEffect extends MKEffect {
 
@@ -30,7 +33,7 @@ public class FlameWaveEffect extends MKEffect {
     }
 
     private FlameWaveEffect() {
-        super(EffectType.HARMFUL);
+        super(MobEffectCategory.HARMFUL);
         setRegistryName("effect.flame_wave");
     }
 
@@ -60,12 +63,12 @@ public class FlameWaveEffect extends MKEffect {
             float damage = getScaledValue(activeEffect.getStackCount(), activeEffect.getSkillLevel());
             if (MKUAbilityUtils.isBurning(targetData)) {
                 int dur = witherDurationBase + activeEffect.getStackCount() * witherDurationScale;
-                EffectInstance witherEffect = new EffectInstance(Effects.WITHER, dur * GameConstants.TICKS_PER_SECOND, 0);
+                MobEffectInstance witherEffect = new MobEffectInstance(MobEffects.WITHER, dur * GameConstants.TICKS_PER_SECOND, 0);
                 damage *= damageBoost;
-                targetData.getEntity().addPotionEffect(witherEffect);
+                targetData.getEntity().addEffect(witherEffect);
             }
 
-            targetData.getEntity().attackEntityFrom(MKDamageSource.causeAbilityDamage(CoreDamageTypes.FireDamage,
+            targetData.getEntity().hurt(MKDamageSource.causeAbilityDamage(CoreDamageTypes.FireDamage,
                     activeEffect.getAbilityId(), activeEffect.getDirectEntity(), activeEffect.getSourceEntity(), getModifierScale()), damage);
             return true;
         }

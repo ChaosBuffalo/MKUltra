@@ -4,10 +4,10 @@ import com.chaosbuffalo.mkcore.abilities.*;
 import com.chaosbuffalo.mkcore.core.IMKEntityData;
 import com.chaosbuffalo.mkcore.utils.TargetUtil;
 import com.google.common.collect.ImmutableSet;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.brain.memory.MemoryModuleType;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.memory.MemoryModuleType;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.network.chat.Component;
 
 import java.util.Set;
 
@@ -17,7 +17,7 @@ public abstract class PositionTargetingAbility extends MKAbility {
         super();
     }
 
-    public abstract void castAtPosition(LivingEntity castingEntity, Vector3d position);
+    public abstract void castAtPosition(LivingEntity castingEntity, Vec3 position);
 
     @Override
     public void endCast(LivingEntity castingEntity, IMKEntityData casterData, AbilityContext context) {
@@ -32,7 +32,7 @@ public abstract class PositionTargetingAbility extends MKAbility {
     }
 
     // FIXME: when we get the multiproject working lets make some of these calls less protected for stuff like this
-    public ITextComponent exposeAbilityDescription(IMKEntityData casterData) {
+    public Component exposeAbilityDescription(IMKEntityData casterData) {
         return getAbilityDescription(casterData);
     }
 

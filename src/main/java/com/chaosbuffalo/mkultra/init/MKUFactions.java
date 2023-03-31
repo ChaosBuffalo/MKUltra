@@ -4,7 +4,7 @@ import com.chaosbuffalo.mkfaction.faction.FactionConstants;
 import com.chaosbuffalo.mkfaction.faction.MKFaction;
 import com.chaosbuffalo.mkfaction.init.Factions;
 import com.chaosbuffalo.mkultra.MKUltra;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;

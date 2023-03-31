@@ -28,15 +28,14 @@ import com.chaosbuffalo.mkultra.init.MKUEntitlements;
 import com.chaosbuffalo.mkultra.init.MKUItems;
 import com.chaosbuffalo.mkultra.init.MKUWorldGen;
 import com.chaosbuffalo.mkweapons.items.randomization.slots.LootSlotManager;
-import net.minecraft.block.Blocks;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.DirectoryCache;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.data.HashCache;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
@@ -53,7 +52,7 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
     }
 
     @Override
-    public void act(DirectoryCache cache) throws IOException {
+    public void run(HashCache cache) throws IOException {
         writeDefinition(generateIntroQuest(), cache);
         writeDefinition(generateTrooperArmorQuest(), cache);
         writeDefinition(generateIntroClericQuest(), cache);
@@ -67,7 +66,7 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
 
         QuestDefinition def = new QuestDefinition(new ResourceLocation(MKUltra.MODID, "nether_mage_intro"));
         def.setRepeatable(false);
-        def.setQuestName(new StringTextComponent("Helping the Nether Mage"));
+        def.setQuestName(new TextComponent("Helping the Nether Mage"));
 
         DialogueNode ambushedNode = new DialogueNode("ambushed", String.format("%s will you retrieve my staff from %s?",
                 DialogueContexts.PLAYER_NAME_CONTEXT, magus.getDialogueLink()));
@@ -95,9 +94,9 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
         def.addStartPrompt(netherMagePrompt);
 
         Quest getStaff = new QuestBuilder("get_staff",
-                new StringTextComponent("The Nether Mage Initiate wants you to retrieve a staff from the library."))
+                new TextComponent("The Nether Mage Initiate wants you to retrieve a staff from the library."))
                 .autoComplete(true)
-                .questLootFromNotable("loot_staff", magus, 1.0, 1, new StringTextComponent("The Magic Staff"))
+                .questLootFromNotable("loot_staff", magus, 1.0, 1, new TextComponent("The Magic Staff"))
 
                 .quest();
         def.addQuest(getStaff);
@@ -110,9 +109,9 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
 
 
         Quest returnToInitiate = new QuestBuilder("return_to_initiate",
-                new StringTextComponent("Return to the Initiate with the Magic Staff"))
+                new TextComponent("Return to the Initiate with the Magic Staff"))
                 .autoComplete(true)
-                .simpleHail("return_to_initiate", new StringTextComponent("Talk to the Initiate again."), initiate,
+                .simpleHail("return_to_initiate", new TextComponent("Talk to the Initiate again."), initiate,
                         String.format("Thanks for retrieving this staff, you really saved my ass. Will you do one more thing for me? " +
                                 "My assignment was to use this staff to %s here to test its efficacy.", killZombiesPrompt.getPromptEmbed()),
                         false,
@@ -121,13 +120,13 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
                                 .withAdditionalPrompts(killZombiesPrompt)
                 )
                 .reward(new MKLootReward(new ResourceLocation(MKUltra.MODID, "burning_staff"), LootSlotManager.MAIN_HAND.getName(),
-                        new TranslationTextComponent("mkultra.quest_reward.receive_item.name", new StringTextComponent("Burning Staff"))))
+                        new TranslatableComponent("mkultra.quest_reward.receive_item.name", new TextComponent("Burning Staff"))))
                 .reward(new XpReward(25))
                 .quest();
         def.addQuest(returnToInitiate);
 
         Quest testStaff = new QuestBuilder("test_staff",
-                new StringTextComponent("Land Killing Blows with the Fireball Ability granted by the Initiate's Staff"))
+                new TextComponent("Land Killing Blows with the Fireball Ability granted by the Initiate's Staff"))
                 .autoComplete(true)
                 .killWithAbility("test_staff", MKUAbilities.FIREBALL.get(), 10)
                 .reward(new XpReward(25))
@@ -138,9 +137,9 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
         DialoguePrompt guildPrompt = new DialoguePrompt("nether_mage_guild", "guild", "What guild?", "the Guild");
 
 
-        Quest finalReturn = new QuestBuilder("test_complete", new StringTextComponent("Return to the Initiate"))
+        Quest finalReturn = new QuestBuilder("test_complete", new TextComponent("Return to the Initiate"))
                 .autoComplete(true)
-                .simpleHail("test_complete", new StringTextComponent("Talk to the Initiate"), initiate,
+                .simpleHail("test_complete", new TextComponent("Talk to the Initiate"), initiate,
                         String.format("Looks like the staff is in working order. " +
                         "You know you weren't half bad at this, you should consider joining %s. " +
                         "In the meantime, I can %s a few spells. ", guildPrompt.getPromptEmbed(),
@@ -165,7 +164,7 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
 
         QuestDefinition def = new QuestDefinition(new ResourceLocation(MKUltra.MODID, "cleric_intro"));
         def.setRepeatable(false);
-        def.setQuestName(new StringTextComponent("A Missing Apprentice"));
+        def.setQuestName(new TextComponent("A Missing Apprentice"));
 
         DialogueNode councilNode = new DialogueNode("council",
                 "The leadership of my order is called the Council of the Nine. " +
@@ -214,10 +213,10 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
         withFavor.addEffect(new ObjectiveCompleteEffect("talk_to_apprentice", "talk_to_apprentice"));
 
         Quest talkToApprentice = new QuestBuilder("talk_to_apprentice",
-                new StringTextComponent("You need to find the Apprentice somewhere in the castle. Perhaps near the library.."))
+                new TextComponent("You need to find the Apprentice somewhere in the castle. Perhaps near the library.."))
                 .autoComplete(true)
                 .simpleHail("talk_to_apprentice",
-                        new StringTextComponent("Talk to the apprentice"),
+                        new TextComponent("Talk to the apprentice"),
                         apprentice,
                         String.format("Oh thank goodness, it is good to see a friendly face. One of the zombies chased me into " +
                                 "here and I wasn't certain if I'd ever get out. Can you do me %s?", favorPrompt.getPromptEmbed()),
@@ -232,18 +231,18 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
         def.addQuest(talkToApprentice);
 
         Quest apprenticeNecklace = new QuestBuilder("loot_necklace",
-                new StringTextComponent("The Apprentice wants you to retrieve their necklace from a zombie in the library."))
+                new TextComponent("The Apprentice wants you to retrieve their necklace from a zombie in the library."))
                 .autoComplete(true)
-                .questLootFromNotable("loot_necklace", magus, 1.0, 1, new StringTextComponent("The Apprentice's Necklace"))
+                .questLootFromNotable("loot_necklace", magus, 1.0, 1, new TextComponent("The Apprentice's Necklace"))
                 .reward(new XpReward(25))
                 .quest();
         def.addQuest(apprenticeNecklace);
 
         Quest returnToApprentice = new QuestBuilder("return_to_apprentice",
-                new StringTextComponent("Return the necklace to the Apprentice"))
+                new TextComponent("Return the necklace to the Apprentice"))
                 .autoComplete(true)
                 .simpleHail("return_to_apprentice",
-                        new StringTextComponent("Talk to the apprentice"),
+                        new TextComponent("Talk to the apprentice"),
                         apprentice,
                         String.format("Thank you so much I don't think I could have handled %s on my own. Please let %s know I will return shortly.",
                                 magus.getDialogueLink(), acolyte.getDialogueLink()),
@@ -255,10 +254,10 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
         def.addQuest(returnToApprentice);
 
         Quest returnToAcolyte = new QuestBuilder("return_to_acolyte",
-                new StringTextComponent("Return to the Acolyte and let them know the Apprentice is safe."))
+                new TextComponent("Return to the Acolyte and let them know the Apprentice is safe."))
                 .autoComplete(true)
                 .simpleHail("return_to_acolyte",
-                        new StringTextComponent("Return to the Acolyte"),
+                        new TextComponent("Return to the Acolyte"),
                         acolyte,
                         String.format("I'm glad %s is alright. Thank you for all you've done. For your service, I will bend my order's rules a little and provide you with some training in our healing magics.",
                                 acolyte.getDialogueLink()),
@@ -277,7 +276,7 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
         QuestDefinition def = new QuestDefinition(new ResourceLocation(MKUltra.MODID, "trooper_armor"));
         def.addRequirement(new HasEntitlementRequirement(MKUEntitlements.GreenKnightTier1));
         def.setRepeatable(true);
-        def.setQuestName(new StringTextComponent("Salvaged Trooper Armor"));
+        def.setQuestName(new TextComponent("Salvaged Trooper Armor"));
         def.setMode(QuestDefinition.QuestMode.UNSORTED);
         DialoguePrompt startQuestPrompt = new DialoguePrompt("start_quest", "need some armor",
                 "I need some armor", "need some armor.");
@@ -295,7 +294,7 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
 
 
 
-        Quest helmet = new Quest("tradeHelmet", new StringTextComponent("The Green Smith needs " +
+        Quest helmet = new Quest("tradeHelmet", new TextComponent("The Green Smith needs " +
                 "some scrap metal and a helmet from the pigs in the castle."));
         helmet.setAutoComplete(true);
         TradeItemsObjective helmetTrade = new TradeItemsObjective(
@@ -307,10 +306,10 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
         helmet.addObjective(helmetTrade);
         helmet.addReward(new XpReward(25));
         helmet.addReward(new MKLootReward(new ResourceLocation(MKUltra.MODID, "trooper_knight_armor"), LootSlotManager.HEAD.getName(),
-                new TranslationTextComponent("mkultra.quest_reward.receive_item.name", MKUItems.trooperKnightHelmet.getName())));
+                new TranslatableComponent("mkultra.quest_reward.receive_item.name", MKUItems.trooperKnightHelmet.getDescription())));
         def.addQuest(helmet);
 
-        Quest leggings = new Quest("tradeLeggings", new StringTextComponent("The Green Smith needs " +
+        Quest leggings = new Quest("tradeLeggings", new TextComponent("The Green Smith needs " +
                 "some scrap metal and a pair of leggings from the pigs in the castle."));
         leggings.setAutoComplete(true);
         TradeItemsObjective leggingsTrade = new TradeItemsObjective(
@@ -322,10 +321,10 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
         leggings.addObjective(leggingsTrade);
         leggings.addReward(new XpReward(25));
         leggings.addReward(new MKLootReward(new ResourceLocation(MKUltra.MODID, "trooper_knight_armor"), LootSlotManager.LEGS.getName(),
-                new TranslationTextComponent("mkultra.quest_reward.receive_item.name", MKUItems.trooperKnightLeggings.getName())));
+                new TranslatableComponent("mkultra.quest_reward.receive_item.name", MKUItems.trooperKnightLeggings.getDescription())));
         def.addQuest(leggings);
 
-        Quest boots = new Quest("tradeBoots", new StringTextComponent("The Green Smith needs " +
+        Quest boots = new Quest("tradeBoots", new TextComponent("The Green Smith needs " +
                 "some scrap metal and a pair of boots from the pigs in the castle."));
         boots.setAutoComplete(true);
         TradeItemsObjective bootTrade = new TradeItemsObjective(
@@ -337,10 +336,10 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
         boots.addObjective(bootTrade);
         boots.addReward(new XpReward(25));
         boots.addReward(new MKLootReward(new ResourceLocation(MKUltra.MODID, "trooper_knight_armor"), LootSlotManager.FEET.getName(),
-                new TranslationTextComponent("mkultra.quest_reward.receive_item.name", MKUItems.trooperKnightBoots.getName())));
+                new TranslatableComponent("mkultra.quest_reward.receive_item.name", MKUItems.trooperKnightBoots.getDescription())));
         def.addQuest(boots);
 
-        Quest chestplate = new Quest("tradeChestplate", new StringTextComponent("The Green Smith needs " +
+        Quest chestplate = new Quest("tradeChestplate", new TextComponent("The Green Smith needs " +
                 "some scrap metal and the chestplate from the pigs in the castle."));
         chestplate.setAutoComplete(true);
         TradeItemsObjective chestplateTrade = new TradeItemsObjective(
@@ -352,7 +351,7 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
         chestplate.addObjective(chestplateTrade);
         chestplate.addReward(new XpReward(25));
         chestplate.addReward(new MKLootReward(new ResourceLocation(MKUltra.MODID, "trooper_knight_armor"), LootSlotManager.CHEST.getName(),
-                new TranslationTextComponent("mkultra.quest_reward.receive_item.name", MKUItems.trooperKnightChestplate.getName())));
+                new TranslatableComponent("mkultra.quest_reward.receive_item.name", MKUItems.trooperKnightChestplate.getDescription())));
         def.addQuest(chestplate);
 
         return def;
@@ -368,7 +367,7 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
         QuestBuilder.QuestNpc burningRevenant = new QuestBuilder.QuestNpc(introCastle, new ResourceLocation(MKUltra.MODID, "burning_skeleton"));
 
         QuestDefinition def = new QuestDefinition(new ResourceLocation(MKUltra.MODID, "intro_quest"));
-        def.setQuestName(new StringTextComponent("The Green Knights"));
+        def.setQuestName(new TextComponent("The Green Knights"));
         DialoguePrompt startQuestPrompt = new DialoguePrompt("start_quest", "don't know",
                 "I don't know", "What are you doing");
         startQuestPrompt.addResponse(new DialogueResponse("start_quest"));
@@ -383,10 +382,10 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
 
 
         Quest talk1 = new QuestBuilder("talk_to_smith",
-                new StringTextComponent("The Green Lady wants you to go talk to the smith and equip yourself for an unknown task."))
+                new TextComponent("The Green Lady wants you to go talk to the smith and equip yourself for an unknown task."))
                 .autoComplete(true)
                 .simpleHail("talk_to_smith",
-                        new StringTextComponent("Talk to the smith"),
+                        new TextComponent("Talk to the smith"),
                         greenSmith,
                         "We ain't got much left after the crash. " +
                                 "Check that chest over there we got a few things. You can use my crafting table as well. " +
@@ -399,9 +398,9 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
         def.addQuest(talk1);
 
 
-        Quest lootSmithChest = new QuestBuilder("equip_yourself", new StringTextComponent("The Green Smith points you towards a chest in his workshop."))
+        Quest lootSmithChest = new QuestBuilder("equip_yourself", new TextComponent("The Green Smith points you towards a chest in his workshop."))
                 .autoComplete(true)
-                .lootChest("loot_chest", new StringTextComponent("Loot the smith's chest"), introCastle, "intro_chest",
+                .lootChest("loot_chest", new TextComponent("Loot the smith's chest"), introCastle, "intro_chest",
                         new ItemStack(Blocks.COBBLESTONE, 20),
                         new ItemStack(Blocks.OAK_PLANKS, 20),
                         new ItemStack(Items.STRING, 10),
@@ -414,10 +413,10 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
                 .quest();
         def.addQuest(lootSmithChest);
 
-        Quest returnToSmith = new QuestBuilder("return_to_smith", new StringTextComponent("Use the Green Smith's supplies to craft your desired weapon and perhaps some armor for the battle ahead."))
+        Quest returnToSmith = new QuestBuilder("return_to_smith", new TextComponent("Use the Green Smith's supplies to craft your desired weapon and perhaps some armor for the battle ahead."))
                 .autoComplete(true)
                 .hailWithCondition("return_to_smith",
-                        new StringTextComponent("Talk to the Green Smith with a weapon in your hand."),
+                        new TextComponent("Talk to the Green Smith with a weapon in your hand."),
                         greenSmith,
                         "Great, but you're going to need more than just a sharp rock where we're going. " +
                                 "Go back and talk to the Green Lady, ask her about learning to develop your magical talents.",
@@ -430,11 +429,11 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
         def.addQuest(returnToSmith);
 
         Quest greenLadyTrainTalent = new QuestBuilder("green_lady_talent",
-                new StringTextComponent("Talk to the Green Lady to learn more about developing your magical abilities"))
+                new TextComponent("Talk to the Green Lady to learn more about developing your magical abilities"))
                 .autoComplete(true)
                 .simpleHail(
                         "green_lady_talent",
-                        new StringTextComponent("Talk to the Green Lady about the talent system."),
+                        new TextComponent("Talk to the Green Lady about the talent system."),
                         greenLady,
                         "We can help you awaken your magical gifts, the first step is learning how " +
                                 "to train your talents. You should have gained a talent point upon initiating this conversation. " +
@@ -455,10 +454,10 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
         needTraining.addResponse(new DialogueResponse(openTraining.getId()));
 
         Quest returnToGreenLady = new QuestBuilder("return_to_green_lady",
-                new StringTextComponent("The Green Lady wants you to learn about spending talent points."))
+                new TextComponent("The Green Lady wants you to learn about spending talent points."))
                 .autoComplete(true)
                 .hailWithCondition("return_to_green_lady",
-                        new StringTextComponent("Talk to the Green Lady after training a talent."),
+                        new TextComponent("Talk to the Green Lady after training a talent."),
                         greenLady,
                         String.format(
                                 "Alright you're now %s your first ability.", needTraining.getPromptEmbed()),
@@ -483,10 +482,10 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
         needTraining2.addResponse(new DialogueResponse(openTraining2.getId()));
 
         Quest afterAbility = new QuestBuilder("after_ability",
-                new StringTextComponent("Talk to the Green Lady and learn your first ability, then speak to her again."))
+                new TextComponent("Talk to the Green Lady and learn your first ability, then speak to her again."))
                 .autoComplete(true)
                 .hailWithCondition("after_green_lady",
-                        new StringTextComponent("Talk to the Green Lady after learning your first ability."),
+                        new TextComponent("Talk to the Green Lady after learning your first ability."),
                         greenLady,
                         "Now we must test your mettle in combat. " +
                                 "Go kill some of the zombies on the first floor to try out your new magic, and don't forget you can always return to me to learn more.",
@@ -501,12 +500,12 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
         def.addQuest(afterAbility);
 
         Quest killQuest = new QuestBuilder("first_kill",
-                new StringTextComponent("The Green Lady wants you to clear out some of the zombies on the first floor of the castle"))
+                new TextComponent("The Green Lady wants you to clear out some of the zombies on the first floor of the castle"))
                 .autoComplete(true)
                 .killNpc("kill_zombies", new ResourceLocation(MKUltra.MODID, "decaying_piglin"), 4)
                 .killNpc("kill_archers", new ResourceLocation(MKUltra.MODID, "decaying_piglin_archer"), 4)
                 .hailWithObjectives("after_kill",
-                        new StringTextComponent("Talk to the Green Lady after completing the other objectives."),
+                        new TextComponent("Talk to the Green Lady after completing the other objectives."),
                         greenLady,
                         String.format("Your skills have not gone unnoticed. " +
                                         "The dead rise everywhere, to cull the damned is a blessed pursuit. " +
@@ -519,12 +518,12 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
                 .quest();
         def.addQuest(killQuest);
 
-        Quest killCaptain = new QuestBuilder("kill_captain", new StringTextComponent("The Green Lady wants you to find and kill the Piglin Captain"))
+        Quest killCaptain = new QuestBuilder("kill_captain", new TextComponent("The Green Lady wants you to find and kill the Piglin Captain"))
                 .autoComplete(true)
                 .killNotable("kill_captain", piglinCaptain)
                 .hailWithObjectives(
                         "after_kill_captain",
-                        new StringTextComponent("Talk to the Green Lady after completing the other objectives."),
+                        new TextComponent("Talk to the Green Lady after completing the other objectives."),
                         greenLady,
                         "I need you to return to the castle and delve even deeper. I know not why it appeared here at this time, but I do sense a residual life force beneath the castle. " +
                                 "Perhaps this spirit will be amiable to conversation. Go find it.",
@@ -575,9 +574,9 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
         DialoguePrompt crusadersPrompt = new DialoguePrompt("crusaders", "crusaders", "What crusaders?", "dimension-hopping crusaders");
         crusadersPrompt.addResponse(new DialogueResponse(crusaders));
 
-        Quest talkToGhost = new QuestBuilder("talk_to_ghost", new StringTextComponent("The Green Lady wants you to seek out a spirit in the depths."))
+        Quest talkToGhost = new QuestBuilder("talk_to_ghost", new TextComponent("The Green Lady wants you to seek out a spirit in the depths."))
                 .autoComplete(true)
-                .simpleHail("talk_to_ghost", new StringTextComponent("Find the spirit in the castle."), forlornGhost,
+                .simpleHail("talk_to_ghost", new TextComponent("Find the spirit in the castle."), forlornGhost,
                         String.format("Those %s sent you after me didn't they?", crusadersPrompt.getPromptEmbed()), false,
                         obj -> obj
                                 .withAdditionalNode(finalOffer)
@@ -599,12 +598,12 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
                 .quest();
         def.addQuest(talkToGhost);
 
-        Quest killBurning = new QuestBuilder("kill_burning", new StringTextComponent("The Forlorn Ghost has asked you you to kill the Burning Revenant"))
+        Quest killBurning = new QuestBuilder("kill_burning", new TextComponent("The Forlorn Ghost has asked you you to kill the Burning Revenant"))
                 .autoComplete(true)
                 .killNotable("kill_burning", burningRevenant)
                 .hailWithObjectives(
                         "after_kill_burning",
-                        new StringTextComponent("Return to the Green Lady after completing the other objectives."),
+                        new TextComponent("Return to the Green Lady after completing the other objectives."),
                         greenLady,
                         "Good: it is done. Our order is dedicated to cleansing this land. You are welcome to stay here and learn of our ways or go as you please.",
                         String.format("Has the castle been cleansed, is the %s dead?", burningRevenant.getDialogueLink()),

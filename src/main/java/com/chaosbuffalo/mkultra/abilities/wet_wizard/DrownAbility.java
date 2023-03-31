@@ -15,14 +15,15 @@ import com.chaosbuffalo.mkcore.serialization.attributes.ResourceLocationAttribut
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.DrownEffect;
 import com.chaosbuffalo.mkultra.entities.projectiles.DrownProjectileEntity;
+import com.chaosbuffalo.mkultra.init.MKUEntities;
 import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.TargetingContext;
 import com.chaosbuffalo.targeting_api.TargetingContexts;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 public class DrownAbility extends MKAbility {
     public static final ResourceLocation CASTING_PARTICLES = new ResourceLocation(MKUltra.MODID, "ember_casting");
@@ -48,11 +49,11 @@ public class DrownAbility extends MKAbility {
     }
 
     @Override
-    protected ITextComponent getAbilityDescription(IMKEntityData entityData) {
+    protected Component getAbilityDescription(IMKEntityData entityData) {
         float level = getSkillLevel(entityData.getEntity(), MKAttributes.CONJURATION);
-        ITextComponent dotStr = getDamageDescription(entityData,
+        Component dotStr = getDamageDescription(entityData,
                 CoreDamageTypes.NatureDamage, baseDot.value(), scaleDot.value(), level, dotModifierScaling.value());
-        return new TranslationTextComponent(getDescriptionTranslationKey(),
+        return new TranslatableComponent(getDescriptionTranslationKey(),
                 NUMBER_FORMATTER.format(convertDurationToSeconds(getBuffDuration(entityData, level, baseDuration.value(), scaleDuration.value()))),
                 dotStr, NUMBER_FORMATTER.format(convertDurationToSeconds(DrownEffect.DEFAULT_PERIOD)));
     }
@@ -95,10 +96,10 @@ public class DrownAbility extends MKAbility {
     public void endCast(LivingEntity entity, IMKEntityData data, AbilityContext context) {
         super.endCast(entity, data, context);
         float level = getSkillLevel(entity, MKAttributes.CONJURATION);
-        DrownProjectileEntity proj = new DrownProjectileEntity(entity.world);
-        proj.setShooter(entity);
+        DrownProjectileEntity proj = new DrownProjectileEntity(MKUEntities.DROWN_TYPE.get(), entity.level);
+        proj.setOwner(entity);
         proj.setSkillLevel(level);
         shootProjectile(proj, projectileSpeed.value(), projectileInaccuracy.value(), entity, context);
-        entity.world.addEntity(proj);
+        entity.level.addFreshEntity(proj);
     }
 }

@@ -3,7 +3,7 @@ package com.chaosbuffalo.mkultra.abilities;
 import com.chaosbuffalo.mkcore.MKCore;
 import com.chaosbuffalo.mkcore.core.IMKEntityData;
 import com.chaosbuffalo.mkultra.effects.BurnEffect;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.world.entity.LivingEntity;
 
 public class MKUAbilityUtils {
 

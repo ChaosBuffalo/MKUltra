@@ -12,14 +12,15 @@ import com.chaosbuffalo.mkcore.serialization.attributes.FloatAttribute;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.effects.ShadowbringerEffect;
 import com.chaosbuffalo.mkultra.entities.projectiles.ShadowBoltProjectileEntity;
+import com.chaosbuffalo.mkultra.init.MKUEntities;
 import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.TargetingContext;
 import com.chaosbuffalo.targeting_api.TargetingContexts;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 import javax.annotation.Nullable;
 
@@ -62,12 +63,12 @@ public class ShadowBoltAbility extends MKAbility {
     }
 
     @Override
-    protected ITextComponent getAbilityDescription(IMKEntityData entityData) {
+    protected Component getAbilityDescription(IMKEntityData entityData) {
         float skillLevel = getSkillLevel(entityData.getEntity(), MKAttributes.EVOCATION);
-        ITextComponent damageStr = getDamageDescription(entityData, CoreDamageTypes.ShadowDamage, baseDamage.value(),
+        Component damageStr = getDamageDescription(entityData, CoreDamageTypes.ShadowDamage, baseDamage.value(),
                 scaleDamage.value(), skillLevel,
                 modifierScaling.value());
-        return new TranslationTextComponent(getDescriptionTranslationKey(), damageStr);
+        return new TranslatableComponent(getDescriptionTranslationKey(), damageStr);
     }
 
     @Override
@@ -107,10 +108,10 @@ public class ShadowBoltAbility extends MKAbility {
         if (data.getEffects().isEffectActive(ShadowbringerEffect.INSTANCE)) {
             data.getEffects().removeEffect(ShadowbringerEffect.INSTANCE);
         }
-        ShadowBoltProjectileEntity proj = new ShadowBoltProjectileEntity(entity.world);
-        proj.setShooter(entity);
+        ShadowBoltProjectileEntity proj = new ShadowBoltProjectileEntity(MKUEntities.SHADOWBOLT_TYPE.get(), entity.level);
+        proj.setOwner(entity);
         proj.setSkillLevel(level);
         shootProjectile(proj, projectileSpeed.value(), projectileInaccuracy.value(), entity, context);
-        entity.world.addEntity(proj);
+        entity.level.addFreshEntity(proj);
     }
 }

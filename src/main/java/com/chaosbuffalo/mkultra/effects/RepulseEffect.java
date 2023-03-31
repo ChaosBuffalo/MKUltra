@@ -7,12 +7,12 @@ import com.chaosbuffalo.mkcore.effects.MKEffect;
 import com.chaosbuffalo.mkcore.effects.MKEffectBuilder;
 import com.chaosbuffalo.mkcore.effects.ScalingValueEffectState;
 import com.chaosbuffalo.mkultra.MKUltra;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.play.server.SEntityVelocityPacket;
-import net.minecraft.potion.EffectType;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
+import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -24,11 +24,11 @@ public class RepulseEffect extends MKEffect {
     public static final RepulseEffect INSTANCE = new RepulseEffect();
 
     private RepulseEffect() {
-        super(EffectType.HARMFUL);
+        super(MobEffectCategory.HARMFUL);
         setRegistryName(MKUltra.MODID, "effect.repulse");
     }
 
-    public static MKEffectBuilder<?> from(LivingEntity source, float base, float scale, Vector3d sourcePos) {
+    public static MKEffectBuilder<?> from(LivingEntity source, float base, float scale, Vec3 sourcePos) {
         return INSTANCE.builder(source).state(s -> {
             s.setScalingParameters(base, scale, 0.0f);
             s.setPos(sourcePos);
@@ -51,42 +51,42 @@ public class RepulseEffect extends MKEffect {
     }
 
     public static class State extends ScalingValueEffectState {
-        protected Vector3d pos;
+        protected Vec3 pos;
 
         @Override
         public boolean performEffect(IMKEntityData targetData, MKActiveEffect activeEffect) {
             LivingEntity target = targetData.getEntity();
-            Vector3d targetPos = new Vector3d(target.getPosX(), target.getPosYHeight(0.6f), target.getPosZ());
+            Vec3 targetPos = new Vec3(target.getX(), target.getY(0.6f), target.getZ());
             float force = getScaledValue(activeEffect.getStackCount(), activeEffect.getSkillLevel());
             targetData.getAbilityExecutor().interruptCast(CastInterruptReason.Jump);
-            Vector3d awayFrom = targetPos.subtract(pos).normalize().scale(force);
-            target.addVelocity(awayFrom.getX(), awayFrom.getY(), awayFrom.getZ());
-            if (target instanceof ServerPlayerEntity){
-                ((ServerPlayerEntity) target).connection.sendPacket(new SEntityVelocityPacket(target));
+            Vec3 awayFrom = targetPos.subtract(pos).normalize().scale(force);
+            target.push(awayFrom.x(), awayFrom.y(), awayFrom.z());
+            if (target instanceof ServerPlayer){
+                ((ServerPlayer) target).connection.send(new ClientboundSetEntityMotionPacket(target));
             }
             return true;
         }
 
-        public void setPos(Vector3d pos) {
+        public void setPos(Vec3 pos) {
             this.pos = pos;
         }
 
-        public Vector3d getPos() {
+        public Vec3 getPos() {
             return pos;
         }
 
         @Override
-        public void deserializeStorage(CompoundNBT stateTag) {
+        public void deserializeStorage(CompoundTag stateTag) {
             super.deserializeStorage(stateTag);
-            pos = new Vector3d(stateTag.getDouble("posX"), stateTag.getDouble("posY"), stateTag.getDouble("posZ"));
+            pos = new Vec3(stateTag.getDouble("posX"), stateTag.getDouble("posY"), stateTag.getDouble("posZ"));
         }
 
         @Override
-        public void serializeStorage(CompoundNBT stateTag) {
+        public void serializeStorage(CompoundTag stateTag) {
             super.serializeStorage(stateTag);
-            stateTag.putDouble("posX", pos.getX());
-            stateTag.putDouble("posY", pos.getY());
-            stateTag.putDouble("posZ", pos.getZ());
+            stateTag.putDouble("posX", pos.x());
+            stateTag.putDouble("posY", pos.y());
+            stateTag.putDouble("posZ", pos.z());
         }
     }
 

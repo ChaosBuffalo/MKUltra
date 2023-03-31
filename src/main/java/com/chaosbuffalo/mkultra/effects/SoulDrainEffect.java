@@ -10,9 +10,9 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.abilities.passives.SoulDrainAbility;
 import com.chaosbuffalo.mkultra.init.MKUAbilities;
 import com.chaosbuffalo.mkultra.init.ModSounds;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.potion.EffectType;
-import net.minecraft.util.DamageSource;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -23,7 +23,7 @@ public class SoulDrainEffect extends MKEffect {
     public static final SoulDrainEffect INSTANCE = new SoulDrainEffect();
 
     public SoulDrainEffect() {
-        super(EffectType.BENEFICIAL);
+        super(MobEffectCategory.BENEFICIAL);
         setRegistryName(MKUltra.MODID, "effect.soul_drain");
         SpellTriggers.LIVING_KILL_ENTITY.register(this, this::onLivingKillEntity);
     }

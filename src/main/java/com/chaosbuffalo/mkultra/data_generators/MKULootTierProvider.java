@@ -18,12 +18,12 @@ import com.chaosbuffalo.mkweapons.items.randomization.slots.RandomizationSlotMan
 import com.chaosbuffalo.mkweapons.items.randomization.templates.RandomizationTemplate;
 import com.chaosbuffalo.mkweapons.items.weapon.types.MeleeWeaponTypes;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.DirectoryCache;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.data.HashCache;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.TextComponent;
 
 import javax.annotation.Nonnull;
 
@@ -34,7 +34,7 @@ public class MKULootTierProvider extends LootTierProvider {
     }
 
     @Override
-    public void act(@Nonnull DirectoryCache cache) {
+    public void run(@Nonnull HashCache cache) {
         writeLootTier(trooperKnightLootTier(), cache);
         writeLootTier(zombieTrooperTier(), cache);
         writeLootTier(trooperCaptain(), cache);
@@ -66,7 +66,7 @@ public class MKULootTierProvider extends LootTierProvider {
                 template.addRandomizationOption(option);
             }
         }
-        NameOption name = new NameOption(new StringTextComponent("Sacrificial Dagger"));
+        NameOption name = new NameOption(new TextComponent("Sacrificial Dagger"));
         template.addRandomizationOption(name);
         template.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "blade"),
                 RandomizationSlotManager.ATTRIBUTE_SLOT, RandomizationSlotManager.NAME_SLOT), 10);
@@ -82,7 +82,7 @@ public class MKULootTierProvider extends LootTierProvider {
         option.addAttributeModifier(MKAttributes.FIRE_DAMAGE, tier.getName().toString(),
                 2, 8, AttributeModifier.Operation.ADDITION);
         template.addRandomizationOption(option);
-        NameOption name = new NameOption(new StringTextComponent("Earring of Minor Firepower"));
+        NameOption name = new NameOption(new TextComponent("Earring of Minor Firepower"));
         template.addRandomizationOption(name);
         template.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "earring"),
                 RandomizationSlotManager.ATTRIBUTE_SLOT, RandomizationSlotManager.NAME_SLOT), 15);
@@ -97,7 +97,7 @@ public class MKULootTierProvider extends LootTierProvider {
         option.addAttributeModifier(MKAttributes.BLEED_DAMAGE, tier.getName().toString(),
                 3, 9, AttributeModifier.Operation.ADDITION);
         template.addRandomizationOption(option);
-        NameOption name = new NameOption(new StringTextComponent("Bloody Ring"));
+        NameOption name = new NameOption(new TextComponent("Bloody Ring"));
         template.addRandomizationOption(name);
         template.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "ring"),
                 RandomizationSlotManager.ATTRIBUTE_SLOT, RandomizationSlotManager.NAME_SLOT), 15);
@@ -143,7 +143,7 @@ public class MKULootTierProvider extends LootTierProvider {
         option.addAttributeModifier(Attributes.MAX_HEALTH, tier.getName().toString(),
                 4, 20.0, AttributeModifier.Operation.ADDITION);
         template.addRandomizationOption(option);
-        NameOption name = new NameOption(new StringTextComponent("Earring of Minor Health"));
+        NameOption name = new NameOption(new TextComponent("Earring of Minor Health"));
         template.addRandomizationOption(name);
         template.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "earring"),
                 RandomizationSlotManager.ATTRIBUTE_SLOT, RandomizationSlotManager.NAME_SLOT), 15);
@@ -158,7 +158,7 @@ public class MKULootTierProvider extends LootTierProvider {
         option.addAttributeModifier(MKAttributes.MANA_REGEN, tier.getName().toString(),
                 0.25, 2.5, AttributeModifier.Operation.ADDITION);
         template.addRandomizationOption(option);
-        NameOption name = new NameOption(new StringTextComponent("Earring of Quickening Thoughts"));
+        NameOption name = new NameOption(new TextComponent("Earring of Quickening Thoughts"));
         template.addRandomizationOption(name);
         template.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "earring"),
                 RandomizationSlotManager.ATTRIBUTE_SLOT, RandomizationSlotManager.NAME_SLOT), 15);
@@ -172,7 +172,7 @@ public class MKULootTierProvider extends LootTierProvider {
         option.addAttributeModifier(MKAttributes.MAX_MANA, tier.getName().toString(),
                 4, 20, AttributeModifier.Operation.ADDITION);
         template.addRandomizationOption(option);
-        NameOption name = new NameOption(new StringTextComponent("Ring of Minor Mana"));
+        NameOption name = new NameOption(new TextComponent("Ring of Minor Mana"));
         template.addRandomizationOption(name);
         template.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "ring"),
                 RandomizationSlotManager.ATTRIBUTE_SLOT, RandomizationSlotManager.NAME_SLOT), 15);
@@ -187,7 +187,7 @@ public class MKULootTierProvider extends LootTierProvider {
         option.addAttributeModifier(Attributes.MAX_HEALTH, tier.getName().toString(),
                 4, 20.0, AttributeModifier.Operation.ADDITION);
         template.addRandomizationOption(option);
-        NameOption name = new NameOption(new StringTextComponent("Ring of Minor Health"));
+        NameOption name = new NameOption(new TextComponent("Ring of Minor Health"));
         template.addRandomizationOption(name);
         template.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "ring"),
                 RandomizationSlotManager.ATTRIBUTE_SLOT, RandomizationSlotManager.NAME_SLOT), 15);
@@ -201,7 +201,7 @@ public class MKULootTierProvider extends LootTierProvider {
         MeleeEffectOption meleeEffect = new MeleeEffectOption();
         meleeEffect.addEffect(new UndeadDamageMeleeWeaponEffect(1.25f));
         katana.addRandomizationOption(meleeEffect);
-        NameOption name = new NameOption(new StringTextComponent("Stinging Blade"));
+        NameOption name = new NameOption(new TextComponent("Stinging Blade"));
         katana.addRandomizationOption(name);
         introCastleAttrs(tier, katana);
         katana.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "blade"),
@@ -219,7 +219,7 @@ public class MKULootTierProvider extends LootTierProvider {
         staff.addItem(MKWeaponsItems.lookupWeapon(MKWeaponsItems.IRON_TIER, MeleeWeaponTypes.STAFF_TYPE));
         AddAbilityOption abilityOption = new AddAbilityOption(MKUAbilities.FIREBALL.get(), RandomizationSlotManager.ABILITY_SLOT);
         staff.addRandomizationOption(abilityOption);
-        NameOption name = new NameOption(new StringTextComponent("Burning Staff"));
+        NameOption name = new NameOption(new TextComponent("Burning Staff"));
         staff.addRandomizationOption(name);
         introCastleAttrs(tier, staff);
         staff.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "blade"),
@@ -245,7 +245,7 @@ public class MKULootTierProvider extends LootTierProvider {
         executionersBlade.addItem(MKWeaponsItems.lookupWeapon(MKWeaponsItems.IRON_TIER, MeleeWeaponTypes.BATTLEAXE_TYPE));
         AddAbilityOption abilityOption = new AddAbilityOption(MKUAbilities.SEVER_TENDON.get(), RandomizationSlotManager.ABILITY_SLOT);
         executionersBlade.addRandomizationOption(abilityOption);
-        PrefixNameOption name = new PrefixNameOption(new StringTextComponent("Executioner's"));
+        PrefixNameOption name = new PrefixNameOption(new TextComponent("Executioner's"));
         executionersBlade.addRandomizationOption(name);
         introCastleAttrs(tier, executionersBlade);
         executionersBlade.addTemplate(new RandomizationTemplate(new ResourceLocation(MKUltra.MODID, "blade"),

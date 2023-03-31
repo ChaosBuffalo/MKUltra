@@ -7,9 +7,9 @@ import com.chaosbuffalo.mkcore.effects.MKEffect;
 import com.chaosbuffalo.mkcore.effects.MKEffectBuilder;
 import com.chaosbuffalo.mkcore.effects.MKEffectState;
 import com.chaosbuffalo.mkultra.MKUltra;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.potion.EffectType;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -21,7 +21,7 @@ public class WarpTargetEffect extends MKEffect {
     public static final WarpTargetEffect INSTANCE = new WarpTargetEffect();
 
     private WarpTargetEffect() {
-        super(EffectType.HARMFUL);
+        super(MobEffectCategory.HARMFUL);
         setRegistryName(MKUltra.MODID, "effect.warp_target");
     }
 
@@ -51,10 +51,10 @@ public class WarpTargetEffect extends MKEffect {
             if (source == null) {
                 return false;
             }
-            Vector3d playerOrigin = source.getPositionVec();
-            Vector3d heading = source.getLookVec();
+            Vec3 playerOrigin = source.position();
+            Vec3 heading = source.getLookAngle();
             targetData.getAbilityExecutor().interruptCast(CastInterruptReason.Teleport);
-            targetData.getEntity().setPositionAndUpdate(
+            targetData.getEntity().teleportTo(
                     playerOrigin.x + heading.x,
                     playerOrigin.y + heading.y + 1.0,
                     playerOrigin.z + heading.z);

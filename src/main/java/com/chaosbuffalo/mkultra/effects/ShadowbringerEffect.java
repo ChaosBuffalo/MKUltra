@@ -5,8 +5,8 @@ import com.chaosbuffalo.mkcore.effects.*;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.abilities.necromancer.ShadowBoltAbility;
 import com.chaosbuffalo.mkultra.init.MKUAbilities;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.potion.EffectType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -20,7 +20,7 @@ public class ShadowbringerEffect extends MKEffect {
     }
 
     public ShadowbringerEffect() {
-        super(EffectType.BENEFICIAL);
+        super(MobEffectCategory.BENEFICIAL);
         setRegistryName(MKUltra.MODID, "effect.shadowbringer");
     }
 

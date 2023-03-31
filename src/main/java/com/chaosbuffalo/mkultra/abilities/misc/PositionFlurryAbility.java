@@ -10,13 +10,14 @@ import com.chaosbuffalo.mkcore.core.CastInterruptReason;
 import com.chaosbuffalo.mkcore.core.IMKEntityData;
 import com.chaosbuffalo.mkcore.serialization.attributes.IntAttribute;
 import com.chaosbuffalo.targeting_api.Targeting;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraftforge.fmllegacy.RegistryObject;
+
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -32,20 +33,20 @@ public abstract class PositionFlurryAbility extends MKAbility {
     }
 
     @Override
-    protected ITextComponent getAbilityDescription(IMKEntityData entityData) {
+    protected Component getAbilityDescription(IMKEntityData entityData) {
 
-        return new TranslationTextComponent("mkultra.ability.flurry.description",
+        return new TranslatableComponent("mkultra.ability.flurry.description",
                 abilityToCast.get().getAbilityName(),
                 NUMBER_FORMATTER.format(getDistance(entityData.getEntity())),
                 NUMBER_FORMATTER.format(convertDurationToSeconds(tickRate.value())));
     }
 
     @Override
-    public void buildDescription(IMKEntityData casterData, Consumer<ITextComponent> consumer) {
+    public void buildDescription(IMKEntityData casterData, Consumer<Component> consumer) {
         super.buildDescription(casterData, consumer);
         abilityToCast.ifPresent(x -> {
-            consumer.accept(x.getAbilityName().copyRaw().mergeStyle(TextFormatting.UNDERLINE).mergeStyle(TextFormatting.GRAY));
-            consumer.accept(x.exposeAbilityDescription(casterData).copyRaw().mergeStyle(TextFormatting.GRAY));
+            consumer.accept(x.getAbilityName().plainCopy().withStyle(ChatFormatting.UNDERLINE).withStyle(ChatFormatting.GRAY));
+            consumer.accept(x.exposeAbilityDescription(casterData).plainCopy().withStyle(ChatFormatting.GRAY));
         });
     }
 
@@ -74,14 +75,14 @@ public abstract class PositionFlurryAbility extends MKAbility {
         super.continueCast(castingEntity, casterData, castTimeLeft, context);
         if (castTimeLeft % tickRate.value() == 0) {
             float dist = getDistance(castingEntity);
-            Vector3d minBound = castingEntity.getPositionVec().subtract(dist, 1.0, dist);
-            Vector3d maxBound = castingEntity.getPositionVec().add(dist, 4.0, dist);
-            List<LivingEntity> entities = castingEntity.getEntityWorld().getEntitiesWithinAABB(LivingEntity.class,
-                    new AxisAlignedBB(minBound, maxBound));
+            Vec3 minBound = castingEntity.position().subtract(dist, 1.0, dist);
+            Vec3 maxBound = castingEntity.position().add(dist, 4.0, dist);
+            List<LivingEntity> entities = castingEntity.getCommandSenderWorld().getEntitiesOfClass(LivingEntity.class,
+                    new AABB(minBound, maxBound));
             abilityToCast.ifPresent(ab -> {
                 for (LivingEntity ent : entities) {
                     if (Targeting.isValidTarget(getTargetContext(), castingEntity, ent)) {
-                        ab.castAtPosition(castingEntity, ent.getPositionVec());
+                        ab.castAtPosition(castingEntity, ent.position());
                     }
                 }
             });

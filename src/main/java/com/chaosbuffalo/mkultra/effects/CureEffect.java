@@ -6,9 +6,9 @@ import com.chaosbuffalo.mkcore.effects.MKEffect;
 import com.chaosbuffalo.mkcore.effects.MKEffectBuilder;
 import com.chaosbuffalo.mkcore.effects.MKEffectState;
 import com.chaosbuffalo.mkultra.MKUltra;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.EffectType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -19,7 +19,7 @@ public class CureEffect extends MKEffect {
     public static final CureEffect INSTANCE = new CureEffect();
 
     private CureEffect() {
-        super(EffectType.BENEFICIAL);
+        super(MobEffectCategory.BENEFICIAL);
         setRegistryName(MKUltra.MODID, "effect.cure");
     }
 
@@ -36,19 +36,19 @@ public class CureEffect extends MKEffect {
 
         @Override
         public boolean performEffect(IMKEntityData targetData, MKActiveEffect activeEffect) {
-            ArrayList<EffectInstance> toRemove = new ArrayList<>();
+            ArrayList<MobEffectInstance> toRemove = new ArrayList<>();
             int count = 0;
-            for (EffectInstance effect : targetData.getEntity().getActivePotionEffects()) {
+            for (MobEffectInstance effect : targetData.getEntity().getActiveEffects()) {
                 if (count > activeEffect.getStackCount()) {
                     break;
                 }
-                if (!effect.getPotion().isBeneficial()) {
+                if (!effect.getEffect().isBeneficial()) {
                     toRemove.add(effect);
                     count++;
                 }
             }
-            for (EffectInstance effect : toRemove) {
-                targetData.getEntity().removePotionEffect(effect.getPotion());
+            for (MobEffectInstance effect : toRemove) {
+                targetData.getEntity().removeEffect(effect.getEffect());
             }
             return true;
         }

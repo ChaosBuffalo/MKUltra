@@ -16,9 +16,9 @@ import com.chaosbuffalo.mkultra.abilities.nether_mage.*;
 import com.chaosbuffalo.mkultra.abilities.passives.LifeSiphonAbility;
 import com.chaosbuffalo.mkultra.abilities.passives.SoulDrainAbility;
 import com.chaosbuffalo.mkultra.abilities.wet_wizard.DrownAbility;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 
 public class MKUAbilities {

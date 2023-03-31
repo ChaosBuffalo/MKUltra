@@ -22,12 +22,12 @@ import com.chaosbuffalo.mkultra.effects.YaupEffect;
 import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.TargetingContext;
 import com.chaosbuffalo.targeting_api.TargetingContexts;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 import java.util.function.Consumer;
 
@@ -50,14 +50,14 @@ public class YaupAbility extends MKAbility {
     }
 
     @Override
-    protected ITextComponent getSkillDescription(IMKEntityData casterData) {
+    protected Component getSkillDescription(IMKEntityData casterData) {
         float level = getSkillLevel(casterData.getEntity(), MKAttributes.ARETE);
         int duration = getBuffDuration(casterData, level, baseDuration.value(), scaleDuration.value()) / GameConstants.TICKS_PER_SECOND;
-        return new TranslationTextComponent(getDescriptionTranslationKey(), INTEGER_FORMATTER.format(duration));
+        return new TranslatableComponent(getDescriptionTranslationKey(), INTEGER_FORMATTER.format(duration));
     }
 
     @Override
-    public void buildDescription(IMKEntityData casterData, Consumer<ITextComponent> consumer) {
+    public void buildDescription(IMKEntityData casterData, Consumer<Component> consumer) {
         super.buildDescription(casterData, consumer);
         AbilityDescriptions.getEffectModifiers(YaupEffect.INSTANCE, casterData, false).forEach(consumer);
     }
@@ -87,10 +87,10 @@ public class YaupAbility extends MKAbility {
         super.endCast(entity, data, context);
         float level = getSkillLevel(entity, MKAttributes.ARETE);
         MKEffectBuilder<?> yaup = YaupEffect.from(entity, level, getBuffDuration(data, level, baseDuration.value(), scaleDuration.value()));
-        MKEffectBuilder<?> sound = SoundEffect.from(entity, ModSounds.spell_buff_attack_4, entity.getSoundCategory())
+        MKEffectBuilder<?> sound = SoundEffect.from(entity, ModSounds.spell_buff_attack_4, entity.getSoundSource())
                 .ability(this);
         MKEffectBuilder<?> particles = MKParticleEffect.from(entity, tick_particles.getValue(),
-                true, new Vector3d(0.0, 1.0, 0.0))
+                true, new Vec3(0.0, 1.0, 0.0))
                 .ability(this);
 
         AreaEffectBuilder.createOnCaster(entity)
@@ -104,6 +104,6 @@ public class YaupAbility extends MKAbility {
                 .spawn();
 
         PacketHandler.sendToTrackingAndSelf(new MKParticleEffectSpawnPacket(
-                new Vector3d(0.0, 1.0, 0.0), cast_particles.getValue(), entity.getEntityId()), entity);
+                new Vec3(0.0, 1.0, 0.0), cast_particles.getValue(), entity.getId()), entity);
     }
 }

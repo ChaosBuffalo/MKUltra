@@ -26,15 +26,15 @@ import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.Targeting;
 import com.chaosbuffalo.targeting_api.TargetingContext;
 import com.chaosbuffalo.targeting_api.TargetingContexts;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -76,12 +76,12 @@ public class ExplosiveGrowthAbility extends MKAbility {
     }
 
     @Override
-    protected ITextComponent getAbilityDescription(IMKEntityData entityData) {
-        ITextComponent damageStr = getDamageDescription(entityData, CoreDamageTypes.MeleeDamage, baseDamage.value(),
+    protected Component getAbilityDescription(IMKEntityData entityData) {
+        Component damageStr = getDamageDescription(entityData, CoreDamageTypes.MeleeDamage, baseDamage.value(),
                 scaleDamage.value(),
                 getSkillLevel(entityData.getEntity(), MKAttributes.PANKRATION),
                 modifierScaling.value());
-        return new TranslationTextComponent(getDescriptionTranslationKey(), damageStr);
+        return new TranslatableComponent(getDescriptionTranslationKey(), damageStr);
     }
 
     @Override
@@ -106,7 +106,7 @@ public class ExplosiveGrowthAbility extends MKAbility {
         float restoLevel = getSkillLevel(castingEntity, MKAttributes.RESTORATION);
         float pankrationLevel = getSkillLevel(castingEntity, MKAttributes.PANKRATION);
 
-        SoundCategory cat = castingEntity instanceof PlayerEntity ? SoundCategory.PLAYERS : SoundCategory.HOSTILE;
+        SoundSource cat = castingEntity instanceof Player ? SoundSource.PLAYERS : SoundSource.HOSTILE;
         float damage = baseDamage.value() + scaleDamage.value() * pankrationLevel;
 
         MKEffectBuilder<?> cure = CureEffect.from(castingEntity)
@@ -115,9 +115,9 @@ public class ExplosiveGrowthAbility extends MKAbility {
         MKEffectBuilder<?> remedy = MKUAbilities.NATURES_REMEDY.get().createNaturesRemedyEffect(casterData, restoLevel)
                 .ability(this);
 
-        Vector3d look = castingEntity.getLookVec().scale(getDistance(castingEntity));
-        Vector3d from = castingEntity.getPositionVec().add(0, castingEntity.getEyeHeight(), 0);
-        Vector3d to = from.add(look);
+        Vec3 look = castingEntity.getLookAngle().scale(getDistance(castingEntity));
+        Vec3 from = castingEntity.position().add(0, castingEntity.getEyeHeight(), 0);
+        Vec3 to = from.add(look);
         List<LivingEntity> entityHit = TargetUtil.getTargetsInLine(castingEntity, from, to, 1.0f, this::isValidTarget);
 
         for (LivingEntity entHit : entityHit) {
@@ -133,25 +133,25 @@ public class ExplosiveGrowthAbility extends MKAbility {
                     break;
                 }
                 case ENEMY: {
-                    entHit.attackEntityFrom(MKDamageSource.causeMeleeDamage(getAbilityId(), castingEntity, castingEntity), damage);
+                    entHit.hurt(MKDamageSource.causeMeleeDamage(getAbilityId(), castingEntity, castingEntity), damage);
                     SoundUtils.serverPlaySoundAtEntity(entHit, ModSounds.spell_earth_1, cat);
                     break;
                 }
             }
 
             PacketHandler.sendToTrackingAndSelf(new MKParticleEffectSpawnPacket(
-                    new Vector3d(0.0, 1.0, 0.0), detonate_particles.getValue(),
-                    entHit.getEntityId()), entHit);
+                    new Vec3(0.0, 1.0, 0.0), detonate_particles.getValue(),
+                    entHit.getId()), entHit);
         }
 
-        RayTraceResult blockHit = RayTraceUtils.rayTraceBlocks(castingEntity, from, to, false);
-        if (blockHit != null && blockHit.getType() == RayTraceResult.Type.BLOCK) {
-            to = blockHit.getHitVec();
+        HitResult blockHit = RayTraceUtils.rayTraceBlocks(castingEntity, from, to, false);
+        if (blockHit != null && blockHit.getType() == HitResult.Type.BLOCK) {
+            to = blockHit.getLocation();
         }
 
         casterData.getEffects().addEffect(cure);
         casterData.getEffects().addEffect(remedy);
-        castingEntity.setPositionAndUpdate(to.x, to.y, to.z);
+        castingEntity.teleportTo(to.x, to.y, to.z);
         MKParticleEffectSpawnPacket spawn = new MKParticleEffectSpawnPacket(from, CAST_PARTICLES);
         spawn.addLoc(to);
         PacketHandler.sendToTrackingAndSelf(spawn, castingEntity);

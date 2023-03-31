@@ -18,11 +18,11 @@ import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.mkweapons.init.MKWeaponsParticles;
 import com.chaosbuffalo.targeting_api.TargetingContext;
 import com.chaosbuffalo.targeting_api.TargetingContexts;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 public class SeverTendonAbility extends MKAbility {
     protected final FloatAttribute base = new FloatAttribute("base", 4.0f);
@@ -44,14 +44,14 @@ public class SeverTendonAbility extends MKAbility {
     }
 
     @Override
-    protected ITextComponent getAbilityDescription(IMKEntityData entityData) {
+    protected Component getAbilityDescription(IMKEntityData entityData) {
         float level = getSkillLevel(entityData.getEntity(), MKAttributes.PANKRATION);
-        ITextComponent valueStr = getDamageDescription(entityData,
+        Component valueStr = getDamageDescription(entityData,
                 CoreDamageTypes.MeleeDamage, base.value(), scale.value(), level, modifierScaling.value());
-        ITextComponent dotStr = getDamageDescription(entityData,
+        Component dotStr = getDamageDescription(entityData,
                 CoreDamageTypes.BleedDamage, baseDot.value(), scaleDot.value(), level, dotModifierScaling.value());
         int periodSeconds = SeverTendonEffect.DEFAULT_PERIOD / 20;
-        return new TranslationTextComponent(getDescriptionTranslationKey(), valueStr,
+        return new TranslatableComponent(getDescriptionTranslationKey(), valueStr,
                 getBuffDuration(entityData, level, baseDuration.value(), scaleDuration.value()) / 20,
                 dotStr, periodSeconds, (level + 1) * .05f * 100.0f);
     }
@@ -103,14 +103,14 @@ public class SeverTendonAbility extends MKAbility {
                 targetData.getEffects().addEffect(severTendon);
             });
 
-            SoundUtils.serverPlaySoundAtEntity(targetEntity, ModSounds.spell_punch_6, targetEntity.getSoundCategory());
-            Vector3d lookVec = entity.getLookVec();
+            SoundUtils.serverPlaySoundAtEntity(targetEntity, ModSounds.spell_punch_6, targetEntity.getSoundSource());
+            Vec3 lookVec = entity.getLookAngle();
             PacketHandler.sendToTrackingAndSelf(
                     new ParticleEffectSpawnPacket(
                             MKWeaponsParticles.DRIPPING_BLOOD,
                             ParticleEffects.CIRCLE_MOTION, 25, 10,
-                            targetEntity.getPosX(), targetEntity.getPosY() + 1.0f,
-                            targetEntity.getPosZ(), 0.75, 0.75, 0.75, 1.0,
+                            targetEntity.getX(), targetEntity.getY() + 1.0f,
+                            targetEntity.getZ(), 0.75, 0.75, 0.75, 1.0,
                             lookVec), targetEntity);
         });
     }

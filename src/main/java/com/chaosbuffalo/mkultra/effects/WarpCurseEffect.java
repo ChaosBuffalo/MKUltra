@@ -12,10 +12,10 @@ import com.chaosbuffalo.mkcore.utils.EntityUtils;
 import com.chaosbuffalo.mkcore.utils.SoundUtils;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.init.ModSounds;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.potion.EffectType;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -36,7 +36,7 @@ public class WarpCurseEffect extends MKEffect {
     }
 
     private WarpCurseEffect() {
-        super(EffectType.HARMFUL);
+        super(MobEffectCategory.HARMFUL);
         setRegistryName(MKUltra.MODID, "effect.warp_curse");
     }
 
@@ -62,19 +62,19 @@ public class WarpCurseEffect extends MKEffect {
             LivingEntity target = targetData.getEntity();
 
             float damage = getScaledValue(activeEffect.getStackCount(), activeEffect.getSkillLevel());
-            target.attackEntityFrom(MKDamageSource.causeAbilityDamage(CoreDamageTypes.ShadowDamage,
+            target.hurt(MKDamageSource.causeAbilityDamage(CoreDamageTypes.ShadowDamage,
                     activeEffect.getAbilityId(), activeEffect.getDirectEntity(), activeEffect.getSourceEntity(),
                     getModifierScale()), damage);
 
-            SoundUtils.serverPlaySoundAtEntity(target, ModSounds.spell_fire_5, target.getSoundCategory());
+            SoundUtils.serverPlaySoundAtEntity(target, ModSounds.spell_fire_5, target.getSoundSource());
             boolean hasTeleported = false;
             int attempts = 5;
             while (!hasTeleported && attempts > 0){
-                Vector3d targetOrigin = target.getPositionVec();
-                double nextX = targetOrigin.x + (target.getRNG().nextInt(8) - target.getRNG().nextInt(8));
+                Vec3 targetOrigin = target.position();
+                double nextX = targetOrigin.x + (target.getRandom().nextInt(8) - target.getRandom().nextInt(8));
                 double nextY = targetOrigin.y + 1.0;
-                double nextZ = targetOrigin.z + (target.getRNG().nextInt(8) - target.getRNG().nextInt(8));
-                hasTeleported = EntityUtils.safeTeleportEntity(target, new Vector3d(nextX, nextY, nextZ));
+                double nextZ = targetOrigin.z + (target.getRandom().nextInt(8) - target.getRandom().nextInt(8));
+                hasTeleported = EntityUtils.safeTeleportEntity(target, new Vec3(nextX, nextY, nextZ));
                 attempts--;
             }
             targetData.getAbilityExecutor().interruptCast(CastInterruptReason.Teleport);

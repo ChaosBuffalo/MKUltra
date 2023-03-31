@@ -17,12 +17,12 @@ import com.chaosbuffalo.mkultra.effects.FuriousBroodingEffect;
 import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.TargetingContext;
 import com.chaosbuffalo.targeting_api.TargetingContexts;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 import javax.annotation.Nullable;
 
@@ -55,13 +55,13 @@ public class FuriousBroodingAbility extends MKAbility {
     }
 
     @Override
-    protected ITextComponent getSkillDescription(IMKEntityData casterData) {
+    protected Component getSkillDescription(IMKEntityData casterData) {
         float level = getSkillLevel(casterData.getEntity(), MKAttributes.PNEUMA);
-        ITextComponent damageStr = getHealDescription(casterData, baseValue.value(),
+        Component damageStr = getHealDescription(casterData, baseValue.value(),
                 scaleValue.value(), level, modifierScaling.value());
         int duration = getBuffDuration(casterData, level, baseDuration.value(), scaleDuration.value()) / GameConstants.TICKS_PER_SECOND;
         float speedReduction = -0.6f + 0.05f * level;
-        return new TranslationTextComponent(getDescriptionTranslationKey(), damageStr, INTEGER_FORMATTER.format(duration), PERCENT_FORMATTER.format(speedReduction));
+        return new TranslatableComponent(getDescriptionTranslationKey(), damageStr, INTEGER_FORMATTER.format(duration), PERCENT_FORMATTER.format(speedReduction));
     }
 
     @Nullable
@@ -87,8 +87,8 @@ public class FuriousBroodingAbility extends MKAbility {
             MKEffectBuilder<?> heal = createFuriousBroodingEffect(casterData, level).ability(this);
             MKCore.getEntityData(targetEntity).ifPresent(targetData -> targetData.getEffects().addEffect(heal));
             PacketHandler.sendToTrackingAndSelf(new MKParticleEffectSpawnPacket(
-                    new Vector3d(0.0, 1.0, 0.0), tick_particles.getValue(),
-                    targetEntity.getEntityId()), targetEntity);
+                    new Vec3(0.0, 1.0, 0.0), tick_particles.getValue(),
+                    targetEntity.getId()), targetEntity);
         });
     }
 }

@@ -24,12 +24,12 @@ import com.chaosbuffalo.mkultra.init.MKUAbilities;
 import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.TargetingContext;
 import com.chaosbuffalo.targeting_api.TargetingContexts;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 public class IgniteAbility extends MKAbility {
     public static final ResourceLocation CASTING_PARTICLES = new ResourceLocation(MKUltra.MODID, "ignite_casting");
@@ -58,11 +58,11 @@ public class IgniteAbility extends MKAbility {
     }
 
     @Override
-    protected ITextComponent getAbilityDescription(IMKEntityData entityData) {
+    protected Component getAbilityDescription(IMKEntityData entityData) {
         float level = getSkillLevel(entityData.getEntity(), MKAttributes.EVOCATION);
-        ITextComponent valueStr = getDamageDescription(entityData,
+        Component valueStr = getDamageDescription(entityData,
                 CoreDamageTypes.FireDamage, base.value(), scale.value(), level, modifierScaling.value());
-        return new TranslationTextComponent(getDescriptionTranslationKey(), valueStr, igniteDistance.value());
+        return new TranslatableComponent(getDescriptionTranslationKey(), valueStr, igniteDistance.value());
     }
 
     @Override
@@ -105,16 +105,16 @@ public class IgniteAbility extends MKAbility {
             MKCore.getEntityData(targetEntity).ifPresent(targetData -> {
                 targetData.getEffects().addEffect(damage);
 
-                SoundUtils.serverPlaySoundAtEntity(targetEntity, ModSounds.spell_fire_4, targetEntity.getSoundCategory());
+                SoundUtils.serverPlaySoundAtEntity(targetEntity, ModSounds.spell_fire_4, targetEntity.getSoundSource());
 
                 if (MKUAbilityUtils.isBurning(targetData)) {
                     MKEffectBuilder<?> ignite = IgniteEffect.from(entity, base.value(), scale.value(), modifierScaling.value())
                             .ability(this)
                             .skillLevel(level);
                     MKEffectBuilder<?> particle = MKParticleEffect.from(entity, cast_2_particles.getValue(),
-                            true, new Vector3d(0.0, 1.0, 0.0))
+                            true, new Vec3(0.0, 1.0, 0.0))
                             .ability(this);
-                    MKEffectBuilder<?> sound = SoundEffect.from(entity, ModSounds.spell_fire_8, entity.getSoundCategory())
+                    MKEffectBuilder<?> sound = SoundEffect.from(entity, ModSounds.spell_fire_8, entity.getSoundSource())
                             .ability(this);
 
                     AreaEffectBuilder.createOnEntity(entity, targetEntity)
@@ -132,8 +132,8 @@ public class IgniteAbility extends MKAbility {
                             .ability(this);
                     targetData.getEffects().addEffect(burn);
 
-                    PacketHandler.sendToTrackingAndSelf(new MKParticleEffectSpawnPacket(new Vector3d(0.0, 1.0, 0.0),
-                            cast_1_particles.getValue(), targetEntity.getEntityId()), targetEntity);
+                    PacketHandler.sendToTrackingAndSelf(new MKParticleEffectSpawnPacket(new Vec3(0.0, 1.0, 0.0),
+                            cast_1_particles.getValue(), targetEntity.getId()), targetEntity);
                 }
             });
         });

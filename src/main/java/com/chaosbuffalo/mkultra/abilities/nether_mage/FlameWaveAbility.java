@@ -22,12 +22,12 @@ import com.chaosbuffalo.mkultra.effects.FlameWaveEffect;
 import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.TargetingContext;
 import com.chaosbuffalo.targeting_api.TargetingContexts;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 import javax.annotation.Nullable;
 
@@ -56,13 +56,13 @@ public class FlameWaveAbility extends MKAbility {
     }
 
     @Override
-    protected ITextComponent getAbilityDescription(IMKEntityData entityData) {
+    protected Component getAbilityDescription(IMKEntityData entityData) {
         float level = getSkillLevel(entityData.getEntity(), MKAttributes.EVOCATION);
-        ITextComponent dmgStr = getDamageDescription(entityData, CoreDamageTypes.FireDamage, base.value(), scale.value(),
+        Component dmgStr = getDamageDescription(entityData, CoreDamageTypes.FireDamage, base.value(), scale.value(),
                 level, modifierScaling.value());
         int dur = Math.round(baseDuration.value() + scaleDuration.value() * level);
         float mult = damageBoost.value() * 100.0f;
-        return new TranslationTextComponent(getDescriptionTranslationKey(), dmgStr, mult, dur);
+        return new TranslatableComponent(getDescriptionTranslationKey(), dmgStr, mult, dur);
     }
 
     @Override
@@ -102,10 +102,10 @@ public class FlameWaveAbility extends MKAbility {
                 .ability(this)
                 .skillLevel(level);
 
-        MKEffectBuilder<?> particles = MKParticleEffect.from(entity, cast_2_particles.getValue(), false, new Vector3d(0.0, 1.0, 0.0))
+        MKEffectBuilder<?> particles = MKParticleEffect.from(entity, cast_2_particles.getValue(), false, new Vec3(0.0, 1.0, 0.0))
                 .ability(this);
 
-        MKEffectBuilder<?> sound = SoundEffect.from(entity, ModSounds.spell_fire_1, entity.getSoundCategory())
+        MKEffectBuilder<?> sound = SoundEffect.from(entity, ModSounds.spell_fire_1, entity.getSoundSource())
                 .ability(this);
 
         AreaEffectBuilder.createOnCaster(entity)
@@ -119,7 +119,7 @@ public class FlameWaveAbility extends MKAbility {
                 .spawn();
 
         PacketHandler.sendToTrackingAndSelf(new MKParticleEffectSpawnPacket(
-                        new Vector3d(0.0, 1.0, 0.0), cast_1_particles.getValue(), entity.getEntityId()),
+                        new Vec3(0.0, 1.0, 0.0), cast_1_particles.getValue(), entity.getId()),
                 entity);
     }
 }

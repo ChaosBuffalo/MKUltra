@@ -15,12 +15,12 @@ import com.chaosbuffalo.mkultra.effects.YankEffect;
 import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.TargetingContext;
 import com.chaosbuffalo.targeting_api.TargetingContexts;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 public class YankAbility extends MKAbility {
     public static final ResourceLocation CAST_PARTICLES = new ResourceLocation(MKUltra.MODID, "yank_cast");
@@ -39,10 +39,10 @@ public class YankAbility extends MKAbility {
     }
 
     @Override
-    protected ITextComponent getAbilityDescription(IMKEntityData entityData) {
+    protected Component getAbilityDescription(IMKEntityData entityData) {
         float level = getSkillLevel(entityData.getEntity(), MKAttributes.PANKRATION);
         String value = NUMBER_FORMATTER.format(base.value() + scale.value() * level);
-        return new TranslationTextComponent(getDescriptionTranslationKey(), value);
+        return new TranslatableComponent(getDescriptionTranslationKey(), value);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class YankAbility extends MKAbility {
         super.endCast(entity, data, context);
         float level = getSkillLevel(entity, MKAttributes.PANKRATION);
         context.getMemory(MKAbilityMemories.ABILITY_TARGET).ifPresent(targetEntity -> {
-            Vector3d yankPos = new Vector3d(entity.getPosX(), entity.getPosYHeight(0.6), entity.getPosZ());
+            Vec3 yankPos = new Vec3(entity.getX(), entity.getY(0.6), entity.getZ());
             MKEffectBuilder<?> yank = YankEffect.from(entity, base.value(), scale.value(), yankPos)
                     .ability(this)
                     .skillLevel(level);
@@ -80,7 +80,7 @@ public class YankAbility extends MKAbility {
             });
 
             MKParticleEffectSpawnPacket spawn = new MKParticleEffectSpawnPacket(yankPos, CAST_PARTICLES);
-            Vector3d targetPos = new Vector3d(targetEntity.getPosX(), targetEntity.getPosYHeight(0.6f), targetEntity.getPosZ());
+            Vec3 targetPos = new Vec3(targetEntity.getX(), targetEntity.getY(0.6f), targetEntity.getZ());
             spawn.addLoc(targetPos);
             PacketHandler.sendToTrackingAndSelf(spawn, entity);
         });

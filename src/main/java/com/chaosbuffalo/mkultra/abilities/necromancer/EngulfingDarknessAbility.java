@@ -19,12 +19,12 @@ import com.chaosbuffalo.mkultra.effects.EngulfingDarknessEffect;
 import com.chaosbuffalo.mkultra.init.ModSounds;
 import com.chaosbuffalo.targeting_api.TargetingContext;
 import com.chaosbuffalo.targeting_api.TargetingContexts;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 import java.util.function.Consumer;
 
@@ -61,19 +61,19 @@ public class EngulfingDarknessAbility extends MKAbility {
     }
 
     @Override
-    public void buildDescription(IMKEntityData casterData, Consumer<ITextComponent> consumer) {
+    public void buildDescription(IMKEntityData casterData, Consumer<Component> consumer) {
         super.buildDescription(casterData, consumer);
         AbilityDescriptions.getEffectModifiers(EngulfingDarknessEffect.INSTANCE, casterData, false).forEach(consumer);
     }
 
     @Override
-    protected ITextComponent getAbilityDescription(IMKEntityData entityData) {
+    protected Component getAbilityDescription(IMKEntityData entityData) {
         float level = getSkillLevel(entityData.getEntity(), MKAttributes.CONJURATION);
-        ITextComponent dotStr = getDamageDescription(entityData,
+        Component dotStr = getDamageDescription(entityData,
                 CoreDamageTypes.ShadowDamage, baseDot.value(), scaleDot.value(), level, dotModifierScaling.value());
         float dotDur = convertDurationToSeconds(getBuffDuration(entityData, level, baseDuration.value(), scaleDuration.value()));
         float shadowbringerDur = convertDurationToSeconds(shadowbringerDuration.value());
-        return new TranslationTextComponent(getDescriptionTranslationKey(),
+        return new TranslatableComponent(getDescriptionTranslationKey(),
                 dotStr, NUMBER_FORMATTER.format(convertDurationToSeconds(EngulfingDarknessEffect.DEFAULT_PERIOD)),
                 NUMBER_FORMATTER.format(dotDur), PERCENT_FORMATTER.format(getShadowbringerChance(entityData)), NUMBER_FORMATTER.format(shadowbringerDur));
     }
@@ -125,10 +125,10 @@ public class EngulfingDarknessAbility extends MKAbility {
                 targetData.getEffects().addEffect(dot);
             });
 
-            SoundUtils.serverPlaySoundAtEntity(targetEntity, ModSounds.spell_dark_7, targetEntity.getSoundCategory());
+            SoundUtils.serverPlaySoundAtEntity(targetEntity, ModSounds.spell_dark_7, targetEntity.getSoundSource());
             PacketHandler.sendToTrackingAndSelf(new MKParticleEffectSpawnPacket(
-                            new Vector3d(0.0, 1.0, 0.0), castParticles.getValue(),
-                            targetEntity.getEntityId()),
+                            new Vec3(0.0, 1.0, 0.0), castParticles.getValue(),
+                            targetEntity.getId()),
                     targetEntity);
         });
     }
