@@ -8,12 +8,15 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ObjectHolder;
 
 
 @Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 @ObjectHolder(MKUltra.MODID)
 public class MKUEntitlements {
+
+    public static final DeferredRegister<MKEntitlement> REGISTRY = DeferredRegister.create(MKEntitlement.class, MKUltra.MODID);
 
     @ObjectHolder("green_knight.tier_1")
     public static MKEntitlement GreenKnightTier1;
