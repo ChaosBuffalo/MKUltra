@@ -41,7 +41,7 @@ public class MKUTalentTreeProvider extends DataGenerators.TalentTreeDataGenerato
         line.addNode(new AttributeTalentNode(CoreTalents.MANA_REGEN_TALENT, 2, 0.25));
         line.addNode(new AttributeTalentNode(CoreTalents.MAX_HEALTH_TALENT, 3, 1.0));
         line.addNode(new EntitlementGrantTalentNode(CoreTalents.PASSIVE_ABILITY_SLOT_TALENT, UUID.fromString("95725b31-da3a-4a3e-b6cc-e5036a6e9a87")));
-        line.addNode(new TalentNode(MKUTalents.LIFE_SIPHON_TALENT));
+        line.addNode(new TalentNode(MKUTalents.LIFE_SIPHON_TALENT.get()));
         tree.addLine(line);
         TalentLineDefinition magic = new TalentLineDefinition(tree, "magic");
         magic.addNode(new EntitlementGrantTalentNode(CoreTalents.ABILITY_SLOT_TALENT, UUID.fromString("2e1ff629-b139-4303-831d-1c1bc5ebc21e")));
@@ -69,7 +69,7 @@ public class MKUTalentTreeProvider extends DataGenerators.TalentTreeDataGenerato
         heal.addNode(new AttributeTalentNode(CoreTalents.MAX_MANA_TALENT, 3, 1.0));
         heal.addNode(new AttributeTalentNode(CoreTalents.HEAL_BONUS_TALENT, 1, 1.0));
         heal.addNode(new EntitlementGrantTalentNode(CoreTalents.PASSIVE_ABILITY_SLOT_TALENT, UUID.fromString("05865420-0069-45e1-856e-331c9900f99c")));
-        heal.addNode(new TalentNode(MKUTalents.SOUL_DRAIN_TALENT));
+        heal.addNode(new TalentNode(MKUTalents.SOUL_DRAIN_TALENT.get()));
         tree.addLine(heal);
         writeDefinition(tree, cache);
 

@@ -12,7 +12,8 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class MKUEntitlements {
 
-    public static final DeferredRegister<MKEntitlement> REGISTRY = DeferredRegister.create(MKCoreRegistry.ENTITLEMENT_REGISTRY_NAME, MKUltra.MODID);
+    public static final DeferredRegister<MKEntitlement> REGISTRY =
+            DeferredRegister.create(MKCoreRegistry.ENTITLEMENT_REGISTRY_NAME, MKUltra.MODID);
 
     public static RegistryObject<MKEntitlement> GreenKnightTier1 = REGISTRY.register("green_knight.tier_1",
             () -> new SimpleEntitlement(1));
