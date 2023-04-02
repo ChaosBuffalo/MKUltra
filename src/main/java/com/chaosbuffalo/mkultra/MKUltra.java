@@ -23,15 +23,9 @@ public class MKUltra {
     public static final Logger LOGGER = LogManager.getLogger();
 
     public MKUltra(){
-        CryptStructurePools.registerPatterns();
-        IntroCastlePools.registerPatterns();
-        DesertTempleVillagePools.registerPatterns();
-        NecrotideAlterPools.registerPatterns();
-        MKUWorldGen.registerStructurePieces();
         MKUEntities.register();
         MKUAbilities.register();
-        MinecraftForge.EVENT_BUS.addListener(MKUWorldGen::worldSetup);
-        MinecraftForge.EVENT_BUS.addListener(MKUWorldGen::biomeSetup);
+        MKUWorldGen.register();
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
     }
 

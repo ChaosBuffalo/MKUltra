@@ -1,0 +1,30 @@
+{
+  "name": "mkultra:necrotide_alter/towers",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "location": "mkultra:necrotide_alter/tower_left",
+        "processors": {
+          "processors": []
+        },
+        "projection": "rigid",
+        "bWaterLog": false,
+        "element_type": "mknpc:mk_single_jigsaw"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "location": "mkultra:necrotide_alter/tower_right",
+        "processors": {
+          "processors": []
+        },
+        "projection": "rigid",
+        "bWaterLog": false,
+        "element_type": "mknpc:mk_single_jigsaw"
+      }
+    }
+  ]
+}

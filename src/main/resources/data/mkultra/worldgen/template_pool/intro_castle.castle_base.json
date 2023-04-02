@@ -1,0 +1,18 @@
+{
+  "name": "mkultra:intro_castle.castle_base",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "location": "mkultra:intro_castle/castle_base",
+        "processors": {
+          "processors": []
+        },
+        "projection": "rigid",
+        "bWaterLog": false,
+        "element_type": "mknpc:mk_single_jigsaw"
+      }
+    }
+  ]
+}

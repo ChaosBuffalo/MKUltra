@@ -1,0 +1,10 @@
+{
+  "type": "mkultra:necrotide_alter",
+  "config": {
+    "start_pool": "mkultra:necrotide_alter/base",
+    "size": 7
+  },
+  "biomes": "#minecraft:has_structure/desert_pyramid",
+  "spawn_overrides": {},
+  "adapt_noise": false
+}

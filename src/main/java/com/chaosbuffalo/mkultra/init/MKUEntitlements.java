@@ -1,6 +1,8 @@
 package com.chaosbuffalo.mkultra.init;
 
 
+import com.chaosbuffalo.mkcore.MKCore;
+import com.chaosbuffalo.mkcore.MKCoreRegistry;
 import com.chaosbuffalo.mkcore.core.entitlements.MKEntitlement;
 import com.chaosbuffalo.mkcore.core.entitlements.SimpleEntitlement;
 import com.chaosbuffalo.mkultra.MKUltra;
@@ -8,7 +10,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ObjectHolder;
 
 
@@ -16,7 +17,7 @@ import net.minecraftforge.registries.ObjectHolder;
 @ObjectHolder(MKUltra.MODID)
 public class MKUEntitlements {
 
-    public static final DeferredRegister<MKEntitlement> REGISTRY = DeferredRegister.create(MKEntitlement.class, MKUltra.MODID);
+//    public static final DeferredRegister<MKEntitlement> REGISTRY = DeferredRegister.create(MKCore.makeRL("entitlements"), MKUltra.MODID);
 
     @ObjectHolder("green_knight.tier_1")
     public static MKEntitlement GreenKnightTier1;

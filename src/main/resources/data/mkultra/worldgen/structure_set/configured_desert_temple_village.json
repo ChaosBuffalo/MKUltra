@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "mkultra:configured_desert_temple_village",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "salt": 14444012,
+    "spacing": 36,
+    "separation": 8,
+    "type": "minecraft:random_spread"
+  }
+}

@@ -5,8 +5,7 @@ import com.chaosbuffalo.mkultra.MKUltra;
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.levelgen.feature.structures.StructureTemplatePool;
-import net.minecraft.data.worldgen.Pools;
+import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 
 public class NecrotideAlterPools {
     private static final ResourceLocation BASE_NAME = new ResourceLocation(MKUltra.MODID, "necrotide_alter/base");
@@ -15,17 +14,20 @@ public class NecrotideAlterPools {
 
     public static final int GEN_DEPTH = 7;
 
-    public static final StructureTemplatePool BASE = Pools.register(
-            new StructureTemplatePool(new ResourceLocation(MKUltra.MODID, "necrotide_alter/base"),
-                    new ResourceLocation("empty"), ImmutableList.of(
-                    Pair.of(MKSingleJigsawPiece.getMKSingleJigsaw(BASE_NAME, false), 1)), StructureTemplatePool.Projection.TERRAIN_MATCHING));
+    public static final StructureTemplatePool BASE = new StructureTemplatePool(
+            new ResourceLocation(MKUltra.MODID, "necrotide_alter/base"),
+            new ResourceLocation("empty"),
+            ImmutableList.of(
+                    Pair.of(MKSingleJigsawPiece.getMKSingleJigsaw(BASE_NAME, false), 1)),
+            StructureTemplatePool.Projection.TERRAIN_MATCHING);
 
-    public static void registerPatterns() {
-        Pools.register(new StructureTemplatePool(new ResourceLocation(MKUltra.MODID, "necrotide_alter/towers"), new ResourceLocation("empty"),
-                ImmutableList.of(
-                        Pair.of(MKSingleJigsawPiece.getMKSingleJigsaw(TOWER_LEFT, false), 1),
-                        Pair.of(MKSingleJigsawPiece.getMKSingleJigsaw(TOWER_RIGHT, false), 1)
-                ),
-                StructureTemplatePool.Projection.RIGID));
-    }
+    public static final StructureTemplatePool TOWERS = new StructureTemplatePool(
+            new ResourceLocation(MKUltra.MODID, "necrotide_alter/towers"),
+            new ResourceLocation("empty"),
+            ImmutableList.of(
+                    Pair.of(MKSingleJigsawPiece.getMKSingleJigsaw(TOWER_LEFT, false), 1),
+                    Pair.of(MKSingleJigsawPiece.getMKSingleJigsaw(TOWER_RIGHT, false), 1)
+            ),
+            StructureTemplatePool.Projection.RIGID);
+
 }

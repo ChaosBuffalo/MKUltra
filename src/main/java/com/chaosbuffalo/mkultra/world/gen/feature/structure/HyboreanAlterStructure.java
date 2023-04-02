@@ -7,7 +7,6 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
 
-import net.minecraft.world.level.levelgen.feature.StructureFeature.StructureStartFactory;
 
 //public class HyboreanAlterStructure extends StructureFeature<NoneFeatureConfiguration> {
 //

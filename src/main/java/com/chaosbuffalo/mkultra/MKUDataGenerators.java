@@ -23,6 +23,9 @@ public class MKUDataGenerators {
             generator.addProvider(new MKULootTierProvider(generator));
             generator.addProvider(new MKUFactionProvider(generator));
             generator.addProvider(new MKUQuestProvider(generator));
+            generator.addProvider(new MKUPoolProviders(generator));
+            generator.addProvider(new MKUConfiguredStructureProvider(generator));
+            generator.addProvider(new MKUStructureSetProvider(generator));
 
         }
         if (event.includeClient()){

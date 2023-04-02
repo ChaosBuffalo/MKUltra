@@ -16,7 +16,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.network.chat.Component;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraftforge.fmllegacy.RegistryObject;
+import net.minecraftforge.registries.RegistryObject;
 
 
 import java.util.List;
@@ -24,7 +24,7 @@ import java.util.function.Consumer;
 
 public abstract class PositionFlurryAbility extends MKAbility {
     protected final IntAttribute tickRate = new IntAttribute("tickRate", GameConstants.TICKS_PER_SECOND / 2);
-    protected final RegistryObject<? extends PositionTargetingAbility> abilityToCast;
+    protected final net.minecraftforge.registries.RegistryObject<? extends PositionTargetingAbility> abilityToCast;
 
     public PositionFlurryAbility(RegistryObject<? extends PositionTargetingAbility> abilityToCast) {
         super();

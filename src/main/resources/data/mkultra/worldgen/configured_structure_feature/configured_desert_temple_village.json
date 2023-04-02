@@ -1,0 +1,10 @@
+{
+  "type": "mkultra:desert_temple_village",
+  "config": {
+    "start_pool": "mkultra:desert_temple_village",
+    "size": 6
+  },
+  "biomes": "#minecraft:has_structure/village_desert",
+  "spawn_overrides": {},
+  "adapt_noise": false
+}

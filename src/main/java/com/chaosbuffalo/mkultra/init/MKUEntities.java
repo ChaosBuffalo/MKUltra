@@ -15,7 +15,7 @@ import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fmllegacy.RegistryObject;
+import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -32,7 +32,7 @@ public class MKUEntities {
 
 
     public static final String ORC_NAME = "orc";
-    public static final RegistryObject<EntityType<OrcEntity>> ORC_TYPE = REGISTRY.register(ORC_NAME,
+    public static final net.minecraftforge.registries.RegistryObject<EntityType<OrcEntity>> ORC_TYPE = REGISTRY.register(ORC_NAME,
             () -> EntityType.Builder.of(OrcEntity::new, MobCategory.CREATURE)
                     .sized(EntityType.ZOMBIE.getWidth(), EntityType.ZOMBIE.getHeight())
                     .build(new ResourceLocation(MKUltra.MODID, ORC_NAME).toString()));
@@ -45,7 +45,7 @@ public class MKUEntities {
 
 
     public static final String ZOMBIFIED_PIGLIN_NAME = "zombified_piglin";
-    public static RegistryObject<EntityType<MKZombifiedPiglinEntity>> ZOMBIFIED_PIGLIN_TYPE = REGISTRY.register(ZOMBIFIED_PIGLIN_NAME,
+    public static net.minecraftforge.registries.RegistryObject<EntityType<MKZombifiedPiglinEntity>> ZOMBIFIED_PIGLIN_TYPE = REGISTRY.register(ZOMBIFIED_PIGLIN_NAME,
             () -> EntityType.Builder.of(MKZombifiedPiglinEntity::new, MobCategory.MONSTER)
                     .sized(EntityType.ZOMBIFIED_PIGLIN.getWidth(), EntityType.ZOMBIFIED_PIGLIN.getHeight())
                     .build(new ResourceLocation(MKUltra.MODID, ZOMBIFIED_PIGLIN_NAME).toString()));
@@ -68,7 +68,7 @@ public class MKUEntities {
                     .noSave()
                     .build(new ResourceLocation(MKUltra.MODID, "cleansing_seed_projectile").toString()));
 
-    public static final RegistryObject<EntityType<SpiritBombProjectileEntity>> SPIRIT_BOMB_TYPE = REGISTRY.register(
+    public static final net.minecraftforge.registries.RegistryObject<EntityType<SpiritBombProjectileEntity>> SPIRIT_BOMB_TYPE = REGISTRY.register(
             "spirit_bomb", () -> EntityType.Builder.of(SpiritBombProjectileEntity::new, MobCategory.MISC)
                     .fireImmune()
                     .sized(0.15f, 0.15f)
@@ -78,7 +78,7 @@ public class MKUEntities {
                     .noSave()
                     .build(new ResourceLocation(MKUltra.MODID, "spirit_bomb_projectile").toString()));
 
-    public static final RegistryObject<EntityType<FireballProjectileEntity>> FIREBALL_TYPE = REGISTRY.register(
+    public static final net.minecraftforge.registries.RegistryObject<EntityType<FireballProjectileEntity>> FIREBALL_TYPE = REGISTRY.register(
             "fireball_projectile", () -> EntityType.Builder.of(FireballProjectileEntity::new, MobCategory.MISC)
                     .fireImmune()
                     .sized(0.25f, 0.25f)

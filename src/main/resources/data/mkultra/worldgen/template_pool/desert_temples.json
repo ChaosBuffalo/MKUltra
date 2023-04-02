@@ -1,0 +1,18 @@
+{
+  "name": "mkultra:desert_temples",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "location": "mkultra:desert_temple_village/cleric_temple_small",
+        "processors": {
+          "processors": []
+        },
+        "projection": "rigid",
+        "bWaterLog": false,
+        "element_type": "mknpc:mk_single_jigsaw"
+      }
+    }
+  ]
+}

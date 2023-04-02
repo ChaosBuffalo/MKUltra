@@ -17,7 +17,6 @@ public class MKUNpcExtensions implements IMKNpcExtension {
 
     @Override
     public void registerNpcExtension() {
-//        MKNpcWorldGen.NO_WATER_STRUCTURES.add(MKUWorldGen.CRYPT_STRUCTURE);
-        MKNpcWorldGen.NO_WATER_STRUCTURES.add(MKUWorldGen.INTRO_CASTLE);
+
     }
 }

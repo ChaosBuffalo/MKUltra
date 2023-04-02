@@ -1,0 +1,10 @@
+{
+  "type": "mkultra:intro_castle",
+  "config": {
+    "start_pool": "mkultra:intro_castle.green_knight_island",
+    "size": 7
+  },
+  "biomes": "#mkultra:has_structure/has_intro_castle",
+  "spawn_overrides": {},
+  "adapt_noise": false
+}

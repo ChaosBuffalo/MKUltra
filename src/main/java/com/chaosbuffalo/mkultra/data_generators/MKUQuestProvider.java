@@ -60,7 +60,7 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
     }
 
     private QuestDefinition generateIntroMageQuest(){
-        QuestBuilder.QuestLocation introCastle = new QuestBuilder.QuestLocation(MKUWorldGen.INTRO_CASTLE_NAME, 0);
+        QuestBuilder.QuestLocation introCastle = new QuestBuilder.QuestLocation(MKUWorldGen.INTRO_CASTLE.getId(), 0);
         QuestBuilder.QuestNpc initiate = new QuestBuilder.QuestNpc(introCastle, new ResourceLocation(MKUltra.MODID, "nether_mage_initiate"));
         QuestBuilder.QuestNpc magus = new QuestBuilder.QuestNpc(introCastle, new ResourceLocation(MKUltra.MODID, "imperial_magus"));
 
@@ -157,7 +157,7 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
     }
 
     private QuestDefinition generateIntroClericQuest(){
-        QuestBuilder.QuestLocation introCastle = new QuestBuilder.QuestLocation(MKUWorldGen.INTRO_CASTLE_NAME, 0);
+        QuestBuilder.QuestLocation introCastle = new QuestBuilder.QuestLocation(MKUWorldGen.INTRO_CASTLE.getId(), 0);
         QuestBuilder.QuestNpc acolyte = new QuestBuilder.QuestNpc(introCastle, new ResourceLocation(MKUltra.MODID, "solangian_acolyte"));
         QuestBuilder.QuestNpc apprentice = new QuestBuilder.QuestNpc(introCastle, new ResourceLocation(MKUltra.MODID, "solangian_apprentice"));
         QuestBuilder.QuestNpc magus = new QuestBuilder.QuestNpc(introCastle, new ResourceLocation(MKUltra.MODID, "imperial_magus"));
@@ -299,7 +299,7 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
         helmet.setAutoComplete(true);
         TradeItemsObjective helmetTrade = new TradeItemsObjective(
                 "tradeHelmetObj",
-                MKUWorldGen.INTRO_CASTLE_NAME, 0,
+                MKUWorldGen.INTRO_CASTLE.getId(), 0,
                 new ResourceLocation(MKUltra.MODID, "green_smith"));
         helmetTrade.addItemStack(new ItemStack(MKUItems.corruptedPigIronPlate, 2));
         helmetTrade.addItemStack(new ItemStack(MKUItems.destroyedTrooperHelmet));
@@ -314,7 +314,7 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
         leggings.setAutoComplete(true);
         TradeItemsObjective leggingsTrade = new TradeItemsObjective(
                 "tradeHelmetObj",
-                MKUWorldGen.INTRO_CASTLE_NAME, 0,
+                MKUWorldGen.INTRO_CASTLE.getId(), 0,
                 new ResourceLocation(MKUltra.MODID, "green_smith"));
         leggingsTrade.addItemStack(new ItemStack(MKUItems.corruptedPigIronPlate, 6));
         leggingsTrade.addItemStack(new ItemStack(MKUItems.destroyedTrooperLeggings));
@@ -329,7 +329,7 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
         boots.setAutoComplete(true);
         TradeItemsObjective bootTrade = new TradeItemsObjective(
                 "tradeLeggingsObj",
-                MKUWorldGen.INTRO_CASTLE_NAME, 0,
+                MKUWorldGen.INTRO_CASTLE.getId(), 0,
                 new ResourceLocation(MKUltra.MODID, "green_smith"));
         bootTrade.addItemStack(new ItemStack(MKUItems.corruptedPigIronPlate, 4));
         bootTrade.addItemStack(new ItemStack(MKUItems.destroyedTrooperBoots));
@@ -344,7 +344,7 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
         chestplate.setAutoComplete(true);
         TradeItemsObjective chestplateTrade = new TradeItemsObjective(
                 "tradeChestObj",
-                MKUWorldGen.INTRO_CASTLE_NAME, 0,
+                MKUWorldGen.INTRO_CASTLE.getId(), 0,
                 new ResourceLocation(MKUltra.MODID, "green_smith"));
         chestplateTrade.addItemStack(new ItemStack(MKUItems.corruptedPigIronPlate, 8));
         chestplateTrade.addItemStack(new ItemStack(MKUItems.destroyedTrooperChestplate));
@@ -359,7 +359,7 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
 
     private QuestDefinition generateIntroQuest(){
 
-        QuestBuilder.QuestLocation introCastle = new QuestBuilder.QuestLocation(MKUWorldGen.INTRO_CASTLE_NAME, 0);
+        QuestBuilder.QuestLocation introCastle = new QuestBuilder.QuestLocation(MKUWorldGen.INTRO_CASTLE.getId(), 0);
         QuestBuilder.QuestNpc greenLady = new QuestBuilder.QuestNpc(introCastle, new ResourceLocation(MKUltra.MODID, "green_lady"));
         QuestBuilder.QuestNpc piglinCaptain = new QuestBuilder.QuestNpc(introCastle, new ResourceLocation(MKUltra.MODID, "trooper_captain"));
         QuestBuilder.QuestNpc greenSmith = new QuestBuilder.QuestNpc(introCastle, new ResourceLocation(MKUltra.MODID, "green_smith"));
