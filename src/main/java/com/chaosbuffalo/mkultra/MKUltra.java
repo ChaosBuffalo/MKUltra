@@ -4,6 +4,7 @@ package com.chaosbuffalo.mkultra;
 import com.chaosbuffalo.mkultra.extensions.MKUNpcExtensions;
 import com.chaosbuffalo.mkultra.init.MKUAbilities;
 import com.chaosbuffalo.mkultra.init.MKUEntities;
+import com.chaosbuffalo.mkultra.init.MKUEntitlements;
 import com.chaosbuffalo.mkultra.init.MKUWorldGen;
 import com.chaosbuffalo.mkultra.world.gen.feature.structure.CryptStructurePools;
 import com.chaosbuffalo.mkultra.world.gen.feature.structure.DesertTempleVillagePools;
@@ -26,6 +27,7 @@ public class MKUltra {
         MKUEntities.register();
         MKUAbilities.register();
         MKUWorldGen.register();
+        MKUEntitlements.register(FMLJavaModLoadingContext.get().getModEventBus());
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
     }
 
