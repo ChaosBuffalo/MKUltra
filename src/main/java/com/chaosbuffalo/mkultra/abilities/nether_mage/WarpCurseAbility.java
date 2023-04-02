@@ -75,12 +75,12 @@ public class WarpCurseAbility extends MKAbility {
 
     @Override
     public SoundEvent getCastingSoundEvent() {
-        return ModSounds.casting_shadow;
+        return ModSounds.casting_shadow.get();
     }
 
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
-        return ModSounds.spell_dark_15;
+        return ModSounds.spell_dark_15.get();
     }
 
     @Override
@@ -99,7 +99,7 @@ public class WarpCurseAbility extends MKAbility {
             MKCore.getEntityData(targetEntity).ifPresent(targetData -> targetData.getEffects().addEffect(warpCast));
             targetEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, duration, oldAmp, false, false, true, null));
 
-            SoundUtils.serverPlaySoundAtEntity(targetEntity, ModSounds.spell_fire_5, targetEntity.getSoundSource());
+            SoundUtils.serverPlaySoundAtEntity(targetEntity, ModSounds.spell_fire_5.get(), targetEntity.getSoundSource());
             PacketHandler.sendToTrackingAndSelf(new MKParticleEffectSpawnPacket(
                     new Vec3(0.0, 1.0, 0.0), cast_particles.getValue(), castingEntity.getId()), castingEntity);
         });

@@ -44,7 +44,7 @@ public class DrownProjectileEntity extends TrailProjectileEntity implements IMKR
     protected boolean onImpact(Entity caster, HitResult result, int amplifier) {
         if (!this.level.isClientSide && caster instanceof LivingEntity) {
             SoundSource cat = caster instanceof Player ? SoundSource.PLAYERS : SoundSource.HOSTILE;
-            SoundUtils.serverPlaySoundAtEntity(this, ModSounds.spell_water_5, cat);
+            SoundUtils.serverPlaySoundAtEntity(this, ModSounds.spell_water_5.get(), cat);
             PacketHandler.sendToTrackingAndSelf(new MKParticleEffectSpawnPacket(
                     new Vec3(0.0, 0.0, 0.0), DETONATE_PARTICLES, getId()), this);
 

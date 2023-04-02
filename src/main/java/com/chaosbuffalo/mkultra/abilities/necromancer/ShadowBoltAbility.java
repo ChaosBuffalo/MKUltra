@@ -79,7 +79,7 @@ public class ShadowBoltAbility extends MKAbility {
     @Nullable
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
-        return ModSounds.spell_dark_3;
+        return ModSounds.spell_dark_3.get();
     }
 
     @Override
@@ -98,7 +98,7 @@ public class ShadowBoltAbility extends MKAbility {
 
     @Override
     public SoundEvent getCastingSoundEvent() {
-        return ModSounds.casting_shadow;
+        return ModSounds.casting_shadow.get();
     }
 
     @Override

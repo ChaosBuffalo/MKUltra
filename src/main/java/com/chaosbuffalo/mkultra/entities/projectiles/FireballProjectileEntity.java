@@ -48,7 +48,7 @@ public class FireballProjectileEntity extends TrailProjectileEntity implements I
         if (!this.level.isClientSide && caster instanceof LivingEntity) {
             LivingEntity casterLiving = (LivingEntity) caster;
             SoundSource cat = caster instanceof Player ? SoundSource.PLAYERS : SoundSource.HOSTILE;
-            SoundUtils.serverPlaySoundAtEntity(this, ModSounds.spell_fire_4, cat);
+            SoundUtils.serverPlaySoundAtEntity(this, ModSounds.spell_fire_4.get(), cat);
             PacketHandler.sendToTrackingAndSelf(new MKParticleEffectSpawnPacket(
                             new Vec3(0.0, 0.0, 0.0), DETONATE_PARTICLES, getId()), this);
 

@@ -56,7 +56,7 @@ public class CleansingSeedProjectileEntity extends TrailProjectileEntity impleme
         }
 
         SoundSource cat = caster instanceof Player ? SoundSource.PLAYERS : SoundSource.HOSTILE;
-        SoundUtils.serverPlaySoundAtEntity(this, ModSounds.spell_water_6, cat);
+        SoundUtils.serverPlaySoundAtEntity(this, ModSounds.spell_water_6.get(), cat);
         if (caster instanceof LivingEntity && trace.getType() == HitResult.Type.ENTITY) {
             LivingEntity casterLiving = (LivingEntity) caster;
             EntityHitResult entityTrace = (EntityHitResult) trace;
@@ -74,7 +74,7 @@ public class CleansingSeedProjectileEntity extends TrailProjectileEntity impleme
 
                         MKCore.getEntityData(target).ifPresent(targetData -> targetData.getEffects().addEffect(cure));
 
-                        SoundUtils.serverPlaySoundAtEntity(target, ModSounds.spell_water_2, cat);
+                        SoundUtils.serverPlaySoundAtEntity(target, ModSounds.spell_water_2.get(), cat);
                         break;
                     }
                     case ENEMY: {
@@ -82,7 +82,7 @@ public class CleansingSeedProjectileEntity extends TrailProjectileEntity impleme
                                         ability.getAbilityId(), this, caster,
                                         ability.getModifierScaling()),
                                 ability.getDamageForLevel(getSkillLevel()));
-                        SoundUtils.serverPlaySoundAtEntity(target, ModSounds.spell_water_8, cat);
+                        SoundUtils.serverPlaySoundAtEntity(target, ModSounds.spell_water_8.get(), cat);
                         break;
                     }
                 }

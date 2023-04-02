@@ -67,7 +67,7 @@ public class FuriousBroodingAbility extends MKAbility {
     @Nullable
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
-        return ModSounds.spell_negative_effect_7;
+        return ModSounds.spell_negative_effect_7.get();
     }
 
     public MKEffectBuilder<?> createFuriousBroodingEffect(IMKEntityData casterData, float level) {

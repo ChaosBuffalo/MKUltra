@@ -85,7 +85,7 @@ public class StunningShoutAbility extends MKAbility {
     @Nullable
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
-        return ModSounds.spell_shout_1;
+        return ModSounds.spell_shout_1.get();
     }
 
     @Override

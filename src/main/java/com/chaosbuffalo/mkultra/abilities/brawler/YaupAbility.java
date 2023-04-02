@@ -79,7 +79,7 @@ public class YaupAbility extends MKAbility {
 
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
-        return ModSounds.spell_holy_2;
+        return ModSounds.spell_holy_2.get();
     }
 
     @Override
@@ -87,7 +87,7 @@ public class YaupAbility extends MKAbility {
         super.endCast(entity, data, context);
         float level = getSkillLevel(entity, MKAttributes.ARETE);
         MKEffectBuilder<?> yaup = YaupEffect.from(entity, level, getBuffDuration(data, level, baseDuration.value(), scaleDuration.value()));
-        MKEffectBuilder<?> sound = SoundEffect.from(entity, ModSounds.spell_buff_attack_4, entity.getSoundSource())
+        MKEffectBuilder<?> sound = SoundEffect.from(entity, ModSounds.spell_buff_attack_4.get(), entity.getSoundSource())
                 .ability(this);
         MKEffectBuilder<?> particles = MKParticleEffect.from(entity, tick_particles.getValue(),
                 true, new Vec3(0.0, 1.0, 0.0))

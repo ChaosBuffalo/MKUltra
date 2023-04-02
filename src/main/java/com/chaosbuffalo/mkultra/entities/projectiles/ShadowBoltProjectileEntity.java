@@ -50,7 +50,7 @@ public class ShadowBoltProjectileEntity extends TrailProjectileEntity implements
         if (!this.level.isClientSide && caster instanceof LivingEntity) {
             LivingEntity casterLiving = (LivingEntity) caster;
             SoundSource cat = caster instanceof Player ? SoundSource.PLAYERS : SoundSource.HOSTILE;
-            SoundUtils.serverPlaySoundAtEntity(this, ModSounds.spell_dark_8, cat);
+            SoundUtils.serverPlaySoundAtEntity(this, ModSounds.spell_dark_8.get(), cat);
             PacketHandler.sendToTrackingAndSelf(new MKParticleEffectSpawnPacket(
                             new Vec3(0.0, 0.0, 0.0), DETONATE_PARTICLES, getId()), this);
 

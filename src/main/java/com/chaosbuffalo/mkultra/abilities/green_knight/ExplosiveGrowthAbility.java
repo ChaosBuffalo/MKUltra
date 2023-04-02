@@ -91,13 +91,13 @@ public class ExplosiveGrowthAbility extends MKAbility {
 
     @Override
     public SoundEvent getCastingSoundEvent() {
-        return ModSounds.casting_shadow;
+        return ModSounds.casting_shadow.get();
     }
 
     @Nullable
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
-        return ModSounds.spell_earth_8;
+        return ModSounds.spell_earth_8.get();
     }
 
     @Override
@@ -129,12 +129,12 @@ public class ExplosiveGrowthAbility extends MKAbility {
                         targetData.getEffects().addEffect(remedy);
                     });
 
-                    SoundUtils.serverPlaySoundAtEntity(entHit, ModSounds.spell_earth_6, cat);
+                    SoundUtils.serverPlaySoundAtEntity(entHit, ModSounds.spell_earth_6.get(), cat);
                     break;
                 }
                 case ENEMY: {
                     entHit.hurt(MKDamageSource.causeMeleeDamage(getAbilityId(), castingEntity, castingEntity), damage);
-                    SoundUtils.serverPlaySoundAtEntity(entHit, ModSounds.spell_earth_1, cat);
+                    SoundUtils.serverPlaySoundAtEntity(entHit, ModSounds.spell_earth_1.get(), cat);
                     break;
                 }
             }

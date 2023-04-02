@@ -30,7 +30,7 @@ public class SoulDrainEffect extends MKEffect {
 
     public void onLivingKillEntity(LivingDeathEvent event, DamageSource source, LivingEntity living) {
         MKCore.getPlayer(living).ifPresent(data -> {
-            SoundUtils.playSoundAtEntity(living, ModSounds.spell_dark_4);
+            SoundUtils.playSoundAtEntity(living, ModSounds.spell_dark_4.get());
             float mana = MKUAbilities.SOUL_DRAIN.get().getDrainValue(living);
             data.getStats().addMana(mana);
         });

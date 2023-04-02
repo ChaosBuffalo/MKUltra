@@ -69,12 +69,12 @@ public class SmiteAbility extends MKAbility {
 
     @Override
     public SoundEvent getCastingSoundEvent() {
-        return ModSounds.casting_shadow;
+        return ModSounds.casting_shadow.get();
     }
 
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
-        return ModSounds.spell_magic_whoosh_2;
+        return ModSounds.spell_magic_whoosh_2.get();
     }
 
     @Override
@@ -97,7 +97,7 @@ public class SmiteAbility extends MKAbility {
                 targetData.getEffects().addEffect(damage);
                 targetData.getEffects().addEffect(stun);
             });
-            SoundUtils.serverPlaySoundAtEntity(targetEntity, ModSounds.spell_holy_2, targetEntity.getSoundSource());
+            SoundUtils.serverPlaySoundAtEntity(targetEntity, ModSounds.spell_holy_2.get(), targetEntity.getSoundSource());
             PacketHandler.sendToTrackingAndSelf(new MKParticleEffectSpawnPacket(
                     new Vec3(0.0, 1.0, 0.0), cast_particles.getValue(), targetEntity.getId()), targetEntity);
         });

@@ -62,7 +62,7 @@ public class YankAbility extends MKAbility {
 
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
-        return ModSounds.spell_grab_2;
+        return ModSounds.spell_grab_2.get();
     }
 
     @Override

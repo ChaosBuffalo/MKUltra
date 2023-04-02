@@ -71,12 +71,12 @@ public class HealAbility extends MKAbility {
 
     @Override
     public SoundEvent getCastingSoundEvent() {
-        return ModSounds.casting_holy;
+        return ModSounds.casting_holy.get();
     }
 
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
-        return ModSounds.spell_holy_5;
+        return ModSounds.spell_holy_5.get();
     }
 
     @Override
@@ -96,7 +96,7 @@ public class HealAbility extends MKAbility {
 
             MKCore.getEntityData(targetEntity).ifPresent(targetData -> targetData.getEffects().addEffect(heal));
 
-            SoundUtils.serverPlaySoundAtEntity(targetEntity, ModSounds.spell_heal_3, targetEntity.getSoundSource());
+            SoundUtils.serverPlaySoundAtEntity(targetEntity, ModSounds.spell_heal_3.get(), targetEntity.getSoundSource());
             PacketHandler.sendToTrackingAndSelf(new MKParticleEffectSpawnPacket(
                     new Vec3(0.0, 1.0, 0.0), cast_particles.getValue(), targetEntity.getId()), targetEntity);
         });

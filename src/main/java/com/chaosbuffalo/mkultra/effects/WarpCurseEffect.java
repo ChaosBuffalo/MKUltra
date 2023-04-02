@@ -66,7 +66,7 @@ public class WarpCurseEffect extends MKEffect {
                     activeEffect.getAbilityId(), activeEffect.getDirectEntity(), activeEffect.getSourceEntity(),
                     getModifierScale()), damage);
 
-            SoundUtils.serverPlaySoundAtEntity(target, ModSounds.spell_fire_5, target.getSoundSource());
+            SoundUtils.serverPlaySoundAtEntity(target, ModSounds.spell_fire_5.get(), target.getSoundSource());
             boolean hasTeleported = false;
             int attempts = 5;
             while (!hasTeleported && attempts > 0){

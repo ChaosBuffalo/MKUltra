@@ -73,7 +73,7 @@ public class FireballAbility extends MKAbility {
     @Nullable
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
-        return ModSounds.spell_fire_2;
+        return ModSounds.spell_fire_2.get();
     }
 
     @Override
@@ -92,7 +92,7 @@ public class FireballAbility extends MKAbility {
 
     @Override
     public SoundEvent getCastingSoundEvent() {
-        return ModSounds.hostile_casting_fire;
+        return ModSounds.hostile_casting_fire.get();
     }
 
     @Override

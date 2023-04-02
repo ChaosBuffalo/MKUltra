@@ -84,12 +84,12 @@ public class DrownAbility extends MKAbility {
 
     @Override
     public SoundEvent getCastingSoundEvent() {
-        return ModSounds.casting_water;
+        return ModSounds.casting_water.get();
     }
 
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
-        return ModSounds.spell_water_7;
+        return ModSounds.spell_water_7.get();
     }
 
     @Override

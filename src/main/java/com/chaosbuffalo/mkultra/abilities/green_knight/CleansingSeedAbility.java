@@ -56,7 +56,7 @@ public class CleansingSeedAbility extends MKAbility {
     @Nullable
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
-        return ModSounds.spell_cast_6;
+        return ModSounds.spell_cast_6.get();
     }
 
     @Override
@@ -75,7 +75,7 @@ public class CleansingSeedAbility extends MKAbility {
 
     @Override
     public SoundEvent getCastingSoundEvent() {
-        return ModSounds.casting_water;
+        return ModSounds.casting_water.get();
     }
 
     @Override

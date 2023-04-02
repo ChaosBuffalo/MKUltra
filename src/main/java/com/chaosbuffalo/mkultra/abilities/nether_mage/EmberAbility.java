@@ -90,12 +90,12 @@ public class EmberAbility extends MKAbility {
 
     @Override
     public SoundEvent getCastingSoundEvent() {
-        return ModSounds.casting_fire;
+        return ModSounds.casting_fire.get();
     }
 
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
-        return ModSounds.spell_cast_7;
+        return ModSounds.spell_cast_7.get();
     }
 
     @Override
@@ -117,7 +117,7 @@ public class EmberAbility extends MKAbility {
             });
 
 
-            SoundUtils.serverPlaySoundAtEntity(targetEntity, ModSounds.spell_fire_6, targetEntity.getSoundSource());
+            SoundUtils.serverPlaySoundAtEntity(targetEntity, ModSounds.spell_fire_6.get(), targetEntity.getSoundSource());
             PacketHandler.sendToTrackingAndSelf(new MKParticleEffectSpawnPacket(
                             new Vec3(0.0, 1.0, 0.0), cast_particles.getValue(),
                             targetEntity.getId()),

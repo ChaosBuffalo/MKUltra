@@ -74,7 +74,7 @@ public class WrathBeamAbility extends PositionTargetingAbility {
     @Nullable
     @Override
     public SoundEvent getCastingSoundEvent() {
-        return ModSounds.hostile_casting_fire;
+        return ModSounds.hostile_casting_fire.get();
     }
 
     @Override
@@ -88,7 +88,7 @@ public class WrathBeamAbility extends PositionTargetingAbility {
                 .ability(this)
                 .timed(breakDuration.value())
                 .skillLevel(level);
-        MKEffectBuilder<?> sound = SoundEffect.from(castingEntity, ModSounds.spell_fire_7, castingEntity.getSoundSource())
+        MKEffectBuilder<?> sound = SoundEffect.from(castingEntity, ModSounds.spell_fire_7.get(), castingEntity.getSoundSource())
                 .ability(this);
         EntityEffectBuilder.LineEffectBuilder lineBuilder = EntityEffectBuilder.createLineEffect(castingEntity,
                 position.subtract(0.0, 0.1, 0.0),
@@ -102,7 +102,7 @@ public class WrathBeamAbility extends PositionTargetingAbility {
                 .waitTime(duration.value() / 2)
                 .tickRate(tickRate.value());
         SoundUtils.serverPlaySoundFromEntity(position.x(), position.y(), position.z(),
-                ModSounds.spell_dark_13, castingEntity.getSoundSource(), 1.0f, 1.0f, castingEntity);
+                ModSounds.spell_dark_13.get(), castingEntity.getSoundSource(), 1.0f, 1.0f, castingEntity);
         lineBuilder.spawn();
     }
 }

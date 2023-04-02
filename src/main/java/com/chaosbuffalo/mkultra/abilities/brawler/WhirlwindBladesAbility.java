@@ -97,7 +97,7 @@ public class WhirlwindBladesAbility extends MKAbility {
 
     @Override
     public SoundEvent getCastingSoundEvent() {
-        return ModSounds.spell_whirlwind_1;
+        return ModSounds.spell_whirlwind_1.get();
     }
 
     @Nullable
@@ -124,7 +124,7 @@ public class WhirlwindBladesAbility extends MKAbility {
             MKEffectBuilder<?> particles = MKParticleEffect.from(castingEntity,
                     cast_particles.getValue(), true, new Vec3(0.0, 1.0, 0.0))
                     .ability(this);
-            MKEffectBuilder<?> sound = SoundEffect.from(castingEntity, ModSounds.spell_shadow_2, castingEntity.getSoundSource())
+            MKEffectBuilder<?> sound = SoundEffect.from(castingEntity, ModSounds.spell_shadow_2.get(), castingEntity.getSoundSource())
                     .ability(this);
 
             AreaEffectBuilder.createOnCaster(castingEntity)

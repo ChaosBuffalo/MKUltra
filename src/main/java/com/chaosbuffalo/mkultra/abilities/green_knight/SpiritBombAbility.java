@@ -58,13 +58,13 @@ public class SpiritBombAbility extends MKAbility {
 
     @Override
     public SoundEvent getCastingSoundEvent() {
-        return ModSounds.casting_holy;
+        return ModSounds.casting_holy.get();
     }
 
     @Nullable
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
-        return ModSounds.spell_magic_whoosh_1;
+        return ModSounds.spell_magic_whoosh_1.get();
     }
 
     public float getBaseDamage() {

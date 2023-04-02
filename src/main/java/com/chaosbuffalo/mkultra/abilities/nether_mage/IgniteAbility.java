@@ -82,12 +82,12 @@ public class IgniteAbility extends MKAbility {
 
     @Override
     public SoundEvent getCastingSoundEvent() {
-        return ModSounds.casting_fire;
+        return ModSounds.casting_fire.get();
     }
 
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
-        return ModSounds.spell_dark_13;
+        return ModSounds.spell_dark_13.get();
     }
 
     @Override
@@ -105,7 +105,7 @@ public class IgniteAbility extends MKAbility {
             MKCore.getEntityData(targetEntity).ifPresent(targetData -> {
                 targetData.getEffects().addEffect(damage);
 
-                SoundUtils.serverPlaySoundAtEntity(targetEntity, ModSounds.spell_fire_4, targetEntity.getSoundSource());
+                SoundUtils.serverPlaySoundAtEntity(targetEntity, ModSounds.spell_fire_4.get(), targetEntity.getSoundSource());
 
                 if (MKUAbilityUtils.isBurning(targetData)) {
                     MKEffectBuilder<?> ignite = IgniteEffect.from(entity, base.value(), scale.value(), modifierScaling.value())
@@ -114,7 +114,7 @@ public class IgniteAbility extends MKAbility {
                     MKEffectBuilder<?> particle = MKParticleEffect.from(entity, cast_2_particles.getValue(),
                             true, new Vec3(0.0, 1.0, 0.0))
                             .ability(this);
-                    MKEffectBuilder<?> sound = SoundEffect.from(entity, ModSounds.spell_fire_8, entity.getSoundSource())
+                    MKEffectBuilder<?> sound = SoundEffect.from(entity, ModSounds.spell_fire_8.get(), entity.getSoundSource())
                             .ability(this);
 
                     AreaEffectBuilder.createOnEntity(entity, targetEntity)

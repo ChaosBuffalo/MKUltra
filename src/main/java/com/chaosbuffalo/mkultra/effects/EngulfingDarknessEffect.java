@@ -91,7 +91,7 @@ public class EngulfingDarknessEffect extends DamageTypeDotEffect {
 
         @Override
         public boolean performEffect(IMKEntityData targetData, MKActiveEffect activeEffect) {
-            SoundUtils.serverPlaySoundAtEntity(targetData.getEntity(), ModSounds.spell_dark_1,
+            SoundUtils.serverPlaySoundAtEntity(targetData.getEntity(), ModSounds.spell_dark_1.get(),
                     targetData.getEntity().getSoundSource());
             sendEffectParticles(targetData.getEntity());
             LivingEntity source = activeEffect.getSourceEntity();
@@ -99,7 +99,7 @@ public class EngulfingDarknessEffect extends DamageTypeDotEffect {
                 MKCore.getEntityData(source).ifPresent(
                         x -> {
                             x.getEffects().addEffect(ShadowbringerEffect.from(source, getTriggerTime()));
-                            SoundUtils.serverPlaySoundAtEntity(source, ModSounds.spell_dark_9,
+                            SoundUtils.serverPlaySoundAtEntity(source, ModSounds.spell_dark_9.get(),
                                     source.getSoundSource());
                         });
             }

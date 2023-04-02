@@ -43,7 +43,7 @@ public class ShadowPulseFlurryAbility extends PositionFlurryAbility{
     @Nullable
     @Override
     public SoundEvent getCastingSoundEvent() {
-        return ModSounds.hostile_casting_fire;
+        return ModSounds.hostile_casting_fire.get();
     }
 
     @Nullable

@@ -60,7 +60,7 @@ public class BurnEffect extends DamageTypeDotEffect {
 
         @Override
         public boolean performEffect(IMKEntityData targetData, MKActiveEffect activeEffect) {
-            SoundUtils.serverPlaySoundAtEntity(targetData.getEntity(), ModSounds.spell_fire_6, targetData.getEntity().getSoundSource());
+            SoundUtils.serverPlaySoundAtEntity(targetData.getEntity(), ModSounds.spell_fire_6.get(), targetData.getEntity().getSoundSource());
             sendEffectParticles(targetData.getEntity());
             return super.performEffect(targetData, activeEffect);
         }

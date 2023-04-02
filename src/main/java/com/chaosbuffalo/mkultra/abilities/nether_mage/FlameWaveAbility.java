@@ -83,13 +83,13 @@ public class FlameWaveAbility extends MKAbility {
 
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
-        return ModSounds.spell_fire_7;
+        return ModSounds.spell_fire_7.get();
     }
 
     @Nullable
     @Override
     public SoundEvent getCastingSoundEvent() {
-        return ModSounds.casting_fire;
+        return ModSounds.casting_fire.get();
     }
 
     @Override
@@ -105,7 +105,7 @@ public class FlameWaveAbility extends MKAbility {
         MKEffectBuilder<?> particles = MKParticleEffect.from(entity, cast_2_particles.getValue(), false, new Vec3(0.0, 1.0, 0.0))
                 .ability(this);
 
-        MKEffectBuilder<?> sound = SoundEffect.from(entity, ModSounds.spell_fire_1, entity.getSoundSource())
+        MKEffectBuilder<?> sound = SoundEffect.from(entity, ModSounds.spell_fire_1.get(), entity.getSoundSource())
                 .ability(this);
 
         AreaEffectBuilder.createOnCaster(entity)

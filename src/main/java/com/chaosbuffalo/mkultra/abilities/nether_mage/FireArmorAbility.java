@@ -64,7 +64,7 @@ public class FireArmorAbility extends MKAbility {
     @Nullable
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
-        return ModSounds.spell_buff_5;
+        return ModSounds.spell_buff_5.get();
     }
 
     @Override
@@ -80,7 +80,7 @@ public class FireArmorAbility extends MKAbility {
         MKEffectBuilder<?> particles = MKParticleEffect.from(entity, cast_particles.getValue(), true, new Vec3(0.0, 1.0, 0.0))
                 .ability(this);
 
-        MKEffectBuilder<?> sound = SoundEffect.from(entity, ModSounds.spell_fire_2, entity.getSoundSource())
+        MKEffectBuilder<?> sound = SoundEffect.from(entity, ModSounds.spell_fire_2.get(), entity.getSoundSource())
                 .ability(this);
 
         MKEffectBuilder<?> fireArmor = ResistanceEffects.FIRE_ARMOR.builder(entity)

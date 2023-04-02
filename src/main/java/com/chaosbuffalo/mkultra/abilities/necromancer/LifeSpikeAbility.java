@@ -79,12 +79,12 @@ public class LifeSpikeAbility extends MKAbility {
 
     @Override
     public SoundEvent getCastingSoundEvent() {
-        return ModSounds.casting_shadow;
+        return ModSounds.casting_shadow.get();
     }
 
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
-        return ModSounds.spell_magic_whoosh_4;
+        return ModSounds.spell_magic_whoosh_4.get();
     }
 
     @Override
@@ -103,7 +103,7 @@ public class LifeSpikeAbility extends MKAbility {
                 targetData.getEffects().addEffect(damage);
             });
 
-            SoundUtils.serverPlaySoundAtEntity(targetEntity, ModSounds.spell_shadow_6, targetEntity.getSoundSource());
+            SoundUtils.serverPlaySoundAtEntity(targetEntity, ModSounds.spell_shadow_6.get(), targetEntity.getSoundSource());
             PacketHandler.sendToTrackingAndSelf(new MKParticleEffectSpawnPacket(
                     new Vec3(0.0, 1.75, 0.0), cast_particles.getValue(), targetEntity.getId()), targetEntity);
         });

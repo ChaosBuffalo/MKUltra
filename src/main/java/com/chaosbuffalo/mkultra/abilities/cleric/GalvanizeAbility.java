@@ -72,7 +72,7 @@ public class GalvanizeAbility extends MKAbility {
 
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
-        return ModSounds.spell_heal_1;
+        return ModSounds.spell_heal_1.get();
     }
 
     @Override
@@ -86,7 +86,7 @@ public class GalvanizeAbility extends MKAbility {
         MKEffectBuilder<?> cure = CureEffect.from(entity)
                 .ability(this)
                 .skillLevel(level);
-        MKEffectBuilder<?> sound = SoundEffect.from(entity, ModSounds.spell_buff_5, entity.getSoundSource())
+        MKEffectBuilder<?> sound = SoundEffect.from(entity, ModSounds.spell_buff_5.get(), entity.getSoundSource())
                 .ability(this);
         MKEffectBuilder<?> particles = MKParticleEffect.from(entity, cast_2_particles.getValue(), false, new Vec3(0.0, 1.0, 0.0))
                 .ability(this);

@@ -66,7 +66,7 @@ public class DrownEffect extends DamageTypeDotEffect {
 
         @Override
         public boolean performEffect(IMKEntityData targetData, MKActiveEffect activeEffect) {
-            SoundUtils.serverPlaySoundAtEntity(targetData.getEntity(), ModSounds.spell_water_4, targetData.getEntity().getSoundSource());
+            SoundUtils.serverPlaySoundAtEntity(targetData.getEntity(), ModSounds.spell_water_4.get(), targetData.getEntity().getSoundSource());
             sendEffectParticles(targetData.getEntity());
             return super.performEffect(targetData, activeEffect);
         }

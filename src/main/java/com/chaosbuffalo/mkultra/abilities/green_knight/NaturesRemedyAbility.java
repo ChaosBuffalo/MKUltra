@@ -72,7 +72,7 @@ public class NaturesRemedyAbility extends MKAbility {
     @Nullable
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
-        return ModSounds.spell_cast_5;
+        return ModSounds.spell_cast_5.get();
     }
 
     public MKEffectBuilder<?> createNaturesRemedyEffect(IMKEntityData casterData, float level) {
@@ -93,7 +93,7 @@ public class NaturesRemedyAbility extends MKAbility {
 
             MKCore.getEntityData(targetEntity).ifPresent(targetData -> targetData.getEffects().addEffect(heal));
 
-            SoundUtils.serverPlaySoundAtEntity(targetEntity, ModSounds.spell_heal_8, targetEntity.getSoundSource());
+            SoundUtils.serverPlaySoundAtEntity(targetEntity, ModSounds.spell_heal_8.get(), targetEntity.getSoundSource());
             PacketHandler.sendToTrackingAndSelf(new MKParticleEffectSpawnPacket(
                     new Vec3(0.0, 1.0, 0.0), cast_particles.getValue(),
                     targetEntity.getId()), targetEntity);

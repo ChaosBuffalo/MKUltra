@@ -105,12 +105,12 @@ public class EngulfingDarknessAbility extends MKAbility {
 
     @Override
     public SoundEvent getCastingSoundEvent() {
-        return ModSounds.hostile_casting_shadow;
+        return ModSounds.hostile_casting_shadow.get();
     }
 
     @Override
     public SoundEvent getSpellCompleteSoundEvent() {
-        return ModSounds.spell_dark_9;
+        return ModSounds.spell_dark_9.get();
     }
 
     @Override
@@ -125,7 +125,7 @@ public class EngulfingDarknessAbility extends MKAbility {
                 targetData.getEffects().addEffect(dot);
             });
 
-            SoundUtils.serverPlaySoundAtEntity(targetEntity, ModSounds.spell_dark_7, targetEntity.getSoundSource());
+            SoundUtils.serverPlaySoundAtEntity(targetEntity, ModSounds.spell_dark_7.get(), targetEntity.getSoundSource());
             PacketHandler.sendToTrackingAndSelf(new MKParticleEffectSpawnPacket(
                             new Vec3(0.0, 1.0, 0.0), castParticles.getValue(),
                             targetEntity.getId()),
