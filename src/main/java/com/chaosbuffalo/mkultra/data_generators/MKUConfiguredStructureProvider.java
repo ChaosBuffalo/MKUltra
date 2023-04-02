@@ -4,6 +4,7 @@ import com.chaosbuffalo.mknpc.data.ConfiguredStructureProvider;
 import com.chaosbuffalo.mkultra.MKUltra;
 import com.chaosbuffalo.mkultra.init.MKUWorldGen;
 import com.chaosbuffalo.mkultra.world.gen.feature.structure.DesertTempleVillagePools;
+import com.chaosbuffalo.mkultra.world.gen.feature.structure.IntroCastleJigsawStructure;
 import com.chaosbuffalo.mkultra.world.gen.feature.structure.IntroCastlePools;
 import com.chaosbuffalo.mkultra.world.gen.feature.structure.NecrotideAlterPools;
 import net.minecraft.core.Registry;
@@ -24,7 +25,7 @@ public class MKUConfiguredStructureProvider extends ConfiguredStructureProvider 
     @Override
     public void run(HashCache cache) throws IOException {
         TagKey<Biome> hasIntroCastle = TagKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(MKUltra.MODID, "has_structure/has_intro_castle"));
-        writeFeature(new ConfiguredStructureData(new ResourceLocation(MKUltra.MODID, "configured_intro_castle"),
+        writeFeature(new ConfiguredStructureData(IntroCastleJigsawStructure.INTRO_CASTLE_STRUCTURE_NAME,
                 IntroCastlePools.ISLAND_POOL.getName(), IntroCastlePools.GEN_DEPTH, hasIntroCastle, MKUWorldGen.INTRO_CASTLE.get()), cache);
         writeFeature(new ConfiguredStructureData(new ResourceLocation(MKUltra.MODID, "configured_desert_temple_village"),
                 DesertTempleVillagePools.DESERT_TEMPLE_VILLAGE_BASE.getName(), DesertTempleVillagePools.GEN_DEPTH,

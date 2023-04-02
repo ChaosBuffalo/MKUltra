@@ -22,7 +22,7 @@ public class MKUWorldGen {
             ForgeRegistries.STRUCTURE_FEATURES, MKUltra.MODID);
 
     public static final RegistryObject<StructureFeature<JigsawConfiguration>> INTRO_CASTLE = STRUCTURE_REGISTRY.register("intro_castle",
-            () -> new IntroCastleJigsawStructure(JigsawConfiguration.CODEC, 0, true, true, (piece) -> true, false));
+            () -> new IntroCastleJigsawStructure(JigsawConfiguration.CODEC, 0, true, true, false));
 
     public static final RegistryObject<StructureFeature<JigsawConfiguration>> DESERT_TEMPLE_VILLAGE_STRUCTURE = STRUCTURE_REGISTRY.register("desert_temple_village",
             () -> new MKJigsawStructure(JigsawConfiguration.CODEC, 0, true, true, (x) -> true, false));
