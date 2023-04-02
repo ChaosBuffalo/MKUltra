@@ -148,7 +148,7 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
                             obj.withAdditionalPrompts(openTraining);
                             obj.withAdditionalPrompts(guildPrompt);
                         })
-                .reward(new GrantEntitlementReward(MKUEntitlements.IntroNetherMageTier1))
+                .reward(new GrantEntitlementReward(MKUEntitlements.IntroNetherMageTier1.get()))
                 .reward(new XpReward(50))
                 .quest();
         def.addQuest(finalReturn);
@@ -265,7 +265,7 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
                         null
                 )
                 .reward(new XpReward(25))
-                .reward(new GrantEntitlementReward(MKUEntitlements.IntroClericTier1))
+                .reward(new GrantEntitlementReward(MKUEntitlements.IntroClericTier1.get()))
                 .quest();
         def.addQuest(returnToAcolyte);
 
@@ -274,7 +274,7 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
 
     private QuestDefinition generateTrooperArmorQuest(){
         QuestDefinition def = new QuestDefinition(new ResourceLocation(MKUltra.MODID, "trooper_armor"));
-        def.addRequirement(new HasEntitlementRequirement(MKUEntitlements.GreenKnightTier1));
+        def.addRequirement(new HasEntitlementRequirement(MKUEntitlements.GreenKnightTier1.get()));
         def.setRepeatable(true);
         def.setQuestName(new TextComponent("Salvaged Trooper Armor"));
         def.setMode(QuestDefinition.QuestMode.UNSORTED);
@@ -469,7 +469,7 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
                         }
                         )
                 .reward(new XpReward(50))
-                .reward(new GrantEntitlementReward(MKUEntitlements.GreenKnightTier1))
+                .reward(new GrantEntitlementReward(MKUEntitlements.GreenKnightTier1.get()))
                 .quest();
         def.addQuest(returnToGreenLady);
 
@@ -532,7 +532,7 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
                         null
                         )
                 .reward(new XpReward(100))
-                .reward(new GrantEntitlementReward(MKUEntitlements.GreenKnightTier2))
+                .reward(new GrantEntitlementReward(MKUEntitlements.GreenKnightTier2.get()))
                 .quest();
         def.addQuest(killCaptain);
 
@@ -611,7 +611,7 @@ public class MKUQuestProvider extends QuestDefinitionProvider {
                         null
                 )
                 .reward(new XpReward(100))
-                .reward(new GrantEntitlementReward(MKUEntitlements.GreenKnightTier3))
+                .reward(new GrantEntitlementReward(MKUEntitlements.GreenKnightTier3.get()))
                 .quest();
         def.addQuest(killBurning);
 

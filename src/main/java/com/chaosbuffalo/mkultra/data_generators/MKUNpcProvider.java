@@ -168,8 +168,8 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                         new ResourceLocation("mkweapons:mace_iron"))), 1.0, 0.0f));
         def.addOption(new QuestOfferingOption(new ResourceLocation("mkultra", "cleric_intro")));
         def.addOption(new AbilityTrainingOption()
-                        .withTrainingOption(MKUAbilities.HEAL.get(), new HasEntitlementRequirement(MKUEntitlements.IntroClericTier1))
-                        .withTrainingOption(MKUAbilities.SMITE.get(), new HasEntitlementRequirement(MKUEntitlements.IntroClericTier1))
+                        .withTrainingOption(MKUAbilities.HEAL.get(), new HasEntitlementRequirement(MKUEntitlements.IntroClericTier1.get()))
+                        .withTrainingOption(MKUAbilities.SMITE.get(), new HasEntitlementRequirement(MKUEntitlements.IntroClericTier1.get()))
         );
         def.addOption(equipOption);
         def.addOption(MKUNpcGenUtils.GetSkillOptionForClass(MKUNpcGenUtils.NpcSkillClass.CLERIC));
@@ -199,11 +199,11 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                         new ResourceLocation("mkweapons:mace_gold"))), 1.0, 0.0f));
 //        def.addOption(new QuestOfferingOption(new ResourceLocation("mkultra", "cleric_intro")));
         def.addOption(new AbilityTrainingOption()
-                .withTrainingOption(MKUAbilities.HEAL.get(), new HasEntitlementRequirement(MKUEntitlements.ClericTier1))
-                .withTrainingOption(MKUAbilities.SMITE.get(), new HasEntitlementRequirement(MKUEntitlements.ClericTier1))
-                .withTrainingOption(MKUAbilities.GALVANIZE.get(), new HasEntitlementRequirement(MKUEntitlements.ClericTier2))
-                .withTrainingOption(MKUAbilities.POWER_WORD_SUMMON.get(), new HasEntitlementRequirement(MKUEntitlements.ClericTier2))
-                .withTrainingOption(MKUAbilities.INSPIRE.get(), new HasEntitlementRequirement(MKUEntitlements.ClericTier3))
+                .withTrainingOption(MKUAbilities.HEAL.get(), new HasEntitlementRequirement(MKUEntitlements.ClericTier1.get()))
+                .withTrainingOption(MKUAbilities.SMITE.get(), new HasEntitlementRequirement(MKUEntitlements.ClericTier1.get()))
+                .withTrainingOption(MKUAbilities.GALVANIZE.get(), new HasEntitlementRequirement(MKUEntitlements.ClericTier2.get()))
+                .withTrainingOption(MKUAbilities.POWER_WORD_SUMMON.get(), new HasEntitlementRequirement(MKUEntitlements.ClericTier2.get()))
+                .withTrainingOption(MKUAbilities.INSPIRE.get(), new HasEntitlementRequirement(MKUEntitlements.ClericTier3.get()))
         );
         def.addOption(equipOption);
         def.addOption(MKUNpcGenUtils.GetSkillOptionForClass(MKUNpcGenUtils.NpcSkillClass.CLERIC));
@@ -320,8 +320,8 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
                         new ResourceLocation("mkweapons:staff_wood"))), 1.0, 0.0f));
         def.addOption(equipOption);
         def.addOption(new AbilityTrainingOption()
-                .withTrainingOption(MKUAbilities.EMBER.get(), new HasEntitlementRequirement(MKUEntitlements.IntroNetherMageTier1))
-                .withTrainingOption(MKUAbilities.FIRE_ARMOR.get(), new HasEntitlementRequirement(MKUEntitlements.IntroNetherMageTier1))
+                .withTrainingOption(MKUAbilities.EMBER.get(), new HasEntitlementRequirement(MKUEntitlements.IntroNetherMageTier1.get()))
+                .withTrainingOption(MKUAbilities.FIRE_ARMOR.get(), new HasEntitlementRequirement(MKUEntitlements.IntroNetherMageTier1.get()))
         );
         def.addOption(new DialogueOption().setValue(new ResourceLocation(MKUltra.MODID, "intro_nether_mage_initiate")));
         def.addOption(new QuestOfferingOption(new ResourceLocation("mkultra", "nether_mage_intro")));
@@ -825,11 +825,11 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
         def.addOption(new MKSizeOption().setValue(1.1f));
         def.addOption(new RenderGroupOption().setValue(MKUOrcs.GREEN_LADY_NAME));
         def.addOption(new AbilityTrainingOption()
-                .withTrainingOption(MKUAbilities.SKIN_LIKE_WOOD.get(), new HasEntitlementRequirement(MKUEntitlements.GreenKnightTier1))
-                .withTrainingOption(MKUAbilities.NATURES_REMEDY.get(), new HasEntitlementRequirement(MKUEntitlements.GreenKnightTier1))
-                .withTrainingOption(MKUAbilities.SPIRIT_BOMB.get(), new HasEntitlementRequirement(MKUEntitlements.GreenKnightTier2))
-                .withTrainingOption(MKUAbilities.CLEANSING_SEED.get(), new HasEntitlementRequirement(MKUEntitlements.GreenKnightTier2))
-                .withTrainingOption(MKUAbilities.EXPLOSIVE_GROWTH.get(), new HasEntitlementRequirement(MKUEntitlements.GreenKnightTier3))
+                .withTrainingOption(MKUAbilities.SKIN_LIKE_WOOD.get(), new HasEntitlementRequirement(MKUEntitlements.GreenKnightTier1.get()))
+                .withTrainingOption(MKUAbilities.NATURES_REMEDY.get(), new HasEntitlementRequirement(MKUEntitlements.GreenKnightTier1.get()))
+                .withTrainingOption(MKUAbilities.SPIRIT_BOMB.get(), new HasEntitlementRequirement(MKUEntitlements.GreenKnightTier2.get()))
+                .withTrainingOption(MKUAbilities.CLEANSING_SEED.get(), new HasEntitlementRequirement(MKUEntitlements.GreenKnightTier2.get()))
+                .withTrainingOption(MKUAbilities.EXPLOSIVE_GROWTH.get(), new HasEntitlementRequirement(MKUEntitlements.GreenKnightTier3.get()))
         );
         def.addOption(new AbilitiesOption()
                 .withAbilityOption(MKUAbilities.SKIN_LIKE_WOOD.get(), 1, 1.0)

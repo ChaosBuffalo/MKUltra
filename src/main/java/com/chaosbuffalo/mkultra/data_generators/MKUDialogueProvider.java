@@ -57,7 +57,7 @@ public class MKUDialogueProvider extends DialogueDataProvider {
         open_training.addEffect(new OpenLearnAbilitiesEffect());
         DialoguePrompt openTraining = new DialoguePrompt("open_training", "teach me", "Will you teach me?", "teach you");
         DialogueResponse resp = new DialogueResponse(open_training);
-        resp.addCondition(new HasEntitlementCondition(MKUEntitlements.IntroNetherMageTier1));
+        resp.addCondition(new HasEntitlementCondition(MKUEntitlements.IntroNetherMageTier1.get()));
         openTraining.addResponse(new DialogueResponse(open_training));
 
 
@@ -77,7 +77,7 @@ public class MKUDialogueProvider extends DialogueDataProvider {
         DialogueResponse hailWoResp = new DialogueResponse(hail_wo_ability);
 
         DialogueResponse hailWResp = new DialogueResponse(hail_w_ability);
-        hailWResp.addCondition(new HasEntitlementCondition(MKUEntitlements.IntroNetherMageTier1));
+        hailWResp.addCondition(new HasEntitlementCondition(MKUEntitlements.IntroNetherMageTier1.get()));
 
         hailPrompt.addResponse(hailWResp);
         hailPrompt.addResponse(hailWoResp);
@@ -101,7 +101,7 @@ public class MKUDialogueProvider extends DialogueDataProvider {
 
         DialoguePrompt openTraining = new DialoguePrompt("open_training", "magical abilities", "what magical abilities?", "magical abilities");
         DialogueResponse resp = new DialogueResponse(open_training);
-        resp.addCondition(new HasEntitlementCondition(MKUEntitlements.IntroClericTier1));
+        resp.addCondition(new HasEntitlementCondition(MKUEntitlements.IntroClericTier1.get()));
         openTraining.addResponse(new DialogueResponse(open_training));
 
         DialogueNode hail_wo_ability = new DialogueNode("hail_wo", String.format("Greetings. I am %s, a humble servant of the Holy See of Solang. " +
@@ -114,7 +114,7 @@ public class MKUDialogueProvider extends DialogueDataProvider {
         DialogueResponse hailWoResp = new DialogueResponse(hail_wo_ability);
 
         DialogueResponse hailWResp = new DialogueResponse(hail_w_ability);
-        hailWResp.addCondition(new HasEntitlementCondition(MKUEntitlements.IntroClericTier1));
+        hailWResp.addCondition(new HasEntitlementCondition(MKUEntitlements.IntroClericTier1.get()));
 
         hailPrompt.addResponse(hailWResp);
         hailPrompt.addResponse(hailWoResp);

@@ -1,71 +1,44 @@
 package com.chaosbuffalo.mkultra.init;
 
 
-import com.chaosbuffalo.mkcore.MKCore;
 import com.chaosbuffalo.mkcore.MKCoreRegistry;
 import com.chaosbuffalo.mkcore.core.entitlements.MKEntitlement;
 import com.chaosbuffalo.mkcore.core.entitlements.SimpleEntitlement;
 import com.chaosbuffalo.mkultra.MKUltra;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.ObjectHolder;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
 
 
-@Mod.EventBusSubscriber(modid = MKUltra.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-@ObjectHolder(MKUltra.MODID)
 public class MKUEntitlements {
 
-//    public static final DeferredRegister<MKEntitlement> REGISTRY = DeferredRegister.create(MKCore.makeRL("entitlements"), MKUltra.MODID);
+    public static final DeferredRegister<MKEntitlement> REGISTRY = DeferredRegister.create(MKCoreRegistry.ENTITLEMENT_REGISTRY_NAME, MKUltra.MODID);
 
-    @ObjectHolder("green_knight.tier_1")
-    public static MKEntitlement GreenKnightTier1;
-
-    @ObjectHolder("green_knight.tier_2")
-    public static MKEntitlement GreenKnightTier2;
-
-    @ObjectHolder("green_knight.tier_3")
-    public static MKEntitlement GreenKnightTier3;
-
-    @ObjectHolder("cleric.tier_1")
-    public static MKEntitlement ClericTier1;
-
-    @ObjectHolder("cleric.intro.tier_1")
-    public static MKEntitlement IntroClericTier1;
-
-    @ObjectHolder("cleric.tier_2")
-    public static MKEntitlement ClericTier2;
-
-    @ObjectHolder("cleric.tier_3")
-    public static MKEntitlement ClericTier3;
-
-    @ObjectHolder("nether_mage.tier_1")
-    public static MKEntitlement NetherMageTier1;
-
-    @ObjectHolder("nether_mage.tier_2")
-    public static MKEntitlement NetherMageTier2;
-
-    @ObjectHolder("nether_mage.tier_3")
-    public static MKEntitlement NetherMageTier3;
-
-    @ObjectHolder("nether_mage.intro.tier_1")
-    public static MKEntitlement IntroNetherMageTier1;
+    public static RegistryObject<MKEntitlement> GreenKnightTier1 = REGISTRY.register("green_knight.tier_1",
+            () -> new SimpleEntitlement(1));
+    public static RegistryObject<MKEntitlement> GreenKnightTier2 = REGISTRY.register("green_knight.tier_2",
+            () -> new SimpleEntitlement(1));
+    public static RegistryObject<MKEntitlement> GreenKnightTier3 = REGISTRY.register("green_knight.tier_3",
+            () -> new SimpleEntitlement(1));
+    public static RegistryObject<MKEntitlement> ClericTier1 = REGISTRY.register("cleric.tier_1",
+            () -> new SimpleEntitlement(1));
+    public static RegistryObject<MKEntitlement> ClericTier2 = REGISTRY.register("cleric.tier_2",
+            () -> new SimpleEntitlement(1));
+    public static RegistryObject<MKEntitlement> ClericTier3 = REGISTRY.register("cleric.tier_3",
+            () -> new SimpleEntitlement(1));
+    public static RegistryObject<MKEntitlement> IntroClericTier1 = REGISTRY.register("cleric.intro.tier_1",
+            () -> new SimpleEntitlement(1));
+    public static RegistryObject<MKEntitlement> NetherMageTier1 = REGISTRY.register("nether_mage.tier_1",
+            () -> new SimpleEntitlement(1));
+    public static RegistryObject<MKEntitlement> NetherMageTier2 = REGISTRY.register("nether_mage.tier_2",
+            () -> new SimpleEntitlement(1));
+    public static RegistryObject<MKEntitlement> NetherMageTier3 = REGISTRY.register("nether_mage.tier_3",
+            () -> new SimpleEntitlement(1));
+    public static RegistryObject<MKEntitlement> IntroNetherMageTier1 = REGISTRY.register("nether_mage.intro.tier_1",
+            () -> new SimpleEntitlement(1));
 
 
-    @SubscribeEvent
-    public static void registerEntitlements(RegistryEvent.Register<MKEntitlement> evt) {
-        evt.getRegistry().register(new SimpleEntitlement(new ResourceLocation(MKUltra.MODID, "green_knight.tier_1"), 1));
-        evt.getRegistry().register(new SimpleEntitlement(new ResourceLocation(MKUltra.MODID, "green_knight.tier_2"), 1));
-        evt.getRegistry().register(new SimpleEntitlement(new ResourceLocation(MKUltra.MODID, "green_knight.tier_3"), 1));
-        evt.getRegistry().register(new SimpleEntitlement(new ResourceLocation(MKUltra.MODID, "cleric.tier_1"), 1));
-        evt.getRegistry().register(new SimpleEntitlement(new ResourceLocation(MKUltra.MODID, "cleric.intro.tier_1"), 1));
-        evt.getRegistry().register(new SimpleEntitlement(new ResourceLocation(MKUltra.MODID, "cleric.tier_2"), 1));
-        evt.getRegistry().register(new SimpleEntitlement(new ResourceLocation(MKUltra.MODID, "cleric.tier_3"), 1));
-        evt.getRegistry().register(new SimpleEntitlement(new ResourceLocation(MKUltra.MODID, "nether_mage.tier_1"), 1));
-        evt.getRegistry().register(new SimpleEntitlement(new ResourceLocation(MKUltra.MODID, "nether_mage.intro.tier_1"), 1));
-        evt.getRegistry().register(new SimpleEntitlement(new ResourceLocation(MKUltra.MODID, "nether_mage.tier_2"), 1));
-        evt.getRegistry().register(new SimpleEntitlement(new ResourceLocation(MKUltra.MODID, "nether_mage.tier_3"), 1));
-
+    public static void register(IEventBus modBus) {
+        REGISTRY.register(modBus);
     }
 }
