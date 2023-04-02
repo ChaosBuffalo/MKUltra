@@ -9,7 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
-
+import net.minecraftforge.registries.ForgeRegistries;
 
 
 public class MKUItemModelProvider extends ItemModelProvider {
@@ -36,8 +36,8 @@ public class MKUItemModelProvider extends ItemModelProvider {
         makeSimpleItem(MKUItems.destroyedTrooperHelmet);
     }
 
-    private void makeSimpleItem(Item item){
-        String path = item.getRegistryName().getPath();
+    private void makeSimpleItem(Item item) {
+        String path = ForgeRegistries.ITEMS.getKey(item).getPath();
 
         ItemModelBuilder builder = getBuilder(path)
                 .parent(getExistingFile(new ResourceLocation("item/generated")))

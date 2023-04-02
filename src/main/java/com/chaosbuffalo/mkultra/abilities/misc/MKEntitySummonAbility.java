@@ -61,11 +61,6 @@ public class MKEntitySummonAbility extends MKAbility {
     }
 
     @Override
-    public Set<MemoryModuleType<?>> getRequiredMemories() {
-        return ImmutableSet.of(MKAbilityMemories.ABILITY_POSITION_TARGET);
-    }
-
-    @Override
     public int getCastTime(IMKEntityData casterData) {
         return casterData.getPets().isPetActive(getAbilityId()) ? 0 : super.getCastTime(casterData);
     }

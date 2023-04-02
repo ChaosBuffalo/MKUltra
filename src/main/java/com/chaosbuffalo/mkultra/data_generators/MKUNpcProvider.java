@@ -98,7 +98,7 @@ public class MKUNpcProvider extends NpcDefinitionProvider {
 
     private NpcDefinition generateNecrotideGolem() {
         NpcDefinition def = new NpcDefinition(new ResourceLocation(MKUltra.MODID, "necrotide_golem"),
-                MKUEntities.GOLEM_TYPE.get().getRegistryName(), null);
+                MKUEntities.GOLEM_TYPE.getId(), null);
         def.addOption(new FactionOption().setValue(MKUFactions.NECROTIDE_CULTISTS_NAME));
         def.addOption(new RenderGroupOption().setValue(MKUGolems.NECROTIDE_GOLEM_NAME));
         def.addOption(new MKSizeOption().setValue(1.25f));

@@ -26,11 +26,6 @@ public abstract class PositionTargetingAbility extends MKAbility {
                 .flatMap(TargetUtil.LivingOrPosition::getPosition).ifPresent(x -> castAtPosition(castingEntity, x));
     }
 
-    @Override
-    public Set<MemoryModuleType<?>> getRequiredMemories() {
-        return ImmutableSet.of(MKAbilityMemories.ABILITY_POSITION_TARGET);
-    }
-
     // FIXME: when we get the multiproject working lets make some of these calls less protected for stuff like this
     public Component exposeAbilityDescription(IMKEntityData casterData) {
         return getAbilityDescription(casterData);
